@@ -1,0 +1,3044 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Modulo Aseguradora | Dr. Sam</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f4f8fb;
+        --panel: rgba(255, 255, 255, 0.88);
+        --panel-solid: #ffffff;
+        --ink: #1d2a44;
+        --muted: #65728b;
+        --line: #dce7ef;
+        --teal: #00a896;
+        --teal-deep: #008b7f;
+        --teal-soft: #e8fbf8;
+        --blue: #1976d2;
+        --blue-soft: #eaf4ff;
+        --orange: #f59e0b;
+        --orange-soft: #fff7e8;
+        --red: #ef4444;
+        --red-soft: #fff0f0;
+        --green: #16a34a;
+        --green-soft: #e9f9f0;
+        --shadow: 0 22px 55px rgba(32, 48, 74, 0.12);
+        --soft-shadow: 0 14px 34px rgba(45, 63, 92, 0.08);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        background:
+          radial-gradient(circle at 12% 8%, rgba(0, 168, 150, 0.12), transparent 28%),
+          radial-gradient(circle at 84% 14%, rgba(25, 118, 210, 0.11), transparent 30%),
+          linear-gradient(135deg, #f8fbfd 0%, #eef6fa 100%);
+        color: var(--ink);
+        font-size: 13px;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+      }
+
+      button {
+        cursor: pointer;
+      }
+
+      .app-shell {
+        display: grid;
+        grid-template-columns: 282px minmax(0, 1fr);
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        position: sticky;
+        top: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 22px;
+        height: 100vh;
+        padding: 24px 18px;
+        background: rgba(255, 255, 255, 0.78);
+        border-right: 1px solid rgba(220, 231, 239, 0.9);
+        backdrop-filter: blur(18px);
+      }
+
+      .brand-block {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 8px 8px 16px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .brand-icon {
+        display: grid;
+        width: 54px;
+        height: 54px;
+        place-items: center;
+        border-radius: 15px;
+        background: linear-gradient(145deg, #02c2ad, #008c7f);
+        color: #fff;
+        box-shadow: 0 14px 30px rgba(0, 168, 150, 0.28);
+      }
+
+      .brand-icon svg,
+      .menu-icon svg,
+      .section-icon svg,
+      .metric-icon svg,
+      .action-icon svg,
+      .assistant-avatar svg {
+        display: block;
+        width: 24px;
+        height: 24px;
+        stroke: currentColor;
+        stroke-width: 2;
+        fill: none;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .brand-text strong {
+        display: block;
+        font-size: 15px;
+        letter-spacing: 0;
+      }
+
+      .brand-text span {
+        color: var(--teal-deep);
+        font-size: 9px;
+        font-weight: 800;
+      }
+
+      .side-nav {
+        display: grid;
+        gap: 6px;
+      }
+
+      .side-nav a {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-height: 46px;
+        border-radius: 14px;
+        padding: 0 12px;
+        color: #45546f;
+        font-size: 11px;
+        font-weight: 800;
+        text-decoration: none;
+      }
+
+      .side-nav a:hover,
+      .side-nav a.active {
+        background: var(--teal-soft);
+        color: var(--teal-deep);
+      }
+
+      .menu-icon {
+        display: grid;
+        width: 32px;
+        height: 32px;
+        place-items: center;
+        border-radius: 11px;
+        background: #f7fafc;
+        color: currentColor;
+      }
+
+      .side-nav a.active .menu-icon {
+        background: #d9f8f2;
+      }
+
+      .side-footer {
+        margin-top: auto;
+        border: 1px solid #bcece4;
+        border-radius: 18px;
+        padding: 16px;
+        background: linear-gradient(160deg, rgba(232, 251, 248, 0.96), rgba(255, 255, 255, 0.92));
+      }
+
+      .side-footer strong {
+        display: block;
+        margin-bottom: 6px;
+      }
+
+      .side-footer span {
+        color: var(--muted);
+        font-size: 10px;
+        line-height: 1.45;
+      }
+
+      .content {
+        min-width: 0;
+        padding: 24px clamp(18px, 3vw, 34px) 32px;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        margin-bottom: 20px;
+      }
+
+      .page-title {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .page-title h1 {
+        margin: 0;
+        font-size: clamp(23px, 3vw, 31px);
+        line-height: 1.05;
+        letter-spacing: 0;
+      }
+
+      .page-title p {
+        margin: 7px 0 0;
+        color: var(--teal-deep);
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .user-box {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .avatar {
+        display: grid;
+        width: 48px;
+        height: 48px;
+        place-items: center;
+        border: 1px solid #cdeee8;
+        border-radius: 50%;
+        background: var(--teal-soft);
+        color: var(--teal-deep);
+        font-weight: 900;
+      }
+
+      .user-card {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        min-height: 58px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 0 14px 0 16px;
+        background: rgba(255, 255, 255, 0.72);
+      }
+
+      .user-card strong,
+      .user-card small {
+        display: block;
+      }
+
+      .user-card small {
+        margin-top: 3px;
+        color: var(--muted);
+      }
+
+      .chevron {
+        width: 12px;
+        height: 12px;
+        border-right: 2px solid #64748b;
+        border-bottom: 2px solid #64748b;
+        transform: rotate(45deg) translateY(-3px);
+      }
+
+      .workspace {
+        border: 1px solid #d6e3ec;
+        border-radius: 24px;
+        padding: clamp(16px, 2vw, 26px);
+        background: rgba(255, 255, 255, 0.5);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      }
+
+      .main-card {
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        padding: clamp(18px, 2.4vw, 28px);
+        background: var(--panel);
+        box-shadow: var(--shadow);
+      }
+
+      .module-window {
+        display: none;
+      }
+
+      .module-window.active {
+        display: block;
+      }
+
+      .workspace > .module-window {
+        margin-top: 0;
+      }
+
+      .window-placeholder {
+        min-height: 420px;
+      }
+
+      .placeholder-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .placeholder-item {
+        border: 1px solid #dbeaf0;
+        border-radius: 16px;
+        padding: 16px;
+        background: #fbfdff;
+      }
+
+      .placeholder-item span {
+        display: block;
+        color: var(--muted);
+        font-weight: 800;
+      }
+
+      .placeholder-item strong {
+        display: block;
+        margin-top: 7px;
+        color: var(--teal-deep);
+        font-size: 20px;
+      }
+
+      .module-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        margin-bottom: 24px;
+      }
+
+      .module-heading {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+      }
+
+      .section-icon {
+        display: grid;
+        width: 72px;
+        height: 72px;
+        place-items: center;
+        border: 1px solid #cdeee8;
+        border-radius: 22px;
+        background: linear-gradient(145deg, #f2fffd, #e4f8f5);
+        color: var(--teal);
+      }
+
+      .module-heading h2 {
+        margin: 0;
+        font-size: 23px;
+        letter-spacing: 0;
+      }
+
+      .module-heading p {
+        margin: 7px 0 0;
+        color: var(--muted);
+      }
+
+      .module-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .primary-button,
+      .icon-button,
+      .ghost-button {
+        border: 0;
+        border-radius: 14px;
+        font-weight: 900;
+      }
+
+      .primary-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        min-height: 52px;
+        padding: 0 24px;
+        background: linear-gradient(135deg, #00b9a7, #008f82);
+        color: #fff;
+        box-shadow: 0 16px 30px rgba(0, 168, 150, 0.26);
+      }
+
+      .icon-button {
+        display: grid;
+        width: 52px;
+        height: 52px;
+        place-items: center;
+        border: 1px solid var(--line);
+        background: #fff;
+        color: #26344d;
+        box-shadow: var(--soft-shadow);
+      }
+
+      .action-icon svg {
+        width: 21px;
+        height: 21px;
+      }
+
+      .metrics {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 18px;
+        margin-bottom: 22px;
+      }
+
+      .metric {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        min-height: 112px;
+        border: 1px solid #cde9e6;
+        border-radius: 18px;
+        padding: 16px;
+        background: linear-gradient(145deg, rgba(248, 255, 253, 0.96), rgba(255, 255, 255, 0.82));
+      }
+
+      .dashboard-summary {
+        width: 100%;
+        text-align: left;
+        color: inherit;
+      }
+
+      .dashboard-summary:hover {
+        border-color: #99ded5;
+        box-shadow: var(--soft-shadow);
+      }
+
+      .metric.warning {
+        border-color: #f7d79d;
+        background: linear-gradient(145deg, #fffaf1, #ffffff);
+      }
+
+      .metric.info {
+        border-color: #cfe2fb;
+        background: linear-gradient(145deg, #f3f9ff, #ffffff);
+      }
+
+      .metric-icon {
+        display: grid;
+        width: 64px;
+        height: 64px;
+        place-items: center;
+        border: 1px solid #d7efe9;
+        border-radius: 50%;
+        background: #fff;
+        color: var(--teal);
+      }
+
+      .metric.warning .metric-icon {
+        border-color: #fde6b9;
+        color: var(--orange);
+      }
+
+      .metric.info .metric-icon {
+        border-color: #d6e8ff;
+        color: var(--blue);
+      }
+
+      .metric span,
+      .patient-sub,
+      .delivery-date span {
+        color: var(--muted);
+      }
+
+      .metric strong {
+        display: block;
+        margin-top: 5px;
+        color: var(--teal-deep);
+        font-size: 25px;
+        line-height: 1;
+      }
+
+      .metric.warning strong {
+        color: #d97706;
+      }
+
+      .metric.info strong {
+        color: var(--blue);
+      }
+
+      .content-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 22px;
+      }
+
+      .table-panel,
+      .detail-panel {
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: var(--panel-solid);
+        box-shadow: var(--soft-shadow);
+        overflow: hidden;
+      }
+
+      .table-scroll {
+        overflow-x: auto;
+      }
+
+      table {
+        width: 100%;
+        min-width: 1120px;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        border-bottom: 1px solid #e5edf3;
+        padding: 15px 16px;
+        text-align: left;
+        vertical-align: middle;
+      }
+
+      th {
+        background: linear-gradient(180deg, #fbfdff, #f6f9fc);
+        color: #43506a;
+        font-size: 10px;
+        font-weight: 900;
+      }
+
+      tbody tr:hover {
+        background: #fbfefd;
+      }
+
+      .patient-cell {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .patient-initials {
+        display: grid;
+        width: 46px;
+        height: 46px;
+        flex: 0 0 auto;
+        place-items: center;
+        border: 1px solid #c9eee8;
+        border-radius: 50%;
+        background: var(--teal-soft);
+        color: var(--teal-deep);
+        font-weight: 900;
+      }
+
+      .patient-cell strong,
+      .patient-cell span,
+      .delivery-date strong,
+      .delivery-date span,
+      .patient-cell strong {
+        margin-bottom: 4px;
+      }
+
+      .delivery-date {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .calendar-dot {
+        display: grid;
+        width: 22px;
+        height: 22px;
+        place-items: center;
+        color: #60708d;
+      }
+
+      .calendar-dot::before {
+        width: 14px;
+        height: 14px;
+        border: 2px solid currentColor;
+        border-top-width: 4px;
+        border-radius: 4px;
+        content: "";
+      }
+
+      .badge {
+        display: inline-grid;
+        min-height: 30px;
+        place-items: center;
+        border-radius: 10px;
+        padding: 0 12px;
+        font-size: 9px;
+        font-weight: 900;
+        white-space: nowrap;
+      }
+
+      .badge.review {
+        background: var(--blue-soft);
+        color: var(--blue);
+        border: 1px solid #cfe5ff;
+      }
+
+      .badge.delivered,
+      .badge.stable {
+        background: var(--green-soft);
+        color: var(--green);
+        border: 1px solid #c6f1d8;
+      }
+
+      .badge.pending {
+        background: var(--orange-soft);
+        color: #d97706;
+        border: 1px solid #fde2ac;
+      }
+
+      .badge.urgent {
+        background: var(--red-soft);
+        color: var(--red);
+        border: 1px solid #ffd1d1;
+      }
+
+      .row-action {
+        display: grid;
+        width: 40px;
+        height: 40px;
+        place-items: center;
+        border: 1px solid var(--line);
+        border-radius: 13px;
+        background: #fff;
+        color: #27344c;
+      }
+
+      .more-dots,
+      .more-dots::before,
+      .more-dots::after {
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+
+      .more-dots {
+        position: relative;
+      }
+
+      .more-dots::before,
+      .more-dots::after {
+        position: absolute;
+        left: 0;
+        content: "";
+      }
+
+      .more-dots::before {
+        top: -8px;
+      }
+
+      .more-dots::after {
+        top: 8px;
+      }
+
+      .table-footer {
+        display: flex;
+        justify-content: center;
+        padding: 14px;
+      }
+
+      .table-footer a {
+        color: var(--blue);
+        font-weight: 900;
+        text-decoration: none;
+      }
+
+      .chronic-section {
+        margin-top: 22px;
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        padding: 20px;
+        background: var(--panel-solid);
+        box-shadow: var(--soft-shadow);
+      }
+
+      .chronic-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 18px;
+        margin-bottom: 18px;
+      }
+
+      .chronic-header h3 {
+        margin: 0;
+        font-size: 20px;
+      }
+
+      .chronic-header p {
+        margin: 6px 0 0;
+        color: var(--muted);
+        line-height: 1.45;
+      }
+
+      .chronic-alert {
+        display: grid;
+        gap: 5px;
+        min-width: 250px;
+        border: 1px solid #bfeee7;
+        border-radius: 16px;
+        padding: 13px 15px;
+        background: linear-gradient(145deg, #ecfffb, #ffffff);
+      }
+
+      .chronic-alert strong {
+        color: var(--teal-deep);
+      }
+
+      .chronic-alert span {
+        color: var(--muted);
+      }
+
+      .chronic-kpis {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      .mini-kpi {
+        border: 1px solid #dbeaf0;
+        border-radius: 15px;
+        padding: 13px;
+        background: #fbfdff;
+      }
+
+      .mini-kpi span {
+        display: block;
+        color: var(--muted);
+        font-weight: 800;
+      }
+
+      .mini-kpi strong {
+        display: block;
+        margin-top: 5px;
+        color: var(--teal-deep);
+        font-size: 22px;
+      }
+
+      .insurance-button {
+        display: inline-grid;
+        min-height: 30px;
+        place-items: center;
+        border-radius: 10px;
+        padding: 0 12px;
+        background: var(--teal-soft);
+        color: var(--teal-deep);
+        font-size: 9px;
+        font-weight: 900;
+        white-space: nowrap;
+      }
+
+      .chronic-table table {
+        min-width: 1580px;
+      }
+
+      .medication-table table {
+        min-width: 1620px;
+      }
+
+      .cost-value {
+        color: var(--teal-deep);
+        font-weight: 900;
+        white-space: nowrap;
+      }
+
+      .patient-table table {
+        min-width: 1490px;
+      }
+
+      .doctors-section {
+        margin-top: 22px;
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        padding: 20px;
+        background: var(--panel-solid);
+        box-shadow: var(--soft-shadow);
+      }
+
+      .section-heading-row {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 18px;
+        margin-bottom: 18px;
+      }
+
+      .section-heading-row h3 {
+        margin: 0;
+        font-size: 20px;
+      }
+
+      .section-heading-row p {
+        margin: 6px 0 0;
+        color: var(--muted);
+        line-height: 1.45;
+      }
+
+      .doctor-table table {
+        min-width: 1510px;
+      }
+
+      .doctor-filter-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .doctor-filter-row th {
+        position: relative;
+        padding: 8px;
+        background: #f8fbfd;
+      }
+
+      .filter-menu {
+        position: relative;
+      }
+
+      .filter-menu summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 38px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 0 11px;
+        background: #fff;
+        color: var(--ink);
+        cursor: pointer;
+        font-size: 9px;
+        font-weight: 900;
+        list-style: none;
+      }
+
+      .filter-menu summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .filter-menu summary::after {
+        width: 8px;
+        height: 8px;
+        border-right: 2px solid var(--muted);
+        border-bottom: 2px solid var(--muted);
+        content: "";
+        transform: rotate(45deg);
+      }
+
+      .filter-menu[open] summary::after {
+        transform: rotate(225deg);
+      }
+
+      .filter-options {
+        position: absolute;
+        z-index: 8;
+        top: calc(100% + 6px);
+        left: 0;
+        display: grid;
+        gap: 7px;
+        width: min(280px, 88vw);
+        max-height: 260px;
+        overflow: auto;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 10px;
+        background: #fff;
+        box-shadow: var(--soft-shadow);
+      }
+
+      .check-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--muted);
+        line-height: 1.3;
+      }
+
+      .check-row strong {
+        color: var(--ink);
+      }
+
+      .check-row input {
+        width: 15px;
+        height: 15px;
+        accent-color: var(--teal);
+      }
+
+      .filter-empty {
+        padding: 14px 16px;
+        color: var(--muted);
+        font-weight: 800;
+      }
+
+      .status-control {
+        display: inline-flex;
+        gap: 6px;
+        padding: 4px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: #f8fafc;
+        white-space: nowrap;
+      }
+
+      .status-option {
+        min-height: 28px;
+        border: 0;
+        border-radius: 999px;
+        padding: 0 10px;
+        background: transparent;
+        color: var(--muted);
+        cursor: pointer;
+        font-size: 9px;
+        font-weight: 900;
+      }
+
+      .status-option.active-on {
+        background: var(--green-soft);
+        color: var(--green);
+      }
+
+      .status-option.active-off {
+        background: var(--red-soft);
+        color: var(--red);
+      }
+
+      .platform-relation {
+        display: grid;
+        gap: 7px;
+        min-width: 190px;
+      }
+
+      .relation-label {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: fit-content;
+        min-height: 25px;
+        border: 0;
+        border-radius: 999px;
+        padding: 0 10px;
+        font-size: 9px;
+        font-weight: 900;
+      }
+
+      .relation-label.relation-toggle {
+        cursor: pointer;
+      }
+
+      .relation-label.yes {
+        background: var(--green-soft);
+        color: var(--green);
+      }
+
+      .relation-label.no {
+        background: var(--red-soft);
+        color: var(--red);
+      }
+
+      .relation-label.pending {
+        background: var(--orange-soft);
+        color: var(--orange);
+      }
+
+      .relation-request {
+        display: none;
+        align-items: center;
+        width: fit-content;
+        min-height: 30px;
+        border: 1px solid #bfeee7;
+        border-radius: 10px;
+        padding: 0 12px;
+        background: var(--teal-soft);
+        color: var(--teal-deep);
+        cursor: pointer;
+        font-size: 9px;
+        font-weight: 900;
+      }
+
+      .platform-relation.show-request .relation-request {
+        display: inline-flex;
+      }
+
+      .relation-request:disabled {
+        cursor: default;
+        opacity: 0.72;
+      }
+
+      .sync-bulk {
+        position: relative;
+        width: max-content;
+        min-width: 170px;
+      }
+
+      .sync-bulk-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        width: 100%;
+        min-height: 36px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 0 11px;
+        background: #fff;
+        color: var(--ink);
+        font-size: 9px;
+        font-weight: 900;
+      }
+
+      .sync-bulk-toggle::after {
+        width: 8px;
+        height: 8px;
+        border-right: 2px solid var(--muted);
+        border-bottom: 2px solid var(--muted);
+        content: "";
+        transform: rotate(45deg);
+      }
+
+      .sync-bulk.open .sync-bulk-toggle::after {
+        transform: rotate(225deg);
+      }
+
+      .sync-bulk-menu {
+        position: absolute;
+        z-index: 12;
+        top: calc(100% + 6px);
+        right: 0;
+        display: none;
+        gap: 7px;
+        width: 270px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 10px;
+        background: #fff;
+        box-shadow: var(--soft-shadow);
+      }
+
+      .sync-bulk.open .sync-bulk-menu {
+        display: grid;
+      }
+
+      .sync-bulk-menu button {
+        min-height: 34px;
+        border: 1px solid #bfeee7;
+        border-radius: 10px;
+        padding: 0 10px;
+        background: var(--teal-soft);
+        color: var(--teal-deep);
+        font-size: 9px;
+        font-weight: 900;
+        text-align: left;
+      }
+
+      .hospital-section {
+        margin-top: 22px;
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        padding: 20px;
+        background: var(--panel-solid);
+        box-shadow: var(--soft-shadow);
+      }
+
+      .hospital-table table {
+        min-width: 1420px;
+      }
+
+      .detail-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 34px;
+        border: 1px solid #bfeee7;
+        border-radius: 11px;
+        padding: 0 13px;
+        background: var(--teal-soft);
+        color: var(--teal-deep);
+        font-size: 9px;
+        font-weight: 900;
+        white-space: nowrap;
+      }
+
+      .hospital-modal {
+        position: fixed;
+        inset: 0;
+        z-index: 30;
+        display: grid;
+        place-items: center;
+        padding: 22px;
+        background: rgba(29, 42, 68, 0.42);
+      }
+
+      .hospital-modal[hidden] {
+        display: none;
+      }
+
+      .hospital-dialog {
+        width: min(1120px, 100%);
+        max-height: min(760px, 92vh);
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        background: #fff;
+        box-shadow: var(--shadow);
+      }
+
+      .hospital-dialog-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 20px;
+        border-bottom: 1px solid var(--line);
+        background: linear-gradient(180deg, #fbfdff, #f6fafc);
+      }
+
+      .hospital-dialog-header h3 {
+        margin: 0;
+        font-size: 20px;
+      }
+
+      .hospital-dialog-header p {
+        margin: 6px 0 0;
+        color: var(--muted);
+      }
+
+      .modal-close {
+        display: grid;
+        width: 40px;
+        height: 40px;
+        place-items: center;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: #fff;
+        color: var(--ink);
+        font-size: 18px;
+        font-weight: 900;
+      }
+
+      .hospital-dialog-body {
+        display: grid;
+        gap: 16px;
+        max-height: calc(92vh - 96px);
+        overflow: auto;
+        padding: 20px;
+      }
+
+      .hospital-summary {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .summary-item {
+        border: 1px solid #dbeaf0;
+        border-radius: 15px;
+        padding: 12px;
+        background: #fbfdff;
+      }
+
+      .summary-item span,
+      .invoice-total span {
+        display: block;
+        color: var(--muted);
+        font-weight: 800;
+      }
+
+      .summary-item strong,
+      .invoice-total strong {
+        display: block;
+        margin-top: 5px;
+      }
+
+      .invoice-table table {
+        min-width: 980px;
+      }
+
+      .invoice-total {
+        justify-self: end;
+        min-width: 260px;
+        border: 1px solid #bfeee7;
+        border-radius: 15px;
+        padding: 13px 15px;
+        background: linear-gradient(145deg, #ecfffb, #ffffff);
+      }
+
+      .invoice-total strong {
+        color: var(--teal-deep);
+        font-size: 20px;
+      }
+
+      .secondary-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 22px;
+        margin-top: 22px;
+      }
+
+      .detail-panel {
+        padding: 20px;
+      }
+
+      .panel-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      .panel-title h3 {
+        margin: 0;
+      }
+
+      .panel-title span {
+        color: var(--muted);
+        font-size: 10px;
+        font-weight: 900;
+      }
+
+      .timeline {
+        display: grid;
+        gap: 13px;
+      }
+
+      .timeline-item {
+        display: grid;
+        grid-template-columns: 90px minmax(0, 1fr);
+        gap: 14px;
+        border: 1px solid #e6eef4;
+        border-radius: 15px;
+        padding: 12px;
+        background: #fbfdff;
+      }
+
+      .timeline-item time {
+        color: var(--teal-deep);
+        font-size: 10px;
+        font-weight: 900;
+      }
+
+      .timeline-item strong,
+      .timeline-item span {
+        display: block;
+      }
+
+      .timeline-item span {
+        margin-top: 4px;
+        color: var(--muted);
+        line-height: 1.45;
+      }
+
+      .assistant-bar {
+        position: sticky;
+        bottom: 18px;
+        display: grid;
+        grid-template-columns: 64px minmax(0, 1fr) 154px;
+        gap: 12px;
+        align-items: center;
+        width: min(860px, 100%);
+        margin: 22px auto 0;
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        padding: 12px;
+        background: rgba(255, 255, 255, 0.94);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(14px);
+      }
+
+      .assistant-avatar {
+        display: grid;
+        width: 54px;
+        height: 54px;
+        place-items: center;
+        border-radius: 18px;
+        background: var(--teal-soft);
+        color: var(--teal);
+      }
+
+      .assistant-bar input {
+        width: 100%;
+        min-height: 54px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 0 18px;
+        background: #fff;
+        color: var(--ink);
+        outline: 0;
+      }
+
+      .assistant-bar button {
+        min-height: 54px;
+        border: 0;
+        border-radius: 16px;
+        background: linear-gradient(135deg, #00b9a7, #008f82);
+        color: #fff;
+        font-weight: 900;
+      }
+
+      @media (max-width: 1180px) {
+        .app-shell {
+          grid-template-columns: 92px minmax(0, 1fr);
+        }
+
+        .brand-text,
+        .side-nav span.label,
+        .side-footer {
+          display: none;
+        }
+
+        .sidebar {
+          align-items: center;
+          padding: 20px 12px;
+        }
+
+        .brand-block {
+          padding: 0 0 16px;
+        }
+
+        .side-nav a {
+          justify-content: center;
+          width: 56px;
+          padding: 0;
+        }
+      }
+
+      @media (max-width: 980px) {
+        .topbar,
+        .module-header,
+        .module-actions,
+        .user-box {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .metrics,
+        .content-grid,
+        .secondary-layout {
+          grid-template-columns: 1fr;
+        }
+
+        .module-actions {
+          width: 100%;
+        }
+
+        .chronic-header {
+          flex-direction: column;
+        }
+
+        .chronic-alert {
+          width: 100%;
+        }
+
+        .chronic-kpis {
+          grid-template-columns: 1fr;
+        }
+
+        .section-heading-row {
+          flex-direction: column;
+        }
+
+        .doctor-filter-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .hospital-summary {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .placeholder-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .primary-button,
+        .icon-button {
+          width: 100%;
+        }
+      }
+
+      @media (max-width: 700px) {
+        .app-shell {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          position: static;
+          align-items: stretch;
+          height: auto;
+          border-right: 0;
+          border-bottom: 1px solid var(--line);
+        }
+
+        .brand-text,
+        .side-nav span.label {
+          display: block;
+        }
+
+        .side-nav {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .side-nav a {
+          justify-content: flex-start;
+          width: auto;
+          padding: 0 10px;
+        }
+
+        .content {
+          padding: 16px;
+        }
+
+        .page-title {
+          align-items: flex-start;
+        }
+
+        .user-card {
+          width: 100%;
+          justify-content: space-between;
+        }
+
+        .module-heading {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .assistant-bar {
+          position: static;
+          grid-template-columns: 1fr;
+        }
+
+        .doctor-filter-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .hospital-summary {
+          grid-template-columns: 1fr;
+        }
+
+        .placeholder-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .hospital-modal {
+          padding: 12px;
+        }
+
+        .timeline-item {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Menu aseguradora">
+        <div class="brand-block">
+          <div class="brand-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 3 5 6v5c0 4.8 3 8.6 7 10 4-1.4 7-5.2 7-10V6l-7-3Z"></path>
+              <path d="M12 8v6"></path>
+              <path d="M9 11h6"></path>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <strong>Modulo Aseguradora</strong>
+            <span>Dr. Sam</span>
+          </div>
+        </div>
+
+        <nav class="side-nav">
+          <a class="active" href="#dashboard">
+            <span class="menu-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 13h6V4H4v9Z"></path><path d="M14 20h6V4h-6v16Z"></path><path d="M4 20h6v-3H4v3Z"></path></svg>
+            </span>
+            <span class="label">Dashboard</span>
+          </a>
+          <a href="#pacientes">
+            <span class="menu-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"></path><circle cx="9.5" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            </span>
+            <span class="label">Pacientes</span>
+          </a>
+          <a href="#medicos">
+            <span class="menu-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4v3"></path><path d="M8 6a4 4 0 0 1 8 0"></path><path d="M5 21v-2a5 5 0 0 1 5-5h4a5 5 0 0 1 5 5v2"></path><path d="M9 10h6"></path><path d="M12 7v6"></path></svg>
+            </span>
+            <span class="label">Medicos</span>
+          </a>
+          <a href="#cronico-degenerativos">
+            <span class="menu-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M8 3h8v4H8z"></path><path d="M10 7 6 21h12L14 7"></path><path d="M9 14h6"></path><path d="M12 11v6"></path></svg>
+            </span>
+            <span class="label">Cronico Degenerativos</span>
+          </a>
+          <a href="#medicamentos">
+            <span class="menu-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M7 3h10v6H7z"></path><path d="M9 9h6l2 12H7L9 9Z"></path><path d="M10 15h4"></path><path d="M12 13v4"></path></svg>
+            </span>
+            <span class="label">Medicamentos</span>
+          </a>
+          <a href="#hospitalizaciones">
+            <span class="menu-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 19V6"></path><path d="M4 14h16"></path><path d="M20 19V9a3 3 0 0 0-3-3h-4v8"></path><path d="M4 10h5a3 3 0 0 1 3 3v1"></path><path d="M6 19v-2"></path><path d="M18 19v-2"></path></svg>
+            </span>
+            <span class="label">Hospitalizaciones</span>
+          </a>
+          <a href="#polizas">
+            <span class="menu-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 19V5"></path><path d="M4 19h16"></path><path d="m7 15 4-4 3 3 5-7"></path></svg>
+            </span>
+            <span class="label">Polizas</span>
+          </a>
+          <a href="#empresas">
+            <span class="menu-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M3 21h18"></path><path d="M5 21V7l8-4v18"></path><path d="M19 21V11l-6-4"></path><path d="M9 9h1"></path><path d="M9 13h1"></path><path d="M9 17h1"></path></svg>
+            </span>
+            <span class="label">Empresas</span>
+          </a>
+          <a href="#planes">
+            <span class="menu-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"></path><path d="M14 2v6h6"></path><path d="M8 13h8"></path><path d="M8 17h5"></path></svg>
+            </span>
+            <span class="label">Planes</span>
+          </a>
+          <a href="#asesores">
+            <span class="menu-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"></path><path d="M8 8h8"></path><path d="M8 12h8"></path><path d="M8 16h5"></path></svg>
+            </span>
+            <span class="label">Asesores</span>
+          </a>
+          <a href="#riesgo">
+            <span class="menu-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M3 3v18h18"></path><path d="M8 17V9"></path><path d="M13 17V5"></path><path d="M18 17v-6"></path></svg>
+            </span>
+            <span class="label">Riesgo</span>
+          </a>
+          <a href="#usuarios">
+            <span class="menu-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 15v2"></path><path d="M6 10V8a6 6 0 1 1 12 0v2"></path><rect x="4" y="10" width="16" height="11" rx="2"></rect></svg>
+            </span>
+            <span class="label">Usuarios</span>
+          </a>
+        </nav>
+
+        <div class="side-footer">
+          <strong>Trazabilidad activa</strong>
+          <span>Padron administrativo de asegurados ligado a poliza y usuario de plataforma.</span>
+        </div>
+      </aside>
+
+      <main class="content">
+        <header class="topbar">
+          <div class="page-title">
+            <div class="brand-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 3 5 6v5c0 4.8 3 8.6 7 10 4-1.4 7-5.2 7-10V6l-7-3Z"></path>
+                <path d="M12 8v6"></path>
+                <path d="M9 11h6"></path>
+              </svg>
+            </div>
+            <div>
+              <h1>Modulo Aseguradora</h1>
+              <p>Gestion integral de pacientes asegurados</p>
+            </div>
+          </div>
+
+          <div class="user-box">
+            <div class="avatar">AM</div>
+            <div class="user-card">
+              <div>
+                <strong>Ana Martinez Lopez</strong>
+                <small>Administrador</small>
+              </div>
+              <span class="chevron" aria-hidden="true"></span>
+            </div>
+          </div>
+        </header>
+
+        <section class="workspace" id="workspace">
+          <section class="main-card module-window" id="dashboard">
+            <div class="module-header">
+              <div class="module-heading">
+                <div class="section-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M4 13h6V4H4v9Z"></path>
+                    <path d="M14 20h6V4h-6v16Z"></path>
+                    <path d="M4 20h6v-3H4v3Z"></path>
+                  </svg>
+                </div>
+                <div>
+                  <h2>Dashboard Operativo</h2>
+                  <p>Resumen general por seccion principal de la plataforma.</p>
+                </div>
+              </div>
+            </div>
+
+            <section class="metrics" aria-label="Indicadores generales">
+              <button class="metric dashboard-summary" data-dashboard-target="pacientes" type="button">
+                <div class="metric-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"></path><circle cx="9.5" cy="7" r="4"></circle><path d="M18 8v6"></path><path d="M15 11h6"></path></svg>
+                </div>
+                <div><span>Total de pacientes</span><strong>248</strong></div>
+              </button>
+              <button class="metric dashboard-summary" data-dashboard-target="medicos" type="button">
+                <div class="metric-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4v3"></path><path d="M8 6a4 4 0 0 1 8 0"></path><path d="M5 21v-2a5 5 0 0 1 5-5h4a5 5 0 0 1 5 5v2"></path><path d="M9 10h6"></path><path d="M12 7v6"></path></svg>
+                </div>
+                <div><span>Total de medicos</span><strong>4</strong></div>
+              </button>
+              <button class="metric dashboard-summary warning" data-dashboard-target="cronico-degenerativos" type="button">
+                <div class="metric-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M8 3h8v4H8z"></path><path d="M10 7 6 21h12L14 7"></path><path d="M9 14h6"></path><path d="M12 11v6"></path></svg>
+                </div>
+                <div><span>Total cronico degenerativos</span><strong>4</strong></div>
+              </button>
+              <button class="metric dashboard-summary info" data-dashboard-target="hospitalizaciones" type="button">
+                <div class="metric-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M4 19V6"></path><path d="M4 14h16"></path><path d="M20 19V9a3 3 0 0 0-3-3h-4v8"></path><path d="M6 19v-2"></path></svg>
+                </div>
+                <div><span>Total hospitalizaciones</span><strong>3</strong></div>
+              </button>
+            </section>
+          </section>
+
+          <div class="main-card module-window" id="pacientes">
+            <div class="module-header">
+              <div class="module-heading">
+                <div class="section-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9.5" cy="7" r="4"></circle>
+                    <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                  </svg>
+                </div>
+                <div>
+                  <h2>Pacientes Asegurados</h2>
+                  <p>Listado general de asegurados con datos personales, poliza, plan, contacto y estatus</p>
+                </div>
+              </div>
+              <div class="module-actions">
+                <button class="primary-button" type="button">
+                  <span class="action-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v8"></path><path d="M8 12h8"></path></svg>
+                  </span>
+                  Nuevo asegurado
+                </button>
+                <button class="icon-button" type="button" aria-label="Exportar">
+                  <span class="action-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M12 16V4"></path><path d="m7 9 5-5 5 5"></path><path d="M20 16v4H4v-4"></path></svg>
+                  </span>
+                </button>
+              </div>
+            </div>
+
+            <section class="metrics" aria-label="Indicadores de asegurados">
+              <article class="metric">
+                <div class="metric-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"></path><circle cx="9.5" cy="7" r="4"></circle><path d="M18 8v6"></path><path d="M15 11h6"></path></svg>
+                </div>
+                <div><span>Asegurados activos</span><strong>248</strong></div>
+              </article>
+              <article class="metric">
+                <div class="metric-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.8 3 8.6 7 10 4-1.4 7-5.2 7-10V6l-7-3Z"></path><path d="M9 12h6"></path></svg>
+                </div>
+                <div><span>Polizas vigentes</span><strong>241</strong></div>
+              </article>
+              <article class="metric warning">
+                <div class="metric-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"></path><path d="M8 8h8"></path><path d="M8 12h6"></path><path d="M8 16h4"></path></svg>
+                </div>
+                <div><span>Planes activos</span><strong>12</strong></div>
+              </article>
+              <article class="metric info">
+                <div class="metric-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M12 9v4"></path><path d="M12 17h.01"></path><path d="M10.3 3.9 2.5 18a2 2 0 0 0 1.8 3h15.4a2 2 0 0 0 1.8-3L13.7 3.9a2 2 0 0 0-3.4 0Z"></path></svg>
+                </div>
+                <div><span>Riesgo alto</span><strong>37</strong></div>
+              </article>
+            </section>
+
+            <div class="content-grid">
+              <section class="table-panel patient-table">
+                <div class="table-scroll">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Asegurado</th>
+                        <th>CURP / RFC</th>
+                        <th>Edad / Sexo</th>
+                        <th>Contacto</th>
+                        <th>Poliza</th>
+                        <th>Aseguradora / Plan</th>
+                        <th>Empresa</th>
+                        <th>Riesgo</th>
+                        <th>Estatus</th>
+                        <th>
+                          <div class="sync-bulk" id="patient-sync-bulk">
+                            <button class="sync-bulk-toggle" type="button" aria-expanded="false">Sincronizacion</button>
+                            <div class="sync-bulk-menu" aria-label="Acciones masivas de sincronizacion">
+                              <button data-sync-action="send-no" type="button">Enviar solicitud a los No Sincronizados</button>
+                              <button data-sync-action="resend-pending" type="button">Reenviar solicitud a los pendiente</button>
+                              <button data-sync-action="both" type="button">Ambas</button>
+                            </div>
+                          </div>
+                        </th>
+                        <th>Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <div class="patient-cell">
+                            <div class="patient-initials">JR</div>
+                            <div><strong>Jose Ramirez Torres</strong><span class="patient-sub">ID 1002458</span></div>
+                          </div>
+                        </td>
+                        <td><strong>RATJ850624HDFMRR09</strong><span class="patient-sub">RATJ850624AB1</span></td>
+                        <td><strong>39 anos</strong><span class="patient-sub">Masculino</span></td>
+                        <td><strong>555 210 8841</strong><span class="patient-sub">jose.ramirez@demo.local</span></td>
+                        <td><strong>GMM-1002458</strong><span class="patient-sub">Vigente</span></td>
+                        <td><strong>Salud Integral</strong><span class="patient-sub">Corporativo Plus</span></td>
+                        <td>Industrias Atlas</td>
+                        <td><span class="badge pending">Medio</span></td>
+                        <td><span class="badge stable">Estable</span></td>
+                        <td>
+                          <div class="platform-relation">
+                            <span class="relation-label yes">Si</span>
+                          </div>
+                        </td>
+                        <td><button class="row-action" type="button" aria-label="Acciones"><span class="more-dots"></span></button></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div class="patient-cell">
+                            <div class="patient-initials">LM</div>
+                            <div><strong>Laura Mendez Solis</strong><span class="patient-sub">ID 1001893</span></div>
+                          </div>
+                        </td>
+                        <td><strong>MESL900112MDFNLR04</strong><span class="patient-sub">MESL900112CD2</span></td>
+                        <td><strong>36 anos</strong><span class="patient-sub">Femenino</span></td>
+                        <td><strong>555 482 1190</strong><span class="patient-sub">laura.mendez@demo.local</span></td>
+                        <td><strong>GMM-1001893</strong><span class="patient-sub">Vigente</span></td>
+                        <td><strong>Salud Integral</strong><span class="patient-sub">Plan Familiar</span></td>
+                        <td>Grupo Nova</td>
+                        <td><span class="badge pending">Medio</span></td>
+                        <td><span class="badge stable">Activo</span></td>
+                        <td>
+                          <div class="platform-relation">
+                            <button class="relation-label relation-toggle pending" type="button" aria-expanded="false">Pendiente</button>
+                            <button class="relation-request" data-relation-subject="paciente" type="button">Reenviar</button>
+                          </div>
+                        </td>
+                        <td><button class="row-action" type="button" aria-label="Acciones"><span class="more-dots"></span></button></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div class="patient-cell">
+                            <div class="patient-initials">CC</div>
+                            <div><strong>Carlos Cano Hernandez</strong><span class="patient-sub">ID 1000764</span></div>
+                          </div>
+                        </td>
+                        <td><strong>CAHC781003HDFNNR07</strong><span class="patient-sub">CAHC781003EF3</span></td>
+                        <td><strong>47 anos</strong><span class="patient-sub">Masculino</span></td>
+                        <td><strong>555 903 6712</strong><span class="patient-sub">carlos.cano@demo.local</span></td>
+                        <td><strong>GMM-1000764</strong><span class="patient-sub">Vigente</span></td>
+                        <td><strong>Confia Salud</strong><span class="patient-sub">Ejecutivo Nacional</span></td>
+                        <td>Logistica Central</td>
+                        <td><span class="badge urgent">Alto</span></td>
+                        <td><span class="badge stable">Activo</span></td>
+                        <td>
+                          <div class="platform-relation">
+                            <span class="relation-label yes">Si</span>
+                          </div>
+                        </td>
+                        <td><button class="row-action" type="button" aria-label="Acciones"><span class="more-dots"></span></button></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div class="patient-cell">
+                            <div class="patient-initials">MV</div>
+                            <div><strong>Maria Vargas Perez</strong><span class="patient-sub">ID 1001547</span></div>
+                          </div>
+                        </td>
+                        <td><strong>VAPM820807MDFRRL02</strong><span class="patient-sub">VAPM820807GH4</span></td>
+                        <td><strong>43 anos</strong><span class="patient-sub">Femenino</span></td>
+                        <td><strong>555 674 2215</strong><span class="patient-sub">maria.vargas@demo.local</span></td>
+                        <td><strong>GMM-1001547</strong><span class="patient-sub">Vigente</span></td>
+                        <td><strong>Aseguradora Norte</strong><span class="patient-sub">GMM Oro</span></td>
+                        <td>Consultores Delta</td>
+                        <td><span class="badge stable">Bajo</span></td>
+                        <td><span class="badge stable">Activo</span></td>
+                        <td>
+                          <div class="platform-relation">
+                            <button class="relation-label relation-toggle no" type="button" aria-expanded="false">No</button>
+                            <button class="relation-request" data-relation-subject="paciente" type="button">Reenviar</button>
+                          </div>
+                        </td>
+                        <td><button class="row-action" type="button" aria-label="Acciones"><span class="more-dots"></span></button></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div class="patient-cell">
+                            <div class="patient-initials">FP</div>
+                            <div><strong>Francisco Perez Luna</strong><span class="patient-sub">ID 1001122</span></div>
+                          </div>
+                        </td>
+                        <td><strong>PELF751211HDFRNR01</strong><span class="patient-sub">PELF751211IJ5</span></td>
+                        <td><strong>50 anos</strong><span class="patient-sub">Masculino</span></td>
+                        <td><strong>555 318 4410</strong><span class="patient-sub">francisco.perez@demo.local</span></td>
+                        <td><strong>GMM-1001122</strong><span class="patient-sub">Revision anual</span></td>
+                        <td><strong>Vita Proteccion</strong><span class="patient-sub">Empresarial Total</span></td>
+                        <td>Finanzas Horizonte</td>
+                        <td><span class="badge urgent">Alto</span></td>
+                        <td><span class="badge pending">Validacion</span></td>
+                        <td>
+                          <div class="platform-relation">
+                            <button class="relation-label relation-toggle pending" type="button" aria-expanded="false">Pendiente</button>
+                            <button class="relation-request" data-relation-subject="paciente" type="button">Reenviar</button>
+                          </div>
+                        </td>
+                        <td><button class="row-action" type="button" aria-label="Acciones"><span class="more-dots"></span></button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="table-footer"><a href="#pacientes">Ver todos los asegurados &rsaquo;</a></div>
+              </section>
+
+            </div>
+          </div>
+
+          <section class="doctors-section module-window" id="medicos">
+            <div class="section-heading-row">
+              <div>
+                <h3>Medicos</h3>
+                <p>Catalogo de medicos vinculados a asegurados, polizas y planes de atencion.</p>
+              </div>
+              <button class="primary-button" type="button">Nuevo medico</button>
+            </div>
+
+            <section class="table-panel doctor-table">
+              <div class="table-scroll">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Medico</th>
+                      <th>Cedula</th>
+                      <th>Especialidad</th>
+                      <th>Subespecialidad</th>
+                      <th>Telefono</th>
+                      <th>Correo</th>
+                      <th>Unidad / consultorio</th>
+                      <th>Aseguradora / plan</th>
+                      <th>Direccion</th>
+                      <th>Estatus</th>
+                      <th>Sincronizacion</th>
+                    </tr>
+                    <tr class="doctor-filter-row" id="doctor-filter-grid" aria-label="Filtros por columna"></tr>
+                  </thead>
+                  <tbody id="hospitalization-table-body">
+                    <tr data-medico="Dra. Ana Isabel Rojas Medina" data-cedula="CED-4589210" data-especialidad="Medicina interna" data-subespecialidad="Endocrinologia" data-telefono="555 780 2145" data-correo="ana.rojas@demo.local" data-unidad="Torre Medica Roma 304" data-plan="Salud Integral / Corporativo Plus" data-direccion="Av. Oaxaca 120" data-estatus="Activo" data-plataforma="Si">
+                      <td>
+                        <div class="patient-cell">
+                          <div class="patient-initials">AR</div>
+                          <div><strong>Dra. Ana Isabel Rojas Medina</strong><span class="patient-sub">Medico tratante</span></div>
+                        </div>
+                      </td>
+                      <td>CED-4589210</td>
+                      <td>Medicina interna</td>
+                      <td>Endocrinologia</td>
+                      <td>555 780 2145</td>
+                      <td>ana.rojas@demo.local</td>
+                      <td>Torre Medica Roma 304</td>
+                      <td>Salud Integral / Corporativo Plus</td>
+                      <td>Av. Oaxaca 120</td>
+                      <td>
+                        <div class="status-control" aria-label="Estatus Dra. Ana Isabel Rojas Medina">
+                          <button class="status-option active-on" type="button">Activo</button>
+                          <button class="status-option" type="button">Inactivo</button>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="platform-relation">
+                          <span class="relation-label yes">Si</span>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr data-medico="Dr. Hector Manuel Silva Cruz" data-cedula="CED-6734218" data-especialidad="Cardiologia" data-subespecialidad="Insuficiencia cardiaca" data-telefono="555 910 4431" data-correo="hector.silva@demo.local" data-unidad="Hospital Central Consultorio 21" data-plan="Vita Proteccion / Empresarial Total" data-direccion="Av. Universidad 450" data-estatus="Activo" data-plataforma="Pendiente">
+                      <td>
+                        <div class="patient-cell">
+                          <div class="patient-initials">HS</div>
+                          <div><strong>Dr. Hector Manuel Silva Cruz</strong><span class="patient-sub">Auditor clinico</span></div>
+                        </div>
+                      </td>
+                      <td>CED-6734218</td>
+                      <td>Cardiologia</td>
+                      <td>Insuficiencia cardiaca</td>
+                      <td>555 910 4431</td>
+                      <td>hector.silva@demo.local</td>
+                      <td>Hospital Central Consultorio 21</td>
+                      <td>Vita Proteccion / Empresarial Total</td>
+                      <td>Av. Universidad 450</td>
+                      <td>
+                        <div class="status-control" aria-label="Estatus Dr. Hector Manuel Silva Cruz">
+                          <button class="status-option active-on" type="button">Activo</button>
+                          <button class="status-option" type="button">Inactivo</button>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="platform-relation">
+                          <button class="relation-label relation-toggle pending" type="button" aria-expanded="false">Pendiente</button>
+                          <button class="relation-request" data-relation-subject="medico" type="button">Reenviar</button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr data-medico="Dra. Laura Patricia Gomez Rios" data-cedula="CED-7821104" data-especialidad="Reumatologia" data-subespecialidad="Enfermedad autoinmune" data-telefono="555 332 9081" data-correo="laura.gomez@demo.local" data-unidad="Clinica Norte 18" data-plan="Aseguradora Norte / GMM Oro" data-direccion="Calz. Norte 700" data-estatus="Inactivo" data-plataforma="No">
+                      <td>
+                        <div class="patient-cell">
+                          <div class="patient-initials">LG</div>
+                          <div><strong>Dra. Laura Patricia Gomez Rios</strong><span class="patient-sub">Proveedor externo</span></div>
+                        </div>
+                      </td>
+                      <td>CED-7821104</td>
+                      <td>Reumatologia</td>
+                      <td>Enfermedad autoinmune</td>
+                      <td>555 332 9081</td>
+                      <td>laura.gomez@demo.local</td>
+                      <td>Clinica Norte 18</td>
+                      <td>Aseguradora Norte / GMM Oro</td>
+                      <td>Calz. Norte 700</td>
+                      <td>
+                        <div class="status-control" aria-label="Estatus Dra. Laura Patricia Gomez Rios">
+                          <button class="status-option" type="button">Activo</button>
+                          <button class="status-option active-off" type="button">Inactivo</button>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="platform-relation">
+                          <button class="relation-label relation-toggle no" type="button" aria-expanded="false">No</button>
+                          <button class="relation-request" data-relation-subject="medico" type="button">Reenviar</button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr data-medico="Dr. Carlos Emilio Navas Ruiz" data-cedula="CED-3398122" data-especialidad="Neumologia" data-subespecialidad="EPOC" data-telefono="555 602 1188" data-correo="carlos.navas@demo.local" data-unidad="Consultorio Satelite 5" data-plan="Confia Salud / Ejecutivo Nacional" data-direccion="Circuito Medicos 44" data-estatus="Activo" data-plataforma="Si">
+                      <td>
+                        <div class="patient-cell">
+                          <div class="patient-initials">CN</div>
+                          <div><strong>Dr. Carlos Emilio Navas Ruiz</strong><span class="patient-sub">Medico especialista</span></div>
+                        </div>
+                      </td>
+                      <td>CED-3398122</td>
+                      <td>Neumologia</td>
+                      <td>EPOC</td>
+                      <td>555 602 1188</td>
+                      <td>carlos.navas@demo.local</td>
+                      <td>Consultorio Satelite 5</td>
+                      <td>Confia Salud / Ejecutivo Nacional</td>
+                      <td>Circuito Medicos 44</td>
+                      <td>
+                        <div class="status-control" aria-label="Estatus Dr. Carlos Emilio Navas Ruiz">
+                          <button class="status-option active-on" type="button">Activo</button>
+                          <button class="status-option" type="button">Inactivo</button>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="platform-relation">
+                          <span class="relation-label yes">Si</span>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="filter-empty" id="doctor-empty-state" hidden>No hay medicos que coincidan con la busqueda o filtros.</div>
+            </section>
+          </section>
+
+          <section class="chronic-section module-window" id="cronico-degenerativos">
+            <div class="chronic-header">
+              <div>
+                <h3>Cronico Degenerativos</h3>
+                <p>Solicitudes mensuales de medicamentos para pacientes cuya poliza cubre el tratamiento de su padecimiento. Las alertas entran cuando el paciente presiona Surtir con seguro desde su receta.</p>
+              </div>
+              <div class="chronic-alert">
+                <strong>7 solicitudes nuevas</strong>
+                <span>Recibidas desde recetas digitales con cobertura activa de seguro.</span>
+              </div>
+            </div>
+
+            <div class="chronic-kpis">
+              <article class="mini-kpi"><span>Por validar cobertura</span><strong>7</strong></article>
+              <article class="mini-kpi"><span>Autorizadas para surtido mensual</span><strong>31</strong></article>
+              <article class="mini-kpi"><span>Programadas este mes</span><strong>42</strong></article>
+            </div>
+
+            <section class="table-panel chronic-table">
+              <div class="table-scroll">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Paciente</th>
+                      <th>Padecimiento</th>
+                      <th>Medicamento mensual</th>
+                      <th>Costo directo unitario</th>
+                      <th>Costo por receta</th>
+                      <th>Poliza / cobertura</th>
+                      <th>Receta</th>
+                      <th>Medico tratante</th>
+                      <th>Meses Cubiertos</th>
+                      <th>Solicitud</th>
+                      <th>Accion</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <div class="patient-cell">
+                          <div class="patient-initials">CS</div>
+                          <div><strong>Claudia Salinas Vega</strong><span class="patient-sub">ID 1003001</span></div>
+                        </div>
+                      </td>
+                      <td><strong>Diabetes mellitus</strong><span class="patient-sub">Seguimiento mensual</span></td>
+                      <td><strong>Insulina Glargina</strong><span class="patient-sub">2 plumas / 30 dias</span></td>
+                      <td><span class="cost-value">$860.00</span><span class="patient-sub">Por pluma</span></td>
+                      <td><span class="cost-value">$5,160.00</span><span class="patient-sub">6 plumas / 3 meses</span></td>
+                      <td><strong>GMM-3001</strong><span class="patient-sub">Medicamento incluido</span></td>
+                      <td><strong>RX-2026-0712</strong><span class="patient-sub">Emitida por medico tratante</span></td>
+                      <td><strong>Dra. Ana Isabel Rojas Medina</strong><span class="patient-sub">Endocrinologia</span></td>
+                      <td><strong>Julio, Agosto, Septiembre</strong><span class="patient-sub">Ultimo surtido: 3 meses</span></td>
+                      <td><span class="insurance-button">Surtir con seguro</span></td>
+                      <td><button class="row-action" type="button" aria-label="Acciones"><span class="more-dots"></span></button></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div class="patient-cell">
+                          <div class="patient-initials">JR</div>
+                          <div><strong>Jose Ramirez Torres</strong><span class="patient-sub">ID 1002458</span></div>
+                        </div>
+                      </td>
+                      <td><strong>Diabetes tipo 2</strong><span class="patient-sub">Tratamiento continuo</span></td>
+                      <td><strong>Metformina 850 mg</strong><span class="patient-sub">60 tabletas / 30 dias</span></td>
+                      <td><span class="cost-value">$95.00</span><span class="patient-sub">Por caja</span></td>
+                      <td><span class="cost-value">$570.00</span><span class="patient-sub">6 cajas / 3 meses</span></td>
+                      <td><strong>GMM-1002458</strong><span class="patient-sub">Cobertura vigente</span></td>
+                      <td><strong>RX-2026-0708</strong><span class="patient-sub">Vigente hasta 08 ago</span></td>
+                      <td><strong>Dra. Ana Isabel Rojas Medina</strong><span class="patient-sub">Medicina interna</span></td>
+                      <td><strong>Junio, Julio, Agosto</strong><span class="patient-sub">Ultimo surtido: 3 meses</span></td>
+                      <td><span class="insurance-button">Surtir con seguro</span></td>
+                      <td><button class="row-action" type="button" aria-label="Acciones"><span class="more-dots"></span></button></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div class="patient-cell">
+                          <div class="patient-initials">LM</div>
+                          <div><strong>Laura Mendez Solis</strong><span class="patient-sub">ID 1001893</span></div>
+                        </div>
+                      </td>
+                      <td><strong>Hipertension arterial</strong><span class="patient-sub">Control mensual</span></td>
+                      <td><strong>Losartan 50 mg</strong><span class="patient-sub">30 tabletas / 30 dias</span></td>
+                      <td><span class="cost-value">$68.00</span><span class="patient-sub">Por caja</span></td>
+                      <td><span class="cost-value">$204.00</span><span class="patient-sub">3 cajas / 3 meses</span></td>
+                      <td><strong>GMM-1001893</strong><span class="patient-sub">Medicamento incluido</span></td>
+                      <td><strong>RX-2026-0704</strong><span class="patient-sub">Receta validada</span></td>
+                      <td><strong>Dr. Hector Manuel Silva Cruz</strong><span class="patient-sub">Cardiologia</span></td>
+                      <td><strong>Julio, Agosto, Septiembre</strong><span class="patient-sub">Ultimo surtido: 3 meses</span></td>
+                      <td><span class="insurance-button">Surtir con seguro</span></td>
+                      <td><button class="row-action" type="button" aria-label="Acciones"><span class="more-dots"></span></button></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div class="patient-cell">
+                          <div class="patient-initials">MV</div>
+                          <div><strong>Maria Vargas Perez</strong><span class="patient-sub">ID 1001547</span></div>
+                        </div>
+                      </td>
+                      <td><strong>Artritis reumatoide</strong><span class="patient-sub">Biologico mensual</span></td>
+                      <td><strong>Adalimumab 40 mg</strong><span class="patient-sub">2 jeringas / 28 dias</span></td>
+                      <td><span class="cost-value">$9,850.00</span><span class="patient-sub">Por jeringa</span></td>
+                      <td><span class="cost-value">$59,100.00</span><span class="patient-sub">6 jeringas / 3 meses</span></td>
+                      <td><strong>GMM-1001547</strong><span class="patient-sub">Requiere autorizacion</span></td>
+                      <td><strong>RX-2026-0701</strong><span class="patient-sub">Adjunta estudios</span></td>
+                      <td><strong>Dra. Laura Patricia Gomez Rios</strong><span class="patient-sub">Reumatologia</span></td>
+                      <td><strong>Junio, Julio, Agosto</strong><span class="patient-sub">Ultimo surtido: 3 meses</span></td>
+                      <td><span class="insurance-button">Surtir con seguro</span></td>
+                      <td><button class="row-action" type="button" aria-label="Acciones"><span class="more-dots"></span></button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="table-footer"><a href="#cronico-degenerativos">Ver todas las solicitudes de medicamento &rsaquo;</a></div>
+            </section>
+          </section>
+
+          <section class="hospital-section module-window" id="medicamentos">
+            <div class="section-heading-row">
+              <div>
+                <h3>Catalogo de Medicamentos</h3>
+                <p>Lista de precios de compra, incidencia mensual y costo estimado del siniestro por paciente.</p>
+              </div>
+            </div>
+
+            <div class="chronic-kpis">
+              <article class="mini-kpi"><span>Medicamentos catalogados</span><strong>4</strong></article>
+              <article class="mini-kpi"><span>Costo mensual estimado</span><strong>$21,678</strong></article>
+              <article class="mini-kpi"><span>Costo trimestral estimado</span><strong>$65,034</strong></article>
+            </div>
+
+            <section class="table-panel medication-table">
+              <div class="table-scroll">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Medicamento</th>
+                      <th>Sustancia activa</th>
+                      <th>Presentacion</th>
+                      <th>Proveedor</th>
+                      <th>Precio compra unitario</th>
+                      <th>Paciente</th>
+                      <th>Numero de usuario de la plataforma</th>
+                      <th>Diagnostico</th>
+                      <th>Cantidad mensual</th>
+                      <th>Incidencia del siniestro</th>
+                      <th>Costo mensual siniestro</th>
+                      <th>Costo 3 meses</th>
+                      <th>Cobertura</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Insulina Glargina</strong><span class="patient-sub">Tratamiento mensual</span></td>
+                      <td>Insulina glargina</td>
+                      <td>Pluma 100 UI/ml</td>
+                      <td>Proveedor Farma Norte</td>
+                      <td><span class="cost-value">$860.00</span></td>
+                      <td>
+                        <div class="patient-cell">
+                          <div class="patient-initials">CS</div>
+                          <div><strong>Claudia Salinas Vega</strong><span class="patient-sub">ID 1003001</span></div>
+                        </div>
+                      </td>
+                      <td><strong>USR-DS-1003001</strong></td>
+                      <td>Diabetes mellitus</td>
+                      <td>2 plumas</td>
+                      <td><span class="badge pending">Recurrente mensual</span></td>
+                      <td><span class="cost-value">$1,720.00</span></td>
+                      <td><span class="cost-value">$5,160.00</span></td>
+                      <td><span class="badge stable">Incluido</span></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Metformina 850 mg</strong><span class="patient-sub">Tratamiento mensual</span></td>
+                      <td>Metformina</td>
+                      <td>Caja 30 tabletas</td>
+                      <td>Proveedor Genericos Salud</td>
+                      <td><span class="cost-value">$95.00</span></td>
+                      <td>
+                        <div class="patient-cell">
+                          <div class="patient-initials">JR</div>
+                          <div><strong>Jose Ramirez Torres</strong><span class="patient-sub">ID 1002458</span></div>
+                        </div>
+                      </td>
+                      <td><strong>USR-DS-1002458</strong></td>
+                      <td>Diabetes tipo 2</td>
+                      <td>2 cajas</td>
+                      <td><span class="badge pending">Recurrente mensual</span></td>
+                      <td><span class="cost-value">$190.00</span></td>
+                      <td><span class="cost-value">$570.00</span></td>
+                      <td><span class="badge stable">Incluido</span></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Losartan 50 mg</strong><span class="patient-sub">Tratamiento mensual</span></td>
+                      <td>Losartan potasico</td>
+                      <td>Caja 30 tabletas</td>
+                      <td>Proveedor Cardio Med</td>
+                      <td><span class="cost-value">$68.00</span></td>
+                      <td>
+                        <div class="patient-cell">
+                          <div class="patient-initials">LM</div>
+                          <div><strong>Laura Mendez Solis</strong><span class="patient-sub">ID 1001893</span></div>
+                        </div>
+                      </td>
+                      <td><strong>USR-DS-1001893</strong></td>
+                      <td>Hipertension arterial</td>
+                      <td>1 caja</td>
+                      <td><span class="badge pending">Recurrente mensual</span></td>
+                      <td><span class="cost-value">$68.00</span></td>
+                      <td><span class="cost-value">$204.00</span></td>
+                      <td><span class="badge stable">Incluido</span></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Adalimumab 40 mg</strong><span class="patient-sub">Biologico mensual</span></td>
+                      <td>Adalimumab</td>
+                      <td>Jeringa prellenada</td>
+                      <td>Proveedor Biotech Especialidad</td>
+                      <td><span class="cost-value">$9,850.00</span></td>
+                      <td>
+                        <div class="patient-cell">
+                          <div class="patient-initials">MV</div>
+                          <div><strong>Maria Vargas Perez</strong><span class="patient-sub">ID 1001547</span></div>
+                        </div>
+                      </td>
+                      <td><strong>USR-DS-1001547</strong></td>
+                      <td>Artritis reumatoide</td>
+                      <td>2 jeringas</td>
+                      <td><span class="badge urgent">Alta incidencia de costo</span></td>
+                      <td><span class="cost-value">$19,700.00</span></td>
+                      <td><span class="cost-value">$59,100.00</span></td>
+                      <td><span class="badge review">Requiere autorizacion</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          </section>
+
+          <section class="hospital-section module-window" id="hospitalizaciones">
+            <div class="section-heading-row">
+              <div>
+                <h3>Hospitalizaciones</h3>
+                <p>Listado operativo de asegurados hospitalizados con vinculacion por numero de usuario de plataforma.</p>
+              </div>
+            </div>
+
+            <section class="table-panel hospital-table">
+              <div class="table-scroll">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Asegurado</th>
+                      <th>Numero de usuario de la plataforma</th>
+                      <th>CURP / RFC</th>
+                      <th>Poliza</th>
+                      <th>Aseguradora / plan</th>
+                      <th>Empresa</th>
+                      <th>Hospital</th>
+                      <th>Ingreso</th>
+                      <th>Motivo / diagnostico</th>
+                      <th>Estatus</th>
+                      <th>Accion</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <div class="patient-cell">
+                          <div class="patient-initials">CC</div>
+                          <div><strong>Carlos Cano Hernandez</strong><span class="patient-sub">ID 1000764</span></div>
+                        </div>
+                      </td>
+                      <td><strong>USR-DS-1000764</strong><span class="patient-sub">Paciente sincronizado</span></td>
+                      <td><strong>CAHC781003HDFNNR07</strong><span class="patient-sub">CAHC781003EF3</span></td>
+                      <td><strong>GMM-1000764</strong><span class="patient-sub">Vigente</span></td>
+                      <td><strong>Confia Salud</strong><span class="patient-sub">Ejecutivo Nacional</span></td>
+                      <td>Logistica Central</td>
+                      <td>Hospital San Angel</td>
+                      <td><strong>02 jul 2026</strong><span class="patient-sub">Urgencias</span></td>
+                      <td><strong>EPOC descompensado</strong><span class="patient-sub">Oxigenoterapia y estudios</span></td>
+                      <td><span class="badge urgent">Activa</span></td>
+                      <td><button class="detail-button hospital-detail-button" data-case="cc" type="button">Ver detalles</button></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div class="patient-cell">
+                          <div class="patient-initials">FP</div>
+                          <div><strong>Francisco Perez Luna</strong><span class="patient-sub">ID 1001122</span></div>
+                        </div>
+                      </td>
+                      <td><strong>USR-DS-1001122</strong><span class="patient-sub">Paciente sincronizado</span></td>
+                      <td><strong>PELF751211HDFRNR01</strong><span class="patient-sub">PELF751211IJ5</span></td>
+                      <td><strong>GMM-1001122</strong><span class="patient-sub">Revision anual</span></td>
+                      <td><strong>Vita Proteccion</strong><span class="patient-sub">Empresarial Total</span></td>
+                      <td>Finanzas Horizonte</td>
+                      <td>Hospital ABC</td>
+                      <td><strong>04 jul 2026</strong><span class="patient-sub">Hospitalizacion</span></td>
+                      <td><strong>Insuficiencia cardiaca</strong><span class="patient-sub">Manejo intrahospitalario</span></td>
+                      <td><span class="badge review">En revision</span></td>
+                      <td><button class="detail-button hospital-detail-button" data-case="fp" type="button">Ver detalles</button></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div class="patient-cell">
+                          <div class="patient-initials">CS</div>
+                          <div><strong>Claudia Salinas Vega</strong><span class="patient-sub">ID 1003001</span></div>
+                        </div>
+                      </td>
+                      <td><strong>USR-DS-1003001</strong><span class="patient-sub">Paciente sincronizado</span></td>
+                      <td><strong>SAVC790221MDFLGL08</strong><span class="patient-sub">SAVC790221KQ2</span></td>
+                      <td><strong>GMM-3001</strong><span class="patient-sub">Vigente</span></td>
+                      <td><strong>Salud Integral</strong><span class="patient-sub">Corporativo Plus</span></td>
+                      <td>Industrias Atlas</td>
+                      <td>Hospital Angeles Pedregal</td>
+                      <td><strong>01 jul 2026</strong><span class="patient-sub">Urgencia</span></td>
+                      <td><strong>Diabetes descompensada</strong><span class="patient-sub">Control metabolico</span></td>
+                      <td><span class="badge stable">Egresada</span></td>
+                      <td><button class="detail-button hospital-detail-button" data-case="cs" type="button">Ver detalles</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          </section>
+
+          <div class="hospital-modal" id="hospital-detail-modal" role="dialog" aria-modal="true" aria-labelledby="hospital-modal-title" hidden>
+            <div class="hospital-dialog">
+              <div class="hospital-dialog-header">
+                <div>
+                  <h3 id="hospital-modal-title">Detalle de hospitalizacion</h3>
+                  <p id="hospital-modal-subtitle">Facturas emitidas por el hospital para cobertura del seguro.</p>
+                </div>
+                <button class="modal-close" id="hospital-modal-close" type="button" aria-label="Cerrar">x</button>
+              </div>
+              <div class="hospital-dialog-body">
+                <div class="hospital-summary">
+                  <div class="summary-item"><span>Asegurado</span><strong id="hospital-patient-name"></strong></div>
+                  <div class="summary-item"><span>Numero de usuario de la plataforma</span><strong id="hospital-platform-user"></strong></div>
+                  <div class="summary-item"><span>Hospital</span><strong id="hospital-name"></strong></div>
+                  <div class="summary-item"><span>Poliza</span><strong id="hospital-policy"></strong></div>
+                  <div class="summary-item"><span>Aseguradora / plan</span><strong id="hospital-plan"></strong></div>
+                  <div class="summary-item"><span>Ingreso</span><strong id="hospital-admission"></strong></div>
+                  <div class="summary-item"><span>Motivo / diagnostico</span><strong id="hospital-diagnosis"></strong></div>
+                  <div class="summary-item"><span>Estatus</span><strong id="hospital-status"></strong></div>
+                </div>
+
+                <section class="table-panel invoice-table">
+                  <div class="table-scroll">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Factura</th>
+                          <th>UUID fiscal</th>
+                          <th>Fecha</th>
+                          <th>Concepto</th>
+                          <th>Subtotal</th>
+                          <th>IVA</th>
+                          <th>Total</th>
+                          <th>Estatus</th>
+                          <th>Cubierto por seguro</th>
+                        </tr>
+                      </thead>
+                      <tbody id="hospital-invoice-body"></tbody>
+                    </table>
+                  </div>
+                </section>
+
+                <div class="invoice-total">
+                  <span>Total a cubrir por el seguro</span>
+                  <strong id="hospital-invoice-total"></strong>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <section class="hospital-section module-window window-placeholder" id="polizas">
+            <div class="section-heading-row">
+              <div>
+                <h3>Polizas</h3>
+                <p>Ventana independiente para administrar polizas, vigencias, coberturas y relacion con asegurados.</p>
+              </div>
+            </div>
+            <div class="placeholder-grid">
+              <article class="placeholder-item"><span>Polizas vigentes</span><strong>241</strong></article>
+              <article class="placeholder-item"><span>En revision</span><strong>7</strong></article>
+              <article class="placeholder-item"><span>Por renovar</span><strong>18</strong></article>
+            </div>
+          </section>
+
+          <section class="hospital-section module-window window-placeholder" id="empresas">
+            <div class="section-heading-row">
+              <div>
+                <h3>Empresas</h3>
+                <p>Ventana independiente para empresas contratantes y padrones de asegurados corporativos.</p>
+              </div>
+            </div>
+            <div class="placeholder-grid">
+              <article class="placeholder-item"><span>Empresas activas</span><strong>16</strong></article>
+              <article class="placeholder-item"><span>Asegurados corporativos</span><strong>183</strong></article>
+              <article class="placeholder-item"><span>Altas pendientes</span><strong>6</strong></article>
+            </div>
+          </section>
+
+          <section class="hospital-section module-window window-placeholder" id="planes">
+            <div class="section-heading-row">
+              <div>
+                <h3>Planes</h3>
+                <p>Ventana independiente para planes, coberturas, deducibles, coaseguros y reglas operativas.</p>
+              </div>
+            </div>
+            <div class="placeholder-grid">
+              <article class="placeholder-item"><span>Planes activos</span><strong>12</strong></article>
+              <article class="placeholder-item"><span>Con medicamentos incluidos</span><strong>8</strong></article>
+              <article class="placeholder-item"><span>Con hospitalizacion</span><strong>10</strong></article>
+            </div>
+          </section>
+
+          <section class="hospital-section module-window window-placeholder" id="asesores">
+            <div class="section-heading-row">
+              <div>
+                <h3>Asesores</h3>
+                <p>Ventana independiente para asesores, responsables operativos y canales de atencion.</p>
+              </div>
+            </div>
+            <div class="placeholder-grid">
+              <article class="placeholder-item"><span>Asesores principales</span><strong>28</strong></article>
+              <article class="placeholder-item"><span>Coordinadores activos</span><strong>9</strong></article>
+              <article class="placeholder-item"><span>Alertas sin responsable</span><strong>2</strong></article>
+            </div>
+          </section>
+
+          <section class="hospital-section module-window window-placeholder" id="riesgo">
+            <div class="section-heading-row">
+              <div>
+                <h3>Riesgo</h3>
+                <p>Ventana independiente para semaforos de riesgo, alertas administrativas y priorizacion clinica.</p>
+              </div>
+            </div>
+            <div class="placeholder-grid">
+              <article class="placeholder-item"><span>Riesgo alto</span><strong>37</strong></article>
+              <article class="placeholder-item"><span>Riesgo critico</span><strong>4</strong></article>
+              <article class="placeholder-item"><span>Sin seguimiento reciente</span><strong>11</strong></article>
+            </div>
+          </section>
+
+          <section class="hospital-section module-window window-placeholder" id="usuarios">
+            <div class="section-heading-row">
+              <div>
+                <h3>Usuarios</h3>
+                <p>Ventana independiente para usuarios, roles, permisos y trazabilidad de acceso.</p>
+              </div>
+            </div>
+            <div class="placeholder-grid">
+              <article class="placeholder-item"><span>Usuarios activos</span><strong>32</strong></article>
+              <article class="placeholder-item"><span>Roles configurados</span><strong>7</strong></article>
+              <article class="placeholder-item"><span>Accesos pendientes</span><strong>5</strong></article>
+            </div>
+          </section>
+
+          <form class="assistant-bar" aria-label="Consulta Dr. Sam">
+            <div class="assistant-avatar" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4v1h1a3 3 0 0 1 3 3v5a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-5a3 3 0 0 1 3-3h1V6a4 4 0 0 1 4-4Z"></path><path d="M9 14h.01"></path><path d="M15 14h.01"></path><path d="M10 18h4"></path></svg>
+            </div>
+            <input aria-label="Consulta" placeholder="Soy Dr. Sam, consulta un asegurado, poliza, plan o solicitud de medicamento">
+            <button type="button">Preguntar</button>
+          </form>
+        </section>
+      </main>
+    </div>
+    <script>
+      function showModuleWindow(targetId, updateHash) {
+        var windows = Array.prototype.slice.call(document.querySelectorAll(".module-window"));
+        var target = document.getElementById(targetId);
+
+        if (!target || !target.classList.contains("module-window")) {
+          targetId = "dashboard";
+          target = document.getElementById(targetId);
+        }
+
+        windows.forEach(function (windowElement) {
+          windowElement.classList.toggle("active", windowElement === target);
+        });
+
+        document.querySelectorAll(".side-nav a").forEach(function (link) {
+          link.classList.toggle("active", link.getAttribute("href") === "#" + targetId);
+        });
+
+        if (updateHash && window.location.hash !== "#" + targetId) {
+          window.history.pushState(null, "", "#" + targetId);
+        }
+      }
+
+      document.querySelectorAll(".side-nav a").forEach(function (link) {
+        link.addEventListener("click", function (event) {
+          var targetId = link.getAttribute("href").replace("#", "");
+          event.preventDefault();
+          showModuleWindow(targetId, true);
+        });
+      });
+
+      document.querySelectorAll("[data-dashboard-target]").forEach(function (button) {
+        button.addEventListener("click", function () {
+          showModuleWindow(button.dataset.dashboardTarget, true);
+        });
+      });
+
+      window.addEventListener("popstate", function () {
+        showModuleWindow((window.location.hash || "#dashboard").replace("#", ""), false);
+      });
+
+      window.addEventListener("hashchange", function () {
+        showModuleWindow((window.location.hash || "#dashboard").replace("#", ""), false);
+      });
+
+      showModuleWindow((window.location.hash || "#dashboard").replace("#", ""), false);
+
+      var INSURER_HOSPITALIZATIONS_KEY = "drSamInsuranceHospitalizationsV1";
+
+      var hospitalizationDetails = {
+        cc: {
+          patient: "Carlos Cano Hernandez",
+          platformUser: "USR-DS-1000764",
+          hospital: "Hospital San Angel",
+          policy: "GMM-1000764",
+          plan: "Confia Salud / Ejecutivo Nacional",
+          admission: "02 jul 2026 - Urgencias",
+          diagnosis: "EPOC descompensado",
+          status: "Activa",
+          invoices: [
+            { number: "F-HSA-7812", uuid: "A1C2-7812-HSA-2026", date: "03 jul 2026", concept: "Habitacion", subtotal: 48000, iva: 0, total: 48000, status: "Recibida" },
+            { number: "F-HSA-7813", uuid: "B4D8-7813-HSA-2026", date: "03 jul 2026", concept: "Medicamentos intrahospitalarios", subtotal: 21430, iva: 3428.8, total: 24858.8, status: "En revision" },
+            { number: "F-HSA-7814", uuid: "C9F1-7814-HSA-2026", date: "04 jul 2026", concept: "Laboratorio e imagen", subtotal: 18200, iva: 0, total: 18200, status: "Recibida" }
+          ]
+        },
+        fp: {
+          patient: "Francisco Perez Luna",
+          platformUser: "USR-DS-1001122",
+          hospital: "Hospital ABC",
+          policy: "GMM-1001122",
+          plan: "Vita Proteccion / Empresarial Total",
+          admission: "04 jul 2026 - Hospitalizacion",
+          diagnosis: "Insuficiencia cardiaca",
+          status: "En revision",
+          invoices: [
+            { number: "F-ABC-3301", uuid: "D5A2-3301-ABC-2026", date: "04 jul 2026", concept: "Urgencias y valoracion", subtotal: 16900, iva: 0, total: 16900, status: "Recibida" },
+            { number: "F-ABC-3302", uuid: "E8C3-3302-ABC-2026", date: "05 jul 2026", concept: "Terapia intermedia", subtotal: 56200, iva: 0, total: 56200, status: "En revision" },
+            { number: "F-ABC-3303", uuid: "F7E4-3303-ABC-2026", date: "05 jul 2026", concept: "Honorarios medicos", subtotal: 28500, iva: 4560, total: 33060, status: "Recibida" }
+          ]
+        },
+        cs: {
+          patient: "Claudia Salinas Vega",
+          platformUser: "USR-DS-1003001",
+          hospital: "Hospital Angeles Pedregal",
+          policy: "GMM-3001",
+          plan: "Salud Integral / Corporativo Plus",
+          admission: "01 jul 2026 - Urgencia",
+          diagnosis: "Diabetes descompensada",
+          status: "Egresada",
+          invoices: [
+            { number: "F-HAP-9201", uuid: "G2H5-9201-HAP-2026", date: "02 jul 2026", concept: "Hospitalizacion", subtotal: 34200, iva: 0, total: 34200, status: "Aprobada" },
+            { number: "F-HAP-9202", uuid: "H6J9-9202-HAP-2026", date: "02 jul 2026", concept: "Laboratorio", subtotal: 8800, iva: 0, total: 8800, status: "Aprobada" },
+            { number: "F-HAP-9203", uuid: "J1K7-9203-HAP-2026", date: "03 jul 2026", concept: "Medicamentos", subtotal: 12650, iva: 2024, total: 14674, status: "En revision" }
+          ]
+        }
+      };
+
+      function formatMoney(amount) {
+        return "$" + amount.toLocaleString("es-MX", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      }
+
+      function setText(id, value) {
+        var element = document.getElementById(id);
+        if (element) {
+          element.textContent = value;
+        }
+      }
+
+      function escapeHtml(value) {
+        return String(value == null ? "" : value)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
+      function readAdvisorHospitalizations() {
+        try {
+          var parsed = JSON.parse(localStorage.getItem(INSURER_HOSPITALIZATIONS_KEY) || "[]");
+          return Array.isArray(parsed) ? parsed : [];
+        } catch (error) {
+          return [];
+        }
+      }
+
+      function formatHospitalDate(value) {
+        if (!value) {
+          return "Pendiente";
+        }
+
+        var raw = String(value);
+        var parsed = /^\d{4}-\d{2}-\d{2}$/.test(raw) ? new Date(raw + "T00:00:00") : new Date(raw);
+        if (Number.isNaN(parsed.getTime())) {
+          return raw;
+        }
+
+        return new Intl.DateTimeFormat("es-MX", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric"
+        }).format(parsed);
+      }
+
+      function patientInitials(name) {
+        return String(name || "PA")
+          .trim()
+          .split(/\s+/)
+          .slice(0, 2)
+          .map(function (part) {
+            return part.charAt(0);
+          })
+          .join("")
+          .toUpperCase() || "PA";
+      }
+
+      function hospitalStatusBadgeClass(status) {
+        var normalized = normalizeText(status);
+        if (normalized.indexOf("egres") !== -1 || normalized.indexOf("aprob") !== -1 || normalized.indexOf("cubiert") !== -1 || normalized === "si") {
+          return "stable";
+        }
+        if (normalized.indexOf("revision") !== -1 || normalized.indexOf("pendiente") !== -1 || normalized.indexOf("recibido") !== -1) {
+          return "review";
+        }
+        return "urgent";
+      }
+
+      function advisorHospitalizationToDetail(record) {
+        var amount = Number(record.authorizedAmount || 0);
+        var invoices = Array.isArray(record.invoices) && record.invoices.length ? record.invoices : [
+          {
+            number: "EXP-" + (record.claimId || record.id || "SIN"),
+            uuid: "Pendiente de CFDI",
+            date: record.admittedAt,
+            concept: record.reason || record.diagnosis || "Expediente hospitalario",
+            subtotal: amount,
+            iva: 0,
+            total: amount,
+            status: "Expediente recibido",
+            covered: "En revision"
+          }
+        ];
+
+        return {
+          patient: record.patientName || "Asegurado",
+          platformUser: record.platformUserLabel || record.platformUserNumber || "Pendiente",
+          hospital: record.hospital || "Hospital pendiente",
+          policy: record.policyNumber || record.policyId || "Sin poliza",
+          plan: [record.insurer, record.plan].filter(Boolean).join(" / ") || "Plan pendiente",
+          admission: formatHospitalDate(record.admittedAt) + " - " + (record.area || "Hospitalizacion"),
+          diagnosis: record.reason || record.diagnosis || "Diagnostico pendiente",
+          status: record.statusLabel || record.status || "En revision",
+          invoices: invoices.map(function (invoice) {
+            return {
+              number: invoice.number || "EXP-" + (record.claimId || record.id || "SIN"),
+              uuid: invoice.uuid || "Pendiente",
+              date: invoice.date || record.admittedAt,
+              concept: invoice.concept || record.reason || "Expediente hospitalario",
+              subtotal: Number(invoice.subtotal || 0),
+              iva: Number(invoice.iva || 0),
+              total: Number(invoice.total || invoice.subtotal || amount || 0),
+              status: invoice.status || "Expediente recibido",
+              covered: invoice.covered || "En revision"
+            };
+          })
+        };
+      }
+
+      function renderAdvisorHospitalizations() {
+        var tableBody = document.getElementById("hospitalization-table-body");
+        if (!tableBody) {
+          return;
+        }
+
+        tableBody.querySelectorAll("[data-advisor-hospitalization]").forEach(function (row) {
+          row.remove();
+        });
+
+        var records = readAdvisorHospitalizations();
+        if (!records.length) {
+          return;
+        }
+
+        var fragment = document.createDocumentFragment();
+        records.forEach(function (record) {
+          var key = String(record.id || "advisor-" + (record.claimId || Date.now()));
+          var detail = advisorHospitalizationToDetail(record);
+          var badgeClass = hospitalStatusBadgeClass(detail.status);
+          hospitalizationDetails[key] = detail;
+
+          var row = document.createElement("tr");
+          row.dataset.advisorHospitalization = "true";
+          row.innerHTML =
+            "<td><div class=\"patient-cell\"><div class=\"patient-initials\">" + escapeHtml(patientInitials(record.patientName)) + "</div><div><strong>" + escapeHtml(record.patientName || "Asegurado") + "</strong><span class=\"patient-sub\">ID " + escapeHtml(record.platformUserNumber || "Pendiente") + " / " + escapeHtml(record.patientUsername || "usuario") + "</span></div></div></td>" +
+            "<td><strong>" + escapeHtml(record.platformUserLabel || record.platformUserNumber || "Pendiente") + "</strong><span class=\"patient-sub\">Enviado por asesor</span></td>" +
+            "<td><strong>" + escapeHtml(record.curp || "Pendiente") + "</strong><span class=\"patient-sub\">" + escapeHtml(record.rfc || "Pendiente") + "</span></td>" +
+            "<td><strong>" + escapeHtml(record.policyNumber || "Sin poliza") + "</strong><span class=\"patient-sub\">" + escapeHtml(record.policyStatus || "Vigente") + "</span></td>" +
+            "<td><strong>" + escapeHtml(record.insurer || "Aseguradora") + "</strong><span class=\"patient-sub\">" + escapeHtml(record.plan || "Plan") + "</span></td>" +
+            "<td>" + escapeHtml(record.company || "Individual") + "</td>" +
+            "<td>" + escapeHtml(record.hospital || "Hospital pendiente") + "</td>" +
+            "<td><strong>" + escapeHtml(formatHospitalDate(record.admittedAt)) + "</strong><span class=\"patient-sub\">" + escapeHtml(record.area || "Hospitalizacion") + "</span></td>" +
+            "<td><strong>" + escapeHtml(record.reason || record.diagnosis || "Diagnostico pendiente") + "</strong><span class=\"patient-sub\">" + escapeHtml(record.claimId || "Siniestro") + "</span></td>" +
+            "<td><span class=\"badge " + badgeClass + "\">" + escapeHtml(detail.status) + "</span></td>" +
+            "<td><button class=\"detail-button hospital-detail-button\" data-case=\"" + escapeHtml(key) + "\" type=\"button\">Ver detalles</button></td>";
+          fragment.appendChild(row);
+        });
+
+        tableBody.insertBefore(fragment, tableBody.firstChild);
+      }
+
+      function openHospitalDetail(caseId) {
+        var detail = hospitalizationDetails[caseId];
+        var modal = document.getElementById("hospital-detail-modal");
+        var invoiceBody = document.getElementById("hospital-invoice-body");
+
+        if (!detail || !modal || !invoiceBody) {
+          return;
+        }
+
+        setText("hospital-patient-name", detail.patient);
+        setText("hospital-platform-user", detail.platformUser);
+        setText("hospital-name", detail.hospital);
+        setText("hospital-policy", detail.policy);
+        setText("hospital-plan", detail.plan);
+        setText("hospital-admission", detail.admission);
+        setText("hospital-diagnosis", detail.diagnosis);
+        setText("hospital-status", detail.status);
+
+        invoiceBody.innerHTML = "";
+        var total = 0;
+
+        detail.invoices.forEach(function (invoice) {
+          total += invoice.total;
+          var invoiceStatusClass = hospitalStatusBadgeClass(invoice.status);
+          var coveredLabel = invoice.covered || "Si";
+          var coveredStatusClass = hospitalStatusBadgeClass(coveredLabel);
+          var row = document.createElement("tr");
+          row.innerHTML =
+            "<td><strong>" + escapeHtml(invoice.number) + "</strong></td>" +
+            "<td>" + escapeHtml(invoice.uuid) + "</td>" +
+            "<td>" + escapeHtml(formatHospitalDate(invoice.date)) + "</td>" +
+            "<td>" + escapeHtml(invoice.concept) + "</td>" +
+            "<td>" + formatMoney(invoice.subtotal) + "</td>" +
+            "<td>" + formatMoney(invoice.iva) + "</td>" +
+            "<td><strong>" + formatMoney(invoice.total) + "</strong></td>" +
+            "<td><span class=\"badge " + invoiceStatusClass + "\">" + escapeHtml(invoice.status) + "</span></td>" +
+            "<td><span class=\"badge " + coveredStatusClass + "\">" + escapeHtml(coveredLabel) + "</span></td>";
+          invoiceBody.appendChild(row);
+        });
+
+        setText("hospital-invoice-total", formatMoney(total));
+        modal.hidden = false;
+      }
+
+      function closeHospitalDetail() {
+        var modal = document.getElementById("hospital-detail-modal");
+        if (modal) {
+          modal.hidden = true;
+        }
+      }
+
+      renderAdvisorHospitalizations();
+
+      var hospitalTable = document.querySelector(".hospital-table");
+      if (hospitalTable) {
+        hospitalTable.addEventListener("click", function (event) {
+          var button = event.target.closest(".hospital-detail-button");
+          if (button) {
+            openHospitalDetail(button.dataset.case);
+          }
+        });
+      }
+
+      window.addEventListener("storage", function (event) {
+        if (event.key === INSURER_HOSPITALIZATIONS_KEY) {
+          renderAdvisorHospitalizations();
+        }
+      });
+
+      var hospitalModalClose = document.getElementById("hospital-modal-close");
+      if (hospitalModalClose) {
+        hospitalModalClose.addEventListener("click", closeHospitalDetail);
+      }
+
+      var hospitalModal = document.getElementById("hospital-detail-modal");
+      if (hospitalModal) {
+        hospitalModal.addEventListener("click", function (event) {
+          if (event.target === hospitalModal) {
+            closeHospitalDetail();
+          }
+        });
+      }
+
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+          closeHospitalDetail();
+        }
+      });
+
+      var doctorFilterConfig = [
+        { key: "medico", label: "Medico" },
+        { key: "cedula", label: "Cedula" },
+        { key: "especialidad", label: "Especialidad" },
+        { key: "subespecialidad", label: "Subespecialidad" },
+        { key: "telefono", label: "Telefono" },
+        { key: "correo", label: "Correo" },
+        { key: "unidad", label: "Unidad / consultorio" },
+        { key: "plan", label: "Aseguradora / plan" },
+        { key: "direccion", label: "Direccion" },
+        { key: "estatus", label: "Estatus" },
+        { key: "plataforma", label: "Sincronizacion" }
+      ];
+
+      var doctorRows = Array.prototype.slice.call(document.querySelectorAll(".doctor-table tbody tr"));
+      var doctorFilterGrid = document.getElementById("doctor-filter-grid");
+      var doctorEmptyState = document.getElementById("doctor-empty-state");
+
+      function normalizeText(value) {
+        return String(value || "").toLowerCase();
+      }
+
+      function getDoctorRowValue(row, key) {
+        return row.dataset[key] || "";
+      }
+
+      function buildDoctorFilters() {
+        if (!doctorFilterGrid || !doctorRows.length) {
+          return;
+        }
+
+        doctorFilterGrid.innerHTML = "";
+
+        doctorFilterConfig.forEach(function (filter) {
+          var values = doctorRows
+            .map(function (row) {
+              return getDoctorRowValue(row, filter.key);
+            })
+            .filter(Boolean)
+            .filter(function (value, index, list) {
+              return list.indexOf(value) === index;
+            })
+            .sort(function (a, b) {
+              return a.localeCompare(b);
+            });
+
+          var details = document.createElement("details");
+          details.className = "filter-menu";
+          details.dataset.filterKey = filter.key;
+
+          var summary = document.createElement("summary");
+          summary.textContent = filter.label;
+          details.appendChild(summary);
+
+          var options = document.createElement("div");
+          options.className = "filter-options";
+
+          var allLabel = document.createElement("label");
+          allLabel.className = "check-row";
+          allLabel.innerHTML = '<input type="checkbox" data-filter-all checked> <strong>Seleccionar todo</strong>';
+          options.appendChild(allLabel);
+
+          values.forEach(function (value) {
+            var label = document.createElement("label");
+            label.className = "check-row";
+            var checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.checked = true;
+            checkbox.dataset.filterValue = value;
+            label.appendChild(checkbox);
+            label.appendChild(document.createTextNode(value));
+            options.appendChild(label);
+          });
+
+          details.appendChild(options);
+          var cell = document.createElement("th");
+          cell.appendChild(details);
+          doctorFilterGrid.appendChild(cell);
+        });
+      }
+
+      function updateFilterAllState(menu) {
+        var all = menu.querySelector("[data-filter-all]");
+        var options = Array.prototype.slice.call(menu.querySelectorAll("[data-filter-value]"));
+        all.checked = options.every(function (option) {
+          return option.checked;
+        });
+      }
+
+      function applyDoctorFilters() {
+        if (!doctorRows.length) {
+          return;
+        }
+
+        var visibleCount = 0;
+
+        doctorRows.forEach(function (row) {
+          var matchesFilters = doctorFilterConfig.every(function (filter) {
+            var menu = doctorFilterGrid.querySelector('[data-filter-key="' + filter.key + '"]');
+            if (!menu) {
+              return true;
+            }
+
+            var checkedValues = Array.prototype.slice.call(menu.querySelectorAll("[data-filter-value]:checked")).map(function (checkbox) {
+              return checkbox.dataset.filterValue;
+            });
+
+            return checkedValues.indexOf(getDoctorRowValue(row, filter.key)) !== -1;
+          });
+
+          row.hidden = !matchesFilters;
+          if (!row.hidden) {
+            visibleCount += 1;
+          }
+        });
+
+        if (doctorEmptyState) {
+          doctorEmptyState.hidden = visibleCount > 0;
+        }
+      }
+
+      buildDoctorFilters();
+
+      if (doctorFilterGrid) {
+        doctorFilterGrid.addEventListener("change", function (event) {
+          var menu = event.target.closest(".filter-menu");
+          if (!menu) {
+            return;
+          }
+
+          if (event.target.matches("[data-filter-all]")) {
+            menu.querySelectorAll("[data-filter-value]").forEach(function (checkbox) {
+              checkbox.checked = event.target.checked;
+            });
+          } else if (event.target.matches("[data-filter-value]")) {
+            updateFilterAllState(menu);
+          }
+
+          applyDoctorFilters();
+        });
+      }
+
+      document.querySelectorAll(".status-control").forEach(function (control) {
+        control.addEventListener("click", function (event) {
+          var button = event.target.closest(".status-option");
+          if (!button) {
+            return;
+          }
+
+          control.querySelectorAll(".status-option").forEach(function (option) {
+            option.classList.remove("active-on", "active-off");
+            option.setAttribute("aria-pressed", "false");
+          });
+
+          if (button.textContent.trim() === "Activo") {
+            button.classList.add("active-on");
+          } else {
+            button.classList.add("active-off");
+          }
+
+          button.setAttribute("aria-pressed", "true");
+          if (control.closest(".doctor-table")) {
+            control.closest("tr").dataset.estatus = button.textContent.trim();
+            applyDoctorFilters();
+          }
+        });
+      });
+
+      document.querySelectorAll(".relation-toggle").forEach(function (button) {
+        button.addEventListener("click", function () {
+          var relation = button.closest(".platform-relation");
+          var expanded = relation.classList.toggle("show-request");
+          button.setAttribute("aria-expanded", expanded ? "true" : "false");
+        });
+      });
+
+      document.querySelectorAll(".relation-request").forEach(function (button) {
+        button.addEventListener("click", function () {
+          var relation = button.closest(".platform-relation");
+          var label = relation.querySelector(".relation-label");
+          var subject = button.dataset.relationSubject || "medico";
+
+          label.classList.remove("yes", "no");
+          label.classList.add("pending");
+          label.textContent = "Pendiente";
+          label.setAttribute("aria-label", "Solicitud reenviada al " + subject);
+          relation.classList.add("show-request");
+          if (relation.closest(".doctor-table")) {
+            relation.closest("tr").dataset.plataforma = "Pendiente";
+            applyDoctorFilters();
+          }
+          button.textContent = "Reenviado";
+          button.disabled = true;
+        });
+      });
+
+      function markRelationPending(relation, buttonText) {
+        var label = relation.querySelector(".relation-label");
+        var requestButton = relation.querySelector(".relation-request");
+
+        if (!label) {
+          return;
+        }
+
+        label.classList.remove("yes", "no");
+        label.classList.add("pending");
+        label.textContent = "Pendiente";
+        relation.classList.add("show-request");
+
+        if (requestButton) {
+          requestButton.textContent = buttonText;
+          requestButton.disabled = true;
+        }
+      }
+
+      function runPatientSyncBulk(action) {
+        var relations = Array.prototype.slice.call(document.querySelectorAll("#pacientes .patient-table .platform-relation"));
+
+        relations.forEach(function (relation) {
+          var label = relation.querySelector(".relation-label");
+          var status = label ? label.textContent.trim() : "";
+
+          if ((action === "send-no" || action === "both") && status === "No") {
+            markRelationPending(relation, "Enviado");
+          }
+
+          if ((action === "resend-pending" || action === "both") && status === "Pendiente") {
+            markRelationPending(relation, "Reenviado");
+          }
+        });
+      }
+
+      var patientSyncBulk = document.getElementById("patient-sync-bulk");
+      if (patientSyncBulk) {
+        var patientSyncToggle = patientSyncBulk.querySelector(".sync-bulk-toggle");
+
+        patientSyncToggle.addEventListener("click", function () {
+          var expanded = patientSyncBulk.classList.toggle("open");
+          patientSyncToggle.setAttribute("aria-expanded", expanded ? "true" : "false");
+        });
+
+        patientSyncBulk.querySelectorAll("[data-sync-action]").forEach(function (button) {
+          button.addEventListener("click", function () {
+            runPatientSyncBulk(button.dataset.syncAction);
+            patientSyncBulk.classList.remove("open");
+            patientSyncToggle.setAttribute("aria-expanded", "false");
+          });
+        });
+      }
+
+      document.addEventListener("click", function (event) {
+        if (patientSyncBulk && !patientSyncBulk.contains(event.target)) {
+          patientSyncBulk.classList.remove("open");
+          patientSyncBulk.querySelector(".sync-bulk-toggle").setAttribute("aria-expanded", "false");
+        }
+      });
+    </script>
+  </body>
+</html>
