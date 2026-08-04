@@ -31,7 +31,11 @@
       plus: '<path d="M12 5v14M5 12h14"/>',
       close: '<path d="M6 6l12 12M18 6 6 18"/>',
       chevron: '<path d="m9 18 6-6-6-6"/>',
+      back: '<path d="m15 18-6-6 6-6"/>',
       wallet: '<path d="M4 7h15a2 2 0 0 1 2 2v9H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h12v3"/><path d="M16 11h5v4h-5a2 2 0 0 1 0-4Z"/>',
+      diamond: '<path d="M6 3h12l4 6-10 12L2 9Z"/><path d="m6 3 6 18 6-18M2 9h20"/>',
+      users: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>',
+      lock: '<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
       support: '<path d="M4 13v-2a8 8 0 0 1 16 0v2"/><path d="M4 13h3v6H5a2 2 0 0 1-2-2v-2a2 2 0 0 1 1-2Zm16 0h-3v6h2a2 2 0 0 0 2-2v-2a2 2 0 0 0-1-2ZM17 19c0 1.1-2.2 2-5 2"/>',
       request: '<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 3h6v3H9zM9 11h6M9 15h4"/>',
       message: '<path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"/><path d="M8 9h8M8 13h5"/>',
@@ -97,7 +101,7 @@
       ]
     },
     subscription: {
-      current: "family",
+      current: "smart",
       plans: [
         { id: "basic", name: "Historial Básico", label: "Gratis", price: 0, period: "Sin costo", description: "Para empezar a guardar y consultar información médica reciente." },
         { id: "complete", name: "Historial Completo", label: "Individual", price: 20, period: "Mensuales", description: "Acceso permanente a toda tu historia clínica digital." },
@@ -258,6 +262,7 @@
     modalBody.innerHTML = html;
     modalDialog.classList.toggle("is-wide", !!wide);
     modalDialog.classList.toggle("is-wallet", variant === "wallet");
+    modalDialog.classList.toggle("is-subscription", variant === "subscription");
     modal.hidden = false;
     modal.setAttribute("aria-hidden", "false");
     document.body.classList.add("patient-profile-modal-open");
@@ -270,7 +275,7 @@
     modal.hidden = true;
     modal.setAttribute("aria-hidden", "true");
     modalBody.innerHTML = "";
-    modalDialog.classList.remove("is-wide", "is-wallet");
+    modalDialog.classList.remove("is-wide", "is-wallet", "is-subscription");
     document.body.classList.remove("patient-profile-modal-open");
   }
 
@@ -278,11 +283,121 @@
     return '<div class="patient-profile-empty">' + icon(iconName) + '<h3>' + escapeHtml(title) + '</h3><p>' + escapeHtml(description) + '</p></div>';
   }
 
+  function getSubscriptionPlans() {
+    return state.subscription && Array.isArray(state.subscription.plans) ? state.subscription.plans : initialState.subscription.plans;
+  }
+
+  function getSubscriptionPlan(planId) {
+    var plans = getSubscriptionPlans();
+    return plans.find(function (plan) { return plan.id === planId; }) || null;
+  }
+
+  function getCurrentSubscriptionPlan() {
+    return getSubscriptionPlan(state.subscription.current) || getSubscriptionPlans()[0];
+  }
+
+  function subscriptionPlanIcon(plan) {
+    if (!plan) return "card";
+    if (plan.id === "premium") return "diamond";
+    if (plan.id === "family") return "users";
+    if (plan.id === "smart") return "check";
+    return "card";
+  }
+
+  function subscriptionPrice(plan) {
+    var price = Number(plan && plan.price) || 0;
+    return price > 0 ? money(price) : "Gratis";
+  }
+
+  function subscriptionBenefits(plan) {
+    var benefits = {
+      basic: ["Historial reciente", "Datos principales", "Acceso inicial"],
+      complete: ["Historial completo", "Documentos clinicos", "Consulta organizada"],
+      smart: ["Seguimiento con IA", "Recordatorios", "Organizacion de salud"],
+      family: ["Hasta 5 usuarios", "Gestion familiar", "Permisos por familiar"],
+      premium: ["Historial completo", "Seguimiento avanzado", "Experiencia medica premium", "Mas herramientas de bienestar"]
+    };
+    return benefits[plan && plan.id] || ["Acceso al plan", "Soporte de la plataforma", "Beneficios activos"];
+  }
+
+  function renderSubscriptionBenefitList(plan) {
+    return '<ul class="patient-subscription-benefits">' + subscriptionBenefits(plan).map(function (benefit) {
+      return '<li><span>' + icon("check") + '</span>' + escapeHtml(benefit) + '</li>';
+    }).join("") + '</ul>';
+  }
+
+  function renderSubscriptionUpgrade(selectedPlanId) {
+    var plans = getSubscriptionPlans();
+    var currentPlan = getCurrentSubscriptionPlan();
+    var selectablePlans = plans.filter(function (plan) { return plan.id !== currentPlan.id; });
+    var selectedPlan = getSubscriptionPlan(selectedPlanId);
+    if (!selectedPlan || selectedPlan.id === currentPlan.id) {
+      selectedPlan = selectablePlans.find(function (plan) { return plan.id === "premium"; }) || selectablePlans[0] || currentPlan;
+    }
+    var planCards = selectablePlans.map(function (plan) {
+      var isSelected = plan.id === selectedPlan.id;
+      var isRecommended = plan.id === "premium";
+      return '<button type="button" class="patient-subscription-plan-card ' + (isSelected ? "is-selected" : "") + '" data-profile-upgrade-select="' + escapeHtml(plan.id) + '">' +
+        '<span class="patient-subscription-plan-icon">' + icon(subscriptionPlanIcon(plan)) + '</span>' +
+        '<span class="patient-subscription-radio" aria-hidden="true"></span>' +
+        (isRecommended ? '<b class="patient-subscription-recommended">' + icon("check") + ' Recomendado</b>' : '') +
+        '<strong>' + escapeHtml(plan.name) + '</strong>' +
+        '<em>' + subscriptionPrice(plan) + ' / mes</em>' +
+        '<small>' + escapeHtml(plan.period || "") + '</small>' +
+        renderSubscriptionBenefitList(plan) +
+      '</button>';
+    }).join("");
+    openModal("Mejorar suscripci&oacute;n", "SUSCRIPCIONES", '<div class="patient-subscription-flow">' +
+      '<button type="button" class="patient-subscription-back" data-profile-subscription-back="wallet" aria-label="Volver a billetera">' + icon("back") + '</button>' +
+      '<header class="patient-subscription-title"><h2>Mejorar suscripci&oacute;n</h2><p>Cambia tu plan para obtener m&aacute;s beneficios</p></header>' +
+      '<section class="patient-subscription-current"><span>' + icon(subscriptionPlanIcon(currentPlan)) + '</span><div><small>PLAN ACTUAL</small><strong>' + escapeHtml(currentPlan.name) + '</strong><em>' + subscriptionPrice(currentPlan) + ' / mes</em></div><b>' + icon("check") + ' Activo</b></section>' +
+      '<h3 class="patient-subscription-section-title">Elige tu nuevo plan</h3>' +
+      '<div class="patient-subscription-options">' + planCards + '</div>' +
+      '<section class="patient-subscription-summary"><div><span>' + icon(subscriptionPlanIcon(selectedPlan)) + '</span><div><small>NUEVO PLAN</small><strong>' + escapeHtml(selectedPlan.name) + '</strong><em>' + subscriptionPrice(selectedPlan) + ' / mes</em></div></div><button type="button" class="patient-profile-button is-primary" data-profile-subscription-payment="' + escapeHtml(selectedPlan.id) + '">Continuar al pago ' + icon("arrow") + '</button><button type="button" class="patient-subscription-link">Ver comparaci&oacute;n de planes</button></section>' +
+    '</div>', false, "subscription");
+  }
+
+  function renderSubscriptionPayment(planId) {
+    var plan = getSubscriptionPlan(planId);
+    var currentPlan = getCurrentSubscriptionPlan();
+    if (!plan) return renderFinance();
+    openModal("Pago", "SUSCRIPCIONES", '<form class="patient-subscription-flow patient-subscription-payment" data-profile-subscription-payment-form data-plan-id="' + escapeHtml(plan.id) + '">' +
+      '<button type="button" class="patient-subscription-back" data-profile-subscription-back="upgrade" data-plan-id="' + escapeHtml(plan.id) + '" aria-label="Volver a planes">' + icon("back") + '</button>' +
+      '<header class="patient-subscription-title"><h2>Pago</h2><p>Confirma tu m&eacute;todo de pago</p></header>' +
+      '<section class="patient-subscription-current is-payment"><span>' + icon(subscriptionPlanIcon(plan)) + '</span><div><strong>' + escapeHtml(plan.name) + '</strong><em>' + subscriptionPrice(plan) + ' / mes</em><b>' + icon("up") + ' Upgrade desde ' + escapeHtml(currentPlan.name) + '</b></div></section>' +
+      '<h3 class="patient-subscription-section-title">M&eacute;todo de pago</h3>' +
+      '<section class="patient-subscription-pay-method"><span>' + icon("card") + '</span><div><strong>Tarjeta de cr&eacute;dito o d&eacute;bito</strong><small>Visa, Mastercard, American Express</small></div><b aria-hidden="true"></b></section>' +
+      '<section class="patient-subscription-card-form">' +
+        '<label>Nombre del titular<input name="holder" autocomplete="cc-name" placeholder="Nombre completo como aparece en la tarjeta" required></label>' +
+        '<label>N&uacute;mero de tarjeta<input name="card" inputmode="numeric" autocomplete="cc-number" placeholder="1234 5678 9012 3456" required></label>' +
+        '<label>MM/AA<input name="expiry" autocomplete="cc-exp" placeholder="MM/AA" required></label>' +
+        '<label>CVV<input name="cvv" inputmode="numeric" autocomplete="cc-csc" placeholder="123" required></label>' +
+        '<label class="patient-subscription-save-card"><input type="checkbox" checked> Guardar tarjeta para pr&oacute;ximos pagos</label>' +
+      '</section>' +
+      '<section class="patient-subscription-total"><div><span>Subtotal</span><strong>' + subscriptionPrice(plan) + '</strong></div><div><span>IVA incluido</span></div><hr><div><b>Total de hoy</b><strong>' + subscriptionPrice(plan) + '</strong></div></section>' +
+      '<button type="submit" class="patient-profile-button is-primary patient-subscription-pay-button">Pagar y mejorar plan ' + icon("arrow") + '</button>' +
+      '<p class="patient-subscription-secure">' + icon("lock") + ' Pago seguro</p>' +
+    '</form>', false, "subscription");
+  }
+
+  function renderSubscriptionSuccess(planId) {
+    var plan = getSubscriptionPlan(planId) || getCurrentSubscriptionPlan();
+    openModal("Upgrade confirmado", "SUSCRIPCIONES", '<div class="patient-subscription-flow patient-subscription-success">' +
+      '<button type="button" class="patient-subscription-back" data-profile-subscription-home aria-label="Volver a billetera">' + icon("back") + '</button>' +
+      '<header class="patient-subscription-title"><span class="patient-subscription-success-mark">' + icon("check") + '</span><h2>&iexcl;Upgrade confirmado!</h2><p>Tu suscripci&oacute;n fue actualizada correctamente.</p></header>' +
+      '<section class="patient-subscription-current"><span>' + icon(subscriptionPlanIcon(plan)) + '</span><div><small>NUEVO PLAN ACTIVO</small><strong>' + escapeHtml(plan.name) + '</strong><em>' + subscriptionPrice(plan) + ' / mes</em></div><b>' + icon("check") + ' Activo</b></section>' +
+      '<div class="patient-subscription-confirm-list"><p><span>' + icon("card") + '</span>Pago procesado con &eacute;xito</p><p><span>' + icon("calendar") + '</span>Facturaci&oacute;n mensual activada</p><p><span>' + icon("diamond") + '</span>Beneficios premium disponibles ahora</p></div>' +
+      '<p class="patient-subscription-activation">' + icon("calendar") + ' Fecha de activaci&oacute;n: <strong>Hoy</strong></p>' +
+      '<button type="button" class="patient-profile-button is-primary patient-subscription-pay-button" data-profile-subscription-home>Ir a mi suscripci&oacute;n</button>' +
+      '<button type="button" class="patient-profile-button patient-subscription-outline" data-profile-close-modal>Volver al inicio</button>' +
+    '</div>', false, "subscription");
+  }
+
   function renderFinance() {
     var totalCredits = state.wallet.movements.reduce(function (sum, item) { return sum + Math.max(0, Number(item.amount) || 0); }, 0);
     var totalDebits = state.wallet.movements.reduce(function (sum, item) { return sum + Math.abs(Math.min(0, Number(item.amount) || 0)); }, 0);
-    var plans = state.subscription && Array.isArray(state.subscription.plans) ? state.subscription.plans : initialState.subscription.plans;
-    var currentPlan = plans.find(function (plan) { return plan.id === state.subscription.current; }) || plans[0];
+    var plans = getSubscriptionPlans();
+    var currentPlan = getCurrentSubscriptionPlan();
     var subscriptionCards = plans.map(function (plan) {
       var isCurrent = plan.id === currentPlan.id;
       var price = Number(plan.price) || 0;
@@ -464,11 +579,35 @@
       saveState();
       renderSynchronizations();
     }
-    if (button.dataset.profilePlan) {
-      state.subscription.current = button.dataset.profilePlan;
-      saveState();
-      emit("subscription:selected", { planId: button.dataset.profilePlan });
+    if (button.dataset.profileSubscriptionBack === "wallet") {
+      event.preventDefault();
       renderFinance();
+      return;
+    }
+    if (button.dataset.profileSubscriptionBack === "upgrade") {
+      event.preventDefault();
+      renderSubscriptionUpgrade(button.dataset.planId);
+      return;
+    }
+    if (button.dataset.profileUpgradeSelect) {
+      event.preventDefault();
+      renderSubscriptionUpgrade(button.dataset.profileUpgradeSelect);
+      return;
+    }
+    if (button.dataset.profileSubscriptionPayment) {
+      event.preventDefault();
+      renderSubscriptionPayment(button.dataset.profileSubscriptionPayment);
+      return;
+    }
+    if (button.matches("[data-profile-subscription-home]")) {
+      event.preventDefault();
+      renderFinance();
+      return;
+    }
+    if (button.dataset.profilePlan) {
+      event.preventDefault();
+      renderSubscriptionUpgrade(button.dataset.profilePlan);
+      return;
     }
     if (button.matches("[data-profile-confirm-logout]")) {
       event.preventDefault();
@@ -486,6 +625,18 @@
       saveState();
       emit("wallet:recharged", { amount: amount });
       renderFinance();
+    }
+    if (event.target.matches("[data-profile-subscription-payment-form]")) {
+      event.preventDefault();
+      var plan = getSubscriptionPlan(event.target.dataset.planId);
+      if (!plan) return;
+      state.subscription.current = plan.id;
+      if (Number(plan.price) > 0) {
+        state.wallet.movements.unshift({ id: "SUB-" + Date.now(), date: new Date().toLocaleDateString("es-MX"), concept: "Suscripcion " + plan.name, amount: -Number(plan.price) });
+      }
+      saveState();
+      emit("subscription:upgraded", { planId: plan.id, planName: plan.name, amount: Number(plan.price) || 0 });
+      renderSubscriptionSuccess(plan.id);
     }
     if (event.target.matches("[data-profile-form]")) {
       event.preventDefault();

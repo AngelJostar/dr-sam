@@ -180,6 +180,27 @@
     { id: "fuerza", catalogId: "community-fuerza-funcional", slug: "fuerza-funcional", repositorySource: "catalogo-base", name: "Fuerza Funcional", category: "Fuerza", access: "closed", visibility: "public", members: 64, city: "Guadalajara", description: "Entrenamiento progresivo y bienestar integral.", longDescription: "Entrenamiento funcional progresivo con foco en fuerza, movilidad y prevencion.", initials: "FF", logoInitials: "FF", tone: "blue", role: "none", heroImage: "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1400&q=88", features: ["Fuerza segura", "Movilidad", "Progresion"] }
   ];
 
+  communities = communities.concat([
+    { id: "yoga-calma", catalogId: "community-yoga-calma", slug: "yoga-en-calma", repositorySource: "catalogo-base", exploreCategory: "yoga", name: "Yoga en Calma", category: "Yoga", access: "closed", visibility: "public", members: 84, city: "Ciudad de Mexico", description: "Practicas suaves para respirar, estirar y descansar mejor.", longDescription: "Sesiones guiadas para construir calma diaria con ejercicios de respiracion, movilidad ligera y meditacion.", initials: "YC", logoInitials: "YC", tone: "mint", role: "none", heroImage: "https://images.unsplash.com/photo-1545389336-cf090694435e?auto=format&fit=crop&w=1400&q=88", features: ["Yoga suave", "Respiracion", "Descanso"] },
+    { id: "meditacion-movimiento", catalogId: "community-meditacion-movimiento", slug: "meditacion-en-movimiento", repositorySource: "catalogo-base", exploreCategory: "yoga", name: "Meditacion en Movimiento", category: "Yoga", access: "open", visibility: "public", members: 97, city: "Queretaro", description: "Meditacion activa, movilidad consciente y pausas breves.", longDescription: "Comunidad para integrar pausas conscientes durante el dia con movimiento amable y respiracion guiada.", initials: "MM", logoInitials: "MM", tone: "blue", role: "none", heroImage: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1400&q=88", features: ["Meditacion activa", "Pausas", "Movimiento"] },
+    { id: "equilibrio-interior", catalogId: "community-equilibrio-interior", slug: "equilibrio-interior", repositorySource: "catalogo-base", exploreCategory: "yoga", name: "Equilibrio Interior", category: "Yoga", access: "closed", visibility: "public", members: 76, city: "Guadalajara", description: "Rutinas de meditacion y respiracion para recuperar equilibrio.", longDescription: "Espacio para practicar respiracion, estiramientos sencillos y habitos de recuperacion emocional.", initials: "EI", logoInitials: "EI", tone: "gold", role: "none", heroImage: "https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?auto=format&fit=crop&w=1400&q=88", features: ["Meditacion", "Balance", "Respiracion"] },
+    { id: "paso-constante", catalogId: "community-paso-constante", slug: "paso-constante", repositorySource: "catalogo-base", exploreCategory: "running", name: "Paso Constante", category: "Running", access: "open", visibility: "public", members: 68, city: "Ciudad de Mexico", description: "Caminata, trote ligero y metas semanales faciles de seguir.", longDescription: "Comunidad para comenzar actividad fisica con caminatas progresivas y seguimiento amable.", initials: "PC", logoInitials: "PC", tone: "blue", role: "none", heroImage: "https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=1400&q=88", features: ["Caminata", "Trote ligero", "Metas"] },
+    { id: "running-klini", catalogId: "community-running-klini", slug: "running-klini", repositorySource: "catalogo-base", exploreCategory: "running", name: "Running Klini", category: "Running", access: "closed", visibility: "public", members: 73, city: "Monterrey", description: "Entrenamiento seguro para retomar carrera sin presion.", longDescription: "Planes simples para correr o caminar con seguimiento de esfuerzo, descanso y progreso.", initials: "RK", logoInitials: "RK", tone: "mint", role: "none", heroImage: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=1400&q=88", features: ["Carrera suave", "Progreso", "Prevencion"] },
+    { id: "caminata-metabolica", catalogId: "community-caminata-metabolica", slug: "caminata-metabolica", repositorySource: "catalogo-base", exploreCategory: "running", name: "Caminata Metabolica", category: "Running", access: "open", visibility: "public", members: 92, city: "Ciudad de Mexico", description: "Caminatas guiadas para energia, glucosa y bienestar diario.", longDescription: "Grupo de caminatas con enfoque cardiometabolico, seguimiento semanal y actividades al aire libre.", initials: "CM", logoInitials: "CM", tone: "blue", role: "none", heroImage: "https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=1400&q=88", features: ["Caminatas", "Metabolismo", "Habitos"] },
+    { id: "cocina-saludable", catalogId: "community-cocina-saludable", slug: "cocina-saludable", repositorySource: "catalogo-base", exploreCategory: "nutricion", name: "Cocina Saludable", category: "Nutricion", access: "open", visibility: "public", members: 74, city: "Ciudad de Mexico", description: "Recetas simples y listas de compra para comer mejor.", longDescription: "Ideas de menu, sustituciones y preparacion sencilla para mejorar adherencia nutricional.", initials: "CS", logoInitials: "CS", tone: "gold", role: "none", heroImage: "https://images.unsplash.com/photo-1543352634-a1c51d9f1fa7?auto=format&fit=crop&w=1400&q=88", features: ["Recetas", "Compras", "Menu"] },
+    { id: "nutricion-consciente", catalogId: "community-nutricion-consciente", slug: "nutricion-consciente", repositorySource: "catalogo-base", exploreCategory: "nutricion", name: "Nutricion Consciente", category: "Nutricion", access: "open", visibility: "public", members: 73, city: "Puebla", description: "Planificacion, porciones y seguimiento sin culpa.", longDescription: "Acompanamiento comunitario para construir habitos de alimentacion sostenibles.", initials: "NC", logoInitials: "NC", tone: "mint", role: "none", heroImage: "https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=1400&q=88", features: ["Porciones", "Planificacion", "Habitos"] },
+    { id: "fuerza-en-equilibrio", catalogId: "community-fuerza-equilibrio", slug: "fuerza-en-equilibrio", repositorySource: "catalogo-base", exploreCategory: "fuerza", name: "Fuerza en Equilibrio", category: "Fuerza", access: "open", visibility: "public", members: 65, city: "Guadalajara", description: "Entrenamiento progresivo, movilidad y tecnica segura.", longDescription: "Ejercicios de fuerza funcional adaptados para crear constancia sin sobrecarga.", initials: "FE", logoInitials: "FE", tone: "violet", role: "none", heroImage: "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1400&q=88", features: ["Fuerza", "Tecnica", "Movilidad"] },
+    { id: "movilidad-funcional", catalogId: "community-movilidad-funcional", slug: "movilidad-funcional", repositorySource: "catalogo-base", exploreCategory: "fuerza", name: "Movilidad Funcional", category: "Fuerza", access: "closed", visibility: "public", members: 58, city: "Ciudad de Mexico", description: "Rutinas de movilidad y fuerza para cuidar articulaciones.", longDescription: "Sesiones cortas para mejorar movilidad, postura y fuerza de forma progresiva.", initials: "MF", logoInitials: "MF", tone: "blue", role: "none", heroImage: "https://images.unsplash.com/photo-1518459031867-a89b944bffe4?auto=format&fit=crop&w=1400&q=88", features: ["Movilidad", "Postura", "Fuerza"] },
+    { id: "mente-serena", catalogId: "community-mente-serena", slug: "mente-serena", repositorySource: "catalogo-base", exploreCategory: "salud-mental", name: "Mente Serena", category: "Salud mental", access: "open", visibility: "public", members: 88, city: "Queretaro", description: "Herramientas de calma, descanso y regulacion emocional.", longDescription: "Espacio para aprender pausas de respiracion, higiene del sueno y estrategias de autocuidado.", initials: "MS", logoInitials: "MS", tone: "violet", role: "none", heroImage: "https://images.unsplash.com/photo-1593811167562-9cef47bfc4d7?auto=format&fit=crop&w=1400&q=88", features: ["Calma", "Descanso", "Autocuidado"] },
+    { id: "pausa-consciente", catalogId: "community-pausa-consciente", slug: "pausa-consciente", repositorySource: "catalogo-base", exploreCategory: "salud-mental", name: "Pausa Consciente", category: "Salud mental", access: "open", visibility: "public", members: 62, city: "Ciudad de Mexico", description: "Pausas breves para manejar estres durante el dia.", longDescription: "Practicas simples para integrar respiracion, enfoque y descanso mental en rutinas diarias.", initials: "PA", logoInitials: "PA", tone: "mint", role: "none", heroImage: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1400&q=88", features: ["Estres", "Pausas", "Respiracion"] },
+    { id: "habitos-en-equilibrio", catalogId: "community-habitos-equilibrio", slug: "habitos-en-equilibrio", repositorySource: "catalogo-base", exploreCategory: "bienestar", name: "Habitos en Equilibrio", category: "Bienestar", access: "open", visibility: "public", members: 81, city: "Ciudad de Mexico", description: "Metas pequenas para agua, descanso, movimiento y energia.", longDescription: "Comunidad para construir habitos integrales y celebrar avances diarios.", initials: "HE", logoInitials: "HE", tone: "mint", role: "none", heroImage: "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=1400&q=88", features: ["Habitos", "Metas", "Bienestar"] },
+    { id: "ciclos-de-bienestar", catalogId: "community-ciclos-bienestar", slug: "ciclos-de-bienestar", repositorySource: "catalogo-base", exploreCategory: "bienestar", name: "Ciclos de Bienestar", category: "Bienestar", access: "open", visibility: "public", members: 51, city: "Merida", description: "Rutinas semanales para cuidar cuerpo, energia y descanso.", longDescription: "Seguimiento por ciclos con recomendaciones simples para sostener bienestar personal.", initials: "CB", logoInitials: "CB", tone: "blue", role: "none", heroImage: "https://images.unsplash.com/photo-1499728603263-13726abce5fd?auto=format&fit=crop&w=1400&q=88", features: ["Rutinas", "Energia", "Descanso"] },
+    { id: "menu-inteligente", catalogId: "community-menu-inteligente", slug: "menu-inteligente", repositorySource: "catalogo-base", exploreCategory: "nutricion", name: "Menu Inteligente", category: "Nutricion", access: "closed", visibility: "public", members: 69, city: "Ciudad de Mexico", description: "Planeacion de comidas, adherencia y recetas practicas.", longDescription: "Grupo para preparar menus semanales, revisar objetivos nutricionales y compartir alternativas saludables.", initials: "MI", logoInitials: "MI", tone: "gold", role: "none", heroImage: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=1400&q=88", features: ["Menu", "Recetas", "Adherencia"] },
+    { id: "core-seguro", catalogId: "community-core-seguro", slug: "core-seguro", repositorySource: "catalogo-base", exploreCategory: "fuerza", name: "Core Seguro", category: "Fuerza", access: "open", visibility: "public", members: 60, city: "Monterrey", description: "Fuerza central, estabilidad y progresion sin dolor.", longDescription: "Ejercicios de core y estabilidad con niveles para avanzar de forma segura.", initials: "CO", logoInitials: "CO", tone: "violet", role: "none", heroImage: "https://images.unsplash.com/photo-1571019613914-85f342c6a11e?auto=format&fit=crop&w=1400&q=88", features: ["Core", "Estabilidad", "Progresion"] },
+    { id: "descanso-profundo", catalogId: "community-descanso-profundo", slug: "descanso-profundo", repositorySource: "catalogo-base", exploreCategory: "salud-mental", name: "Descanso Profundo", category: "Salud mental", access: "closed", visibility: "public", members: 79, city: "Ciudad de Mexico", description: "Rutinas de descanso, sueno y pausas para recuperar energia.", longDescription: "Practicas para mejorar descanso, reducir tension y preparar el cuerpo para dormir mejor.", initials: "DP", logoInitials: "DP", tone: "violet", role: "none", heroImage: "https://images.unsplash.com/photo-1520206183501-b80df61043c2?auto=format&fit=crop&w=1400&q=88", features: ["Sueno", "Descanso", "Calma"] },
+    { id: "bienestar-integral-klini", catalogId: "community-bienestar-integral-klini", slug: "bienestar-integral-klini", repositorySource: "catalogo-base", exploreCategory: "bienestar", name: "Bienestar Integral Klini", category: "Bienestar", access: "open", visibility: "public", members: 93, city: "Guadalajara", description: "Seguimiento integral para metas pequenas y sostenibles.", longDescription: "Comunidad para combinar hidratacion, movimiento, descanso y seguimiento de metas personales.", initials: "BI", logoInitials: "BI", tone: "mint", role: "none", heroImage: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1400&q=88", features: ["Integral", "Metas", "Seguimiento"] }
+  ]);
+
   var events = [
     { id: "e1", group: "week", communityId: "respira", category: "Yoga", title: "Respiracion y movilidad suave", date: "miercoles, 22 de julio", day: "mie", number: "22", month: "jul", time: "07:00 p.m.", place: "Casa Klini Roma Norte", modality: "Presencial", capacity: 18, available: 14 },
     { id: "e2", group: "week", communityId: "respira", category: "Yoga", title: "Postura y respiracion", date: "jueves, 23 de julio", day: "jue", number: "23", month: "jul", time: "06:00 p.m.", place: "Casa Klini Condesa", modality: "Presencial", capacity: 20, available: 20 },
@@ -318,6 +339,9 @@
       compass: '<circle cx="12" cy="12" r="9"/><path d="m16 8-2.5 5.5L8 16l2.5-5.5L16 8Z"/>',
       users: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>',
       calendar: '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
+      clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+      minus: '<path d="M5 12h14"/>',
+      video: '<path d="M15 10 21 6v12l-6-4v-4Z"/><rect x="3" y="6" width="12" height="12" rx="2"/>',
       ticket: '<path d="M2 9a3 3 0 0 0 0 6v4h20v-4a3 3 0 0 0 0-6V5H2v4Z"/><path d="M13 5v2M13 10v4M13 17v2"/>',
       shield: '<path d="M20 13c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V5l8-3 8 3v8Z"/>',
       info: '<circle cx="12" cy="12" r="9"/><path d="M12 10v7M12 7h.01"/>',
@@ -398,6 +422,8 @@
       replyDrafts: {},
       storyIndex: null,
       storyUploads: {},
+      cancelConfirmId: null,
+      reservationFlow: null,
       createdCommunities: [],
       createStep: 1, createDraft: defaultCreateDraft(), createCompleted: false, createdCommunityId: null,
       eventSearch: "",
@@ -405,6 +431,8 @@
       eventFilterQueries: {},
       activeEventFilter: "",
       eventCountryExpanded: false,
+      selectedExploreCategory: "",
+      adminTool: "stories",
       pendingDirectoryFocus: false
     };
     this.storyTimer = null;
@@ -543,17 +571,23 @@
       if (action === "profile:photo-updated" || action === "profile:photo-removed") self.render();
     });
     this.root.addEventListener("click", function (event) {
+      var control = event.target.closest("[data-action]");
       var panTrack = event.target.closest("[data-pan]");
       if (panTrack && panTrack.dataset.ignoreClick === "1") {
-        event.preventDefault();
-        event.stopPropagation();
+        var actionInPan = control ? control.getAttribute("data-action") : "";
+        var wasDrag = panTrack.dataset.moved === "1";
         panTrack.dataset.ignoreClick = "0";
-        return;
+        if (wasDrag || actionInPan !== "open-community-panel") {
+          event.preventDefault();
+          event.stopPropagation();
+          return;
+        }
       }
-      var control = event.target.closest("[data-action]");
       if (!control) return;
       var action = control.getAttribute("data-action");
       var id = control.getAttribute("data-id");
+      var preserveScroll = self.shouldPreserveFilterScroll(action);
+      var scrollSnapshot = preserveScroll ? self.captureScrollPosition() : null;
       if (action === "create-open") { self.state.view = "create"; self.state.createStep = 1; self.state.createCompleted = false; self.state.createdCommunityId = null; }
       if (action === "create-cancel") { self.state.view = "feed"; self.state.createStep = 1; self.state.createCompleted = false; }
       if (action === "create-next") self.state.createStep = Math.min(5, self.state.createStep + 1);
@@ -567,6 +601,7 @@
       if (action === "clear-event-search") {
         self.state.eventSearch = "";
         self.state.eventFilters = self.defaultEventFilters();
+        self.state.eventFilterQueries = {};
         self.state.activeEventFilter = "";
         self.state.eventCountryExpanded = false;
       }
@@ -586,11 +621,36 @@
       if (action === "open-directory-filter") self.selectDirectoryFilter(id || "explore", false);
       if (action === "back-feed" || action === "home") self.state.view = "feed";
       if (action === "open-detail" || action === "open-community-panel") self.openCommunityPanel(id);
+      if (action === "open-admin-panel") self.openAdminPanel(id);
+      if (action === "open-admin-tool") self.openAdminTool(id);
       if (action === "back-directory") self.state.view = "directory";
       if (action === "filter") self.selectDirectoryFilter(id || "explore", false);
+      if (action === "explore-category") self.state.selectedExploreCategory = id || "";
       if (action === "category") self.state.category = id;
       if (action === "join") self.join(id);
-      if (action === "reserve") self.reserve(id);
+      if (action === "reserve") self.openReservationFlow(id);
+      if (action === "reservation-attendees") self.updateReservationAttendees(Number(control.getAttribute("data-dir")) || 0);
+      if (action === "reservation-modality") self.updateReservationModality(id);
+      if (action === "reservation-toggle-confirm") self.toggleReservationConfirmation(id);
+      if (action === "reservation-back" || action === "reservation-cancel") self.closeReservationFlow();
+      if (action === "reservation-submit") self.confirmReservationFlow();
+      if (action === "reservation-view-reservations") {
+        self.state.reservationFlow = null;
+        self.state.view = "directory";
+        self.state.filter = "events";
+      }
+      if (action === "reservation-open-community") {
+        var flow = self.state.reservationFlow;
+        var communityId = flow && flow.communityId;
+        self.state.reservationFlow = null;
+        if (communityId) self.openCommunityPanel(communityId);
+      }
+      if (action === "confirm-cancel-reservation") self.state.cancelConfirmId = id;
+      if (action === "dismiss-cancel-reservation") self.state.cancelConfirmId = null;
+      if (action === "confirm-cancel-reservation-submit") {
+        self.cancel(id || self.state.cancelConfirmId);
+        self.state.cancelConfirmId = null;
+      }
       if (action === "cancel") self.cancel(id);
       if (action === "more") self.state.limits[id] += 5;
       if (action === "like") self.state.likes[id] = !self.state.likes[id];
@@ -606,7 +666,8 @@
         return;
       }
       self.save(); self.render();
-      if (action === "open-detail" || action === "open-community-panel" || action === "open-directory" || action === "open-directory-filter" || action === "filter" || action === "back-directory" || action === "back-feed" || action === "home") {
+      if (preserveScroll) self.restoreScrollPosition(scrollSnapshot);
+      if (!preserveScroll && (action === "open-detail" || action === "open-community-panel" || action === "open-admin-panel" || action === "open-directory" || action === "open-directory-filter" || action === "filter" || action === "back-directory" || action === "back-feed" || action === "home" || action === "reserve" || action === "reservation-submit" || action === "reservation-view-reservations" || action === "reservation-open-community")) {
         self.scrollToScreenTop(action === "filter" ? "smooth" : "auto");
       }
     });
@@ -639,6 +700,7 @@
         var queryType = event.target.getAttribute("data-type") || "";
         var matchedValue = self.findTypedEventFilterValue(queryType, event.target.value);
         if (matchedValue !== null) {
+          var scrollSnapshot = self.captureScrollPosition();
           var filters = self.currentEventFilters();
           filters[queryType] = matchedValue;
           if (queryType === "country") filters.city = "";
@@ -647,25 +709,30 @@
           self.state.activeEventFilter = queryType === "country" ? "city" : "";
           self.save();
           self.render();
+          self.restoreScrollPosition(scrollSnapshot);
         }
         return;
       }
       if (event.target.hasAttribute("data-event-country-input")) {
         var country = self.findEventCountry(event.target.value);
         if (country) {
+          var countryScrollSnapshot = self.captureScrollPosition();
           self.currentEventFilters().country = country.value;
           self.currentEventFilters().city = "";
           self.save();
           self.render();
+          self.restoreScrollPosition(countryScrollSnapshot);
         }
         return;
       }
       if (event.target.hasAttribute("data-event-city-input")) {
         var city = self.findEventCity(event.target.value);
         if (city) {
+          var cityScrollSnapshot = self.captureScrollPosition();
           self.currentEventFilters().city = city;
           self.save();
           self.render();
+          self.restoreScrollPosition(cityScrollSnapshot);
         }
         return;
       }
@@ -688,6 +755,7 @@
       var firstVisible = event.target.closest("[data-event-selector]")?.querySelector("[data-event-option-search]:not([hidden])");
       if (matchedValue === null && firstVisible) matchedValue = firstVisible.getAttribute("data-value") || "";
       if (matchedValue === null) return;
+      var scrollSnapshot = self.captureScrollPosition();
       var filters = self.currentEventFilters();
       filters[queryType] = matchedValue;
       if (queryType === "country") filters.city = "";
@@ -696,6 +764,7 @@
       self.state.activeEventFilter = queryType === "country" ? "city" : "";
       self.save();
       self.render();
+      self.restoreScrollPosition(scrollSnapshot);
     });
     this.root.addEventListener("pointerdown", function (event) {
       var track = event.target.closest("[data-pan]");
@@ -712,7 +781,7 @@
       if (!track || track.dataset.dragging !== "1") return;
       var deltaX = event.clientX - Number(track.dataset.startX);
       var dragSpeed = track.getAttribute("data-carousel") === "stories" ? 0.52 : 1;
-      if (Math.abs(deltaX) > 4) {
+      if (Math.abs(deltaX) > 8) {
         track.dataset.moved = "1";
         track.dataset.ignoreClick = "1";
         track.classList.add("is-panning");
@@ -747,6 +816,52 @@
   CommunityApp.prototype.scrollCarousel = function (id, direction) {
     var track = this.root.querySelector('[data-carousel="' + id + '"]');
     if (track) track.scrollBy({ left: direction * Math.max(280, track.clientWidth * 0.75), behavior: "smooth" });
+  };
+
+  CommunityApp.prototype.shouldPreserveFilterScroll = function (action) {
+    return ["toggle-event-filter", "select-event-filter", "toggle-event-country-more", "clear-event-search", "open-admin-tool", "explore-category"].indexOf(action) !== -1;
+  };
+
+  CommunityApp.prototype.captureScrollPosition = function () {
+    var root = this.root;
+    var scrollingElement = document.scrollingElement || document.documentElement;
+    var portal = root.closest("[data-patient-portal], .patient-portal");
+    var content = root.closest(".patient-portal-content");
+    return {
+      windowX: window.scrollX || window.pageXOffset || 0,
+      windowY: window.scrollY || window.pageYOffset || 0,
+      documentLeft: scrollingElement ? scrollingElement.scrollLeft : 0,
+      documentTop: scrollingElement ? scrollingElement.scrollTop : 0,
+      portalLeft: portal ? portal.scrollLeft : null,
+      portalTop: portal ? portal.scrollTop : null,
+      contentLeft: content ? content.scrollLeft : null,
+      contentTop: content ? content.scrollTop : null
+    };
+  };
+
+  CommunityApp.prototype.restoreScrollPosition = function (snapshot) {
+    if (!snapshot) return;
+    var root = this.root;
+    var restore = function () {
+      var scrollingElement = document.scrollingElement || document.documentElement;
+      var portal = root.closest("[data-patient-portal], .patient-portal");
+      var content = root.closest(".patient-portal-content");
+      if (scrollingElement) {
+        scrollingElement.scrollLeft = snapshot.documentLeft;
+        scrollingElement.scrollTop = snapshot.documentTop;
+      }
+      window.scrollTo(snapshot.windowX, snapshot.windowY);
+      if (portal && snapshot.portalTop != null) {
+        portal.scrollLeft = snapshot.portalLeft || 0;
+        portal.scrollTop = snapshot.portalTop;
+      }
+      if (content && snapshot.contentTop != null) {
+        content.scrollLeft = snapshot.contentLeft || 0;
+        content.scrollTop = snapshot.contentTop;
+      }
+    };
+    restore();
+    window.requestAnimationFrame(restore);
   };
 
   CommunityApp.prototype.scrollToScreenTop = function (behavior) {
@@ -833,6 +948,7 @@
     var filters = this.currentEventFilters();
     var cards = this.root.querySelectorAll("[data-event-search-card]");
     var empty = this.root.querySelector("[data-event-search-empty]");
+    var groups = this.root.querySelectorAll("[data-event-search-group]");
     var visible = 0;
     Array.prototype.forEach.call(cards, function (card) {
       var haystack = card.getAttribute("data-event-search-text") || "";
@@ -843,6 +959,9 @@
       if (show && filters.location) show = card.getAttribute("data-event-location") === normalizeSearch(filters.location);
       card.hidden = !show;
       if (show) visible += 1;
+    });
+    Array.prototype.forEach.call(groups, function (group) {
+      group.hidden = !group.querySelector("[data-event-search-card]:not([hidden])");
     });
     if (empty) empty.hidden = visible > 0;
   };
@@ -961,6 +1080,24 @@
     this.emit("community.opened", community);
   };
 
+  CommunityApp.prototype.openAdminPanel = function (id) {
+    var community = this.findCommunity(id) || this.findCommunity(this.state.detailId);
+    if (!community || this.communityRole(community) !== "admin") community = this.adminCommunities()[0];
+    if (!community || this.communityRole(community) !== "admin") return;
+    this.state.view = "admin";
+    this.state.detailId = community.id;
+    this.state.filter = "mine";
+    this.state.selectedExploreCategory = "";
+    this.state.activeEventFilter = "";
+    this.state.adminTool = "stories";
+    this.emit("community.admin.opened", community);
+  };
+
+  CommunityApp.prototype.openAdminTool = function (id) {
+    if (["stories", "communityPosts", "events", "classes", "editPage"].indexOf(id) === -1) return;
+    this.state.adminTool = id;
+  };
+
   CommunityApp.prototype.join = function (id) {
     var community = this.findCommunity(id);
     if (!community) return;
@@ -970,13 +1107,15 @@
 
   CommunityApp.prototype.findReservableItem = function (id) {
     var event = events.find(function (item) { return item.id === id; });
-    if (event) return { type: "event", item: event };
+    if (event) return { type: "event", item: event, community: this.findCommunity(event.communityId) || communities[0] };
     var classItem = null;
+    var classCommunity = null;
     communities.some(function (community) {
       classItem = (community.classes || []).find(function (item) { return item.id === id; }) || null;
+      if (classItem) classCommunity = community;
       return !!classItem;
     });
-    return classItem ? { type: "class", item: classItem } : { type: id.indexOf("class-") === 0 ? "class" : "event", item: { id: id } };
+    return classItem ? { type: "class", item: classItem, community: classCommunity } : { type: id.indexOf("class-") === 0 ? "class" : "event", item: { id: id }, community: communities[0] };
   };
 
   CommunityApp.prototype.reserve = function (id) {
@@ -992,10 +1131,74 @@
     this.emit(reservable.type + ".cancelled", reservable.item);
   };
 
+  CommunityApp.prototype.openReservationFlow = function (id) {
+    if (this.state.reservations[id]) return;
+    var reservable = this.findReservableItem(id);
+    var item = reservable.item || {};
+    var community = reservable.community || this.findCommunity(item.communityId) || communities[0];
+    this.state.reservationFlow = {
+      itemId: id,
+      type: reservable.type,
+      communityId: community && community.id,
+      step: "confirm",
+      attendees: 1,
+      modality: item.modality || "Presencial",
+      confirmAttend: true,
+      confirmRules: true,
+      returnView: this.state.view,
+      returnDetailId: this.state.detailId,
+      returnFilter: this.state.filter
+    };
+    this.state.view = "reservation";
+  };
+
+  CommunityApp.prototype.closeReservationFlow = function () {
+    var flow = this.state.reservationFlow || {};
+    this.state.reservationFlow = null;
+    this.state.view = flow.returnView || "directory";
+    this.state.detailId = flow.returnDetailId || this.state.detailId;
+    this.state.filter = flow.returnFilter || this.state.filter || "events";
+  };
+
+  CommunityApp.prototype.updateReservationAttendees = function (delta) {
+    var flow = this.state.reservationFlow;
+    if (!flow) return;
+    flow.attendees = Math.max(1, Math.min(8, (Number(flow.attendees) || 1) + delta));
+  };
+
+  CommunityApp.prototype.updateReservationModality = function (modality) {
+    var flow = this.state.reservationFlow;
+    if (!flow || !modality) return;
+    flow.modality = modality;
+  };
+
+  CommunityApp.prototype.toggleReservationConfirmation = function (field) {
+    var flow = this.state.reservationFlow;
+    if (!flow) return;
+    if (field === "attend") flow.confirmAttend = !flow.confirmAttend;
+    if (field === "rules") flow.confirmRules = !flow.confirmRules;
+  };
+
+  CommunityApp.prototype.confirmReservationFlow = function () {
+    var flow = this.state.reservationFlow;
+    if (!flow || !flow.confirmAttend || !flow.confirmRules) return;
+    this.reserve(flow.itemId);
+    flow.step = "success";
+  };
+
+  CommunityApp.prototype.currentReservation = function () {
+    var flow = this.state.reservationFlow || {};
+    var reservable = this.findReservableItem(flow.itemId || "");
+    var item = reservable.item || {};
+    var community = reservable.community || this.findCommunity(flow.communityId) || communities[0] || {};
+    return { flow: flow, reservable: reservable, item: item, community: community };
+  };
+
   CommunityApp.prototype.render = function () {
     var shellClass = this.state.view === "create" ? "kc-shell kc-shell-create" : "kc-shell";
+    var hideBottomNav = this.state.view === "create" || this.state.view === "reservation";
     this.root.innerHTML = '<div class="klini-communities">' +
-      '<section class="' + shellClass + '">' + this.renderView() + '</section>' + this.renderStoryViewer() + (this.state.view === "create" ? "" : this.renderBottomNav()) + '</div>';
+      '<section class="' + shellClass + '">' + this.renderView() + '</section>' + this.renderStoryViewer() + this.renderCancelConfirmModal() + (hideBottomNav ? "" : this.renderBottomNav()) + '</div>';
     this.syncStoryTimer();
     this.syncDirectoryFocus();
     this.applyEventSearch(this.state.eventSearch || "");
@@ -1004,6 +1207,8 @@
   CommunityApp.prototype.renderView = function () {
     if (this.state.view === "directory") return this.renderDirectory();
     if (this.state.view === "detail") return this.renderDetail();
+    if (this.state.view === "admin") return this.renderAdminPanel();
+    if (this.state.view === "reservation") return this.renderReservationFlow();
     if (this.state.view === "create") return this.renderCreate();
     return this.renderFeed();
   };
@@ -1052,6 +1257,102 @@
       '<img class="kc-story-photo" src="' + escapeHtml(storyPhoto) + '" alt="Historia de ' + escapeHtml(person.name) + '">' +
       '<footer class="kc-story-reply"><label><input placeholder="Enviar mensaje..." aria-label="Enviar mensaje"></label><button type="button" aria-label="Me gusta">' + icon("heart") + '</button><button type="button" aria-label="Comentar">' + icon("message") + '</button><button type="button" aria-label="Enviar">' + icon("send") + '</button></footer>' +
       '</div></div>';
+  };
+
+  CommunityApp.prototype.renderCancelConfirmModal = function () {
+    if (!this.state.cancelConfirmId) return "";
+    return '<div class="kc-cancel-confirm-backdrop" role="presentation">' +
+      '<section class="kc-cancel-confirm-dialog" role="dialog" aria-modal="true" aria-labelledby="kc-cancel-confirm-title">' +
+      '<div class="kc-cancel-confirm-icon" aria-hidden="true"><span>!</span></div>' +
+      '<h2 id="kc-cancel-confirm-title">&iquest;Est&aacute;s segura que deseas cancelar?</h2>' +
+      '<p>Esta acci&oacute;n no se puede deshacer.</p>' +
+      '<div class="kc-cancel-confirm-actions">' +
+      '<button type="button" class="kc-cancel-confirm-no" data-action="dismiss-cancel-reservation">No</button>' +
+      '<button type="button" class="kc-cancel-confirm-yes" data-action="confirm-cancel-reservation-submit" data-id="' + escapeHtml(this.state.cancelConfirmId) + '">S&iacute;, cancelar</button>' +
+      '</div></section></div>';
+  };
+
+  CommunityApp.prototype.reservationDateLabel = function (item) {
+    var date = item && item.date ? String(item.date) : "martes, 28 de julio";
+    return date.charAt(0).toUpperCase() + date.slice(1);
+  };
+
+  CommunityApp.prototype.reservationTimeRange = function (item) {
+    var start = item && item.time ? String(item.time) : "6:00 p.m.";
+    if (item && item.endTime) return start + " - " + item.endTime;
+    var match = start.match(/(\d{1,2})(?::(\d{2}))?\s*(a\.m\.|p\.m\.)/i);
+    if (!match) return start;
+    var hour = Number(match[1]);
+    var minutes = Number(match[2] || 0);
+    var period = match[3].toLowerCase();
+    if (period === "p.m." && hour < 12) hour += 12;
+    if (period === "a.m." && hour === 12) hour = 0;
+    minutes += 90;
+    hour += Math.floor(minutes / 60);
+    minutes = minutes % 60;
+    var outPeriod = hour >= 12 && hour < 24 ? "p.m." : "a.m.";
+    var outHour = hour % 12 || 12;
+    var outMinutes = minutes < 10 ? "0" + minutes : String(minutes);
+    return start + " - " + outHour + ":" + outMinutes + " " + outPeriod;
+  };
+
+  CommunityApp.prototype.renderReservationDetailCard = function (context, compact) {
+    var item = context.item || {};
+    var community = context.community || {};
+    var image = item.image || this.communityHeroImage(community) || community.heroImage || "/images/communities/create-cover.png";
+    var title = item.title || "Actividad principal";
+    var category = item.category || community.category || "Bienestar";
+    var city = community.city || item.city || "Ciudad de M&eacute;xico";
+    var available = Number(item.available || 12);
+    var capacity = Number(item.capacity || 24);
+    return '<article class="kc-booking-detail-card' + (compact ? " is-compact" : "") + '">' +
+      '<img src="' + escapeHtml(image) + '" alt="' + escapeHtml(title) + '">' +
+      '<div class="kc-booking-detail-copy"><small>' + escapeHtml(category) + '</small><h2>' + escapeHtml(title) + '</h2><p>' + escapeHtml(community.description || item.detail || "Yoga suave, respiracion y constancia semanal.") + '</p>' +
+      '<ul><li>' + icon("calendar") + '<span>' + escapeHtml(this.reservationDateLabel(item)) + '</span></li>' +
+      '<li>' + icon("clock") + '<span>' + escapeHtml(this.reservationTimeRange(item)) + '</span></li>' +
+      '<li>' + icon("map") + '<span>' + escapeHtml(city) + '</span></li>' +
+      '<li>' + icon("users") + '<span>' + available + ' lugares disponibles de ' + capacity + '</span></li>' +
+      '<li>' + icon("users") + '<span>Organiza: ' + escapeHtml(community.name || "Ash and Olmo") + '</span></li></ul></div></article>';
+  };
+
+  CommunityApp.prototype.renderReservationFlow = function () {
+    var context = this.currentReservation();
+    if (!context.flow.itemId) return this.renderDirectory();
+    if (context.flow.step === "success") return this.renderReservationSuccess(context);
+    return this.renderReservationConfirm(context);
+  };
+
+  CommunityApp.prototype.renderReservationConfirm = function (context) {
+    var flow = context.flow;
+    var item = context.item || {};
+    var available = Number(item.available || 12);
+    var capacity = Number(item.capacity || 24);
+    var pct = Math.max(5, Math.min(100, Math.round((available / Math.max(1, capacity)) * 100)));
+    var canConfirm = flow.confirmAttend && flow.confirmRules;
+    var presencial = flow.modality !== "Remoto";
+    var attendancePhrase = context.reservable.type === "class" ? "a la clase" : "al evento";
+    return '<div class="kc-booking-shell kc-booking-confirm">' +
+      '<header class="kc-booking-head"><button type="button" data-action="reservation-back" aria-label="Volver">' + icon("back") + '</button><div><h1>Confirmar reservaci&oacute;n</h1><p>Revisa los detalles y confirma tu lugar.</p></div></header>' +
+      this.renderReservationDetailCard(context, false) +
+      '<section class="kc-booking-card kc-booking-reserve-box"><h2>Tu reservaci&oacute;n</h2><div class="kc-booking-row"><div><h3>Asistentes</h3><p>&iquest;Cu&aacute;ntas personas asistir&aacute;n?</p></div><div class="kc-booking-stepper"><button type="button" data-action="reservation-attendees" data-dir="-1" aria-label="Restar asistente">' + icon("minus") + '</button><strong>' + flow.attendees + '</strong><button type="button" data-action="reservation-attendees" data-dir="1" aria-label="Agregar asistente">' + icon("plus") + '</button></div></div>' +
+      '<div class="kc-booking-row kc-booking-modality-row"><div><h3>Modalidad</h3><p>Elige c&oacute;mo deseas participar.</p></div><div class="kc-booking-modality"><button type="button" class="' + (presencial ? "is-selected" : "") + '" data-action="reservation-modality" data-id="Presencial">' + icon("users") + '<span>Presencial</span><b></b></button><button type="button" class="' + (!presencial ? "is-selected" : "") + '" data-action="reservation-modality" data-id="Remoto">' + icon("video") + '<span>Remota</span><b></b></button></div></div></section>' +
+      '<section class="kc-booking-card"><h2>Informaci&oacute;n importante</h2><ul class="kc-booking-important"><li>' + icon("check") + 'Llega 15 minutos antes del inicio.</li><li>' + icon("check") + 'Usa ropa c&oacute;moda y lleva tu botella de agua.</li><li>' + icon("check") + 'Tu lugar se libera 10 minutos despu&eacute;s del inicio si no llegas.</li><li>' + icon("check") + 'Puedes cancelar tu reservaci&oacute;n hasta 2 horas antes desde Mis Reservas.</li></ul></section>' +
+      '<section class="kc-booking-card kc-booking-availability"><div><h2>Disponibilidad</h2><span><b>' + available + '</b> / ' + capacity + ' lugares disponibles</span></div><em><i style="width:' + pct + '%"></i></em></section>' +
+      '<section class="kc-booking-card kc-booking-confirmations"><h2>Confirmaci&oacute;n</h2><button type="button" class="' + (flow.confirmAttend ? "is-checked" : "") + '" data-action="reservation-toggle-confirm" data-id="attend"><span>' + icon("check") + '</span>Confirmo que asistir&eacute; ' + attendancePhrase + '.</button><button type="button" class="' + (flow.confirmRules ? "is-checked" : "") + '" data-action="reservation-toggle-confirm" data-id="rules"><span>' + icon("check") + '</span>Acepto las reglas de la comunidad.<b>Ver reglas ' + icon("arrow") + '</b></button></section>' +
+      '<section class="kc-booking-card kc-booking-summary"><h2>Resumen</h2><p><span>Costo</span><b>Gratis</b></p><p><strong>Total</strong><strong>$0 MXN</strong></p></section>' +
+      '<footer class="kc-booking-actions"><button type="button" data-action="reservation-cancel">Cancelar</button><button type="button" class="kc-booking-primary" data-action="reservation-submit"' + (canConfirm ? "" : " disabled") + '>' + icon("calendar") + ' Confirmar reservaci&oacute;n</button><p>' + icon("lock") + ' Tus datos est&aacute;n protegidos</p></footer></div>';
+  };
+
+  CommunityApp.prototype.renderReservationSuccess = function (context) {
+    var activityLabel = context.reservable.type === "class" ? "clase" : "evento";
+    var reminderPhrase = context.reservable.type === "class" ? "de la clase" : "del evento";
+    return '<div class="kc-booking-shell kc-booking-success">' +
+      '<section class="kc-booking-success-hero"><div class="kc-booking-confetti" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span>' + icon("check") + '</span><h1>&iexcl;Confirmado,<br><b>te esperamos!</b></h1><p>Tu reservaci&oacute;n ha sido realizada con &eacute;xito.<br>Recibir&aacute;s un recordatorio antes ' + reminderPhrase + '.</p></section>' +
+      '<section class="kc-booking-card kc-booking-success-details"><h2>' + icon("calendar") + ' Detalles de tu reserva</h2>' + this.renderReservationDetailCard(context, true) + '</section>' +
+      '<section class="kc-booking-note">' + icon("info") + '<p>Recibir&aacute;s un recordatorio 24 horas antes ' + reminderPhrase + '.<br>Puedes cancelar tu reservaci&oacute;n desde Mis Reservas.</p></section>' +
+      '<section class="kc-booking-calendar-card"><span>' + icon("calendar") + '</span><div><h2>Agregar al calendario</h2><p>No te pierdas esta ' + activityLabel + '</p></div><button type="button">Agregar</button></section>' +
+      '<section class="kc-booking-thanks"><img src="/images/communities/create-cover.png" alt=""><div><h2>&iexcl;Gracias por ser parte!</h2><p>Tu bienestar inspira a nuestra comunidad.</p><b>&hearts;</b></div></section>' +
+      '<footer class="kc-booking-success-actions"><button type="button" class="kc-booking-primary" data-action="reservation-view-reservations">Ver mis reservas</button><button type="button" data-action="reservation-open-community">Ir a la comunidad</button></footer></div>';
   };
 
   CommunityApp.prototype.renderPost = function (post) {
@@ -1253,7 +1554,7 @@
     var targetId = storyId === "more" ? "patient" : (storyId || "patient");
     var input = document.createElement("input");
     input.type = "file";
-    input.accept = "image/*";
+    input.accept = ".jpg,.jpeg,image/jpeg";
     input.style.position = "fixed";
     input.style.left = "-9999px";
     input.style.top = "0";
@@ -1264,14 +1565,16 @@
         if (input.parentNode) input.parentNode.removeChild(input);
         return;
       }
-      if (file.type && !/^image\//.test(file.type)) {
+      var isJpg = (file.type && file.type.toLowerCase() === "image/jpeg") || /\.jpe?g$/i.test(file.name || "");
+      if (!isJpg) {
         if (input.parentNode) input.parentNode.removeChild(input);
+        window.alert("Selecciona una imagen JPG o JPEG para subirla a tu historia.");
         return;
       }
       var reader = new FileReader();
       reader.onload = function () {
         (self.state.storyUploads || (self.state.storyUploads = {}))[targetId] = String(reader.result || "");
-        self.state.storyIndex = Math.max(0, self.storyItems().findIndex(function (item) { return item.id === targetId; }));
+        self.state.storyIndex = null;
         if (input.parentNode) input.parentNode.removeChild(input);
         self.emit("story.uploaded", { id: targetId });
         self.save();
@@ -1725,7 +2028,20 @@
     return '<section class="kc-section kc-directory-panel kc-directory-event-reservations"><div class="kc-section-title"><div><h2>Mis reservas</h2><p>Eventos a los que confirmaste asistencia.</p></div><div class="kc-carousel-controls"><button data-action="scroll" data-target="event-reservations" data-dir="-1" aria-label="Anterior">' + icon("back") + '</button><button data-action="scroll" data-target="event-reservations" data-dir="1" aria-label="Siguiente">' + icon("arrow") + '</button></div></div>' +
       '<div class="kc-pan-track kc-reservation-strip" data-pan data-carousel="event-reservations">' + (reserved.length ? reserved.map(this.renderReservationPreview.bind(this)).join("") : '<div class="kc-empty">A&uacute;n no tienes reservas.</div>') + '</div></section>' +
       '<section class="kc-section kc-directory-panel kc-directory-next-events"><div class="kc-section-title"><div><h2>Pr&oacute;ximos eventos</h2><p>Actividades publicadas por el administrador.</p></div></div>' + this.renderEventSearchPanel(nextEvents) +
-      '<div class="kc-event-search-results" data-event-search-results>' + (nextEvents.length ? nextEvents.map(this.renderEvent.bind(this)).join("") : '<div class="kc-empty">No hay eventos pr&oacute;ximos.</div>') + '<div class="kc-empty kc-event-search-empty" data-event-search-empty hidden>No encontramos eventos con esa b&uacute;squeda.</div></div></section>';
+      '<div class="kc-event-search-results" data-event-search-results>' + (nextEvents.length ? this.renderEventSearchGroups(nextEvents) : '<div class="kc-empty">No hay eventos pr&oacute;ximos.</div>') + '<div class="kc-empty kc-event-search-empty" data-event-search-empty hidden>No encontramos eventos con esa b&uacute;squeda.</div></div></section>';
+  };
+
+  CommunityApp.prototype.renderEventSearchGroups = function (eventList) {
+    var groups = [
+      ["week", "This Week"],
+      ["next", "Next Week"],
+      ["soon", "Coming Soon"]
+    ];
+    return groups.map(function (group) {
+      var items = eventList.filter(function (event) { return event.group === group[0]; });
+      if (!items.length) return "";
+      return '<section class="kc-event-week-group" data-event-search-group="' + group[0] + '"><h3>' + group[1] + '</h3>' + items.map(this.renderEvent.bind(this)).join("") + '</section>';
+    }, this).join("");
   };
 
   CommunityApp.prototype.renderEventSearchPanel = function (eventList) {
@@ -1847,22 +2163,53 @@
       '<div class="kc-explore-block"><div class="kc-section-title"><div><h2>Comunidades recomendadas para ti</h2></div><button class="kc-title-link" data-action="filter" data-id="explore">Ver todas ' + icon("arrow") + '</button></div><div class="kc-recommended-grid">' + allCommunities.slice(1, 5).map(this.renderExploreCommunity.bind(this)).join("") + '</div></div></section>';
   };
 
+  CommunityApp.prototype.exploreCategoryDefinitions = function () {
+    return [
+      { id: "yoga", title: "Yoga", subtitle: "y meditacion", icon: "users", tone: "violet", heading: "Comunidades de Yoga para ti", categories: ["yoga", "meditacion"] },
+      { id: "running", title: "Running", subtitle: "y caminata", icon: "sparkles", tone: "blue", heading: "Comunidades de Running para ti", categories: ["running", "senderismo"] },
+      { id: "nutricion", title: "Nutricion", subtitle: "y cocina", icon: "calendar", tone: "green", heading: "Comunidades de Nutricion para ti", categories: ["nutricion"] },
+      { id: "fuerza", title: "Fuerza", subtitle: "y entrenamiento", icon: "shield", tone: "violet", heading: "Comunidades de Fuerza para ti", categories: ["fuerza"] },
+      { id: "salud-mental", title: "Salud mental", subtitle: "y bienestar", icon: "heart", tone: "rose", heading: "Comunidades de Salud mental para ti", categories: ["salud mental", "meditacion"] },
+      { id: "bienestar", title: "Bienestar", subtitle: "integral", icon: "heart", tone: "green", heading: "Comunidades de Bienestar para ti", categories: ["bienestar"] }
+    ];
+  };
+
+  CommunityApp.prototype.exploreCategoryConfig = function (id) {
+    return this.exploreCategoryDefinitions().find(function (item) { return item.id === id; }) || null;
+  };
+
+  CommunityApp.prototype.exploreCategoryCommunities = function (categoryId, allCommunities) {
+    var config = this.exploreCategoryConfig(categoryId);
+    if (!config) return [];
+    var categoryNames = config.categories || [];
+    return allCommunities.filter(function (community) {
+      if (community.exploreCategory) return community.exploreCategory === categoryId;
+      var category = normalizeSearch(community.category || "");
+      return categoryNames.indexOf(category) !== -1;
+    }).slice(0, 4);
+  };
+
+  CommunityApp.prototype.renderExploreCategoryRecommendations = function (categoryId, allCommunities) {
+    var config = this.exploreCategoryConfig(categoryId);
+    if (!config) return "";
+    var recommendations = this.exploreCategoryCommunities(categoryId, allCommunities);
+    return '<div class="kc-explore-category-results" aria-live="polite"><div class="kc-section-title"><div><h2>' + escapeHtml(config.heading) + '</h2></div></div>' +
+      '<div class="kc-recommended-grid">' + (recommendations.length ? recommendations.map(this.renderExploreCommunity.bind(this)).join("") : '<div class="kc-empty">No hay recomendaciones para esta categoria.</div>') + '</div></div>';
+  };
+
   CommunityApp.prototype.renderDirectoryExplore = function (allCommunities) {
     var featured = allCommunities.slice(0, 3);
     var more = allCommunities.slice(3, 7);
-    var categories = [
-      ["Yoga", "y meditacion", "users", "violet"],
-      ["Running", "y caminata", "sparkles", "blue"],
-      ["Nutricion", "y cocina", "calendar", "green"],
-      ["Fuerza", "y entrenamiento", "shield", "violet"],
-      ["Salud mental", "y bienestar", "heart", "rose"],
-      ["Bienestar", "integral", "heart", "green"]
-    ];
+    var categories = this.exploreCategoryDefinitions();
+    var selectedCategory = this.state.selectedExploreCategory || "";
+    var selectedPanel = this.renderExploreCategoryRecommendations(selectedCategory, allCommunities);
     return '<section class="kc-section kc-directory-panel kc-explore-panel"><div class="kc-explore-search"><label>' + icon("search") + '<input type="search" placeholder="Buscar comunidades, temas o actividades" aria-label="Buscar comunidades"></label><button type="button">' + icon("filter") + ' Filtros</button></div>' +
       '<div class="kc-explore-block kc-explore-featured-block"><div class="kc-section-title"><div><h2>Comunidades destacadas</h2></div></div><div class="kc-pan-track kc-directory-featured" data-pan data-carousel="explore-featured">' + featured.map(this.renderCommunity.bind(this)).join("") + '</div></div>' +
-      '<div class="kc-explore-block"><h3>Explorar por categorias</h3><div class="kc-category-explore-grid" data-pan>' + categories.map(function (item) {
-        return '<button type="button" class="kc-explore-category is-' + item[3] + '">' + icon(item[2]) + '<strong>' + item[0] + '</strong><small>' + item[1] + '</small></button>';
+      '<div class="kc-explore-block ' + (selectedPanel ? "has-active-category" : "") + '"><h3>Explorar por categorias</h3><div class="kc-category-explore-grid" data-pan>' + categories.map(function (item) {
+        var active = selectedCategory === item.id;
+        return '<button type="button" class="kc-explore-category is-' + item.tone + (active ? " is-active" : "") + '" data-action="explore-category" data-id="' + item.id + '" aria-expanded="' + (active ? "true" : "false") + '">' + icon(item.icon) + '<strong>' + escapeHtml(item.title) + '</strong><small>' + escapeHtml(item.subtitle) + '</small></button>';
       }).join("") + '</div></div>' +
+      selectedPanel +
       '<div class="kc-explore-block"><div class="kc-section-title"><div><h2>Comunidades recomendadas para ti</h2></div></div><div class="kc-recommended-grid">' + allCommunities.slice(1, 5).map(this.renderExploreCommunity.bind(this)).join("") + '</div></div>' +
       '<div class="kc-explore-block"><div class="kc-section-title"><div><h2>Mas comunidades para ti</h2></div></div><div class="kc-compact-community-grid">' + (more.length ? more.map(this.renderCompactCommunity.bind(this)).join("") : allCommunities.map(this.renderCompactCommunity.bind(this)).join("")) + '</div></div></section>';
   };
@@ -1879,16 +2226,78 @@
   };
 
   CommunityApp.prototype.renderExploreCommunity = function (community) {
-    return '<article class="kc-explore-community"><span class="kc-explore-mark ' + community.tone + '">' + escapeHtml(community.initials) + '</span><div><h3>' + escapeHtml(community.name) + '</h3><small>' + escapeHtml(community.category) + ' · ' + (community.access === "open" ? "Abierta" : "Cerrada") + '</small><b>' + community.members + ' miembros</b></div><button type="button" data-action="open-community-panel" data-id="' + community.id + '">Ver comunidad</button></article>';
+    var id = escapeHtml(community.id);
+    return '<article class="kc-explore-community"><span class="kc-explore-mark ' + community.tone + '">' + escapeHtml(community.initials) + '</span><div><h3>' + escapeHtml(community.name) + '</h3><small>' + escapeHtml(community.category) + ' · ' + (community.access === "open" ? "Abierta" : "Cerrada") + '</small><b>' + community.members + ' miembros</b></div><button type="button" data-action="open-community-panel" data-id="' + id + '">Ver comunidad</button></article>';
   };
 
   CommunityApp.prototype.renderMineCommunity = function (community) {
-    return '<article class="kc-mine-community"><span class="kc-mine-mark ' + community.tone + '">' + escapeHtml(community.initials) + '</span><div><small>' + escapeHtml(community.category) + ' · ' + (community.access === "open" ? "Abierta" : "Cerrada") + '</small><h3>' + escapeHtml(community.name) + '</h3><p>' + escapeHtml(community.description) + '</p><b>' + icon("users") + ' ' + community.members + ' miembros&nbsp;&nbsp;' + escapeHtml(community.city) + '</b></div><button type="button" data-action="open-community-panel" data-id="' + community.id + '">Ver comunidad</button></article>';
+    var isAdmin = this.communityRole(community) === "admin";
+    var adminButton = isAdmin ? '<button class="kc-mine-admin-button" type="button" data-action="open-admin-panel" data-id="' + community.id + '" aria-label="Abrir panel de administrador de ' + escapeHtml(community.name) + '">Panel de administrador</button>' : "";
+    return '<article class="kc-mine-community"><span class="kc-mine-mark ' + community.tone + '">' + escapeHtml(community.initials) + '</span><div><small>' + escapeHtml(community.category) + ' · ' + (community.access === "open" ? "Abierta" : "Cerrada") + '</small><h3>' + escapeHtml(community.name) + '</h3><p>' + escapeHtml(community.description) + '</p><b>' + icon("users") + ' ' + community.members + ' miembros&nbsp;&nbsp;' + escapeHtml(community.city) + '</b></div><div class="kc-mine-actions"><button type="button" data-action="open-community-panel" data-id="' + community.id + '">Ver comunidad</button>' + adminButton + '</div></article>';
+  };
+
+  CommunityApp.prototype.renderAdminPanel = function () {
+    var self = this;
+    var community = this.findCommunity(this.state.detailId) || this.adminCommunities()[0];
+    if (!community || this.communityRole(community) !== "admin") {
+      this.state.view = "directory";
+      this.state.filter = "mine";
+      return this.renderDirectory();
+    }
+    var permissions = community.adminPermissions || {
+      stories: true,
+      communityPosts: true,
+      events: true,
+      classes: true,
+      editPage: true
+    };
+    var tools = [
+      ["stories", "Historias", "Subir stories como administrador.", "camera"],
+      ["communityPosts", "Publicaciones", "Crear publicaciones para la comunidad.", "message"],
+      ["events", "Eventos", "Crear y editar eventos.", "calendar"],
+      ["classes", "Clases", "Crear clases y actividades.", "sparkles"],
+      ["editPage", "Informacion", "Editar datos de la pagina de comunidad.", "edit"]
+    ];
+    var activeTool = this.state.adminTool || "stories";
+    var communityEvents = events.filter(function (event) { return event.communityId === community.id; });
+    return '<div class="kc-admin-panel kc-admin-modern"><button class="kc-back kc-admin-back" type="button" data-action="back-directory">' + icon("back") + ' Volver a mis comunidades</button>' +
+      '<section class="kc-admin-hero ' + community.tone + '"><span class="kc-admin-hero-mark">' + escapeHtml(community.logoInitials || community.initials) + '</span><div class="kc-admin-hero-copy"><small>Panel de administrador</small><h1>' + escapeHtml(community.name) + '</h1><p>' + escapeHtml(community.description) + '</p></div></section>' +
+      '<section class="kc-admin-summary" aria-label="Resumen de la comunidad"><article><b>' + community.members + '</b><span>Miembros</span></article><article><b>' + communityEvents.length + '</b><span>Eventos</span></article><article><b>' + ((community.classes || []).length) + '</b><span>Clases</span></article></section>' +
+      '<section class="kc-admin-tools"><div class="kc-section-title kc-admin-tools-heading"><div><h2>Herramientas de administracion</h2><p>Acciones disponibles segun permisos.</p></div></div><div class="kc-admin-tools-list">' + tools.map(function (tool) {
+        var enabled = permissions[tool[0]] !== false;
+        return '<article class="kc-admin-tool ' + (enabled ? "" : "is-disabled") + (activeTool === tool[0] ? " is-active" : "") + '"><span class="kc-admin-tool-icon">' + icon(tool[3]) + '</span><div><strong>' + tool[1] + '</strong><p>' + tool[2] + '</p></div><button type="button"' + (enabled ? ' data-action="open-admin-tool" data-id="' + tool[0] + '"' : " disabled") + '>' + (enabled ? "Abrir" : "Sin permiso") + '</button></article>';
+      }).join("") + '</div></section>' +
+      this.renderAdminToolView(community) +
+      '<section class="kc-admin-repository"><div class="kc-section-title"><div><h2>Catalogo y repositorio</h2><p>Registro base donde se almacena esta comunidad.</p></div></div><dl><div><dt>ID catalogo</dt><dd>' + escapeHtml(community.catalogId || community.slug || community.id) + '</dd></div><div><dt>Repositorio</dt><dd>' + escapeHtml(community.repositorySource || "catalogo-base") + '</dd></div><div><dt>Administrador</dt><dd>' + escapeHtml((self.options.patient && self.options.patient.name) || "Usuario administrador") + '</dd></div></dl></section></div>';
+  };
+
+  CommunityApp.prototype.renderAdminToolView = function (community) {
+    var activeTool = this.state.adminTool || "stories";
+    var storyId = "community:" + (community.slug || community.id);
+    var communityEvents = events.filter(function (event) { return event.communityId === community.id; });
+    var communityClasses = community.classes || [];
+    if (activeTool === "communityPosts") {
+      return '<section class="kc-admin-tool-view"><div class="kc-section-title"><div><h2>Publicaciones</h2><p>Crea y administra publicaciones visibles en la comunidad.</p></div></div><div class="kc-admin-post-composer"><textarea placeholder="Escribe una publicacion para ' + escapeHtml(community.name) + '"></textarea><button type="button">Publicar</button></div><div class="kc-admin-mini-list"><article><strong>Publicacion fijada</strong><p>' + escapeHtml(community.pinnedMessage || "Mensaje principal de la comunidad.") + '</p></article></div></section>';
+    }
+    if (activeTool === "events") {
+      return '<section class="kc-admin-tool-view"><div class="kc-section-title"><div><h2>Eventos</h2><p>Calendario y eventos activos de la comunidad.</p></div><button type="button">Crear evento</button></div><div class="kc-admin-mini-list">' + (communityEvents.length ? communityEvents.map(function (event) {
+        return '<article><strong>' + escapeHtml(event.title) + '</strong><p>' + escapeHtml(event.date) + ' · ' + escapeHtml(event.time) + ' · ' + escapeHtml(event.place) + '</p></article>';
+      }).join("") : '<article><strong>Sin eventos activos</strong><p>Crea el primer evento de esta comunidad.</p></article>') + '</div></section>';
+    }
+    if (activeTool === "classes") {
+      return '<section class="kc-admin-tool-view"><div class="kc-section-title"><div><h2>Clases y actividades</h2><p>Sesiones publicadas para miembros de la comunidad.</p></div><button type="button">Crear clase</button></div><div class="kc-admin-mini-list">' + (communityClasses.length ? communityClasses.map(function (item) {
+        return '<article><strong>' + escapeHtml(item.title) + '</strong><p>' + escapeHtml(item.date) + ' · ' + escapeHtml(item.time) + ' · ' + escapeHtml(item.place) + '</p></article>';
+      }).join("") : '<article><strong>Sin clases activas</strong><p>Crea una clase o actividad para esta comunidad.</p></article>') + '</div></section>';
+    }
+    if (activeTool === "editPage") {
+      return '<section class="kc-admin-tool-view"><div class="kc-section-title"><div><h2>Informacion de la pagina</h2><p>Edita los datos publicos de la comunidad.</p></div></div><div class="kc-admin-edit-grid"><label>Nombre<input value="' + escapeHtml(community.name) + '"></label><label>Categoria<input value="' + escapeHtml(community.category) + '"></label><label>Ciudad<input value="' + escapeHtml(community.city) + '"></label><label>Descripcion<textarea>' + escapeHtml(community.description) + '</textarea></label><button type="button">Guardar cambios</button></div></section>';
+    }
+    return '<section class="kc-admin-tool-view"><div class="kc-section-title"><div><h2>Historias</h2><p>Sube una story como administrador de la comunidad.</p></div><button type="button" data-action="upload-story" data-id="' + escapeHtml(storyId) + '">' + icon("plus") + ' Subir historia</button></div><div class="kc-admin-story-preview"><img src="' + escapeHtml(this.storyImageFor(storyId, community.heroImage || community.profileImage || "/images/communities/create-cover.png")) + '" alt=""><div><strong>' + escapeHtml(community.name) + '</strong><p>La historia se mostrara en el carrusel superior de Comunidades.</p></div></div></section>';
   };
 
   CommunityApp.prototype.renderReservationPreview = function (event) {
     var community = communities.find(function (item) { return item.id === event.communityId; }) || communities[0];
-    return '<article class="kc-reservation-preview"><div class="kc-date-tile"><small>' + event.day + '</small><strong>' + event.number + '</strong><small>' + event.month + '</small></div><div><small>' + escapeHtml(event.category) + '</small><h3>' + escapeHtml(event.title) + '</h3><p>' + event.time + ' · ' + escapeHtml(community.name) + '</p><b>' + (event.modality === "Remoto" ? icon("globe") : icon("map")) + ' ' + escapeHtml(event.place) + '</b></div><button type="button" data-action="open-community-panel" data-id="' + community.id + '">Ver detalles</button></article>';
+    return '<article class="kc-reservation-preview"><div class="kc-date-tile"><small>' + event.day + '</small><strong>' + event.number + '</strong><small>' + event.month + '</small></div><div><small>' + escapeHtml(event.category) + '</small><h3>' + escapeHtml(event.title) + '</h3><p>' + event.time + ' · ' + escapeHtml(community.name) + '</p><b>' + (event.modality === "Remoto" ? icon("globe") : icon("map")) + ' ' + escapeHtml(event.place) + '</b></div><button class="kc-reservation-cancel-button" type="button" data-action="confirm-cancel-reservation" data-id="' + event.id + '">Cancelar</button></article>';
   };
 
   CommunityApp.prototype.renderCarouselSection = function (title, subtitle, content, id, more) {
@@ -1899,17 +2308,18 @@
   };
 
   CommunityApp.prototype.renderCommunity = function (community) {
+    var id = escapeHtml(community.id);
     return '<article class="kc-community-card"><div class="kc-community-image ' + community.tone + '"><span>' + community.initials + '</span></div>' +
       '<div class="kc-community-copy"><small>' + escapeHtml(community.category) + ' · ' + (community.access === "open" ? "Abierta" : "Cerrada") + '</small><h3>' + escapeHtml(community.name) + '</h3><p>' + escapeHtml(community.description) + '</p>' +
       '<b>' + icon("users") + ' ' + community.members + ' miembros&nbsp;&nbsp;' + escapeHtml(community.city) + '</b></div>' +
-      '<div class="kc-card-actions"><button type="button" data-action="open-community-panel" data-id="' + community.id + '">Ver comunidad</button></div></article>';
+      '<div class="kc-card-actions"><button type="button" data-action="open-community-panel" data-id="' + id + '">Ver comunidad</button></div></article>';
   };
 
   CommunityApp.prototype.renderReservation = function (event) {
     var community = communities.find(function (item) { return item.id === event.communityId; });
     return '<article class="kc-reservation"><div class="kc-date-tile"><small>' + event.day + '</small><strong>' + event.number + '</strong><small>' + event.month + '</small></div>' +
       '<div><small>' + escapeHtml(event.category) + ' · Reservacion confirmada</small><h3>' + escapeHtml(event.title) + '</h3><b>' + event.time + ' · ' + escapeHtml(community.name) + '</b><p>' + escapeHtml(event.place) + '</p></div>' +
-      '<button data-action="cancel" data-id="' + event.id + '">Cancelar</button></article>';
+      '<button data-action="confirm-cancel-reservation" data-id="' + event.id + '">Cancelar</button></article>';
   };
 
   CommunityApp.prototype.renderEventSection = function (title, group) {

@@ -553,6 +553,11 @@ body.native-shell .patient-portal-communities-view .kc-message-reply-trigger {
 .kc-community-copy p { margin: 0 0 8px; color: var(--kc-muted); font-size: 12px; line-height: 1.4; }
 .kc-community-stats { color: var(--kc-muted); font-size: 11px; font-weight: 750; }
 .kc-card-actions { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr; gap: 9px; }
+.kc-card-actions button,
+.patient-portal-communities-view .kc-explore-community button {
+  cursor: pointer;
+  touch-action: manipulation;
+}
 .kc-btn {
   min-height: 40px;
   padding: 9px 12px;
@@ -1264,7 +1269,7 @@ body.native-shell .patient-portal-communities-view .kc-community-shortcut strong
   width: 74px;
   height: 74px;
   margin: 0 auto 8px;
-  overflow: hidden;
+  overflow: visible;
   border: 3px solid #fff;
   border-radius: 50%;
   outline: 2px solid #bdecef;
@@ -1284,11 +1289,12 @@ body.native-shell .patient-portal-communities-view .kc-community-shortcut strong
 }
 .patient-portal-communities-view .kc-story-thumb em {
   position: absolute;
-  right: -8px;
-  bottom: -7px;
+  right: -2px;
+  bottom: 0;
   display: grid;
-  min-width: 36px;
-  height: 36px;
+  width: 34px;
+  min-width: 34px;
+  height: 34px;
   place-items: center;
   border: 3px solid #fff;
   border-radius: 50%;
@@ -1300,7 +1306,8 @@ body.native-shell .patient-portal-communities-view .kc-community-shortcut strong
   line-height: 1;
   box-shadow: 0 10px 22px rgba(10, 151, 142, .28);
   cursor: pointer;
-  z-index: 2;
+  pointer-events: auto;
+  z-index: 6;
 }
 .patient-portal-communities-view .kc-story-thumb em::before {
   content: "";
@@ -5457,6 +5464,682 @@ body.native-shell .patient-portal-communities-view .kc-directory .kc-carousel-co
   font-weight: 950;
 }
 
+.patient-portal-communities-view .kc-reservation-preview .kc-reservation-cancel-button {
+  min-height: 42px;
+  border-color: #db3d3d !important;
+  background: #fff !important;
+  color: #c83232 !important;
+  letter-spacing: 0;
+}
+
+.patient-portal-communities-view .kc-reservation-preview .kc-reservation-cancel-button:hover {
+  background: #fff6f6 !important;
+  border-color: #c92f2f !important;
+}
+
+.patient-portal-communities-view .kc-cancel-confirm-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 360;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(22, 35, 47, .44);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+.patient-portal-communities-view .kc-cancel-confirm-dialog {
+  width: min(100%, 560px);
+  padding: 38px 32px 28px;
+  border: 1px solid #d9e6eb;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 32px 90px rgba(12, 29, 45, .24);
+  text-align: center;
+}
+
+.patient-portal-communities-view .kc-cancel-confirm-icon {
+  position: relative;
+  display: grid;
+  width: 66px;
+  height: 58px;
+  margin: 0 auto 18px;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: #ff7248;
+  font-size: 28px;
+  font-weight: 950;
+  line-height: 1;
+}
+
+.patient-portal-communities-view .kc-cancel-confirm-icon::before,
+.patient-portal-communities-view .kc-cancel-confirm-icon::after {
+  content: "";
+  position: absolute;
+  clip-path: polygon(50% 4%, 97% 92%, 3% 92%);
+}
+
+.patient-portal-communities-view .kc-cancel-confirm-icon::before {
+  inset: 0;
+  background: #ffd4c3;
+}
+
+.patient-portal-communities-view .kc-cancel-confirm-icon::after {
+  inset: 7px 9px 8px;
+  background: #fff8f4;
+}
+
+.patient-portal-communities-view .kc-cancel-confirm-icon span {
+  position: relative;
+  z-index: 1;
+  transform: translateY(8px);
+}
+
+.patient-portal-communities-view .kc-cancel-confirm-dialog h2 {
+  margin: 0 0 10px;
+  color: #142542;
+  font-size: clamp(20px, 2.2vw, 25px);
+  font-weight: 950;
+  line-height: 1.2;
+}
+
+.patient-portal-communities-view .kc-cancel-confirm-dialog p {
+  margin: 0;
+  color: #607489;
+  font-size: 18px;
+  font-weight: 650;
+}
+
+.patient-portal-communities-view .kc-cancel-confirm-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 28px;
+}
+
+.patient-portal-communities-view .kc-cancel-confirm-actions button {
+  min-height: 52px;
+  border-radius: 8px;
+  box-shadow: none !important;
+  font-size: 16px;
+  font-weight: 950;
+}
+
+.patient-portal-communities-view .kc-cancel-confirm-no {
+  border: 1px solid #75879d !important;
+  background: #fff !important;
+  color: #142542 !important;
+}
+
+.patient-portal-communities-view .kc-cancel-confirm-yes {
+  border: 0 !important;
+  background: #e52424 !important;
+  color: #fff !important;
+}
+
+.patient-portal-communities-view .kc-booking-shell {
+  width: min(100%, 760px);
+  margin: 20px auto 112px;
+  padding: 20px 20px 26px;
+  border: 1px solid #d7e5eb;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 24px 80px rgba(27, 55, 78, .08);
+}
+
+.patient-portal-communities-view .kc-booking-head {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) 48px;
+  align-items: start;
+  gap: 10px;
+  padding: 10px 0 24px;
+  text-align: center;
+}
+
+.patient-portal-communities-view .kc-booking-head button {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border: 0 !important;
+  background: transparent !important;
+  color: #10213d !important;
+  box-shadow: none !important;
+}
+
+.patient-portal-communities-view .kc-booking-head svg {
+  width: 32px;
+  height: 32px;
+  stroke-width: 2.7;
+}
+
+.patient-portal-communities-view .kc-booking-head h1 {
+  margin: 0 0 10px;
+  color: #142542;
+  font-size: clamp(26px, 4vw, 34px);
+  font-weight: 950;
+  letter-spacing: 0;
+}
+
+.patient-portal-communities-view .kc-booking-head p {
+  margin: 0;
+  color: #607489;
+  font-size: clamp(16px, 2.5vw, 21px);
+  font-weight: 700;
+}
+
+.patient-portal-communities-view .kc-booking-card,
+.patient-portal-communities-view .kc-booking-detail-card,
+.patient-portal-communities-view .kc-booking-note,
+.patient-portal-communities-view .kc-booking-calendar-card,
+.patient-portal-communities-view .kc-booking-thanks {
+  border: 1px solid #dbe8ed;
+  border-radius: 16px;
+  background: #fff;
+}
+
+.patient-portal-communities-view .kc-booking-detail-card {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 34px;
+  align-items: center;
+  padding: 28px;
+}
+
+.patient-portal-communities-view .kc-booking-detail-card > img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1.35;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.patient-portal-communities-view .kc-booking-detail-copy small {
+  color: #009f8d;
+  font-size: 16px;
+  font-weight: 950;
+}
+
+.patient-portal-communities-view .kc-booking-detail-copy h2 {
+  margin: 10px 0 8px;
+  color: #142542;
+  font-size: clamp(24px, 3.5vw, 32px);
+  font-weight: 950;
+  line-height: 1.05;
+}
+
+.patient-portal-communities-view .kc-booking-detail-copy p {
+  margin: 0 0 16px;
+  color: #607489;
+  font-size: clamp(16px, 2.2vw, 20px);
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.patient-portal-communities-view .kc-booking-detail-copy ul,
+.patient-portal-communities-view .kc-booking-important {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.patient-portal-communities-view .kc-booking-detail-copy li,
+.patient-portal-communities-view .kc-booking-important li {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  color: #58708d;
+  font-size: 17px;
+  font-weight: 750;
+}
+
+.patient-portal-communities-view .kc-booking-detail-copy li svg,
+.patient-portal-communities-view .kc-booking-important li svg {
+  width: 22px;
+  height: 22px;
+  color: #607489;
+}
+
+.patient-portal-communities-view .kc-booking-card {
+  margin-top: 16px;
+  padding: 24px;
+}
+
+.patient-portal-communities-view .kc-booking-card h2,
+.patient-portal-communities-view .kc-booking-calendar-card h2,
+.patient-portal-communities-view .kc-booking-thanks h2 {
+  margin: 0;
+  color: #142542;
+  font-size: 24px;
+  font-weight: 950;
+}
+
+.patient-portal-communities-view .kc-booking-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: center;
+  margin-top: 26px;
+}
+
+.patient-portal-communities-view .kc-booking-row h3 {
+  margin: 0 0 6px;
+  color: #008f84;
+  font-size: 18px;
+  font-weight: 950;
+}
+
+.patient-portal-communities-view .kc-booking-row p {
+  margin: 0;
+  color: #607489;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.patient-portal-communities-view .kc-booking-stepper {
+  display: grid;
+  grid-template-columns: 46px 54px 46px;
+  gap: 18px;
+  align-items: center;
+}
+
+.patient-portal-communities-view .kc-booking-stepper button {
+  display: grid;
+  width: 46px;
+  height: 46px;
+  place-items: center;
+  border: 1px solid #b9cbd8 !important;
+  border-radius: 50%;
+  background: #fff !important;
+  color: #00a79b !important;
+  box-shadow: none !important;
+}
+
+.patient-portal-communities-view .kc-booking-stepper strong {
+  color: #142542;
+  font-size: 24px;
+  font-weight: 950;
+  text-align: center;
+}
+
+.patient-portal-communities-view .kc-booking-modality {
+  display: grid;
+  min-width: 390px;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.patient-portal-communities-view .kc-booking-modality button {
+  display: grid;
+  min-height: 72px;
+  grid-template-columns: 26px minmax(0, 1fr) 24px;
+  gap: 12px;
+  align-items: center;
+  padding: 0 18px;
+  border: 1px solid #d8e5eb !important;
+  border-radius: 12px;
+  background: #fff !important;
+  color: #607489 !important;
+  box-shadow: none !important;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.patient-portal-communities-view .kc-booking-modality button.is-selected {
+  border-color: #00a99d !important;
+  background: #effffb !important;
+  color: #008f84 !important;
+}
+
+.patient-portal-communities-view .kc-booking-modality b {
+  display: block;
+  width: 22px;
+  height: 22px;
+  border: 1px solid #b8cbd6;
+  border-radius: 50%;
+}
+
+.patient-portal-communities-view .kc-booking-modality .is-selected b {
+  border: 6px solid #13a99f;
+}
+
+.patient-portal-communities-view .kc-booking-important li svg {
+  color: #00a99d;
+}
+
+.patient-portal-communities-view .kc-booking-availability > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.patient-portal-communities-view .kc-booking-availability span {
+  color: #607489;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.patient-portal-communities-view .kc-booking-availability span b {
+  color: #009f8d;
+}
+
+.patient-portal-communities-view .kc-booking-availability em {
+  display: block;
+  height: 11px;
+  margin-top: 22px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #edf2f4;
+}
+
+.patient-portal-communities-view .kc-booking-availability i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #008f84, #23c6b7);
+}
+
+.patient-portal-communities-view .kc-booking-confirmations {
+  display: grid;
+  gap: 18px;
+}
+
+.patient-portal-communities-view .kc-booking-confirmations button {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: center;
+  min-height: 42px;
+  padding: 0;
+  border: 0 !important;
+  background: transparent !important;
+  color: #607489 !important;
+  box-shadow: none !important;
+  text-align: left;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.patient-portal-communities-view .kc-booking-confirmations button > span {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border: 1px solid #bbe5df;
+  border-radius: 6px;
+  background: #fff;
+  color: transparent;
+}
+
+.patient-portal-communities-view .kc-booking-confirmations button.is-checked > span {
+  background: #00a99d;
+  color: #fff;
+}
+
+.patient-portal-communities-view .kc-booking-confirmations b {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #009f8d;
+  font-size: 16px;
+  font-weight: 950;
+}
+
+.patient-portal-communities-view .kc-booking-summary {
+  overflow: hidden;
+  padding: 0;
+}
+
+.patient-portal-communities-view .kc-booking-summary h2 {
+  padding: 20px 24px;
+  background: linear-gradient(180deg, #f7fafb, #fff);
+}
+
+.patient-portal-communities-view .kc-booking-summary p {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin: 0 24px;
+  padding: 22px 0;
+  border-top: 1px solid #e6eef2;
+  color: #142542;
+  font-size: 20px;
+  font-weight: 850;
+}
+
+.patient-portal-communities-view .kc-booking-summary p b {
+  color: #009f8d;
+}
+
+.patient-portal-communities-view .kc-booking-summary p strong {
+  font-size: 25px;
+  font-weight: 950;
+}
+
+.patient-portal-communities-view .kc-booking-actions {
+  display: grid;
+  grid-template-columns: .48fr 1fr;
+  gap: 24px;
+  align-items: center;
+  padding-top: 20px;
+}
+
+.patient-portal-communities-view .kc-booking-actions > button,
+.patient-portal-communities-view .kc-booking-success-actions button {
+  min-height: 62px;
+  border-radius: 10px;
+  box-shadow: none !important;
+  font-size: 20px;
+  font-weight: 950;
+}
+
+.patient-portal-communities-view .kc-booking-actions > button:first-child,
+.patient-portal-communities-view .kc-booking-success-actions button:last-child {
+  border: 1px solid #8da0b5 !important;
+  background: #fff !important;
+  color: #142542 !important;
+}
+
+.patient-portal-communities-view .kc-booking-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border: 0 !important;
+  background: linear-gradient(135deg, #00a091, #08b49f) !important;
+  color: #fff !important;
+}
+
+.patient-portal-communities-view .kc-booking-primary:disabled {
+  opacity: .55;
+}
+
+.patient-portal-communities-view .kc-booking-actions p {
+  grid-column: 1 / -1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 0;
+  color: #607489;
+  font-size: 16px;
+  font-weight: 750;
+}
+
+.patient-portal-communities-view .kc-booking-success {
+  padding-top: 42px;
+}
+
+.patient-portal-communities-view .kc-booking-success-hero {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  padding: 12px 18px 34px;
+  text-align: center;
+}
+
+.patient-portal-communities-view .kc-booking-success-hero > span {
+  display: grid;
+  width: 150px;
+  height: 150px;
+  place-items: center;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #08b49f, #008f84);
+  color: #fff;
+  box-shadow: 0 0 0 22px rgba(24, 205, 177, .12);
+}
+
+.patient-portal-communities-view .kc-booking-success-hero > span svg {
+  width: 82px;
+  height: 82px;
+  stroke-width: 2.8;
+}
+
+.patient-portal-communities-view .kc-booking-success-hero h1 {
+  margin: 34px 0 18px;
+  color: #142542;
+  font-size: clamp(36px, 7vw, 50px);
+  font-weight: 950;
+  line-height: 1.05;
+}
+
+.patient-portal-communities-view .kc-booking-success-hero h1 b {
+  color: #009f8d;
+}
+
+.patient-portal-communities-view .kc-booking-success-hero p {
+  margin: 0;
+  color: #607489;
+  font-size: clamp(17px, 2.6vw, 22px);
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.patient-portal-communities-view .kc-booking-confetti {
+  position: absolute;
+  inset: 0 64px auto;
+  height: 120px;
+  pointer-events: none;
+}
+
+.patient-portal-communities-view .kc-booking-confetti i {
+  position: absolute;
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #6fd8c2;
+}
+
+.patient-portal-communities-view .kc-booking-confetti i:nth-child(1) { left: 9%; top: 44px; background: #71c9e8; }
+.patient-portal-communities-view .kc-booking-confetti i:nth-child(2) { left: 22%; top: 10px; width: 28px; height: 12px; border-radius: 8px; background: #a866e8; transform: rotate(45deg); }
+.patient-portal-communities-view .kc-booking-confetti i:nth-child(3) { left: 45%; top: 0; }
+.patient-portal-communities-view .kc-booking-confetti i:nth-child(4) { right: 36%; top: 20px; background: #7fe0c7; }
+.patient-portal-communities-view .kc-booking-confetti i:nth-child(5) { right: 22%; top: 28px; width: 28px; height: 12px; border-radius: 8px; background: #7d5cf1; transform: rotate(-36deg); }
+.patient-portal-communities-view .kc-booking-confetti i:nth-child(6) { right: 11%; top: 64px; background: #ff9100; }
+.patient-portal-communities-view .kc-booking-confetti i:nth-child(7) { left: 20%; top: 78px; background: #67c7dc; }
+.patient-portal-communities-view .kc-booking-confetti i:nth-child(8) { right: 14%; top: 94px; width: 26px; height: 11px; border-radius: 8px; background: #4dbfe8; transform: rotate(-30deg); }
+
+.patient-portal-communities-view .kc-booking-success-details {
+  padding: 28px;
+}
+
+.patient-portal-communities-view .kc-booking-success-details > h2 {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.patient-portal-communities-view .kc-booking-detail-card.is-compact {
+  padding: 0;
+  border: 0;
+  grid-template-columns: 220px minmax(0, 1fr);
+}
+
+.patient-portal-communities-view .kc-booking-detail-card.is-compact > img {
+  aspect-ratio: 1 / 1.35;
+}
+
+.patient-portal-communities-view .kc-booking-note,
+.patient-portal-communities-view .kc-booking-calendar-card,
+.patient-portal-communities-view .kc-booking-thanks {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+  margin-top: 22px;
+  padding: 24px;
+  background: linear-gradient(135deg, rgba(237,255,251,.92), rgba(255,255,255,.96));
+}
+
+.patient-portal-communities-view .kc-booking-note svg,
+.patient-portal-communities-view .kc-booking-calendar-card > span,
+.patient-portal-communities-view .kc-booking-thanks b {
+  display: grid;
+  width: 52px;
+  height: 52px;
+  place-items: center;
+  border-radius: 50%;
+  background: #e3fbf5;
+  color: #009f8d;
+}
+
+.patient-portal-communities-view .kc-booking-note p,
+.patient-portal-communities-view .kc-booking-calendar-card p,
+.patient-portal-communities-view .kc-booking-thanks p {
+  margin: 4px 0 0;
+  color: #607489;
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.patient-portal-communities-view .kc-booking-calendar-card button {
+  min-width: 142px;
+  min-height: 58px;
+  border: 1px solid #00a99d !important;
+  border-radius: 10px;
+  background: #fff !important;
+  color: #009f8d !important;
+  box-shadow: none !important;
+  font-size: 21px;
+  font-weight: 950;
+}
+
+.patient-portal-communities-view .kc-booking-thanks {
+  grid-template-columns: minmax(0, 260px) minmax(0, 1fr);
+  background: linear-gradient(135deg, rgba(237,255,251,.94), rgba(246,255,253,.96));
+}
+
+.patient-portal-communities-view .kc-booking-thanks img {
+  width: 100%;
+  height: 150px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.patient-portal-communities-view .kc-booking-thanks b {
+  width: auto;
+  height: auto;
+  justify-content: start;
+  background: transparent;
+  font-size: 26px;
+}
+
+.patient-portal-communities-view .kc-booking-success-actions {
+  display: grid;
+  gap: 22px;
+  margin-top: 26px;
+}
+
 .patient-portal-communities-view .kc-event-search-tools {
   display: grid;
   gap: 18px;
@@ -5861,6 +6544,27 @@ body.native-shell .patient-portal-communities-view .kc-directory .kc-carousel-co
   display: none !important;
 }
 
+.patient-portal-communities-view .kc-event-search-results {
+  display: grid;
+  gap: 18px;
+}
+
+.patient-portal-communities-view .kc-event-week-group {
+  display: grid;
+  gap: 10px;
+}
+
+.patient-portal-communities-view .kc-event-week-group[hidden] {
+  display: none !important;
+}
+
+.patient-portal-communities-view .kc-event-week-group h3 {
+  margin: 0;
+  color: #10213d;
+  font-size: 16px;
+  font-weight: 950;
+}
+
 .patient-portal-communities-view .kc-directory-next-events .kc-event {
   grid-template-columns: 72px minmax(0, 1fr) auto;
   margin-top: 10px;
@@ -5941,6 +6645,7 @@ body.native-shell .patient-portal-communities-view .kc-directory .kc-carousel-co
 }
 
 .patient-portal-communities-view .kc-explore-category {
+  position: relative;
   display: grid;
   min-height: 106px;
   justify-items: center;
@@ -5953,6 +6658,48 @@ body.native-shell .patient-portal-communities-view .kc-directory .kc-carousel-co
   color: #142542 !important;
   box-shadow: none !important;
   text-align: center;
+  cursor: pointer;
+  transition: border-color 180ms ease, background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.patient-portal-communities-view .kc-explore-category:hover,
+.patient-portal-communities-view .kc-explore-category:focus-visible,
+.patient-portal-communities-view .kc-explore-category.is-active {
+  border-color: #12bdb2 !important;
+  background: #f2fffc !important;
+  box-shadow: 0 18px 38px rgba(25, 188, 177, .12) !important;
+}
+
+.patient-portal-communities-view .kc-explore-category.is-active {
+  transform: translateY(-1px);
+}
+
+.patient-portal-communities-view .kc-explore-block.has-active-category {
+  padding-bottom: 18px;
+}
+
+.patient-portal-communities-view .kc-explore-category.is-active::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -22px;
+  width: 2px;
+  height: 22px;
+  background: #0aa89c;
+  transform: translateX(-50%);
+}
+
+.patient-portal-communities-view .kc-explore-category.is-active::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -29px;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #0aa89c;
+  transform: translateX(-50%);
+  box-shadow: 0 0 0 4px rgba(18, 189, 178, .14);
 }
 
 .patient-portal-communities-view .kc-explore-category svg {
@@ -5979,6 +6726,26 @@ body.native-shell .patient-portal-communities-view .kc-directory .kc-carousel-co
   color: #607489;
   font-size: 9px;
   font-weight: 850;
+}
+
+.patient-portal-communities-view .kc-explore-category-results {
+  display: grid;
+  gap: 14px;
+  margin-top: 4px;
+  animation: kcCategoryReveal 260ms ease both;
+}
+
+.patient-portal-communities-view .kc-explore-category-results .kc-section-title {
+  margin-bottom: 0;
+}
+
+.patient-portal-communities-view .kc-explore-category-results h2 {
+  font-size: 18px;
+}
+
+@keyframes kcCategoryReveal {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .patient-portal-communities-view .kc-explore-community {
@@ -6017,7 +6784,7 @@ body.native-shell .patient-portal-communities-view .kc-directory .kc-carousel-co
 
 .patient-portal-communities-view .kc-mine-community {
   display: grid;
-  grid-template-columns: 78px minmax(0, 1fr) 150px;
+  grid-template-columns: 78px minmax(0, 1fr) minmax(330px, 330px);
   gap: 14px;
   align-items: center;
   min-height: 96px;
@@ -6049,6 +6816,15 @@ body.native-shell .patient-portal-communities-view .kc-directory .kc-carousel-co
   font-weight: 850;
 }
 
+.patient-portal-communities-view .kc-mine-actions {
+  display: grid;
+  justify-self: end;
+  width: 100%;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  align-items: center;
+}
+
 .patient-portal-communities-view .kc-mine-community button {
   min-height: 38px;
   border: 1px solid #77d8cf !important;
@@ -6058,6 +6834,532 @@ body.native-shell .patient-portal-communities-view .kc-directory .kc-carousel-co
   box-shadow: none !important;
   font-size: 11px;
   font-weight: 950;
+}
+
+.patient-portal-communities-view .kc-mine-community .kc-mine-admin-button {
+  border-color: #10b9ad !important;
+  background: linear-gradient(135deg, #25c9bd, #0ca799) !important;
+  color: #fff !important;
+}
+
+.patient-portal-communities-view .kc-admin-panel {
+  display: grid;
+  gap: 16px;
+  padding: 0 0 108px;
+}
+
+.patient-portal-communities-view .kc-admin-hero {
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr);
+  gap: 18px;
+  align-items: center;
+  padding: 24px;
+  border: 1px solid #d7e8ed;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #effffc, #fff);
+  box-shadow: 0 22px 50px rgba(18, 58, 74, .06);
+}
+
+.patient-portal-communities-view .kc-admin-hero > span {
+  display: grid;
+  width: 84px;
+  height: 84px;
+  place-items: center;
+  border-radius: 18px;
+  background: #dffdf7;
+  color: #008f84;
+  font-size: 27px;
+  font-weight: 950;
+}
+
+.patient-portal-communities-view .kc-admin-hero.gold > span { background: #fff2bf; color: #9b6100; }
+.patient-portal-communities-view .kc-admin-hero.blue > span { background: #e5f2ff; color: #176ad8; }
+.patient-portal-communities-view .kc-admin-hero.violet > span { background: #f1e8ff; color: #7448d8; }
+
+.patient-portal-communities-view .kc-admin-hero small {
+  color: #008f84;
+  font-size: 12px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.patient-portal-communities-view .kc-admin-hero h1 {
+  margin: 6px 0;
+  color: #142542;
+  font-size: clamp(30px, 5vw, 48px);
+  font-weight: 950;
+  letter-spacing: 0;
+}
+
+.patient-portal-communities-view .kc-admin-hero p {
+  margin: 0;
+  color: #607489;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.patient-portal-communities-view .kc-admin-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.patient-portal-communities-view .kc-admin-summary article,
+.patient-portal-communities-view .kc-admin-tools,
+.patient-portal-communities-view .kc-admin-repository {
+  border: 1px solid #d7e8ed;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 18px 42px rgba(18, 58, 74, .05);
+}
+
+.patient-portal-communities-view .kc-admin-summary article {
+  display: grid;
+  min-height: 92px;
+  place-items: center;
+  padding: 16px;
+  text-align: center;
+}
+
+.patient-portal-communities-view .kc-admin-summary b {
+  color: #008f84;
+  font-size: 28px;
+  font-weight: 950;
+}
+
+.patient-portal-communities-view .kc-admin-summary span {
+  color: #607489;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.patient-portal-communities-view .kc-admin-tools,
+.patient-portal-communities-view .kc-admin-repository {
+  padding: 18px;
+}
+
+.patient-portal-communities-view .kc-admin-tools > div:last-child {
+  display: grid;
+  gap: 12px;
+}
+
+.patient-portal-communities-view .kc-admin-tools article {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr) 118px;
+  gap: 14px;
+  align-items: center;
+  min-height: 74px;
+  padding: 14px;
+  border: 1px solid #dfecef;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.patient-portal-communities-view .kc-admin-tools article > svg {
+  width: 42px;
+  height: 42px;
+  padding: 10px;
+  border-radius: 14px;
+  background: #e9fffa;
+  color: #008f84;
+}
+
+.patient-portal-communities-view .kc-admin-tools strong {
+  color: #142542;
+  font-size: 15px;
+  font-weight: 950;
+}
+
+.patient-portal-communities-view .kc-admin-tools p {
+  margin: 4px 0 0;
+  color: #607489;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.patient-portal-communities-view .kc-admin-tools button {
+  min-height: 38px;
+  border: 1px solid #77d8cf !important;
+  border-radius: 8px;
+  background: #fff !important;
+  color: #008f84 !important;
+  box-shadow: none !important;
+  font-size: 11px;
+  font-weight: 950;
+}
+
+.patient-portal-communities-view .kc-admin-tools article.is-disabled {
+  opacity: .55;
+}
+
+.patient-portal-communities-view .kc-admin-tools article.is-active {
+  border-color: #77d8cf;
+  background: #f0fffc;
+}
+
+.patient-portal-communities-view .kc-admin-tools article.is-active button {
+  background: #dff9f4 !important;
+}
+
+.patient-portal-communities-view .kc-admin-tool-view {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+  border: 1px solid #d7e8ed;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #fff, #f7fffd);
+  box-shadow: 0 18px 42px rgba(18, 58, 74, .05);
+}
+
+.patient-portal-communities-view .kc-admin-tool-view .kc-section-title button,
+.patient-portal-communities-view .kc-admin-post-composer button,
+.patient-portal-communities-view .kc-admin-edit-grid button {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 18px;
+  border: 0 !important;
+  border-radius: 9px;
+  background: linear-gradient(135deg, #25c9bd, #0ca799) !important;
+  color: #fff !important;
+  box-shadow: 0 14px 26px rgba(12, 173, 160, .18) !important;
+  font-size: 12px;
+  font-weight: 950;
+}
+
+.patient-portal-communities-view .kc-admin-tool-view .kc-section-title button svg {
+  width: 16px;
+  height: 16px;
+}
+
+.patient-portal-communities-view .kc-admin-story-preview,
+.patient-portal-communities-view .kc-admin-post-composer,
+.patient-portal-communities-view .kc-admin-mini-list article,
+.patient-portal-communities-view .kc-admin-edit-grid {
+  border: 1px solid #dfecef;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.patient-portal-communities-view .kc-admin-story-preview {
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
+  padding: 14px;
+}
+
+.patient-portal-communities-view .kc-admin-story-preview img {
+  width: 112px;
+  height: 136px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.patient-portal-communities-view .kc-admin-story-preview strong,
+.patient-portal-communities-view .kc-admin-mini-list strong {
+  color: #142542;
+  font-size: 15px;
+  font-weight: 950;
+}
+
+.patient-portal-communities-view .kc-admin-story-preview p,
+.patient-portal-communities-view .kc-admin-mini-list p {
+  margin: 6px 0 0;
+  color: #607489;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.patient-portal-communities-view .kc-admin-post-composer {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+}
+
+.patient-portal-communities-view .kc-admin-post-composer textarea,
+.patient-portal-communities-view .kc-admin-edit-grid input,
+.patient-portal-communities-view .kc-admin-edit-grid textarea {
+  width: 100%;
+  min-height: 96px;
+  padding: 13px;
+  border: 1px solid #d7e8ed;
+  border-radius: 10px;
+  background: #fbfefe;
+  color: #142542;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.patient-portal-communities-view .kc-admin-mini-list {
+  display: grid;
+  gap: 10px;
+}
+
+.patient-portal-communities-view .kc-admin-mini-list article {
+  padding: 14px;
+}
+
+.patient-portal-communities-view .kc-admin-edit-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  padding: 14px;
+}
+
+.patient-portal-communities-view .kc-admin-edit-grid label {
+  display: grid;
+  gap: 7px;
+  color: #607489;
+  font-size: 11px;
+  font-weight: 950;
+}
+
+.patient-portal-communities-view .kc-admin-edit-grid label:nth-child(4),
+.patient-portal-communities-view .kc-admin-edit-grid button {
+  grid-column: 1 / -1;
+}
+
+.patient-portal-communities-view .kc-admin-edit-grid input {
+  min-height: 44px;
+}
+
+.patient-portal-communities-view .kc-admin-repository dl {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+}
+
+.patient-portal-communities-view .kc-admin-repository div {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  gap: 10px;
+  padding: 12px 14px;
+  border: 1px solid #e2eef2;
+  border-radius: 10px;
+  background: #fbfefe;
+}
+
+.patient-portal-communities-view .kc-admin-repository dt,
+.patient-portal-communities-view .kc-admin-repository dd {
+  margin: 0;
+  color: #607489;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.patient-portal-communities-view .kc-admin-repository dd {
+  color: #142542;
+  text-align: right;
+}
+
+.patient-portal-communities-view .kc-admin-modern {
+  gap: 18px;
+  padding: 0 0 116px;
+  color: #142542;
+}
+
+.patient-portal-communities-view .kc-admin-modern .kc-admin-back {
+  width: 100%;
+  min-height: 48px;
+  justify-content: flex-start;
+  padding: 0 22px;
+  border: 0 !important;
+  border-radius: 12px;
+  background: #0b8f82 !important;
+  color: #fff !important;
+  box-shadow: 0 14px 30px rgba(5, 118, 107, .16);
+  font-size: 15px;
+  font-weight: 950;
+}
+
+.patient-portal-communities-view .kc-admin-modern .kc-admin-back svg {
+  width: 18px;
+  height: 18px;
+  color: #fff;
+  stroke: #fff;
+}
+
+.patient-portal-communities-view .kc-admin-modern .kc-admin-hero {
+  grid-template-columns: 112px minmax(0, 1fr);
+  min-height: 166px;
+  gap: 28px;
+  padding: 28px;
+  border-color: #bfe9e6;
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 92% 8%, rgba(120, 225, 216, .22), transparent 34%),
+    linear-gradient(135deg, #f1fffc 0%, #ffffff 62%);
+  box-shadow: 0 18px 46px rgba(19, 76, 88, .07);
+}
+
+.patient-portal-communities-view .kc-admin-modern .kc-admin-hero-mark {
+  width: 96px;
+  height: 96px;
+  border-radius: 18px;
+  background: #d9faf3;
+  color: #008f84;
+  font-size: 28px;
+  box-shadow: none;
+}
+
+.patient-portal-communities-view .kc-admin-modern .kc-admin-hero.gold .kc-admin-hero-mark { background: #fff2bf; color: #9b6100; }
+.patient-portal-communities-view .kc-admin-modern .kc-admin-hero.blue .kc-admin-hero-mark { background: #e5f2ff; color: #176ad8; }
+.patient-portal-communities-view .kc-admin-modern .kc-admin-hero.violet .kc-admin-hero-mark { background: #f1e8ff; color: #7448d8; }
+
+.patient-portal-communities-view .kc-admin-modern .kc-admin-hero-copy small {
+  display: block;
+  margin-bottom: 10px;
+  color: #008f84;
+  font-size: 12px;
+  font-weight: 950;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.patient-portal-communities-view .kc-admin-modern .kc-admin-hero-copy h1 {
+  margin: 0;
+  color: #142542;
+  font-size: clamp(38px, 5.4vw, 56px);
+  line-height: 1;
+  font-weight: 950;
+  letter-spacing: 0;
+}
+
+.patient-portal-communities-view .kc-admin-modern .kc-admin-hero-copy p {
+  margin: 12px 0 0;
+  color: #607489;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.patient-portal-communities-view .kc-admin-modern .kc-admin-summary {
+  gap: 14px;
+}
+
+.patient-portal-communities-view .kc-admin-modern .kc-admin-summary article {
+  min-height: 104px;
+  border-radius: 14px;
+  border-color: #d4e6ec;
+  box-shadow: 0 16px 36px rgba(17, 68, 82, .05);
+}
+
+.patient-portal-communities-view .kc-admin-modern .kc-admin-summary b {
+  color: #008f84;
+  font-size: 30px;
+  line-height: 1;
+}
+
+.patient-portal-communities-view .kc-admin-modern .kc-admin-summary span {
+  margin-top: 8px;
+  color: #607489;
+  font-size: 12px;
+}
+
+.patient-portal-communities-view .kc-admin-modern .kc-admin-tools {
+  padding: 20px;
+  border-color: #d4e6ec;
+  border-radius: 14px;
+  box-shadow: 0 18px 46px rgba(17, 68, 82, .06);
+}
+
+.patient-portal-communities-view .kc-admin-modern .kc-admin-tools-heading {
+  margin-bottom: 14px;
+}
+
+.patient-portal-communities-view .kc-admin-modern .kc-admin-tools-heading h2 {
+  margin: 0;
+  color: #142542;
+  font-size: 18px;
+  font-weight: 950;
+}
+
+.patient-portal-communities-view .kc-admin-modern .kc-admin-tools-heading p {
+  margin: 4px 0 0;
+  color: #607489;
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.patient-portal-communities-view .kc-admin-modern .kc-admin-tools-list {
+  display: grid;
+  gap: 12px;
+}
+
+.patient-portal-communities-view .kc-admin-modern .kc-admin-tool {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr) 132px;
+  gap: 18px;
+  align-items: center;
+  min-height: 84px;
+  padding: 16px 18px;
+  border: 1px solid #d6e8ee;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.patient-portal-communities-view .kc-admin-modern .kc-admin-tool.is-active {
+  border-color: #62d8cf;
+  background: #effffb;
+}
+
+.patient-portal-communities-view .kc-admin-modern .kc-admin-tool-icon {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border-radius: 14px;
+  background: #e6fbf6;
+  color: #008f84;
+}
+
+.patient-portal-communities-view .kc-admin-modern .kc-admin-tool-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.patient-portal-communities-view .kc-admin-modern .kc-admin-tool strong {
+  display: block;
+  color: #142542;
+  font-size: 15px;
+  font-weight: 950;
+}
+
+.patient-portal-communities-view .kc-admin-modern .kc-admin-tool p {
+  margin: 5px 0 0;
+  color: #607489;
+  font-size: 12px;
+  line-height: 1.35;
+  font-weight: 850;
+}
+
+.patient-portal-communities-view .kc-admin-modern .kc-admin-tool button {
+  justify-self: end;
+  width: 132px;
+  min-height: 42px;
+  border: 1px solid #66d8cf !important;
+  border-radius: 9px;
+  background: #effffb !important;
+  color: #008f84 !important;
+  box-shadow: none !important;
+  font-size: 12px;
+  font-weight: 950;
+}
+
+.patient-portal-communities-view .kc-admin-modern .kc-admin-tool.is-active button {
+  background: #dff9f4 !important;
+}
+
+.patient-portal-communities-view .kc-admin-modern .kc-admin-tool.is-disabled {
+  opacity: .5;
+}
+
+.patient-portal-communities-view .kc-admin-modern .kc-admin-tool.is-disabled button {
+  background: #f8fbfc !important;
+  color: #8aa0b2 !important;
 }
 
 body.native-shell .patient-portal-communities-view .kc-directory .kc-filter,
@@ -6101,9 +7403,51 @@ body.native-shell .patient-portal-communities-view .kc-title-link {
     grid-template-columns: 72px minmax(0, 1fr);
   }
 
+  .patient-portal-communities-view .kc-mine-actions,
   .patient-portal-communities-view .kc-mine-community button {
     grid-column: 1 / -1;
     width: 100%;
+  }
+
+  .patient-portal-communities-view .kc-mine-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .patient-portal-communities-view .kc-admin-hero {
+    grid-template-columns: 1fr;
+    padding: 18px;
+  }
+
+  .patient-portal-communities-view .kc-admin-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .patient-portal-communities-view .kc-admin-tools article {
+    grid-template-columns: 48px minmax(0, 1fr);
+  }
+
+  .patient-portal-communities-view .kc-admin-tools button {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  .patient-portal-communities-view .kc-admin-story-preview,
+  .patient-portal-communities-view .kc-admin-edit-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .patient-portal-communities-view .kc-admin-story-preview img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+  }
+
+  .patient-portal-communities-view .kc-admin-repository div {
+    grid-template-columns: 1fr;
+  }
+
+  .patient-portal-communities-view .kc-admin-repository dd {
+    text-align: left;
   }
 
   .patient-portal-communities-view .kc-event-search-tools {
@@ -6216,6 +7560,193 @@ body.native-shell .patient-portal-communities-view .kc-title-link {
 
   .patient-portal-communities-view .kc-directory-next-events .kc-event-action {
     grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  .patient-portal-communities-view .kc-cancel-confirm-backdrop {
+    padding: 18px;
+  }
+
+  .patient-portal-communities-view .kc-cancel-confirm-dialog {
+    padding: 30px 18px 20px;
+    border-radius: 14px;
+  }
+
+  .patient-portal-communities-view .kc-cancel-confirm-dialog p {
+    font-size: 15px;
+  }
+
+  .patient-portal-communities-view .kc-cancel-confirm-actions {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 760px) {
+  .patient-portal-communities-view .kc-booking-shell {
+    width: calc(100% - 16px);
+    margin-top: 8px;
+    padding: 14px 12px 20px;
+    border-radius: 16px;
+  }
+
+  .patient-portal-communities-view .kc-booking-head {
+    grid-template-columns: 40px minmax(0, 1fr) 40px;
+    padding-bottom: 18px;
+  }
+
+  .patient-portal-communities-view .kc-booking-detail-card,
+  .patient-portal-communities-view .kc-booking-detail-card.is-compact {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding: 18px;
+  }
+
+  .patient-portal-communities-view .kc-booking-detail-card > img,
+  .patient-portal-communities-view .kc-booking-detail-card.is-compact > img {
+    aspect-ratio: 16 / 11;
+  }
+
+  .patient-portal-communities-view .kc-booking-card {
+    padding: 18px;
+  }
+
+  .patient-portal-communities-view .kc-booking-row,
+  .patient-portal-communities-view .kc-booking-modality-row {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+
+  .patient-portal-communities-view .kc-booking-stepper {
+    justify-content: end;
+  }
+
+  .patient-portal-communities-view .kc-booking-modality {
+    min-width: 0;
+  }
+
+  .patient-portal-communities-view .kc-booking-confirmations button {
+    grid-template-columns: 32px minmax(0, 1fr);
+  }
+
+  .patient-portal-communities-view .kc-booking-confirmations b {
+    grid-column: 2;
+  }
+
+  .patient-portal-communities-view .kc-booking-actions {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .patient-portal-communities-view .kc-booking-actions .kc-booking-primary {
+    grid-row: 1;
+  }
+
+  .patient-portal-communities-view .kc-booking-note,
+  .patient-portal-communities-view .kc-booking-calendar-card {
+    grid-template-columns: 46px minmax(0, 1fr);
+  }
+
+  .patient-portal-communities-view .kc-booking-calendar-card button {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  .patient-portal-communities-view .kc-booking-thanks {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 430px) {
+  .patient-portal-communities-view .kc-booking-head h1 {
+    font-size: 24px;
+  }
+
+  .patient-portal-communities-view .kc-booking-head p,
+  .patient-portal-communities-view .kc-booking-detail-copy p,
+  .patient-portal-communities-view .kc-booking-detail-copy li,
+  .patient-portal-communities-view .kc-booking-important li,
+  .patient-portal-communities-view .kc-booking-confirmations button {
+    font-size: 15px;
+  }
+
+  .patient-portal-communities-view .kc-booking-card h2,
+  .patient-portal-communities-view .kc-booking-calendar-card h2,
+  .patient-portal-communities-view .kc-booking-thanks h2 {
+    font-size: 21px;
+  }
+
+  .patient-portal-communities-view .kc-booking-modality {
+    grid-template-columns: 1fr;
+  }
+
+  .patient-portal-communities-view .kc-booking-success-hero > span {
+    width: 118px;
+    height: 118px;
+  }
+
+  .patient-portal-communities-view .kc-booking-success-hero > span svg {
+    width: 64px;
+    height: 64px;
+  }
+}
+
+@media (max-width: 900px) {
+  .patient-portal-communities-view .kc-admin-modern {
+    gap: 14px;
+    padding-bottom: 112px;
+  }
+
+  .patient-portal-communities-view .kc-admin-modern .kc-admin-back {
+    min-height: 46px;
+    padding: 0 16px;
+    font-size: 13px;
+  }
+
+  .patient-portal-communities-view .kc-admin-modern .kc-admin-hero {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    min-height: 0;
+    padding: 20px;
+  }
+
+  .patient-portal-communities-view .kc-admin-modern .kc-admin-hero-mark {
+    width: 82px;
+    height: 82px;
+    border-radius: 16px;
+  }
+
+  .patient-portal-communities-view .kc-admin-modern .kc-admin-hero-copy h1 {
+    font-size: clamp(30px, 12vw, 44px);
+  }
+
+  .patient-portal-communities-view .kc-admin-modern .kc-admin-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .patient-portal-communities-view .kc-admin-modern .kc-admin-summary article {
+    min-height: 86px;
+  }
+
+  .patient-portal-communities-view .kc-admin-modern .kc-admin-tools {
+    padding: 16px;
+  }
+
+  .patient-portal-communities-view .kc-admin-modern .kc-admin-tool {
+    grid-template-columns: 50px minmax(0, 1fr);
+    gap: 14px;
+    min-height: 0;
+    padding: 14px;
+  }
+
+  .patient-portal-communities-view .kc-admin-modern .kc-admin-tool-icon {
+    width: 46px;
+    height: 46px;
+  }
+
+  .patient-portal-communities-view .kc-admin-modern .kc-admin-tool button {
+    grid-column: 1 / -1;
+    justify-self: stretch;
     width: 100%;
   }
 }

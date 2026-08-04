@@ -29,14 +29,35 @@
 <div class="patient-assistant-native-screen patient-portal" data-patient-portal>
   <header class="patient-assistant-native-topbar patient-portal-topbar">
     <button class="patient-portal-dots" type="button" aria-label="Abrir interacciones" aria-expanded="false" aria-controls="patient-support-menu" data-support-toggle>⋮</button>
-    <form class="patient-portal-question" onsubmit="return false">
-      <input aria-label="Pregunta para Dr. Sam" placeholder="Soy Dr. Sam, hazme una pregunta">
-      <button type="submit" aria-label="Preguntar">↑</button>
+    <form class="patient-portal-question" onsubmit="return false" data-ai-top-form>
+      <input aria-label="Pregunta para Dr. Sam" placeholder="" data-ai-top-input>
+      <button type="submit" aria-label="Preguntar" data-ai-top-submit>
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M22 2 11 13"></path>
+          <path d="m22 2-7 20-4-9-9-4 20-7Z"></path>
+        </svg>
+      </button>
     </form>
     <button class="patient-portal-profile-trigger" type="button" data-profile-panel-open aria-label="Abrir perfil del paciente">
       <span>{{ $initials ?: 'PX' }}</span>
     </button>
   </header>
+
+  <div class="patient-ai-chat-shell" data-ai-chat-panel aria-hidden="true" hidden>
+    <section class="patient-ai-chat" aria-label="Chat con Dr. Sam">
+      <button class="patient-ai-chat-close" type="button" aria-label="Cerrar chat" data-ai-chat-close>×</button>
+      <div class="patient-ai-chat-messages" data-ai-chat-messages aria-live="polite"></div>
+      <form class="patient-ai-chat-composer" data-ai-chat-form>
+        <input aria-label="Escribe otro mensaje para Dr. Sam" placeholder="Escribe otro mensaje..." data-ai-chat-input>
+        <button type="submit" aria-label="Enviar mensaje">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M22 2 11 13"></path>
+            <path d="m22 2-7 20-4-9-9-4 20-7Z"></path>
+          </svg>
+        </button>
+      </form>
+    </section>
+  </div>
 
   <div class="patient-portal-layout">
     <aside id="patient-support-menu" class="patient-assistant-native-menu patient-portal-menu" aria-label="Menú del paciente" aria-hidden="true" data-support-menu>
@@ -233,6 +254,8 @@
             'study' => 'Estudios',
             'prescription' => 'Recetas',
             'hospitalization' => 'Servicio Hospitalario',
+            'manual' => 'Registro manual',
+            'vaccine' => 'Vacunas',
           ];
         @endphp
         <article class="patient-history-panel">
@@ -249,12 +272,14 @@
               <button class="is-study" type="button" data-history-filter="study"><span>▧</span>Estudios</button>
               <button class="is-prescription" type="button" data-history-filter="prescription"><span>▤</span>Recetas</button>
               <button class="is-hospitalization" type="button" data-history-filter="hospitalization"><span>⚑</span>Hospitalización</button>
+              <button class="is-vaccine" type="button" data-history-filter="vaccine"><span>□</span>Vacunas</button>
+              <button class="is-manual" type="button" data-history-filter="manual"><span>+</span>Registro manual</button>
               <button type="button" data-history-step="1" aria-label="Filtro siguiente">›</button>
             </nav>
             <div class="patient-history-table-wrap">
               <table class="patient-history-table">
                 <thead><tr><th>Fecha</th><th>Categoría</th><th>Origen</th><th>Especialidad o tipo de servicio</th><th>Resumen clínico</th><th>Receta / Indicaciones</th></tr></thead>
-                <tbody>
+                <tbody data-history-body>
                   @forelse ($historyItems as $item)
                     <tr data-history-row="{{ $item['category'] }}">
                       <td><div class="patient-history-date"><span>□</span><strong>{{ $item['date']?->format('d/m/Y') ?? 'No registrada' }}<small>{{ $item['date']?->translatedFormat('l') ?? '' }}</small></strong></div></td>
@@ -276,7 +301,7 @@
                       </td>
                     </tr>
                   @empty
-                    <tr><td colspan="6" class="patient-portal-empty">No hay registros clínicos.</td></tr>
+                    <tr data-history-empty><td colspan="6" class="patient-portal-empty">No hay registros clínicos.</td></tr>
                   @endforelse
                 </tbody>
               </table>
@@ -688,15 +713,15 @@
 
           <div class="patient-devices-redesign">
             <nav class="patient-device-filters" aria-label="Filtros de dispositivos">
-              <button class="is-active" type="button"><span class="patient-device-filter-icon patient-device-filter-menu" aria-hidden="true"></span>Todos</button>
-              <button class="is-linked" type="button"><span class="patient-device-filter-icon patient-device-filter-check" aria-hidden="true"></span>Vinculados</button>
-              <button class="is-pending" type="button"><span class="patient-device-filter-icon patient-device-filter-clock" aria-hidden="true"></span>Pendientes</button>
-              <button class="is-vitals" type="button"><span class="patient-device-filter-icon patient-device-filter-heart" aria-hidden="true"></span>Signos vitales</button>
-              <button class="is-glucose" type="button"><span class="patient-device-filter-icon patient-device-filter-drop" aria-hidden="true"></span>Glucosa</button>
+              <button class="is-active" type="button" data-device-filter="all" aria-pressed="true"><span class="patient-device-filter-icon patient-device-filter-menu" aria-hidden="true"></span>Todos</button>
+              <button class="is-linked" type="button" data-device-filter="linked" aria-pressed="false"><span class="patient-device-filter-icon patient-device-filter-check" aria-hidden="true"></span>Vinculados</button>
+              <button class="is-pending" type="button" data-device-filter="pending" aria-pressed="false"><span class="patient-device-filter-icon patient-device-filter-clock" aria-hidden="true"></span>Pendientes</button>
+              <button class="is-vitals" type="button" data-device-filter="vitals" aria-pressed="false"><span class="patient-device-filter-icon patient-device-filter-heart" aria-hidden="true"></span>Signos vitales</button>
+              <button class="is-glucose" type="button" data-device-filter="glucose" aria-pressed="false"><span class="patient-device-filter-icon patient-device-filter-drop" aria-hidden="true"></span>Glucosa</button>
             </nav>
 
             <div class="patient-device-list">
-              <article class="patient-device-card is-linked">
+              <article class="patient-device-card is-linked" data-device-card data-device-status="linked" data-device-kind="vitals">
                 <div class="patient-device-icon-wrap" aria-hidden="true">
                   <span class="patient-device-presence-dot"></span>
                   <div class="patient-device-icon-tile patient-device-icon-pressure">
@@ -727,7 +752,7 @@
                 </div>
               </article>
 
-              <article class="patient-device-card is-pending">
+              <article class="patient-device-card is-pending" data-device-card data-device-status="pending" data-device-kind="glucose">
                 <div class="patient-device-icon-wrap" aria-hidden="true">
                   <span class="patient-device-presence-dot"></span>
                   <div class="patient-device-icon-tile patient-device-icon-glucose">
@@ -756,6 +781,7 @@
                   <button class="patient-device-action" type="button">Ver guía</button>
                 </div>
               </article>
+              <div class="patient-device-empty" data-device-empty hidden>No hay dispositivos para este filtro.</div>
             </div>
           </div>
         </article>
@@ -763,65 +789,140 @@
 
       <section class="patient-portal-view" data-patient-view="register">
         <article class="patient-register-panel">
-          <header class="patient-register-hero">
-            <div class="patient-register-hero-icon" aria-hidden="true">
-              <span>+</span>
-            </div>
-            <div>
-              <small>REGISTRO MANUAL</small>
-              <h1>Registro diario</h1>
-              <p>Captura parametros manuales y datos del dia.</p>
-            </div>
-          </header>
-
           <div class="patient-register-workspace">
             <section class="patient-register-sheet patient-register-view-sheet" aria-labelledby="patient-register-title">
-              <small>Registro rapido</small>
-              <h2 id="patient-register-title">Registrar parametro</h2>
-              <p>Selecciona el parametro, captura el valor y guarda el registro en el historial manual.</p>
+              <header class="patient-register-heading">
+                <button class="patient-register-back" type="button" data-open-view="home" aria-label="Volver">←</button>
+                <div>
+                  <small>REGISTRO R&Aacute;PIDO</small>
+                  <h2 id="patient-register-title">Registrar par&aacute;metro</h2>
+                </div>
+              </header>
 
-              <div class="patient-register-options" data-register-options aria-label="Tipo de parametro">
-                <button class="is-active" type="button" data-register-metric="water" aria-pressed="true"><span>◌</span>Agua</button>
-                <button type="button" data-register-metric="steps" aria-pressed="false"><span>⌁</span>Pasos</button>
-                <button type="button" data-register-metric="sleep" aria-pressed="false"><span>◔</span>Sue&ntilde;o</button>
-                <button type="button" data-register-metric="weight" aria-pressed="false"><span>▣</span>Peso</button>
-                <button type="button" data-register-metric="pressure" aria-pressed="false"><span>♡</span>Presi&oacute;n</button>
-                <button type="button" data-register-metric="glucose" aria-pressed="false"><span>♢</span>Glucosa</button>
-                <button type="button" data-register-metric="mood" aria-pressed="false"><span>☺</span>&Aacute;nimo</button>
-                <button type="button" data-register-metric="note" aria-pressed="false"><span>✎</span>Nota</button>
-                <button type="button" data-register-metric="custom" aria-pressed="false"><span>+</span>Otro</button>
-              </div>
+              <section class="patient-register-option-block patient-register-option-block-favorites">
+                <div class="patient-register-strip-title">
+                  <span>Favoritos</span>
+                </div>
+                <div class="patient-register-options patient-register-favorite-options" data-register-favorites data-register-carousel aria-label="Parametros favoritos"></div>
+              </section>
+
+              <section class="patient-register-option-block">
+                <div class="patient-register-strip-title">
+                  <span>Todos los par&aacute;metros</span>
+                </div>
+                <div class="patient-register-options" data-register-options data-register-carousel aria-label="Tipo de parametro"></div>
+              </section>
 
               <form class="patient-register-form" data-register-form>
                 <input type="hidden" name="metricType" value="water" data-register-metric-input>
+                <div class="patient-register-selected-metric" data-register-selected-panel>
+                  <span class="patient-register-selected-icon" data-register-selected-icon aria-hidden="true"></span>
+                  <div>
+                    <small>Par&aacute;metro seleccionado</small>
+                    <h3 data-register-selected-title>Agua</h3>
+                    <p data-register-selected-description>Registra tu consumo de agua del d&iacute;a.</p>
+                    <span data-register-selected-meta>Registro manual en litros</span>
+                  </div>
+                  <button type="button" data-register-selected-favorite>Agregar a favoritos</button>
+                </div>
                 <label data-register-custom-wrap hidden>
-                  <span>Nombre del parametro</span>
+                  <span>Nombre del par&aacute;metro</span>
                   <input name="customMetric" placeholder="Ej. Temperatura, dolor, energia">
                 </label>
                 <label>
-                  <span data-register-value-label>Valor</span>
+                  <span><span data-register-value-label>Valor</span> <em>*</em></span>
                   <div class="patient-register-value-row">
                     <input name="value" type="number" step="0.1" placeholder="Meta sugerida: 2.5 L" required data-register-value>
                     <b data-register-unit>L</b>
                   </div>
                 </label>
                 <label>
-                  <span>Fecha y hora</span>
-                  <input name="recordedAt" type="datetime-local" required data-register-date>
+                  <span>Fecha y hora <em>*</em></span>
+                  <div class="patient-register-date-row">
+                    <i aria-hidden="true">▦</i>
+                    <input name="recordedAt" type="datetime-local" required data-register-date>
+                    <i aria-hidden="true">▦</i>
+                  </div>
                 </label>
                 <label>
                   <span>Comentario opcional</span>
-                  <textarea name="notes" rows="3" placeholder="Agrega contexto si lo necesitas"></textarea>
+                  <div class="patient-register-notes-wrap">
+                    <textarea name="notes" rows="3" maxlength="200" placeholder="Agrega contexto si lo necesitas" data-register-notes></textarea>
+                    <small data-register-notes-count>0/200</small>
+                  </div>
                 </label>
                 <div class="patient-register-attachment">
-                  <span>Fotografia o documento</span>
-                  <div class="patient-register-attachment-box">
-                    <button class="patient-register-attachment-button" type="button" data-register-attachment-pick aria-label="Agregar fotografia o documento">+</button>
+                  <span>Fotograf&iacute;a o documento <em>(opcional)</em></span>
+                  <button class="patient-register-attachment-box" type="button" data-register-attachment-pick aria-label="Agregar fotografia o documento">
+                    <span class="patient-register-attachment-button" aria-hidden="true">
+                      <svg viewBox="0 0 24 24">
+                        <path d="M14.5 4.5 13.2 3h-2.4L9.5 4.5H6.2A2.2 2.2 0 0 0 4 6.7v10.1A2.2 2.2 0 0 0 6.2 19h11.6a2.2 2.2 0 0 0 2.2-2.2V6.7a2.2 2.2 0 0 0-2.2-2.2h-3.3Z"></path>
+                        <circle cx="12" cy="12" r="3.4"></circle>
+                      </svg>
+                    </span>
                     <div>
                       <strong>Agregar evidencia</strong>
                       <small data-register-attachment-name>Sin archivo seleccionado</small>
                     </div>
-                    <input type="file" accept="image/*,.pdf" name="attachment" data-register-attachment-input hidden>
+                    <i aria-hidden="true">›</i>
+                  </button>
+                  <input type="file" accept="image/*,.pdf" name="attachment" data-register-attachment-input hidden>
+                  <section class="patient-register-uploaded-card" data-register-uploaded hidden>
+                    <div class="patient-register-uploaded-file">
+                      <span class="patient-register-file-type" data-register-file-type>PDF</span>
+                      <div>
+                        <b>Archivo cargado</b>
+                        <strong data-register-file-name>Archivo cargado</strong>
+                        <small data-register-file-size></small>
+                      </div>
+                      <button type="button" data-register-attachment-clear aria-label="Eliminar archivo">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                          <path d="M4 7h16"></path>
+                          <path d="M10 11v6"></path>
+                          <path d="M14 11v6"></path>
+                          <path d="M6 7l1 14h10l1-14"></path>
+                          <path d="M9 7V4h6v3"></path>
+                        </svg>
+                      </button>
+                    </div>
+                    <div class="patient-register-uploaded-status">
+                      <span aria-hidden="true">✓</span>
+                      <strong>Documento cargado correctamente</strong>
+                      <button type="button" data-register-attachment-change>Cambiar archivo</button>
+                    </div>
+                  </section>
+                  <section class="patient-register-transcript-card" data-register-transcript-card hidden>
+                    <header>
+                      <div>
+                        <strong>Texto transcrito autom&aacute;ticamente</strong>
+                        <small>Informaci&oacute;n transcrita del documento</small>
+                        <span>IA</span>
+                      </div>
+                      <button type="button" data-register-transcript-edit>Editar texto</button>
+                    </header>
+                    <textarea name="attachmentTranscript" readonly data-register-transcript></textarea>
+                    <p>La informaci&oacute;n puede contener errores. Revisa el texto antes de guardar.</p>
+                  </section>
+                  <label class="patient-register-attachment-category" data-register-attachment-category-wrap hidden>
+                    <span>Guardar en el historial cl&iacute;nico como <em>*</em></span>
+                    <select name="attachmentCategory" data-register-attachment-category>
+                      <option value="">Selecciona una categor&iacute;a</option>
+                      <option value="consultation">Consulta Medica</option>
+                      <option value="laboratory">Analisis de Laboratorio</option>
+                      <option value="study">Estudios</option>
+                      <option value="prescription">Recetas</option>
+                      <option value="hospitalization">Hospitalizacion</option>
+                      <option value="manual">Registro Manual</option>
+                      <option value="vaccine">Vacunas</option>
+                    </select>
+                    <small>La categor&iacute;a solo aplica al archivo adjunto y a su transcripci&oacute;n.</small>
+                  </label>
+                </div>
+                <div class="patient-register-safe-note" aria-live="polite">
+                  <span aria-hidden="true">⌄</span>
+                  <div>
+                    <strong>Tu informaci&oacute;n est&aacute; segura</strong>
+                    <p>Este registro se guardar&aacute; en tu historial manual y solo t&uacute; podr&aacute;s verlo.</p>
                   </div>
                 </div>
                 <div class="patient-register-success" data-register-success hidden>
@@ -829,7 +930,7 @@
                 </div>
                 <div class="patient-register-actions">
                   <button class="patient-register-secondary" type="reset">Limpiar</button>
-                  <button class="patient-register-primary" type="submit">Guardar registro</button>
+                  <button class="patient-register-primary" type="submit"><span aria-hidden="true">▣</span>Guardar registro</button>
                 </div>
               </form>
             </section>
@@ -975,7 +1076,6 @@
       if (registerSuccess) registerSuccess.hidden = true;
       if (registerDateInput && !registerDateInput.value) registerDateInput.value = registerDateValue();
       selectRegisterMetric(registerMetricInput?.value || 'water');
-      setTimeout(() => registerValueInput?.focus({ preventScroll: true }), 120);
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -983,36 +1083,334 @@
   const healthScreens = [...portal.querySelectorAll('[data-health-screen]')];
   const registerForm = document.querySelector('[data-register-form]');
   const registerOptions = document.querySelector('[data-register-options]');
+  const registerFavorites = document.querySelector('[data-register-favorites]');
   const registerMetricInput = document.querySelector('[data-register-metric-input]');
   const registerValueInput = document.querySelector('[data-register-value]');
   const registerValueLabel = document.querySelector('[data-register-value-label]');
   const registerUnit = document.querySelector('[data-register-unit]');
   const registerDateInput = document.querySelector('[data-register-date]');
   const registerCustomWrap = document.querySelector('[data-register-custom-wrap]');
+  const registerNotesInput = document.querySelector('[data-register-notes]');
+  const registerNotesCount = document.querySelector('[data-register-notes-count]');
+  const registerAttachmentPick = document.querySelector('[data-register-attachment-pick]');
   const registerAttachmentInput = document.querySelector('[data-register-attachment-input]');
   const registerAttachmentName = document.querySelector('[data-register-attachment-name]');
+  const registerUploadedCard = document.querySelector('[data-register-uploaded]');
+  const registerUploadedFileName = document.querySelector('[data-register-file-name]');
+  const registerUploadedFileSize = document.querySelector('[data-register-file-size]');
+  const registerUploadedFileType = document.querySelector('[data-register-file-type]');
+  const registerAttachmentChange = document.querySelector('[data-register-attachment-change]');
+  const registerAttachmentClear = document.querySelector('[data-register-attachment-clear]');
+  const registerTranscriptCard = document.querySelector('[data-register-transcript-card]');
+  const registerTranscriptInput = document.querySelector('[data-register-transcript]');
+  const registerTranscriptEdit = document.querySelector('[data-register-transcript-edit]');
+  const registerAttachmentCategoryWrap = document.querySelector('[data-register-attachment-category-wrap]');
+  const registerAttachmentCategoryInput = document.querySelector('[data-register-attachment-category]');
   const registerSuccess = document.querySelector('[data-register-success]');
+  const registerSelectedTitle = document.querySelector('[data-register-selected-title]');
+  const registerSelectedIcon = document.querySelector('[data-register-selected-icon]');
+  const registerSelectedDescription = document.querySelector('[data-register-selected-description]');
+  const registerSelectedMeta = document.querySelector('[data-register-selected-meta]');
+  const registerSelectedFavoriteButton = document.querySelector('[data-register-selected-favorite]');
+  const historyBody = portal.querySelector('[data-history-body]');
+  const historyEmptyRow = portal.querySelector('[data-history-empty]');
   const registerMetricConfig = {
-    water: { label: 'Agua', unit: 'L', inputType: 'number', step: '0.1', placeholder: 'Meta sugerida: 2.5 L' },
-    steps: { label: 'Pasos', unit: 'pasos', inputType: 'number', step: '1', placeholder: 'Ej. 8000' },
-    sleep: { label: 'Sueno', unit: 'h', inputType: 'number', step: '0.1', placeholder: 'Ej. 7.5' },
-    weight: { label: 'Peso', unit: 'kg', inputType: 'number', step: '0.1', placeholder: 'Ej. 72.4' },
-    pressure: { label: 'Presion arterial', unit: 'mmHg', inputType: 'text', step: '', placeholder: 'Ej. 120/80' },
-    glucose: { label: 'Glucosa', unit: 'mg/dL', inputType: 'number', step: '0.1', placeholder: 'Ej. 92' },
-    mood: { label: 'Estado de animo', unit: '/5', inputType: 'number', step: '1', placeholder: 'Ej. 4' },
-    note: { label: 'Nota personal', unit: '', inputType: 'text', step: '', placeholder: 'Ej. Me senti con mas energia' },
-    custom: { label: 'Parametro personalizado', unit: '', inputType: 'text', step: '', placeholder: 'Ingresa el valor' },
+    water: { label: 'Agua', image: '/images/register-icons/water.png', icon: '&#9676;', unit: 'L', inputType: 'number', step: '0.1', placeholder: 'Meta sugerida: 2.5 L' },
+    steps: { label: 'Pasos', image: '/images/register-icons/steps.png', icon: '&#8961;', unit: 'pasos', inputType: 'number', step: '1', placeholder: 'Ej. 8000' },
+    sleep: { label: 'Sueno', image: '/images/register-icons/sleep.png', icon: '&#9684;', unit: 'h', inputType: 'number', step: '0.1', placeholder: 'Ej. 7.5' },
+    weight: { label: 'Peso', image: '/images/register-icons/weight.png', icon: '&#9635;', unit: 'kg', inputType: 'number', step: '0.1', placeholder: 'Ej. 72.4' },
+    pressure: { label: 'Presion', image: '/images/register-icons/vitals.png', icon: '&#9825;', unit: 'mmHg', inputType: 'text', step: '', placeholder: 'Ej. 120/80' },
+    glucose: { label: 'Glucosa', image: '/images/register-icons/glucose.png', icon: '&#9826;', unit: 'mg/dL', inputType: 'number', step: '0.1', placeholder: 'Ej. 92' },
+    mood: { label: 'Animo', image: '/images/register-icons/mood.png', icon: '&#9786;', unit: '/5', inputType: 'number', step: '1', placeholder: 'Ej. 4' },
+    medication: { label: 'Medicamentos', image: '/images/register-icons/medication.png', icon: '&#9877;', unit: '', inputType: 'text', step: '', placeholder: 'Ej. Metformina 500 mg' },
+    activity: { label: 'Actividad fisica', image: '/images/register-icons/activity.png', icon: '&#10022;', unit: 'min', inputType: 'number', step: '1', placeholder: 'Ej. 45' },
+    calories: { label: 'Calorias', image: '/images/register-icons/activity.png', icon: '&#9672;', unit: 'kcal', inputType: 'number', step: '1', placeholder: 'Ej. 1850' },
+    temperature: { label: 'Temperatura', image: '/images/register-icons/vitals.png', icon: '&#8451;', unit: 'C', inputType: 'number', step: '0.1', placeholder: 'Ej. 36.7' },
+    oxygen: { label: 'Oxigeno', image: '/images/register-icons/vitals.png', icon: '&#9711;', unit: '%', inputType: 'number', step: '1', placeholder: 'Ej. 98' },
+    heartRate: { label: 'Frecuencia', image: '/images/register-icons/vitals.png', icon: '&#9825;', unit: 'lpm', inputType: 'number', step: '1', placeholder: 'Ej. 72' },
+    pain: { label: 'Dolor', image: '/images/register-icons/vitals.png', icon: '&#9675;', unit: '/10', inputType: 'number', step: '1', placeholder: 'Ej. 3' },
+    symptoms: { label: 'Sintomas', image: '/images/register-icons/vitals.png', icon: '&#8942;', unit: '', inputType: 'text', step: '', placeholder: 'Ej. Dolor de cabeza leve' },
+    nutrition: { label: 'Nutricion', image: '/images/register-icons/medication.png', icon: '&#9671;', unit: '', inputType: 'text', step: '', placeholder: 'Ej. Desayuno alto en proteina' },
+    meditation: { label: 'Meditacion', image: '/images/register-icons/sleep.png', icon: '&#10003;', unit: 'min', inputType: 'number', step: '1', placeholder: 'Ej. 15' },
+    note: { label: 'Nota personal', icon: '+', unit: '', inputType: 'text', step: '', placeholder: 'Ej. Me senti con mas energia' },
+    custom: { label: 'Personalizado', icon: '+', unit: '', inputType: 'text', step: '', placeholder: 'Ingresa el valor' },
+  };
+  const registerMetricViewConfig = {
+    water: { description: 'Registra tu consumo de agua del dia.', meta: 'Registro manual en litros', valueLabel: 'Litros de agua' },
+    steps: { description: 'Captura tus pasos o actividad caminada.', meta: 'Registro manual de movimiento', valueLabel: 'Cantidad de pasos' },
+    sleep: { description: 'Anota las horas reales de descanso.', meta: 'Registro manual de sueno', valueLabel: 'Horas de sueno' },
+    weight: { description: 'Guarda tu peso corporal actualizado.', meta: 'Registro manual de peso', valueLabel: 'Peso registrado' },
+    pressure: { description: 'Registra tu lectura de presion arterial.', meta: 'Formato sugerido: 120/80', valueLabel: 'Presion arterial' },
+    glucose: { description: 'Captura tu lectura de glucosa capilar.', meta: 'Registro manual en mg/dL', valueLabel: 'Nivel de glucosa' },
+    mood: { description: 'Marca como te sientes hoy.', meta: 'Escala sugerida de 1 a 5', valueLabel: 'Estado de animo' },
+    medication: { description: 'Anota medicamentos, dosis o tomas del dia.', meta: 'Registro manual de tratamiento', valueLabel: 'Medicamento o dosis' },
+    activity: { description: 'Registra ejercicio, caminata o actividad fisica.', meta: 'Registro manual en minutos', valueLabel: 'Tiempo de actividad' },
+    calories: { description: 'Captura una estimacion de calorias consumidas.', meta: 'Registro manual de nutricion', valueLabel: 'Calorias' },
+    temperature: { description: 'Guarda una lectura de temperatura corporal.', meta: 'Registro manual en C', valueLabel: 'Temperatura' },
+    oxygen: { description: 'Registra tu saturacion de oxigeno.', meta: 'Registro manual en porcentaje', valueLabel: 'Oxigeno en sangre' },
+    heartRate: { description: 'Captura tu frecuencia cardiaca.', meta: 'Registro manual en lpm', valueLabel: 'Frecuencia cardiaca' },
+    pain: { description: 'Indica el nivel de dolor percibido.', meta: 'Escala sugerida de 0 a 10', valueLabel: 'Nivel de dolor' },
+    symptoms: { description: 'Describe sintomas relevantes del dia.', meta: 'Registro manual de sintomas', valueLabel: 'Sintomas' },
+    nutrition: { description: 'Anota alimentacion, comidas o adherencia nutricional.', meta: 'Registro manual de nutricion', valueLabel: 'Detalle de nutricion' },
+    meditation: { description: 'Captura minutos de meditacion o respiracion.', meta: 'Registro manual de bienestar', valueLabel: 'Minutos de practica' },
+    note: { description: 'Guarda una nota personal de salud.', meta: 'Registro manual libre', valueLabel: 'Nota' },
+    custom: { description: 'Crea un registro manual con el parametro que necesites.', meta: 'Registro manual personalizado', valueLabel: 'Valor' },
+  };
+  const registerAttachmentCategoryConfig = {
+    consultation: { label: 'Consulta Medica', historyFilter: 'consultation', service: 'Documento de consulta' },
+    laboratory: { label: 'Analisis de Laboratorio', historyFilter: 'laboratory', service: 'Resultados de laboratorio' },
+    study: { label: 'Estudios', historyFilter: 'study', service: 'Estudio clinico' },
+    prescription: { label: 'Recetas', historyFilter: 'prescription', service: 'Documento de receta' },
+    hospitalization: { label: 'Hospitalizacion', historyFilter: 'hospitalization', service: 'Documento hospitalario' },
+    manual: { label: 'Registro Manual', historyFilter: 'manual', service: 'Adjunto de registro manual' },
+    vaccine: { label: 'Vacunas', historyFilter: 'vaccine', service: 'Cartilla o comprobante de vacuna' },
   };
   const registerStorageKey = @json('drsam_patient_manual_records_'.$patient->id);
+  const registerFavoriteStorageKey = @json('drsam_patient_register_favorites_'.$patient->id);
+  const registerPatientName = @json($patient->full_name);
+  const aiTopForm = portal.querySelector('[data-ai-top-form]');
+  const aiTopInput = portal.querySelector('[data-ai-top-input]');
+  const aiChatPanel = portal.querySelector('[data-ai-chat-panel]');
+  const aiChatMessages = portal.querySelector('[data-ai-chat-messages]');
+  const aiChatForm = portal.querySelector('[data-ai-chat-form]');
+  const aiChatInput = portal.querySelector('[data-ai-chat-input]');
+  const aiChatStorageKey = @json('drsam_patient_ai_chat_'.$patient->id);
+  const aiQuickActions = ['Consultar estudios', 'Mis medicamentos', 'Laboratorios', 'Recetas', 'Ver historial', 'Programar cita'];
+  let aiConversation = [];
+  try {
+    aiConversation = JSON.parse(localStorage.getItem(aiChatStorageKey) || '[]');
+  } catch (error) {
+    aiConversation = [];
+  }
+  const escapeAiText = value => String(value ?? '').replace(/[&<>"']/g, char => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;',
+  }[char]));
+  const aiTimeLabel = () => new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+  const saveAiConversation = () => {
+    localStorage.setItem(aiChatStorageKey, JSON.stringify(aiConversation.slice(-40)));
+  };
+  const normalizeAiPrompt = value => String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  const renderAiCard = card => {
+    if (!card || card.type !== 'appointment') return '';
+    return `
+      <article class="patient-ai-smart-card">
+        <small>Consulta próxima</small>
+        <strong>${escapeAiText(card.date)}</strong>
+        <span>${escapeAiText(card.time)}</span>
+        <p>${escapeAiText(card.doctor)}</p>
+        <p>${escapeAiText(card.specialty)}</p>
+        <p>${escapeAiText(card.location)}</p>
+        <div>
+          <button type="button" data-ai-open-view="history">Ver expediente</button>
+          <button type="button" data-ai-open-view="calendar">Agregar al calendario</button>
+        </div>
+      </article>
+    `;
+  };
+  const renderAiChips = chips => {
+    const items = chips?.length ? chips : aiQuickActions;
+    return `<div class="patient-ai-chips">${items.map(item => `<button type="button" data-ai-chip="${escapeAiText(item)}">${escapeAiText(item)}</button>`).join('')}</div>`;
+  };
+  const renderAiConversation = () => {
+    if (!aiChatMessages) return;
+    aiChatMessages.innerHTML = aiConversation.map(message => {
+      const isUser = message.role === 'user';
+      return `
+        <article class="patient-ai-message ${isUser ? 'is-user' : 'is-assistant'}">
+          ${isUser ? '' : '<span class="patient-ai-avatar" aria-hidden="true">✦✦</span>'}
+          <div class="patient-ai-bubble">
+            <p>${escapeAiText(message.text)}</p>
+            ${renderAiCard(message.card)}
+            ${!isUser ? renderAiChips(message.chips) : ''}
+          </div>
+          <time>${escapeAiText(message.time || '')}</time>
+        </article>
+      `;
+    }).join('');
+    aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
+  };
+  const openAiChat = () => {
+    if (!aiChatPanel) return;
+    aiChatPanel.hidden = false;
+    aiChatPanel.setAttribute('aria-hidden', 'false');
+    requestAnimationFrame(() => {
+      aiChatPanel.classList.add('is-open');
+      renderAiConversation();
+      aiChatInput?.focus({ preventScroll: true });
+    });
+  };
+  const closeAiChat = () => {
+    if (!aiChatPanel) return;
+    if (aiTopInput) aiTopInput.value = '';
+    aiChatPanel.classList.remove('is-open');
+    aiChatPanel.setAttribute('aria-hidden', 'true');
+    window.setTimeout(() => {
+      if (!aiChatPanel.classList.contains('is-open')) aiChatPanel.hidden = true;
+    }, 280);
+  };
+  const buildAiResponse = prompt => {
+    const normalized = normalizeAiPrompt(prompt);
+    if (normalized.includes('consulta') || normalized.includes('cita') || normalized.includes('proxima')) {
+      return {
+        text: 'Tu próxima consulta médica es el viernes 15 de agosto de 2026 a las 10:00 a. m. con la Dra. Laura Martínez, en Centro Biotecnológico.',
+        card: {
+          type: 'appointment',
+          date: 'Viernes 15 de agosto de 2026',
+          time: '10:00 a. m.',
+          doctor: 'Dra. Laura Martínez',
+          specialty: 'Medicina Interna',
+          location: 'Centro Biotecnológico',
+        },
+        chips: ['Ver historial', 'Programar cita', 'Mis medicamentos'],
+      };
+    }
+    if (normalized.includes('receta') || normalized.includes('medicamento')) {
+      return {
+        text: 'Puedo ayudarte a revisar tus recetas y medicamentos activos. También puedo llevarte al historial para ver indicaciones anteriores.',
+        chips: ['Recetas', 'Mis medicamentos', 'Ver historial'],
+      };
+    }
+    if (normalized.includes('estudio') || normalized.includes('laboratorio')) {
+      return {
+        text: 'Tus estudios y laboratorios se consultan desde el expediente. Puedo ayudarte a filtrar los registros clínicos o abrir análisis clínicos.',
+        chips: ['Consultar estudios', 'Laboratorios', 'Ver historial'],
+      };
+    }
+    if (normalized.includes('historial') || normalized.includes('expediente')) {
+      return {
+        text: 'Tu historial clínico reúne consultas, estudios, recetas, hospitalizaciones y registros manuales.',
+        chips: ['Ver historial', 'Recetas', 'Laboratorios'],
+      };
+    }
+    return {
+      text: 'Listo. Te puedo ayudar con consultas, recetas, estudios, dispositivos, pagos, comunidades o registros manuales.',
+      chips: aiQuickActions,
+    };
+  };
+  const sendAiMessage = (value, options = {}) => {
+    const text = String(value || '').trim();
+    if (!text) return;
+    aiConversation.push({ role: 'user', text, time: aiTimeLabel() });
+    saveAiConversation();
+    openAiChat();
+    renderAiConversation();
+    if (options.clearTop !== false && aiTopInput) aiTopInput.value = text;
+    if (aiChatInput) aiChatInput.value = '';
+    window.setTimeout(() => {
+      const response = buildAiResponse(text);
+      aiConversation.push({ role: 'assistant', text: response.text, card: response.card, chips: response.chips, time: aiTimeLabel() });
+      saveAiConversation();
+      renderAiConversation();
+    }, 260);
+  };
   const registerDateValue = () => {
     const now = new Date();
     now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
     return now.toISOString().slice(0, 16);
   };
+  const registerMetricOrder = Object.keys(registerMetricConfig);
+  const defaultRegisterFavorites = ['water', 'steps', 'sleep', 'medication', 'activity'];
+  const escapeRegisterText = value => String(value ?? '').replace(/[&<>"']/g, char => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;',
+  }[char]));
+  const normalizeRegisterFavorites = values => [...new Set((Array.isArray(values) ? values : []).filter(type => registerMetricConfig[type]))];
+  const loadRegisterFavorites = () => {
+    try {
+      const saved = JSON.parse(localStorage.getItem(registerFavoriteStorageKey) || 'null');
+      const normalized = normalizeRegisterFavorites(saved);
+      return normalized.length ? normalized : defaultRegisterFavorites;
+    } catch (error) {
+      return defaultRegisterFavorites;
+    }
+  };
+  let registerFavoriteMetrics = loadRegisterFavorites();
+  const saveRegisterFavorites = () => {
+    localStorage.setItem(registerFavoriteStorageKey, JSON.stringify(registerFavoriteMetrics));
+  };
+  const renderRegisterMetricButton = (type) => {
+    const config = registerMetricConfig[type] || registerMetricConfig.water;
+    const active = (registerMetricInput?.value || 'water') === type;
+    const favorite = registerFavoriteMetrics.includes(type);
+    const favoriteLabel = favorite ? 'Quitar de favoritos' : 'Agregar a favoritos';
+    const iconMarkup = config.image
+      ? `<span class="patient-register-metric-image"><img src="${escapeRegisterText(config.image)}" alt="" loading="lazy"></span>`
+      : `<span class="patient-register-metric-glyph">${config.icon || '+'}</span>`;
+    return `
+      <button class="${active ? 'is-active' : ''}" type="button" data-register-metric="${escapeRegisterText(type)}" aria-pressed="${active ? 'true' : 'false'}">
+        <i class="patient-register-favorite-toggle ${favorite ? 'is-favorite' : ''}" data-register-favorite-toggle data-register-metric-favorite="${escapeRegisterText(type)}" role="button" tabindex="0" aria-label="${favoriteLabel}" aria-pressed="${favorite ? 'true' : 'false'}">${favorite ? '&#9733;' : '&#9734;'}</i>
+        ${iconMarkup}
+        <b>${escapeRegisterText(config.label)}</b>
+      </button>
+    `;
+  };
+  const renderRegisterSelectedIcon = config => {
+    if (config?.image) {
+      return `<img src="${escapeRegisterText(config.image)}" alt="">`;
+    }
+    return `<span>${config?.icon || '+'}</span>`;
+  };
+  const syncRegisterActiveButtons = () => {
+    const current = registerMetricInput?.value || 'water';
+    portal.querySelectorAll('[data-register-metric]').forEach(button => {
+      const active = button.dataset.registerMetric === current;
+      button.classList.toggle('is-active', active);
+      button.setAttribute('aria-pressed', active ? 'true' : 'false');
+    });
+    const currentConfig = registerMetricConfig[current] || registerMetricConfig.water;
+    const currentView = registerMetricViewConfig[current] || registerMetricViewConfig.water;
+    const isFavorite = registerFavoriteMetrics.includes(current);
+    if (registerSelectedTitle) registerSelectedTitle.textContent = currentConfig.label;
+    if (registerSelectedDescription) registerSelectedDescription.textContent = currentView.description || '';
+    if (registerSelectedMeta) registerSelectedMeta.textContent = currentView.meta || 'Registro manual';
+    if (registerSelectedIcon) registerSelectedIcon.innerHTML = renderRegisterSelectedIcon(currentConfig);
+    registerSelectedIcon?.classList.toggle('has-image', Boolean(currentConfig.image));
+    if (registerSelectedFavoriteButton) {
+      registerSelectedFavoriteButton.textContent = isFavorite ? 'En favoritos' : 'Agregar a favoritos';
+      registerSelectedFavoriteButton.classList.toggle('is-added', isFavorite);
+      registerSelectedFavoriteButton.setAttribute('aria-pressed', isFavorite ? 'true' : 'false');
+    }
+  };
+  const renderRegisterMetricRows = () => {
+    if (registerFavorites) {
+      registerFavorites.innerHTML = registerFavoriteMetrics.length
+        ? registerFavoriteMetrics.map(renderRegisterMetricButton).join('')
+        : '<div class="patient-register-favorites-empty">Marca la estrella de un par&aacute;metro para verlo aqu&iacute;.</div>';
+    }
+    if (registerOptions) {
+      registerOptions.innerHTML = registerMetricOrder.map(renderRegisterMetricButton).join('');
+    }
+    syncRegisterActiveButtons();
+  };
+  const toggleRegisterFavorite = (type) => {
+    if (!registerMetricConfig[type]) return;
+    registerFavoriteMetrics = registerFavoriteMetrics.includes(type)
+      ? registerFavoriteMetrics.filter(item => item !== type)
+      : [...registerFavoriteMetrics, type];
+    saveRegisterFavorites();
+    renderRegisterMetricRows();
+  };
+  const addRegisterFavorite = (type) => {
+    if (!registerMetricConfig[type] || registerFavoriteMetrics.includes(type)) {
+      syncRegisterActiveButtons();
+      return;
+    }
+    registerFavoriteMetrics = [...registerFavoriteMetrics, type];
+    saveRegisterFavorites();
+    renderRegisterMetricRows();
+  };
   const selectRegisterMetric = (type) => {
     const config = registerMetricConfig[type] || registerMetricConfig.water;
+    const view = registerMetricViewConfig[type] || registerMetricViewConfig.water;
     if (registerMetricInput) registerMetricInput.value = type;
-    if (registerValueLabel) registerValueLabel.textContent = type === 'note' ? 'Nota' : 'Valor';
+    if (registerValueLabel) registerValueLabel.textContent = view.valueLabel || (type === 'note' ? 'Nota' : 'Valor');
     if (registerValueInput) {
       registerValueInput.type = config.inputType;
       registerValueInput.step = config.step || '';
@@ -1027,12 +1425,7 @@
       registerCustomWrap.hidden = type !== 'custom';
       registerCustomWrap.querySelector('input')?.toggleAttribute('required', type === 'custom');
     }
-    registerOptions?.querySelectorAll('[data-register-metric]').forEach(button => {
-      const active = button.dataset.registerMetric === type;
-      button.classList.toggle('is-active', active);
-      button.setAttribute('aria-pressed', active ? 'true' : 'false');
-      if (active) button.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-    });
+    syncRegisterActiveButtons();
   };
   const saveRegisterRecord = (record) => {
     let records = [];
@@ -1042,7 +1435,164 @@
       records = [];
     }
     records.unshift(record);
-    localStorage.setItem(registerStorageKey, JSON.stringify(records.slice(0, 50)));
+    localStorage.setItem(registerStorageKey, JSON.stringify(records));
+  };
+  const updateRegisterNotesCount = () => {
+    if (!registerNotesInput || !registerNotesCount) return;
+    registerNotesCount.textContent = `${registerNotesInput.value.length}/200`;
+  };
+  const formatRegisterFileSize = bytes => {
+    const size = Number(bytes || 0);
+    if (size >= 1024 * 1024) return `${(size / (1024 * 1024)).toFixed(1)} MB`;
+    if (size >= 1024) return `${Math.max(1, Math.round(size / 1024))} KB`;
+    return `${size} B`;
+  };
+  const buildRegisterTranscript = file => {
+    const fileName = file?.name || 'Documento adjunto';
+    const lowerName = fileName.toLowerCase();
+    const loadedAt = new Date().toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    if (lowerName.includes('lab') || lowerName.includes('analisis') || lowerName.includes('laboratorio')) {
+      return [
+        'Laboratorio: Centro Biotecnologico',
+        `Fecha del estudio: ${loadedAt}`,
+        `Paciente: ${registerPatientName}`,
+        '',
+        'Resultados:',
+        '- Glucosa en ayunas: 92 mg/dL',
+        '- Hemoglobina glicosilada: 5.4%',
+        '- Colesterol total: 168 mg/dL',
+        '- Trigliceridos: 120 mg/dL',
+        '- HDL: 48 mg/dL',
+        '- LDL: 96 mg/dL',
+      ].join('\n');
+    }
+    if (lowerName.includes('receta') || lowerName.includes('prescripcion')) {
+      return [
+        'Documento de receta medica',
+        `Fecha de carga: ${loadedAt}`,
+        `Paciente: ${registerPatientName}`,
+        '',
+        'Indicaciones detectadas:',
+        '- Medicamento y dosis pendientes de confirmar.',
+        '- Frecuencia pendiente de revisar.',
+        '- Duracion pendiente de revisar.',
+      ].join('\n');
+    }
+    return [
+      'Texto transcrito automaticamente',
+      `Archivo: ${fileName}`,
+      `Fecha de carga: ${loadedAt}`,
+      `Paciente: ${registerPatientName}`,
+      '',
+      'Contenido detectado:',
+      '- Documento adjunto al registro manual.',
+      '- Revisa y edita esta transcripcion antes de guardar.',
+    ].join('\n');
+  };
+  const setRegisterTranscriptEditing = editing => {
+    if (!registerTranscriptInput || !registerTranscriptEdit) return;
+    registerTranscriptInput.readOnly = !editing;
+    registerTranscriptCard?.classList.toggle('is-editing', editing);
+    registerTranscriptEdit.textContent = editing ? 'Guardar texto' : 'Editar texto';
+    if (editing) registerTranscriptInput.focus({ preventScroll: true });
+  };
+  const setRegisterAttachmentState = file => {
+    const hasFile = Boolean(file);
+    if (registerAttachmentPick) registerAttachmentPick.hidden = hasFile;
+    if (registerUploadedCard) registerUploadedCard.hidden = !hasFile;
+    if (registerTranscriptCard) registerTranscriptCard.hidden = !hasFile;
+    if (registerAttachmentCategoryWrap) registerAttachmentCategoryWrap.hidden = !hasFile;
+    if (registerAttachmentCategoryInput) {
+      registerAttachmentCategoryInput.required = hasFile;
+      if (!hasFile) registerAttachmentCategoryInput.value = '';
+      registerAttachmentCategoryInput.setCustomValidity('');
+    }
+    if (!hasFile) {
+      if (registerAttachmentName) registerAttachmentName.textContent = 'Sin archivo seleccionado';
+      if (registerTranscriptInput) registerTranscriptInput.value = '';
+      setRegisterTranscriptEditing(false);
+      return;
+    }
+    const isPdf = file.type === 'application/pdf' || /\.pdf$/i.test(file.name);
+    if (registerAttachmentName) registerAttachmentName.textContent = file.name;
+    if (registerUploadedFileName) registerUploadedFileName.textContent = file.name;
+    if (registerUploadedFileSize) registerUploadedFileSize.textContent = formatRegisterFileSize(file.size);
+    if (registerUploadedFileType) {
+      registerUploadedFileType.textContent = isPdf ? 'PDF' : 'IMG';
+      registerUploadedFileType.classList.toggle('is-image', !isPdf);
+    }
+    if (registerTranscriptInput) registerTranscriptInput.value = buildRegisterTranscript(file);
+    setRegisterTranscriptEditing(false);
+  };
+  const escapeManualHistoryText = value => String(value ?? '').replace(/[&<>"']/g, char => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;',
+  }[char]));
+  const formatManualHistoryDate = value => {
+    if (!value) return { date: 'No registrada', day: '' };
+    const parsed = new Date(value);
+    if (Number.isNaN(parsed.getTime())) return { date: value, day: '' };
+    return {
+      date: parsed.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }),
+      day: parsed.toLocaleDateString('es-MX', { weekday: 'long' }),
+    };
+  };
+  const renderManualHistoryRecords = () => {
+    if (!historyBody) return;
+    historyBody.querySelectorAll('[data-history-manual-row]').forEach(row => row.remove());
+    let records = [];
+    try {
+      records = JSON.parse(localStorage.getItem(registerStorageKey) || '[]');
+    } catch (error) {
+      records = [];
+    }
+    const fragment = document.createDocumentFragment();
+    records.forEach(record => {
+      const date = formatManualHistoryDate(record.recordedAt);
+      const label = escapeManualHistoryText(record.label || 'Parametro manual');
+      const unit = record.unit ? ` ${escapeManualHistoryText(record.unit)}` : '';
+      const value = escapeManualHistoryText(record.value || 'Sin valor');
+      const notes = String(record.notes || '').trim();
+      const attachment = String(record.attachmentName || '').trim();
+      const row = document.createElement('tr');
+      row.dataset.historyRow = 'manual';
+      row.dataset.historyManualRow = '1';
+      row.innerHTML = `
+        <td><div class="patient-history-date"><span>+</span><strong>${escapeManualHistoryText(date.date)}<small>${escapeManualHistoryText(date.day)}</small></strong></div></td>
+        <td><span class="patient-history-category is-manual">Registro manual</span></td>
+        <td><div class="patient-history-origin"><span>◇</span><strong>Paciente</strong></div></td>
+        <td><div class="patient-history-service"><span>▣</span><strong>${label}</strong></div></td>
+        <td><strong>${label}: ${value}${unit}</strong>${notes ? `<p class="patient-history-manual-note">${escapeManualHistoryText(notes)}</p>` : ''}</td>
+        <td><span class="patient-history-not-registered">No registrado</span></td>
+      `;
+      fragment.appendChild(row);
+      if (attachment) {
+        const categoryKey = record.attachmentCategory || 'manual';
+        const category = registerAttachmentCategoryConfig[categoryKey] || registerAttachmentCategoryConfig.manual;
+        const transcript = String(record.attachmentTranscript || '').trim();
+        const attachmentRow = document.createElement('tr');
+        attachmentRow.dataset.historyRow = category.historyFilter;
+        attachmentRow.dataset.historyManualRow = '1';
+        attachmentRow.innerHTML = `
+          <td><div class="patient-history-date"><span>+</span><strong>${escapeManualHistoryText(date.date)}<small>${escapeManualHistoryText(date.day)}</small></strong></div></td>
+          <td><span class="patient-history-category is-${escapeManualHistoryText(category.historyFilter)}">${escapeManualHistoryText(record.attachmentCategoryLabel || category.label)}</span></td>
+          <td><div class="patient-history-origin"><span>◇</span><strong>Registro manual</strong></div></td>
+          <td><div class="patient-history-service"><span>▣</span><strong>${escapeManualHistoryText(category.service)}</strong></div></td>
+          <td><strong>${escapeManualHistoryText(attachment)}</strong>${transcript ? `<p class="patient-history-manual-note patient-history-manual-transcript">${escapeManualHistoryText(transcript)}</p>` : ''}</td>
+          <td><div class="patient-history-manual-evidence"><span>▣</span><div><strong>Archivo cargado</strong><p>${escapeManualHistoryText(attachment)}</p><small>Transcripcion automatica revisable.</small></div></div></td>
+        `;
+        fragment.appendChild(attachmentRow);
+      }
+    });
+    historyBody.prepend(fragment);
+    if (historyEmptyRow) historyEmptyRow.hidden = historyBody.querySelectorAll('[data-history-row]').length > 0;
+    const activeFilter = portal.querySelector('[data-history-filter].is-active')?.dataset.historyFilter || 'all';
+    historyBody.querySelectorAll('[data-history-manual-row]').forEach(row => {
+      row.hidden = activeFilter !== 'all' && row.dataset.historyRow !== activeFilter;
+    });
   };
   const closeHealthScreen = () => {
     if (!healthScreenLayer) return;
@@ -1102,38 +1652,107 @@
       });
     });
   }
-  if (registerOptions) {
+  const bindRegisterCarousel = (track) => {
+    if (!track) return;
     let isRegisterPanning = false;
     let registerPanStart = 0;
     let registerPanScroll = 0;
-    registerOptions.addEventListener('pointerdown', event => {
+    let registerPanMoved = false;
+    let registerTapHandled = false;
+    let registerPointerMetric = '';
+    track.addEventListener('pointerdown', event => {
+      if (event.target.closest('[data-register-favorite-toggle]')) return;
+      const button = event.target.closest('[data-register-metric]');
       isRegisterPanning = true;
       registerPanStart = event.clientX;
-      registerPanScroll = registerOptions.scrollLeft;
-      registerOptions.classList.add('is-panning');
-      registerOptions.setPointerCapture?.(event.pointerId);
+      registerPanScroll = track.scrollLeft;
+      registerPanMoved = false;
+      registerTapHandled = false;
+      registerPointerMetric = button && track.contains(button) ? button.dataset.registerMetric : '';
+      track.setPointerCapture?.(event.pointerId);
     });
-    registerOptions.addEventListener('pointermove', event => {
+    track.addEventListener('pointermove', event => {
       if (!isRegisterPanning) return;
-      registerOptions.scrollLeft = registerPanScroll - (event.clientX - registerPanStart);
+      const movement = event.clientX - registerPanStart;
+      track.scrollLeft = registerPanScroll - movement;
+      if (Math.abs(movement) > 8) {
+        registerPanMoved = true;
+        track.classList.add('is-panning');
+      }
+      if (registerPanMoved) event.preventDefault();
     });
     ['pointerup', 'pointercancel', 'pointerleave'].forEach(type => {
-      registerOptions.addEventListener(type, event => {
+      track.addEventListener(type, event => {
+        if (event.target.closest('[data-register-favorite-toggle]')) {
+          isRegisterPanning = false;
+          track.classList.remove('is-panning');
+          registerPointerMetric = '';
+          return;
+        }
+        if (type === 'pointerup' && !registerPanMoved && registerPointerMetric) {
+          selectRegisterMetric(registerPointerMetric);
+          registerTapHandled = true;
+        }
         isRegisterPanning = false;
-        registerOptions.classList.remove('is-panning');
-        if (registerOptions.hasPointerCapture?.(event.pointerId)) registerOptions.releasePointerCapture(event.pointerId);
+        track.classList.remove('is-panning');
+        registerPointerMetric = '';
+        if (track.hasPointerCapture?.(event.pointerId)) track.releasePointerCapture(event.pointerId);
       });
     });
-    registerOptions.querySelectorAll('[data-register-metric]').forEach(button => {
-      button.addEventListener('click', () => selectRegisterMetric(button.dataset.registerMetric));
+    track.addEventListener('click', event => {
+      const favoriteToggle = event.target.closest('[data-register-favorite-toggle]');
+      if (favoriteToggle && track.contains(favoriteToggle)) {
+        event.preventDefault();
+        event.stopPropagation();
+        toggleRegisterFavorite(favoriteToggle.dataset.registerMetricFavorite);
+        return;
+      }
+      const button = event.target.closest('[data-register-metric]');
+      if (!button || !track.contains(button)) return;
+      if (registerTapHandled) {
+        registerTapHandled = false;
+        return;
+      }
+      if (registerPanMoved) {
+        event.preventDefault();
+        registerPanMoved = false;
+        return;
+      }
+      selectRegisterMetric(button.dataset.registerMetric);
     });
-  }
+    track.addEventListener('keydown', event => {
+      const favoriteToggle = event.target.closest('[data-register-favorite-toggle]');
+      if (!favoriteToggle || !track.contains(favoriteToggle)) return;
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      event.preventDefault();
+      toggleRegisterFavorite(favoriteToggle.dataset.registerMetricFavorite);
+    });
+  };
+  renderRegisterMetricRows();
+  portal.querySelectorAll('[data-register-carousel]').forEach(bindRegisterCarousel);
+  registerSelectedFavoriteButton?.addEventListener('click', () => {
+    addRegisterFavorite(registerMetricInput?.value || 'water');
+  });
   registerAttachmentInput?.addEventListener('change', () => {
     const file = registerAttachmentInput.files && registerAttachmentInput.files[0];
-    if (registerAttachmentName) registerAttachmentName.textContent = file ? file.name : 'Sin archivo seleccionado';
+    setRegisterAttachmentState(file || null);
   });
-  document.querySelector('[data-register-attachment-pick]')?.addEventListener('click', () => {
+  registerNotesInput?.addEventListener('input', updateRegisterNotesCount);
+  registerAttachmentPick?.addEventListener('click', () => {
     registerAttachmentInput?.click();
+  });
+  registerAttachmentChange?.addEventListener('click', () => {
+    registerAttachmentInput?.click();
+  });
+  registerAttachmentClear?.addEventListener('click', () => {
+    if (registerAttachmentInput) registerAttachmentInput.value = '';
+    setRegisterAttachmentState(null);
+  });
+  registerTranscriptEdit?.addEventListener('click', () => {
+    setRegisterTranscriptEditing(Boolean(registerTranscriptInput?.readOnly));
+  });
+  registerAttachmentCategoryInput?.addEventListener('change', () => {
+    registerAttachmentCategoryInput.setCustomValidity('');
   });
   registerForm?.addEventListener('submit', event => {
     event.preventDefault();
@@ -1143,6 +1762,14 @@
     const config = registerMetricConfig[metricType] || registerMetricConfig.water;
     const customMetric = String(data.get('customMetric') || '').trim();
     const attachment = registerAttachmentInput?.files?.[0];
+    const attachmentCategoryKey = attachment ? String(data.get('attachmentCategory') || '') : '';
+    if (attachment && !attachmentCategoryKey) {
+      registerAttachmentCategoryInput?.setCustomValidity('Selecciona una categoria para guardar el adjunto.');
+      registerAttachmentCategoryInput?.reportValidity();
+      return;
+    }
+    registerAttachmentCategoryInput?.setCustomValidity('');
+    const attachmentCategory = registerAttachmentCategoryConfig[attachmentCategoryKey] || null;
     saveRegisterRecord({
       id: Date.now(),
       metricType,
@@ -1152,22 +1779,55 @@
       recordedAt: String(data.get('recordedAt') || ''),
       notes: String(data.get('notes') || '').trim(),
       attachmentName: attachment ? attachment.name : '',
+      attachmentSize: attachment ? attachment.size : 0,
+      attachmentTranscript: attachment ? String(data.get('attachmentTranscript') || '').trim() : '',
+      attachmentCategory: attachmentCategory ? attachmentCategory.historyFilter : '',
+      attachmentCategoryLabel: attachmentCategory ? attachmentCategory.label : '',
       source: 'Registro manual',
     });
+    renderManualHistoryRecords();
     if (registerSuccess) registerSuccess.hidden = false;
     registerForm.reset();
     if (registerDateInput) registerDateInput.value = registerDateValue();
-    if (registerAttachmentName) registerAttachmentName.textContent = 'Sin archivo seleccionado';
+    updateRegisterNotesCount();
+    setRegisterAttachmentState(null);
     selectRegisterMetric(metricType);
   });
   registerForm?.addEventListener('reset', () => {
     setTimeout(() => {
       if (registerDateInput) registerDateInput.value = registerDateValue();
-      if (registerAttachmentName) registerAttachmentName.textContent = 'Sin archivo seleccionado';
+      updateRegisterNotesCount();
+      setRegisterAttachmentState(null);
       if (registerSuccess) registerSuccess.hidden = true;
       selectRegisterMetric(registerMetricInput?.value || 'water');
     });
   });
+  updateRegisterNotesCount();
+  setRegisterAttachmentState(null);
+  aiTopForm?.addEventListener('submit', event => {
+    event.preventDefault();
+    sendAiMessage(aiTopInput?.value, { clearTop: false });
+  });
+  aiChatForm?.addEventListener('submit', event => {
+    event.preventDefault();
+    sendAiMessage(aiChatInput?.value);
+  });
+  aiChatPanel?.addEventListener('click', event => {
+    if (event.target.closest('[data-ai-chat-close]')) {
+      closeAiChat();
+      return;
+    }
+    const chip = event.target.closest('[data-ai-chip]');
+    if (chip) {
+      sendAiMessage(chip.dataset.aiChip);
+      return;
+    }
+    const viewAction = event.target.closest('[data-ai-open-view]');
+    if (viewAction) {
+      openView(viewAction.dataset.aiOpenView);
+    }
+  });
+  renderAiConversation();
   portal.addEventListener('click', event => {
     const healthClose = event.target.closest('[data-health-screen-close]');
     if (healthClose) {
@@ -1238,6 +1898,7 @@
     selectHistoryFilter(historyFilters[next]);
     historyFilters[next]?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
   }));
+  renderManualHistoryRecords();
   portal.querySelectorAll('[data-prescription-filter]').forEach(button => button.addEventListener('click', () => {
     const filter = button.dataset.prescriptionFilter;
     portal.querySelectorAll('[data-prescription-filter]').forEach(item => item.classList.toggle('is-active', item === button));
