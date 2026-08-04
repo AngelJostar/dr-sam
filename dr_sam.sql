@@ -88,31 +88,6 @@ CREATE TABLE `audit_logs` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Volcado de datos para la tabla `audit_logs`
---
-
-INSERT INTO `audit_logs` (`id`, `user_id`, `event`, `auditable_type`, `auditable_id`, `ip_address`, `payload`, `created_at`, `updated_at`) VALUES
-(1, 1, 'doctor.appointment.created', 'App\\Models\\Appointment', 2, '127.0.0.1', '{\"module\": \"doctor\", \"context\": [], \"changed_fields\": []}', '2026-07-27 18:33:29', '2026-07-27 18:33:29'),
-(2, 1, 'doctor.patient.updated', 'App\\Models\\Patient', 1, '127.0.0.1', '{\"module\": \"doctor\", \"context\": [], \"changed_fields\": [\"first_name\", \"full_name\", \"metadata\", \"updated_by\", \"updated_at\"]}', '2026-07-27 18:41:00', '2026-07-27 18:41:00'),
-(3, 1, 'institution.unit.status_updated', 'App\\Models\\MedicalUnit', 1, '127.0.0.1', '{\"module\": \"institution\", \"context\": {\"status\": \"maintenance\"}, \"changed_fields\": [\"status\", \"metadata\", \"updated_at\"]}', '2026-07-27 22:26:21', '2026-07-27 22:26:21'),
-(4, 1, 'institution.unit.status_updated', 'App\\Models\\MedicalUnit', 1, '127.0.0.1', '{\"module\": \"institution\", \"context\": {\"status\": \"maintenance\"}, \"changed_fields\": [\"metadata\", \"updated_at\"]}', '2026-07-27 22:26:23', '2026-07-27 22:26:23'),
-(5, 1, 'institution.unit.status_updated', 'App\\Models\\MedicalUnit', 1, '127.0.0.1', '{\"module\": \"institution\", \"context\": {\"status\": \"maintenance\"}, \"changed_fields\": [\"metadata\", \"updated_at\"]}', '2026-07-27 22:26:27', '2026-07-27 22:26:27'),
-(6, 1, 'unit.procedure_area.created', 'App\\Models\\MedicalUnit', 1, '127.0.0.1', '{\"module\": \"unit\", \"context\": {\"type\": \"consulting\", \"unit_number\": \"C-01\"}, \"changed_fields\": [\"metadata\", \"updated_at\"]}', '2026-07-27 23:41:45', '2026-07-27 23:41:45'),
-(7, 13, 'operational.provider_request.status_updated', 'App\\Models\\ProviderRequest', 1, '127.0.0.1', '{\"module\": \"operational\", \"context\": {\"status\": \"cancelled\", \"status_event_id\": 1}, \"changed_fields\": [\"status\", \"updated_at\"]}', '2026-07-28 03:24:59', '2026-07-28 03:24:59'),
-(8, 8, 'operational.provider_request.authorization_updated', 'App\\Models\\ProviderRequest', 2, '127.0.0.1', '{\"module\": \"operational\", \"context\": {\"status\": \"approved\", \"authorization\": \"operational\"}, \"changed_fields\": [\"payload\", \"updated_at\"]}', '2026-07-28 04:56:48', '2026-07-28 04:56:48'),
-(9, 8, 'operational.provider_request.status_updated', 'App\\Models\\ProviderRequest', 4, '127.0.0.1', '{\"module\": \"operational\", \"context\": {\"status\": \"accepted\", \"status_event_id\": 8}, \"changed_fields\": [\"status\", \"updated_at\"]}', '2026-07-28 05:21:35', '2026-07-28 05:21:35'),
-(10, 8, 'operational.provider_request.status_updated', 'App\\Models\\ProviderRequest', 4, '127.0.0.1', '{\"module\": \"operational\", \"context\": {\"status\": \"accepted\", \"status_event_id\": 9}, \"changed_fields\": []}', '2026-07-28 05:21:39', '2026-07-28 05:21:39'),
-(11, 8, 'operational.provider_request.authorization_updated', 'App\\Models\\ProviderRequest', 2, '127.0.0.1', '{\"module\": \"operational\", \"context\": {\"status\": \"approved\", \"authorization\": \"pharmacy\"}, \"changed_fields\": [\"payload\", \"updated_at\"]}', '2026-07-28 05:28:25', '2026-07-28 05:28:25'),
-(12, 8, 'operational.provider_request.status_updated', 'App\\Models\\ProviderRequest', 2, '127.0.0.1', '{\"module\": \"operational\", \"context\": {\"status\": \"accepted\", \"status_event_id\": 11}, \"changed_fields\": [\"status\", \"payload\", \"updated_at\"]}', '2026-07-28 05:33:40', '2026-07-28 05:33:40'),
-(13, 1, 'operational.provider_request.authorization_updated', 'App\\Models\\ProviderRequest', 3, '127.0.0.1', '{\"module\": \"operational\", \"context\": {\"status\": \"approved\", \"authorization\": \"pharmacy\"}, \"changed_fields\": [\"payload\", \"updated_at\"]}', '2026-07-30 03:22:27', '2026-07-30 03:22:27'),
-(14, 1, 'outpatient.patient.updated', 'App\\Models\\Patient', 4, '127.0.0.1', '{\"module\": \"operational\", \"context\": [], \"changed_fields\": [\"platform_number\", \"first_name\", \"last_name\", \"birth_date\", \"curp\", \"metadata\", \"updated_at\"]}', '2026-07-30 03:44:00', '2026-07-30 03:44:00'),
-(15, 1, 'external_pharmacy.prescription_item.dispensed', 'App\\Models\\PatientOrderItem', 1, '127.0.0.1', '{\"module\": \"external_pharmacy\", \"context\": {\"order_id\": 1, \"quantity\": 1, \"prescription_id\": null}, \"changed_fields\": [\"metadata\", \"updated_at\"]}', '2026-07-30 05:13:56', '2026-07-30 05:13:56'),
-(16, 1, 'external_pharmacy.warehouse.status_updated', 'App\\Models\\PharmacyWarehouse', 1, '127.0.0.1', '{\"module\": \"external_pharmacy\", \"context\": {\"status\": \"inactive\"}, \"changed_fields\": [\"status\", \"updated_at\"]}', '2026-07-30 05:33:49', '2026-07-30 05:33:49'),
-(17, 1, 'external_pharmacy.warehouse.status_updated', 'App\\Models\\PharmacyWarehouse', 1, '127.0.0.1', '{\"module\": \"external_pharmacy\", \"context\": {\"status\": \"active\"}, \"changed_fields\": [\"status\", \"updated_at\"]}', '2026-07-30 05:33:50', '2026-07-30 05:33:50'),
-(18, 22, 'insurance_advisor.message.sent', 'App\\Models\\InsuranceAdvisorNotification', 1, '127.0.0.1', '{\"module\": \"insurance_advisor\", \"context\": {\"policy_id\": 1}, \"changed_fields\": []}', '2026-08-01 15:17:26', '2026-08-01 15:17:26'),
-(19, 1, 'provider.request.status_updated', 'App\\Models\\ProviderRequest', 6, '127.0.0.1', '{\"module\": \"provider\", \"context\": {\"status\": \"rejected\", \"provider_type\": \"npt\", \"status_event_id\": 13}, \"changed_fields\": [\"status\", \"updated_at\"]}', '2026-08-01 15:27:30', '2026-08-01 15:27:30');
-
 -- --------------------------------------------------------
 
 --
@@ -1800,14 +1775,6 @@ CREATE TABLE `sessions` (
   `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `last_activity` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Volcado de datos para la tabla `sessions`
---
-
-INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('jzMHZReqwjtnBk0X5N8a5n5vqFS0t5A3DX04or4G', 22, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoia0wzOTM4YXRlU244U0J4SXJqTzk3U0hybVRveUdDNFVIR1lrZmE0VSI7czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MzE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9kYXNoYm9hcmQiO3M6NToicm91dGUiO3M6OToiZGFzaGJvYXJkIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MjI7fQ==', 1785597517),
-('X44fhb0C8DnYCVqhPcXQAByo5OY8qentPeQeIws6', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoickpZWllqcFE3bkxGYjRGMXhKdG9jVEMxZU9Md21jeDlnR3NXWDRuOCI7czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6NjY6Imh0dHA6Ly9kci1zYW0tbGFyYXZlbC50ZXN0L3Byb3ZpZGVycy9ucHQ/c2NvcGU9bnB0JnNlY3Rpb249aGlzdG9yeSI7czo1OiJyb3V0ZSI7czoyMjoicHJvdmlkZXIubnB0LmRhc2hib2FyZCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==', 1785598125);
 
 -- --------------------------------------------------------
 

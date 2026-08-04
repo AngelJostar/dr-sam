@@ -1,6 +1,25 @@
 # Dr. Sam Laravel Platform
 
-Base modular Laravel para Dr. Sam con pantallas Blade nativas, MySQL, permisos por accion, auditoria y bloqueo del legacy publico.
+## Instalación para colaboradores y uso con Codex
+
+La guía completa para clonar el repositorio, importar `dr_sam.sql`, ejecutar Laravel en Windows/Laragon y trabajar de forma segura con Codex está en el [manual de instalación y trabajo con Codex](docs/MANUAL_INSTALACION_CODEX.md).
+
+Inicio rápido después de clonar:
+
+```powershell
+composer install
+Copy-Item .env.example .env
+php artisan key:generate
+mysql -u root -e "CREATE DATABASE IF NOT EXISTS dr_sam CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+cmd /c "mysql -u root dr_sam < dr_sam.sql"
+php artisan migrate
+php artisan optimize:clear
+php artisan serve --host=127.0.0.1 --port=8000
+```
+
+No ejecutes `migrate:fresh` después de importar el respaldo incluido.
+
+Plataforma médica modular desarrollada con Laravel 12, Blade y MySQL. Incluye permisos por acción, control de acceso por entidad, auditoría y pruebas automatizadas.
 
 ## Modulo Aseguradora Salud
 
@@ -9,14 +28,12 @@ Administra pacientes asegurados ligados a usuarios de plataforma, padecimientos 
 
 Documentacion tecnica y de uso: [docs/insurance-health-module.md](docs/insurance-health-module.md).
 
-La plataforma ya no usa los HTML legacy como destino de modulos. El acceso principal esta resuelto con Laravel Blade para:
+La plataforma centraliza:
 
 - Acceso centralizado de usuarios por rol y modulo.
 - Revision temporal sin contrasena.
 - Base de datos unica para instituciones, unidades, servicios, pacientes, medicos, proveedores, farmacia, pedidos y mensajeria.
-- Importacion de catalogos heredados desde los archivos JS/JSON actuales.
 - Permisos finos por accion, ownership por entidad y auditoria de cambios criticos.
-- Bloqueo del puente y archivos legacy publicos por defecto.
 
 Modulos nativos actuales:
 
@@ -29,39 +46,14 @@ Modulos nativos actuales:
 - Paciente: `/patient`
 - Pedidos paciente: `/orders`
 - Medico: `/doctor`
-- Proveedores NPT/quimioterapia/importacion: `/providers/npt`, `/providers/chemotherapy`, `/providers/import`
+- Proveedores NPT e importación: `/providers/npt`, `/providers/import`
 - Mensajeria: `/messenger`
 - Aseguradora salud: `/insurance`
 - Asesor de seguros GMM: `/insurance-advisor`
 
-## Instalacion sugerida
+## Instalación
 
-Desde esta carpeta:
-
-```bash
-composer install
-cp .env.example .env
-php artisan key:generate
-php artisan migrate --seed
-php artisan serve
-```
-
-Configuracion MySQL recomendada para Laragon/local:
-
-```env
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=dr_sam
-DB_USERNAME=root
-DB_PASSWORD=
-```
-
-Para validar la instalacion:
-
-```bash
-php artisan test
-```
+Para la primera instalación sigue el [manual para colaboradores](docs/MANUAL_INSTALACION_CODEX.md). El procedimiento incluye requisitos, descarga, configuración, importación de `dr_sam.sql`, ejecución, pruebas y trabajo asistido con Codex.
 
 ## Acceso libre de revision
 
@@ -101,48 +93,15 @@ Cuando se pase a produccion:
 
 ```env
 DRSAM_REVIEW_PASSWORDLESS=false
-DRSAM_LEGACY_BRIDGE_ENABLED=false
 ```
 
 El sistema ya impide activar `DRSAM_REVIEW_PASSWORDLESS=true` en produccion.
-
-## Legacy bloqueado
-
-Los archivos heredados permanecen en `public/legacy` solo como referencia/importacion, pero el acceso web directo queda bloqueado por `.htaccess`.
-
-El puente `/legacy/open/{module}` tambien esta deshabilitado por defecto mediante:
-
-```env
-DRSAM_LEGACY_BRIDGE_ENABLED=false
-```
-
-Si en una revision controlada se requiere abrir una pantalla antigua, se debe habilitar explicitamente esa variable y revisar que el modulo tenga un target legacy configurado.
-
-## Importacion de datos heredados
-
-Para cargar catalogos desde el prototipo actual:
-
-```bash
-php artisan drsam:import-legacy --root="../"
-```
-
-El importador reconoce:
-
-- `medical-units.js`
-- `private-hospitals-catalog.js`
-- `medication-catalog.js`
-- `farmacia-catalogo-imss-bienestar.js`
-- `med_catalog_final.json`
-
-Los datos que todavia no tengan tabla especifica se pueden conservar en `legacy_payloads` para no perder informacion durante la migracion.
 
 ## Estructura
 
 - `app/Enums`: roles normalizados.
 - `app/Models`: modelos Eloquent de la base unificada.
 - `app/Http/Controllers/Auth`: acceso demo y cierre de sesion.
-- `app/Http/Controllers/Legacy`: puente legacy deshabilitado por defecto.
-- `app/Services/LegacyData`: lectura e importacion de JS/JSON heredados.
 - `app/Services/Platform`: registro de modulos, navegacion, permisos por accion y auditoria.
 - `database/migrations`: esquema relacional consolidado.
 - `database/seeders`: usuarios y datos demo de revision.
@@ -153,5 +112,4 @@ Los datos que todavia no tengan tabla especifica se pueden conservar en `legacy_
 - Auditoria uniforme con `PlatformAuditService`.
 - Ownership en acciones sensibles de institucion, unidad, operativa y mensajeria.
 - Navegacion global por modulos permitidos.
-- Bloqueo de legacy publico.
 - Seed demo cubierto por pruebas.
