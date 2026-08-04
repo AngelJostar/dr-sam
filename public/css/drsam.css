@@ -2661,10 +2661,239 @@ textarea {
 }
 .native-shell .patient-portal-topbar { position: sticky; top: 4px; z-index: 30; display: grid; grid-template-columns: 52px minmax(0, 1fr) 48px; gap: 9px; align-items: center; min-height: 70px; width: calc(100% - 8px); margin: 4px; padding: 5px 10px 5px 5px; box-sizing: border-box; background: rgba(255,255,255,.98); border: 1px solid #dce9eb; border-radius: 22px; box-shadow: 0 13px 30px rgba(34,78,85,.10); }
 .native-shell .patient-portal-topbar .patient-portal-dots { width: 50px; height: 50px; border: 1px solid #d3e2e5 !important; border-radius: 16px; background: #fff !important; color: #111 !important; font-size: 20px; font-weight: 800; line-height: 1; box-shadow: none !important; cursor: pointer; }
-.native-shell .patient-portal-question { display: grid; grid-template-columns: minmax(0,1fr) 44px; gap: 9px; align-items: center; }
-.native-shell .patient-portal-question input { width: 100%; height: 50px; padding: 0 15px; border: 1px solid #d7e4e7; border-radius: 16px; outline: 0; background: linear-gradient(90deg,#fff 55%,#f5fffd); color: #3d4b57; font: inherit; box-shadow: none; }
+.native-shell .patient-portal-question { display: grid; grid-template-columns: minmax(0,1fr) 48px; gap: 0; align-items: center; min-width: 0; height: 50px; overflow: hidden; border: 1px solid #d7e4e7; border-radius: 16px; background: linear-gradient(90deg,#fff 55%,#f5fffd); box-shadow: none; }
+.native-shell .patient-ai-top-spark { display: grid; width: 48px; height: 48px; place-items: center; margin-left: 5px; border-radius: 50%; background: #e9fbf7; color: #04a99b; font-size: 16px; font-weight: 950; box-shadow: inset 0 0 0 1px rgba(103,222,211,.28); }
+.native-shell .patient-portal-question input { width: 100%; height: 50px; padding: 0 15px; border: 0; border-radius: 0; outline: 0; background: transparent; color: #3d4b57; font: inherit; box-shadow: none; }
 .native-shell .patient-portal-question input:focus { border-color: #9bded8; box-shadow: 0 0 0 3px rgba(31,190,178,.08); }
-.native-shell .patient-portal-question button { width: 44px; height: 44px; border: 0; border-radius: 50%; background: #89e0d7; color: #fff; font-size: 29px; font-weight: 500; line-height: 1; cursor: pointer; box-shadow: 0 8px 18px rgba(59,196,184,.22); }
+.native-shell .patient-portal-question button { width: 40px; height: 40px; justify-self: center; border: 0; border-radius: 50%; background: #89e0d7; color: #fff; font-size: 27px; font-weight: 500; line-height: 1; cursor: pointer; box-shadow: 0 8px 18px rgba(59,196,184,.22); }
+.native-shell .patient-portal-question button svg,
+.native-shell .patient-ai-chat-composer button svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.native-shell .patient-ai-chat-composer button svg { width: 22px; height: 22px; }
+.native-shell .patient-ai-chat-shell[hidden] { display: none !important; }
+.native-shell .patient-ai-chat-shell {
+  position: fixed;
+  z-index: 28;
+  top: calc(var(--patient-topbar-height, 70px) + 22px);
+  left: 50%;
+  width: min(92vw, 1280px);
+  transform: translate(-50%, -14px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .28s ease, transform .28s ease;
+}
+.native-shell .patient-ai-chat-shell.is-open {
+  transform: translate(-50%, 0);
+  opacity: 1;
+  pointer-events: auto;
+}
+.native-shell .patient-ai-chat {
+  position: relative;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  min-height: min(62vh, 560px);
+  max-height: calc(100dvh - var(--patient-topbar-height, 70px) - var(--patient-bottom-nav-space, 106px) - 34px);
+  overflow: hidden;
+  padding: 56px 30px 24px;
+  border: 1px solid #dfeaed;
+  border-radius: 24px;
+  background: rgba(255,255,255,.97);
+  box-shadow: 0 24px 70px rgba(23, 52, 68, .12);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+.native-shell .patient-ai-chat-close {
+  position: absolute;
+  top: 22px;
+  right: 24px;
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border: 0 !important;
+  border-radius: 50%;
+  background: transparent !important;
+  color: #102542;
+  box-shadow: none !important;
+  font-size: 36px;
+  line-height: 1;
+  cursor: pointer;
+}
+.native-shell .patient-ai-chat-messages {
+  display: grid;
+  align-content: start;
+  gap: 22px;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0 14px 22px 0;
+  scrollbar-width: thin;
+}
+.native-shell .patient-ai-message {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 560px);
+  gap: 16px;
+  align-items: start;
+}
+.native-shell .patient-ai-message.is-user {
+  grid-template-columns: minmax(0, 560px);
+  justify-content: end;
+}
+.native-shell .patient-ai-avatar {
+  display: grid;
+  width: 46px;
+  height: 46px;
+  place-items: center;
+  border-radius: 50%;
+  background: #e9fbf7;
+  color: #02a99a;
+  font-size: 15px;
+  font-weight: 950;
+}
+.native-shell .patient-ai-bubble {
+  min-width: 0;
+  padding: 18px 20px;
+  border: 1px solid #dce8ed;
+  border-radius: 18px;
+  background: #fff;
+  color: #20304a;
+  box-shadow: 0 10px 24px rgba(21, 54, 72, .05);
+}
+.native-shell .patient-ai-message.is-user .patient-ai-bubble {
+  border-color: #d9f2ef;
+  background: #e6f8f5;
+}
+.native-shell .patient-ai-bubble p {
+  margin: 0;
+  color: #20304a;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+.native-shell .patient-ai-message time {
+  grid-column: 2;
+  margin-top: -14px;
+  color: #708299;
+  font-size: 12px;
+  font-weight: 700;
+}
+.native-shell .patient-ai-message.is-user time {
+  grid-column: 1;
+  justify-self: end;
+  padding-right: 10px;
+}
+.native-shell .patient-ai-smart-card {
+  display: grid;
+  gap: 7px;
+  margin-top: 16px;
+  padding: 16px;
+  border: 1px solid #bfece7;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #f2fffc, #fff);
+}
+.native-shell .patient-ai-smart-card small { color: #008f82; font-size: 12px; font-weight: 950; text-transform: uppercase; }
+.native-shell .patient-ai-smart-card strong { color: #132542; font-size: 19px; }
+.native-shell .patient-ai-smart-card span,
+.native-shell .patient-ai-smart-card p { margin: 0; color: #51657f; font-size: 14px; font-weight: 800; }
+.native-shell .patient-ai-smart-card div { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; margin-top: 8px; }
+.native-shell .patient-ai-smart-card button {
+  min-height: 40px;
+  border: 1px solid #04aaa0 !important;
+  border-radius: 10px;
+  background: #fff !important;
+  color: #008c80;
+  box-shadow: none !important;
+  font-size: 13px;
+  font-weight: 950;
+  cursor: pointer;
+}
+.native-shell .patient-ai-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+.native-shell .patient-ai-chips button {
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid #d5e7eb !important;
+  border-radius: 999px;
+  background: #f8ffff !important;
+  color: #008c80;
+  box-shadow: none !important;
+  font-size: 12px;
+  font-weight: 900;
+  cursor: pointer;
+}
+.native-shell .patient-ai-chat-composer {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) 52px;
+  gap: 14px;
+  align-items: center;
+  padding-top: 20px;
+  border-top: 1px solid #e2ecef;
+}
+.native-shell .patient-ai-chat-composer input {
+  width: 100%;
+  min-height: 58px;
+  box-sizing: border-box;
+  padding: 0 18px;
+  border: 1px solid #d8e5ea;
+  border-radius: 18px;
+  background: #fff;
+  color: #20304a;
+  font: inherit;
+  outline: 0;
+}
+.native-shell .patient-ai-chat-composer input:focus {
+  border-color: #94e4dc;
+  box-shadow: 0 0 0 4px rgba(12, 181, 168, .1);
+}
+.native-shell .patient-ai-chat-composer button {
+  display: grid;
+  width: 52px;
+  height: 52px;
+  place-items: center;
+  border: 0 !important;
+  border-radius: 50%;
+  background: #8fe0d8 !important;
+  color: #fff;
+  box-shadow: 0 12px 24px rgba(9, 170, 157, .18) !important;
+  font-size: 30px;
+  cursor: pointer;
+}
+@media (max-width: 700px) {
+  .native-shell .patient-portal-question { grid-template-columns: minmax(0,1fr) 42px; }
+  .native-shell .patient-ai-top-spark { width: 38px; height: 38px; margin-left: 4px; font-size: 12px; }
+  .native-shell .patient-portal-question input { padding-inline: 10px; font-size: 13px; }
+  .native-shell .patient-portal-question button { width: 36px; height: 36px; font-size: 23px; }
+  .native-shell .patient-ai-chat-shell {
+    top: calc(var(--patient-topbar-height, 70px) + 12px);
+    width: calc(100vw - 18px);
+  }
+  .native-shell .patient-ai-chat {
+    min-height: min(62vh, 520px);
+    max-height: calc(100dvh - var(--patient-topbar-height, 70px) - var(--patient-bottom-nav-space, 106px) - 18px);
+    padding: 50px 14px 14px;
+    border-radius: 20px;
+  }
+  .native-shell .patient-ai-chat-close { top: 12px; right: 14px; }
+  .native-shell .patient-ai-chat-messages { gap: 17px; padding-right: 4px; }
+  .native-shell .patient-ai-message {
+    grid-template-columns: 38px minmax(0, 1fr);
+    gap: 10px;
+  }
+  .native-shell .patient-ai-message.is-user { grid-template-columns: minmax(0, 1fr); }
+  .native-shell .patient-ai-avatar { width: 36px; height: 36px; font-size: 11px; }
+  .native-shell .patient-ai-bubble { padding: 14px; border-radius: 16px; }
+  .native-shell .patient-ai-bubble p { font-size: 13px; }
+  .native-shell .patient-ai-smart-card div { grid-template-columns: 1fr; }
+  .native-shell .patient-ai-chat-composer {
+    grid-template-columns: minmax(0,1fr) 46px;
+    gap: 9px;
+    padding-top: 12px;
+  }
+  .native-shell .patient-ai-chat-composer input { min-height: 48px; border-radius: 15px; }
+  .native-shell .patient-ai-chat-composer button { width: 46px; height: 46px; font-size: 25px; }
+}
 .native-shell .patient-portal-topbar .patient-portal-profile-trigger { display: flex; align-items: center; gap: 10px; width: 46px; height: 46px; padding: 0; border: 0 !important; border-radius: 50%; background: #fff !important; color: inherit; box-shadow: none !important; text-align: left; cursor: pointer; }
 .native-shell .patient-portal-topbar .patient-portal-profile-trigger > span:first-child,
 .native-shell .patient-portal-avatar { display: grid; place-items: center; width: 46px; height: 46px; box-sizing: border-box; border: 1px solid #64d9d0; border-radius: 50%; background: #f3fffd; color: #087b70; font-size: 12px; font-weight: 900; }
@@ -3639,8 +3868,10 @@ body.is-register-modal-open {
   overflow-x: auto;
   margin: 0 -4px 14px;
   padding: 0 4px 10px;
-  scroll-snap-type: x proximity;
+  scroll-behavior: auto;
+  scroll-snap-type: none;
   scrollbar-width: none;
+  overscroll-behavior-x: contain;
   -webkit-overflow-scrolling: touch;
   touch-action: pan-x;
   cursor: grab;
@@ -3668,11 +3899,12 @@ body.is-register-modal-open {
   color: #263754;
   font-size: 13px;
   font-weight: 900;
-  scroll-snap-align: start;
   cursor: pointer;
+  user-select: none;
 }
 
-.native-shell .patient-register-options button span {
+.native-shell .patient-register-options button .patient-register-metric-glyph,
+.native-shell .patient-register-options button .patient-register-metric-image {
   display: grid;
   width: 22px;
   height: 22px;
@@ -3858,6 +4090,10 @@ body.is-register-modal-open {
 .native-shell .patient-device-filters button.is-pending { color: #f2a000; }
 .native-shell .patient-device-filters button.is-vitals { color: #166bd7; }
 .native-shell .patient-device-filters button.is-glucose { color: #704cff; }
+.native-shell .patient-device-filters button.is-active.is-linked,
+.native-shell .patient-device-filters button.is-active.is-pending,
+.native-shell .patient-device-filters button.is-active.is-vitals,
+.native-shell .patient-device-filters button.is-active.is-glucose { color: #fff; }
 .native-shell .patient-device-filter-icon { position: relative; display: inline-grid; flex: 0 0 20px; place-items: center; width: 20px; height: 20px; color: currentColor; }
 .native-shell .patient-device-filter-icon::before,
 .native-shell .patient-device-filter-icon::after { content: ""; position: absolute; box-sizing: border-box; }
@@ -3869,6 +4105,7 @@ body.is-register-modal-open {
 .native-shell .patient-device-filter-heart::after { width: 14px; height: 7px; border-top: 2px solid currentColor; border-radius: 50%; transform: translateY(2px); }
 .native-shell .patient-device-filter-drop::before { width: 15px; height: 15px; border: 2px solid currentColor; border-radius: 50% 50% 50% 2px; transform: rotate(-45deg); }
 .native-shell .patient-device-list { display: grid; gap: 16px; }
+.native-shell .patient-device-empty { padding: 28px; border: 1px dashed #bfe7e4; border-radius: 18px; background: #f9fffe; color: #60758b; font-size: 14px; font-weight: 850; text-align: center; }
 .native-shell .patient-device-card { display: grid; grid-template-columns: 96px minmax(0,1fr) 220px; gap: 22px; align-items: center; min-height: 178px; padding: 24px 26px; border: 1px solid #dce8ed; border-radius: 19px; background: #fff; box-shadow: 0 18px 42px rgba(16,42,60,.06); }
 .native-shell .patient-device-icon-wrap { position: relative; display: grid; place-items: center; width: 96px; height: 96px; }
 .native-shell .patient-device-presence-dot { position: absolute; left: -13px; top: 39px; display: block; width: 14px; height: 14px; border: 5px solid #dcfbf7; border-radius: 50%; background: #20c9bb; }
@@ -4053,6 +4290,1188 @@ body.is-register-modal-open {
   .native-shell .patient-portal-two-columns,
   .native-shell .patient-portal-form-grid,
   .native-shell .patient-portal-doctor-grid { grid-template-columns: 1fr; }
+}
+
+/* Registro rapido redisenado */
+.native-shell .patient-portal-view[data-patient-view="register"] {
+  max-width: 1180px;
+}
+
+.native-shell .patient-register-panel {
+  display: block;
+  padding: 0;
+}
+
+.native-shell .patient-register-workspace {
+  width: min(100%, 1120px);
+  margin: 0 auto;
+}
+
+.native-shell .patient-register-sheet,
+.native-shell .patient-register-view-sheet {
+  width: 100%;
+  max-height: none;
+  overflow: visible;
+  padding: 34px 28px 28px;
+  border: 1px solid #d9e7ec;
+  border-radius: 26px;
+  background: #fff;
+  box-shadow: 0 22px 55px rgba(22, 54, 72, .08);
+}
+
+.native-shell .patient-register-heading {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 165px;
+  padding: 0 72px;
+  text-align: center;
+}
+
+.native-shell .patient-register-heading small {
+  display: block;
+  color: #008e80;
+  font-size: 18px;
+  font-weight: 950;
+  letter-spacing: .02em;
+}
+
+.native-shell .patient-register-heading h2 {
+  margin: 14px 0 10px;
+  color: #142542;
+  font-size: clamp(38px, 5vw, 52px);
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.native-shell .patient-register-heading p {
+  max-width: 720px;
+  margin: 0 auto;
+  color: #576b87;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.native-shell .patient-register-back {
+  position: absolute;
+  top: 18px;
+  left: 0;
+  display: grid;
+  width: 52px;
+  height: 52px;
+  place-items: center;
+  border: 1px solid #cfe3e8 !important;
+  border-radius: 14px;
+  background: #fff !important;
+  color: #132541;
+  box-shadow: 0 10px 22px rgba(24, 55, 73, .08) !important;
+  font-size: 31px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.native-shell .patient-register-option-block {
+  display: grid;
+  gap: 10px;
+  margin: 0 -2px 16px;
+}
+
+.native-shell .patient-register-strip-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-start;
+  gap: 16px;
+  padding: 0 2px;
+  color: #142542;
+}
+
+.native-shell .patient-register-strip-title span {
+  color: #008e80;
+  font-size: 14px;
+  font-weight: 950;
+  text-transform: uppercase;
+  letter-spacing: .02em;
+}
+
+.native-shell .patient-register-strip-title small {
+  color: #65748a;
+  font-size: 12px;
+  font-weight: 800;
+  text-align: right;
+}
+
+.native-shell .patient-register-options {
+  position: relative;
+  display: flex;
+  gap: 18px;
+  margin: 0;
+  padding: 0 2px 20px;
+  overflow-x: auto;
+  border-bottom: 1px solid #e0e9ed;
+  scroll-behavior: auto;
+  scroll-snap-type: none;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+  touch-action: pan-x;
+  -webkit-overflow-scrolling: touch;
+}
+
+.native-shell .patient-register-favorite-options {
+  min-height: 104px;
+  padding: 12px;
+  border: 1px solid #ccebef;
+  border-radius: 22px;
+  background: linear-gradient(135deg, rgba(234, 252, 248, .86), rgba(255, 255, 255, .98));
+}
+
+.native-shell .patient-register-options::-webkit-scrollbar {
+  display: none;
+}
+
+.native-shell .patient-register-options.is-panning {
+  cursor: grabbing;
+  user-select: none;
+}
+
+.native-shell .patient-register-options button {
+  position: relative;
+  display: grid;
+  flex: 0 0 128px;
+  min-height: 118px;
+  place-items: center;
+  align-content: center;
+  gap: 12px;
+  padding: 16px 12px;
+  border: 1px solid #d5e2e8 !important;
+  border-radius: 18px;
+  background: #fff !important;
+  color: #142542;
+  box-shadow: none !important;
+  font-size: 20px;
+  font-weight: 950;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.native-shell .patient-register-options button b {
+  max-width: 100%;
+  overflow: hidden;
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: 1.05;
+  text-overflow: ellipsis;
+}
+
+.native-shell .patient-register-options button .patient-register-metric-glyph,
+.native-shell .patient-register-options button .patient-register-metric-image {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: 50%;
+  background: #eafcf8;
+  color: #009b8f;
+  font-size: 26px;
+  line-height: 1;
+}
+
+.native-shell .patient-register-options button .patient-register-metric-image {
+  width: 44px;
+  height: 44px;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #e9fffa;
+}
+
+.native-shell .patient-register-options button .patient-register-metric-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  pointer-events: none;
+  transform: scale(1.7);
+}
+
+.native-shell .patient-register-favorite-toggle {
+  position: absolute;
+  top: 9px;
+  right: 9px;
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border: 1px solid #d5e9ee;
+  border-radius: 50%;
+  background: #fff;
+  color: #9aa7b5;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 950;
+  line-height: 1;
+  box-shadow: 0 8px 18px rgba(20, 67, 83, .08);
+  z-index: 2;
+}
+
+.native-shell .patient-register-favorite-toggle.is-favorite {
+  border-color: rgba(10, 168, 155, .32);
+  background: #e7fbf7;
+  color: #008e80;
+}
+
+.native-shell .patient-register-options button.is-active {
+  border-color: #0aa89b !important;
+  background: linear-gradient(135deg, #f0fffc, #fff) !important;
+  color: #00877b;
+  box-shadow: 0 18px 36px rgba(12, 173, 160, .12) !important;
+}
+
+.native-shell .patient-register-options button.is-active::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -21px;
+  left: 0;
+  height: 7px;
+  border-radius: 999px 999px 0 0;
+  background: #008c80;
+}
+
+.native-shell .patient-register-favorites-empty {
+  display: flex;
+  flex: 0 0 min(420px, 100%);
+  min-height: 78px;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 18px;
+  border: 1px dashed #bce1e6;
+  border-radius: 17px;
+  background: rgba(255, 255, 255, .78);
+  color: #65748a;
+  font-size: 13px;
+  font-weight: 850;
+  text-align: center;
+}
+
+.native-shell .patient-register-form {
+  display: grid;
+  gap: 26px;
+  padding: 26px 34px 34px;
+  border: 1px solid #d9e7ec;
+  border-radius: 24px;
+  background: #fff;
+}
+
+.native-shell .patient-register-selected-metric {
+  display: grid;
+  grid-template-columns: 70px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+  min-height: 78px;
+  padding: 14px 18px;
+  border: 1px solid #ccebed;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #effffc, #fff);
+}
+
+.native-shell .patient-register-selected-icon {
+  display: grid;
+  width: 64px;
+  height: 64px;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 18px;
+  background: #e8fffa;
+  color: #008e80;
+  font-size: 30px;
+  font-weight: 950;
+  box-shadow: inset 0 0 0 1px rgba(9, 170, 157, .16);
+}
+
+.native-shell .patient-register-selected-icon img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transform: scale(1.65);
+}
+
+.native-shell .patient-register-selected-metric small,
+.native-shell .patient-register-selected-metric h3,
+.native-shell .patient-register-selected-metric p,
+.native-shell .patient-register-selected-metric div > span {
+  display: block;
+  margin: 0;
+}
+
+.native-shell .patient-register-selected-metric small {
+  color: #008e80;
+  font-size: 12px;
+  font-weight: 950;
+  text-transform: uppercase;
+  letter-spacing: .02em;
+}
+
+.native-shell .patient-register-selected-metric h3 {
+  margin-top: 5px;
+  color: #142542;
+  font-size: 25px;
+  font-weight: 950;
+  line-height: 1.08;
+}
+
+.native-shell .patient-register-selected-metric p {
+  margin-top: 8px;
+  color: #526681;
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+.native-shell .patient-register-selected-metric div > span {
+  width: max-content;
+  max-width: 100%;
+  margin-top: 10px;
+  padding: 7px 11px;
+  border-radius: 999px;
+  background: #e6fbf6;
+  color: #008c80;
+  font-size: 12px;
+  font-weight: 950;
+}
+
+.native-shell .patient-register-selected-metric button {
+  min-height: 46px;
+  padding: 0 18px;
+  border: 1px solid #0aa89b !important;
+  border-radius: 999px;
+  background: #fff !important;
+  color: #00877b;
+  box-shadow: 0 12px 24px rgba(12, 173, 160, .12) !important;
+  font-size: 14px;
+  font-weight: 950;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.native-shell .patient-register-selected-metric button.is-added {
+  background: #dff9f4 !important;
+  color: #007b72;
+}
+
+.native-shell .patient-register-form label,
+.native-shell .patient-register-attachment {
+  display: grid;
+  gap: 12px;
+  color: #142542;
+  font-size: 20px;
+  font-weight: 950;
+}
+
+.native-shell .patient-register-form label > span,
+.native-shell .patient-register-attachment > span {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.native-shell .patient-register-form label em,
+.native-shell .patient-register-attachment em {
+  color: #5a6880;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.native-shell .patient-register-form label > span em {
+  color: #c21b68;
+}
+
+.native-shell .patient-register-value-row,
+.native-shell .patient-register-date-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  min-height: 86px;
+  overflow: hidden;
+  border: 1px solid #d7e5eb;
+  border-radius: 18px;
+  background: #fbfefe;
+}
+
+.native-shell .patient-register-value-row input,
+.native-shell .patient-register-date-row input {
+  min-height: 84px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: #142542;
+  font-size: 24px;
+  font-weight: 850;
+  padding: 0 22px;
+}
+
+.native-shell .patient-register-value-row input::placeholder,
+.native-shell .patient-register-form textarea::placeholder {
+  color: #8792a0;
+  opacity: 1;
+}
+
+.native-shell .patient-register-value-row b {
+  min-width: 70px;
+  padding: 0 22px;
+  color: #008b7e;
+  font-size: 22px;
+  font-weight: 950;
+  text-align: center;
+}
+
+.native-shell .patient-register-date-row {
+  grid-template-columns: 56px minmax(0, 1fr) 56px;
+}
+
+.native-shell .patient-register-date-row i {
+  display: grid;
+  place-items: center;
+  color: #132541;
+  font-style: normal;
+  font-size: 22px;
+}
+
+.native-shell .patient-register-notes-wrap {
+  position: relative;
+}
+
+.native-shell .patient-register-form textarea {
+  min-height: 140px;
+  padding: 20px 22px 34px;
+  border: 1px solid #d7e5eb;
+  border-radius: 18px;
+  background: #fbfefe;
+  color: #142542;
+  font-size: 20px;
+  font-weight: 800;
+  resize: vertical;
+}
+
+.native-shell .patient-register-notes-wrap small {
+  position: absolute;
+  right: 18px;
+  bottom: 14px;
+  color: #6d7b8f;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.native-shell .patient-register-form input:focus,
+.native-shell .patient-register-form textarea:focus,
+.native-shell .patient-register-value-row:focus-within,
+.native-shell .patient-register-date-row:focus-within {
+  border-color: #88e0d8;
+  box-shadow: 0 0 0 4px rgba(15, 185, 170, .1);
+}
+
+.native-shell .patient-register-attachment-box {
+  display: grid;
+  grid-template-columns: 78px minmax(0, 1fr) auto;
+  width: 100%;
+  min-height: 110px;
+  align-items: center;
+  gap: 18px;
+  padding: 14px 22px 14px 18px;
+  border: 1px dashed #c7d8e1 !important;
+  border-radius: 18px;
+  background: #fff !important;
+  color: inherit;
+  box-shadow: none !important;
+  text-align: left;
+  cursor: pointer;
+}
+
+.native-shell .patient-register-attachment-box[hidden] {
+  display: none !important;
+}
+
+.native-shell .patient-register-attachment-button {
+  display: grid;
+  width: 66px;
+  height: 66px;
+  place-items: center;
+  border: 0;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #defaf5, #fff);
+  color: #009c8f;
+  font-size: 28px;
+}
+
+.native-shell .patient-register-attachment-button svg {
+  width: 30px;
+  height: 30px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.native-shell .patient-register-attachment-box strong,
+.native-shell .patient-register-attachment-box small {
+  display: block;
+}
+
+.native-shell .patient-register-attachment-box strong {
+  color: #00877b;
+  font-size: 21px;
+  font-weight: 950;
+}
+
+.native-shell .patient-register-attachment-box small {
+  margin-top: 4px;
+  overflow: hidden;
+  color: #5f718a;
+  font-size: 18px;
+  font-weight: 750;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.native-shell .patient-register-attachment-box i {
+  color: #142542;
+  font-style: normal;
+  font-size: 46px;
+  line-height: 1;
+}
+
+.native-shell .patient-register-uploaded-card[hidden],
+.native-shell .patient-register-transcript-card[hidden],
+.native-shell .patient-register-attachment-category[hidden] {
+  display: none !important;
+}
+
+.native-shell .patient-register-uploaded-card {
+  display: grid;
+  gap: 16px;
+  padding: 16px;
+  border: 1px dashed #b9dce2;
+  border-radius: 18px;
+  background: #fff;
+}
+
+.native-shell .patient-register-uploaded-file {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr) 42px;
+  gap: 14px;
+  align-items: center;
+}
+
+.native-shell .patient-register-file-type {
+  display: grid;
+  width: 52px;
+  height: 52px;
+  place-items: center;
+  border-radius: 14px;
+  background: #ffe9e9;
+  color: #e63946;
+  font-size: 15px;
+  font-weight: 950;
+}
+
+.native-shell .patient-register-file-type.is-image {
+  background: #e5fbf6;
+  color: #008f82;
+}
+
+.native-shell .patient-register-uploaded-file strong,
+.native-shell .patient-register-uploaded-file b,
+.native-shell .patient-register-uploaded-file small {
+  display: block;
+}
+
+.native-shell .patient-register-uploaded-file b {
+  margin-bottom: 3px;
+  color: #008f82;
+  font-size: 12px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.native-shell .patient-register-uploaded-file strong {
+  overflow: hidden;
+  color: #162943;
+  font-size: 18px;
+  font-weight: 950;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.native-shell .patient-register-uploaded-file small {
+  margin-top: 4px;
+  color: #61748d;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.native-shell .patient-register-uploaded-file button {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border: 0 !important;
+  border-radius: 50%;
+  background: #fff !important;
+  color: #162943;
+  box-shadow: none !important;
+  cursor: pointer;
+}
+
+.native-shell .patient-register-uploaded-file button svg {
+  width: 21px;
+  height: 21px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.native-shell .patient-register-uploaded-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  color: #008f82;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.native-shell .patient-register-uploaded-status span {
+  display: grid;
+  width: 26px;
+  height: 26px;
+  place-items: center;
+  border-radius: 50%;
+  background: #09a99b;
+  color: #fff;
+}
+
+.native-shell .patient-register-uploaded-status button {
+  margin-left: auto;
+  min-height: 40px;
+  padding: 0 22px;
+  border: 1px solid #0bb5aa !important;
+  border-radius: 10px;
+  background: #fff !important;
+  color: #008f82;
+  box-shadow: none !important;
+  font-size: 14px;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+.native-shell .patient-register-transcript-card {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid #0fb7aa;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #f7fffd, #fff);
+}
+
+.native-shell .patient-register-transcript-card header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.native-shell .patient-register-transcript-card header div {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 9px;
+}
+
+.native-shell .patient-register-transcript-card header strong {
+  color: #142542;
+  font-size: 16px;
+  font-weight: 950;
+}
+
+.native-shell .patient-register-transcript-card header small {
+  color: #5f718a;
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.native-shell .patient-register-transcript-card header span {
+  display: inline-flex;
+  min-height: 24px;
+  align-items: center;
+  padding: 0 9px;
+  border-radius: 999px;
+  background: #e6fbf7;
+  color: #009c90;
+  font-size: 12px;
+  font-weight: 950;
+}
+
+.native-shell .patient-register-transcript-card header button {
+  min-height: 38px;
+  padding: 0 14px;
+  border: 1px solid #0fb7aa !important;
+  border-radius: 10px;
+  background: #fff !important;
+  color: #008f82;
+  box-shadow: none !important;
+  font-size: 13px;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+.native-shell .patient-register-transcript-card textarea {
+  min-height: 210px;
+  padding: 18px;
+  border: 1px solid #cfe1e7;
+  border-radius: 14px;
+  background: #fff;
+  color: #253750;
+  font-size: 15px;
+  font-weight: 750;
+  line-height: 1.45;
+  white-space: pre-wrap;
+}
+
+.native-shell .patient-register-transcript-card textarea[readonly] {
+  background: #fbfefe;
+}
+
+.native-shell .patient-register-transcript-card.is-editing textarea {
+  border-color: #0fb7aa;
+  box-shadow: 0 0 0 4px rgba(15,183,170,.1);
+}
+
+.native-shell .patient-register-transcript-card p {
+  margin: 0;
+  color: #5e718b;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.native-shell .patient-register-attachment-category {
+  display: grid;
+  gap: 10px;
+  padding: 18px;
+  border: 1px solid #d8e7eb;
+  border-radius: 18px;
+  background: #fff;
+}
+
+.native-shell .patient-register-attachment-category select {
+  width: 100%;
+  min-height: 56px;
+  padding: 0 16px;
+  border: 1px solid #d4e5eb;
+  border-radius: 14px;
+  background: #fbfefe;
+  color: #142542;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 850;
+  outline: 0;
+}
+
+.native-shell .patient-register-attachment-category select:focus {
+  border-color: #88e0d8;
+  box-shadow: 0 0 0 4px rgba(15,185,170,.1);
+}
+
+.native-shell .patient-register-attachment-category small {
+  color: #61748d;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.native-shell .patient-register-safe-note {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  align-items: center;
+  gap: 20px;
+  padding: 24px;
+  border-radius: 18px;
+  background: linear-gradient(105deg, #eafff9, #f5fffd 55%, #f0faf8);
+}
+
+.native-shell .patient-register-safe-note > span {
+  display: grid;
+  width: 62px;
+  height: 62px;
+  place-items: center;
+  border-radius: 50%;
+  background: #d6f9ef;
+  color: #008f82;
+  font-size: 34px;
+  font-weight: 950;
+}
+
+.native-shell .patient-register-safe-note strong {
+  display: block;
+  color: #00877b;
+  font-size: 21px;
+  font-weight: 950;
+}
+
+.native-shell .patient-register-safe-note p {
+  margin: 6px 0 0;
+  color: #50647e;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.42;
+}
+
+.native-shell .patient-register-success {
+  padding: 15px 18px;
+  border: 1px solid #bfeee8;
+  border-radius: 16px;
+  background: #effffd;
+  color: #007c72;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.native-shell .patient-register-actions {
+  display: grid;
+  grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
+  gap: 18px;
+  margin-top: 0;
+}
+
+.native-shell .patient-register-secondary,
+.native-shell .patient-register-primary {
+  display: inline-flex;
+  min-height: 78px;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border-radius: 18px;
+  font-size: 22px;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+.native-shell .patient-register-secondary {
+  border: 1px solid #02a99b !important;
+  background: #fff !important;
+  color: #00877b;
+  box-shadow: none !important;
+}
+
+.native-shell .patient-register-primary {
+  border: 0 !important;
+  background: linear-gradient(135deg, #1dc7bb, #008f82) !important;
+  color: #fff;
+  box-shadow: 0 18px 36px rgba(4,170,155,.24) !important;
+}
+
+.native-shell .patient-register-primary span {
+  font-size: 28px;
+  line-height: 1;
+}
+
+@media (max-width: 760px) {
+  .native-shell .patient-portal-view[data-patient-view="register"] {
+    max-width: 460px;
+  }
+
+  .native-shell .patient-register-sheet,
+  .native-shell .patient-register-view-sheet {
+    padding: 18px 16px 20px;
+    border-radius: 20px;
+  }
+
+  .native-shell .patient-register-heading {
+    min-height: 165px;
+    padding: 20px 22px 0;
+  }
+
+  .native-shell .patient-register-back {
+    top: 4px;
+    left: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    font-size: 27px;
+  }
+
+  .native-shell .patient-register-heading small {
+    font-size: 12px;
+  }
+
+  .native-shell .patient-register-heading h2 {
+    margin-top: 12px;
+    font-size: 34px;
+  }
+
+  .native-shell .patient-register-heading p {
+    font-size: 17px;
+  }
+
+  .native-shell .patient-register-option-block {
+    gap: 8px;
+    margin-inline: -16px;
+    margin-bottom: 14px;
+  }
+
+  .native-shell .patient-register-strip-title {
+    display: grid;
+    gap: 2px;
+    padding-inline: 16px;
+  }
+
+  .native-shell .patient-register-strip-title span {
+    font-size: 11px;
+  }
+
+  .native-shell .patient-register-strip-title small {
+    font-size: 11px;
+    text-align: left;
+  }
+
+  .native-shell .patient-register-options {
+    gap: 12px;
+    margin-inline: 0;
+    padding-inline: 16px;
+    padding-bottom: 16px;
+  }
+
+  .native-shell .patient-register-favorite-options {
+    min-height: 100px;
+    margin-inline: 0;
+    padding: 10px 16px 14px;
+    border-right: 0;
+    border-left: 0;
+    border-radius: 0;
+  }
+
+  .native-shell .patient-register-options button {
+    flex-basis: 112px;
+    min-height: 104px;
+    font-size: 18px;
+  }
+
+  .native-shell .patient-register-favorite-toggle {
+    top: 7px;
+    right: 7px;
+    width: 26px;
+    height: 26px;
+    font-size: 13px;
+  }
+
+  .native-shell .patient-register-options button.is-active::after {
+    bottom: -17px;
+    height: 6px;
+  }
+
+  .native-shell .patient-register-form {
+    gap: 21px;
+    padding: 20px 16px;
+    border-radius: 18px;
+  }
+
+  .native-shell .patient-register-selected-metric {
+    grid-template-columns: 54px minmax(0, 1fr);
+    min-height: 0;
+    gap: 12px;
+    padding: 14px;
+    border-radius: 16px;
+  }
+
+  .native-shell .patient-register-selected-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 15px;
+    font-size: 24px;
+  }
+
+  .native-shell .patient-register-selected-metric small {
+    font-size: 10px;
+  }
+
+  .native-shell .patient-register-selected-metric h3 {
+    font-size: 21px;
+  }
+
+  .native-shell .patient-register-selected-metric p {
+    font-size: 13px;
+  }
+
+  .native-shell .patient-register-selected-metric div > span {
+    font-size: 11px;
+  }
+
+  .native-shell .patient-register-selected-metric button {
+    grid-column: 1 / -1;
+    width: 100%;
+    min-height: 44px;
+    font-size: 13px;
+  }
+
+  .native-shell .patient-register-form label,
+  .native-shell .patient-register-attachment {
+    font-size: 16px;
+  }
+
+  .native-shell .patient-register-value-row,
+  .native-shell .patient-register-date-row {
+    min-height: 64px;
+    border-radius: 15px;
+  }
+
+  .native-shell .patient-register-value-row input,
+  .native-shell .patient-register-date-row input {
+    min-height: 62px;
+    padding-inline: 14px;
+    font-size: 17px;
+  }
+
+  .native-shell .patient-register-value-row b {
+    min-width: 48px;
+    padding-inline: 12px;
+    font-size: 17px;
+  }
+
+  .native-shell .patient-register-date-row {
+    grid-template-columns: 42px minmax(0, 1fr) 42px;
+  }
+
+  .native-shell .patient-register-form textarea {
+    min-height: 104px;
+    padding: 16px 14px 30px;
+    font-size: 16px;
+  }
+
+  .native-shell .patient-register-notes-wrap small {
+    right: 13px;
+    bottom: 10px;
+    font-size: 12px;
+  }
+
+  .native-shell .patient-register-attachment-box {
+    grid-template-columns: 54px minmax(0, 1fr) auto;
+    min-height: 86px;
+    gap: 13px;
+    padding: 12px 14px;
+  }
+
+  .native-shell .patient-register-attachment-button {
+    width: 52px;
+    height: 52px;
+    border-radius: 15px;
+    font-size: 22px;
+  }
+
+  .native-shell .patient-register-attachment-button svg {
+    width: 25px;
+    height: 25px;
+  }
+
+  .native-shell .patient-register-attachment-box strong {
+    font-size: 16px;
+  }
+
+  .native-shell .patient-register-attachment-box small {
+    font-size: 13px;
+  }
+
+  .native-shell .patient-register-uploaded-card,
+  .native-shell .patient-register-transcript-card,
+  .native-shell .patient-register-attachment-category {
+    padding: 14px;
+    border-radius: 16px;
+  }
+
+  .native-shell .patient-register-uploaded-file {
+    grid-template-columns: 50px minmax(0, 1fr) 38px;
+    gap: 10px;
+  }
+
+  .native-shell .patient-register-file-type {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    font-size: 12px;
+  }
+
+  .native-shell .patient-register-uploaded-file strong {
+    font-size: 14px;
+  }
+
+  .native-shell .patient-register-uploaded-file small,
+  .native-shell .patient-register-uploaded-status,
+  .native-shell .patient-register-transcript-card p,
+  .native-shell .patient-register-attachment-category small {
+    font-size: 12px;
+  }
+
+  .native-shell .patient-register-uploaded-status button {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .native-shell .patient-register-transcript-card header {
+    align-items: flex-start;
+  }
+
+  .native-shell .patient-register-transcript-card header strong {
+    font-size: 14px;
+  }
+
+  .native-shell .patient-register-transcript-card textarea {
+    min-height: 170px;
+    padding: 14px;
+    font-size: 13px;
+  }
+
+  .native-shell .patient-register-attachment-category select {
+    min-height: 50px;
+    font-size: 13px;
+  }
+
+  .native-shell .patient-register-safe-note {
+    grid-template-columns: 54px minmax(0, 1fr);
+    gap: 14px;
+    padding: 17px;
+  }
+
+  .native-shell .patient-register-safe-note > span {
+    width: 50px;
+    height: 50px;
+    font-size: 26px;
+  }
+
+  .native-shell .patient-register-safe-note strong {
+    font-size: 16px;
+  }
+
+  .native-shell .patient-register-safe-note p {
+    font-size: 14px;
+  }
+
+  .native-shell .patient-register-actions {
+    grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+    gap: 10px;
+  }
+
+  .native-shell .patient-register-secondary,
+  .native-shell .patient-register-primary {
+    min-height: 56px;
+    border-radius: 14px;
+    font-size: 15px;
+  }
 }
 
 .native-shell .doctor-hero {
@@ -19256,13 +20675,17 @@ body.is-register-modal-open {
   display: flex;
   overflow-x: auto;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   padding: 5px 0 20px;
+  scrollbar-width: none;
+}
+.native-shell .patient-history-filters::-webkit-scrollbar {
+  display: none;
 }
 .native-shell .patient-history-filters button {
   min-height: 50px;
   flex: 0 0 auto;
-  padding: 11px 20px;
+  padding: 11px 17px;
   border: 1px solid #d4e2e7;
   border-radius: 999px;
   background: #fff;
@@ -19277,7 +20700,16 @@ body.is-register-modal-open {
 .native-shell .patient-history-filters button.is-study { color: #7443e9; }
 .native-shell .patient-history-filters button.is-prescription { color: #ed7700; }
 .native-shell .patient-history-filters button.is-hospitalization { color: #f1383e; }
+.native-shell .patient-history-filters button.is-manual { color: #008f82; }
+.native-shell .patient-history-filters button.is-vaccine { color: #0b8f62; }
 .native-shell .patient-history-filters button.is-active:not(:first-child) { background: #fff; box-shadow: 0 8px 22px rgba(22, 54, 72, .08); }
+.native-shell .patient-history-filters button[data-history-filter].is-active {
+  border-color: #16b7aa;
+  background: #10b5a8;
+  color: #fff;
+  box-shadow: 0 12px 26px rgba(16, 181, 168, .2);
+}
+.native-shell .patient-history-filters button[data-history-filter].is-active span { color: inherit; }
 .native-shell .patient-history-filters button:first-child,
 .native-shell .patient-history-filters button:last-child {
   width: 44px;
@@ -19310,6 +20742,8 @@ body.is-register-modal-open {
   color: #08a99a;
   font-size: 22px;
 }
+.native-shell .patient-history-date { gap: 0; }
+.native-shell .patient-history-date > span { display: none; }
 .native-shell .patient-history-date strong,
 .native-shell .patient-history-origin strong,
 .native-shell .patient-history-service strong { color: #1e3047; }
@@ -19331,6 +20765,23 @@ body.is-register-modal-open {
 .native-shell .patient-history-category.is-study { background: #eee8ff; color: #7140e4; }
 .native-shell .patient-history-category.is-prescription { background: #fff2df; color: #db6d00; }
 .native-shell .patient-history-category.is-hospitalization { background: #ffe5e5; color: #e83239; }
+.native-shell .patient-history-category.is-manual { background: #e4fbf6; color: #008f82; }
+.native-shell .patient-history-category.is-vaccine { background: #e2f9ef; color: #0b8f62; }
+.native-shell .patient-history-manual-note { margin: 7px 0 0; color: #536783; font-size: 13px; line-height: 1.45; }
+.native-shell .patient-history-manual-transcript { white-space: pre-wrap; }
+.native-shell .patient-history-manual-evidence {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 12px 13px;
+  border: 1px solid #bfeee8;
+  border-radius: 13px;
+  background: #f0fffc;
+}
+.native-shell .patient-history-manual-evidence > span { color: #008f82; font-size: 18px; }
+.native-shell .patient-history-manual-evidence strong { display: block; color: #17304a; font-size: 12px; }
+.native-shell .patient-history-manual-evidence p { margin: 3px 0 0; color: #60738b; font-size: 12px; }
+.native-shell .patient-history-manual-evidence small { display: block; margin-top: 5px; color: #008f82; font-size: 11px; font-weight: 900; }
 .native-shell .patient-history-indications {
   padding: 14px 16px;
   border: 1px solid #f3d2a4;
