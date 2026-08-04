@@ -66,7 +66,6 @@ class PatientPortalController extends Controller
             'sex' => ['nullable', 'in:female,male,other,unspecified'],
             'curp' => ['nullable', 'string', 'max:18', 'unique:patients,curp,'.$patient->id],
             'phone' => ['nullable', 'string', 'max:30'],
-            'email' => ['nullable', 'email', 'max:255'],
         ]);
 
         $fullName = trim(($validated['first_name'] ?? '').' '.($validated['last_name'] ?? ''));

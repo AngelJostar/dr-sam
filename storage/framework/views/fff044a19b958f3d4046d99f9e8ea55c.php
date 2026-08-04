@@ -1,13 +1,11 @@
-@extends('layouts.app', ['title' => 'Portal del Paciente'])
+<?php $__env->startSection('body_class', 'patient-assistant-native-body patient-portal-body'); ?>
 
-@section('body_class', 'patient-assistant-native-body patient-portal-body')
+<?php $__env->startPush('styles'); ?>
+  <link rel="stylesheet" href="<?php echo e(asset('css/patient-profile-panel.css')); ?>?v=<?php echo e(filemtime(public_path('css/patient-profile-panel.css'))); ?>">
+  <link rel="stylesheet" href="<?php echo e(asset('css/communities.css')); ?>?v=<?php echo e(filemtime(public_path('css/communities.css'))); ?>">
+<?php $__env->stopPush(); ?>
 
-@push('styles')
-  <link rel="stylesheet" href="{{ asset('css/patient-profile-panel.css') }}?v={{ filemtime(public_path('css/patient-profile-panel.css')) }}">
-  <link rel="stylesheet" href="{{ asset('css/communities.css') }}?v={{ filemtime(public_path('css/communities.css')) }}">
-@endpush
-
-@php
+<?php
   $statusLabels = [
     'active' => 'Activo', 'inactive' => 'Inactivo', 'scheduled' => 'Programada',
     'created' => 'Creado', 'pending' => 'Pendiente', 'delivered' => 'Entregado',
@@ -23,9 +21,9 @@
     'calendar' => ['Calendario', 'calendar'],
     'doctors' => ['Médicos y terapeutas', 'people'],
   ];
-@endphp
+?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="patient-assistant-native-screen patient-portal" data-patient-portal>
   <header class="patient-assistant-native-topbar patient-portal-topbar">
     <button class="patient-portal-dots" type="button" aria-label="Abrir interacciones" aria-expanded="false" aria-controls="patient-support-menu" data-support-toggle>⋮</button>
@@ -34,27 +32,28 @@
       <button type="submit" aria-label="Preguntar">↑</button>
     </form>
     <button class="patient-portal-profile-trigger" type="button" data-profile-panel-open aria-label="Abrir perfil del paciente">
-      <span>{{ $initials ?: 'PX' }}</span>
+      <span><?php echo e($initials ?: 'PX'); ?></span>
     </button>
   </header>
 
   <div class="patient-portal-layout">
     <aside id="patient-support-menu" class="patient-assistant-native-menu patient-portal-menu" aria-label="Menú del paciente" aria-hidden="true" data-support-menu>
       <strong class="patient-portal-menu-title">Interacciones</strong>
-      @foreach ($supportViews as $key => [$label, $icon])
-        <button type="button" data-open-view="{{ $key }}">
-          <span class="patient-support-icon patient-support-icon-{{ $icon }}" aria-hidden="true"></span>{{ $label }}
+      <?php $__currentLoopData = $supportViews; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => [$label, $icon]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <button type="button" data-open-view="<?php echo e($key); ?>">
+          <span class="patient-support-icon patient-support-icon-<?php echo e($icon); ?>" aria-hidden="true"></span><?php echo e($label); ?>
+
         </button>
-      @endforeach
+      <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
     </aside>
 
     <main class="patient-portal-content">
-      @if (session('patient_notice'))
-        <div class="patient-portal-notice">{{ session('patient_notice') }}</div>
-      @endif
-      @if ($errors->any())
-        <div class="patient-portal-notice is-error">{{ $errors->first() }}</div>
-      @endif
+      <?php if(session('patient_notice')): ?>
+        <div class="patient-portal-notice"><?php echo e(session('patient_notice')); ?></div>
+      <?php endif; ?>
+      <?php if($errors->any()): ?>
+        <div class="patient-portal-notice is-error"><?php echo e($errors->first()); ?></div>
+      <?php endif; ?>
 
       <section class="patient-portal-view is-active" data-patient-view="home">
         <div class="patient-assistant-native-intro patient-portal-intro">
@@ -66,25 +65,25 @@
       <section class="patient-portal-view" data-patient-view="profile">
         <div class="patient-portal-view-heading"><div><small>PERFIL DEL PACIENTE</small><h1>Mi perfil</h1><p>Información personal y datos de contacto.</p></div></div>
         <div class="patient-portal-two-columns">
-          <form class="patient-portal-card patient-portal-form" method="post" action="{{ route('patient.profile.update') }}">
-            @csrf @method('PATCH')
+          <form class="patient-portal-card patient-portal-form" method="post" action="<?php echo e(route('patient.profile.update')); ?>">
+            <?php echo csrf_field(); ?> <?php echo method_field('PATCH'); ?>
             <h2>Datos personales</h2>
             <div class="patient-portal-form-grid">
-              <label>Nombre<input name="first_name" value="{{ old('first_name', $patient->first_name) }}"></label>
-              <label>Apellidos<input name="last_name" value="{{ old('last_name', $patient->last_name) }}"></label>
-              <label>Fecha de nacimiento<input type="date" name="birth_date" value="{{ old('birth_date', $patient->birth_date?->format('Y-m-d')) }}"></label>
-              <label>Sexo<select name="sex"><option value="unspecified">Sin especificar</option><option value="female" @selected($patient->sex === 'female')>Femenino</option><option value="male" @selected($patient->sex === 'male')>Masculino</option><option value="other" @selected($patient->sex === 'other')>Otro</option></select></label>
-              <label>CURP<input name="curp" maxlength="18" value="{{ old('curp', $patient->curp) }}"></label>
-              <label>No. usuario plataforma<input value="{{ $patient->platform_number }}" disabled></label>
-              <label>Teléfono<input name="phone" value="{{ old('phone', $patient->phone) }}"></label>
-              <label>Correo<input type="email" name="email" value="{{ old('email', $patient->email) }}" readonly aria-readonly="true"></label>
+              <label>Nombre<input name="first_name" value="<?php echo e(old('first_name', $patient->first_name)); ?>"></label>
+              <label>Apellidos<input name="last_name" value="<?php echo e(old('last_name', $patient->last_name)); ?>"></label>
+              <label>Fecha de nacimiento<input type="date" name="birth_date" value="<?php echo e(old('birth_date', $patient->birth_date?->format('Y-m-d'))); ?>"></label>
+              <label>Sexo<select name="sex"><option value="unspecified">Sin especificar</option><option value="female" <?php if($patient->sex === 'female'): echo 'selected'; endif; ?>>Femenino</option><option value="male" <?php if($patient->sex === 'male'): echo 'selected'; endif; ?>>Masculino</option><option value="other" <?php if($patient->sex === 'other'): echo 'selected'; endif; ?>>Otro</option></select></label>
+              <label>CURP<input name="curp" maxlength="18" value="<?php echo e(old('curp', $patient->curp)); ?>"></label>
+              <label>No. usuario plataforma<input value="<?php echo e($patient->platform_number); ?>" disabled></label>
+              <label>Teléfono<input name="phone" value="<?php echo e(old('phone', $patient->phone)); ?>"></label>
+              <label>Correo<input type="email" name="email" value="<?php echo e(old('email', $patient->email)); ?>" readonly aria-readonly="true"></label>
             </div>
             <button class="patient-portal-primary" type="submit">Guardar cambios</button>
           </form>
           <article class="patient-portal-card patient-portal-preview">
-            <div class="patient-portal-avatar">{{ $initials ?: 'PX' }}</div>
-            <h2>{{ $patient->full_name }}</h2><p>{{ $patient->platform_number ?? 'Sin número de plataforma' }}</p>
-            <dl><div><dt>Estatus</dt><dd>{{ $statusText($patient->status) }}</dd></div><div><dt>Médico principal</dt><dd>{{ $patient->primaryDoctor?->full_name ?? 'Sin asignar' }}</dd></div><div><dt>Perfil completado</dt><dd>{{ $patient->profile_completed_at?->format('d/m/Y') ?? 'Pendiente' }}</dd></div></dl>
+            <div class="patient-portal-avatar"><?php echo e($initials ?: 'PX'); ?></div>
+            <h2><?php echo e($patient->full_name); ?></h2><p><?php echo e($patient->platform_number ?? 'Sin número de plataforma'); ?></p>
+            <dl><div><dt>Estatus</dt><dd><?php echo e($statusText($patient->status)); ?></dd></div><div><dt>Médico principal</dt><dd><?php echo e($patient->primaryDoctor?->full_name ?? 'Sin asignar'); ?></dd></div><div><dt>Perfil completado</dt><dd><?php echo e($patient->profile_completed_at?->format('d/m/Y') ?? 'Pendiente'); ?></dd></div></dl>
           </article>
         </div>
       </section>
@@ -94,7 +93,7 @@
       </section>
 
       <section class="patient-portal-view" data-patient-view="insurance">
-        @php
+        <?php
           $policyMeta = $policy?->metadata ?? [];
           $advisorName = $policyMeta['advisor_name'] ?? 'Andrea Suarez';
           $insuranceComplete = $policy
@@ -103,7 +102,7 @@
             && $policy->starts_at
             && $policy->ends_at;
           $insuranceValue = fn ($value, $fallback = 'No registrado') => filled($value) ? $value : $fallback;
-        @endphp
+        ?>
         <article class="patient-insurance-shell">
           <header class="patient-insurance-hero">
             <div class="patient-insurance-hero-icon" aria-hidden="true"><span>✓</span></div>
@@ -115,9 +114,9 @@
               <h2>Ten tu información siempre actualizada</h2>
               <p>Mantener tus datos de seguro al día nos permite brindarte una mejor experiencia y evitar contratiempos en tus servicios de salud.</p>
               <strong>Estado de tu seguro <span title="Información del estado">ⓘ</span></strong>
-              <div class="patient-insurance-alert {{ $insuranceComplete ? 'is-complete' : '' }}">
-                <span>{{ $insuranceComplete ? '✓' : '◷' }}</span>
-                <div><b>{{ $insuranceComplete ? 'Información completa' : 'Información pendiente' }}</b><small>{{ $insuranceComplete ? 'Tu póliza se encuentra registrada.' : 'Hay datos por completar para tu seguro.' }}</small></div>
+              <div class="patient-insurance-alert <?php echo e($insuranceComplete ? 'is-complete' : ''); ?>">
+                <span><?php echo e($insuranceComplete ? '✓' : '◷'); ?></span>
+                <div><b><?php echo e($insuranceComplete ? 'Información completa' : 'Información pendiente'); ?></b><small><?php echo e($insuranceComplete ? 'Tu póliza se encuentra registrada.' : 'Hay datos por completar para tu seguro.'); ?></small></div>
               </div>
               <button class="patient-insurance-complete-link" type="button" data-insurance-form-open>Completa tu información →</button>
               <div class="patient-insurance-actions">
@@ -126,14 +125,14 @@
               </div>
             </section>
             <aside class="patient-insurance-advisor">
-              <div class="patient-insurance-advisor-heading"><span>{{ collect(explode(' ', $advisorName))->filter()->take(2)->map(fn($part) => mb_substr($part, 0, 1))->implode('') ?: 'AS' }}</span><div><small>ASESOR DE SEGUROS VINCULADO</small><strong>{{ $advisorName }}</strong></div></div>
+              <div class="patient-insurance-advisor-heading"><span><?php echo e(collect(explode(' ', $advisorName))->filter()->take(2)->map(fn($part) => mb_substr($part, 0, 1))->implode('') ?: 'AS'); ?></span><div><small>ASESOR DE SEGUROS VINCULADO</small><strong><?php echo e($advisorName); ?></strong></div></div>
               <p>Cualquier solicitud de soporte se canalizará con tu asesor vinculado para dar seguimiento a coberturas, autorizaciones y reembolsos.</p>
-              <div><small>ASEGURADORA</small><strong>{{ $insuranceValue($policy?->insurer_name, 'Por asignar') }}</strong></div>
-              @if($policyMeta['advisor_email'] ?? null)
-                <a href="mailto:{{ $policyMeta['advisor_email'] }}">Contactar asesor</a>
-              @else
+              <div><small>ASEGURADORA</small><strong><?php echo e($insuranceValue($policy?->insurer_name, 'Por asignar')); ?></strong></div>
+              <?php if($policyMeta['advisor_email'] ?? null): ?>
+                <a href="mailto:<?php echo e($policyMeta['advisor_email']); ?>">Contactar asesor</a>
+              <?php else: ?>
                 <button type="button" disabled title="Asesor sin medio de contacto registrado">Contactar asesor</button>
-              @endif
+              <?php endif; ?>
             </aside>
           </div>
           <nav class="patient-insurance-tabs" aria-label="Secciones de Mi Seguro">
@@ -150,29 +149,29 @@
             <section class="patient-insurance-pane is-active" data-insurance-pane="summary">
               <header><span>▣</span><div><h2>Resumen de información</h2><p>Detalle del estado de tu información de seguro</p></div></header>
               <dl class="patient-insurance-summary">
-                <div><dt>♢&nbsp; Aseguradora</dt><dd class="{{ $policy?->insurer_name ? '' : 'is-missing' }}">{{ $insuranceValue($policy?->insurer_name, 'Aseguradora no registrada') }}</dd></div>
-                <div><dt>▣&nbsp; Vigencia</dt><dd class="{{ $policy?->starts_at && $policy?->ends_at ? '' : 'is-missing' }}">{{ $policy?->starts_at && $policy?->ends_at ? $policy->starts_at->format('d/m/Y').' - '.$policy->ends_at->format('d/m/Y') : 'No registrada' }}</dd></div>
-                <div><dt>▯&nbsp; Póliza</dt><dd class="{{ $policy?->policy_number ? '' : 'is-missing' }}">{{ $insuranceValue($policy?->policy_number) }}</dd></div>
-                <div><dt>▣&nbsp; Deducible</dt><dd class="{{ filled($policyMeta['deductible'] ?? null) ? '' : 'is-missing' }}">{{ $insuranceValue($policyMeta['deductible'] ?? null) }}</dd></div>
-                <div><dt>▣&nbsp; Plan</dt><dd class="{{ $policy?->plan_name ? '' : 'is-pending' }}">{{ $insuranceValue($policy?->plan_name, 'Plan pendiente de captura') }}</dd></div>
-                <div><dt>♢&nbsp; Coaseguro</dt><dd class="{{ filled($policyMeta['coinsurance'] ?? null) ? '' : 'is-missing' }}">{{ $insuranceValue($policyMeta['coinsurance'] ?? null) }}</dd></div>
+                <div><dt>♢&nbsp; Aseguradora</dt><dd class="<?php echo e($policy?->insurer_name ? '' : 'is-missing'); ?>"><?php echo e($insuranceValue($policy?->insurer_name, 'Aseguradora no registrada')); ?></dd></div>
+                <div><dt>▣&nbsp; Vigencia</dt><dd class="<?php echo e($policy?->starts_at && $policy?->ends_at ? '' : 'is-missing'); ?>"><?php echo e($policy?->starts_at && $policy?->ends_at ? $policy->starts_at->format('d/m/Y').' - '.$policy->ends_at->format('d/m/Y') : 'No registrada'); ?></dd></div>
+                <div><dt>▯&nbsp; Póliza</dt><dd class="<?php echo e($policy?->policy_number ? '' : 'is-missing'); ?>"><?php echo e($insuranceValue($policy?->policy_number)); ?></dd></div>
+                <div><dt>▣&nbsp; Deducible</dt><dd class="<?php echo e(filled($policyMeta['deductible'] ?? null) ? '' : 'is-missing'); ?>"><?php echo e($insuranceValue($policyMeta['deductible'] ?? null)); ?></dd></div>
+                <div><dt>▣&nbsp; Plan</dt><dd class="<?php echo e($policy?->plan_name ? '' : 'is-pending'); ?>"><?php echo e($insuranceValue($policy?->plan_name, 'Plan pendiente de captura')); ?></dd></div>
+                <div><dt>♢&nbsp; Coaseguro</dt><dd class="<?php echo e(filled($policyMeta['coinsurance'] ?? null) ? '' : 'is-missing'); ?>"><?php echo e($insuranceValue($policyMeta['coinsurance'] ?? null)); ?></dd></div>
               </dl>
             </section>
-            @foreach (['coverage' => ['Cobertura', 'Los beneficios y límites de cobertura aparecerán cuando sean registrados.'], 'programs' => ['Programas', 'No hay programas de apego vinculados a esta póliza.'], 'network' => ['Red de Médicos', 'No hay una red médica registrada para esta póliza.'], 'medications' => ['Medicamentos', 'No hay medicamentos cubiertos registrados.'], 'refunds' => ['Reembolsos', 'No hay solicitudes de reembolso registradas.']] as $tab => [$title, $description])
-              <section class="patient-insurance-pane" data-insurance-pane="{{ $tab }}"><header><span>▣</span><div><h2>{{ $title }}</h2><p>{{ $description }}</p></div></header><div class="patient-insurance-empty">No registrado</div></section>
-            @endforeach
+            <?php $__currentLoopData = ['coverage' => ['Cobertura', 'Los beneficios y límites de cobertura aparecerán cuando sean registrados.'], 'programs' => ['Programas', 'No hay programas de apego vinculados a esta póliza.'], 'network' => ['Red de Médicos', 'No hay una red médica registrada para esta póliza.'], 'medications' => ['Medicamentos', 'No hay medicamentos cubiertos registrados.'], 'refunds' => ['Reembolsos', 'No hay solicitudes de reembolso registradas.']]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tab => [$title, $description]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+              <section class="patient-insurance-pane" data-insurance-pane="<?php echo e($tab); ?>"><header><span>▣</span><div><h2><?php echo e($title); ?></h2><p><?php echo e($description); ?></p></div></header><div class="patient-insurance-empty">No registrado</div></section>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
           </div>
-          <form class="patient-insurance-edit-form patient-portal-form" method="post" action="{{ route('patient.insurance.save') }}" data-insurance-form hidden>
-            @csrf
-            <div class="patient-insurance-form-heading"><div><h2>{{ $policy ? 'Actualizar póliza' : 'Registrar póliza' }}</h2><p>Completa los datos disponibles de tu seguro médico.</p></div><button type="button" data-insurance-form-close>×</button></div>
+          <form class="patient-insurance-edit-form patient-portal-form" method="post" action="<?php echo e(route('patient.insurance.save')); ?>" data-insurance-form hidden>
+            <?php echo csrf_field(); ?>
+            <div class="patient-insurance-form-heading"><div><h2><?php echo e($policy ? 'Actualizar póliza' : 'Registrar póliza'); ?></h2><p>Completa los datos disponibles de tu seguro médico.</p></div><button type="button" data-insurance-form-close>×</button></div>
             <div class="patient-portal-form-grid">
-              <label>Número de póliza<input required name="policy_number" value="{{ old('policy_number', $policy?->policy_number) }}"></label>
-              <label>Aseguradora<input required name="insurer_name" value="{{ old('insurer_name', $policy?->insurer_name) }}"></label>
-              <label>Plan<input name="plan_name" value="{{ old('plan_name', $policy?->plan_name) }}"></label>
-              <label>Empresa<input name="employer_name" value="{{ old('employer_name', $policy?->employer_name) }}"></label>
-              <label>Inicio<input type="date" name="starts_at" value="{{ old('starts_at', $policy?->starts_at?->format('Y-m-d')) }}"></label>
-              <label>Fin<input type="date" name="ends_at" value="{{ old('ends_at', $policy?->ends_at?->format('Y-m-d')) }}"></label>
-              <label>Estatus<select name="status"><option value="active">Activa</option><option value="pending" @selected($policy?->status === 'pending')>Pendiente</option><option value="inactive" @selected($policy?->status === 'inactive')>Inactiva</option><option value="expired" @selected($policy?->status === 'expired')>Vencida</option></select></label>
+              <label>Número de póliza<input required name="policy_number" value="<?php echo e(old('policy_number', $policy?->policy_number)); ?>"></label>
+              <label>Aseguradora<input required name="insurer_name" value="<?php echo e(old('insurer_name', $policy?->insurer_name)); ?>"></label>
+              <label>Plan<input name="plan_name" value="<?php echo e(old('plan_name', $policy?->plan_name)); ?>"></label>
+              <label>Empresa<input name="employer_name" value="<?php echo e(old('employer_name', $policy?->employer_name)); ?>"></label>
+              <label>Inicio<input type="date" name="starts_at" value="<?php echo e(old('starts_at', $policy?->starts_at?->format('Y-m-d'))); ?>"></label>
+              <label>Fin<input type="date" name="ends_at" value="<?php echo e(old('ends_at', $policy?->ends_at?->format('Y-m-d'))); ?>"></label>
+              <label>Estatus<select name="status"><option value="active">Activa</option><option value="pending" <?php if($policy?->status === 'pending'): echo 'selected'; endif; ?>>Pendiente</option><option value="inactive" <?php if($policy?->status === 'inactive'): echo 'selected'; endif; ?>>Inactiva</option><option value="expired" <?php if($policy?->status === 'expired'): echo 'selected'; endif; ?>>Vencida</option></select></label>
             </div>
             <button class="patient-portal-primary" type="submit">Guardar póliza</button>
           </form>
@@ -180,15 +179,15 @@
       </section>
 
       <section class="patient-portal-view" data-patient-view="analyses">
-        <div class="patient-portal-view-heading"><div><small>EXPEDIENTE DIGITAL</small><h1>Análisis clínicos</h1><p>Resultados y documentos médicos cargados a tu cuenta.</p></div><span>{{ $clinicalAnalyses->count() }} estudios</span></div>
+        <div class="patient-portal-view-heading"><div><small>EXPEDIENTE DIGITAL</small><h1>Análisis clínicos</h1><p>Resultados y documentos médicos cargados a tu cuenta.</p></div><span><?php echo e($clinicalAnalyses->count()); ?> estudios</span></div>
         <div class="patient-portal-table-card"><table><thead><tr><th>Estudio</th><th>Fecha</th><th>Tipo</th><th>Estatus</th><th>Archivo</th></tr></thead><tbody>
-          @forelse ($clinicalAnalyses as $document)<tr><td><strong>{{ $document->name }}</strong></td><td>{{ $document->loaded_at?->format('d/m/Y') ?? $document->created_at?->format('d/m/Y') }}</td><td>{{ ucfirst(str_replace('_', ' ', $document->document_type)) }}</td><td><span class="patient-portal-status">{{ $statusText($document->status) }}</span></td><td>@if($document->file_path)<a href="{{ asset('storage/'.$document->file_path) }}" target="_blank">Ver documento</a>@else Sin archivo @endif</td></tr>
-          @empty <tr><td colspan="5" class="patient-portal-empty">Aún no hay análisis clínicos registrados.</td></tr>@endforelse
+          <?php $__empty_1 = true; $__currentLoopData = $clinicalAnalyses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $document): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?><tr><td><strong><?php echo e($document->name); ?></strong></td><td><?php echo e($document->loaded_at?->format('d/m/Y') ?? $document->created_at?->format('d/m/Y')); ?></td><td><?php echo e(ucfirst(str_replace('_', ' ', $document->document_type))); ?></td><td><span class="patient-portal-status"><?php echo e($statusText($document->status)); ?></span></td><td><?php if($document->file_path): ?><a href="<?php echo e(asset('storage/'.$document->file_path)); ?>" target="_blank">Ver documento</a><?php else: ?> Sin archivo <?php endif; ?></td></tr>
+          <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?> <tr><td colspan="5" class="patient-portal-empty">Aún no hay análisis clínicos registrados.</td></tr><?php endif; ?>
         </tbody></table></div>
       </section>
 
       <section class="patient-portal-view" data-patient-view="history">
-        @php
+        <?php
           $clinicalCategory = function ($type) {
             $type = strtolower((string) $type);
             return str_contains($type, 'hospital') ? 'hospitalization'
@@ -234,7 +233,7 @@
             'prescription' => 'Recetas',
             'hospitalization' => 'Servicio Hospitalario',
           ];
-        @endphp
+        ?>
         <article class="patient-history-panel">
           <header class="patient-history-hero">
             <div class="patient-history-hero-icon" aria-hidden="true"><i></i><i></i><i></i></div>
@@ -255,29 +254,29 @@
               <table class="patient-history-table">
                 <thead><tr><th>Fecha</th><th>Categoría</th><th>Origen</th><th>Especialidad o tipo de servicio</th><th>Resumen clínico</th><th>Receta / Indicaciones</th></tr></thead>
                 <tbody>
-                  @forelse ($historyItems as $item)
-                    <tr data-history-row="{{ $item['category'] }}">
-                      <td><div class="patient-history-date"><span>□</span><strong>{{ $item['date']?->format('d/m/Y') ?? 'No registrada' }}<small>{{ $item['date']?->translatedFormat('l') ?? '' }}</small></strong></div></td>
-                      <td><span class="patient-history-category is-{{ $item['category'] }}">{{ $historyCategoryLabels[$item['category']] ?? 'Registro clínico' }}</span></td>
-                      <td><div class="patient-history-origin"><span>♙</span><strong>{{ $item['origin'] }}</strong></div></td>
-                      <td><div class="patient-history-service"><span>⌁</span><strong>{{ $item['service'] }}</strong></div></td>
-                      <td>{{ $item['summary'] }}</td>
+                  <?php $__empty_1 = true; $__currentLoopData = $historyItems; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                    <tr data-history-row="<?php echo e($item['category']); ?>">
+                      <td><div class="patient-history-date"><span>□</span><strong><?php echo e($item['date']?->format('d/m/Y') ?? 'No registrada'); ?><small><?php echo e($item['date']?->translatedFormat('l') ?? ''); ?></small></strong></div></td>
+                      <td><span class="patient-history-category is-<?php echo e($item['category']); ?>"><?php echo e($historyCategoryLabels[$item['category']] ?? 'Registro clínico'); ?></span></td>
+                      <td><div class="patient-history-origin"><span>♙</span><strong><?php echo e($item['origin']); ?></strong></div></td>
+                      <td><div class="patient-history-service"><span>⌁</span><strong><?php echo e($item['service']); ?></strong></div></td>
+                      <td><?php echo e($item['summary']); ?></td>
                       <td>
-                        @if(count($item['indications']))
+                        <?php if(count($item['indications'])): ?>
                           <div class="patient-history-indications">
                             <span>▤</span>
-                            @foreach($item['indications'] as $indication)
-                              <div><strong>{{ $indication['title'] }}</strong><p>{{ $indication['detail'] }}</p></div>
-                            @endforeach
+                            <?php $__currentLoopData = $item['indications']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $indication): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                              <div><strong><?php echo e($indication['title']); ?></strong><p><?php echo e($indication['detail']); ?></p></div>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                           </div>
-                        @else
+                        <?php else: ?>
                           <span class="patient-history-not-registered">No registrado</span>
-                        @endif
+                        <?php endif; ?>
                       </td>
                     </tr>
-                  @empty
+                  <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                     <tr><td colspan="6" class="patient-portal-empty">No hay registros clínicos.</td></tr>
-                  @endforelse
+                  <?php endif; ?>
                 </tbody>
               </table>
             </div>
@@ -303,80 +302,80 @@
               <table class="patient-prescriptions-table">
                 <thead><tr><th>Médico tratante</th><th>Especialidad</th><th>Fecha</th><th>Medicamento, dosis, presentación</th><th>Análisis clínico</th><th>Ver receta</th><th>Hospital donde se recetó</th><th>Institución donde se recetó</th></tr></thead>
                 <tbody>
-                @forelse ($patient->prescriptions->sortByDesc('issued_at') as $prescription)
-                  @php
+                <?php $__empty_1 = true; $__currentLoopData = $patient->prescriptions->sortByDesc('issued_at'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $prescription): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                  <?php
                     $prescriptionMeta = $prescription->metadata ?? [];
                     $isExpiredPrescription = in_array($prescription->status, ['expired', 'inactive'], true)
                       || ($prescriptionMeta['expires_at'] ?? null) && \Illuminate\Support\Carbon::parse($prescriptionMeta['expires_at'])->isPast();
                     $hasAnalysis = !empty($prescriptionMeta['clinical_analysis']) || !empty($prescriptionMeta['clinical_analyses']);
-                  @endphp
-                  <tr data-prescription-row data-status="{{ $isExpiredPrescription ? 'expired' : 'active' }}" data-has-medications="{{ $prescription->items->isNotEmpty() ? '1' : '0' }}" data-has-analysis="{{ $hasAnalysis ? '1' : '0' }}">
-                    <td>{{ $prescription->doctor?->full_name ?? 'Sin médico asignado' }}</td>
-                    <td>{{ $prescription->doctor?->specialty ?? 'Medicina general' }}</td>
-                    <td>{{ $prescription->issued_at?->format('d/m/Y') ?? 'Sin fecha' }}</td>
-                    <td class="patient-prescription-medications">@forelse($prescription->items as $item)<div>{{ $item->medication_name }} @if($item->dose)| {{ $item->dose }} @endif @if($item->metadata['presentation'] ?? null)| {{ $item->metadata['presentation'] }} @endif @if($item->frequency)| {{ $item->frequency }} @endif</div>@empty Sin medicamentos indicados @endforelse</td>
-                    <td>{{ $prescriptionMeta['clinical_analysis'] ?? ($hasAnalysis ? 'Análisis relacionados' : '—') }}</td>
-                    <td><button class="patient-prescription-view-button" type="button" title="{{ $prescription->code ?? 'Receta médica' }}" data-prescription-open="patient-prescription-{{ $prescription->id }}">Ver</button></td>
-                    <td>{{ $prescriptionMeta['hospital'] ?? $prescriptionMeta['medical_unit'] ?? 'Privada' }}</td>
-                    <td>{{ $prescriptionMeta['institution'] ?? 'Privada' }}</td>
+                  ?>
+                  <tr data-prescription-row data-status="<?php echo e($isExpiredPrescription ? 'expired' : 'active'); ?>" data-has-medications="<?php echo e($prescription->items->isNotEmpty() ? '1' : '0'); ?>" data-has-analysis="<?php echo e($hasAnalysis ? '1' : '0'); ?>">
+                    <td><?php echo e($prescription->doctor?->full_name ?? 'Sin médico asignado'); ?></td>
+                    <td><?php echo e($prescription->doctor?->specialty ?? 'Medicina general'); ?></td>
+                    <td><?php echo e($prescription->issued_at?->format('d/m/Y') ?? 'Sin fecha'); ?></td>
+                    <td class="patient-prescription-medications"><?php $__empty_2 = true; $__currentLoopData = $prescription->items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_2 = false; ?><div><?php echo e($item->medication_name); ?> <?php if($item->dose): ?>| <?php echo e($item->dose); ?> <?php endif; ?> <?php if($item->metadata['presentation'] ?? null): ?>| <?php echo e($item->metadata['presentation']); ?> <?php endif; ?> <?php if($item->frequency): ?>| <?php echo e($item->frequency); ?> <?php endif; ?></div><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_2): ?> Sin medicamentos indicados <?php endif; ?></td>
+                    <td><?php echo e($prescriptionMeta['clinical_analysis'] ?? ($hasAnalysis ? 'Análisis relacionados' : '—')); ?></td>
+                    <td><button class="patient-prescription-view-button" type="button" title="<?php echo e($prescription->code ?? 'Receta médica'); ?>" data-prescription-open="patient-prescription-<?php echo e($prescription->id); ?>">Ver</button></td>
+                    <td><?php echo e($prescriptionMeta['hospital'] ?? $prescriptionMeta['medical_unit'] ?? 'Privada'); ?></td>
+                    <td><?php echo e($prescriptionMeta['institution'] ?? 'Privada'); ?></td>
                   </tr>
-                @empty <tr><td colspan="8" class="patient-portal-empty">No hay recetas registradas.</td></tr>@endforelse
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?> <tr><td colspan="8" class="patient-portal-empty">No hay recetas registradas.</td></tr><?php endif; ?>
                 </tbody>
               </table>
             </div>
           </div>
         </article>
-        @foreach ($patient->prescriptions->sortByDesc('issued_at') as $prescription)
-          @php
+        <?php $__currentLoopData = $patient->prescriptions->sortByDesc('issued_at'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $prescription): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+          <?php
             $prescriptionMeta = $prescription->metadata ?? [];
             $hospitalName = $prescriptionMeta['hospital'] ?? $prescriptionMeta['medical_unit'] ?? 'Privada';
             $institutionName = $prescriptionMeta['institution'] ?? 'Privada';
             $pharmacyName = $prescriptionMeta['external_pharmacy'] ?? 'Farmacia externa';
-          @endphp
-          <dialog class="patient-prescription-dialog" id="patient-prescription-{{ $prescription->id }}" aria-labelledby="patient-prescription-title-{{ $prescription->id }}">
+          ?>
+          <dialog class="patient-prescription-dialog" id="patient-prescription-<?php echo e($prescription->id); ?>" aria-labelledby="patient-prescription-title-<?php echo e($prescription->id); ?>">
             <header class="patient-prescription-dialog-header">
-              <div><small>FORMATO PDF</small><h2 id="patient-prescription-title-{{ $prescription->id }}">Receta canjeable</h2></div>
+              <div><small>FORMATO PDF</small><h2 id="patient-prescription-title-<?php echo e($prescription->id); ?>">Receta canjeable</h2></div>
               <button type="button" data-prescription-close aria-label="Cerrar receta">×</button>
             </header>
             <div class="patient-prescription-paper">
               <div class="patient-prescription-paper-title">
-                <div><h3>Formato de Receta Médica</h3><p>{{ $pharmacyName }} - {{ $hospitalName === 'Privada' ? 'Consulta Externa Privada' : $hospitalName }}</p></div>
-                <div><small>Folio</small><strong>{{ $prescription->code ?? 'RX-'.$prescription->id }}</strong></div>
+                <div><h3>Formato de Receta Médica</h3><p><?php echo e($pharmacyName); ?> - <?php echo e($hospitalName === 'Privada' ? 'Consulta Externa Privada' : $hospitalName); ?></p></div>
+                <div><small>Folio</small><strong><?php echo e($prescription->code ?? 'RX-'.$prescription->id); ?></strong></div>
               </div>
               <dl class="patient-prescription-detail-grid">
-                <div><dt>Paciente</dt><dd>{{ $patient->full_name }}</dd></div>
-                <div><dt>ID de paciente</dt><dd>{{ $patient->platform_number ?? $patient->id }}</dd></div>
-                <div><dt>Médico tratante</dt><dd>{{ $prescription->doctor?->full_name ?? 'Sin médico asignado' }}</dd></div>
-                <div><dt>Especialidad</dt><dd>{{ $prescription->doctor?->specialty ?? 'Medicina general' }}</dd></div>
-                <div><dt>Fecha</dt><dd>{{ $prescription->issued_at?->format('d/m/Y') ?? 'Sin fecha' }}</dd></div>
-                <div><dt>Hospital</dt><dd>{{ $hospitalName }}</dd></div>
-                <div><dt>Institución</dt><dd>{{ $institutionName }}</dd></div>
-                <div><dt>Farmacia externa</dt><dd>{{ $pharmacyName }}</dd></div>
+                <div><dt>Paciente</dt><dd><?php echo e($patient->full_name); ?></dd></div>
+                <div><dt>ID de paciente</dt><dd><?php echo e($patient->platform_number ?? $patient->id); ?></dd></div>
+                <div><dt>Médico tratante</dt><dd><?php echo e($prescription->doctor?->full_name ?? 'Sin médico asignado'); ?></dd></div>
+                <div><dt>Especialidad</dt><dd><?php echo e($prescription->doctor?->specialty ?? 'Medicina general'); ?></dd></div>
+                <div><dt>Fecha</dt><dd><?php echo e($prescription->issued_at?->format('d/m/Y') ?? 'Sin fecha'); ?></dd></div>
+                <div><dt>Hospital</dt><dd><?php echo e($hospitalName); ?></dd></div>
+                <div><dt>Institución</dt><dd><?php echo e($institutionName); ?></dd></div>
+                <div><dt>Farmacia externa</dt><dd><?php echo e($pharmacyName); ?></dd></div>
                 <div><dt>Formato</dt><dd>Formato de Receta Médica</dd></div>
-                <div><dt>Canje</dt><dd>{{ $prescriptionMeta['redemption'] ?? 'Canje sujeto a validación de Farmacia externa.' }}</dd></div>
+                <div><dt>Canje</dt><dd><?php echo e($prescriptionMeta['redemption'] ?? 'Canje sujeto a validación de Farmacia externa.'); ?></dd></div>
               </dl>
               <div class="patient-prescription-lines">
-                @forelse ($prescription->items as $item)
-                  <div><small>{{ $item->metadata['quantity'] ?? 1 }} {{ ($item->metadata['quantity'] ?? 1) == 1 ? 'pieza' : 'piezas' }}</small><strong>{{ $item->medication_name }}@if($item->dose) | {{ $item->dose }}@endif @if($item->metadata['presentation'] ?? null)| {{ $item->metadata['presentation'] }}@endif</strong>@if($item->frequency || $item->duration || $item->instructions)<p>{{ collect([$item->frequency, $item->duration, $item->instructions])->filter()->implode(' · ') }}</p>@endif</div>
-                @empty
+                <?php $__empty_1 = true; $__currentLoopData = $prescription->items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                  <div><small><?php echo e($item->metadata['quantity'] ?? 1); ?> <?php echo e(($item->metadata['quantity'] ?? 1) == 1 ? 'pieza' : 'piezas'); ?></small><strong><?php echo e($item->medication_name); ?><?php if($item->dose): ?> | <?php echo e($item->dose); ?><?php endif; ?> <?php if($item->metadata['presentation'] ?? null): ?>| <?php echo e($item->metadata['presentation']); ?><?php endif; ?></strong><?php if($item->frequency || $item->duration || $item->instructions): ?><p><?php echo e(collect([$item->frequency, $item->duration, $item->instructions])->filter()->implode(' · ')); ?></p><?php endif; ?></div>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                   <div><strong>Sin medicamentos indicados</strong></div>
-                @endforelse
+                <?php endif; ?>
               </div>
               <footer class="patient-prescription-paper-footer">
-                <div class="patient-prescription-signature"><span></span><strong>{{ $prescription->doctor?->full_name ?? 'Médico tratante' }}</strong><small>Cédula profesional {{ $prescription->doctor?->professional_license ?? 'sin registrar' }}</small></div>
+                <div class="patient-prescription-signature"><span></span><strong><?php echo e($prescription->doctor?->full_name ?? 'Médico tratante'); ?></strong><small>Cédula profesional <?php echo e($prescription->doctor?->professional_license ?? 'sin registrar'); ?></small></div>
                 <div class="patient-prescription-qr" aria-label="Código para canje"><span></span><small>QR para canje</small></div>
               </footer>
             </div>
           </dialog>
-        @endforeach
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
       </section>
 
       <section class="patient-portal-view" data-patient-view="calendar">
-        @php
+        <?php
           $calendarAppointments = $patient->appointments->sortBy('starts_at')->values();
           $calendarMonths = $calendarAppointments->filter(fn ($item) => $item->starts_at)->map(fn ($item) => ['key' => $item->starts_at->format('Y-m'), 'label' => ucfirst($item->starts_at->translatedFormat('F Y'))])->unique('key')->values();
           $consultationHistory = $patient->clinicalRecords->sortByDesc('recorded_at')->values();
-        @endphp
+        ?>
         <div class="patient-calendar-shell">
           <header class="patient-calendar-hero">
             <span class="patient-calendar-hero-icon" aria-hidden="true"></span>
@@ -391,54 +390,54 @@
             </div>
             <div class="patient-calendar-month-nav">
               <button type="button" aria-label="Mes anterior" data-calendar-month-step="-1">‹</button>
-              <span><b>☺</b> {{ $calendarAppointments->filter(fn ($item) => $item->starts_at?->isFuture())->count() }} próximas citas</span>
-              <strong data-calendar-month-label>{{ $calendarMonths->first()['label'] ?? ucfirst(now()->translatedFormat('F Y')) }}</strong>
+              <span><b>☺</b> <?php echo e($calendarAppointments->filter(fn ($item) => $item->starts_at?->isFuture())->count()); ?> próximas citas</span>
+              <strong data-calendar-month-label><?php echo e($calendarMonths->first()['label'] ?? ucfirst(now()->translatedFormat('F Y'))); ?></strong>
               <button type="button" aria-label="Mes siguiente" data-calendar-month-step="1">›</button>
             </div>
           </div>
           <div class="patient-calendar-list">
-            @forelse ($calendarAppointments as $appointment)
-              @php
+            <?php $__empty_1 = true; $__currentLoopData = $calendarAppointments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $appointment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+              <?php
                 $calendarText = mb_strtolower(collect([$appointment->specialty, $appointment->modality, $appointment->reason])->filter()->implode(' '));
                 $calendarType = str_contains($calendarText, 'laborat') || str_contains($calendarText, 'análisis') || str_contains($calendarText, 'muestra') ? 'laboratory' : 'consultation';
                 $isUpcoming = $appointment->starts_at?->isFuture() && !in_array($appointment->status, ['cancelled', 'completed'], true);
                 $appointmentUnit = $appointment->medicalUnit?->name ?? $appointment->location ?? 'Ubicación no registrada';
                 $appointmentTitle = $calendarType === 'laboratory' ? 'Laboratorio' : ($appointment->specialty ?: 'Consulta médica');
-              @endphp
-              <article class="patient-calendar-card" data-calendar-item data-calendar-type="{{ $calendarType }}" data-calendar-upcoming="{{ $isUpcoming ? '1' : '0' }}" data-calendar-month="{{ $appointment->starts_at?->format('Y-m') }}">
-                <div class="patient-calendar-type-icon is-{{ $calendarType }}" aria-hidden="true"><span>{{ $calendarType === 'laboratory' ? '♙' : '♥' }}</span></div>
+              ?>
+              <article class="patient-calendar-card" data-calendar-item data-calendar-type="<?php echo e($calendarType); ?>" data-calendar-upcoming="<?php echo e($isUpcoming ? '1' : '0'); ?>" data-calendar-month="<?php echo e($appointment->starts_at?->format('Y-m')); ?>">
+                <div class="patient-calendar-type-icon is-<?php echo e($calendarType); ?>" aria-hidden="true"><span><?php echo e($calendarType === 'laboratory' ? '♙' : '♥'); ?></span></div>
                 <div class="patient-calendar-card-main">
-                  <h2>{{ $appointmentTitle }}</h2>
-                  <div class="patient-calendar-date"><span>▣</span><strong>{{ $appointment->starts_at?->format('d/m/Y') ?? 'Fecha pendiente' }}</strong><i>•</i><span>◷</span><strong>{{ $appointment->starts_at?->format('H:i') ?? 'Sin hora' }}</strong></div>
-                  <p>Con {{ $appointment->doctor?->full_name ?? 'médico por asignar' }}, en {{ $appointmentUnit }}. Motivo: {{ $appointment->reason ?: 'No registrado' }}</p>
+                  <h2><?php echo e($appointmentTitle); ?></h2>
+                  <div class="patient-calendar-date"><span>▣</span><strong><?php echo e($appointment->starts_at?->format('d/m/Y') ?? 'Fecha pendiente'); ?></strong><i>•</i><span>◷</span><strong><?php echo e($appointment->starts_at?->format('H:i') ?? 'Sin hora'); ?></strong></div>
+                  <p>Con <?php echo e($appointment->doctor?->full_name ?? 'médico por asignar'); ?>, en <?php echo e($appointmentUnit); ?>. Motivo: <?php echo e($appointment->reason ?: 'No registrado'); ?></p>
                   <div class="patient-calendar-card-meta">
-                    <div><small>MÉDICO</small><strong>{{ $appointment->doctor?->full_name ?? 'No registrado' }}</strong></div>
-                    <div><small>ESPECIALIDAD</small><strong>{{ $appointment->specialty ?: 'No registrada' }}</strong></div>
-                    <div><small>MODALIDAD</small><strong>{{ $appointment->modality ?: ($calendarType === 'laboratory' ? 'Toma de muestra' : 'Consulta presencial') }}</strong></div>
-                    <div><small>UBICACIÓN</small><strong>{{ $appointmentUnit }}</strong></div>
+                    <div><small>MÉDICO</small><strong><?php echo e($appointment->doctor?->full_name ?? 'No registrado'); ?></strong></div>
+                    <div><small>ESPECIALIDAD</small><strong><?php echo e($appointment->specialty ?: 'No registrada'); ?></strong></div>
+                    <div><small>MODALIDAD</small><strong><?php echo e($appointment->modality ?: ($calendarType === 'laboratory' ? 'Toma de muestra' : 'Consulta presencial')); ?></strong></div>
+                    <div><small>UBICACIÓN</small><strong><?php echo e($appointmentUnit); ?></strong></div>
                   </div>
                 </div>
                 <aside class="patient-calendar-card-actions">
-                  <span class="patient-calendar-status">{{ $statusText($appointment->status) }}</span>
-                  <button type="button" data-calendar-detail-open="patient-calendar-detail-{{ $appointment->id }}">Ver detalle <b>›</b></button>
+                  <span class="patient-calendar-status"><?php echo e($statusText($appointment->status)); ?></span>
+                  <button type="button" data-calendar-detail-open="patient-calendar-detail-<?php echo e($appointment->id); ?>">Ver detalle <b>›</b></button>
                   <button type="button" disabled title="La cancelación todavía no está habilitada">Cancelar cita</button>
                 </aside>
               </article>
-              <dialog class="patient-calendar-dialog" id="patient-calendar-detail-{{ $appointment->id }}">
-                <header><div><small>DETALLE DE CITA</small><h2>{{ $appointmentTitle }}</h2></div><button type="button" data-calendar-detail-close aria-label="Cerrar">×</button></header>
+              <dialog class="patient-calendar-dialog" id="patient-calendar-detail-<?php echo e($appointment->id); ?>">
+                <header><div><small>DETALLE DE CITA</small><h2><?php echo e($appointmentTitle); ?></h2></div><button type="button" data-calendar-detail-close aria-label="Cerrar">×</button></header>
                 <dl>
-                  <div><dt>Fecha y hora</dt><dd>{{ $appointment->starts_at?->format('d/m/Y H:i') ?? 'No registrada' }}</dd></div>
-                  <div><dt>Estatus</dt><dd>{{ $statusText($appointment->status) }}</dd></div>
-                  <div><dt>Médico</dt><dd>{{ $appointment->doctor?->full_name ?? 'No registrado' }}</dd></div>
-                  <div><dt>Especialidad</dt><dd>{{ $appointment->specialty ?: 'No registrada' }}</dd></div>
-                  <div><dt>Modalidad</dt><dd>{{ $appointment->modality ?: 'No registrada' }}</dd></div>
-                  <div><dt>Ubicación</dt><dd>{{ $appointmentUnit }}</dd></div>
-                  <div class="is-wide"><dt>Motivo</dt><dd>{{ $appointment->reason ?: 'No registrado' }}</dd></div>
+                  <div><dt>Fecha y hora</dt><dd><?php echo e($appointment->starts_at?->format('d/m/Y H:i') ?? 'No registrada'); ?></dd></div>
+                  <div><dt>Estatus</dt><dd><?php echo e($statusText($appointment->status)); ?></dd></div>
+                  <div><dt>Médico</dt><dd><?php echo e($appointment->doctor?->full_name ?? 'No registrado'); ?></dd></div>
+                  <div><dt>Especialidad</dt><dd><?php echo e($appointment->specialty ?: 'No registrada'); ?></dd></div>
+                  <div><dt>Modalidad</dt><dd><?php echo e($appointment->modality ?: 'No registrada'); ?></dd></div>
+                  <div><dt>Ubicación</dt><dd><?php echo e($appointmentUnit); ?></dd></div>
+                  <div class="is-wide"><dt>Motivo</dt><dd><?php echo e($appointment->reason ?: 'No registrado'); ?></dd></div>
                 </dl>
               </dialog>
-            @empty
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
               <div class="patient-calendar-empty" data-calendar-empty>No hay citas o estudios programados.</div>
-            @endforelse
+            <?php endif; ?>
             <div class="patient-calendar-empty" data-calendar-filter-empty hidden>No hay citas que coincidan con este filtro.</div>
           </div>
           <p class="patient-calendar-timezone">ⓘ Las citas y estudios se muestran en la zona horaria de tu ubicación actual.</p>
@@ -449,24 +448,24 @@
             <table>
               <thead><tr><th>Fecha</th><th>Médico tratante</th><th>Especialidad</th><th>Tipo de consulta</th><th>Motivo</th><th>Diagnóstico</th><th>Medicamento, dosis y cantidad</th><th>Unidad</th><th>Estatus</th></tr></thead>
               <tbody>
-                @forelse ($consultationHistory as $record)
-                  @php
+                <?php $__empty_1 = true; $__currentLoopData = $consultationHistory; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $record): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                  <?php
                     $recordPayload = $record->payload ?? [];
                     $recordMedication = $recordPayload['medications'] ?? $recordPayload['medication'] ?? null;
                     if (is_array($recordMedication)) {
                       $recordMedication = collect($recordMedication)->map(fn ($item) => is_array($item) ? collect($item)->filter()->implode(' · ') : $item)->filter()->implode('; ');
                     }
-                  @endphp
+                  ?>
                   <tr>
-                    <td>{{ $record->recorded_at?->format('d/m/Y') ?? 'No registrada' }}</td><td>{{ $record->doctor?->full_name ?? 'No registrado' }}</td>
-                    <td>{{ $recordPayload['specialty'] ?? $recordPayload['service'] ?? 'No registrada' }}</td><td>{{ $recordPayload['consultation_type'] ?? $record->title ?? ucfirst(str_replace('_', ' ', $record->record_type)) }}</td>
-                    <td>{{ $recordPayload['reason'] ?? $record->summary ?? 'No registrado' }}</td><td>{{ $recordPayload['diagnosis'] ?? 'No registrado' }}</td>
-                    <td>{{ $recordMedication ?: 'Sin receta generada' }}</td><td>{{ $recordPayload['unit'] ?? $recordPayload['location'] ?? 'No registrada' }}</td>
+                    <td><?php echo e($record->recorded_at?->format('d/m/Y') ?? 'No registrada'); ?></td><td><?php echo e($record->doctor?->full_name ?? 'No registrado'); ?></td>
+                    <td><?php echo e($recordPayload['specialty'] ?? $recordPayload['service'] ?? 'No registrada'); ?></td><td><?php echo e($recordPayload['consultation_type'] ?? $record->title ?? ucfirst(str_replace('_', ' ', $record->record_type))); ?></td>
+                    <td><?php echo e($recordPayload['reason'] ?? $record->summary ?? 'No registrado'); ?></td><td><?php echo e($recordPayload['diagnosis'] ?? 'No registrado'); ?></td>
+                    <td><?php echo e($recordMedication ?: 'Sin receta generada'); ?></td><td><?php echo e($recordPayload['unit'] ?? $recordPayload['location'] ?? 'No registrada'); ?></td>
                     <td><span class="patient-calendar-history-status">Atendida</span></td>
                   </tr>
-                @empty
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                   <tr><td colspan="9" class="patient-portal-empty">No hay consultas anteriores registradas.</td></tr>
-                @endforelse
+                <?php endif; ?>
               </tbody>
             </table>
           </div>
@@ -474,11 +473,11 @@
       </section>
 
       <section class="patient-portal-view" data-patient-view="doctors">
-        <div class="patient-portal-view-heading"><div><small>RED MÉDICA</small><h1>Médicos y terapeutas</h1><p>Consulta los profesionales disponibles en la plataforma.</p></div><span>{{ $doctors->count() }} profesionales</span></div>
+        <div class="patient-portal-view-heading"><div><small>RED MÉDICA</small><h1>Médicos y terapeutas</h1><p>Consulta los profesionales disponibles en la plataforma.</p></div><span><?php echo e($doctors->count()); ?> profesionales</span></div>
         <div class="patient-portal-filters"><input type="search" placeholder="Buscar médico, especialidad o unidad" data-card-search="doctor-grid"></div>
         <div class="patient-portal-doctor-grid" id="doctor-grid">
-          @forelse ($doctors as $doctor)<article><div class="patient-portal-avatar">{{ collect(explode(' ', $doctor->full_name))->filter()->take(2)->map(fn($part) => mb_substr($part,0,1))->implode('') }}</div><div><h2>{{ $doctor->full_name }}</h2><strong>{{ $doctor->specialty ?? 'Medicina general' }}</strong><p>{{ $doctor->subspecialty ?? $doctor->service_name ?? 'Atención médica' }}</p><small>{{ $doctor->medicalUnit?->name ?? 'Consulta privada' }}</small></div></article>
-          @empty <div class="patient-portal-empty">No hay médicos activos.</div>@endforelse
+          <?php $__empty_1 = true; $__currentLoopData = $doctors; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $doctor): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?><article><div class="patient-portal-avatar"><?php echo e(collect(explode(' ', $doctor->full_name))->filter()->take(2)->map(fn($part) => mb_substr($part,0,1))->implode('')); ?></div><div><h2><?php echo e($doctor->full_name); ?></h2><strong><?php echo e($doctor->specialty ?? 'Medicina general'); ?></strong><p><?php echo e($doctor->subspecialty ?? $doctor->service_name ?? 'Atención médica'); ?></p><small><?php echo e($doctor->medicalUnit?->name ?? 'Consulta privada'); ?></small></div></article>
+          <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?> <div class="patient-portal-empty">No hay médicos activos.</div><?php endif; ?>
         </div>
       </section>
 
@@ -852,30 +851,30 @@
 <aside
   class="patient-profile-panel"
   data-patient-profile-panel
-  data-storage-key="{{ 'drsam_patient_profile_panel_'.$patient->id }}"
-  data-profile-name="{{ e($patient->full_name) }}"
-  data-profile-id="{{ e($patient->platform_number ?? (string) $patient->id) }}"
-  data-profile-curp="{{ e($patient->curp ?: 'No registrado') }}"
-  data-profile-email="{{ e($patient->email ?: 'paciente@demo.drsam.local') }}"
-  data-profile-phone="{{ e($patient->phone ?: 'No registrado') }}"
-  data-profile-status="{{ e($statusText($patient->status)) }}"
-  data-profile-doctor="{{ e($patient->primaryDoctor?->full_name ?? 'Sin asignar') }}"
-  data-profile-completed="{{ e($patient->profile_completed_at?->format('d/m/Y') ?? 'Pendiente') }}"
-  data-logout-url="{{ route('logout') }}"
-  data-login-url="{{ route('login') }}"
-  data-csrf-token="{{ csrf_token() }}"
+  data-storage-key="<?php echo e('drsam_patient_profile_panel_'.$patient->id); ?>"
+  data-profile-name="<?php echo e(e($patient->full_name)); ?>"
+  data-profile-id="<?php echo e(e($patient->platform_number ?? (string) $patient->id)); ?>"
+  data-profile-curp="<?php echo e(e($patient->curp ?: 'No registrado')); ?>"
+  data-profile-email="<?php echo e(e($patient->email ?: 'paciente@demo.drsam.local')); ?>"
+  data-profile-phone="<?php echo e(e($patient->phone ?: 'No registrado')); ?>"
+  data-profile-status="<?php echo e(e($statusText($patient->status))); ?>"
+  data-profile-doctor="<?php echo e(e($patient->primaryDoctor?->full_name ?? 'Sin asignar')); ?>"
+  data-profile-completed="<?php echo e(e($patient->profile_completed_at?->format('d/m/Y') ?? 'Pendiente')); ?>"
+  data-logout-url="<?php echo e(route('logout')); ?>"
+  data-login-url="<?php echo e(route('login')); ?>"
+  data-csrf-token="<?php echo e(csrf_token()); ?>"
   aria-label="Perfil del paciente"
   aria-hidden="true"
   hidden>
   <div class="patient-profile-scroll">
     <header class="patient-profile-header">
       <button class="patient-profile-avatar-button" type="button" data-profile-view="photo" aria-label="Ver o cambiar foto de perfil">
-        <span class="patient-profile-avatar" data-profile-panel-avatar>{{ $initials ?: 'PX' }}</span>
+        <span class="patient-profile-avatar" data-profile-panel-avatar><?php echo e($initials ?: 'PX'); ?></span>
         <span class="patient-profile-avatar-add" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>
       </button>
       <div class="patient-profile-identity">
-        <strong data-profile-panel-name>{{ $patient->full_name }}</strong>
-        <span>ID DE USUARIO - <b data-profile-panel-id>{{ $patient->platform_number ?? $patient->id }}</b></span>
+        <strong data-profile-panel-name><?php echo e($patient->full_name); ?></strong>
+        <span>ID DE USUARIO - <b data-profile-panel-id><?php echo e($patient->platform_number ?? $patient->id); ?></b></span>
       </div>
       <button class="patient-profile-icon-button" type="button" data-profile-panel-close aria-label="Cerrar perfil">
         <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg>
@@ -946,8 +945,8 @@
 </div>
 <input type="file" accept="image/*" data-patient-profile-photo hidden>
 
-<script src="{{ asset('js/patient-profile-panel.js') }}?v={{ filemtime(public_path('js/patient-profile-panel.js')) }}"></script>
-<script src="{{ asset('js/communities.js') }}?v={{ filemtime(public_path('js/communities.js')) }}"></script>
+<script src="<?php echo e(asset('js/patient-profile-panel.js')); ?>?v=<?php echo e(filemtime(public_path('js/patient-profile-panel.js'))); ?>"></script>
+<script src="<?php echo e(asset('js/communities.js')); ?>?v=<?php echo e(filemtime(public_path('js/communities.js'))); ?>"></script>
 <script>
 (() => {
   const portal = document.querySelector('[data-patient-portal]');
@@ -958,11 +957,11 @@
     if (!root || communitiesApp || !window.KliniCommunities) return;
     communitiesApp = window.KliniCommunities.mount(root, {
       patient: {
-        id: @json($patient->platform_number ?? (string) $patient->id),
-        name: @json($patient->full_name),
+        id: <?php echo json_encode($patient->platform_number ?? (string) $patient->id, 15, 512) ?>,
+        name: <?php echo json_encode($patient->full_name, 15, 512) ?>,
       },
-      storageKey: @json('drsam_patient_communities_'.$patient->id),
-      profileStorageKey: @json('drsam_patient_profile_panel_'.$patient->id),
+      storageKey: <?php echo json_encode('drsam_patient_communities_'.$patient->id, 15, 512) ?>,
+      profileStorageKey: <?php echo json_encode('drsam_patient_profile_panel_'.$patient->id, 15, 512) ?>,
       onAction: event => window.dispatchEvent(new CustomEvent('drsam:communities-action', { detail: event })),
     });
   };
@@ -1003,7 +1002,7 @@
     note: { label: 'Nota personal', unit: '', inputType: 'text', step: '', placeholder: 'Ej. Me senti con mas energia' },
     custom: { label: 'Parametro personalizado', unit: '', inputType: 'text', step: '', placeholder: 'Ingresa el valor' },
   };
-  const registerStorageKey = @json('drsam_patient_manual_records_'.$patient->id);
+  const registerStorageKey = <?php echo json_encode('drsam_patient_manual_records_'.$patient->id, 15, 512) ?>;
   const registerDateValue = () => {
     const now = new Date();
     now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
@@ -1213,7 +1212,7 @@
     portal.querySelector('[data-support-toggle]')?.setAttribute('aria-expanded', 'false');
     portal.querySelector('[data-support-menu]')?.setAttribute('aria-hidden', 'true');
   });
-  const initial = @json($errors->any() ? (old('policy_number') ? 'insurance' : 'profile') : null) || sessionStorage.getItem('patientPortalView') || 'home';
+  const initial = <?php echo json_encode($errors->any() ? (old('policy_number') ? 'insurance' : 'profile') : null, 15, 512) ?> || sessionStorage.getItem('patientPortalView') || 'home';
   openView(portal.querySelector(`[data-patient-view="${initial}"]`) ? initial : 'home');
 
   portal.querySelectorAll('[data-table-search]').forEach(input => input.addEventListener('input', () => {
@@ -1285,7 +1284,7 @@
   });
   const calendarItems = [...portal.querySelectorAll('[data-calendar-item]')];
   const calendarFilters = [...portal.querySelectorAll('[data-calendar-filter]')];
-  const calendarMonths = @json($calendarMonths ?? collect());
+  const calendarMonths = <?php echo json_encode($calendarMonths ?? collect(), 15, 512) ?>;
   let calendarFilter = 'all';
   let calendarMonthIndex = 0;
   let calendarMonthEnabled = false;
@@ -1327,4 +1326,6 @@
   });
 })();
 </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', ['title' => 'Portal del Paciente'], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\dr-sam\resources\views/patient/dashboard.blade.php ENDPATH**/ ?>

@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Klini Wellness - Administrador de comunidades</title>
+    <link rel="stylesheet" href="paciente.css?v=patient-wellness-devices-nav-v8" />
+    <link rel="stylesheet" href="paciente-wellness.css?v=wellness-community-public-v1" />
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: #eef8f8;
+        color: #102238;
+        font-family: Inter, Arial, sans-serif;
+      }
+
+      .community-admin-standalone {
+        min-height: 100vh;
+        padding: 18px;
+      }
+
+      .community-admin-shell {
+        max-width: 1680px;
+        margin: 0 auto;
+      }
+
+      .community-admin-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 14px;
+      }
+
+      .community-admin-header h1 {
+        margin: 0;
+        font-size: clamp(1.4rem, 2vw, 2rem);
+      }
+
+      .community-admin-header p {
+        margin: 4px 0 0;
+        color: #63758d;
+        font-weight: 800;
+      }
+
+      .community-admin-header a {
+        min-height: 42px;
+        border: 1px solid #bfe9e6;
+        border-radius: 12px;
+        background: #fff;
+        color: #008f82;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 14px;
+        text-decoration: none;
+        font-weight: 950;
+      }
+
+      .community-admin-header-actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      #wellnessView {
+        display: block;
+      }
+
+      #wellnessView .wellness-dashboard-panel {
+        border-radius: 18px;
+        overflow: hidden;
+      }
+
+      #wellnessView .wellness-bottom-nav {
+        display: none;
+      }
+
+      .toast {
+        position: fixed;
+        left: 50%;
+        bottom: 22px;
+        transform: translateX(-50%) translateY(24px);
+        opacity: 0;
+        pointer-events: none;
+        border-radius: 14px;
+        background: #102238;
+        color: #fff;
+        padding: 12px 16px;
+        font-weight: 900;
+        transition: opacity 0.2s ease, transform 0.2s ease;
+        z-index: 400;
+      }
+
+      .toast.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+    </style>
+  </head>
+  <body data-patient-view="wellnessView">
+    <main class="community-admin-standalone">
+      <div class="community-admin-shell">
+        <header class="community-admin-header">
+          <div>
+            <h1>Administrador de comunidades Klini Wellness</h1>
+            <p>Acceso separado para creadores y administradores de comunidades.</p>
+          </div>
+          <div class="community-admin-header-actions">
+            <a href="comunidad-publica.html?community=community-yoga-mente">Ver vista publica</a>
+            <a href="paciente.html">Ir a plataforma del paciente</a>
+          </div>
+        </header>
+
+        <section id="wellnessView" class="doctor-view">
+          <section class="panel doctor-list-panel wellness-dashboard-panel">
+            <div class="panel-heading patient-section-hero wellness-dashboard-hero">
+              <span class="patient-section-hero-icon wellness-dashboard-hero-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 3l7 3v5c0 4.5-2.8 8.4-7 10-4.2-1.6-7-5.5-7-10V6l7-3z"></path>
+                  <path d="M9 12l2 2 4-5"></path>
+                </svg>
+              </span>
+              <div class="patient-section-hero-copy">
+                <h2 id="patientWellnessHeroTitle">Administrador de comunidad</h2>
+                <span id="patientWellnessHeroSubtitle" class="muted">CRM, eventos, contenido, analitica y crecimiento comunitario</span>
+              </div>
+            </div>
+            <div id="patientWellnessRoot" class="wellness-root" aria-live="polite"></div>
+          </section>
+        </section>
+      </div>
+    </main>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script src="paciente-wellness.js?v=wellness-community-public-v1"></script>
+    <script>
+      window.showToast = function showToast(message) {
+        const toast = document.getElementById("toast");
+        if (!toast) return;
+        toast.textContent = message;
+        toast.classList.add("show");
+        clearTimeout(window.__communityAdminToastTimer);
+        window.__communityAdminToastTimer = setTimeout(function () {
+          toast.classList.remove("show");
+        }, 2400);
+      };
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const wellnessView = document.getElementById("wellnessView");
+        wellnessView.addEventListener("click", function (event) {
+          window.handlePatientWellnessAction?.(event);
+        });
+        wellnessView.addEventListener("submit", function (event) {
+          window.handlePatientWellnessSubmit?.(event);
+        });
+        wellnessView.addEventListener("change", function (event) {
+          window.handlePatientWellnessChange?.(event);
+        });
+        wellnessView.addEventListener("input", function (event) {
+          window.handlePatientWellnessInput?.(event);
+        });
+        window.openCommunityAdminPanel?.("community-yoga-mente");
+      });
+    </script>
+  </body>
+</html>
