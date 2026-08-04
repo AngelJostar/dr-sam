@@ -1,0 +1,904 @@
+[Mon Aug  3 10:53:50 2026] PHP 8.3.13 Development Server (http://0.0.0.0:8012) started
+[Mon Aug  3 10:54:05 2026] 127.0.0.1:63343 Accepted
+[Mon Aug  3 10:54:05 2026] 127.0.0.1:63343 Closing
+[Mon Aug  3 10:54:05 2026] 127.0.0.1:63345 Accepted
+[Mon Aug  3 10:54:05 2026] 127.0.0.1:63345 Closing
+[Mon Aug  3 10:56:38 2026] 192.168.100.63:49993 Accepted
+[Mon Aug  3 10:56:38 2026] 192.168.100.63:52409 Accepted
+[Mon Aug  3 10:56:39 2026] 192.168.100.63:52409 Closing
+[Mon Aug  3 10:56:39 2026] 192.168.100.63:63193 Accepted
+[Mon Aug  3 10:56:39 2026] 192.168.100.63:63193 Closing
+[Mon Aug  3 10:56:39 2026] 192.168.100.63:54267 Accepted
+[Mon Aug  3 10:56:39 2026] 192.168.100.63:54267 [200]: GET /css/drsam.css?v=1785770829
+[Mon Aug  3 10:56:39 2026] 192.168.100.63:54267 Closing
+[Mon Aug  3 10:56:39 2026] 192.168.100.63:61397 Accepted
+[Mon Aug  3 10:56:39 2026] 192.168.100.63:61397 Closing
+[Mon Aug  3 10:56:55 2026] 192.168.100.63:55833 Accepted
+[Mon Aug  3 10:56:55 2026] 192.168.100.63:55833 Closing
+[Mon Aug  3 10:56:55 2026] 192.168.100.63:62266 Accepted
+[Mon Aug  3 10:56:56 2026] 192.168.100.63:62266 Closing
+[Mon Aug  3 10:56:56 2026] 192.168.100.63:49202 Accepted
+[Mon Aug  3 10:56:56 2026] 192.168.100.63:59042 Accepted
+[Mon Aug  3 10:56:56 2026] 192.168.100.63:63867 Accepted
+[Mon Aug  3 10:56:56 2026] 192.168.100.63:56451 Accepted
+[Mon Aug  3 10:56:56 2026] 192.168.100.63:49202 [200]: GET /css/patient-profile-panel.css?v=1785767279
+[Mon Aug  3 10:56:56 2026] 192.168.100.63:59869 Accepted
+[Mon Aug  3 10:56:56 2026] 192.168.100.63:59042 [200]: GET /css/communities.css?v=1785775298
+[Mon Aug  3 10:56:56 2026] 192.168.100.63:63867 [200]: GET /css/drsam.css?v=1785770829
+[Mon Aug  3 10:56:56 2026] 192.168.100.63:56451 [200]: GET /js/patient-profile-panel.js?v=1785767690
+[Mon Aug  3 10:56:56 2026] 192.168.100.63:59869 [200]: GET /js/communities.js?v=1785771644
+[Mon Aug  3 10:56:56 2026] 192.168.100.63:49202 Closing
+[Mon Aug  3 10:56:56 2026] 192.168.100.63:59042 Closing
+[Mon Aug  3 10:56:56 2026] 192.168.100.63:56451 Closing
+[Mon Aug  3 10:56:56 2026] 192.168.100.63:59869 Closing
+[Mon Aug  3 10:56:56 2026] 192.168.100.63:63867 Closing
+[Mon Aug  3 10:56:57 2026] 192.168.100.63:65180 Accepted
+[Mon Aug  3 10:56:57 2026] 192.168.100.63:60469 Accepted
+[Mon Aug  3 10:56:57 2026] 192.168.100.63:52403 Accepted
+[Mon Aug  3 10:56:57 2026] 192.168.100.63:55349 Accepted
+[Mon Aug  3 10:56:57 2026] 192.168.100.63:60469 [200]: GET /images/communities/category-mine.png
+[Mon Aug  3 10:56:57 2026] 192.168.100.63:58287 Accepted
+[Mon Aug  3 10:56:57 2026] 192.168.100.63:65180 [200]: GET /images/communities/category-wellness.png
+[Mon Aug  3 10:56:57 2026] 192.168.100.63:52403 [200]: GET /images/communities/category-sport.png
+[Mon Aug  3 10:56:57 2026] 192.168.100.63:55349 [200]: GET /images/communities/category-new.png
+[Mon Aug  3 10:56:57 2026] 192.168.100.63:58287 [200]: GET /images/communities/avatar-carlos.png
+[Mon Aug  3 10:56:57 2026] 192.168.100.63:50325 Accepted
+[Mon Aug  3 10:56:57 2026] 192.168.100.63:60469 Closing
+[Mon Aug  3 10:56:57 2026] 192.168.100.63:50325 [200]: GET /images/communities/create-cover.png
+[Mon Aug  3 10:56:57 2026] 192.168.100.63:65180 Closing
+[Mon Aug  3 10:56:57 2026] 192.168.100.63:52403 Closing
+[Mon Aug  3 10:56:57 2026] 192.168.100.63:55349 Closing
+[Mon Aug  3 10:56:57 2026] 192.168.100.63:58287 Closing
+[Mon Aug  3 10:56:57 2026] 192.168.100.63:50325 Closing
+[Mon Aug  3 10:59:00 2026] 127.0.0.1:51176 Accepted
+[Mon Aug  3 10:59:00 2026] 127.0.0.1:51176 Closing
+[Mon Aug  3 10:59:00 2026] 127.0.0.1:59730 Accepted
+[Mon Aug  3 10:59:00 2026] 127.0.0.1:59730 [200]: GET /css/drsam.css?v=1785776324
+[Mon Aug  3 10:59:00 2026] 127.0.0.1:55772 Accepted
+[Mon Aug  3 10:59:00 2026] 127.0.0.1:54516 Accepted
+[Mon Aug  3 10:59:00 2026] 127.0.0.1:55971 Accepted
+[Mon Aug  3 10:59:00 2026] 127.0.0.1:49912 Accepted
+[Mon Aug  3 10:59:00 2026] 127.0.0.1:55772 [200]: GET /css/patient-profile-panel.css?v=1785767279
+[Mon Aug  3 10:59:00 2026] 127.0.0.1:54516 [200]: GET /css/communities.css?v=1785775298
+[Mon Aug  3 10:59:00 2026] 127.0.0.1:55971 [200]: GET /js/patient-profile-panel.js?v=1785767690
+[Mon Aug  3 10:59:00 2026] 127.0.0.1:49912 [200]: GET /js/communities.js?v=1785771644
+[Mon Aug  3 10:59:00 2026] 127.0.0.1:55772 Closing
+[Mon Aug  3 10:59:00 2026] 127.0.0.1:59730 Closing
+[Mon Aug  3 10:59:00 2026] 127.0.0.1:54516 Closing
+[Mon Aug  3 10:59:00 2026] 127.0.0.1:55971 Closing
+[Mon Aug  3 10:59:00 2026] 127.0.0.1:49912 Closing
+[Mon Aug  3 10:59:00 2026] 127.0.0.1:49816 Accepted
+[Mon Aug  3 10:59:00 2026] 127.0.0.1:49816 Closing
+[Mon Aug  3 10:59:00 2026] 127.0.0.1:49994 Accepted
+[Mon Aug  3 10:59:00 2026] 127.0.0.1:50580 Accepted
+[Mon Aug  3 10:59:00 2026] 127.0.0.1:49994 [200]: GET /images/communities/category-mine.png
+[Mon Aug  3 10:59:00 2026] 127.0.0.1:51494 Accepted
+[Mon Aug  3 10:59:00 2026] 127.0.0.1:50580 [200]: GET /images/communities/category-wellness.png
+[Mon Aug  3 10:59:00 2026] 127.0.0.1:53428 Accepted
+[Mon Aug  3 10:59:00 2026] 127.0.0.1:51494 [200]: GET /images/communities/category-sport.png
+[Mon Aug  3 10:59:00 2026] 127.0.0.1:61361 Accepted
+[Mon Aug  3 10:59:00 2026] 127.0.0.1:53428 [200]: GET /images/communities/category-new.png
+[Mon Aug  3 10:59:00 2026] 127.0.0.1:49994 Closing
+[Mon Aug  3 10:59:00 2026] 127.0.0.1:52719 Accepted
+[Mon Aug  3 10:59:00 2026] 127.0.0.1:61361 [200]: GET /images/communities/avatar-carlos.png
+[Mon Aug  3 10:59:00 2026] 127.0.0.1:50580 Closing
+[Mon Aug  3 10:59:00 2026] 127.0.0.1:52719 [200]: GET /images/communities/create-cover.png
+[Mon Aug  3 10:59:00 2026] 127.0.0.1:51494 Closing
+[Mon Aug  3 10:59:00 2026] 127.0.0.1:53428 Closing
+[Mon Aug  3 10:59:00 2026] 127.0.0.1:61361 Closing
+[Mon Aug  3 10:59:00 2026] 127.0.0.1:52719 Closing
+[Mon Aug  3 11:00:58 2026] 192.168.100.63:49993 Closed without sending a request; it was probably just an unused speculative preconnection
+[Mon Aug  3 11:00:58 2026] 192.168.100.63:49993 Closing
+[Mon Aug  3 11:01:03 2026] 192.168.100.63:58647 Accepted
+[Mon Aug  3 11:01:04 2026] 192.168.100.63:58647 Closing
+[Mon Aug  3 11:01:04 2026] 192.168.100.63:59849 Accepted
+[Mon Aug  3 11:01:04 2026] 192.168.100.63:59849 [200]: GET /css/drsam.css?v=1785776324
+[Mon Aug  3 11:01:04 2026] 192.168.100.63:51930 Accepted
+[Mon Aug  3 11:01:04 2026] 192.168.100.63:64371 Accepted
+[Mon Aug  3 11:01:04 2026] 192.168.100.63:64415 Accepted
+[Mon Aug  3 11:01:04 2026] 192.168.100.63:64371 [200]: GET /css/patient-profile-panel.css?v=1785767279
+[Mon Aug  3 11:01:04 2026] 192.168.100.63:56192 Accepted
+[Mon Aug  3 11:01:04 2026] 192.168.100.63:51930 [200]: GET /css/communities.css?v=1785775298
+[Mon Aug  3 11:01:04 2026] 192.168.100.63:64415 [200]: GET /js/patient-profile-panel.js?v=1785767690
+[Mon Aug  3 11:01:04 2026] 192.168.100.63:56192 [200]: GET /js/communities.js?v=1785771644
+[Mon Aug  3 11:01:04 2026] 192.168.100.63:59849 Closing
+[Mon Aug  3 11:01:04 2026] 192.168.100.63:64371 Closing
+[Mon Aug  3 11:01:04 2026] 192.168.100.63:51930 Closing
+[Mon Aug  3 11:01:04 2026] 192.168.100.63:64415 Closing
+[Mon Aug  3 11:01:04 2026] 192.168.100.63:56192 Closing
+[Mon Aug  3 11:01:06 2026] 192.168.100.63:60827 Accepted
+[Mon Aug  3 11:01:06 2026] 192.168.100.63:56796 Accepted
+[Mon Aug  3 11:01:06 2026] 192.168.100.63:49742 Accepted
+[Mon Aug  3 11:01:06 2026] 192.168.100.63:60827 [200]: GET /images/communities/category-mine.png
+[Mon Aug  3 11:01:06 2026] 192.168.100.63:53762 Accepted
+[Mon Aug  3 11:01:06 2026] 192.168.100.63:56796 [200]: GET /images/communities/category-wellness.png
+[Mon Aug  3 11:01:06 2026] 192.168.100.63:49742 [200]: GET /images/communities/category-sport.png
+[Mon Aug  3 11:01:06 2026] 192.168.100.63:65246 Accepted
+[Mon Aug  3 11:01:06 2026] 192.168.100.63:53762 [200]: GET /images/communities/category-new.png
+[Mon Aug  3 11:01:06 2026] 192.168.100.63:64210 Accepted
+[Mon Aug  3 11:01:06 2026] 192.168.100.63:65246 [200]: GET /images/communities/avatar-carlos.png
+[Mon Aug  3 11:01:06 2026] 192.168.100.63:60827 Closing
+[Mon Aug  3 11:01:06 2026] 192.168.100.63:64210 [200]: GET /images/communities/create-cover.png
+[Mon Aug  3 11:01:06 2026] 192.168.100.63:56796 Closing
+[Mon Aug  3 11:01:06 2026] 192.168.100.63:49742 Closing
+[Mon Aug  3 11:01:06 2026] 192.168.100.63:53762 Closing
+[Mon Aug  3 11:01:06 2026] 192.168.100.63:65246 Closing
+[Mon Aug  3 11:01:06 2026] 192.168.100.63:64210 Closing
+[Mon Aug  3 11:01:38 2026] 192.168.100.63:56610 Accepted
+[Mon Aug  3 11:01:38 2026] 192.168.100.63:56610 [200]: GET /images/communities/create-cover.png
+[Mon Aug  3 11:01:38 2026] 192.168.100.63:56610 Closing
+[Mon Aug  3 11:33:07 2026] 127.0.0.1:51740 Accepted
+[Mon Aug  3 11:33:07 2026] 127.0.0.1:51740 Closing
+[Mon Aug  3 11:33:07 2026] 127.0.0.1:55208 Accepted
+[Mon Aug  3 11:33:07 2026] 127.0.0.1:54870 Accepted
+[Mon Aug  3 11:33:07 2026] 127.0.0.1:63627 Accepted
+[Mon Aug  3 11:33:07 2026] 127.0.0.1:55208 [200]: GET /css/communities.css?v=1785778304
+[Mon Aug  3 11:33:07 2026] 127.0.0.1:56277 Accepted
+[Mon Aug  3 11:33:07 2026] 127.0.0.1:54870 [200]: GET /css/drsam.css?v=1785776324
+[Mon Aug  3 11:33:07 2026] 127.0.0.1:63627 [200]: GET /css/patient-profile-panel.css?v=1785767279
+[Mon Aug  3 11:33:07 2026] 127.0.0.1:60723 Accepted
+[Mon Aug  3 11:33:07 2026] 127.0.0.1:56277 [200]: GET /js/communities.js?v=1785778353
+[Mon Aug  3 11:33:07 2026] 127.0.0.1:60723 [200]: GET /js/patient-profile-panel.js?v=1785767690
+[Mon Aug  3 11:33:07 2026] 127.0.0.1:55208 Closing
+[Mon Aug  3 11:33:07 2026] 127.0.0.1:63627 Closing
+[Mon Aug  3 11:33:07 2026] 127.0.0.1:56277 Closing
+[Mon Aug  3 11:33:07 2026] 127.0.0.1:60723 Closing
+[Mon Aug  3 11:33:07 2026] 127.0.0.1:54870 Closing
+[Mon Aug  3 11:33:22 2026] 127.0.0.1:59288 Accepted
+[Mon Aug  3 11:33:22 2026] 127.0.0.1:59288 Closing
+[Mon Aug  3 11:33:22 2026] 127.0.0.1:53734 Accepted
+[Mon Aug  3 11:33:22 2026] 127.0.0.1:53734 [200]: GET /css/drsam.css?v=1785776324
+[Mon Aug  3 11:33:22 2026] 127.0.0.1:53155 Accepted
+[Mon Aug  3 11:33:22 2026] 127.0.0.1:56826 Accepted
+[Mon Aug  3 11:33:22 2026] 127.0.0.1:49647 Accepted
+[Mon Aug  3 11:33:22 2026] 127.0.0.1:53155 [200]: GET /css/patient-profile-panel.css?v=1785767279
+[Mon Aug  3 11:33:22 2026] 127.0.0.1:56826 [200]: GET /css/communities.css?v=1785778304
+[Mon Aug  3 11:33:22 2026] 127.0.0.1:53744 Accepted
+[Mon Aug  3 11:33:22 2026] 127.0.0.1:49647 [200]: GET /js/patient-profile-panel.js?v=1785767690
+[Mon Aug  3 11:33:22 2026] 127.0.0.1:53744 [200]: GET /js/communities.js?v=1785778353
+[Mon Aug  3 11:33:22 2026] 127.0.0.1:53734 Closing
+[Mon Aug  3 11:33:22 2026] 127.0.0.1:53155 Closing
+[Mon Aug  3 11:33:22 2026] 127.0.0.1:56826 Closing
+[Mon Aug  3 11:33:22 2026] 127.0.0.1:49647 Closing
+[Mon Aug  3 11:33:22 2026] 127.0.0.1:53744 Closing
+[Mon Aug  3 11:33:23 2026] 127.0.0.1:63949 Accepted
+[Mon Aug  3 11:33:23 2026] 127.0.0.1:63949 [200]: GET /images/communities/category-mine.png
+[Mon Aug  3 11:33:23 2026] 127.0.0.1:63949 Closing
+[Mon Aug  3 11:33:23 2026] 127.0.0.1:51340 Accepted
+[Mon Aug  3 11:33:23 2026] 127.0.0.1:54603 Accepted
+[Mon Aug  3 11:33:23 2026] 127.0.0.1:57703 Accepted
+[Mon Aug  3 11:33:23 2026] 127.0.0.1:63723 Accepted
+[Mon Aug  3 11:33:23 2026] 127.0.0.1:54253 Accepted
+[Mon Aug  3 11:33:23 2026] 127.0.0.1:51340 [200]: GET /images/communities/category-wellness.png
+[Mon Aug  3 11:33:23 2026] 127.0.0.1:54603 [200]: GET /images/communities/category-sport.png
+[Mon Aug  3 11:33:23 2026] 127.0.0.1:57703 [200]: GET /images/communities/category-new.png
+[Mon Aug  3 11:33:23 2026] 127.0.0.1:63723 [200]: GET /images/communities/avatar-carlos.png
+[Mon Aug  3 11:33:23 2026] 127.0.0.1:54253 [200]: GET /images/communities/create-cover.png
+[Mon Aug  3 11:33:23 2026] 127.0.0.1:51340 Closing
+[Mon Aug  3 11:33:23 2026] 127.0.0.1:54603 Closing
+[Mon Aug  3 11:33:23 2026] 127.0.0.1:57703 Closing
+[Mon Aug  3 11:33:23 2026] 127.0.0.1:63723 Closing
+[Mon Aug  3 11:33:23 2026] 127.0.0.1:54253 Closing
+[Mon Aug  3 11:34:12 2026] 127.0.0.1:57970 Accepted
+[Mon Aug  3 11:34:12 2026] 127.0.0.1:57970 Closing
+[Mon Aug  3 11:34:12 2026] 127.0.0.1:53097 Accepted
+[Mon Aug  3 11:34:12 2026] 127.0.0.1:52893 Accepted
+[Mon Aug  3 11:34:12 2026] 127.0.0.1:62560 Accepted
+[Mon Aug  3 11:34:12 2026] 127.0.0.1:52859 Accepted
+[Mon Aug  3 11:34:12 2026] 127.0.0.1:51343 Accepted
+[Mon Aug  3 11:34:12 2026] 127.0.0.1:53097 [200]: GET /css/drsam.css?v=1785776324
+[Mon Aug  3 11:34:12 2026] 127.0.0.1:52893 [200]: GET /css/patient-profile-panel.css?v=1785767279
+[Mon Aug  3 11:34:12 2026] 127.0.0.1:62560 [200]: GET /css/communities.css?v=1785778304
+[Mon Aug  3 11:34:12 2026] 127.0.0.1:52859 [200]: GET /js/communities.js?v=1785778429
+[Mon Aug  3 11:34:12 2026] 127.0.0.1:51343 [200]: GET /js/patient-profile-panel.js?v=1785767690
+[Mon Aug  3 11:34:12 2026] 127.0.0.1:52893 Closing
+[Mon Aug  3 11:34:12 2026] 127.0.0.1:62560 Closing
+[Mon Aug  3 11:34:12 2026] 127.0.0.1:52859 Closing
+[Mon Aug  3 11:34:12 2026] 127.0.0.1:51343 Closing
+[Mon Aug  3 11:34:12 2026] 127.0.0.1:53097 Closing
+[Mon Aug  3 11:34:13 2026] 127.0.0.1:53686 Accepted
+[Mon Aug  3 11:34:13 2026] 127.0.0.1:53686 [200]: GET /images/communities/category-mine.png
+[Mon Aug  3 11:34:13 2026] 127.0.0.1:53686 Closing
+[Mon Aug  3 11:34:13 2026] 127.0.0.1:51225 Accepted
+[Mon Aug  3 11:34:13 2026] 127.0.0.1:65162 Accepted
+[Mon Aug  3 11:34:13 2026] 127.0.0.1:55620 Accepted
+[Mon Aug  3 11:34:13 2026] 127.0.0.1:63733 Accepted
+[Mon Aug  3 11:34:13 2026] 127.0.0.1:51225 [200]: GET /images/communities/category-wellness.png
+[Mon Aug  3 11:34:13 2026] 127.0.0.1:65162 [200]: GET /images/communities/category-sport.png
+[Mon Aug  3 11:34:13 2026] 127.0.0.1:55620 [200]: GET /images/communities/category-new.png
+[Mon Aug  3 11:34:13 2026] 127.0.0.1:63733 [200]: GET /images/communities/avatar-carlos.png
+[Mon Aug  3 11:34:13 2026] 127.0.0.1:59440 Accepted
+[Mon Aug  3 11:34:13 2026] 127.0.0.1:59440 [200]: GET /images/communities/create-cover.png
+[Mon Aug  3 11:34:13 2026] 127.0.0.1:51225 Closing
+[Mon Aug  3 11:34:13 2026] 127.0.0.1:65162 Closing
+[Mon Aug  3 11:34:13 2026] 127.0.0.1:55620 Closing
+[Mon Aug  3 11:34:13 2026] 127.0.0.1:63733 Closing
+[Mon Aug  3 11:34:13 2026] 127.0.0.1:59440 Closing
+[Mon Aug  3 11:39:48 2026] 192.168.100.63:52535 Accepted
+[Mon Aug  3 11:39:48 2026] 192.168.100.63:52535 Closing
+[Mon Aug  3 11:39:48 2026] 192.168.100.63:50174 Accepted
+[Mon Aug  3 11:39:48 2026] 192.168.100.63:50174 [200]: GET /css/communities.css?v=1785778304
+[Mon Aug  3 11:39:48 2026] 192.168.100.63:52093 Accepted
+[Mon Aug  3 11:39:48 2026] 192.168.100.63:57483 Accepted
+[Mon Aug  3 11:39:48 2026] 192.168.100.63:52093 [200]: GET /css/drsam.css?v=1785776324
+[Mon Aug  3 11:39:48 2026] 192.168.100.63:62540 Accepted
+[Mon Aug  3 11:39:48 2026] 192.168.100.63:57483 [200]: GET /css/patient-profile-panel.css?v=1785767279
+[Mon Aug  3 11:39:48 2026] 192.168.100.63:50174 Closing
+[Mon Aug  3 11:39:48 2026] 192.168.100.63:64546 Accepted
+[Mon Aug  3 11:39:48 2026] 192.168.100.63:62540 [200]: GET /js/communities.js?v=1785778429
+[Mon Aug  3 11:39:48 2026] 192.168.100.63:64546 [200]: GET /js/patient-profile-panel.js?v=1785767690
+[Mon Aug  3 11:39:48 2026] 192.168.100.63:57483 Closing
+[Mon Aug  3 11:39:48 2026] 192.168.100.63:62540 Closing
+[Mon Aug  3 11:39:48 2026] 192.168.100.63:64546 Closing
+[Mon Aug  3 11:39:48 2026] 192.168.100.63:52093 Closing
+[Mon Aug  3 11:39:53 2026] 192.168.100.63:51374 Accepted
+[Mon Aug  3 11:39:53 2026] 192.168.100.63:51374 Closing
+[Mon Aug  3 11:39:53 2026] 192.168.100.63:50688 Accepted
+[Mon Aug  3 11:39:53 2026] 192.168.100.63:50688 [200]: GET /css/drsam.css?v=1785776324
+[Mon Aug  3 11:39:53 2026] 192.168.100.63:56092 Accepted
+[Mon Aug  3 11:39:53 2026] 192.168.100.63:63911 Accepted
+[Mon Aug  3 11:39:53 2026] 192.168.100.63:50848 Accepted
+[Mon Aug  3 11:39:53 2026] 192.168.100.63:56092 [200]: GET /css/patient-profile-panel.css?v=1785767279
+[Mon Aug  3 11:39:53 2026] 192.168.100.63:53217 Accepted
+[Mon Aug  3 11:39:53 2026] 192.168.100.63:63911 [200]: GET /css/communities.css?v=1785778304
+[Mon Aug  3 11:39:53 2026] 192.168.100.63:50848 [200]: GET /js/patient-profile-panel.js?v=1785767690
+[Mon Aug  3 11:39:53 2026] 192.168.100.63:53217 [200]: GET /js/communities.js?v=1785778429
+[Mon Aug  3 11:39:53 2026] 192.168.100.63:50688 Closing
+[Mon Aug  3 11:39:53 2026] 192.168.100.63:56092 Closing
+[Mon Aug  3 11:39:53 2026] 192.168.100.63:63911 Closing
+[Mon Aug  3 11:39:53 2026] 192.168.100.63:50848 Closing
+[Mon Aug  3 11:39:53 2026] 192.168.100.63:53217 Closing
+[Mon Aug  3 11:39:56 2026] 192.168.100.63:65377 Accepted
+[Mon Aug  3 11:39:56 2026] 192.168.100.63:52002 Accepted
+[Mon Aug  3 11:39:56 2026] 192.168.100.63:58994 Accepted
+[Mon Aug  3 11:39:56 2026] 192.168.100.63:63265 Accepted
+[Mon Aug  3 11:39:56 2026] 192.168.100.63:65377 [200]: GET /images/communities/category-mine.png
+[Mon Aug  3 11:39:56 2026] 192.168.100.63:65396 Accepted
+[Mon Aug  3 11:39:56 2026] 192.168.100.63:52002 [200]: GET /images/communities/category-wellness.png
+[Mon Aug  3 11:39:56 2026] 192.168.100.63:58994 [200]: GET /images/communities/category-sport.png
+[Mon Aug  3 11:39:56 2026] 192.168.100.63:63265 [200]: GET /images/communities/category-new.png
+[Mon Aug  3 11:39:56 2026] 192.168.100.63:49183 Accepted
+[Mon Aug  3 11:39:56 2026] 192.168.100.63:65396 [200]: GET /images/communities/avatar-carlos.png
+[Mon Aug  3 11:39:56 2026] 192.168.100.63:49183 [200]: GET /images/communities/create-cover.png
+[Mon Aug  3 11:39:56 2026] 192.168.100.63:65377 Closing
+[Mon Aug  3 11:39:56 2026] 192.168.100.63:52002 Closing
+[Mon Aug  3 11:39:56 2026] 192.168.100.63:58994 Closing
+[Mon Aug  3 11:39:56 2026] 192.168.100.63:63265 Closing
+[Mon Aug  3 11:39:56 2026] 192.168.100.63:65396 Closing
+[Mon Aug  3 11:39:56 2026] 192.168.100.63:49183 Closing
+[Mon Aug  3 11:40:47 2026] 192.168.100.63:58351 Accepted
+[Mon Aug  3 11:40:47 2026] 192.168.100.63:61151 Accepted
+[Mon Aug  3 11:40:47 2026] 192.168.100.63:57068 Accepted
+[Mon Aug  3 11:40:47 2026] 192.168.100.63:56896 Accepted
+[Mon Aug  3 11:40:47 2026] 192.168.100.63:58351 [200]: GET /images/communities/category-mine.png
+[Mon Aug  3 11:40:47 2026] 192.168.100.63:60227 Accepted
+[Mon Aug  3 11:40:47 2026] 192.168.100.63:61151 [200]: GET /images/communities/category-wellness.png
+[Mon Aug  3 11:40:47 2026] 192.168.100.63:57068 [200]: GET /images/communities/category-sport.png
+[Mon Aug  3 11:40:47 2026] 192.168.100.63:56896 [200]: GET /images/communities/category-new.png
+[Mon Aug  3 11:40:47 2026] 192.168.100.63:62633 Accepted
+[Mon Aug  3 11:40:47 2026] 192.168.100.63:60227 [200]: GET /images/communities/create-cover.png
+[Mon Aug  3 11:40:47 2026] 192.168.100.63:62633 [200]: GET /images/communities/avatar-carlos.png
+[Mon Aug  3 11:40:47 2026] 192.168.100.63:58351 Closing
+[Mon Aug  3 11:40:47 2026] 192.168.100.63:61151 Closing
+[Mon Aug  3 11:40:47 2026] 192.168.100.63:57068 Closing
+[Mon Aug  3 11:40:47 2026] 192.168.100.63:56896 Closing
+[Mon Aug  3 11:40:47 2026] 192.168.100.63:62633 Closing
+[Mon Aug  3 11:40:47 2026] 192.168.100.63:60227 Closing
+[Mon Aug  3 11:41:35 2026] 192.168.100.63:50595 Accepted
+[Mon Aug  3 11:41:35 2026] 192.168.100.63:61956 Accepted
+[Mon Aug  3 11:41:35 2026] 192.168.100.63:61443 Accepted
+[Mon Aug  3 11:41:35 2026] 192.168.100.63:50595 [200]: GET /images/communities/category-mine.png
+[Mon Aug  3 11:41:35 2026] 192.168.100.63:51316 Accepted
+[Mon Aug  3 11:41:35 2026] 192.168.100.63:61956 [200]: GET /images/communities/category-wellness.png
+[Mon Aug  3 11:41:35 2026] 192.168.100.63:61443 [200]: GET /images/communities/category-sport.png
+[Mon Aug  3 11:41:35 2026] 192.168.100.63:61471 Accepted
+[Mon Aug  3 11:41:35 2026] 192.168.100.63:51316 [200]: GET /images/communities/category-new.png
+[Mon Aug  3 11:41:35 2026] 192.168.100.63:63379 Accepted
+[Mon Aug  3 11:41:35 2026] 192.168.100.63:61471 [200]: GET /images/communities/avatar-carlos.png
+[Mon Aug  3 11:41:35 2026] 192.168.100.63:50595 Closing
+[Mon Aug  3 11:41:35 2026] 192.168.100.63:63379 [200]: GET /images/communities/create-cover.png
+[Mon Aug  3 11:41:35 2026] 192.168.100.63:61956 Closing
+[Mon Aug  3 11:41:35 2026] 192.168.100.63:61443 Closing
+[Mon Aug  3 11:41:35 2026] 192.168.100.63:51316 Closing
+[Mon Aug  3 11:41:35 2026] 192.168.100.63:61471 Closing
+[Mon Aug  3 11:41:35 2026] 192.168.100.63:63379 Closing
+[Mon Aug  3 11:44:50 2026] 127.0.0.1:51527 Accepted
+[Mon Aug  3 11:44:50 2026] 127.0.0.1:51527 Closing
+[Mon Aug  3 11:44:50 2026] 127.0.0.1:57913 Accepted
+[Mon Aug  3 11:44:50 2026] 127.0.0.1:65031 Accepted
+[Mon Aug  3 11:44:50 2026] 127.0.0.1:61930 Accepted
+[Mon Aug  3 11:44:50 2026] 127.0.0.1:62760 Accepted
+[Mon Aug  3 11:44:50 2026] 127.0.0.1:59007 Accepted
+[Mon Aug  3 11:44:50 2026] 127.0.0.1:57913 [200]: GET /css/drsam.css?v=1785776324
+[Mon Aug  3 11:44:50 2026] 127.0.0.1:65031 [200]: GET /css/patient-profile-panel.css?v=1785767279
+[Mon Aug  3 11:44:50 2026] 127.0.0.1:61930 [200]: GET /css/communities.css?v=1785778304
+[Mon Aug  3 11:44:50 2026] 127.0.0.1:62760 [200]: GET /js/communities.js?v=1785779064
+[Mon Aug  3 11:44:50 2026] 127.0.0.1:59007 [200]: GET /js/patient-profile-panel.js?v=1785767690
+[Mon Aug  3 11:44:50 2026] 127.0.0.1:65031 Closing
+[Mon Aug  3 11:44:50 2026] 127.0.0.1:61930 Closing
+[Mon Aug  3 11:44:50 2026] 127.0.0.1:62760 Closing
+[Mon Aug  3 11:44:50 2026] 127.0.0.1:59007 Closing
+[Mon Aug  3 11:44:50 2026] 127.0.0.1:57913 Closing
+[Mon Aug  3 11:44:51 2026] 127.0.0.1:49524 Accepted
+[Mon Aug  3 11:44:51 2026] 127.0.0.1:49524 [200]: GET /images/communities/category-mine.png
+[Mon Aug  3 11:44:51 2026] 127.0.0.1:53065 Accepted
+[Mon Aug  3 11:44:51 2026] 127.0.0.1:49524 Closing
+[Mon Aug  3 11:44:51 2026] 127.0.0.1:65142 Accepted
+[Mon Aug  3 11:44:51 2026] 127.0.0.1:55043 Accepted
+[Mon Aug  3 11:44:51 2026] 127.0.0.1:60688 Accepted
+[Mon Aug  3 11:44:51 2026] 127.0.0.1:53065 [200]: GET /images/communities/category-wellness.png
+[Mon Aug  3 11:44:51 2026] 127.0.0.1:65142 [200]: GET /images/communities/category-sport.png
+[Mon Aug  3 11:44:51 2026] 127.0.0.1:55043 [200]: GET /images/communities/category-new.png
+[Mon Aug  3 11:44:51 2026] 127.0.0.1:60688 [200]: GET /images/communities/avatar-carlos.png
+[Mon Aug  3 11:44:51 2026] 127.0.0.1:55715 Accepted
+[Mon Aug  3 11:44:51 2026] 127.0.0.1:55715 [200]: GET /images/communities/create-cover.png
+[Mon Aug  3 11:44:51 2026] 127.0.0.1:53065 Closing
+[Mon Aug  3 11:44:51 2026] 127.0.0.1:65142 Closing
+[Mon Aug  3 11:44:51 2026] 127.0.0.1:55043 Closing
+[Mon Aug  3 11:44:51 2026] 127.0.0.1:60688 Closing
+[Mon Aug  3 11:44:51 2026] 127.0.0.1:55715 Closing
+[Mon Aug  3 11:59:43 2026] 192.168.100.63:52661 Accepted
+[Mon Aug  3 11:59:44 2026] 192.168.100.63:52661 Closing
+[Mon Aug  3 11:59:44 2026] 192.168.100.63:58108 Accepted
+[Mon Aug  3 11:59:44 2026] 192.168.100.63:58108 [200]: GET /css/communities.css?v=1785779952
+[Mon Aug  3 11:59:44 2026] 192.168.100.63:64220 Accepted
+[Mon Aug  3 11:59:44 2026] 192.168.100.63:64220 [200]: GET /js/communities.js?v=1785779929
+[Mon Aug  3 11:59:44 2026] 192.168.100.63:58108 Closing
+[Mon Aug  3 11:59:44 2026] 192.168.100.63:64220 Closing
+[Mon Aug  3 11:59:47 2026] 127.0.0.1:52422 Accepted
+[Mon Aug  3 11:59:48 2026] 127.0.0.1:52422 Closing
+[Mon Aug  3 11:59:48 2026] 127.0.0.1:64687 Accepted
+[Mon Aug  3 11:59:48 2026] 127.0.0.1:57750 Accepted
+[Mon Aug  3 11:59:48 2026] 127.0.0.1:50271 Accepted
+[Mon Aug  3 11:59:48 2026] 127.0.0.1:62923 Accepted
+[Mon Aug  3 11:59:48 2026] 127.0.0.1:64687 [200]: GET /css/communities.css?v=1785779952
+[Mon Aug  3 11:59:48 2026] 127.0.0.1:58928 Accepted
+[Mon Aug  3 11:59:48 2026] 127.0.0.1:57750 [200]: GET /css/drsam.css?v=1785776324
+[Mon Aug  3 11:59:48 2026] 127.0.0.1:50271 [200]: GET /css/patient-profile-panel.css?v=1785767279
+[Mon Aug  3 11:59:48 2026] 127.0.0.1:62923 [200]: GET /js/communities.js?v=1785779929
+[Mon Aug  3 11:59:48 2026] 127.0.0.1:58928 [200]: GET /js/patient-profile-panel.js?v=1785767690
+[Mon Aug  3 11:59:48 2026] 127.0.0.1:64687 Closing
+[Mon Aug  3 11:59:48 2026] 127.0.0.1:50271 Closing
+[Mon Aug  3 11:59:48 2026] 127.0.0.1:62923 Closing
+[Mon Aug  3 11:59:48 2026] 127.0.0.1:58928 Closing
+[Mon Aug  3 11:59:48 2026] 127.0.0.1:57750 Closing
+[Mon Aug  3 11:59:48 2026] 127.0.0.1:53521 Accepted
+[Mon Aug  3 11:59:48 2026] 127.0.0.1:53521 [200]: GET /images/communities/category-mine.png
+[Mon Aug  3 11:59:48 2026] 127.0.0.1:53823 Accepted
+[Mon Aug  3 11:59:48 2026] 127.0.0.1:62531 Accepted
+[Mon Aug  3 11:59:48 2026] 127.0.0.1:53823 [200]: GET /images/communities/category-wellness.png
+[Mon Aug  3 11:59:48 2026] 127.0.0.1:65194 Accepted
+[Mon Aug  3 11:59:48 2026] 127.0.0.1:62531 [200]: GET /images/communities/category-sport.png
+[Mon Aug  3 11:59:48 2026] 127.0.0.1:53521 Closing
+[Mon Aug  3 11:59:48 2026] 127.0.0.1:56123 Accepted
+[Mon Aug  3 11:59:48 2026] 127.0.0.1:65194 [200]: GET /images/communities/category-new.png
+[Mon Aug  3 11:59:48 2026] 127.0.0.1:52897 Accepted
+[Mon Aug  3 11:59:48 2026] 127.0.0.1:56123 [200]: GET /images/communities/avatar-carlos.png
+[Mon Aug  3 11:59:48 2026] 127.0.0.1:53823 Closing
+[Mon Aug  3 11:59:48 2026] 127.0.0.1:52897 [200]: GET /images/communities/create-cover.png
+[Mon Aug  3 11:59:48 2026] 127.0.0.1:62531 Closing
+[Mon Aug  3 11:59:48 2026] 127.0.0.1:65194 Closing
+[Mon Aug  3 11:59:48 2026] 127.0.0.1:56123 Closing
+[Mon Aug  3 11:59:48 2026] 127.0.0.1:52897 Closing
+[Mon Aug  3 12:00:22 2026] 127.0.0.1:55255 Accepted
+[Mon Aug  3 12:00:22 2026] 127.0.0.1:55255 [200]: GET /images/communities/create-cover.png
+[Mon Aug  3 12:00:22 2026] 127.0.0.1:55255 Closing
+[Mon Aug  3 12:00:38 2026] 127.0.0.1:53711 Accepted
+[Mon Aug  3 12:00:39 2026] 127.0.0.1:53711 Closing
+[Mon Aug  3 12:00:39 2026] 127.0.0.1:56817 Accepted
+[Mon Aug  3 12:00:39 2026] 127.0.0.1:62881 Accepted
+[Mon Aug  3 12:00:39 2026] 127.0.0.1:56817 [200]: GET /css/drsam.css?v=1785776324
+[Mon Aug  3 12:00:39 2026] 127.0.0.1:52121 Accepted
+[Mon Aug  3 12:00:39 2026] 127.0.0.1:62881 [200]: GET /css/patient-profile-panel.css?v=1785767279
+[Mon Aug  3 12:00:39 2026] 127.0.0.1:50889 Accepted
+[Mon Aug  3 12:00:39 2026] 127.0.0.1:52121 [200]: GET /css/communities.css?v=1785779952
+[Mon Aug  3 12:00:39 2026] 127.0.0.1:52149 Accepted
+[Mon Aug  3 12:00:39 2026] 127.0.0.1:50889 [200]: GET /js/patient-profile-panel.js?v=1785767690
+[Mon Aug  3 12:00:39 2026] 127.0.0.1:52149 [200]: GET /js/communities.js?v=1785779929
+[Mon Aug  3 12:00:39 2026] 127.0.0.1:62881 Closing
+[Mon Aug  3 12:00:39 2026] 127.0.0.1:52121 Closing
+[Mon Aug  3 12:00:39 2026] 127.0.0.1:50889 Closing
+[Mon Aug  3 12:00:39 2026] 127.0.0.1:56817 Closing
+[Mon Aug  3 12:00:39 2026] 127.0.0.1:52149 Closing
+[Mon Aug  3 12:00:39 2026] 127.0.0.1:53656 Accepted
+[Mon Aug  3 12:00:39 2026] 127.0.0.1:61844 Accepted
+[Mon Aug  3 12:00:39 2026] 127.0.0.1:65035 Accepted
+[Mon Aug  3 12:00:39 2026] 127.0.0.1:53656 [200]: GET /images/communities/category-mine.png
+[Mon Aug  3 12:00:39 2026] 127.0.0.1:49535 Accepted
+[Mon Aug  3 12:00:39 2026] 127.0.0.1:61844 [200]: GET /images/communities/category-wellness.png
+[Mon Aug  3 12:00:39 2026] 127.0.0.1:65035 [200]: GET /images/communities/category-sport.png
+[Mon Aug  3 12:00:39 2026] 127.0.0.1:58836 Accepted
+[Mon Aug  3 12:00:39 2026] 127.0.0.1:49535 [200]: GET /images/communities/category-new.png
+[Mon Aug  3 12:00:39 2026] 127.0.0.1:64395 Accepted
+[Mon Aug  3 12:00:39 2026] 127.0.0.1:58836 [200]: GET /images/communities/avatar-carlos.png
+[Mon Aug  3 12:00:39 2026] 127.0.0.1:53656 Closing
+[Mon Aug  3 12:00:39 2026] 127.0.0.1:64395 [200]: GET /images/communities/create-cover.png
+[Mon Aug  3 12:00:39 2026] 127.0.0.1:61844 Closing
+[Mon Aug  3 12:00:39 2026] 127.0.0.1:65035 Closing
+[Mon Aug  3 12:00:39 2026] 127.0.0.1:49535 Closing
+[Mon Aug  3 12:00:39 2026] 127.0.0.1:58836 Closing
+[Mon Aug  3 12:00:39 2026] 127.0.0.1:64395 Closing
+[Mon Aug  3 12:01:44 2026] 127.0.0.1:59238 Accepted
+[Mon Aug  3 12:01:45 2026] 127.0.0.1:59238 Closing
+[Mon Aug  3 12:01:45 2026] 127.0.0.1:51426 Accepted
+[Mon Aug  3 12:01:45 2026] 127.0.0.1:55594 Accepted
+[Mon Aug  3 12:01:45 2026] 127.0.0.1:51426 [200]: GET /css/drsam.css?v=1785776324
+[Mon Aug  3 12:01:45 2026] 127.0.0.1:54953 Accepted
+[Mon Aug  3 12:01:45 2026] 127.0.0.1:55594 [200]: GET /css/patient-profile-panel.css?v=1785767279
+[Mon Aug  3 12:01:45 2026] 127.0.0.1:61734 Accepted
+[Mon Aug  3 12:01:45 2026] 127.0.0.1:55017 Accepted
+[Mon Aug  3 12:01:45 2026] 127.0.0.1:54953 [200]: GET /css/communities.css?v=1785779952
+[Mon Aug  3 12:01:45 2026] 127.0.0.1:61734 [200]: GET /js/patient-profile-panel.js?v=1785767690
+[Mon Aug  3 12:01:45 2026] 127.0.0.1:55017 [200]: GET /js/communities.js?v=1785779929
+[Mon Aug  3 12:01:45 2026] 127.0.0.1:55594 Closing
+[Mon Aug  3 12:01:45 2026] 127.0.0.1:54953 Closing
+[Mon Aug  3 12:01:45 2026] 127.0.0.1:61734 Closing
+[Mon Aug  3 12:01:45 2026] 127.0.0.1:51426 Closing
+[Mon Aug  3 12:01:45 2026] 127.0.0.1:55017 Closing
+[Mon Aug  3 12:01:45 2026] 127.0.0.1:61740 Accepted
+[Mon Aug  3 12:01:45 2026] 127.0.0.1:61740 [200]: GET /images/communities/create-cover.png
+[Mon Aug  3 12:01:45 2026] 127.0.0.1:49891 Accepted
+[Mon Aug  3 12:01:45 2026] 127.0.0.1:58511 Accepted
+[Mon Aug  3 12:01:45 2026] 127.0.0.1:63757 Accepted
+[Mon Aug  3 12:01:45 2026] 127.0.0.1:49891 [200]: GET /images/communities/category-mine.png
+[Mon Aug  3 12:01:45 2026] 127.0.0.1:50852 Accepted
+[Mon Aug  3 12:01:45 2026] 127.0.0.1:58511 [200]: GET /images/communities/category-wellness.png
+[Mon Aug  3 12:01:45 2026] 127.0.0.1:63757 [200]: GET /images/communities/category-sport.png
+[Mon Aug  3 12:01:45 2026] 127.0.0.1:53984 Accepted
+[Mon Aug  3 12:01:45 2026] 127.0.0.1:50852 [200]: GET /images/communities/category-new.png
+[Mon Aug  3 12:01:45 2026] 127.0.0.1:53984 [200]: GET /images/communities/avatar-carlos.png
+[Mon Aug  3 12:01:45 2026] 127.0.0.1:49891 Closing
+[Mon Aug  3 12:01:45 2026] 127.0.0.1:58511 Closing
+[Mon Aug  3 12:01:45 2026] 127.0.0.1:63757 Closing
+[Mon Aug  3 12:01:45 2026] 127.0.0.1:61740 Closing
+[Mon Aug  3 12:01:45 2026] 127.0.0.1:50852 Closing
+[Mon Aug  3 12:01:45 2026] 127.0.0.1:53984 Closing
+[Mon Aug  3 12:02:37 2026] 192.168.100.63:52677 Accepted
+[Mon Aug  3 12:02:38 2026] 192.168.100.63:52677 Closing
+[Mon Aug  3 12:02:38 2026] 192.168.100.63:59091 Accepted
+[Mon Aug  3 12:02:38 2026] 192.168.100.63:59091 Closing
+[Mon Aug  3 12:02:38 2026] 192.168.100.63:55216 Accepted
+[Mon Aug  3 12:03:21 2026] 127.0.0.1:64334 Accepted
+[Mon Aug  3 12:03:22 2026] 127.0.0.1:64334 Closing
+[Mon Aug  3 12:03:22 2026] 127.0.0.1:54657 Accepted
+[Mon Aug  3 12:03:22 2026] 127.0.0.1:54225 Accepted
+[Mon Aug  3 12:03:22 2026] 127.0.0.1:54657 [200]: GET /css/drsam.css?v=1785776324
+[Mon Aug  3 12:03:22 2026] 127.0.0.1:54225 [200]: GET /css/patient-profile-panel.css?v=1785767279
+[Mon Aug  3 12:03:22 2026] 127.0.0.1:53315 Accepted
+[Mon Aug  3 12:03:22 2026] 127.0.0.1:54225 Closing
+[Mon Aug  3 12:03:22 2026] 127.0.0.1:59422 Accepted
+[Mon Aug  3 12:03:22 2026] 127.0.0.1:57775 Accepted
+[Mon Aug  3 12:03:22 2026] 127.0.0.1:53315 [200]: GET /css/communities.css?v=1785779952
+[Mon Aug  3 12:03:22 2026] 127.0.0.1:59422 [200]: GET /js/communities.js?v=1785780188
+[Mon Aug  3 12:03:22 2026] 127.0.0.1:57775 [200]: GET /js/patient-profile-panel.js?v=1785767690
+[Mon Aug  3 12:03:22 2026] 127.0.0.1:54657 Closing
+[Mon Aug  3 12:03:22 2026] 127.0.0.1:53315 Closing
+[Mon Aug  3 12:03:22 2026] 127.0.0.1:59422 Closing
+[Mon Aug  3 12:03:22 2026] 127.0.0.1:57775 Closing
+[Mon Aug  3 12:03:22 2026] 127.0.0.1:60359 Accepted
+[Mon Aug  3 12:03:22 2026] 127.0.0.1:59385 Accepted
+[Mon Aug  3 12:03:22 2026] 127.0.0.1:57025 Accepted
+[Mon Aug  3 12:03:22 2026] 127.0.0.1:59368 Accepted
+[Mon Aug  3 12:03:22 2026] 127.0.0.1:60359 [200]: GET /images/communities/category-mine.png
+[Mon Aug  3 12:03:22 2026] 127.0.0.1:57806 Accepted
+[Mon Aug  3 12:03:22 2026] 127.0.0.1:59385 [200]: GET /images/communities/category-wellness.png
+[Mon Aug  3 12:03:22 2026] 127.0.0.1:57025 [200]: GET /images/communities/category-sport.png
+[Mon Aug  3 12:03:22 2026] 127.0.0.1:59368 [200]: GET /images/communities/category-new.png
+[Mon Aug  3 12:03:22 2026] 127.0.0.1:52355 Accepted
+[Mon Aug  3 12:03:22 2026] 127.0.0.1:57806 [200]: GET /images/communities/avatar-carlos.png
+[Mon Aug  3 12:03:22 2026] 127.0.0.1:52355 [200]: GET /images/communities/create-cover.png
+[Mon Aug  3 12:03:22 2026] 127.0.0.1:60359 Closing
+[Mon Aug  3 12:03:22 2026] 127.0.0.1:59385 Closing
+[Mon Aug  3 12:03:22 2026] 127.0.0.1:57025 Closing
+[Mon Aug  3 12:03:22 2026] 127.0.0.1:59368 Closing
+[Mon Aug  3 12:03:22 2026] 127.0.0.1:57806 Closing
+[Mon Aug  3 12:03:22 2026] 127.0.0.1:52355 Closing
+[Mon Aug  3 12:03:58 2026] 192.168.100.63:55216 Closed without sending a request; it was probably just an unused speculative preconnection
+[Mon Aug  3 12:03:58 2026] 192.168.100.63:55216 Closing
+[Mon Aug  3 12:04:11 2026] 127.0.0.1:50486 Accepted
+[Mon Aug  3 12:04:12 2026] 127.0.0.1:50486 Closing
+[Mon Aug  3 12:04:12 2026] 127.0.0.1:64195 Accepted
+[Mon Aug  3 12:04:12 2026] 127.0.0.1:52311 Accepted
+[Mon Aug  3 12:04:12 2026] 127.0.0.1:64195 [200]: GET /css/drsam.css?v=1785776324
+[Mon Aug  3 12:04:12 2026] 127.0.0.1:64184 Accepted
+[Mon Aug  3 12:04:12 2026] 127.0.0.1:52311 [200]: GET /css/patient-profile-panel.css?v=1785767279
+[Mon Aug  3 12:04:12 2026] 127.0.0.1:60113 Accepted
+[Mon Aug  3 12:04:12 2026] 127.0.0.1:64184 [200]: GET /css/communities.css?v=1785779952
+[Mon Aug  3 12:04:12 2026] 127.0.0.1:51133 Accepted
+[Mon Aug  3 12:04:12 2026] 127.0.0.1:60113 [200]: GET /js/communities.js?v=1785780222
+[Mon Aug  3 12:04:12 2026] 127.0.0.1:51133 [200]: GET /js/patient-profile-panel.js?v=1785767690
+[Mon Aug  3 12:04:12 2026] 127.0.0.1:52311 Closing
+[Mon Aug  3 12:04:12 2026] 127.0.0.1:64184 Closing
+[Mon Aug  3 12:04:12 2026] 127.0.0.1:60113 Closing
+[Mon Aug  3 12:04:12 2026] 127.0.0.1:64195 Closing
+[Mon Aug  3 12:04:12 2026] 127.0.0.1:51133 Closing
+[Mon Aug  3 12:04:12 2026] 127.0.0.1:51409 Accepted
+[Mon Aug  3 12:04:12 2026] 127.0.0.1:51409 [200]: GET /images/communities/category-mine.png
+[Mon Aug  3 12:04:12 2026] 127.0.0.1:65105 Accepted
+[Mon Aug  3 12:04:12 2026] 127.0.0.1:65105 [200]: GET /images/communities/category-wellness.png
+[Mon Aug  3 12:04:12 2026] 127.0.0.1:51409 Closing
+[Mon Aug  3 12:04:12 2026] 127.0.0.1:51324 Accepted
+[Mon Aug  3 12:04:12 2026] 127.0.0.1:63592 Accepted
+[Mon Aug  3 12:04:12 2026] 127.0.0.1:51324 [200]: GET /images/communities/category-sport.png
+[Mon Aug  3 12:04:12 2026] 127.0.0.1:65105 Closing
+[Mon Aug  3 12:04:12 2026] 127.0.0.1:63592 [200]: GET /images/communities/category-new.png
+[Mon Aug  3 12:04:12 2026] 127.0.0.1:56177 Accepted
+[Mon Aug  3 12:04:12 2026] 127.0.0.1:51324 Closing
+[Mon Aug  3 12:04:12 2026] 127.0.0.1:58171 Accepted
+[Mon Aug  3 12:04:12 2026] 127.0.0.1:63592 Closing
+[Mon Aug  3 12:04:12 2026] 127.0.0.1:56177 [200]: GET /images/communities/avatar-carlos.png
+[Mon Aug  3 12:04:12 2026] 127.0.0.1:58171 [200]: GET /images/communities/create-cover.png
+[Mon Aug  3 12:04:12 2026] 127.0.0.1:56177 Closing
+[Mon Aug  3 12:04:12 2026] 127.0.0.1:58171 Closing
+[Mon Aug  3 12:04:27 2026] 192.168.100.63:55373 Accepted
+[Mon Aug  3 12:04:27 2026] 192.168.100.63:55373 Closing
+[Mon Aug  3 12:04:27 2026] 192.168.100.63:64118 Accepted
+[Mon Aug  3 12:04:27 2026] 192.168.100.63:64118 [200]: GET /js/communities.js?v=1785780222
+[Mon Aug  3 12:04:27 2026] 192.168.100.63:64118 Closing
+[Mon Aug  3 12:17:22 2026] 192.168.100.63:52292 Accepted
+[Mon Aug  3 12:17:23 2026] 192.168.100.63:52292 Closing
+[Mon Aug  3 12:17:23 2026] 192.168.100.63:52236 Accepted
+[Mon Aug  3 12:17:23 2026] 192.168.100.63:52236 [200]: GET /css/drsam.css?v=1785776324
+[Mon Aug  3 12:17:23 2026] 192.168.100.63:57403 Accepted
+[Mon Aug  3 12:17:23 2026] 192.168.100.63:50202 Accepted
+[Mon Aug  3 12:17:23 2026] 192.168.100.63:63297 Accepted
+[Mon Aug  3 12:17:23 2026] 192.168.100.63:57403 [200]: GET /css/patient-profile-panel.css?v=1785767279
+[Mon Aug  3 12:17:23 2026] 192.168.100.63:50202 [200]: GET /css/communities.css?v=1785779952
+[Mon Aug  3 12:17:23 2026] 192.168.100.63:54204 Accepted
+[Mon Aug  3 12:17:23 2026] 192.168.100.63:63297 [200]: GET /js/patient-profile-panel.js?v=1785767690
+[Mon Aug  3 12:17:23 2026] 192.168.100.63:54204 [200]: GET /js/communities.js?v=1785780222
+[Mon Aug  3 12:17:23 2026] 192.168.100.63:57403 Closing
+[Mon Aug  3 12:17:23 2026] 192.168.100.63:50202 Closing
+[Mon Aug  3 12:17:23 2026] 192.168.100.63:52236 Closing
+[Mon Aug  3 12:17:23 2026] 192.168.100.63:63297 Closing
+[Mon Aug  3 12:17:23 2026] 192.168.100.63:54204 Closing
+[Mon Aug  3 12:17:25 2026] 192.168.100.63:58423 Accepted
+[Mon Aug  3 12:17:25 2026] 192.168.100.63:52319 Accepted
+[Mon Aug  3 12:17:25 2026] 192.168.100.63:58423 [200]: GET /images/communities/category-wellness.png
+[Mon Aug  3 12:17:25 2026] 192.168.100.63:55363 Accepted
+[Mon Aug  3 12:17:25 2026] 192.168.100.63:52319 [200]: GET /images/communities/category-mine.png
+[Mon Aug  3 12:17:25 2026] 192.168.100.63:52398 Accepted
+[Mon Aug  3 12:17:25 2026] 192.168.100.63:55363 [200]: GET /images/communities/category-sport.png
+[Mon Aug  3 12:17:25 2026] 192.168.100.63:53708 Accepted
+[Mon Aug  3 12:17:25 2026] 192.168.100.63:52398 [200]: GET /images/communities/category-new.png
+[Mon Aug  3 12:17:25 2026] 192.168.100.63:58423 Closing
+[Mon Aug  3 12:17:25 2026] 192.168.100.63:59873 Accepted
+[Mon Aug  3 12:17:25 2026] 192.168.100.63:53708 [200]: GET /images/communities/avatar-carlos.png
+[Mon Aug  3 12:17:25 2026] 192.168.100.63:52319 Closing
+[Mon Aug  3 12:17:25 2026] 192.168.100.63:59873 [200]: GET /images/communities/create-cover.png
+[Mon Aug  3 12:17:25 2026] 192.168.100.63:55363 Closing
+[Mon Aug  3 12:17:25 2026] 192.168.100.63:52398 Closing
+[Mon Aug  3 12:17:25 2026] 192.168.100.63:53708 Closing
+[Mon Aug  3 12:17:25 2026] 192.168.100.63:59873 Closing
+[Mon Aug  3 13:45:27 2026] 192.168.100.63:54826 Accepted
+[Mon Aug  3 13:45:28 2026] 192.168.100.63:54826 Closing
+[Mon Aug  3 13:45:28 2026] 192.168.100.63:57206 Accepted
+[Mon Aug  3 13:45:28 2026] 192.168.100.63:57206 [200]: GET /css/communities.css?v=1785779952
+[Mon Aug  3 13:45:28 2026] 192.168.100.63:63296 Accepted
+[Mon Aug  3 13:45:28 2026] 192.168.100.63:58472 Accepted
+[Mon Aug  3 13:45:28 2026] 192.168.100.63:63296 [200]: GET /css/patient-profile-panel.css?v=1785767279
+[Mon Aug  3 13:45:28 2026] 192.168.100.63:63978 Accepted
+[Mon Aug  3 13:45:28 2026] 192.168.100.63:58472 [200]: GET /css/drsam.css?v=1785776324
+[Mon Aug  3 13:45:28 2026] 192.168.100.63:57206 Closing
+[Mon Aug  3 13:45:28 2026] 192.168.100.63:60800 Accepted
+[Mon Aug  3 13:45:28 2026] 192.168.100.63:63978 [200]: GET /js/patient-profile-panel.js?v=1785767690
+[Mon Aug  3 13:45:28 2026] 192.168.100.63:60800 [200]: GET /js/communities.js?v=1785780222
+[Mon Aug  3 13:45:28 2026] 192.168.100.63:63296 Closing
+[Mon Aug  3 13:45:28 2026] 192.168.100.63:63978 Closing
+[Mon Aug  3 13:45:28 2026] 192.168.100.63:60800 Closing
+[Mon Aug  3 13:45:28 2026] 192.168.100.63:58472 Closing
+[Mon Aug  3 13:45:29 2026] 192.168.100.63:59849 Accepted
+[Mon Aug  3 13:45:29 2026] 192.168.100.63:61179 Accepted
+[Mon Aug  3 13:45:29 2026] 192.168.100.63:50425 Accepted
+[Mon Aug  3 13:45:29 2026] 192.168.100.63:56814 Accepted
+[Mon Aug  3 13:45:29 2026] 192.168.100.63:60334 Accepted
+[Mon Aug  3 13:45:29 2026] 192.168.100.63:59849 [200]: GET /images/communities/category-sport.png
+[Mon Aug  3 13:45:29 2026] 192.168.100.63:54439 Accepted
+[Mon Aug  3 13:45:29 2026] 192.168.100.63:61179 [200]: GET /images/communities/avatar-carlos.png
+[Mon Aug  3 13:45:29 2026] 192.168.100.63:50425 [200]: GET /images/communities/category-wellness.png
+[Mon Aug  3 13:45:29 2026] 192.168.100.63:56814 [200]: GET /images/communities/category-mine.png
+[Mon Aug  3 13:45:29 2026] 192.168.100.63:60334 [200]: GET /images/communities/category-new.png
+[Mon Aug  3 13:45:29 2026] 192.168.100.63:54439 [200]: GET /images/communities/create-cover.png
+[Mon Aug  3 13:45:29 2026] 192.168.100.63:59849 Closing
+[Mon Aug  3 13:45:29 2026] 192.168.100.63:61179 Closing
+[Mon Aug  3 13:45:29 2026] 192.168.100.63:50425 Closing
+[Mon Aug  3 13:45:29 2026] 192.168.100.63:56814 Closing
+[Mon Aug  3 13:45:29 2026] 192.168.100.63:60334 Closing
+[Mon Aug  3 13:45:29 2026] 192.168.100.63:54439 Closing
+[Mon Aug  3 14:18:38 2026] 127.0.0.1:60728 Accepted
+[Mon Aug  3 14:18:38 2026] 127.0.0.1:60728 Closing
+[Mon Aug  3 14:18:38 2026] 127.0.0.1:65430 Accepted
+[Mon Aug  3 14:18:38 2026] 127.0.0.1:65430 Closing
+[Mon Aug  3 14:18:38 2026] 127.0.0.1:50744 Accepted
+[Mon Aug  3 14:18:38 2026] 127.0.0.1:50744 [200]: GET /css/drsam.css?v=1785776324
+[Mon Aug  3 14:18:38 2026] 127.0.0.1:50744 Closing
+[Mon Aug  3 14:20:52 2026] 127.0.0.1:60810 Accepted
+[Mon Aug  3 14:20:53 2026] 127.0.0.1:60810 Closing
+[Mon Aug  3 14:20:53 2026] 127.0.0.1:63041 Accepted
+[Mon Aug  3 14:20:53 2026] 127.0.0.1:63041 Closing
+[Mon Aug  3 14:20:53 2026] 127.0.0.1:53913 Accepted
+[Mon Aug  3 14:20:53 2026] 127.0.0.1:53913 [200]: GET /css/drsam.css?v=1785776324
+[Mon Aug  3 14:20:53 2026] 127.0.0.1:53913 Closing
+[Mon Aug  3 14:21:29 2026] 127.0.0.1:51143 Accepted
+[Mon Aug  3 14:21:29 2026] 127.0.0.1:51143 Closing
+[Mon Aug  3 14:21:29 2026] 127.0.0.1:49375 Accepted
+[Mon Aug  3 14:21:30 2026] 127.0.0.1:49375 Closing
+[Mon Aug  3 14:21:30 2026] 127.0.0.1:49573 Accepted
+[Mon Aug  3 14:21:30 2026] 127.0.0.1:49573 [200]: GET /css/drsam.css?v=1785776324
+[Mon Aug  3 14:21:30 2026] 127.0.0.1:53524 Accepted
+[Mon Aug  3 14:21:30 2026] 127.0.0.1:59000 Accepted
+[Mon Aug  3 14:21:30 2026] 127.0.0.1:62334 Accepted
+[Mon Aug  3 14:21:30 2026] 127.0.0.1:53524 [200]: GET /css/communities.css?v=1785788271
+[Mon Aug  3 14:21:30 2026] 127.0.0.1:51376 Accepted
+[Mon Aug  3 14:21:30 2026] 127.0.0.1:59000 [200]: GET /css/patient-profile-panel.css?v=1785767279
+[Mon Aug  3 14:21:30 2026] 127.0.0.1:62334 [200]: GET /js/communities.js?v=1785788198
+[Mon Aug  3 14:21:30 2026] 127.0.0.1:51376 [200]: GET /js/patient-profile-panel.js?v=1785767690
+[Mon Aug  3 14:21:30 2026] 127.0.0.1:49573 Closing
+[Mon Aug  3 14:21:30 2026] 127.0.0.1:53524 Closing
+[Mon Aug  3 14:21:30 2026] 127.0.0.1:59000 Closing
+[Mon Aug  3 14:21:30 2026] 127.0.0.1:62334 Closing
+[Mon Aug  3 14:21:30 2026] 127.0.0.1:51376 Closing
+[Mon Aug  3 14:22:52 2026] 127.0.0.1:64746 Accepted
+[Mon Aug  3 14:22:52 2026] 127.0.0.1:52956 Accepted
+[Mon Aug  3 14:22:52 2026] 127.0.0.1:64746 [200]: GET /images/communities/category-mine.png
+[Mon Aug  3 14:22:52 2026] 127.0.0.1:54757 Accepted
+[Mon Aug  3 14:22:52 2026] 127.0.0.1:52956 [200]: GET /images/communities/category-wellness.png
+[Mon Aug  3 14:22:52 2026] 127.0.0.1:57358 Accepted
+[Mon Aug  3 14:22:52 2026] 127.0.0.1:54757 [200]: GET /images/communities/category-sport.png
+[Mon Aug  3 14:22:52 2026] 127.0.0.1:57358 [200]: GET /images/communities/category-new.png
+[Mon Aug  3 14:22:52 2026] 127.0.0.1:64746 Closing
+[Mon Aug  3 14:22:52 2026] 127.0.0.1:52956 Closing
+[Mon Aug  3 14:22:52 2026] 127.0.0.1:54757 Closing
+[Mon Aug  3 14:22:52 2026] 127.0.0.1:57358 Closing
+[Mon Aug  3 14:22:52 2026] 127.0.0.1:61238 Accepted
+[Mon Aug  3 14:22:52 2026] 127.0.0.1:63185 Accepted
+[Mon Aug  3 14:22:52 2026] 127.0.0.1:61238 [200]: GET /images/communities/avatar-carlos.png
+[Mon Aug  3 14:22:52 2026] 127.0.0.1:63185 [200]: GET /images/communities/create-cover.png
+[Mon Aug  3 14:22:52 2026] 127.0.0.1:61238 Closing
+[Mon Aug  3 14:22:52 2026] 127.0.0.1:63185 Closing
+[Mon Aug  3 14:25:10 2026] 127.0.0.1:61758 Accepted
+[Mon Aug  3 14:25:10 2026] 127.0.0.1:61758 Closing
+[Mon Aug  3 14:25:10 2026] 127.0.0.1:58289 Accepted
+[Mon Aug  3 14:25:10 2026] 127.0.0.1:57578 Accepted
+[Mon Aug  3 14:25:10 2026] 127.0.0.1:56199 Accepted
+[Mon Aug  3 14:25:10 2026] 127.0.0.1:53374 Accepted
+[Mon Aug  3 14:25:10 2026] 127.0.0.1:57807 Accepted
+[Mon Aug  3 14:25:10 2026] 127.0.0.1:58289 [200]: GET /css/drsam.css?v=1785776324
+[Mon Aug  3 14:25:10 2026] 127.0.0.1:57578 [200]: GET /css/patient-profile-panel.css?v=1785767279
+[Mon Aug  3 14:25:10 2026] 127.0.0.1:56199 [200]: GET /css/communities.css?v=1785788271
+[Mon Aug  3 14:25:10 2026] 127.0.0.1:53374 [200]: GET /js/communities.js?v=1785788688
+[Mon Aug  3 14:25:10 2026] 127.0.0.1:57807 [200]: GET /js/patient-profile-panel.js?v=1785767690
+[Mon Aug  3 14:25:10 2026] 127.0.0.1:57578 Closing
+[Mon Aug  3 14:25:10 2026] 127.0.0.1:53374 Closing
+[Mon Aug  3 14:25:10 2026] 127.0.0.1:57807 Closing
+[Mon Aug  3 14:25:10 2026] 127.0.0.1:56199 Closing
+[Mon Aug  3 14:25:10 2026] 127.0.0.1:58289 Closing
+[Mon Aug  3 14:25:10 2026] 127.0.0.1:65244 Accepted
+[Mon Aug  3 14:25:10 2026] 127.0.0.1:58305 Accepted
+[Mon Aug  3 14:25:10 2026] 127.0.0.1:65244 [200]: GET /images/communities/category-mine.png
+[Mon Aug  3 14:25:10 2026] 127.0.0.1:60620 Accepted
+[Mon Aug  3 14:25:10 2026] 127.0.0.1:58305 [200]: GET /images/communities/category-wellness.png
+[Mon Aug  3 14:25:10 2026] 127.0.0.1:62684 Accepted
+[Mon Aug  3 14:25:10 2026] 127.0.0.1:58836 Accepted
+[Mon Aug  3 14:25:10 2026] 127.0.0.1:65244 Closing
+[Mon Aug  3 14:25:10 2026] 127.0.0.1:58305 Closing
+[Mon Aug  3 14:25:10 2026] 127.0.0.1:60620 [200]: GET /images/communities/category-sport.png
+[Mon Aug  3 14:25:10 2026] 127.0.0.1:62684 [200]: GET /images/communities/category-new.png
+[Mon Aug  3 14:25:10 2026] 127.0.0.1:58836 [200]: GET /images/communities/avatar-carlos.png
+[Mon Aug  3 14:25:10 2026] 127.0.0.1:60620 Closing
+[Mon Aug  3 14:25:10 2026] 127.0.0.1:56922 Accepted
+[Mon Aug  3 14:25:10 2026] 127.0.0.1:62684 Closing
+[Mon Aug  3 14:25:10 2026] 127.0.0.1:58836 Closing
+[Mon Aug  3 14:25:10 2026] 127.0.0.1:56922 [200]: GET /images/communities/create-cover.png
+[Mon Aug  3 14:25:10 2026] 127.0.0.1:56922 Closing
+[Mon Aug  3 14:26:34 2026] 192.168.100.63:62131 Accepted
+[Mon Aug  3 14:26:34 2026] 192.168.100.63:62131 Closing
+[Mon Aug  3 14:26:34 2026] 192.168.100.63:64232 Accepted
+[Mon Aug  3 14:26:34 2026] 192.168.100.63:64232 [200]: GET /css/communities.css?v=1785788271
+[Mon Aug  3 14:26:34 2026] 192.168.100.63:60119 Accepted
+[Mon Aug  3 14:26:34 2026] 192.168.100.63:59652 Accepted
+[Mon Aug  3 14:26:34 2026] 192.168.100.63:60119 [200]: GET /css/drsam.css?v=1785776324
+[Mon Aug  3 14:26:34 2026] 192.168.100.63:53786 Accepted
+[Mon Aug  3 14:26:34 2026] 192.168.100.63:59652 [200]: GET /css/patient-profile-panel.css?v=1785767279
+[Mon Aug  3 14:26:34 2026] 192.168.100.63:53929 Accepted
+[Mon Aug  3 14:26:34 2026] 192.168.100.63:53786 [200]: GET /js/communities.js?v=1785788688
+[Mon Aug  3 14:26:34 2026] 192.168.100.63:64232 Closing
+[Mon Aug  3 14:26:34 2026] 192.168.100.63:53929 [200]: GET /js/patient-profile-panel.js?v=1785767690
+[Mon Aug  3 14:26:34 2026] 192.168.100.63:59652 Closing
+[Mon Aug  3 14:26:34 2026] 192.168.100.63:53786 Closing
+[Mon Aug  3 14:26:34 2026] 192.168.100.63:53929 Closing
+[Mon Aug  3 14:26:34 2026] 192.168.100.63:60119 Closing
+[Mon Aug  3 14:26:34 2026] 192.168.100.63:50758 Accepted
+[Mon Aug  3 14:26:34 2026] 192.168.100.63:59500 Accepted
+[Mon Aug  3 14:26:34 2026] 192.168.100.63:60176 Accepted
+[Mon Aug  3 14:26:34 2026] 192.168.100.63:60901 Accepted
+[Mon Aug  3 14:26:34 2026] 192.168.100.63:62698 Accepted
+[Mon Aug  3 14:26:34 2026] 192.168.100.63:50758 [200]: GET /images/communities/category-mine.png
+[Mon Aug  3 14:26:34 2026] 192.168.100.63:59500 [200]: GET /images/communities/category-wellness.png
+[Mon Aug  3 14:26:34 2026] 192.168.100.63:60176 [200]: GET /images/communities/category-sport.png
+[Mon Aug  3 14:26:34 2026] 192.168.100.63:60901 [200]: GET /images/communities/category-new.png
+[Mon Aug  3 14:26:34 2026] 192.168.100.63:62698 [200]: GET /images/communities/avatar-carlos.png
+[Mon Aug  3 14:26:34 2026] 192.168.100.63:63775 Accepted
+[Mon Aug  3 14:26:34 2026] 192.168.100.63:63775 [200]: GET /images/communities/create-cover.png
+[Mon Aug  3 14:26:34 2026] 192.168.100.63:50758 Closing
+[Mon Aug  3 14:26:34 2026] 192.168.100.63:59500 Closing
+[Mon Aug  3 14:26:34 2026] 192.168.100.63:60176 Closing
+[Mon Aug  3 14:26:34 2026] 192.168.100.63:60901 Closing
+[Mon Aug  3 14:26:34 2026] 192.168.100.63:62698 Closing
+[Mon Aug  3 14:26:34 2026] 192.168.100.63:63775 Closing
+[Mon Aug  3 14:36:41 2026] 127.0.0.1:64470 Accepted
+[Mon Aug  3 14:36:41 2026] 127.0.0.1:64470 Closing
+[Mon Aug  3 14:36:41 2026] 127.0.0.1:52306 Accepted
+[Mon Aug  3 14:36:41 2026] 127.0.0.1:62826 Accepted
+[Mon Aug  3 14:36:41 2026] 127.0.0.1:63107 Accepted
+[Mon Aug  3 14:36:41 2026] 127.0.0.1:64341 Accepted
+[Mon Aug  3 14:36:41 2026] 127.0.0.1:52306 [200]: GET /css/communities.css?v=1785789335
+[Mon Aug  3 14:36:41 2026] 127.0.0.1:57001 Accepted
+[Mon Aug  3 14:36:41 2026] 127.0.0.1:62826 [200]: GET /css/drsam.css?v=1785776324
+[Mon Aug  3 14:36:41 2026] 127.0.0.1:63107 [200]: GET /css/patient-profile-panel.css?v=1785767279
+[Mon Aug  3 14:36:41 2026] 127.0.0.1:64341 [200]: GET /js/communities.js?v=1785789316
+[Mon Aug  3 14:36:41 2026] 127.0.0.1:57001 [200]: GET /js/patient-profile-panel.js?v=1785767690
+[Mon Aug  3 14:36:41 2026] 127.0.0.1:52306 Closing
+[Mon Aug  3 14:36:41 2026] 127.0.0.1:63107 Closing
+[Mon Aug  3 14:36:41 2026] 127.0.0.1:64341 Closing
+[Mon Aug  3 14:36:41 2026] 127.0.0.1:57001 Closing
+[Mon Aug  3 14:36:41 2026] 127.0.0.1:62826 Closing
+[Mon Aug  3 14:36:42 2026] 127.0.0.1:60316 Accepted
+[Mon Aug  3 14:36:42 2026] 127.0.0.1:60316 [200]: GET /images/communities/category-mine.png
+[Mon Aug  3 14:36:42 2026] 127.0.0.1:64074 Accepted
+[Mon Aug  3 14:36:42 2026] 127.0.0.1:54507 Accepted
+[Mon Aug  3 14:36:42 2026] 127.0.0.1:60316 Closing
+[Mon Aug  3 14:36:42 2026] 127.0.0.1:64074 [200]: GET /images/communities/category-wellness.png
+[Mon Aug  3 14:36:42 2026] 127.0.0.1:58265 Accepted
+[Mon Aug  3 14:36:42 2026] 127.0.0.1:54507 [200]: GET /images/communities/category-sport.png
+[Mon Aug  3 14:36:42 2026] 127.0.0.1:52184 Accepted
+[Mon Aug  3 14:36:42 2026] 127.0.0.1:58265 [200]: GET /images/communities/category-new.png
+[Mon Aug  3 14:36:42 2026] 127.0.0.1:56194 Accepted
+[Mon Aug  3 14:36:42 2026] 127.0.0.1:52184 [200]: GET /images/communities/avatar-carlos.png
+[Mon Aug  3 14:36:42 2026] 127.0.0.1:64074 Closing
+[Mon Aug  3 14:36:42 2026] 127.0.0.1:56194 [200]: GET /images/communities/create-cover.png
+[Mon Aug  3 14:36:42 2026] 127.0.0.1:54507 Closing
+[Mon Aug  3 14:36:42 2026] 127.0.0.1:58265 Closing
+[Mon Aug  3 14:36:42 2026] 127.0.0.1:52184 Closing
+[Mon Aug  3 14:36:42 2026] 127.0.0.1:56194 Closing
+[Mon Aug  3 14:39:56 2026] 192.168.100.63:54895 Accepted
+[Mon Aug  3 14:39:56 2026] 192.168.100.63:54895 Closing
+[Mon Aug  3 14:39:56 2026] 192.168.100.63:53700 Accepted
+[Mon Aug  3 14:39:56 2026] 192.168.100.63:53700 [200]: GET /css/communities.css?v=1785789517
+[Mon Aug  3 14:39:56 2026] 192.168.100.63:62214 Accepted
+[Mon Aug  3 14:39:56 2026] 192.168.100.63:59219 Accepted
+[Mon Aug  3 14:39:56 2026] 192.168.100.63:61745 Accepted
+[Mon Aug  3 14:39:56 2026] 192.168.100.63:62214 [200]: GET /css/drsam.css?v=1785776324
+[Mon Aug  3 14:39:56 2026] 192.168.100.63:59877 Accepted
+[Mon Aug  3 14:39:56 2026] 192.168.100.63:59219 [200]: GET /css/patient-profile-panel.css?v=1785767279
+[Mon Aug  3 14:39:56 2026] 192.168.100.63:61745 [200]: GET /js/communities.js?v=1785789316
+[Mon Aug  3 14:39:56 2026] 192.168.100.63:53700 Closing
+[Mon Aug  3 14:39:56 2026] 192.168.100.63:59877 [200]: GET /js/patient-profile-panel.js?v=1785767690
+[Mon Aug  3 14:39:56 2026] 192.168.100.63:59219 Closing
+[Mon Aug  3 14:39:56 2026] 192.168.100.63:61745 Closing
+[Mon Aug  3 14:39:56 2026] 192.168.100.63:59877 Closing
+[Mon Aug  3 14:39:56 2026] 192.168.100.63:62214 Closing
+[Mon Aug  3 14:39:56 2026] 192.168.100.63:63093 Accepted
+[Mon Aug  3 14:39:56 2026] 192.168.100.63:57905 Accepted
+[Mon Aug  3 14:39:56 2026] 192.168.100.63:58795 Accepted
+[Mon Aug  3 14:39:56 2026] 192.168.100.63:63093 [200]: GET /images/communities/category-mine.png
+[Mon Aug  3 14:39:56 2026] 192.168.100.63:56254 Accepted
+[Mon Aug  3 14:39:56 2026] 192.168.100.63:57905 [200]: GET /images/communities/category-wellness.png
+[Mon Aug  3 14:39:56 2026] 192.168.100.63:58795 [200]: GET /images/communities/category-sport.png
+[Mon Aug  3 14:39:56 2026] 192.168.100.63:52941 Accepted
+[Mon Aug  3 14:39:56 2026] 192.168.100.63:56254 [200]: GET /images/communities/category-new.png
+[Mon Aug  3 14:39:56 2026] 192.168.100.63:63035 Accepted
+[Mon Aug  3 14:39:56 2026] 192.168.100.63:52941 [200]: GET /images/communities/avatar-carlos.png
+[Mon Aug  3 14:39:56 2026] 192.168.100.63:63093 Closing
+[Mon Aug  3 14:39:56 2026] 192.168.100.63:63035 [200]: GET /images/communities/create-cover.png
+[Mon Aug  3 14:39:56 2026] 192.168.100.63:57905 Closing
+[Mon Aug  3 14:39:56 2026] 192.168.100.63:58795 Closing
+[Mon Aug  3 14:39:56 2026] 192.168.100.63:56254 Closing
+[Mon Aug  3 14:39:56 2026] 192.168.100.63:52941 Closing
+[Mon Aug  3 14:39:56 2026] 192.168.100.63:63035 Closing
+[Mon Aug  3 14:41:09 2026] 192.168.100.63:63127 Accepted
+[Mon Aug  3 14:41:09 2026] 192.168.100.63:50905 Accepted
+[Mon Aug  3 14:41:09 2026] 192.168.100.63:60868 Accepted
+[Mon Aug  3 14:41:09 2026] 192.168.100.63:52836 Accepted
+[Mon Aug  3 14:41:09 2026] 192.168.100.63:63127 [200]: GET /images/communities/category-mine.png
+[Mon Aug  3 14:41:09 2026] 192.168.100.63:57378 Accepted
+[Mon Aug  3 14:41:09 2026] 192.168.100.63:50905 [200]: GET /images/communities/category-wellness.png
+[Mon Aug  3 14:41:09 2026] 192.168.100.63:60868 [200]: GET /images/communities/category-sport.png
+[Mon Aug  3 14:41:09 2026] 192.168.100.63:52836 [200]: GET /images/communities/category-new.png
+[Mon Aug  3 14:41:09 2026] 192.168.100.63:50321 Accepted
+[Mon Aug  3 14:41:09 2026] 192.168.100.63:57378 [200]: GET /images/communities/avatar-carlos.png
+[Mon Aug  3 14:41:09 2026] 192.168.100.63:50321 [200]: GET /images/communities/create-cover.png
+[Mon Aug  3 14:41:09 2026] 192.168.100.63:63127 Closing
+[Mon Aug  3 14:41:09 2026] 192.168.100.63:50905 Closing
+[Mon Aug  3 14:41:09 2026] 192.168.100.63:60868 Closing
+[Mon Aug  3 14:41:09 2026] 192.168.100.63:52836 Closing
+[Mon Aug  3 14:41:09 2026] 192.168.100.63:57378 Closing
+[Mon Aug  3 14:41:09 2026] 192.168.100.63:50321 Closing
+[Mon Aug  3 14:41:33 2026] 192.168.100.63:62230 Accepted
+[Mon Aug  3 14:41:33 2026] 192.168.100.63:62230 [200]: GET /images/communities/create-cover.png
+[Mon Aug  3 14:41:33 2026] 192.168.100.63:62230 Closing
+[Mon Aug  3 14:41:46 2026] 192.168.100.63:52386 Accepted
+[Mon Aug  3 14:41:46 2026] 192.168.100.63:64102 Accepted
+[Mon Aug  3 14:41:46 2026] 192.168.100.63:59427 Accepted
+[Mon Aug  3 14:41:46 2026] 192.168.100.63:55789 Accepted
+[Mon Aug  3 14:41:46 2026] 192.168.100.63:52386 [200]: GET /images/communities/category-mine.png
+[Mon Aug  3 14:41:46 2026] 192.168.100.63:61257 Accepted
+[Mon Aug  3 14:41:46 2026] 192.168.100.63:64102 [200]: GET /images/communities/category-new.png
+[Mon Aug  3 14:41:46 2026] 192.168.100.63:59427 [200]: GET /images/communities/category-wellness.png
+[Mon Aug  3 14:41:46 2026] 192.168.100.63:55789 [200]: GET /images/communities/category-sport.png
+[Mon Aug  3 14:41:46 2026] 192.168.100.63:61257 [200]: GET /images/communities/avatar-carlos.png
+[Mon Aug  3 14:41:46 2026] 192.168.100.63:52386 Closing
+[Mon Aug  3 14:41:46 2026] 192.168.100.63:64102 Closing
+[Mon Aug  3 14:41:46 2026] 192.168.100.63:59427 Closing
+[Mon Aug  3 14:41:46 2026] 192.168.100.63:55789 Closing
+[Mon Aug  3 14:41:46 2026] 192.168.100.63:61257 Closing
+[Mon Aug  3 14:42:37 2026] 127.0.0.1:55354 Accepted
+[Mon Aug  3 14:42:37 2026] 127.0.0.1:55354 Closing
+[Mon Aug  3 14:42:37 2026] 127.0.0.1:59472 Accepted
+[Mon Aug  3 14:42:37 2026] 127.0.0.1:59472 [200]: GET /css/drsam.css?v=1785776324
+[Mon Aug  3 14:42:37 2026] 127.0.0.1:53312 Accepted
+[Mon Aug  3 14:42:37 2026] 127.0.0.1:61635 Accepted
+[Mon Aug  3 14:42:37 2026] 127.0.0.1:53312 [200]: GET /css/patient-profile-panel.css?v=1785767279
+[Mon Aug  3 14:42:37 2026] 127.0.0.1:52601 Accepted
+[Mon Aug  3 14:42:37 2026] 127.0.0.1:61635 [200]: GET /css/communities.css?v=1785789517
+[Mon Aug  3 14:42:37 2026] 127.0.0.1:49757 Accepted
+[Mon Aug  3 14:42:37 2026] 127.0.0.1:52601 [200]: GET /js/patient-profile-panel.js?v=1785767690
+[Mon Aug  3 14:42:37 2026] 127.0.0.1:49757 [200]: GET /js/communities.js?v=1785789316
+[Mon Aug  3 14:42:37 2026] 127.0.0.1:53312 Closing
+[Mon Aug  3 14:42:37 2026] 127.0.0.1:59472 Closing
+[Mon Aug  3 14:42:37 2026] 127.0.0.1:61635 Closing
+[Mon Aug  3 14:42:37 2026] 127.0.0.1:52601 Closing
+[Mon Aug  3 14:42:37 2026] 127.0.0.1:49757 Closing
+[Mon Aug  3 14:42:38 2026] 127.0.0.1:55135 Accepted
+[Mon Aug  3 14:42:38 2026] 127.0.0.1:56585 Accepted
+[Mon Aug  3 14:42:38 2026] 127.0.0.1:52598 Accepted
+[Mon Aug  3 14:42:38 2026] 127.0.0.1:55135 [200]: GET /images/communities/category-mine.png
+[Mon Aug  3 14:42:38 2026] 127.0.0.1:57852 Accepted
+[Mon Aug  3 14:42:38 2026] 127.0.0.1:56585 [200]: GET /images/communities/category-wellness.png
+[Mon Aug  3 14:42:38 2026] 127.0.0.1:52598 [200]: GET /images/communities/category-sport.png
+[Mon Aug  3 14:42:38 2026] 127.0.0.1:51079 Accepted
+[Mon Aug  3 14:42:38 2026] 127.0.0.1:57852 [200]: GET /images/communities/category-new.png
+[Mon Aug  3 14:42:38 2026] 127.0.0.1:53067 Accepted
+[Mon Aug  3 14:42:38 2026] 127.0.0.1:51079 [200]: GET /images/communities/avatar-carlos.png
+[Mon Aug  3 14:42:38 2026] 127.0.0.1:55135 Closing
+[Mon Aug  3 14:42:38 2026] 127.0.0.1:53067 [200]: GET /images/communities/create-cover.png
+[Mon Aug  3 14:42:38 2026] 127.0.0.1:56585 Closing
+[Mon Aug  3 14:42:38 2026] 127.0.0.1:52598 Closing
+[Mon Aug  3 14:42:38 2026] 127.0.0.1:57852 Closing
+[Mon Aug  3 14:42:38 2026] 127.0.0.1:51079 Closing
+[Mon Aug  3 14:42:38 2026] 127.0.0.1:53067 Closing
+[Mon Aug  3 14:45:00 2026] 127.0.0.1:51616 Accepted
+[Mon Aug  3 14:45:00 2026] 127.0.0.1:51616 Closing
+[Mon Aug  3 14:45:00 2026] 127.0.0.1:64817 Accepted
+[Mon Aug  3 14:45:00 2026] 127.0.0.1:55691 Accepted
+[Mon Aug  3 14:45:00 2026] 127.0.0.1:64817 [200]: GET /css/drsam.css?v=1785776324
+[Mon Aug  3 14:45:00 2026] 127.0.0.1:52178 Accepted
+[Mon Aug  3 14:45:00 2026] 127.0.0.1:55691 [200]: GET /css/patient-profile-panel.css?v=1785767279
+[Mon Aug  3 14:45:00 2026] 127.0.0.1:53963 Accepted
+[Mon Aug  3 14:45:00 2026] 127.0.0.1:52178 [200]: GET /css/communities.css?v=1785789860
+[Mon Aug  3 14:45:00 2026] 127.0.0.1:58668 Accepted
+[Mon Aug  3 14:45:00 2026] 127.0.0.1:53963 [200]: GET /js/communities.js?v=1785789841
+[Mon Aug  3 14:45:00 2026] 127.0.0.1:58668 [200]: GET /js/patient-profile-panel.js?v=1785767690
+[Mon Aug  3 14:45:00 2026] 127.0.0.1:55691 Closing
+[Mon Aug  3 14:45:00 2026] 127.0.0.1:52178 Closing
+[Mon Aug  3 14:45:00 2026] 127.0.0.1:53963 Closing
+[Mon Aug  3 14:45:00 2026] 127.0.0.1:64817 Closing
+[Mon Aug  3 14:45:00 2026] 127.0.0.1:58668 Closing
+[Mon Aug  3 14:45:00 2026] 127.0.0.1:53979 Accepted
+[Mon Aug  3 14:45:00 2026] 127.0.0.1:53979 [200]: GET /images/communities/category-mine.png
+[Mon Aug  3 14:45:00 2026] 127.0.0.1:57096 Accepted
+[Mon Aug  3 14:45:00 2026] 127.0.0.1:57096 [200]: GET /images/communities/category-wellness.png
+[Mon Aug  3 14:45:00 2026] 127.0.0.1:52060 Accepted
+[Mon Aug  3 14:45:00 2026] 127.0.0.1:53979 Closing
+[Mon Aug  3 14:45:00 2026] 127.0.0.1:57096 Closing
+[Mon Aug  3 14:45:00 2026] 127.0.0.1:64991 Accepted
+[Mon Aug  3 14:45:00 2026] 127.0.0.1:55208 Accepted
+[Mon Aug  3 14:45:00 2026] 127.0.0.1:52060 [200]: GET /images/communities/category-sport.png
+[Mon Aug  3 14:45:00 2026] 127.0.0.1:64991 [200]: GET /images/communities/category-new.png
+[Mon Aug  3 14:45:00 2026] 127.0.0.1:55208 [200]: GET /images/communities/avatar-carlos.png
+[Mon Aug  3 14:45:00 2026] 127.0.0.1:56141 Accepted
+[Mon Aug  3 14:45:00 2026] 127.0.0.1:56141 [200]: GET /images/communities/create-cover.png
+[Mon Aug  3 14:45:00 2026] 127.0.0.1:52060 Closing
+[Mon Aug  3 14:45:00 2026] 127.0.0.1:64991 Closing
+[Mon Aug  3 14:45:00 2026] 127.0.0.1:55208 Closing
+[Mon Aug  3 14:45:00 2026] 127.0.0.1:56141 Closing

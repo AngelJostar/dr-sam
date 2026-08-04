@@ -2643,7 +2643,22 @@ textarea {
 /* Portal paciente homologado (sin Comunidad) */
 .native-shell.patient-portal-body .topbar { display: none; }
 .native-shell.patient-portal-body .shell { width: 100%; max-width: none; margin: 0; padding: 0; }
-.native-shell .patient-portal { position: relative; min-height: 100vh; overflow-x: hidden; background: #f7fbfb; color: #243044; }
+.native-shell .patient-portal { --patient-topbar-height: 70px; --patient-bottom-nav-space: 106px; position: relative; min-height: 100vh; overflow-x: hidden; background: #f7fbfb; color: #243044; }
+.native-shell .patient-portal::after {
+  content: "";
+  position: fixed;
+  z-index: 18;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 122px;
+  pointer-events: none;
+  background: linear-gradient(0deg, rgba(255,255,255,.86) 0%, rgba(255,255,255,.64) 34%, rgba(255,255,255,.32) 62%, rgba(255,255,255,.10) 84%, rgba(255,255,255,0) 100%);
+  -webkit-mask-image: linear-gradient(0deg, rgba(0,0,0,.96) 0%, rgba(0,0,0,.74) 36%, rgba(0,0,0,.38) 64%, rgba(0,0,0,.12) 84%, rgba(0,0,0,0) 100%);
+  mask-image: linear-gradient(0deg, rgba(0,0,0,.96) 0%, rgba(0,0,0,.74) 36%, rgba(0,0,0,.38) 64%, rgba(0,0,0,.12) 84%, rgba(0,0,0,0) 100%);
+  -webkit-backdrop-filter: blur(18px) saturate(135%);
+  backdrop-filter: blur(18px) saturate(135%);
+}
 .native-shell .patient-portal-topbar { position: sticky; top: 4px; z-index: 30; display: grid; grid-template-columns: 52px minmax(0, 1fr) 48px; gap: 9px; align-items: center; min-height: 70px; width: calc(100% - 8px); margin: 4px; padding: 5px 10px 5px 5px; box-sizing: border-box; background: rgba(255,255,255,.98); border: 1px solid #dce9eb; border-radius: 22px; box-shadow: 0 13px 30px rgba(34,78,85,.10); }
 .native-shell .patient-portal-topbar .patient-portal-dots { width: 50px; height: 50px; border: 1px solid #d3e2e5 !important; border-radius: 16px; background: #fff !important; color: #111 !important; font-size: 20px; font-weight: 800; line-height: 1; box-shadow: none !important; cursor: pointer; }
 .native-shell .patient-portal-question { display: grid; grid-template-columns: minmax(0,1fr) 44px; gap: 9px; align-items: center; }
@@ -2714,6 +2729,7 @@ textarea {
 .native-shell .patient-portal-form select,
 .native-shell .patient-portal-filters input,
 .native-shell .patient-portal-filters select { width: 100%; min-height: 42px; margin-top: 6px; padding: 9px 11px; border: 1px solid #d4dfe1; border-radius: 8px; background: #fff; color: #243044; }
+.native-shell .patient-portal-form input[readonly] { background: #f4f8f8; color: #40536e; cursor: default; }
 .native-shell .patient-portal-primary { min-height: 42px; margin-top: 18px; padding: 0 20px; border: 0; border-radius: 8px; background: #087f74; color: #fff; font-weight: 800; cursor: pointer; }
 .native-shell .patient-portal-preview { text-align: center; }
 .native-shell .patient-portal-preview .patient-portal-avatar { width: 82px; height: 82px; margin: 5px auto 13px; font-size: 24px; }
@@ -2759,8 +2775,1122 @@ textarea {
 .native-shell .patient-portal-bottom-nav button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; border: 0; border-radius: 16px; background: transparent; color: #5f7280; font-size: 10px; font-weight: 800; cursor: pointer; }
 .native-shell .patient-portal-bottom-nav button.is-active { background: #e4faf6; color: #008b80; }
 .native-shell .patient-portal-bottom-nav .patient-bottom-icon { font-size: 20px; line-height: 1; }
-.native-shell .patient-portal-bottom-nav .patient-bottom-register { margin: -6px 0 0; background: #1fc2b4; color: #fff; box-shadow: 0 12px 25px rgba(26,184,170,.26); }
+.native-shell .patient-portal-bottom-nav .patient-bottom-register { margin: -6px 0 0; background: #e4faf6; color: #008b80; box-shadow: 0 12px 25px rgba(26,184,170,.12); }
+.native-shell .patient-portal-bottom-nav .patient-bottom-register.is-active { background: #1fc2b4; color: #fff; box-shadow: 0 12px 25px rgba(26,184,170,.26); }
 .native-shell .patient-portal-bottom-nav .patient-bottom-register > span { font-size: 24px; line-height: 1; }
+
+.native-shell .patient-health-panel {
+  overflow: hidden;
+  border: 1px solid #dce8ed;
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 22px 50px rgba(16,42,60,.07);
+}
+
+.native-shell .patient-health-hero {
+  position: relative;
+  display: flex;
+  min-height: 140px;
+  align-items: center;
+  gap: 26px;
+  overflow: hidden;
+  padding: 24px 42px;
+  border-bottom: 1px solid #dce8ed;
+  background:
+    linear-gradient(105deg, rgba(255,255,255,.98) 5%, rgba(247,255,254,.88) 70%, rgba(255,255,255,.96)),
+    repeating-radial-gradient(circle at 76% 44%, rgba(39,205,190,.20) 0 2px, transparent 2px 12px);
+}
+
+.native-shell .patient-health-hero::after {
+  content: "";
+  position: absolute;
+  inset: -130px -80px -140px 45%;
+  opacity: .55;
+  background: repeating-radial-gradient(circle at 50% 50%, transparent 0 18px, rgba(36,201,188,.19) 19px 21px);
+  pointer-events: none;
+}
+
+.native-shell .patient-health-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.native-shell .patient-health-hero-icon {
+  display: grid;
+  flex: 0 0 86px;
+  width: 86px;
+  height: 86px;
+  place-items: center;
+  border: 1px solid #c9eeea;
+  border-radius: 20px;
+  background: rgba(255,255,255,.84);
+  color: #09a99b;
+  box-shadow: 0 16px 35px rgba(44,156,148,.08);
+}
+
+.native-shell .patient-health-hero svg,
+.native-shell .patient-health-metric svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.native-shell .patient-health-hero svg {
+  width: 45px;
+  height: 45px;
+  stroke-width: 4;
+}
+
+.native-shell .patient-health-hero h1 {
+  margin: 0 0 7px;
+  color: #43536a;
+  font-size: clamp(34px, 3vw, 44px);
+  line-height: .98;
+  letter-spacing: 0;
+}
+
+.native-shell .patient-health-hero p {
+  margin: 0;
+  color: #6d7f90;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.native-shell .patient-health-filters {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  overflow-x: auto;
+  margin: 0 28px;
+  padding: 24px 0;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 0;
+  overscroll-behavior-inline: contain;
+  scrollbar-width: none;
+  touch-action: pan-x;
+  cursor: grab;
+  -webkit-overflow-scrolling: touch;
+}
+
+.native-shell .patient-health-filters::-webkit-scrollbar {
+  display: none;
+}
+
+.native-shell .patient-health-filters.is-dragging {
+  cursor: grabbing;
+  user-select: none;
+}
+
+.native-shell .patient-health-filters button {
+  display: inline-flex;
+  flex: 0 0 auto;
+  min-height: 52px;
+  align-items: center;
+  justify-content: center;
+  gap: 11px;
+  padding: 0 22px;
+  border: 1px solid #d9e7ed;
+  border-radius: 999px;
+  background: #fff;
+  color: #31506d;
+  font-size: 13px;
+  font-weight: 900;
+  white-space: nowrap;
+  box-shadow: 0 12px 28px rgba(16,42,60,.06);
+  cursor: pointer;
+  scroll-snap-align: start;
+}
+
+.native-shell .patient-health-filters button span {
+  display: grid;
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--health-accent, #08a799);
+  font-size: 13px;
+}
+
+.native-shell .patient-health-filters button.is-active {
+  min-width: 106px;
+  border-color: transparent;
+  background: linear-gradient(135deg,#20c9bb,#03a99f);
+  color: #fff;
+  box-shadow: 0 15px 30px rgba(10,184,171,.2);
+}
+
+.native-shell .patient-health-filters .is-active span { color: #fff; }
+.native-shell .patient-health-filters .is-activity { --health-accent: #12c28f; }
+.native-shell .patient-health-filters .is-nutrition { --health-accent: #17bb76; }
+.native-shell .patient-health-filters .is-sleep { --health-accent: #8d5cf6; }
+.native-shell .patient-health-filters .is-vitals { --health-accent: #277cff; }
+.native-shell .patient-health-filters .is-wellness { --health-accent: #ff9c22; }
+.native-shell .patient-health-filters .is-biomarkers { --health-accent: #8f5cf6; }
+
+.native-shell .patient-health-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  padding: 0 28px 18px;
+}
+
+.native-shell .patient-health-metric,
+.native-shell .patient-health-section,
+.native-shell .patient-health-recent-grid article {
+  border: 1px solid #dfe9ed;
+  border-radius: 15px;
+  background: #fff;
+  box-shadow: 0 14px 30px rgba(19,44,60,.04);
+}
+
+.native-shell .patient-health-metric {
+  --accent: #15c879;
+  --soft: #e8fbf1;
+  display: grid;
+  min-height: 174px;
+  align-content: start;
+  padding: 19px;
+  color: var(--accent);
+}
+
+.native-shell .patient-health-metric.is-blue,
+.native-shell .patient-health-ring.is-blue,
+.native-shell .patient-health-plan-list article.is-blue,
+.native-shell .patient-health-recent-grid article.is-blue { --accent: #2f80ff; --soft: #eaf2ff; }
+
+.native-shell .patient-health-metric.is-orange,
+.native-shell .patient-health-ring.is-orange,
+.native-shell .patient-health-plan-list article.is-orange,
+.native-shell .patient-health-recent-grid article.is-orange { --accent: #ff9415; --soft: #fff3df; }
+
+.native-shell .patient-health-metric.is-purple,
+.native-shell .patient-health-ring.is-purple,
+.native-shell .patient-health-plan-list article.is-purple,
+.native-shell .patient-health-recent-grid article.is-purple { --accent: #8f5cf6; --soft: #f1e9ff; }
+
+.native-shell .patient-health-metric-icon,
+.native-shell .patient-health-plan-list article > span,
+.native-shell .patient-health-recent-grid article > span {
+  display: grid;
+  width: 47px;
+  height: 47px;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--soft);
+  color: var(--accent);
+}
+
+.native-shell .patient-health-metric-icon svg {
+  width: 26px;
+  height: 26px;
+  stroke-width: 2.5;
+}
+
+.native-shell .patient-health-metric > strong {
+  margin-top: -39px;
+  padding-left: 60px;
+  color: #2c3957;
+  font-size: 26px;
+  font-weight: 950;
+  line-height: 1;
+}
+
+.native-shell .patient-health-metric > small,
+.native-shell .patient-health-recent-grid article > small,
+.native-shell .patient-health-plan-list small {
+  color: #6d7f90;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.native-shell .patient-health-metric > small {
+  margin: 9px 0 0 60px;
+}
+
+.native-shell .patient-health-metric > em {
+  width: max-content;
+  margin: 10px 0 12px 60px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: var(--soft);
+  color: var(--accent);
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.native-shell .patient-health-sparkline {
+  width: 100%;
+  height: 42px;
+  margin-top: auto;
+  color: var(--accent);
+}
+
+.native-shell .patient-health-sparkline polyline {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+}
+
+.native-shell .patient-health-section {
+  margin: 0 28px 18px;
+  padding: 22px 24px;
+}
+
+.native-shell .patient-health-section > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.native-shell .patient-health-section h2 {
+  margin: 0;
+  color: #2c3957;
+  font-size: 20px;
+  font-weight: 950;
+}
+
+.native-shell .patient-health-section header button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 0;
+  background: transparent;
+  color: #0a9f91;
+  font-size: 12px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.native-shell .patient-health-ring-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.native-shell .patient-health-ring {
+  --accent: #15c879;
+  display: grid;
+  justify-items: center;
+  text-align: center;
+}
+
+.native-shell .patient-health-ring span {
+  position: relative;
+  display: grid;
+  width: 112px;
+  height: 112px;
+  place-items: center;
+  border-radius: 50%;
+  background: conic-gradient(var(--accent) calc(var(--value) * 1%), #eef4f5 0);
+}
+
+.native-shell .patient-health-ring span::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px #eef4f5;
+}
+
+.native-shell .patient-health-ring strong {
+  position: relative;
+  z-index: 1;
+  color: #2c3957;
+  font-size: 22px;
+  font-weight: 950;
+}
+
+.native-shell .patient-health-ring h3 {
+  margin: 13px 0 4px;
+  color: #2c3957;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.native-shell .patient-health-ring p {
+  margin: 0;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.native-shell .patient-health-plan-list {
+  display: grid;
+  gap: 18px;
+}
+
+.native-shell .patient-health-plan-list article {
+  --accent: #15c879;
+  --soft: #e8fbf1;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+}
+
+.native-shell .patient-health-plan-list strong {
+  display: block;
+  color: #4c5b70;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.native-shell .patient-health-plan-list small {
+  display: block;
+  margin: 4px 0 7px;
+}
+
+.native-shell .patient-health-plan-list i {
+  display: block;
+  height: 5px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent) var(--progress), #eaf0f2 0);
+}
+
+.native-shell .patient-health-plan-list article > b {
+  color: #70808f;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.native-shell .patient-health-recent-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.native-shell .patient-health-recent-grid article {
+  --accent: #15c879;
+  --soft: #e8fbf1;
+  display: grid;
+  min-height: 164px;
+  align-content: start;
+  padding: 17px;
+  color: var(--accent);
+}
+
+.native-shell .patient-health-recent-grid article > span {
+  width: 43px;
+  height: 43px;
+  margin-bottom: 12px;
+  font-size: 21px;
+}
+
+.native-shell .patient-health-recent-grid strong {
+  color: #2c3957;
+  font-size: 24px;
+  font-weight: 950;
+}
+
+.native-shell .patient-health-recent-grid strong small {
+  color: #2c3957;
+  font-size: 12px;
+}
+
+.native-shell .patient-health-recent-grid article > em {
+  margin-top: 4px;
+  color: #6d7f90;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 800;
+}
+
+body.is-health-screen-open {
+  overflow: hidden;
+}
+
+.native-shell .patient-health-mobile-screen-layer[hidden],
+.native-shell .patient-health-mobile-screen[hidden] {
+  display: none !important;
+}
+
+.native-shell .patient-health-mobile-screen-layer {
+  position: fixed;
+  top: var(--patient-topbar-height, 70px);
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 42;
+  display: grid;
+  place-items: start center;
+  overflow-y: auto;
+  padding: 18px 18px calc(var(--patient-bottom-nav-space, 106px) + 18px);
+  background: rgba(244,250,250,.78);
+  backdrop-filter: blur(16px);
+}
+
+.native-shell .patient-health-mobile-screen {
+  --accent: #13bd83;
+  --soft: #e8fbf1;
+  display: flex;
+  box-sizing: border-box;
+  width: min(100%, 390px);
+  min-height: min(820px, calc(100dvh - var(--patient-topbar-height, 70px) - 36px));
+  max-height: calc(100dvh - var(--patient-topbar-height, 70px) - var(--patient-bottom-nav-space, 106px) - 36px);
+  flex-direction: column;
+  gap: 18px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 26px 18px 22px;
+  border: 1px solid #deeaee;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 26px 70px rgba(21,48,65,.18);
+}
+
+.native-shell .patient-health-screen-header {
+  display: grid;
+  grid-template-columns: 38px minmax(0,1fr);
+  align-items: center;
+  gap: 12px;
+}
+
+.native-shell .patient-health-screen-header button {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #142542;
+  font-size: 27px;
+  cursor: pointer;
+}
+
+.native-shell .patient-health-screen-header h2 {
+  margin: 0;
+  color: #142542;
+  font-size: 23px;
+  font-weight: 950;
+  letter-spacing: 0;
+}
+
+.native-shell .patient-health-screen-lead {
+  margin: 0 4px 10px;
+  color: #536887;
+  font-size: 18px;
+  font-weight: 650;
+  line-height: 1.55;
+}
+
+.native-shell .patient-health-screen-subtitle {
+  margin: 10px 4px 0;
+  color: #142542;
+  font-size: 18px;
+  font-weight: 950;
+}
+
+.native-shell .patient-health-screen-list {
+  display: grid;
+  gap: 14px;
+}
+
+.native-shell .patient-health-mobile-card {
+  --accent: #15c879;
+  --soft: #e8fbf1;
+  display: grid;
+  align-items: center;
+  gap: 14px;
+  min-height: 112px;
+  padding: 15px;
+  border: 1px solid #dfe9ed;
+  border-radius: 15px;
+  background: #fff;
+  color: var(--accent);
+  box-shadow: 0 14px 30px rgba(19,44,60,.045);
+}
+
+.native-shell .patient-health-mobile-card.is-blue { --accent: #2f80ff; --soft: #eaf2ff; }
+.native-shell .patient-health-mobile-card.is-orange { --accent: #ff9415; --soft: #fff3df; }
+.native-shell .patient-health-mobile-card.is-purple { --accent: #8f5cf6; --soft: #f1e9ff; }
+
+.native-shell .patient-health-indicator-detail {
+  grid-template-columns: 104px minmax(0,1fr) 18px;
+}
+
+.native-shell .patient-health-screen-ring {
+  position: relative;
+  display: grid;
+  width: 92px;
+  height: 92px;
+  place-items: center;
+  border-radius: 50%;
+  background: conic-gradient(var(--accent) calc(var(--value) * 1%), #eef4f5 0);
+}
+
+.native-shell .patient-health-screen-ring::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px #eef4f5;
+}
+
+.native-shell .patient-health-screen-ring strong {
+  position: relative;
+  z-index: 1;
+  color: #263754;
+  font-size: 21px;
+  font-weight: 950;
+}
+
+.native-shell .patient-health-mobile-card h3,
+.native-shell .patient-health-data-detail strong {
+  margin: 0;
+  color: #142542;
+  font-size: 17px;
+  font-weight: 950;
+  line-height: 1.2;
+}
+
+.native-shell .patient-health-mobile-card p,
+.native-shell .patient-health-mobile-card small,
+.native-shell .patient-health-mobile-card em {
+  display: block;
+  margin: 4px 0 0;
+  color: #536887;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 750;
+  line-height: 1.45;
+}
+
+.native-shell .patient-health-indicator-detail p {
+  color: var(--accent);
+  font-weight: 900;
+}
+
+.native-shell .patient-health-mobile-card > b {
+  color: #63758b;
+  font-size: 26px;
+  font-weight: 450;
+}
+
+.native-shell .patient-health-plan-detail,
+.native-shell .patient-health-data-detail {
+  grid-template-columns: 66px minmax(0,1fr) 18px;
+  min-height: 154px;
+}
+
+.native-shell .patient-health-screen-icon {
+  display: grid;
+  width: 58px;
+  height: 58px;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--soft);
+  color: var(--accent);
+  font-size: 25px;
+  font-weight: 950;
+}
+
+.native-shell .patient-health-plan-detail i {
+  display: block;
+  height: 8px;
+  overflow: hidden;
+  margin-top: 18px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent) var(--progress), #e9f0f2 0);
+}
+
+.native-shell .patient-health-plan-detail em {
+  margin-top: 10px;
+  color: var(--accent);
+  font-weight: 950;
+}
+
+.native-shell .patient-health-data-detail {
+  align-items: start;
+}
+
+.native-shell .patient-health-data-detail .patient-health-sparkline {
+  height: 58px;
+  margin-top: 18px;
+}
+
+.native-shell .patient-health-data-detail strong small {
+  display: inline;
+  color: #142542;
+  font-size: 13px;
+}
+
+.native-shell .patient-health-screen-tip {
+  display: grid;
+  grid-template-columns: 54px minmax(0,1fr);
+  gap: 14px;
+  align-items: center;
+  margin-top: auto;
+  padding: 18px;
+  border: 1px solid #d6f0ed;
+  border-radius: 15px;
+  background: linear-gradient(135deg,#effffd,#f7fbfb);
+}
+
+.native-shell .patient-health-screen-tip span {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border-radius: 50%;
+  color: #079b8e;
+  font-size: 25px;
+}
+
+.native-shell .patient-health-screen-tip strong {
+  display: block;
+  color: #07887c;
+  font-size: 14px;
+  font-weight: 950;
+  line-height: 1.35;
+}
+
+.native-shell .patient-health-screen-tip p {
+  margin: 6px 0 0;
+  color: #4b6179;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.native-shell .patient-health-screen-primary {
+  min-height: 56px;
+  margin-top: 4px;
+  border: 0;
+  border-radius: 9px;
+  background: linear-gradient(135deg,#07a091,#06b6a7);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 950;
+  box-shadow: 0 16px 30px rgba(4,170,155,.22);
+  cursor: pointer;
+}
+
+body.is-register-modal-open {
+  overflow: hidden;
+}
+
+.native-shell .patient-register-modal[hidden] {
+  display: none !important;
+}
+
+.native-shell .patient-register-form [hidden],
+.native-shell .patient-register-options [hidden] {
+  display: none !important;
+}
+
+.native-shell .patient-register-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 260;
+  display: grid;
+  place-items: end center;
+  padding: calc(var(--patient-topbar-height, 70px) + 14px) 18px 18px;
+  background: rgba(15, 28, 38, 0.42);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.native-shell .patient-register-panel {
+  display: grid;
+  gap: 18px;
+}
+
+.native-shell .patient-register-hero {
+  position: relative;
+  display: flex;
+  min-height: 140px;
+  align-items: center;
+  gap: 26px;
+  overflow: hidden;
+  padding: 24px 42px;
+  border: 1px solid #dce8ed;
+  border-radius: 22px;
+  background:
+    linear-gradient(105deg, rgba(255,255,255,.98) 5%, rgba(244,255,253,.86) 68%, rgba(255,255,255,.96)),
+    repeating-radial-gradient(circle at 69% 42%, rgba(39,205,190,.2) 0 2px, transparent 2px 12px),
+    repeating-linear-gradient(94deg, rgba(39,205,190,.15) 0 2px, transparent 2px 12px);
+  box-shadow: 0 22px 50px rgba(16,42,60,.07);
+}
+
+.native-shell .patient-register-hero-icon {
+  display: grid;
+  flex: 0 0 82px;
+  width: 82px;
+  height: 82px;
+  place-items: center;
+  border: 1px solid #bfe9e6;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #effffd, #fff);
+  color: #08a799;
+  font-size: 42px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.native-shell .patient-register-hero small {
+  color: #008d83;
+  font-size: 12px;
+  font-weight: 950;
+  letter-spacing: .02em;
+}
+
+.native-shell .patient-register-hero h1 {
+  margin: 4px 0 2px;
+  color: #40506a;
+  font-size: 38px;
+  font-weight: 950;
+  letter-spacing: 0;
+}
+
+.native-shell .patient-register-hero p {
+  margin: 0;
+  color: #65788f;
+  font-size: 15px;
+  font-weight: 850;
+}
+
+.native-shell .patient-register-workspace {
+  width: min(100%, 760px);
+  margin: 0 auto;
+}
+
+.native-shell .patient-register-sheet {
+  position: relative;
+  box-sizing: border-box;
+  width: min(100%, 620px);
+  max-height: calc(100dvh - var(--patient-topbar-height, 70px) - 32px);
+  overflow-y: auto;
+  padding: 24px;
+  border: 1px solid #d7e7e9;
+  border-radius: 28px;
+  background: #fff;
+  box-shadow: 0 28px 70px rgba(7, 29, 40, 0.25);
+}
+
+.native-shell .patient-register-view-sheet {
+  width: 100%;
+  max-height: none;
+  overflow: visible;
+  border-radius: 22px;
+  box-shadow: 0 22px 50px rgba(16,42,60,.08);
+}
+
+.native-shell .patient-register-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border: 1px solid #d7e7e9;
+  border-radius: 14px;
+  background: #fff;
+  color: #142542;
+  font-size: 25px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.native-shell .patient-register-sheet > small {
+  display: block;
+  margin-right: 52px;
+  color: #008d83;
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+}
+
+.native-shell .patient-register-sheet h2 {
+  margin: 4px 52px 6px 0;
+  color: #142542;
+  font-size: 27px;
+  font-weight: 950;
+  letter-spacing: 0;
+}
+
+.native-shell .patient-register-sheet p {
+  margin: 0 52px 17px 0;
+  color: #536887;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.native-shell .patient-register-view-sheet > small,
+.native-shell .patient-register-view-sheet h2,
+.native-shell .patient-register-view-sheet p {
+  margin-right: 0;
+}
+
+.native-shell .patient-register-options {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  margin: 0 -4px 14px;
+  padding: 0 4px 10px;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x;
+  cursor: grab;
+}
+
+.native-shell .patient-register-options::-webkit-scrollbar {
+  display: none;
+}
+
+.native-shell .patient-register-options.is-panning {
+  cursor: grabbing;
+  user-select: none;
+}
+
+.native-shell .patient-register-options button {
+  display: inline-flex;
+  flex: 0 0 auto;
+  min-height: 44px;
+  align-items: center;
+  gap: 7px;
+  padding: 0 13px;
+  border: 1px solid #d7e7e9;
+  border-radius: 15px;
+  background: #fff;
+  color: #263754;
+  font-size: 13px;
+  font-weight: 900;
+  scroll-snap-align: start;
+  cursor: pointer;
+}
+
+.native-shell .patient-register-options button span {
+  display: grid;
+  width: 22px;
+  height: 22px;
+  place-items: center;
+  border-radius: 50%;
+  background: #eafff9;
+  color: #008d83;
+}
+
+.native-shell .patient-register-options button.is-active {
+  border-color: #9eece3;
+  background: #eafff9;
+  color: #007c72;
+}
+
+.native-shell .patient-register-form {
+  display: grid;
+  gap: 13px;
+}
+
+.native-shell .patient-register-form label,
+.native-shell .patient-register-attachment {
+  display: grid;
+  gap: 8px;
+  color: #536887;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.native-shell .patient-register-form input,
+.native-shell .patient-register-form textarea {
+  width: 100%;
+  min-height: 48px;
+  box-sizing: border-box;
+  border: 1px solid #d7e7e9;
+  border-radius: 16px;
+  background: #fbfefe;
+  color: #142542;
+  font: inherit;
+  font-weight: 800;
+  outline: 0;
+  padding: 10px 12px;
+}
+
+.native-shell .patient-register-form textarea {
+  resize: vertical;
+}
+
+.native-shell .patient-register-form input:focus,
+.native-shell .patient-register-form textarea:focus {
+  border-color: #8fe4dc;
+  box-shadow: 0 0 0 4px rgba(15, 185, 170, .1);
+}
+
+.native-shell .patient-register-value-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  overflow: hidden;
+  border: 1px solid #d7e7e9;
+  border-radius: 16px;
+  background: #fbfefe;
+}
+
+.native-shell .patient-register-value-row input {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.native-shell .patient-register-value-row b {
+  min-width: 58px;
+  padding: 0 13px;
+  color: #008d83;
+  font-size: 13px;
+  font-weight: 950;
+  text-align: center;
+}
+
+.native-shell .patient-register-attachment-box {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  min-height: 64px;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  border: 1px solid #d7e7e9;
+  border-radius: 18px;
+  background: #fbfefe;
+}
+
+.native-shell .patient-register-attachment-button {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border: 1px solid #bfe9e6;
+  border-radius: 15px;
+  background: linear-gradient(135deg, #eafff9, #fff);
+  color: #008d83;
+  font-size: 25px;
+  font-weight: 900;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.native-shell .patient-register-attachment-box strong,
+.native-shell .patient-register-attachment-box small {
+  display: block;
+}
+
+.native-shell .patient-register-attachment-box strong {
+  color: #142542;
+  font-size: 14px;
+  font-weight: 950;
+}
+
+.native-shell .patient-register-attachment-box small {
+  margin-top: 2px;
+  overflow: hidden;
+  color: #697b8f;
+  font-size: 12px;
+  font-weight: 750;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.native-shell .patient-register-success {
+  padding: 12px 14px;
+  border: 1px solid #bfeee8;
+  border-radius: 16px;
+  background: #effffd;
+  color: #007c72;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.native-shell .patient-register-actions {
+  display: grid;
+  grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr);
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.native-shell .patient-register-secondary,
+.native-shell .patient-register-primary {
+  min-height: 54px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+.native-shell .patient-register-secondary {
+  border: 1px solid #d7e7e9;
+  background: #fff;
+  color: #142542;
+}
+
+.native-shell .patient-register-primary {
+  border: 0;
+  background: linear-gradient(135deg, #07a091, #06b6a7);
+  color: #fff;
+  box-shadow: 0 16px 30px rgba(4,170,155,.22);
+}
+
+/* Dispositivos medicos del paciente */
+.native-shell .patient-devices-panel { overflow: hidden; border: 1px solid #dce8ed; border-radius: 22px; background: #fff; box-shadow: 0 22px 50px rgba(16,42,60,.07); }
+.native-shell .patient-devices-hero { position: relative; display: flex; align-items: center; gap: 26px; min-height: 140px; padding: 24px 42px; overflow: hidden; border-bottom: 1px solid #dce8ed; background: linear-gradient(105deg,rgba(255,255,255,.98) 5%,rgba(244,255,253,.86) 68%,rgba(255,255,255,.96)), repeating-radial-gradient(circle at 69% 42%,rgba(39,205,190,.2) 0 2px,transparent 2px 12px), repeating-linear-gradient(94deg,rgba(39,205,190,.15) 0 2px,transparent 2px 12px); }
+.native-shell .patient-devices-hero::before { content: ""; position: absolute; inset: -120px -60px -140px 45%; opacity: .55; background: repeating-radial-gradient(circle at 50% 50%,transparent 0 17px,rgba(36,201,188,.2) 18px 20px); pointer-events: none; }
+.native-shell .patient-devices-hero > * { position: relative; z-index: 1; }
+.native-shell .patient-devices-hero-icon { display: grid; flex: 0 0 86px; place-items: center; width: 86px; height: 86px; border: 1px solid #c9eeea; border-radius: 20px; background: rgba(255,255,255,.84); color: #6aa39f; box-shadow: 0 16px 35px rgba(44,156,148,.08); }
+.native-shell .patient-devices-hero-icon svg { width: 45px; height: 45px; fill: none; stroke: currentColor; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+.native-shell .patient-devices-hero h1 { margin: 0 0 7px; color: #43536a; font-size: clamp(34px,3vw,44px); line-height: .98; letter-spacing: 0; }
+.native-shell .patient-devices-hero p { margin: 0; color: #6d7f90; font-size: 15px; font-weight: 800; }
+.native-shell .patient-devices-redesign { display: grid; gap: 22px; padding: 24px 28px 28px; background: #fff; }
+.native-shell .patient-device-filters { display: flex; align-items: center; gap: 12px; min-width: 0; padding: 2px 2px 9px; overflow-x: auto; scrollbar-width: none; }
+.native-shell .patient-device-filters::-webkit-scrollbar { display: none; }
+.native-shell .patient-device-filters button { display: inline-flex; flex: 0 0 auto; align-items: center; justify-content: center; gap: 11px; min-height: 52px; padding: 0 22px; border: 1px solid #d9e7ed !important; border-radius: 999px; background: #fff !important; color: #087b70; font: inherit; font-size: 13px; font-weight: 900; white-space: nowrap; box-shadow: 0 12px 28px rgba(16,42,60,.06) !important; cursor: pointer; }
+.native-shell .patient-device-filters button.is-active { min-width: 106px; border-color: #08afa4 !important; background: linear-gradient(135deg,#20c9bb,#03a99f) !important; color: #fff !important; box-shadow: 0 15px 30px rgba(10,184,171,.2) !important; }
+.native-shell .patient-device-filters button.is-linked { color: #0a9f62; }
+.native-shell .patient-device-filters button.is-pending { color: #f2a000; }
+.native-shell .patient-device-filters button.is-vitals { color: #166bd7; }
+.native-shell .patient-device-filters button.is-glucose { color: #704cff; }
+.native-shell .patient-device-filter-icon { position: relative; display: inline-grid; flex: 0 0 20px; place-items: center; width: 20px; height: 20px; color: currentColor; }
+.native-shell .patient-device-filter-icon::before,
+.native-shell .patient-device-filter-icon::after { content: ""; position: absolute; box-sizing: border-box; }
+.native-shell .patient-device-filter-menu::before { width: 16px; height: 2px; border-radius: 999px; background: currentColor; box-shadow: 0 -6px 0 currentColor,0 6px 0 currentColor; }
+.native-shell .patient-device-filter-check::before { width: 13px; height: 7px; border-left: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(-45deg); }
+.native-shell .patient-device-filter-clock::before { width: 18px; height: 18px; border: 2px solid currentColor; border-radius: 50%; }
+.native-shell .patient-device-filter-clock::after { width: 7px; height: 6px; border-left: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: translate(1px,-1px); }
+.native-shell .patient-device-filter-heart::before { width: 16px; height: 16px; border-left: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(-45deg); border-radius: 0 0 2px 8px; }
+.native-shell .patient-device-filter-heart::after { width: 14px; height: 7px; border-top: 2px solid currentColor; border-radius: 50%; transform: translateY(2px); }
+.native-shell .patient-device-filter-drop::before { width: 15px; height: 15px; border: 2px solid currentColor; border-radius: 50% 50% 50% 2px; transform: rotate(-45deg); }
+.native-shell .patient-device-list { display: grid; gap: 16px; }
+.native-shell .patient-device-card { display: grid; grid-template-columns: 96px minmax(0,1fr) 220px; gap: 22px; align-items: center; min-height: 178px; padding: 24px 26px; border: 1px solid #dce8ed; border-radius: 19px; background: #fff; box-shadow: 0 18px 42px rgba(16,42,60,.06); }
+.native-shell .patient-device-icon-wrap { position: relative; display: grid; place-items: center; width: 96px; height: 96px; }
+.native-shell .patient-device-presence-dot { position: absolute; left: -13px; top: 39px; display: block; width: 14px; height: 14px; border: 5px solid #dcfbf7; border-radius: 50%; background: #20c9bb; }
+.native-shell .patient-device-card.is-pending .patient-device-presence-dot { border-color: #fff3d9; background: #f3b323; }
+.native-shell .patient-device-icon-tile { display: grid; place-items: center; width: 94px; height: 94px; border-radius: 22px; }
+.native-shell .patient-device-icon-pressure { background: #e6effd; color: #166bd7; }
+.native-shell .patient-device-icon-glucose { background: #efe7ff; color: #704cff; }
+.native-shell .patient-device-icon-tile svg { width: 48px; height: 48px; fill: none; stroke: currentColor; stroke-width: 3.4; stroke-linecap: round; stroke-linejoin: round; }
+.native-shell .patient-device-content { min-width: 0; }
+.native-shell .patient-device-main { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; margin-bottom: 18px; }
+.native-shell .patient-device-copy h2 { margin: 0 0 8px; color: #101b36; font-size: 20px; line-height: 1.15; letter-spacing: 0; }
+.native-shell .patient-device-copy p { margin: 0; color: #435a70; font-size: 14px; line-height: 1.45; }
+.native-shell .patient-device-badge { display: inline-flex; flex: 0 0 auto; align-items: center; justify-content: center; min-width: 84px; min-height: 36px; padding: 0 16px; border-radius: 999px; font-size: 12px; font-weight: 900; }
+.native-shell .patient-device-badge.is-linked { background: #dff8ed; color: #009961; }
+.native-shell .patient-device-badge.is-pending { background: #fff1db; color: #bd6e00; }
+.native-shell .patient-device-details { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 10px; margin: 0; }
+.native-shell .patient-device-details div { min-height: 65px; padding: 13px 14px; border: 1px solid #dce8ed; border-radius: 11px; background: #fbfdfd; }
+.native-shell .patient-device-details dt { margin: 0 0 9px; color: #617386; font-size: 10px; font-weight: 900; line-height: 1; text-transform: uppercase; }
+.native-shell .patient-device-details dd { margin: 0; color: #19263d; font-size: 12px; font-weight: 900; line-height: 1.25; }
+.native-shell .patient-device-actions { display: grid; gap: 12px; padding-left: 24px; border-left: 1px solid #dce8ed; }
+.native-shell .patient-device-action { display: inline-flex; align-items: center; justify-content: center; width: 100%; min-height: 53px; padding: 0 18px; border: 1px solid #dce8ed !important; border-radius: 14px; background: #fff !important; color: #00756d !important; font: inherit; font-size: 13px; font-weight: 900; box-shadow: none !important; cursor: pointer; }
+.native-shell .patient-device-action.is-primary { border-color: #008a83 !important; background: #fff !important; }
 
 /* Recetas del paciente, homologadas al portal de referencia */
 .native-shell .patient-prescriptions-view { max-width: 1780px; }
@@ -2839,6 +3969,18 @@ textarea {
 @media (max-width: 1000px) {
   .native-shell .patient-portal-summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .native-shell .patient-portal-doctor-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .native-shell .patient-health-metrics,
+  .native-shell .patient-health-ring-grid,
+  .native-shell .patient-health-recent-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .native-shell .patient-health-hero { min-height: 125px; padding: 22px 24px; }
+  .native-shell .patient-health-filters { margin: 0 18px; padding: 18px 0 14px; }
+  .native-shell .patient-health-metrics { padding: 0 18px 18px; }
+  .native-shell .patient-health-section { margin: 0 18px 18px; }
+  .native-shell .patient-devices-hero { min-height: 125px; padding: 22px 24px; }
+  .native-shell .patient-devices-redesign { padding: 18px; }
+  .native-shell .patient-device-card { grid-template-columns: 96px minmax(0,1fr); }
+  .native-shell .patient-device-actions { grid-column: 2; grid-template-columns: repeat(2,minmax(0,1fr)); padding-left: 0; border-left: 0; }
+  .native-shell .patient-device-details { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .native-shell .patient-prescriptions-hero { min-height: 125px; padding: 22px 24px; }
   .native-shell .patient-prescriptions-redesign { padding: 18px; }
 }
@@ -2850,9 +3992,59 @@ textarea {
   .native-shell .patient-portal-question button { display: none; }
   .native-shell .patient-portal-question input { height: 42px; }
   .native-shell .patient-portal-menu { position: fixed; top: 74px; left: 7px; width: min(280px, calc(100vw - 14px)); border-radius: 0 0 18px 18px; }
-  .native-shell .patient-portal-content { padding: 18px 12px; }
+  .native-shell .patient-portal-content { padding: 18px 12px 95px; }
   .native-shell .patient-portal-intro { min-height: 420px; }
   .native-shell .patient-portal-bottom-nav { left: 5px; bottom: 4px; grid-template-columns: repeat(5,1fr); width: calc(100% - 10px); min-height: 68px; }
+  .native-shell .patient-health-panel { border-radius: 18px; }
+  .native-shell .patient-health-hero { gap: 15px; min-height: 116px; padding: 18px; }
+  .native-shell .patient-health-hero-icon { flex-basis: 62px; width: 62px; height: 62px; border-radius: 16px; }
+  .native-shell .patient-health-hero-icon svg { width: 35px; height: 35px; }
+  .native-shell .patient-health-hero h1 { font-size: 31px; }
+  .native-shell .patient-health-filters { margin: 0 14px; padding: 14px 0 12px; }
+  .native-shell .patient-health-filters button { min-height: 46px; padding: 0 15px; }
+  .native-shell .patient-health-mobile-screen-layer { place-items: stretch; padding: 0; background: #fff; backdrop-filter: none; }
+  .native-shell .patient-health-mobile-screen { width: 100%; min-height: calc(100dvh - var(--patient-topbar-height, 70px)); max-height: calc(100dvh - var(--patient-topbar-height, 70px)); overflow-y: auto; border: 0; border-radius: 0; box-shadow: none; padding: 22px 20px calc(var(--patient-bottom-nav-space, 106px) + env(safe-area-inset-bottom) + 18px); }
+  .native-shell .patient-health-screen-header { margin-top: 0; }
+  .native-shell .patient-health-metrics { gap: 10px; padding: 0 14px 14px; }
+  .native-shell .patient-health-metric { min-height: 156px; padding: 14px; }
+  .native-shell .patient-health-metric-icon { width: 39px; height: 39px; }
+  .native-shell .patient-health-metric-icon svg { width: 22px; height: 22px; }
+  .native-shell .patient-health-metric > strong { margin-top: -32px; padding-left: 50px; font-size: 20px; }
+  .native-shell .patient-health-metric > small { margin-left: 50px; font-size: 10px; }
+  .native-shell .patient-health-metric > em { margin-left: 50px; padding: 4px 8px; font-size: 9px; }
+  .native-shell .patient-health-section { margin: 0 14px 14px; padding: 17px 14px; }
+  .native-shell .patient-health-section > header { margin-bottom: 14px; }
+  .native-shell .patient-health-section h2 { font-size: 17px; }
+  .native-shell .patient-health-ring-grid { gap: 12px; }
+  .native-shell .patient-health-ring span { width: 92px; height: 92px; }
+  .native-shell .patient-health-ring span::before { inset: 7px; }
+  .native-shell .patient-health-ring strong { font-size: 18px; }
+  .native-shell .patient-health-plan-list article { gap: 12px; }
+  .native-shell .patient-health-plan-list article > span { width: 43px; height: 43px; }
+  .native-shell .patient-health-recent-grid { gap: 10px; }
+  .native-shell .patient-health-recent-grid article { min-height: 148px; padding: 14px; }
+  .native-shell .patient-health-recent-grid strong { font-size: 20px; }
+  .native-shell .patient-register-modal { place-items: end stretch; padding: var(--patient-topbar-height, 70px) 0 0; }
+  .native-shell .patient-register-panel { gap: 14px; }
+  .native-shell .patient-register-hero { min-height: 116px; gap: 15px; padding: 18px; border-radius: 18px; }
+  .native-shell .patient-register-hero-icon { flex-basis: 62px; width: 62px; height: 62px; border-radius: 16px; font-size: 34px; }
+  .native-shell .patient-register-hero h1 { font-size: 31px; }
+  .native-shell .patient-register-workspace { width: 100%; }
+  .native-shell .patient-register-sheet { width: 100%; max-height: calc(100dvh - var(--patient-topbar-height, 70px)); padding: 22px 18px calc(18px + env(safe-area-inset-bottom)); border-right: 0; border-bottom: 0; border-left: 0; border-radius: 24px 24px 0 0; }
+  .native-shell .patient-register-view-sheet { max-height: none; overflow: visible; border-right: 1px solid #d7e7e9; border-bottom: 1px solid #d7e7e9; border-left: 1px solid #d7e7e9; border-radius: 18px; }
+  .native-shell .patient-register-sheet h2 { font-size: 24px; }
+  .native-shell .patient-register-sheet p { margin-right: 0; }
+  .native-shell .patient-register-actions { grid-template-columns: 1fr; }
+  .native-shell .patient-devices-hero { gap: 15px; padding: 18px; }
+  .native-shell .patient-devices-hero-icon { flex-basis: 62px; width: 62px; height: 62px; border-radius: 16px; }
+  .native-shell .patient-devices-hero-icon svg { width: 35px; height: 35px; }
+  .native-shell .patient-devices-hero h1 { font-size: 31px; }
+  .native-shell .patient-device-filters button { min-height: 46px; padding: 0 15px; }
+  .native-shell .patient-device-card { grid-template-columns: 1fr; gap: 18px; padding: 22px 18px; }
+  .native-shell .patient-device-icon-wrap { width: 94px; height: 94px; }
+  .native-shell .patient-device-main { flex-direction: column; gap: 12px; margin-bottom: 14px; }
+  .native-shell .patient-device-details,
+  .native-shell .patient-device-actions { grid-column: auto; grid-template-columns: 1fr; }
   .native-shell .patient-prescriptions-hero { gap: 15px; padding: 18px; }
   .native-shell .patient-prescriptions-hero-icon { flex-basis: 62px; width: 62px; height: 62px; border-radius: 16px; }
   .native-shell .patient-prescriptions-hero h1 { font-size: 31px; }
@@ -18477,4 +19669,74 @@ textarea {
   .native-shell .provider-native-dialog .provider-native-remission-data {
     grid-template-columns: 1fr;
   }
+}
+
+/* Barras superiores fijas con lectura clara sobre el contenido en scroll. */
+.topbar,
+.native-shell .topbar,
+.native-shell .patient-assistant-native-topbar,
+.native-shell .doctor-assistant-native-topbar,
+.native-shell .orders-store-native-topbar,
+.native-shell .messenger-native-topbar,
+.native-shell .provider-native-topbar,
+.native-shell .provider-chemo-native-topbar,
+.native-shell .provider-import-native-topbar,
+.native-shell .insurance-advisor-native-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 80;
+  isolation: isolate;
+  background: rgba(255, 255, 255, 0.82);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  backdrop-filter: blur(18px) saturate(150%);
+  box-shadow: 0 16px 34px rgba(28, 70, 78, 0.09);
+}
+
+.topbar::after,
+.native-shell .topbar::after,
+.native-shell .patient-assistant-native-topbar::after,
+.native-shell .doctor-assistant-native-topbar::after,
+.native-shell .orders-store-native-topbar::after,
+.native-shell .messenger-native-topbar::after,
+.native-shell .provider-native-topbar::after,
+.native-shell .provider-chemo-native-topbar::after,
+.native-shell .provider-import-native-topbar::after,
+.native-shell .insurance-advisor-native-topbar::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -22px;
+  left: 0;
+  height: 22px;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(247, 251, 251, 0.7), rgba(247, 251, 251, 0));
+}
+
+.native-shell .topbar {
+  margin: 0 auto;
+  border-radius: 0 0 18px 18px;
+}
+
+.native-shell .patient-portal-topbar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 90;
+  width: 100%;
+  margin: 0;
+  border-width: 0 0 1px;
+  border-radius: 0 0 22px 22px;
+  background: rgba(255, 255, 255, 0.74);
+  -webkit-backdrop-filter: blur(20px) saturate(155%);
+  backdrop-filter: blur(20px) saturate(155%);
+  box-shadow: 0 14px 32px rgba(29, 77, 86, 0.1);
+}
+
+.native-shell .patient-portal-menu {
+  top: 70px;
+}
+
+.native-shell .patient-portal-layout {
+  padding-top: 70px;
 }

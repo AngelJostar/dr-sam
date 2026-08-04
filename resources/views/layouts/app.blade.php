@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $title ?? 'Dr. Sam' }}</title>
     <link rel="stylesheet" href="{{ asset('css/drsam.css') }}?v={{ filemtime(public_path('css/drsam.css')) }}">
+    @stack('styles')
   </head>
   <body class="native-shell @yield('body_class')">
     <main class="shell">

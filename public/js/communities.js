@@ -1,0 +1,2165 @@
+(function () {
+  "use strict";
+
+  var DEFAULTS = {
+    patient: { id: "100000002", name: "Guillermo Guerrero Herzig" },
+    storageKey: "klini_communities_portable",
+    catalogStorageKey: "klini_communities_catalog_repository",
+    profileStorageKey: "",
+    onAction: function () {}
+  };
+
+  var people = [
+    { id: "mariana", name: "Mariana López", short: "Mariana", avatar: "/images/communities/category-wellness.png" },
+    { id: "diego", name: "Diego Ramírez", short: "Diego", avatar: "/images/communities/category-sport.png" },
+    { id: "ana", name: "Ana Sofía Ruiz", short: "Ana Sofía", avatar: "/images/communities/category-new.png" },
+    { id: "carlos", name: "Carlos Méndez", short: "Carlos", avatar: "/images/communities/avatar-carlos.png" }
+  ];
+
+  people = people.concat([
+    { id: "camila", name: "Camila Torres", short: "Camila", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=240&h=240&q=82" },
+    { id: "andres", name: "Andres Vega", short: "Andres", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=240&h=240&q=82" },
+    { id: "lucia", name: "Lucia Herrera", short: "Lucia", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=240&h=240&q=82" },
+    { id: "mateo", name: "Mateo Silva", short: "Mateo", avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=240&h=240&q=82" },
+    { id: "renata", name: "Renata Cruz", short: "Renata", avatar: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=240&h=240&q=82" },
+    { id: "pablo", name: "Pablo Neri", short: "Pablo", avatar: "https://images.unsplash.com/photo-1527980965255-d3b416303d12?auto=format&fit=crop&w=240&h=240&q=82" },
+    { id: "valeria", name: "Valeria Montes", short: "Valeria", avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=240&h=240&q=82" },
+    { id: "ivan", name: "Ivan Rojas", short: "Ivan", avatar: "https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?auto=format&fit=crop&w=240&h=240&q=82" },
+    { id: "sofia", name: "Sofia Palma", short: "Sofia", avatar: "https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?auto=format&fit=crop&w=240&h=240&q=82" },
+    { id: "emilio", name: "Emilio Fuentes", short: "Emilio", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=240&h=240&q=82" },
+    { id: "paulina", name: "Paulina Leon", short: "Paulina", avatar: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=240&h=240&q=82" },
+    { id: "ricardo", name: "Ricardo Cano", short: "Ricardo", avatar: "https://images.unsplash.com/photo-1552058544-f2b08422138a?auto=format&fit=crop&w=240&h=240&q=82" },
+    { id: "ximena", name: "Ximena Arias", short: "Ximena", avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=240&h=240&q=82" },
+    { id: "lara", name: "Lara Medina", short: "Lara", avatar: "https://images.unsplash.com/photo-1554151228-14d9def656e4?auto=format&fit=crop&w=240&h=240&q=82" },
+    { id: "natalia", name: "Natalia Sol", short: "Natalia", avatar: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=240&h=240&q=82" },
+    { id: "hector", name: "Hector Pineda", short: "Hector", avatar: "https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?auto=format&fit=crop&w=240&h=240&q=82" },
+    { id: "brenda", name: "Brenda Santos", short: "Brenda", avatar: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=240&h=240&q=82" },
+    { id: "daniel", name: "Daniel Ortiz", short: "Daniel", avatar: "https://images.unsplash.com/photo-1546961329-78bef0414d7c?auto=format&fit=crop&w=240&h=240&q=82" },
+    { id: "oscar", name: "Oscar Molina", short: "Oscar", avatar: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=240&h=240&q=82" },
+    { id: "tomas", name: "Tomas Rey", short: "Tomas", avatar: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=240&h=240&q=82" },
+    { id: "isabel", name: "Isabel Luna", short: "Isabel", avatar: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=240&h=240&q=82" },
+    { id: "miranda", name: "Miranda Paz", short: "Miranda", avatar: "https://images.unsplash.com/photo-1542206395-9feb3edaa68d?auto=format&fit=crop&w=240&h=240&q=82" },
+    { id: "elena", name: "Elena Vargas", short: "Elena", avatar: "https://images.unsplash.com/photo-1520813792240-56fc4a3765a7?auto=format&fit=crop&w=240&h=240&q=82" },
+    { id: "alejandro", name: "Alejandro Ruiz", short: "Alejandro", avatar: "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?auto=format&fit=crop&w=240&h=240&q=82" },
+    { id: "samuel", name: "Samuel Diaz", short: "Samuel", avatar: "https://images.unsplash.com/photo-1521119989659-a83eee488004?auto=format&fit=crop&w=240&h=240&q=82" },
+    { id: "jorge", name: "Jorge Vidal", short: "Jorge", avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=240&h=240&q=82" },
+    { id: "raul", name: "Raul Campos", short: "Raul", avatar: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=240&h=240&q=82" },
+    { id: "maria", name: "Maria Aguilar", short: "Maria", avatar: "https://images.unsplash.com/photo-1521566652839-697aa473761a?auto=format&fit=crop&w=240&h=240&q=82" },
+    { id: "fernando", name: "Fernando Gil", short: "Fernando", avatar: "https://images.unsplash.com/photo-1519345182560-3f2917c472ef?auto=format&fit=crop&w=240&h=240&q=82" },
+    { id: "claudia", name: "Claudia Romero", short: "Claudia", avatar: "https://images.unsplash.com/photo-1525134479668-1bee5c7c6845?auto=format&fit=crop&w=240&h=240&q=82" }
+  ]);
+
+  var posts = [
+    {
+      id: "post-1", author: people[0], time: "Hoy · 8:30 a.m.",
+      text: "Iniciando el día con gratitud y respiración consciente. Pequeños pasos, grandes cambios.",
+      image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1200&q=88",
+      likes: 128, comments: 24, shares: 15
+    },
+    {
+      id: "post-2", author: people[1], time: "Ayer · 7:15 p.m.",
+      text: "Nada como una buena caminata al aire libre para limpiar la mente y recargar energía.",
+      image: "https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=1200&q=88",
+      likes: 96, comments: 18, shares: 7
+    },
+    {
+      id: "post-3", author: people[2], time: "2 días · 9:45 a.m.",
+      text: "Mi smoothie favorito para empezar el día con toda la energía.",
+      image: "https://images.unsplash.com/photo-1623065422902-30a2d299bbe4?auto=format&fit=crop&w=1200&q=88",
+      likes: 74, comments: 12, shares: 6
+    }
+  ];
+
+  var postMessages = {
+    "post-1": [
+      { author: people[1], time: "Hoy · 8:42 a.m.", text: "Me encantó esta idea. Empezar con respiración cambia mucho el ritmo del día." },
+      { author: people[2], time: "Hoy · 8:51 a.m.", text: "Gracias por compartirlo, Mariana. Lo intentaré antes de mi caminata." },
+      { author: people[3], time: "Hoy · 9:05 a.m.", text: "Pequeños pasos, pero constantes. Esa frase me sirve para esta semana." }
+    ],
+    "post-2": [
+      { author: people[0], time: "Ayer · 7:28 p.m.", text: "Caminar al aire libre también me ayuda a bajar el estrés." },
+      { author: people[2], time: "Ayer · 8:02 p.m.", text: "Diego, ¿qué ruta recomiendas para empezar suave?" },
+      { author: people[3], time: "Ayer · 8:16 p.m.", text: "Excelente recordatorio para movernos sin presionarnos." }
+    ],
+    "post-3": [
+      { author: people[0], time: "2 días · 10:04 a.m.", text: "Se ve buenísimo. ¿Qué fruta usaste esta vez?" },
+      { author: people[1], time: "2 días · 10:19 a.m.", text: "Me gusta para después de entrenar, sencillo y práctico." },
+      { author: people[3], time: "2 días · 10:33 a.m.", text: "Lo voy a probar con proteína vegetal." }
+    ]
+  };
+
+  var communities = [
+    {
+      id: "ash-olmo",
+      catalogId: "community-ash-and-olmo",
+      slug: "ash-and-olmo",
+      repositorySource: "catalogo-base",
+      name: "Ash and Olmo",
+      category: "Bienestar",
+      access: "open",
+      visibility: "public",
+      members: 1,
+      city: "Ciudad de Mexico",
+      region: "CDMX",
+      language: "Espanol",
+      description: "Yoga suave, respiracion y constancia semanal.",
+      longDescription: "Comunidad administrada por el usuario para compartir bienestar, actividades y publicaciones de seguimiento.",
+      rules: "Mantener respeto, privacidad y participacion responsable dentro de la comunidad.",
+      pinnedMessage: "Bienvenidos a Ash and Olmo. Comparte historias y avances de bienestar desde la comunidad.",
+      initials: "AA",
+      logoInitials: "AA",
+      tone: "mint",
+      role: "admin",
+      heroImage: "/images/communities/category-mine.png",
+      profileImage: "/images/communities/category-mine.png",
+      features: ["Bienestar integral", "Stories de comunidad", "Comunidad administrada"],
+      adminPermissions: { stories: true, communityPosts: true, events: true, classes: true, editPage: true },
+      classes: []
+    },
+    {
+      id: "respira",
+      catalogId: "community-yoga-mente",
+      slug: "respira-y-avanza",
+      repositorySource: "catalogo-base",
+      name: "Respira y Avanza",
+      category: "Yoga",
+      access: "open",
+      visibility: "public",
+      members: 129,
+      city: "Ciudad de Mexico",
+      region: "CDMX",
+      language: "Espanol",
+      description: "Yoga suave, respiracion y constancia semanal.",
+      longDescription: "Comunidad para pacientes que buscan construir habitos de calma, movilidad y respiracion consciente con acompanamiento respetuoso.",
+      rules: "Mantener respeto, compartir experiencias de bienestar y evitar recomendaciones medicas sin supervision profesional.",
+      pinnedMessage: "Bienvenidos a Respira y Avanza. Revisa los eventos de la semana y reserva tu lugar con anticipacion.",
+      initials: "RY",
+      logoInitials: "RA",
+      tone: "mint",
+      role: "admin",
+      heroImage: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1400&q=88",
+      features: ["Bienestar integral", "Eventos semanales", "Comunidad activa"],
+      classes: [
+        { id: "class-respira-1", communityId: "respira", category: "Yoga", title: "Respiracion consciente", date: "lunes, 27 de julio", day: "lun", number: "27", month: "jul", time: "07:30 a.m.", place: "Casa Klini Roma Norte", modality: "Presencial", capacity: 18, available: 9, detail: "Rutina guiada de 12 minutos", icon: "leaf" },
+        { id: "class-respira-2", communityId: "respira", category: "Movilidad", title: "Movilidad suave", date: "miercoles, 29 de julio", day: "mie", number: "29", month: "jul", time: "08:00 a.m.", place: "Remoto", modality: "Remoto", capacity: 30, available: 18, detail: "Practica para iniciar el dia", icon: "sparkles" },
+        { id: "class-respira-3", communityId: "respira", category: "Yoga", title: "Yoga restaurativo", date: "viernes, 31 de julio", day: "vie", number: "31", month: "jul", time: "07:00 p.m.", place: "Casa Klini Condesa", modality: "Presencial", capacity: 16, available: 7, detail: "Sesion para cierre de semana", icon: "heart" }
+      ]
+    },
+    {
+      id: "nutricion",
+      catalogId: "community-nutricion-inteligente",
+      slug: "nutricion-inteligente-klini",
+      repositorySource: "catalogo-base",
+      name: "Nutricion Inteligente Klini",
+      category: "Nutricion",
+      access: "closed",
+      visibility: "public",
+      members: 42,
+      city: "Ciudad de Mexico",
+      region: "CDMX",
+      language: "Espanol",
+      description: "Planificacion, adherencia y recetas saludables.",
+      longDescription: "Espacio para organizar objetivos de nutricion, revisar progreso semanal y compartir sesiones educativas con acompanamiento profesional.",
+      rules: "Compartir recetas y avances de forma respetuosa. Las recomendaciones clinicas deben validarse con el equipo medico.",
+      pinnedMessage: "Esta semana revisaremos compras inteligentes, menu semanal y adherencia a objetivos personales.",
+      initials: "NI",
+      logoInitials: "NI",
+      tone: "gold",
+      role: "member",
+      heroImage: "https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=1400&q=88",
+      features: ["Plan semanal", "Recetas saludables", "Comunidad moderada"],
+      classes: [
+        { id: "class-nutricion-1", communityId: "nutricion", category: "Nutricion", title: "Menu semanal practico", date: "martes, 28 de julio", day: "mar", number: "28", month: "jul", time: "06:30 p.m.", place: "Remoto", modality: "Remoto", capacity: 40, available: 23, detail: "Organiza comidas para 5 dias", icon: "calendar" },
+        { id: "class-nutricion-2", communityId: "nutricion", category: "Nutricion", title: "Compras inteligentes", date: "jueves, 30 de julio", day: "jue", number: "30", month: "jul", time: "05:30 p.m.", place: "Casa Klini Polanco", modality: "Presencial", capacity: 20, available: 11, detail: "Lista base y sustituciones", icon: "tag" },
+        { id: "class-nutricion-3", communityId: "nutricion", category: "Habitos", title: "Adherencia simple", date: "sabado, 1 de agosto", day: "sab", number: "01", month: "ago", time: "10:00 a.m.", place: "Remoto", modality: "Remoto", capacity: 35, available: 19, detail: "Seguimiento sin culpa", icon: "check" }
+      ]
+    },
+    { id: "ritmo", catalogId: "community-running-cardio", slug: "ritmo-cardiometabolico", repositorySource: "catalogo-base", name: "Ritmo Cardiometabolico", category: "Running", access: "closed", visibility: "public", members: 86, city: "Ciudad de Mexico", description: "Caminatas, running ligero y metas medicas seguras.", longDescription: "Grupo de seguimiento para mejorar actividad fisica, compartir avances y organizar sesiones presenciales con enfoque preventivo.", initials: "RC", logoInitials: "RC", tone: "blue", role: "requested", heroImage: "https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=1400&q=88", features: ["Caminatas guiadas", "Metas medicas", "Seguimiento semanal"] },
+    { id: "mente", catalogId: "community-mental-balance", slug: "mente-en-equilibrio", repositorySource: "catalogo-base", name: "Mente en Equilibrio", category: "Salud mental", access: "open", visibility: "public", members: 71, city: "Queretaro", description: "Meditacion, descanso y acompanamiento entre pares.", longDescription: "Espacio seguro para practicar meditacion, descanso y pequenas pausas de regulacion emocional.", initials: "ME", logoInitials: "ME", tone: "violet", role: "none", heroImage: "https://images.unsplash.com/photo-1593811167562-9cef47bfc4d7?auto=format&fit=crop&w=1400&q=88", features: ["Pausas conscientes", "Descanso", "Apoyo entre pares"] },
+    { id: "sendero", catalogId: "community-senderos-proposito", slug: "senderos-con-proposito", repositorySource: "catalogo-base", name: "Senderos con Proposito", category: "Senderismo", access: "open", visibility: "public", members: 55, city: "Monterrey", description: "Naturaleza, comunidad y movimiento consciente.", longDescription: "Comunidad para conectar con la naturaleza, preparar caminatas y moverse en grupo con seguridad.", initials: "SP", logoInitials: "SP", tone: "mint", role: "none", heroImage: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1400&q=88", features: ["Salidas grupales", "Preparacion", "Naturaleza"] },
+    { id: "fuerza", catalogId: "community-fuerza-funcional", slug: "fuerza-funcional", repositorySource: "catalogo-base", name: "Fuerza Funcional", category: "Fuerza", access: "closed", visibility: "public", members: 64, city: "Guadalajara", description: "Entrenamiento progresivo y bienestar integral.", longDescription: "Entrenamiento funcional progresivo con foco en fuerza, movilidad y prevencion.", initials: "FF", logoInitials: "FF", tone: "blue", role: "none", heroImage: "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1400&q=88", features: ["Fuerza segura", "Movilidad", "Progresion"] }
+  ];
+
+  var events = [
+    { id: "e1", group: "week", communityId: "respira", category: "Yoga", title: "Respiracion y movilidad suave", date: "miercoles, 22 de julio", day: "mie", number: "22", month: "jul", time: "07:00 p.m.", place: "Casa Klini Roma Norte", modality: "Presencial", capacity: 18, available: 14 },
+    { id: "e2", group: "week", communityId: "respira", category: "Yoga", title: "Postura y respiracion", date: "jueves, 23 de julio", day: "jue", number: "23", month: "jul", time: "06:00 p.m.", place: "Casa Klini Condesa", modality: "Presencial", capacity: 20, available: 20 },
+    { id: "e3", group: "week", communityId: "ritmo", category: "Running", title: "Caminata metabolica", date: "viernes, 24 de julio", day: "vie", number: "24", month: "jul", time: "08:00 a.m.", place: "Parque La Mexicana", modality: "Presencial", capacity: 24, available: 8 },
+    { id: "e4", group: "week", communityId: "mente", category: "Salud mental", title: "Cierre de semana consciente", date: "sabado, 25 de julio", day: "sab", number: "25", month: "jul", time: "10:00 a.m.", place: "Remoto", modality: "Remoto", capacity: 30, available: 11 },
+    { id: "e5", group: "week", communityId: "nutricion", category: "Nutricion", title: "Cocina practica de domingo", date: "domingo, 26 de julio", day: "dom", number: "26", month: "jul", time: "11:30 a.m.", place: "Casa Klini Polanco", modality: "Presencial", capacity: 16, available: 5 },
+    { id: "e6", group: "week", communityId: "sendero", category: "Senderismo", title: "Preparacion para sendero", date: "domingo, 26 de julio", day: "dom", number: "26", month: "jul", time: "05:00 p.m.", place: "Remoto", modality: "Remoto", capacity: 40, available: 17 },
+    { id: "e7", group: "next", communityId: "nutricion", category: "Nutricion", title: "Menu semanal practico", date: "martes, 28 de julio", day: "mar", number: "28", month: "jul", time: "06:30 p.m.", place: "Remoto", modality: "Remoto", capacity: 40, available: 40 },
+    { id: "e8", group: "next", communityId: "mente", category: "Salud mental", title: "Rutina de descanso", date: "miercoles, 29 de julio", day: "mie", number: "29", month: "jul", time: "08:00 p.m.", place: "Remoto", modality: "Remoto", capacity: 30, available: 30 },
+    { id: "e9", group: "next", communityId: "ritmo", category: "Running", title: "Tecnica de caminata", date: "jueves, 30 de julio", day: "jue", number: "30", month: "jul", time: "07:00 a.m.", place: "Bosque de Chapultepec", modality: "Presencial", capacity: 22, available: 9 },
+    { id: "e10", group: "next", communityId: "respira", category: "Yoga", title: "Yoga para espalda", date: "viernes, 31 de julio", day: "vie", number: "31", month: "jul", time: "06:00 p.m.", place: "Casa Klini Roma Norte", modality: "Presencial", capacity: 18, available: 7 },
+    { id: "e11", group: "next", communityId: "fuerza", category: "Fuerza", title: "Movimiento funcional", date: "sabado, 1 de agosto", day: "sab", number: "01", month: "ago", time: "09:00 a.m.", place: "Casa Klini Sur", modality: "Presencial", capacity: 18, available: 12 },
+    { id: "e12", group: "next", communityId: "mente", category: "Meditacion", title: "Pausa consciente", date: "domingo, 2 de agosto", day: "dom", number: "02", month: "ago", time: "08:00 p.m.", place: "Remoto", modality: "Remoto", capacity: 12, available: 12 },
+    { id: "e13", group: "soon", communityId: "mente", category: "Meditacion", title: "Pausa consciente", date: "lunes, 3 de agosto", day: "lun", number: "03", month: "ago", time: "08:00 p.m.", place: "Remoto", modality: "Remoto", capacity: 12, available: 12 },
+    { id: "e14", group: "soon", communityId: "respira", category: "Yoga", title: "Yoga restaurativo", date: "miercoles, 5 de agosto", day: "mie", number: "05", month: "ago", time: "07:00 p.m.", place: "Casa Klini Roma Norte", modality: "Presencial", capacity: 16, available: 16 },
+    { id: "e15", group: "soon", communityId: "ritmo", category: "Running", title: "Caminata con inclinacion", date: "sabado, 8 de agosto", day: "sab", number: "08", month: "ago", time: "08:00 a.m.", place: "Parque La Mexicana", modality: "Presencial", capacity: 24, available: 19 },
+    { id: "e16", group: "soon", communityId: "nutricion", category: "Nutricion", title: "Compras inteligentes", date: "martes, 11 de agosto", day: "mar", number: "11", month: "ago", time: "06:00 p.m.", place: "Remoto", modality: "Remoto", capacity: 30, available: 23 },
+    { id: "e17", group: "soon", communityId: "fuerza", category: "Fuerza", title: "Fuerza sin dolor", date: "jueves, 13 de agosto", day: "jue", number: "13", month: "ago", time: "07:00 p.m.", place: "Casa Klini Sur", modality: "Presencial", capacity: 18, available: 10 },
+    { id: "e18", group: "soon", communityId: "sendero", category: "Senderismo", title: "Salida al Ajusco", date: "sabado, 15 de agosto", day: "sab", number: "15", month: "ago", time: "06:30 a.m.", place: "Ajusco", modality: "Presencial", capacity: 20, available: 6 }
+  ];
+
+  var eventCountryOptions = [
+    { value: "MX Mexico", name: "Mexico", code: "MX", tone: "mx" },
+    { value: "US Estados Unidos", name: "Estados Unidos", code: "US", tone: "us" },
+    { value: "CO Colombia", name: "Colombia", code: "CO", tone: "co" },
+    { value: "ES Espana", name: "Espana", code: "ES", tone: "es" },
+    { value: "AR Argentina", name: "Argentina", code: "AR", tone: "ar" },
+    { value: "CL Chile", name: "Chile", code: "CL", tone: "cl" }
+  ];
+
+  var eventCityOptionsByCountry = {
+    "MX Mexico": ["Ciudad de Mexico", "Monterrey", "Guadalajara", "Queretaro"],
+    "US Estados Unidos": ["Miami", "Houston", "Los Angeles", "Nueva York"],
+    "CO Colombia": ["Bogota", "Medellin", "Cali", "Barranquilla"],
+    "ES Espana": ["Madrid", "Barcelona", "Valencia", "Sevilla"],
+    "AR Argentina": ["Buenos Aires", "Cordoba", "Rosario"],
+    "CL Chile": ["Santiago", "Valparaiso", "Concepcion"]
+  };
+
+  function merge(a, b) {
+    var out = {}, key;
+    for (key in a) out[key] = a[key];
+    for (key in b || {}) out[key] = b[key];
+    return out;
+  }
+
+  function escapeHtml(value) {
+    return String(value == null ? "" : value)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+      .replace(/\"/g, "&quot;").replace(/'/g, "&#039;");
+  }
+
+  function initialsFromName(name) {
+    return String(name || "Comunidad").split(/\s+/).filter(Boolean).slice(0, 2)
+      .map(function (part) { return part.charAt(0); }).join("").toUpperCase() || "CC";
+  }
+
+  function slugify(value) {
+    return String(value || "comunidad")
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "") || "comunidad";
+  }
+
+  function normalizeSearch(value) {
+    return String(value || "")
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+  }
+
+  function normalizeCommunityRecord(community) {
+    var source = community || {};
+    var name = source.name || "Comunidad";
+    var access = source.access || source.accessType || (source.type === "private" ? "closed" : "open");
+    if (access === "private") access = "closed";
+    var normalized = merge({
+      id: source.id || source.catalogId || "community-" + Date.now(),
+      catalogId: source.catalogId || source.id || "",
+      slug: source.slug || slugify(name),
+      repositorySource: source.repositorySource || "usuario",
+      name: name,
+      category: source.category || "Bienestar",
+      access: access,
+      visibility: source.visibility || (source.publicDirectory === false ? "hidden" : "public"),
+      members: Number(source.members || source.memberCount || 1),
+      city: source.city || "Ciudad de Mexico",
+      region: source.region || "",
+      language: source.language || "Espanol",
+      description: source.description || source.shortDescription || "Comunidad de bienestar.",
+      longDescription: source.longDescription || source.description || source.shortDescription || "Un espacio para compartir metas de bienestar y participar en actividades comunitarias.",
+      rules: source.rules || "Mantener respeto, privacidad y participacion responsable dentro de la comunidad.",
+      pinnedMessage: source.pinnedMessage || "Bienvenidos a la comunidad. Revisa las actividades disponibles y participa cuando quieras.",
+      initials: source.initials || source.logoInitials || initialsFromName(name),
+      logoInitials: source.logoInitials || source.initials || initialsFromName(name),
+      tone: source.tone || source.coverTone || "mint",
+      role: source.role || "admin",
+      heroImage: source.heroImage || source.backgroundImage || source.coverImage || "",
+      profileImage: source.profileImage || source.logoImage || "",
+      features: source.features || ["Bienestar integral", "Eventos semanales", "Comunidad activa"],
+      classes: source.classes || [],
+      createdAt: source.createdAt || new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    }, source);
+    normalized.access = access === "closed" ? "closed" : "open";
+    normalized.accessType = normalized.access;
+    normalized.memberCount = normalized.members;
+    return normalized;
+  }
+
+  function sameCommunityRecord(a, b) {
+    if (!a || !b) return false;
+    return Boolean(
+      (a.id && b.id && a.id === b.id) ||
+      (a.catalogId && b.catalogId && a.catalogId === b.catalogId) ||
+      (a.slug && b.slug && a.slug === b.slug)
+    );
+  }
+
+  function upsertCommunityRecord(community, placement) {
+    var normalized = normalizeCommunityRecord(community);
+    var index = communities.findIndex(function (item) { return sameCommunityRecord(item, normalized); });
+    if (index >= 0) {
+      communities[index] = normalizeCommunityRecord(merge(communities[index], normalized));
+      return communities[index];
+    }
+    if (placement === "append") communities.push(normalized);
+    else communities.unshift(normalized);
+    return normalized;
+  }
+
+  function icon(name) {
+    var paths = {
+      compass: '<circle cx="12" cy="12" r="9"/><path d="m16 8-2.5 5.5L8 16l2.5-5.5L16 8Z"/>',
+      users: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>',
+      calendar: '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
+      ticket: '<path d="M2 9a3 3 0 0 0 0 6v4h20v-4a3 3 0 0 0 0-6V5H2v4Z"/><path d="M13 5v2M13 10v4M13 17v2"/>',
+      shield: '<path d="M20 13c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V5l8-3 8 3v8Z"/>',
+      info: '<circle cx="12" cy="12" r="9"/><path d="M12 10v7M12 7h.01"/>',
+      lock: '<rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>',
+      image: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m7 15 3-3 2 2 3-4 4 5"/>',
+      file: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h6"/>',
+      edit: '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>',
+      camera: '<path d="M14.5 4 16 7h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h3l1.5-3h5Z"/><circle cx="12" cy="13" r="3.5"/>',
+      check: '<path d="m20 6-11 11-5-5"/>',
+      eye: '<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/>',
+      leaf: '<path d="M20 4C12 4 6 8 5 16c7 1 13-2 15-12Z"/><path d="M5 20c3-5 7-8 12-10"/>',
+      tag: '<path d="M20 13 11 4H4v7l9 9a2 2 0 0 0 3 0l4-4a2 2 0 0 0 0-3Z"/><circle cx="7.5" cy="7.5" r="1.5"/>',
+      sparkles: '<path d="m12 3 1.8 4.2L18 9l-4.2 1.8L12 15l-1.8-4.2L6 9l4.2-1.8L12 3ZM19 15l.9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9L19 15Z"/>',
+      search: '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
+      filter: '<path d="M4 6h16"/><path d="M7 12h10"/><path d="M10 18h4"/>',
+      heart: '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"/>',
+      message: '<path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v8Z"/>',
+      send: '<path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/>',
+      map: '<path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/>',
+      globe: '<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/>',
+      arrow: '<path d="m9 18 6-6-6-6"/>',
+      back: '<path d="m15 18-6-6 6-6"/>',
+      home: '<path d="m3 11 9-8 9 8v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9Z"/><path d="M9 22V12h6v10"/>',
+      plus: '<path d="M12 5v14M5 12h14"/>'
+    };
+    return '<svg aria-hidden="true" viewBox="0 0 24 24">' + (paths[name] || paths.users) + '</svg>';
+  }
+
+  var createSteps = [
+    { id: "general", title: "Información general", subtitle: "Nombre y descripción básica", icon: "info" },
+    { id: "privacy", title: "Tipo y privacidad", subtitle: "Visibilidad y acceso", icon: "globe" },
+    { id: "content", title: "Portada y contenido", subtitle: "Imagen, descripción y reglas", icon: "image" },
+    { id: "members", title: "Miembros y permisos", subtitle: "Configuración de participación", icon: "users" },
+    { id: "review", title: "Revisión y crear", subtitle: "Resumen final", icon: "shield" }
+  ];
+
+  function defaultCreateDraft() {
+    return {
+      name: "",
+      shortDescription: "",
+      category: "",
+      city: "",
+      tags: "",
+      type: "open",
+      approveRequests: true,
+      publicDirectory: true,
+      longDescription: "",
+      objective: "",
+      rules: "",
+      allowPosts: true,
+      allowComments: true,
+      allowEvents: true,
+      allowClasses: false,
+      adminSearch: "",
+      adminUserNumber: "",
+      adminAllowStories: true,
+      adminAllowCommunityPosts: true,
+      adminAllowEvents: true,
+      adminAllowClasses: true,
+      adminAllowEditPage: true,
+      coverImage: "",
+      profileImage: "",
+      memberLimit: "Sin límite",
+      confirmed: true
+    };
+  }
+
+  function CommunityApp(root, options) {
+    this.root = root;
+    this.options = merge(DEFAULTS, options);
+    this.state = {
+      view: "feed", detailId: null, filter: "explore", category: "all",
+      memberships: {}, reservations: { e1: true }, limits: { week: 5, next: 5, soon: 5 }, likes: {},
+      commentsOpen: {},
+      sharesOpen: {},
+      activeReplyThreads: {},
+      replyThreads: {},
+      replyDrafts: {},
+      storyIndex: null,
+      storyUploads: {},
+      createdCommunities: [],
+      createStep: 1, createDraft: defaultCreateDraft(), createCompleted: false, createdCommunityId: null,
+      eventSearch: "",
+      eventFilters: { country: "MX Mexico", city: "", community: "", location: "" },
+      eventFilterQueries: {},
+      activeEventFilter: "",
+      eventCountryExpanded: false,
+      pendingDirectoryFocus: false
+    };
+    this.storyTimer = null;
+    this.storyTimerToken = 0;
+    this.load();
+    this.bind();
+    this.render();
+  }
+
+  CommunityApp.prototype.patientProfilePhoto = function () {
+    var directPhoto = this.options.patient && this.options.patient.photo;
+    if (directPhoto) return directPhoto;
+    var storage = this.options.profileStorageKey;
+    if (!storage) {
+      var profilePanel = document.querySelector("[data-patient-profile-panel]");
+      storage = profilePanel && profilePanel.dataset ? profilePanel.dataset.storageKey : "";
+    }
+    try {
+      var saved = storage && window.localStorage ? JSON.parse(window.localStorage.getItem(storage) || "null") : null;
+      return saved && saved.profile && saved.profile.photo ? saved.profile.photo : "";
+    } catch (error) {
+      return "";
+    }
+  };
+
+  CommunityApp.prototype.patientSummary = function () {
+    var patient = this.options.patient || {};
+    return {
+      id: "patient",
+      name: patient.name || "Tu historia",
+      short: "Tu historia",
+      avatar: this.patientProfilePhoto() || "/images/communities/category-mine.png"
+    };
+  };
+
+  CommunityApp.prototype.storyImageFor = function (id, fallback) {
+    var uploads = this.state.storyUploads || {};
+    return uploads[id] || fallback || "/images/communities/category-mine.png";
+  };
+
+  CommunityApp.prototype.adminStoryCommunities = function () {
+    var seen = {};
+    return communities.filter(function (community) {
+      var key = community.slug || community.id;
+      var role = this.communityRole(community);
+      var canPublishStories = !community.adminPermissions || community.adminPermissions.stories !== false;
+      if (seen[key] || role !== "admin" || !canPublishStories) return false;
+      seen[key] = true;
+      return true;
+    }, this).sort(function (a, b) {
+      var aAsh = a.slug === "ash-and-olmo" ? 0 : 1;
+      var bAsh = b.slug === "ash-and-olmo" ? 0 : 1;
+      return aAsh - bAsh;
+    });
+  };
+
+  CommunityApp.prototype.storyItems = function () {
+    var patient = this.options.patient || {};
+    var patientPhoto = this.patientProfilePhoto() || "/images/communities/category-mine.png";
+    var patientStoryPhoto = this.storyImageFor("patient", patientPhoto);
+    var items = [{
+      id: "patient",
+      name: patient.name || "Tu historia",
+      short: "Tu historia",
+      avatar: patientStoryPhoto,
+      storyPhoto: patientStoryPhoto,
+      isPatient: true,
+      canUploadStory: true
+    }];
+    this.adminStoryCommunities().forEach(function (community) {
+      var storyId = "community:" + (community.slug || community.id);
+      var communityPhoto = community.profileImage || community.heroImage || "/images/communities/create-cover.png";
+      items.push({
+        id: storyId,
+        communityId: community.id,
+        name: community.name,
+        short: community.name === "Ash and Olmo" ? "Ash Olmo" : community.name,
+        avatar: this.storyImageFor(storyId, communityPhoto),
+        storyPhoto: this.storyImageFor(storyId, community.heroImage || communityPhoto),
+        isManagedCommunity: true,
+        canUploadStory: true
+      });
+    }, this);
+    people.forEach(function (person) { items.push(person); });
+    items.push({
+      id: "more",
+      name: "Más historias",
+      short: "Más",
+      avatar: "/images/communities/create-cover.png",
+      isMore: true
+    });
+    return items;
+  };
+
+  CommunityApp.prototype.load = function () {
+    this.restoreCommunityCatalog();
+    try {
+      var saved = JSON.parse(localStorage.getItem(this.options.storageKey) || "null");
+      if (saved) {
+        this.state.memberships = saved.memberships || {};
+        this.state.reservations = saved.reservations || { e1: true };
+        this.state.likes = saved.likes || {};
+        this.state.replyThreads = saved.replyThreads || {};
+        this.state.storyUploads = saved.storyUploads || {};
+        this.state.eventFilters = merge(this.defaultEventFilters(), saved.eventFilters || {});
+        this.state.createdCommunities = saved.createdCommunities || this.state.createdCommunities || [];
+      }
+    } catch (error) {}
+    this.restoreCreatedCommunities();
+  };
+
+  CommunityApp.prototype.save = function () {
+    this.state.createdCommunities = this.createdCommunityRecords();
+    this.saveCommunityCatalog();
+    try {
+      localStorage.setItem(this.options.storageKey, JSON.stringify({
+        memberships: this.state.memberships,
+        reservations: this.state.reservations,
+        likes: this.state.likes,
+        replyThreads: this.state.replyThreads,
+        storyUploads: this.state.storyUploads,
+        eventFilters: this.currentEventFilters(),
+        createdCommunities: this.state.createdCommunities
+      }));
+    } catch (error) {}
+  };
+
+  CommunityApp.prototype.emit = function (type, data) {
+    this.options.onAction({ type: type, data: data || null, state: this.state });
+  };
+
+  CommunityApp.prototype.bind = function () {
+    var self = this;
+    window.addEventListener("drsam:patient-profile", function (event) {
+      var action = event.detail && event.detail.action;
+      if (action === "profile:photo-updated" || action === "profile:photo-removed") self.render();
+    });
+    this.root.addEventListener("click", function (event) {
+      var panTrack = event.target.closest("[data-pan]");
+      if (panTrack && panTrack.dataset.ignoreClick === "1") {
+        event.preventDefault();
+        event.stopPropagation();
+        panTrack.dataset.ignoreClick = "0";
+        return;
+      }
+      var control = event.target.closest("[data-action]");
+      if (!control) return;
+      var action = control.getAttribute("data-action");
+      var id = control.getAttribute("data-id");
+      if (action === "create-open") { self.state.view = "create"; self.state.createStep = 1; self.state.createCompleted = false; self.state.createdCommunityId = null; }
+      if (action === "create-cancel") { self.state.view = "feed"; self.state.createStep = 1; self.state.createCompleted = false; }
+      if (action === "create-next") self.state.createStep = Math.min(5, self.state.createStep + 1);
+      if (action === "create-prev") self.state.createStep = Math.max(1, self.state.createStep - 1);
+      if (action === "create-step") self.state.createStep = Math.max(1, Math.min(5, Number(id) || 1));
+      if (action === "create-submit") self.finishCreate();
+      if (action === "create-upload-cover") { self.uploadCreateImage("coverImage"); return; }
+      if (action === "create-upload-profile") { self.uploadCreateImage("profileImage"); return; }
+      if (action === "upload-story") { self.uploadStoryImage(id || "patient"); return; }
+      if (action === "create-add-admin") self.addCreateAdministrator();
+      if (action === "clear-event-search") {
+        self.state.eventSearch = "";
+        self.state.eventFilters = self.defaultEventFilters();
+        self.state.activeEventFilter = "";
+        self.state.eventCountryExpanded = false;
+      }
+      if (action === "toggle-event-country-more") self.state.eventCountryExpanded = !self.state.eventCountryExpanded;
+      if (action === "toggle-event-filter") self.state.activeEventFilter = self.state.activeEventFilter === id ? "" : id;
+      if (action === "select-event-filter") {
+        var filterType = control.getAttribute("data-type");
+        var filterValue = control.getAttribute("data-value") || "";
+        var filters = self.currentEventFilters();
+        filters[filterType] = filterValue;
+        if (filterType === "country") filters.city = "";
+        if (!self.state.eventFilterQueries) self.state.eventFilterQueries = {};
+        self.state.eventFilterQueries[filterType] = "";
+        self.state.activeEventFilter = filterType === "country" ? "city" : "";
+      }
+      if (action === "open-directory") self.state.view = "directory";
+      if (action === "open-directory-filter") self.selectDirectoryFilter(id || "explore", false);
+      if (action === "back-feed" || action === "home") self.state.view = "feed";
+      if (action === "open-detail" || action === "open-community-panel") self.openCommunityPanel(id);
+      if (action === "back-directory") self.state.view = "directory";
+      if (action === "filter") self.selectDirectoryFilter(id || "explore", false);
+      if (action === "category") self.state.category = id;
+      if (action === "join") self.join(id);
+      if (action === "reserve") self.reserve(id);
+      if (action === "cancel") self.cancel(id);
+      if (action === "more") self.state.limits[id] += 5;
+      if (action === "like") self.state.likes[id] = !self.state.likes[id];
+      if (action === "toggle-post-messages") self.state.commentsOpen[id] = !self.state.commentsOpen[id];
+      if (action === "toggle-post-share") self.state.sharesOpen[id] = !self.state.sharesOpen[id];
+      if (action === "toggle-message-thread") self.state.activeReplyThreads[id] = !self.state.activeReplyThreads[id];
+      if (action === "send-message-reply") self.addMessageReply(id);
+      if (action === "share-post") self.emit("post.shared", { postId: id, network: control.getAttribute("data-network"), mode: control.getAttribute("data-mode") });
+      if (action === "open-story") self.openStory(id);
+      if (action === "close-story") self.closeStory();
+      if (action === "scroll") {
+        self.scrollCarousel(control.getAttribute("data-target"), Number(control.getAttribute("data-dir")));
+        return;
+      }
+      self.save(); self.render();
+      if (action === "open-detail" || action === "open-community-panel" || action === "open-directory" || action === "open-directory-filter" || action === "filter" || action === "back-directory" || action === "back-feed" || action === "home") {
+        self.scrollToScreenTop(action === "filter" ? "smooth" : "auto");
+      }
+    });
+    this.root.addEventListener("input", function (event) {
+      if (event.target.hasAttribute("data-event-search")) {
+        self.state.eventSearch = event.target.value;
+        self.applyEventSearch(event.target.value);
+        return;
+      }
+      if (event.target.hasAttribute("data-event-filter-query")) {
+        var queryType = event.target.getAttribute("data-type") || "";
+        self.state.eventFilterQueries = self.state.eventFilterQueries || {};
+        self.state.eventFilterQueries[queryType] = event.target.value;
+        self.updateEventFilterOptionVisibility(event.target);
+        return;
+      }
+      var replyField = event.target.getAttribute("data-reply-field");
+      if (replyField) {
+        self.state.replyDrafts[replyField] = event.target.value;
+        return;
+      }
+      var field = event.target.getAttribute("data-create-field");
+      if (!field) return;
+      self.state.createDraft[field] = event.target.type === "checkbox" ? event.target.checked : event.target.value;
+      if (event.target.type === "radio") self.syncCreateChoiceSelection(event.target);
+      self.refreshCreatePreview();
+    });
+    this.root.addEventListener("change", function (event) {
+      if (event.target.hasAttribute("data-event-filter-query")) {
+        var queryType = event.target.getAttribute("data-type") || "";
+        var matchedValue = self.findTypedEventFilterValue(queryType, event.target.value);
+        if (matchedValue !== null) {
+          var filters = self.currentEventFilters();
+          filters[queryType] = matchedValue;
+          if (queryType === "country") filters.city = "";
+          self.state.eventFilterQueries = self.state.eventFilterQueries || {};
+          self.state.eventFilterQueries[queryType] = "";
+          self.state.activeEventFilter = queryType === "country" ? "city" : "";
+          self.save();
+          self.render();
+        }
+        return;
+      }
+      if (event.target.hasAttribute("data-event-country-input")) {
+        var country = self.findEventCountry(event.target.value);
+        if (country) {
+          self.currentEventFilters().country = country.value;
+          self.currentEventFilters().city = "";
+          self.save();
+          self.render();
+        }
+        return;
+      }
+      if (event.target.hasAttribute("data-event-city-input")) {
+        var city = self.findEventCity(event.target.value);
+        if (city) {
+          self.currentEventFilters().city = city;
+          self.save();
+          self.render();
+        }
+        return;
+      }
+      var replyField = event.target.getAttribute("data-reply-field");
+      if (replyField) {
+        self.state.replyDrafts[replyField] = event.target.value;
+        return;
+      }
+      var field = event.target.getAttribute("data-create-field");
+      if (!field) return;
+      self.state.createDraft[field] = event.target.type === "checkbox" ? event.target.checked : event.target.value;
+      if (event.target.type === "radio") self.syncCreateChoiceSelection(event.target);
+      self.refreshCreatePreview();
+    });
+    this.root.addEventListener("keydown", function (event) {
+      if (!event.target.hasAttribute("data-event-filter-query") || event.key !== "Enter") return;
+      event.preventDefault();
+      var queryType = event.target.getAttribute("data-type") || "";
+      var matchedValue = self.findTypedEventFilterValue(queryType, event.target.value);
+      var firstVisible = event.target.closest("[data-event-selector]")?.querySelector("[data-event-option-search]:not([hidden])");
+      if (matchedValue === null && firstVisible) matchedValue = firstVisible.getAttribute("data-value") || "";
+      if (matchedValue === null) return;
+      var filters = self.currentEventFilters();
+      filters[queryType] = matchedValue;
+      if (queryType === "country") filters.city = "";
+      self.state.eventFilterQueries = self.state.eventFilterQueries || {};
+      self.state.eventFilterQueries[queryType] = "";
+      self.state.activeEventFilter = queryType === "country" ? "city" : "";
+      self.save();
+      self.render();
+    });
+    this.root.addEventListener("pointerdown", function (event) {
+      var track = event.target.closest("[data-pan]");
+      if (!track) return;
+      if (event.button != null && event.button !== 0) return;
+      track.setPointerCapture(event.pointerId);
+      track.dataset.dragging = "1";
+      track.dataset.moved = "0";
+      track.dataset.startX = String(event.clientX);
+      track.dataset.startScroll = String(track.scrollLeft);
+    });
+    this.root.addEventListener("pointermove", function (event) {
+      var track = event.target.closest("[data-pan]");
+      if (!track || track.dataset.dragging !== "1") return;
+      var deltaX = event.clientX - Number(track.dataset.startX);
+      var dragSpeed = track.getAttribute("data-carousel") === "stories" ? 0.52 : 1;
+      if (Math.abs(deltaX) > 4) {
+        track.dataset.moved = "1";
+        track.dataset.ignoreClick = "1";
+        track.classList.add("is-panning");
+        event.preventDefault();
+      }
+      track.scrollLeft = Number(track.dataset.startScroll) - (deltaX * dragSpeed);
+    });
+    ["pointerup", "pointercancel", "pointerleave"].forEach(function (name) {
+      self.root.addEventListener(name, function (event) {
+        var track = event.target.closest("[data-pan]");
+        if (!track) return;
+        if (name === "pointerup" && track.dataset.moved !== "1") {
+          if (event.target.closest('[data-action="upload-story"]')) return;
+          var storyControl = event.target.closest('[data-action="open-story"]');
+          if (storyControl && track.contains(storyControl)) {
+            track.dataset.ignoreClick = "1";
+            self.openStory(storyControl.getAttribute("data-id"));
+            self.save();
+            self.render();
+            return;
+          }
+        }
+        track.dataset.dragging = "0";
+        track.classList.remove("is-panning");
+        if (track.dataset.moved === "1") {
+          window.setTimeout(function () { track.dataset.ignoreClick = "0"; }, 120);
+        }
+      });
+    });
+  };
+
+  CommunityApp.prototype.scrollCarousel = function (id, direction) {
+    var track = this.root.querySelector('[data-carousel="' + id + '"]');
+    if (track) track.scrollBy({ left: direction * Math.max(280, track.clientWidth * 0.75), behavior: "smooth" });
+  };
+
+  CommunityApp.prototype.scrollToScreenTop = function (behavior) {
+    var root = this.root;
+    var mode = behavior || "auto";
+    window.requestAnimationFrame(function () {
+      var scrollingElement = document.scrollingElement || document.documentElement;
+      if (scrollingElement && scrollingElement.scrollTo) scrollingElement.scrollTo({ top: 0, behavior: mode });
+      window.scrollTo({ top: 0, behavior: mode });
+      var portal = root.closest("[data-patient-portal], .patient-portal");
+      var content = root.closest(".patient-portal-content");
+      [portal, content].forEach(function (target) {
+        if (target && target.scrollTo) target.scrollTo({ top: 0, behavior: mode });
+      });
+    });
+  };
+
+  CommunityApp.prototype.defaultEventFilters = function () {
+    return { country: "MX Mexico", city: "", community: "", location: "" };
+  };
+
+  CommunityApp.prototype.currentEventFilters = function () {
+    this.state.eventFilters = merge(this.defaultEventFilters(), this.state.eventFilters || {});
+    return this.state.eventFilters;
+  };
+
+  CommunityApp.prototype.findEventCountry = function (value) {
+    var needle = normalizeSearch(value);
+    return eventCountryOptions.find(function (country) {
+      return normalizeSearch(country.value) === needle ||
+        normalizeSearch(country.name) === needle ||
+        normalizeSearch(country.code) === needle;
+    }) || null;
+  };
+
+  CommunityApp.prototype.findEventCity = function (value) {
+    var filters = this.currentEventFilters();
+    var cities = eventCityOptionsByCountry[filters.country] || [];
+    var needle = normalizeSearch(value);
+    return cities.find(function (city) { return normalizeSearch(city) === needle; }) || "";
+  };
+
+  CommunityApp.prototype.eventFilterQuery = function (type) {
+    this.state.eventFilterQueries = this.state.eventFilterQueries || {};
+    return this.state.eventFilterQueries[type] || "";
+  };
+
+  CommunityApp.prototype.findTypedEventFilterValue = function (type, value) {
+    var needle = normalizeSearch(value);
+    if (!needle) return null;
+    if (needle === "todas" || needle === "todos") return type === "country" ? null : "";
+    if (type === "country") {
+      var country = this.findEventCountry(value);
+      return country ? country.value : null;
+    }
+    if (type === "city") {
+      var city = this.findEventCity(value);
+      return city || null;
+    }
+    var options = type === "community" ? this.eventCommunityOptions(events) : this.eventLocationOptions(events);
+    var exact = options.find(function (option) { return normalizeSearch(option) === needle; });
+    if (exact) return exact;
+    var suggested = options.find(function (option) { return normalizeSearch(option).indexOf(needle) === 0; });
+    return suggested || null;
+  };
+
+  CommunityApp.prototype.updateEventFilterOptionVisibility = function (input) {
+    var selector = input.closest("[data-event-selector]");
+    if (!selector) return;
+    var query = normalizeSearch(input.value);
+    var visible = 0;
+    selector.querySelectorAll("[data-event-option-search]").forEach(function (option) {
+      var haystack = option.getAttribute("data-search-text") || "";
+      var show = !query || haystack.indexOf(query) !== -1;
+      option.hidden = !show;
+      if (show) visible += 1;
+    });
+    var empty = selector.querySelector("[data-event-selector-empty]");
+    if (empty) empty.hidden = visible > 0;
+  };
+
+  CommunityApp.prototype.applyEventSearch = function (value) {
+    var query = normalizeSearch(value);
+    var filters = this.currentEventFilters();
+    var cards = this.root.querySelectorAll("[data-event-search-card]");
+    var empty = this.root.querySelector("[data-event-search-empty]");
+    var visible = 0;
+    Array.prototype.forEach.call(cards, function (card) {
+      var haystack = card.getAttribute("data-event-search-text") || "";
+      var show = !query || haystack.indexOf(query) >= 0;
+      if (show && filters.country) show = card.getAttribute("data-event-country") === normalizeSearch(filters.country);
+      if (show && filters.city) show = card.getAttribute("data-event-city") === normalizeSearch(filters.city);
+      if (show && filters.community) show = card.getAttribute("data-event-community") === normalizeSearch(filters.community);
+      if (show && filters.location) show = card.getAttribute("data-event-location") === normalizeSearch(filters.location);
+      card.hidden = !show;
+      if (show) visible += 1;
+    });
+    if (empty) empty.hidden = visible > 0;
+  };
+
+  CommunityApp.prototype.selectDirectoryFilter = function (id, focusContent) {
+    var valid = ["events", "explore", "mine"];
+    this.state.view = "directory";
+    this.state.filter = valid.indexOf(id) >= 0 ? id : "explore";
+    this.state.pendingDirectoryFocus = !!focusContent;
+    this.emit("directory.filter.selected", { filter: this.state.filter });
+  };
+
+  CommunityApp.prototype.syncDirectoryFocus = function () {
+    var activeFilter = this.root.querySelector(".kc-filter.active");
+    if (activeFilter) activeFilter.scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" });
+    if (!this.state.pendingDirectoryFocus) return;
+    this.state.pendingDirectoryFocus = false;
+    var target = this.root.querySelector("[data-directory-content]");
+    if (!target) return;
+    window.requestAnimationFrame(function () {
+      window.requestAnimationFrame(function () {
+        target.scrollIntoView({ block: "start", behavior: "smooth" });
+      });
+    });
+  };
+
+  CommunityApp.prototype.syncCreateChoiceSelection = function (input) {
+    var grid = input && input.closest(".kc-create-choice-grid");
+    if (!grid) return;
+    Array.prototype.forEach.call(grid.querySelectorAll(".kc-create-choice"), function (choice) {
+      var radio = choice.querySelector('input[type="radio"]');
+      choice.classList.toggle("is-selected", Boolean(radio && radio.checked));
+    });
+  };
+
+  CommunityApp.prototype.openStory = function (id) {
+    var items = this.storyItems();
+    var index = items.findIndex(function (person) { return person.id === id; });
+    this.state.storyIndex = index >= 0 ? index : 0;
+  };
+
+  CommunityApp.prototype.closeStory = function () {
+    this.state.storyIndex = null;
+    this.clearStoryTimer();
+  };
+
+  CommunityApp.prototype.clearStoryTimer = function () {
+    this.storyTimerToken += 1;
+    if (!this.storyTimer) return;
+    clearTimeout(this.storyTimer);
+    this.storyTimer = null;
+  };
+
+  CommunityApp.prototype.syncStoryTimer = function () {
+    var self = this;
+    this.clearStoryTimer();
+    if (this.state.storyIndex == null) return;
+    var token = this.storyTimerToken;
+    this.storyTimer = setTimeout(function () {
+      if (token !== self.storyTimerToken) return;
+      if (self.state.storyIndex == null) return;
+      self.state.storyIndex = (self.state.storyIndex + 1) % self.storyItems().length;
+      self.render();
+    }, 4000);
+  };
+
+  CommunityApp.prototype.communityRole = function (community) {
+    return this.state.memberships[community.id] || community.role;
+  };
+
+  CommunityApp.prototype.catalogCommunities = function () {
+    return communities.filter(function (community) { return community.visibility !== "hidden"; });
+  };
+
+  CommunityApp.prototype.findCommunity = function (id) {
+    return communities.find(function (community) {
+      return community.id === id || community.catalogId === id || community.slug === id;
+    }) || null;
+  };
+
+  CommunityApp.prototype.findCommunityByName = function (name) {
+    var needle = String(name || "").trim().toLowerCase();
+    return communities.find(function (community) { return community.name.toLowerCase() === needle; }) || null;
+  };
+
+  CommunityApp.prototype.createdCommunityRecords = function () {
+    return communities.filter(function (community) { return community.repositorySource === "usuario"; });
+  };
+
+  CommunityApp.prototype.restoreCommunityCatalog = function () {
+    try {
+      var saved = JSON.parse(localStorage.getItem(this.options.catalogStorageKey) || "[]");
+      if (Array.isArray(saved)) saved.forEach(function (community) {
+        upsertCommunityRecord(merge(community, { repositorySource: "usuario" }));
+      });
+    } catch (error) {}
+  };
+
+  CommunityApp.prototype.saveCommunityCatalog = function () {
+    try {
+      localStorage.setItem(this.options.catalogStorageKey, JSON.stringify(this.createdCommunityRecords()));
+    } catch (error) {}
+  };
+
+  CommunityApp.prototype.restoreCreatedCommunities = function () {
+    var created = this.state.createdCommunities || [];
+    for (var index = created.length - 1; index >= 0; index -= 1) upsertCommunityRecord(merge(created[index], { repositorySource: "usuario" }));
+    this.state.createdCommunities = this.createdCommunityRecords();
+  };
+
+  CommunityApp.prototype.openCommunityPanel = function (id) {
+    var community = this.findCommunity(id);
+    if (!community) return;
+    this.state.view = "detail";
+    this.state.detailId = community.id;
+    this.emit("community.opened", community);
+  };
+
+  CommunityApp.prototype.join = function (id) {
+    var community = this.findCommunity(id);
+    if (!community) return;
+    this.state.memberships[community.id] = community.access === "open" ? "member" : "requested";
+    this.emit(community.access === "open" ? "community.joined" : "community.requested", community);
+  };
+
+  CommunityApp.prototype.findReservableItem = function (id) {
+    var event = events.find(function (item) { return item.id === id; });
+    if (event) return { type: "event", item: event };
+    var classItem = null;
+    communities.some(function (community) {
+      classItem = (community.classes || []).find(function (item) { return item.id === id; }) || null;
+      return !!classItem;
+    });
+    return classItem ? { type: "class", item: classItem } : { type: id.indexOf("class-") === 0 ? "class" : "event", item: { id: id } };
+  };
+
+  CommunityApp.prototype.reserve = function (id) {
+    if (this.state.reservations[id]) return;
+    var reservable = this.findReservableItem(id);
+    this.state.reservations[id] = true;
+    this.emit(reservable.type + ".reserved", reservable.item);
+  };
+
+  CommunityApp.prototype.cancel = function (id) {
+    var reservable = this.findReservableItem(id);
+    delete this.state.reservations[id];
+    this.emit(reservable.type + ".cancelled", reservable.item);
+  };
+
+  CommunityApp.prototype.render = function () {
+    var shellClass = this.state.view === "create" ? "kc-shell kc-shell-create" : "kc-shell";
+    this.root.innerHTML = '<div class="klini-communities">' +
+      '<section class="' + shellClass + '">' + this.renderView() + '</section>' + this.renderStoryViewer() + (this.state.view === "create" ? "" : this.renderBottomNav()) + '</div>';
+    this.syncStoryTimer();
+    this.syncDirectoryFocus();
+    this.applyEventSearch(this.state.eventSearch || "");
+  };
+
+  CommunityApp.prototype.renderView = function () {
+    if (this.state.view === "directory") return this.renderDirectory();
+    if (this.state.view === "detail") return this.renderDetail();
+    if (this.state.view === "create") return this.renderCreate();
+    return this.renderFeed();
+  };
+
+  CommunityApp.prototype.renderFeed = function () {
+    var shortcuts = [
+      ["create-open", "", "Crear Comunidad", "plus", "is-create"],
+      ["open-directory-filter", "events", "Eventos y Clases", "calendar", ""],
+      ["open-directory-filter", "explore", "Explorar", "compass", ""],
+      ["open-directory-filter", "mine", "Mis Comunidades", "users", ""]
+    ];
+    return '<div class="kc-blank-hero" aria-hidden="true"></div>' +
+      '<div class="kc-feed-wrap">' +
+      '<section class="kc-community-shortcuts" aria-label="Accesos de comunidades">' + shortcuts.map(function (item) {
+        return '<button class="kc-community-shortcut ' + item[4] + '" data-action="' + item[0] + '"' + (item[1] ? ' data-id="' + item[1] + '"' : "") + '><span>' + icon(item[3]) + '</span><strong>' + item[2] + '</strong></button>';
+      }).join("") + '</section>' +
+      this.renderStories() + '<div class="kc-post-list">' + posts.map(this.renderPost.bind(this)).join("") + '</div></div>';
+  };
+
+  CommunityApp.prototype.renderStories = function () {
+    var items = this.storyItems();
+    return '<div class="kc-stories" data-pan data-carousel="stories">' +
+      items.map(function (person) {
+        if (person.canUploadStory) {
+          return '<button class="kc-story kc-story-own ' + (person.isManagedCommunity ? "kc-story-managed" : "") + '" data-action="open-story" data-id="' + person.id + '"><span class="kc-story-thumb"><img src="' + escapeHtml(person.avatar) + '" alt="' + escapeHtml(person.name) + '"><em class="kc-story-upload" data-action="upload-story" data-id="' + person.id + '" role="button" aria-label="Subir foto a historia" title="Subir foto">' + icon("plus") + '</em></span><b>' + escapeHtml(person.isPatient ? "Tu historia" : person.short) + '</b></button>';
+        }
+        if (person.isMore) {
+          return '<button class="kc-story kc-story-more" data-action="upload-story" data-id="patient"><span class="kc-story-thumb"><img src="' + escapeHtml(person.avatar) + '" alt="' + escapeHtml(person.name) + '"><em class="kc-story-upload" aria-hidden="true">' + icon("plus") + '</em></span><b>Mas</b></button>';
+        }
+        return '<button class="kc-story" data-action="open-story" data-id="' + person.id + '"><img src="' + person.avatar + '" alt="' + escapeHtml(person.name) + '"><b>' + escapeHtml(person.short) + '</b></button>';
+      }).join("") + '</div>';
+  };
+
+  CommunityApp.prototype.renderStoryViewer = function () {
+    if (this.state.storyIndex == null) return "";
+    var items = this.storyItems();
+    var index = Math.max(0, Math.min(items.length - 1, Number(this.state.storyIndex) || 0));
+    var person = items[index];
+    var storyPhoto = person.storyPhoto || person.avatar;
+    return '<div class="kc-story-viewer" role="dialog" aria-modal="true" aria-label="Historia de ' + escapeHtml(person.name) + '">' +
+      '<div class="kc-story-frame">' +
+      '<div class="kc-story-progress">' + items.map(function (item, itemIndex) {
+        return '<span class="' + (itemIndex < index ? "is-done" : itemIndex === index ? "is-current" : "") + '"><i></i></span>';
+      }).join("") + '</div>' +
+      '<header class="kc-story-viewer-head"><div><img src="' + escapeHtml(person.avatar) + '" alt=""><strong>' + escapeHtml(person.short.toLowerCase().replace(/\s+/g, "")) + '</strong><span>8 h</span></div><button type="button" aria-label="Opciones">•••</button><button type="button" aria-label="Cerrar historia" data-action="close-story">×</button></header>' +
+      '<img class="kc-story-photo" src="' + escapeHtml(storyPhoto) + '" alt="Historia de ' + escapeHtml(person.name) + '">' +
+      '<footer class="kc-story-reply"><label><input placeholder="Enviar mensaje..." aria-label="Enviar mensaje"></label><button type="button" aria-label="Me gusta">' + icon("heart") + '</button><button type="button" aria-label="Comentar">' + icon("message") + '</button><button type="button" aria-label="Enviar">' + icon("send") + '</button></footer>' +
+      '</div></div>';
+  };
+
+  CommunityApp.prototype.renderPost = function (post) {
+    var liked = !!this.state.likes[post.id];
+    var messagesOpen = !!this.state.commentsOpen[post.id];
+    var shareOpen = !!this.state.sharesOpen[post.id];
+    return '<article class="kc-post">' +
+      '<header><img src="' + post.author.avatar + '" alt=""><div><strong>' + escapeHtml(post.author.name) + '</strong><small>' + escapeHtml(post.time) + '</small></div><button aria-label="Más opciones">•••</button></header>' +
+      '<p>' + escapeHtml(post.text) + '</p><img class="kc-post-image" src="' + post.image + '" alt="Publicacion de bienestar">' +
+      '<div class="kc-post-actions"><button class="' + (liked ? "is-liked" : "") + '" data-action="like" data-id="' + post.id + '">' + icon("heart") + ' ' + (post.likes + (liked ? 1 : 0)) + '</button>' +
+      '<button class="' + (messagesOpen ? "is-open" : "") + '" data-action="toggle-post-messages" data-id="' + post.id + '" aria-expanded="' + String(messagesOpen) + '">' + icon("message") + ' ' + post.comments + '</button><button class="' + (shareOpen ? "is-open" : "") + '" data-action="toggle-post-share" data-id="' + post.id + '" aria-expanded="' + String(shareOpen) + '">' + icon("send") + ' ' + post.shares + '</button></div>' +
+      (messagesOpen ? this.renderPostMessages(post) : "") +
+      (shareOpen ? this.renderPostShare(post) : "") +
+      '<div class="kc-liked-by"><span class="kc-mini-avatars">' + people.slice(0, 3).map(function (p) { return '<img src="' + p.avatar + '" alt="">'; }).join("") + '</span>A ' + escapeHtml(people[1].short) + ', ' + escapeHtml(people[2].short) + ' y ' + (post.likes - 3) + ' personas más les gusta esto</div></article>';
+  };
+
+  CommunityApp.prototype.renderPostMessages = function (post) {
+    var messages = postMessages[post.id] || [];
+    var self = this;
+    return '<section class="kc-post-messages" aria-label="Mensajes de la publicación">' +
+      '<div class="kc-post-messages-head"><strong>Mensajes de la publicación</strong><span>' + post.comments + ' en total</span></div>' +
+      messages.map(function (message, index) {
+        return self.renderPostMessage(post, message, index);
+      }).join("") +
+      '</section>';
+  };
+
+  CommunityApp.prototype.renderPostMessage = function (post, message, index) {
+    var threadId = post.id + "-message-" + index;
+    var replies = this.state.replyThreads[threadId] || [];
+    var isOpen = !!this.state.activeReplyThreads[threadId] || replies.length > 0;
+    var draft = this.state.replyDrafts[threadId] || "";
+    return '<article class="kc-post-message" data-message-thread="' + threadId + '"><img src="' + message.author.avatar + '" alt=""><div class="kc-post-message-bubble"><strong>' + escapeHtml(message.author.name) + '</strong><small>' + escapeHtml(message.time) + '</small><p>' + escapeHtml(message.text) + '</p><button type="button" class="kc-message-reply-trigger" data-action="toggle-message-thread" data-id="' + threadId + '" aria-expanded="' + String(isOpen) + '">' + icon("message") + ' Responder</button>' +
+      (isOpen ? '<section class="kc-message-thread" aria-label="Hilo de respuestas">' + (replies.length ? '<div class="kc-message-thread-list">' + replies.map(function (reply) {
+        return '<article><img src="' + escapeHtml(reply.author.avatar) + '" alt=""><div><strong>' + escapeHtml(reply.author.name) + '</strong><small>' + escapeHtml(reply.time) + '</small><p>' + escapeHtml(reply.text) + '</p></div></article>';
+      }).join("") + '</div>' : '<p class="kc-message-thread-empty">Inicia el hilo respondiendo a este mensaje.</p>') +
+      '<div class="kc-message-reply-box"><input data-reply-field="' + threadId + '" value="' + escapeHtml(draft) + '" placeholder="Escribe una respuesta"><button type="button" data-action="send-message-reply" data-id="' + threadId + '">' + icon("send") + '</button></div></section>' : "") +
+      '</div></article>';
+  };
+
+  CommunityApp.prototype.addMessageReply = function (threadId) {
+    var text = ((this.state.replyDrafts || {})[threadId] || "").trim();
+    if (!text) {
+      this.state.activeReplyThreads[threadId] = true;
+      return;
+    }
+    if (!this.state.replyThreads) this.state.replyThreads = {};
+    if (!this.state.replyThreads[threadId]) this.state.replyThreads[threadId] = [];
+    this.state.replyThreads[threadId].push({
+      author: { name: "T\u00fa", avatar: this.patientProfilePhoto() || "/images/communities/category-mine.png" },
+      time: "Ahora",
+      text: text
+    });
+    this.state.replyDrafts[threadId] = "";
+    this.state.activeReplyThreads[threadId] = true;
+    this.emit("message.replied", { threadId: threadId, text: text });
+  };
+
+  CommunityApp.prototype.renderPostShare = function (post) {
+    var publish = [
+      ["Facebook", "f", "facebook"],
+      ["Instagram", "IG", "instagram"],
+      ["X", "X", "x"],
+      ["LinkedIn", "in", "linkedin"]
+    ];
+    var dm = [
+      ["WhatsApp", "WA", "whatsapp"],
+      ["Messenger", "M", "messenger"],
+      ["Telegram", "TG", "telegram"],
+      ["Instagram DM", "DM", "instagram-dm"]
+    ];
+    var renderOption = function (item, mode) {
+      return '<button class="kc-share-option kc-share-' + item[2] + '" type="button" data-action="share-post" data-id="' + post.id + '" data-network="' + item[2] + '" data-mode="' + mode + '"><span>' + escapeHtml(item[1]) + '</span><b>' + escapeHtml(item[0]) + '</b></button>';
+    };
+    return '<section class="kc-post-share-panel" aria-label="Opciones para compartir">' +
+      '<div class="kc-post-share-head"><strong>Compartir publicación</strong><small>Publica o envía por mensaje directo.</small></div>' +
+      '<div class="kc-share-group"><span>Publicar en redes</span><div>' + publish.map(function (item) { return renderOption(item, "publish"); }).join("") + '</div></div>' +
+      '<div class="kc-share-group"><span>Mandar por DM</span><div>' + dm.map(function (item) { return renderOption(item, "dm"); }).join("") + '</div></div>' +
+      '</section>';
+  };
+
+  CommunityApp.prototype.createValue = function (field, fallback) {
+    var value = (this.state.createDraft || {})[field];
+    return value == null || value === "" ? (fallback || "") : value;
+  };
+
+  CommunityApp.prototype.platformUsers = function () {
+    var patient = this.patientSummary();
+    var patientNumber = this.options.patient && this.options.patient.id ? String(this.options.patient.id) : "100000001";
+    var users = [{
+      id: "creator",
+      name: patient.name || "Usuario actual",
+      short: "Tu",
+      userNumber: patientNumber,
+      avatar: patient.avatar,
+      isCurrentUser: true
+    }];
+    people.forEach(function (person, index) {
+      users.push({
+        id: person.id,
+        name: person.name,
+        short: person.short,
+        userNumber: String(100000100 + index),
+        avatar: person.avatar
+      });
+    });
+    return users;
+  };
+
+  CommunityApp.prototype.findPlatformUser = function (value) {
+    var needle = String(value || "").trim().toLowerCase();
+    if (!needle) return null;
+    return this.platformUsers().find(function (user) {
+      return String(user.userNumber).toLowerCase() === needle ||
+        String(user.name).toLowerCase() === needle ||
+        String(user.name).toLowerCase().indexOf(needle) >= 0;
+    }) || null;
+  };
+
+  CommunityApp.prototype.addCreateAdministrator = function () {
+    var draft = this.state.createDraft || (this.state.createDraft = defaultCreateDraft());
+    var user = this.findPlatformUser(draft.adminUserNumber) || this.findPlatformUser(draft.adminSearch);
+    var typedNumber = String(draft.adminUserNumber || "").trim();
+    if (user) {
+      draft.adminSearch = user.name;
+      draft.adminUserNumber = user.userNumber;
+      return;
+    }
+    if (typedNumber) {
+      draft.adminSearch = "Usuario " + typedNumber;
+      draft.adminUserNumber = typedNumber;
+    }
+  };
+
+  CommunityApp.prototype.resolveCreateAdministrator = function () {
+    var draft = this.state.createDraft || {};
+    var user = this.findPlatformUser(draft.adminUserNumber) || this.findPlatformUser(draft.adminSearch);
+    var currentNumber = this.options.patient && this.options.patient.id ? String(this.options.patient.id) : "100000001";
+    if (user && String(user.userNumber) !== currentNumber) return user;
+    var name = String(draft.adminSearch || "").trim();
+    var number = String(draft.adminUserNumber || "").trim();
+    if (number && number === currentNumber) return null;
+    if (!name && !number) return null;
+    return {
+      id: number ? "platform-" + number : "admin-custom",
+      name: name || "Usuario " + number,
+      short: name ? initialsFromName(name) : "US",
+      userNumber: number || "Sin numero",
+      avatar: ""
+    };
+  };
+
+  CommunityApp.prototype.createAdminPermissions = function () {
+    return {
+      stories: this.createValue("adminAllowStories", true) !== false,
+      communityPosts: this.createValue("adminAllowCommunityPosts", true) !== false,
+      events: this.createValue("adminAllowEvents", true) !== false,
+      classes: this.createValue("adminAllowClasses", true) !== false,
+      editPage: this.createValue("adminAllowEditPage", true) !== false
+    };
+  };
+
+  CommunityApp.prototype.uploadCreateImage = function (field) {
+    var self = this;
+    var input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.style.position = "fixed";
+    input.style.left = "-9999px";
+    input.style.top = "0";
+    input.setAttribute("aria-hidden", "true");
+    input.addEventListener("change", function () {
+      var file = input.files && input.files[0];
+      if (!file) {
+        if (input.parentNode) input.parentNode.removeChild(input);
+        return;
+      }
+      if (file.type && !/^image\//.test(file.type)) {
+        if (input.parentNode) input.parentNode.removeChild(input);
+        return;
+      }
+      var reader = new FileReader();
+      reader.onload = function () {
+        self.state.createDraft[field] = String(reader.result || "");
+        if (input.parentNode) input.parentNode.removeChild(input);
+        self.render();
+      };
+      reader.onerror = function () {
+        if (input.parentNode) input.parentNode.removeChild(input);
+      };
+      reader.readAsDataURL(file);
+    });
+    document.body.appendChild(input);
+    input.click();
+  };
+
+  CommunityApp.prototype.uploadStoryImage = function (storyId) {
+    var self = this;
+    var targetId = storyId === "more" ? "patient" : (storyId || "patient");
+    var input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.style.position = "fixed";
+    input.style.left = "-9999px";
+    input.style.top = "0";
+    input.setAttribute("aria-hidden", "true");
+    input.addEventListener("change", function () {
+      var file = input.files && input.files[0];
+      if (!file) {
+        if (input.parentNode) input.parentNode.removeChild(input);
+        return;
+      }
+      if (file.type && !/^image\//.test(file.type)) {
+        if (input.parentNode) input.parentNode.removeChild(input);
+        return;
+      }
+      var reader = new FileReader();
+      reader.onload = function () {
+        (self.state.storyUploads || (self.state.storyUploads = {}))[targetId] = String(reader.result || "");
+        self.state.storyIndex = Math.max(0, self.storyItems().findIndex(function (item) { return item.id === targetId; }));
+        if (input.parentNode) input.parentNode.removeChild(input);
+        self.emit("story.uploaded", { id: targetId });
+        self.save();
+        self.render();
+      };
+      reader.onerror = function () {
+        if (input.parentNode) input.parentNode.removeChild(input);
+      };
+      reader.readAsDataURL(file);
+    });
+    document.body.appendChild(input);
+    input.click();
+  };
+
+  CommunityApp.prototype.finishCreate = function () {
+    var draft = this.state.createDraft || defaultCreateDraft();
+    var name = (draft.name || "").trim() || "Respira y Avanza";
+    var ownerAdmin = merge(this.patientSummary(), {
+      role: "Administrador propietario",
+      userNumber: this.options.patient && this.options.patient.id ? String(this.options.patient.id) : "100000001",
+      permissions: { owner: true, fullAccess: true }
+    });
+    var selectedAdmin = this.resolveCreateAdministrator();
+    var adminPermissions = this.createAdminPermissions();
+    var additionalAdmin = selectedAdmin ? merge(selectedAdmin, {
+      role: "Administrador",
+      permissions: adminPermissions
+    }) : null;
+    var administrators = additionalAdmin ? [ownerAdmin, additionalAdmin] : [ownerAdmin];
+    var community = this.findCommunityByName(name);
+    if (!community) {
+      community = upsertCommunityRecord({
+        id: "created-" + Date.now(),
+        catalogId: "user-" + slugify(name),
+        slug: slugify(name),
+        repositorySource: "usuario",
+        name: name,
+        category: draft.category || "Bienestar",
+        access: draft.type === "private" ? "closed" : "open",
+        visibility: draft.publicDirectory === false ? "hidden" : "public",
+        members: 1,
+        city: draft.city || "Ciudad de México",
+        description: draft.shortDescription || "Yoga suave, respiración y constancia semanal.",
+        longDescription: draft.longDescription || draft.shortDescription || "Un espacio para compartir metas de bienestar y participar en actividades comunitarias.",
+        rules: draft.rules || "Mantener respeto, privacidad y participacion responsable dentro de la comunidad.",
+        pinnedMessage: "Comunidad creada por usuario. Lista para invitar miembros y publicar actividades.",
+        initials: initialsFromName(name),
+        logoInitials: initialsFromName(name),
+        tone: "mint",
+        role: "admin",
+        ownerAdministrator: ownerAdmin,
+        additionalAdministrator: additionalAdmin,
+        administrators: administrators,
+        adminPermissions: adminPermissions,
+        heroImage: draft.coverImage || "/images/communities/create-cover.png",
+        profileImage: draft.profileImage || "",
+        features: ["Comunidad nueva", "Bienestar integral", "Gestion propia"],
+        classes: []
+      });
+    } else {
+      community = upsertCommunityRecord(merge(community, {
+        role: "admin",
+        ownerAdministrator: ownerAdmin,
+        additionalAdministrator: additionalAdmin,
+        administrators: administrators,
+        adminPermissions: adminPermissions
+      }));
+    }
+    community.role = "admin";
+    this.state.memberships[community.id] = "admin";
+    this.state.createdCommunities = this.createdCommunityRecords();
+    this.state.filter = "explore";
+    this.state.view = "create";
+    this.state.createCompleted = true;
+    this.state.createdCommunityId = community.id;
+    this.emit("community.created", community);
+  };
+
+  CommunityApp.prototype.refreshCreatePreview = function () {
+    var draft = this.state.createDraft || {};
+    var values = {
+      "[data-create-preview-name]": draft.name || "Nombre de tu comunidad",
+      "[data-create-preview-description]": draft.shortDescription || "Descripción corta aparecerá aquí.",
+      "[data-create-preview-category]": draft.category || "Aún sin categoría",
+      "[data-create-preview-city]": draft.city || "Ciudad"
+    };
+    Object.keys(values).forEach(function (selector) {
+      var el = document.querySelector(selector);
+      if (el) el.textContent = values[selector];
+    });
+  };
+
+  CommunityApp.prototype.renderCreate = function () {
+    var step = this.state.createStep || 1;
+    return '<div class="kc-create-flow">' +
+      '<header class="kc-create-titlebar"><h1>' + (step === 1 ? 'Información general' : 'Crear comunidad') + '</h1><p>' + (step === 1 ? 'Completa la información básica para tu comunidad.' : 'Configura tu comunidad paso a paso.') + '</p></header>' +
+      this.renderCreateStepper(step) +
+      '<div class="kc-create-layout"><main>' + this.renderCreateStep(step) + '</main>' + this.renderCreateAside(step) + '</div>' +
+      this.renderCreateFooter(step) + '</div>';
+  };
+
+  CommunityApp.prototype.renderCreateStepper = function (step) {
+    return '<ol class="kc-create-steps">' + createSteps.map(function (item, index) {
+      var number = index + 1;
+      var state = number < step ? "is-complete" : number === step ? "is-current" : "";
+      return '<li class="' + state + '"><button type="button" data-action="create-step" data-id="' + number + '">' +
+        '<span>' + (number < step ? icon("check") : number) + '</span><b>' + item.title + '</b></button></li>';
+    }).join("") + '</ol>';
+  };
+
+  CommunityApp.prototype.renderCreateStep = function (step) {
+    if (step === 2) return this.renderCreatePrivacy();
+    if (step === 3) return this.renderCreateContent();
+    if (step === 4) return this.renderCreateMembers();
+    if (step === 5) return this.renderCreateReview();
+    return this.renderCreateGeneral();
+  };
+
+  CommunityApp.prototype.renderCreateCardHead = function (step, title, description) {
+    return '<div class="kc-create-card-head"><div><b>Paso ' + step + ' de 5</b><span>•</span><strong>' + title + '</strong></div><p>' + description + '</p></div>';
+  };
+
+  CommunityApp.prototype.renderCreateGeneral = function () {
+    return '<section class="kc-create-card">' + this.renderCreateCardHead(1, "Información general", "Completa la información básica para tu comunidad.") +
+      '<div class="kc-create-general-grid"><div class="kc-create-fields">' +
+      '<label>Nombre de la comunidad *<input data-create-field="name" value="' + escapeHtml(this.createValue("name")) + '" placeholder="Ej. Respira y Avanza"></label>' +
+      '<label>Descripción corta *<textarea data-create-field="shortDescription" maxlength="120" placeholder="Describe en una línea de qué trata tu comunidad.">' + escapeHtml(this.createValue("shortDescription")) + '</textarea><small>0/120</small></label>' +
+      '<div class="kc-create-two"><label>Categoría *<select data-create-field="category"><option value="">Selecciona una categoría</option><option' + (this.createValue("category") === "Bienestar" ? " selected" : "") + '>Bienestar</option><option' + (this.createValue("category") === "Yoga" ? " selected" : "") + '>Yoga</option><option' + (this.createValue("category") === "Nutrición" ? " selected" : "") + '>Nutrición</option></select></label>' +
+      '<label>Ciudad *<select data-create-field="city"><option value="">Selecciona tu ciudad</option><option' + (this.createValue("city") === "Ciudad de México" ? " selected" : "") + '>Ciudad de México</option><option>Guadalajara</option><option>Monterrey</option></select></label></div>' +
+      '<label>Etiquetas <span>(máx. 5)</span><input data-create-field="tags" value="' + escapeHtml(this.createValue("tags")) + '" placeholder="Añade etiquetas y presiona Enter"><em>Ej. yoga, respiración, bienestar, meditación</em></label>' +
+      '</div>' + this.renderCreateOwnerBox() + '</div></section>';
+  };
+
+  CommunityApp.prototype.renderCreatePrivacy = function () {
+    var type = this.createValue("type", "open");
+    return '<section class="kc-create-card">' + this.renderCreateCardHead(2, "Tipo y privacidad", "Elige quién puede ver, unirse y participar en tu comunidad.") +
+      '<div class="kc-create-privacy-grid"><div>' +
+      '<h3>Tipo de comunidad</h3><div class="kc-create-choice-grid">' +
+      '<label class="kc-create-choice ' + (type !== "private" ? "is-selected" : "") + '">' + icon("globe") + '<input type="radio" name="community-type" data-create-field="type" value="open"' + (type !== "private" ? " checked" : "") + '><strong>Comunidad abierta</strong><p>Cualquiera puede ver el contenido y unirse sin aprobación.</p></label>' +
+      '<label class="kc-create-choice ' + (type === "private" ? "is-selected" : "") + '">' + icon("lock") + '<input type="radio" name="community-type" data-create-field="type" value="private"' + (type === "private" ? " checked" : "") + '><strong>Comunidad privada</strong><p>Solo los miembros pueden ver el contenido. Requiere aprobación para unirse.</p></label>' +
+      '</div><h3>Configuración adicional</h3><div class="kc-create-toggle-list">' +
+      this.renderCreateToggle("approveRequests", "Aprobar solicitudes manualmente", "Revisa y aprueba cada solicitud de ingreso.", "users") +
+      this.renderCreateToggle("publicDirectory", "Mostrar comunidad públicamente", "Aparece en búsquedas y en el directorio de comunidades.", "eye") +
+      '</div></div>' + this.renderCreateOwnerBox() + '</div></section>' + this.renderCreateCollapsedSteps(3);
+  };
+
+  CommunityApp.prototype.renderCreateContent = function () {
+    var coverImage = this.createValue("coverImage", "/images/communities/create-cover.png");
+    var profileImage = this.createValue("profileImage");
+    return '<section class="kc-create-card">' + this.renderCreateCardHead(3, "Portada y contenido", "Personaliza la identidad visual de tu comunidad y define su propósito y reglas.") +
+      '<div class="kc-create-media-grid"><div><h3>Imagen de portada</h3><div class="kc-create-cover"><img src="' + escapeHtml(coverImage) + '" alt=""><button type="button" data-action="create-upload-cover" aria-label="Cargar imagen de portada">' + icon("edit") + '</button></div><small>Recomendado 1200 x 400 px. Formato JPG, PNG o WebP.</small></div>' +
+      '<div><h3>Imagen de perfil</h3><div class="kc-create-profile-image">' + (profileImage ? '<img src="' + escapeHtml(profileImage) + '" alt="Imagen de perfil de la comunidad">' : icon("leaf")) + '<button type="button" data-action="create-upload-profile" aria-label="Cargar imagen de perfil">' + icon("edit") + '</button></div><small>Recomendado 512 x 512 px.</small></div></div>' +
+      '<div class="kc-create-two"><label>Descripción larga<textarea data-create-field="longDescription" maxlength="500" placeholder="Cuéntales más sobre tu comunidad...">' + escapeHtml(this.createValue("longDescription")) + '</textarea><small>0/500</small></label>' +
+      '<label>Objetivo de la comunidad<textarea data-create-field="objective" maxlength="300" placeholder="¿Qué quieres lograr con tu comunidad?">' + escapeHtml(this.createValue("objective")) + '</textarea><small>0/300</small></label></div>' +
+      '<label>Normas básicas<textarea data-create-field="rules" maxlength="300" placeholder="Establece las reglas principales que todos los miembros deben seguir...">' + escapeHtml(this.createValue("rules")) + '</textarea><small>0/300</small></label>' +
+      this.renderCreateOwnerStrip() + '</section>';
+  };
+
+  CommunityApp.prototype.renderCreateMembers = function () {
+    return '<section class="kc-create-card">' + this.renderCreateCardHead(4, "Miembros y permisos", "Define quién puede participar y qué acciones están disponibles en tu comunidad.") +
+      '<div class="kc-create-owner-auto"><img src="/images/communities/owner-mariana.png" alt=""><div><small>Propietario (automático)</small><strong>Mariana López</strong><span>Administrador</span></div><p>Eres el propietario de esta comunidad de forma automática. No puedes cambiar al propietario.</p></div>' +
+      '<h3>Permisos y funcionalidades</h3><div class="kc-create-permission-grid">' +
+      this.renderCreateToggle("allowPosts", "Permitir publicaciones", "Los miembros pueden crear y compartir publicaciones.", "image") +
+      this.renderCreateToggle("allowComments", "Permitir comentarios", "Los miembros pueden comentar en publicaciones.", "message") +
+      this.renderCreateToggle("allowEvents", "Crear eventos", "Los miembros pueden crear y organizar eventos.", "calendar") +
+      this.renderCreateToggle("allowClasses", "Crear clases", "Los miembros pueden crear y publicar clases.", "globe") +
+      '</div><div class="kc-create-two"><div class="kc-create-mini-panel"><h3>Moderadores adicionales <span>(opcional)</span></h3><div class="kc-create-search">Buscar miembros por nombre o correo ' + icon("search") + '</div><div class="kc-create-chips"><span>Ana Sofía Ruiz</span><span>Carlos Ruiz</span><span>Diego Ramírez</span></div><p>Los moderadores pueden gestionar miembros, contenido y reportes, pero no pueden eliminar la comunidad.</p></div>' +
+      '<div class="kc-create-mini-panel"><h3>Límite de miembros</h3><label><select data-create-field="memberLimit"><option>Sin límite</option><option>100 miembros</option><option>500 miembros</option></select></label><p>Puedes cambiar este límite en cualquier momento desde la configuración de la comunidad.</p></div></div>' +
+      '<div class="kc-create-role-grid"><article><b>Administrador</b><p>Control total de la comunidad y su configuración.</p></article><article><b>Moderador</b><p>Gestiona contenido, miembros y reportes.</p></article><article><b>Miembro</b><p>Participa, publica y comenta.</p></article><article><b>Invitado</b><p>Acceso limitado según la visibilidad configurada.</p></article></div></section>';
+  };
+
+  CommunityApp.prototype.renderCreateReview = function () {
+    var name = this.createValue("name", "Respira y Avanza");
+    var description = this.createValue("shortDescription", "Yoga suave, respiración y constancia semanal.");
+    var category = this.createValue("category", "Bienestar");
+    var city = this.createValue("city", "Ciudad de México");
+    return '<section class="kc-create-card kc-create-review-card">' + this.renderCreateCardHead(5, "Revisión y crear", "Revisa los detalles de tu comunidad antes de crearla. Podrás editar todo después.") +
+      this.renderReviewRow("info", "Información general", "Nombre y descripción básica", "Nombre:<br>Descripción:<br>Categoría:<br>Ciudad:", escapeHtml(name) + '<br>' + escapeHtml(description) + '<br>' + escapeHtml(category) + '<br>' + escapeHtml(city), 1) +
+      this.renderReviewRow("globe", "Tipo y privacidad", "Visibilidad y acceso", "Tipo:<br>Acceso:", (this.createValue("type", "open") === "private" ? "Comunidad privada<br>Requiere aprobación para unirse." : "Comunidad abierta<br>Cualquiera puede ver el contenido y unirse sin aprobación."), 2) +
+      this.renderReviewRow("image", "Portada y contenido", "Imagen, descripción y reglas", "Imagen de portada:<br>Imagen de perfil:<br>Descripción larga:<br>Objetivo:<br>Reglas básicas:", "Imagen personalizada<br>Imagen personalizada<br>" + escapeHtml(description) + "<br>Mejorar el bienestar físico y mental a través de la práctica constante.<br>3 reglas definidas", 3) +
+      this.renderReviewRow("users", "Miembros y permisos", "Configuración de participación", "Permitir publicaciones:<br>Permitir comentarios:<br>Crear eventos:<br>Crear clases:<br>Moderadores adicionales:<br>Límite de miembros:", "Sí<br>Sí<br>Sí<br>Sí<br>0<br>" + escapeHtml(this.createValue("memberLimit", "Sin límite")), 4) +
+      this.renderReviewRow("shield", "Administrador propietario", "Propietario y permisos", "Propietario:", '<span class="kc-create-owner-inline"><img src="/images/communities/owner-mariana.png" alt=""> Mariana López <b>Administrador</b></span><small>Se asigna automáticamente al usuario que crea la comunidad desde su sesión.</small>', 1) +
+      '<label class="kc-create-confirm"><input type="checkbox" data-create-field="confirmed" checked><span>' + icon("check") + '</span><b>Confirmo que la información es correcta</b><small>Al crear la comunidad, acepto que podré editar todos los detalles después.</small></label></section>';
+  };
+
+  CommunityApp.prototype.renderReviewRow = function (iconName, title, subtitle, terms, values, step) {
+    return '<article class="kc-create-review-row"><div class="kc-create-review-icon">' + icon(iconName) + '</div><div><h3>' + title + '</h3><p>' + subtitle + '</p></div><dl><dt>' + terms + '</dt><dd>' + values + '</dd></dl><button type="button" data-action="create-step" data-id="' + step + '">' + icon("edit") + ' Editar</button></article>';
+  };
+
+  CommunityApp.prototype.renderCreateAside = function (step) {
+    var draft = this.state.createDraft || {};
+    var name = draft.name || "Nombre de tu comunidad";
+    var description = draft.shortDescription || "Descripción corta aparecerá aquí.";
+    var category = draft.category || "Aún sin categoría";
+    var city = draft.city || "Ciudad";
+    var coverImage = draft.coverImage || "/images/communities/create-cover.png";
+    var profileImage = draft.profileImage || "";
+    var tip = [
+      "Tómate tu tiempo para configurar tu comunidad. Podrás editar todos los detalles después.",
+      "Puedes cambiar algunas configuraciones más adelante desde los ajustes de tu comunidad.",
+      "Una portada atractiva y una descripción clara ayudan a que más personas se unan a tu comunidad.",
+      "Los permisos adecuados fomentan una comunidad activa, segura y bien organizada.",
+      "Una vez creada, podrás invitar miembros, configurar notificaciones y personalizar más opciones desde la administración."
+    ][step - 1];
+    return '<aside class="kc-create-sidebar"><section class="kc-create-preview"><h3>Vista previa de la comunidad</h3><div class="kc-create-preview-cover"><img src="' + escapeHtml(coverImage) + '" alt=""><span>' + (profileImage ? '<img src="' + escapeHtml(profileImage) + '" alt="Imagen de perfil de la comunidad">' : icon("leaf")) + '</span></div><h4 data-create-preview-name>' + escapeHtml(name) + '</h4><p data-create-preview-description>' + escapeHtml(description) + '</p><div><span>' + icon("tag") + ' <b data-create-preview-category>' + escapeHtml(category) + '</b></span><span>' + icon("map") + ' <b data-create-preview-city>' + escapeHtml(city) + '</b></span></div></section>' +
+      '<section class="kc-create-side-card"><h3>Administrador propietario</h3><div class="kc-create-admin-row"><img src="/images/communities/owner-mariana.png" alt=""><div><strong>Mariana López</strong><span>Administrador</span></div>' + icon("shield") + '</div><p>Se asigna automáticamente al usuario que crea la comunidad desde su sesión.</p></section>' +
+      '<section class="kc-create-side-card"><h3>Checklist de creación</h3><ol class="kc-create-checklist">' + createSteps.map(function (item, index) {
+        var number = index + 1;
+        var label = number < step ? "Completado" : number === step ? (step === 5 ? "Listo" : "En curso") : "Pendiente";
+        return '<li class="' + (number < step ? "is-done" : number === step ? "is-now" : "") + '"><span>' + number + '</span><b>' + item.title + '</b><em>' + label + '</em></li>';
+      }).join("") + '</ol></section>' +
+      '<section class="kc-create-advice">' + icon("sparkles") + '<div><h3>Consejo</h3><p>' + tip + '</p></div></section></aside>';
+  };
+
+  CommunityApp.prototype.renderCreateOwnerBox = function () {
+    return '<aside class="kc-create-owner-box"><h3>' + icon("lock") + ' Propietario de la comunidad</h3><div class="kc-create-admin-row"><img src="/images/communities/owner-mariana.png" alt=""><div><strong>Mariana López</strong><span>Administrador</span></div></div><p>Se asigna automáticamente al usuario que crea la comunidad desde su sesión.</p><div class="kc-create-note">' + icon("shield") + '<span>No puedes cambiar al propietario. Podrás añadir moderadores en el siguiente paso.</span></div></aside>';
+  };
+
+  CommunityApp.prototype.renderCreateOwnerStrip = function () {
+    return '<div class="kc-create-owner-strip">' + icon("lock") + '<div><strong>Propietario de la comunidad</strong><small>No puedes cambiar al propietario. Podrás añadir moderadores en el siguiente paso.</small></div><img src="/images/communities/owner-mariana.png" alt=""><b>Mariana López</b><span>Administrador</span></div>';
+  };
+
+  CommunityApp.prototype.renderCreateToggle = function (field, title, description, iconName) {
+    var checked = this.createValue(field, true) !== false;
+    return '<label class="kc-create-toggle">' + icon(iconName) + '<div><strong>' + title + '</strong><p>' + description + '</p></div><input type="checkbox" data-create-field="' + field + '"' + (checked ? " checked" : "") + '><span></span></label>';
+  };
+
+  CommunityApp.prototype.renderCreateCollapsedSteps = function (from) {
+    return '<div class="kc-create-collapsed">' + createSteps.slice(from - 1).map(function (item, index) {
+      var number = from + index;
+      return '<button type="button" data-action="create-step" data-id="' + number + '">' + icon(item.icon) + '<div><strong>Paso ' + number + '</strong><span>' + item.title + '</span></div><em>Pendiente</em>' + icon("arrow") + '</button>';
+    }).join("") + '</div>';
+  };
+
+  CommunityApp.prototype.renderCreateFooter = function (step) {
+    return '<footer class="kc-create-footer"><button type="button" data-action="create-cancel">Cancelar</button>' +
+      (step === 5 ? '<button type="button" class="kc-create-draft">' + icon("file") + ' Guardar borrador</button>' : '<span></span>') +
+      '<div><button type="button" data-action="create-prev"' + (step === 1 ? " disabled" : "") + '>Anterior</button>' +
+      '<button type="button" class="kc-create-primary" data-action="' + (step === 5 ? "create-submit" : "create-next") + '">' + (step === 5 ? icon("sparkles") + ' Crear comunidad' : 'Siguiente ' + icon("arrow")) + '</button></div></footer>';
+  };
+
+  CommunityApp.prototype.renderCreate = function () {
+    var step = this.state.createStep || 1;
+    if (this.state.createCompleted) return this.renderCreateSuccess();
+    return '<div class="kc-create-flow kc-create-mobile-wizard">' +
+      '<header class="kc-create-mobile-head"><button type="button" data-action="create-cancel" aria-label="Volver">' + icon("back") + '</button><strong>Crear comunidad</strong><button type="button" data-action="create-cancel" aria-label="Cerrar">&times;</button></header>' +
+      this.renderCreateStepper(step) +
+      '<main class="kc-create-mobile-main">' + this.renderCreateStep(step) + '</main>' +
+      this.renderCreateFooter(step) + '</div>';
+  };
+
+  CommunityApp.prototype.renderCreateStepper = function (step) {
+    return '<div class="kc-create-mobile-progress"><ol class="kc-create-steps">' + createSteps.map(function (item, index) {
+      var number = index + 1;
+      var state = number < step ? "is-complete" : number === step ? "is-current" : "";
+      return '<li class="' + state + '"><button type="button" data-action="create-step" data-id="' + number + '" aria-label="' + escapeHtml(item.title) + '"><span>' + (number < step ? icon("check") : number) + '</span></button></li>';
+    }).join("") + '</ol><b>' + createSteps[step - 1].title + '</b></div>';
+  };
+
+  CommunityApp.prototype.renderCreateMobileHero = function (iconName, title, description, tone) {
+    return '<div class="kc-create-mobile-hero ' + (tone || "") + '"><span>' + icon(iconName) + '</span><h2>' + title + '</h2><p>' + description + '</p></div>';
+  };
+
+  CommunityApp.prototype.renderCreateGeneral = function () {
+    var category = this.createValue("category");
+    var city = this.createValue("city");
+    var description = this.createValue("shortDescription");
+    return '<section class="kc-create-card">' +
+      this.renderCreateMobileHero("users", "Informaci&oacute;n general", "Cu&eacute;ntanos lo b&aacute;sico para comenzar a crear tu comunidad.") +
+      '<div class="kc-create-fields">' +
+      '<label>Nombre de la comunidad *<input data-create-field="name" value="' + escapeHtml(this.createValue("name")) + '" placeholder="Ej. Respira y Avanza"></label>' +
+      '<label>Descripci&oacute;n corta *<textarea data-create-field="shortDescription" maxlength="120" placeholder="Describe en una l&iacute;nea de qu&eacute; trata tu comunidad.">' + escapeHtml(description) + '</textarea><small>' + description.length + '/120</small></label>' +
+      '<label class="kc-create-select-label">Categor&iacute;a *<span>' + icon("tag") + '<select data-create-field="category"><option value="">Selecciona una categor&iacute;a</option><option value="Bienestar"' + (category === "Bienestar" ? " selected" : "") + '>Bienestar</option><option value="Yoga"' + (category === "Yoga" ? " selected" : "") + '>Yoga</option><option value="Nutrici&oacute;n"' + (category === "Nutrición" ? " selected" : "") + '>Nutrici&oacute;n</option></select>' + icon("arrow") + '</span></label>' +
+      '<label class="kc-create-select-label">Ciudad *<span>' + icon("map") + '<select data-create-field="city"><option value="">Selecciona tu ciudad</option><option value="Ciudad de M&eacute;xico"' + (city === "Ciudad de México" ? " selected" : "") + '>Ciudad de M&eacute;xico</option><option>Guadalajara</option><option>Monterrey</option></select>' + icon("arrow") + '</span></label>' +
+      '</div></section>';
+  };
+
+  CommunityApp.prototype.renderCreatePrivacy = function () {
+    var type = this.createValue("type", "open");
+    return '<section class="kc-create-card">' +
+      this.renderCreateMobileHero("lock", "Tipo y privacidad", "Elige qui&eacute;n puede ver, unirse y participar en tu comunidad.", "is-blue") +
+      '<h3>Tipo de comunidad</h3><div class="kc-create-choice-grid">' +
+      '<label class="kc-create-choice ' + (type !== "private" ? "is-selected" : "") + '">' + icon("globe") + '<strong>Comunidad abierta</strong><p>Cualquiera puede ver el contenido y unirse sin aprobaci&oacute;n.</p><input type="radio" name="community-type" data-create-field="type" value="open"' + (type !== "private" ? " checked" : "") + '></label>' +
+      '<label class="kc-create-choice ' + (type === "private" ? "is-selected" : "") + '">' + icon("lock") + '<strong>Comunidad privada</strong><p>Solo los miembros pueden ver el contenido. Requiere aprobaci&oacute;n para unirse.</p><input type="radio" name="community-type" data-create-field="type" value="private"' + (type === "private" ? " checked" : "") + '></label>' +
+      '</div><h3>Visibilidad en el directorio</h3><div class="kc-create-toggle-list">' +
+      this.renderCreateToggle("publicDirectory", "Mostrar comunidad p&uacute;blicamente", "Aparecer&aacute; en b&uacute;squedas y en el directorio de comunidades.", "eye") +
+      '</div></section>';
+  };
+
+  CommunityApp.prototype.renderCreateContent = function () {
+    var coverImage = this.createValue("coverImage", "/images/communities/create-cover.png");
+    var profileImage = this.createValue("profileImage");
+    var longDescription = this.createValue("longDescription");
+    return '<section class="kc-create-card">' +
+      this.renderCreateMobileHero("image", "Portada y contenido", "Personaliza la imagen, descripci&oacute;n y prop&oacute;sito de tu comunidad.", "is-purple") +
+      '<div class="kc-create-media-grid"><div><h3>Imagen de portada</h3><div class="kc-create-cover"><img src="' + escapeHtml(coverImage) + '" alt=""><button type="button" data-action="create-upload-cover" aria-label="Cargar imagen de portada">' + icon("camera") + '</button></div></div>' +
+      '<div class="kc-create-profile-block"><h3>Imagen de perfil</h3><div class="kc-create-profile-image">' + (profileImage ? '<img src="' + escapeHtml(profileImage) + '" alt="Imagen de perfil de la comunidad">' : icon("leaf")) + '<button type="button" data-action="create-upload-profile" aria-label="Cargar imagen de perfil">' + icon("camera") + '</button></div></div></div>' +
+      '<label>Descripci&oacute;n larga *<textarea data-create-field="longDescription" maxlength="500" placeholder="Cu&eacute;ntales m&aacute;s sobre tu comunidad...">' + escapeHtml(longDescription) + '</textarea><small>' + longDescription.length + '/500</small></label>' +
+      '</section>';
+  };
+
+  CommunityApp.prototype.renderCreateMembers = function () {
+    var limit = this.createValue("memberLimit", "Sin l&iacute;mite");
+    var owner = this.patientSummary();
+    var ownerNumber = this.options.patient && this.options.patient.id ? String(this.options.patient.id) : "100000001";
+    var selectedAdmin = this.resolveCreateAdministrator();
+    var userOptions = this.platformUsers().filter(function (user) { return !user.isCurrentUser; }).map(function (user) {
+      return '<option value="' + escapeHtml(user.name) + '" label="#' + escapeHtml(user.userNumber) + '"></option>';
+    }).join("");
+    var selectedMarkup = selectedAdmin ? '<div class="kc-create-admin-selected">' +
+      '<span>' + (selectedAdmin.avatar ? '<img src="' + escapeHtml(selectedAdmin.avatar) + '" alt="">' : escapeHtml(initialsFromName(selectedAdmin.name))) + '</span>' +
+      '<div><strong>' + escapeHtml(selectedAdmin.name) + '</strong><small>ID de usuario - ' + escapeHtml(selectedAdmin.userNumber || "Sin numero") + '</small></div><b>Administrador</b></div>' : "";
+    return '<section class="kc-create-card">' +
+      this.renderCreateMobileHero("users", "Miembros y permisos", "Configura roles y permisos para mantener tu comunidad segura y organizada.") +
+      '<div class="kc-create-owner-admin"><span>' + (owner.avatar ? '<img src="' + escapeHtml(owner.avatar) + '" alt="">' : escapeHtml(initialsFromName(owner.name))) + '</span><div><small>Administrador propietario</small><strong>' + escapeHtml(owner.name || "Usuario actual") + '</strong><p>ID de usuario - ' + escapeHtml(ownerNumber) + '</p></div><b>Control total</b></div>' +
+      '<div class="kc-create-admin-manager"><h3>Administrador de la comunidad</h3><p>Selecciona a la persona que administrar&aacute; esta comunidad.</p>' +
+      '<label>Buscar administrador<span class="kc-create-admin-search"><input data-create-field="adminSearch" list="kc-create-admin-users" value="' + escapeHtml(this.createValue("adminSearch")) + '" placeholder="Buscar por nombre o usuario">' + icon("search") + '</span></label><datalist id="kc-create-admin-users">' + userOptions + '</datalist>' +
+      '<div class="kc-create-admin-number"><label>o agregar por n&uacute;mero de usuario<input data-create-field="adminUserNumber" value="' + escapeHtml(this.createValue("adminUserNumber")) + '" placeholder="# N&uacute;mero de usuario"></label><button type="button" data-action="create-add-admin">Agregar</button></div>' +
+      selectedMarkup +
+      '<h3>Autorizaciones del administrador</h3><p>Define qu&eacute; puede hacer esta persona en la comunidad.</p><div class="kc-create-toggle-list kc-create-admin-toggles">' +
+      this.renderCreateToggle("adminAllowStories", "Posteo de stories en redes sociales", "Puede publicar historias conectadas a la comunidad.", "send") +
+      this.renderCreateToggle("adminAllowCommunityPosts", "Publicaciones en la comunidad", "Puede crear publicaciones dentro de la comunidad.", "message") +
+      this.renderCreateToggle("adminAllowEvents", "Crear eventos", "Puede organizar y publicar eventos.", "calendar") +
+      this.renderCreateToggle("adminAllowClasses", "Crear clases", "Puede crear y publicar clases o actividades.", "file") +
+      this.renderCreateToggle("adminAllowEditPage", "Editar informaci&oacute;n de la p&aacute;gina de la comunidad", "Puede actualizar portada, descripci&oacute;n y datos generales.", "edit") +
+      '</div></div>' +
+      '<h3>Permisos generales de miembros</h3><div class="kc-create-toggle-list kc-create-role-toggles">' +
+      this.renderCreateToggle("allowPosts", "Publicaciones", "Los miembros pueden crear y compartir publicaciones.", "image") +
+      this.renderCreateToggle("allowComments", "Comentarios", "Los miembros pueden comentar en publicaciones.", "message") +
+      this.renderCreateToggle("allowEvents", "Eventos", "Los miembros pueden crear y organizar eventos.", "calendar") +
+      this.renderCreateToggle("allowClasses", "Clases", "Los miembros pueden crear y publicar clases.", "file", false) +
+      '</div><label class="kc-create-select-label">L&iacute;mite de miembros<span><select data-create-field="memberLimit"><option' + (limit === "Sin límite" || limit === "Sin l&iacute;mite" ? " selected" : "") + '>Sin l&iacute;mite</option><option' + (limit === "100 miembros" ? " selected" : "") + '>100 miembros</option><option' + (limit === "500 miembros" ? " selected" : "") + '>500 miembros</option></select>' + icon("arrow") + '</span></label></section>';
+  };
+
+  CommunityApp.prototype.renderCreateReview = function () {
+    var name = this.createValue("name", "Respira y Avanza");
+    var category = this.createValue("category", "Bienestar");
+    var city = this.createValue("city", "Ciudad de México");
+    var type = this.createValue("type", "open") === "private" ? "Comunidad privada" : "Comunidad abierta";
+    var coverImage = this.createValue("coverImage", "/images/communities/create-cover.png");
+    var permissions = ["Publicaciones", "Comentarios", "Eventos"];
+    if (this.createValue("allowClasses", false) !== false) permissions.push("Clases");
+    var owner = this.patientSummary();
+    var selectedAdmin = this.resolveCreateAdministrator();
+    var adminPermissions = this.createAdminPermissions();
+    var adminPermissionLabels = [];
+    if (adminPermissions.stories) adminPermissionLabels.push("Stories en redes");
+    if (adminPermissions.communityPosts) adminPermissionLabels.push("Publicaciones");
+    if (adminPermissions.events) adminPermissionLabels.push("Eventos");
+    if (adminPermissions.classes) adminPermissionLabels.push("Clases");
+    if (adminPermissions.editPage) adminPermissionLabels.push("Editar pagina");
+    return '<section class="kc-create-card kc-create-review-card">' +
+      this.renderCreateMobileHero("check", "Revisi&oacute;n y crear", "Revisa los detalles de tu comunidad antes de crearla. Podr&aacute;s editar todo despu&eacute;s.", "is-purple") +
+      '<article class="kc-create-summary"><header><strong>Resumen de tu comunidad</strong><button type="button" data-action="create-step" data-id="1">' + icon("edit") + ' Editar</button></header>' +
+      this.renderCreateSummaryRow("info", "Nombre", escapeHtml(name)) +
+      this.renderCreateSummaryRow("tag", "Categor&iacute;a", escapeHtml(category)) +
+      this.renderCreateSummaryRow("map", "Ciudad", escapeHtml(city)) +
+      this.renderCreateSummaryRow("globe", "Tipo", type) +
+      this.renderCreateSummaryRow("image", "Portada", '<img src="' + escapeHtml(coverImage) + '" alt="">') +
+      this.renderCreateSummaryRow("users", "Miembros", escapeHtml(this.createValue("memberLimit", "Sin l&iacute;mite"))) +
+      this.renderCreateSummaryRow("shield", "Permisos", permissions.join(", ")) +
+      this.renderCreateSummaryRow("shield", "Propietario", escapeHtml(owner.name || "Usuario actual") + " - Administrador") +
+      this.renderCreateSummaryRow("users", "Administrador", selectedAdmin ? escapeHtml(selectedAdmin.name) + " - ID " + escapeHtml(selectedAdmin.userNumber || "Sin numero") : "Sin administrador adicional") +
+      this.renderCreateSummaryRow("check", "Autorizaciones", selectedAdmin ? escapeHtml(adminPermissionLabels.join(", ") || "Sin autorizaciones") : "Control total solo para el propietario") +
+      '</article><div class="kc-create-safe-note">' + icon("shield") + '<p>Podr&aacute;s editar toda la informaci&oacute;n despu&eacute;s desde la administraci&oacute;n de tu comunidad.</p></div></section>';
+  };
+
+  CommunityApp.prototype.renderCreateSummaryRow = function (iconName, label, value) {
+    return '<div class="kc-create-summary-row">' + icon(iconName) + '<span>' + label + '</span><b>' + value + '</b></div>';
+  };
+
+  CommunityApp.prototype.renderCreateToggle = function (field, title, description, iconName, fallbackChecked) {
+    var fallback = arguments.length > 4 ? fallbackChecked : true;
+    var checked = this.createValue(field, fallback) !== false;
+    return '<label class="kc-create-toggle">' + icon(iconName) + '<div><strong>' + title + '</strong><p>' + description + '</p></div><input type="checkbox" data-create-field="' + field + '"' + (checked ? " checked" : "") + '><span></span></label>';
+  };
+
+  CommunityApp.prototype.renderCreateFooter = function (step) {
+    return '<footer class="kc-create-footer ' + (step === 1 ? "is-single" : "") + '">' +
+      (step > 1 ? '<button type="button" data-action="create-prev">Anterior</button>' : '') +
+      '<button type="button" class="kc-create-primary" data-action="' + (step === 5 ? "create-submit" : "create-next") + '">' + (step === 5 ? icon("sparkles") + ' Crear comunidad' : 'Siguiente') + '</button></footer>';
+  };
+
+  CommunityApp.prototype.renderCreateSuccess = function () {
+    var id = this.state.createdCommunityId || "";
+    var name = this.createValue("name", "Respira y Avanza");
+    return '<div class="kc-create-flow kc-create-success-flow">' +
+      '<div class="kc-create-success">' +
+      '<div class="kc-create-confetti"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>' +
+      '<div class="kc-create-success-check">' + icon("check") + '</div>' +
+      '<h2>&iexcl;Comunidad creada!</h2><p><strong>' + escapeHtml(name) + '</strong> ya est&aacute; lista. Ahora puedes invitar a miembros, configurar m&aacute;s opciones y comenzar a construir tu comunidad.</p>' +
+      '<section class="kc-create-next-card"><h3>&iquest;Qu&eacute; sigue?</h3>' +
+      this.renderCreateSuccessOption("users", "Invitar miembros", "Comparte tu comunidad con m&aacute;s personas.") +
+      this.renderCreateSuccessOption("sparkles", "Configurar notificaciones", "Elige c&oacute;mo y cu&aacute;ndo recibir notificaciones.") +
+      this.renderCreateSuccessOption("users", "Personalizar m&aacute;s", "Ajusta la informaci&oacute;n, reglas y m&aacute;s opciones.") +
+      '</section><button type="button" class="kc-create-primary kc-create-success-main" data-action="open-detail" data-id="' + escapeHtml(id) + '">Ir a mi comunidad</button>' +
+      '<button type="button" class="kc-create-link-button" data-action="open-directory">Ir al panel de comunidades</button></div></div>';
+  };
+
+  CommunityApp.prototype.renderCreateSuccessOption = function (iconName, title, description) {
+    return '<article>' + icon(iconName) + '<div><strong>' + title + '</strong><p>' + description + '</p></div>' + icon("arrow") + '</article>';
+  };
+
+  CommunityApp.prototype.renderDirectory = function () {
+    var filters = [
+      ["events", "Eventos y Clases", "calendar"], ["explore", "Explorar", "search"],
+      ["mine", "Mis comunidades", "users"]
+    ];
+    var sectionLabels = { events: "Eventos y Clases", explore: "Explorar", mine: "Mis comunidades" };
+    var validFilters = filters.map(function (item) { return item[0]; });
+    if (validFilters.indexOf(this.state.filter) === -1) this.state.filter = "explore";
+    var allCommunities = this.catalogCommunities();
+    var reserved = events.filter(function (event) { return !!this.state.reservations[event.id]; }, this);
+    var mine = allCommunities.filter(function (community) { var role = this.communityRole(community); return role === "member" || role === "admin"; }, this);
+    return '<div class="kc-directory">' +
+      '<button class="kc-back" data-action="back-feed">' + icon("back") + ' Volver a Comunidades</button>' +
+      '<div class="kc-directory-heading"><small>Comunidades</small><h1>Comunidades</h1><p>Conecta, comparte y mejora tu bienestar con personas que tienen intereses similares.</p></div>' +
+      '<div class="kc-filter-row" role="tablist" aria-label="Secciones de comunidades">' + filters.map(function (item) {
+        var selected = this.state.filter === item[0];
+        return '<button type="button" role="tab" class="kc-filter ' + (selected ? " active" : "") + '" data-action="filter" data-id="' + item[0] + '" aria-controls="kc-directory-panel-' + item[0] + '" aria-selected="' + (selected ? "true" : "false") + '" aria-current="' + (selected ? "page" : "false") + '" aria-pressed="' + (selected ? "true" : "false") + '">' + icon(item[2]) + item[1] + '</button>';
+      }, this).join("") + '</div>' +
+      '<div id="kc-directory-panel-' + escapeHtml(this.state.filter) + '" class="kc-directory-content" data-directory-content data-section="' + escapeHtml(this.state.filter) + '" aria-label="' + escapeHtml(sectionLabels[this.state.filter] || "Comunidades") + '">' + this.renderDirectoryContent(allCommunities, reserved, mine) + '</div></div>';
+  };
+
+  CommunityApp.prototype.renderDirectoryContent = function (allCommunities, reserved, mine) {
+    var filter = this.state.filter || "explore";
+    if (filter === "events") return this.renderDirectoryEvents(reserved);
+    if (filter === "explore") return this.renderDirectoryExplore(allCommunities);
+    if (filter === "mine") return this.renderDirectoryMine(mine);
+    return this.renderDirectoryExplore(allCommunities);
+  };
+
+  CommunityApp.prototype.renderDirectoryAll = function (allCommunities) {
+    var featured = allCommunities.slice(0, 3);
+    var more = allCommunities.slice(3, 7);
+    return '<section class="kc-section kc-directory-panel kc-directory-all-panel"><div class="kc-section-title"><div><h2>Comunidades destacadas</h2></div><button class="kc-title-link" data-action="filter" data-id="explore">Ver todas ' + icon("arrow") + '</button></div>' +
+      '<div class="kc-pan-track kc-directory-featured" data-pan data-carousel="all-featured">' + featured.map(this.renderCommunity.bind(this)).join("") + '</div></section>' +
+      '<section class="kc-section kc-directory-panel"><div class="kc-section-title"><div><h2>Más comunidades para ti</h2></div><button class="kc-title-link" data-action="filter" data-id="explore">Ver todas ' + icon("arrow") + '</button></div>' +
+      '<div class="kc-compact-community-grid">' + (more.length ? more.map(this.renderCompactCommunity.bind(this)).join("") : allCommunities.map(this.renderCompactCommunity.bind(this)).join("")) + '</div></section>';
+  };
+
+  CommunityApp.prototype.renderDirectoryEvents = function (reserved) {
+    var nextEvents = events.filter(function (event) { return !this.state.reservations[event.id]; }, this);
+    return '<section class="kc-section kc-directory-panel kc-directory-event-reservations"><div class="kc-section-title"><div><h2>Mis reservas</h2><p>Eventos a los que confirmaste asistencia.</p></div><div class="kc-carousel-controls"><button data-action="scroll" data-target="event-reservations" data-dir="-1" aria-label="Anterior">' + icon("back") + '</button><button data-action="scroll" data-target="event-reservations" data-dir="1" aria-label="Siguiente">' + icon("arrow") + '</button></div></div>' +
+      '<div class="kc-pan-track kc-reservation-strip" data-pan data-carousel="event-reservations">' + (reserved.length ? reserved.map(this.renderReservationPreview.bind(this)).join("") : '<div class="kc-empty">Aún no tienes reservas.</div>') + '</div></section>' +
+      '<section class="kc-section kc-directory-panel kc-directory-next-events"><div class="kc-section-title"><div><h2>Próximos eventos</h2><p>Descubre más eventos en tus comunidades.</p></div></div>' + (nextEvents.length ? nextEvents.map(this.renderEvent.bind(this)).join("") : '<div class="kc-empty">No hay eventos próximos.</div>') + '</section>';
+  };
+
+  CommunityApp.prototype.renderDirectoryEvents = function (reserved) {
+    var nextEvents = events.filter(function (event) { return !this.state.reservations[event.id]; }, this);
+    return '<section class="kc-section kc-directory-panel kc-directory-event-reservations"><div class="kc-section-title"><div><h2>Mis reservas</h2><p>Eventos a los que confirmaste asistencia.</p></div><div class="kc-carousel-controls"><button data-action="scroll" data-target="event-reservations" data-dir="-1" aria-label="Anterior">' + icon("back") + '</button><button data-action="scroll" data-target="event-reservations" data-dir="1" aria-label="Siguiente">' + icon("arrow") + '</button></div></div>' +
+      '<div class="kc-pan-track kc-reservation-strip" data-pan data-carousel="event-reservations">' + (reserved.length ? reserved.map(this.renderReservationPreview.bind(this)).join("") : '<div class="kc-empty">A&uacute;n no tienes reservas.</div>') + '</div></section>' +
+      '<section class="kc-section kc-directory-panel kc-directory-next-events"><div class="kc-section-title"><div><h2>Pr&oacute;ximos eventos</h2><p>Actividades publicadas por el administrador.</p></div></div>' + this.renderEventSearchPanel(nextEvents) +
+      '<div class="kc-event-search-results" data-event-search-results>' + (nextEvents.length ? nextEvents.map(this.renderEvent.bind(this)).join("") : '<div class="kc-empty">No hay eventos pr&oacute;ximos.</div>') + '<div class="kc-empty kc-event-search-empty" data-event-search-empty hidden>No encontramos eventos con esa b&uacute;squeda.</div></div></section>';
+  };
+
+  CommunityApp.prototype.renderEventSearchPanel = function (eventList) {
+    var query = this.state.eventSearch || "";
+    var first = eventList[0] || {};
+    var firstCommunity = communities.find(function (item) { return item.id === first.communityId; }) || communities[0] || {};
+    var filters = this.currentEventFilters();
+    var dates = eventList.slice(0, 7).map(function (event, index) {
+      return '<button type="button" class="' + (index === 0 ? "is-active" : "") + '"><strong>' + escapeHtml(event.number) + '</strong><span>' + escapeHtml(event.day) + '</span></button>';
+    }).join("");
+    return '<div class="kc-event-search-tools">' +
+      '<label class="kc-event-search-box">' + icon("search") + '<input type="search" data-event-search value="' + escapeHtml(query) + '" placeholder="Buscar evento, clase o actividad" aria-label="Buscar evento, clase o actividad"></label>' +
+      '<div class="kc-event-filter-grid">' +
+      this.renderEventFilter("globe", "country", "Pa&iacute;s", filters.country || "Selecciona pa&iacute;s") +
+      this.renderEventFilter("map", "city", "Ciudad", filters.city || "Selecciona ciudad") +
+      this.renderEventFilter("users", "community", "Comunidad", filters.community || firstCommunity.name || "Todas") +
+      this.renderEventFilter("map", "location", "Ubicaci&oacute;n", filters.location || first.place || "Todas") +
+      '</div>' + this.renderEventFilterSelector(eventList) + '<div class="kc-event-date-row"><b>Fecha del evento</b><div>' + dates + '<button type="button" class="kc-event-date-next" aria-label="Siguiente">' + icon("arrow") + '</button></div><button type="button" class="kc-event-clear" data-action="clear-event-search">' + icon("filter") + ' Borrar filtros</button></div></div>';
+  };
+
+  CommunityApp.prototype.renderEventFilter = function (iconName, type, label, value) {
+    var active = this.state.activeEventFilter === type ? " is-active" : "";
+    return '<button type="button" class="kc-event-filter' + active + '" data-action="toggle-event-filter" data-id="' + type + '">' + icon(iconName) + '<span><small>' + label + '</small><strong>' + escapeHtml(value) + '</strong></span>' + icon("arrow") + '</button>';
+  };
+
+  CommunityApp.prototype.renderEventFilterSelector = function (eventList) {
+    var active = this.state.activeEventFilter;
+    if (!active) return "";
+    var filters = this.currentEventFilters();
+    if (active === "country") return this.renderCountrySelector(filters);
+    if (active === "city") return this.renderCitySelector(filters);
+    if (active === "community") return this.renderEventOptionSelector("Comunidad", "community", this.eventCommunityOptions(eventList), filters.community);
+    if (active === "location") return this.renderEventOptionSelector("Ubicaci&oacute;n", "location", this.eventLocationOptions(eventList), filters.location);
+    return "";
+  };
+
+  CommunityApp.prototype.renderCountrySelector = function (filters) {
+    var query = this.eventFilterQuery("country");
+    var needle = normalizeSearch(query);
+    var visibleCount = 0;
+    var rows = eventCountryOptions.map(function (country) {
+      var active = filters.country === country.value ? " is-active" : "";
+      var searchText = normalizeSearch([country.value, country.name, country.code].join(" "));
+      var hidden = needle && searchText.indexOf(needle) === -1 ? " hidden" : "";
+      if (!hidden) visibleCount += 1;
+      return '<button type="button" class="kc-event-dropdown-option kc-event-country-option' + active + '"' + hidden + ' data-event-option-search data-search-text="' + escapeHtml(searchText) + '" data-action="select-event-filter" data-type="country" data-value="' + escapeHtml(country.value) + '"><i class="is-' + country.tone + '">' + country.code + '</i><span><strong>' + escapeHtml(country.name) + '</strong><small>' + escapeHtml(country.value) + '</small></span>' + icon("arrow") + '</button>';
+    }).join("");
+    return '<section class="kc-event-selector" data-event-selector="country"><h4>Pa&iacute;s</h4><label class="kc-event-selector-search">' + icon("search") + '<input type="search" data-event-filter-query data-type="country" value="' + escapeHtml(query) + '" placeholder="Escribe o selecciona pa&iacute;s" aria-label="Escribe o selecciona pa&iacute;s" autocomplete="off">' + icon("check") + '</label><div class="kc-event-dropdown-list">' + rows + '</div><div class="kc-event-selector-empty" data-event-selector-empty' + (visibleCount ? " hidden" : "") + '>No encontramos pa&iacute;ses con ese texto.</div></section>';
+  };
+
+  CommunityApp.prototype.renderCitySelector = function (filters, embedded) {
+    var cities = eventCityOptionsByCountry[filters.country] || [];
+    var query = this.eventFilterQuery("city");
+    var needle = normalizeSearch(query);
+    var options = [{ label: "Todas las ciudades", value: "" }].concat(cities.map(function (city) { return { label: city, value: city }; }));
+    var visibleCount = 0;
+    var rows = options.map(function (option) {
+      var active = filters.city === option.value ? " is-active" : "";
+      var searchText = normalizeSearch(option.label);
+      var hidden = needle && searchText.indexOf(needle) === -1 ? " hidden" : "";
+      if (!hidden) visibleCount += 1;
+      return '<button type="button" class="kc-event-dropdown-option' + active + '"' + hidden + ' data-event-option-search data-search-text="' + escapeHtml(searchText) + '" data-action="select-event-filter" data-type="city" data-value="' + escapeHtml(option.value) + '">' + icon("map") + '<span><strong>' + escapeHtml(option.label) + '</strong><small>' + (option.value ? "Ciudad disponible" : "Mostrar todas") + '</small></span>' + icon("arrow") + '</button>';
+    }).join("");
+    if (!filters.country) return '<section class="kc-event-selector"><div class="kc-event-city-disabled"><h4>Ciudad <span>Primero selecciona un pa&iacute;s para ver las ciudades disponibles.</span></h4><label>' + icon("search") + '<input disabled placeholder="Primero selecciona pa&iacute;s"></label></div></section>';
+    return (embedded ? '<div class="kc-event-city-selector" data-event-selector="city">' : '<section class="kc-event-selector" data-event-selector="city"><div class="kc-event-city-selector">') +
+      '<h4>Ciudad</h4><label class="kc-event-selector-search">' + icon("search") + '<input type="search" data-event-filter-query data-type="city" value="' + escapeHtml(query) + '" placeholder="Escribe o selecciona ciudad" aria-label="Escribe o selecciona ciudad" autocomplete="off">' + icon("check") + '</label><div class="kc-event-dropdown-list">' + rows + '</div><div class="kc-event-selector-empty" data-event-selector-empty' + (visibleCount ? " hidden" : "") + '>No encontramos ciudades con ese texto.</div>' +
+      (embedded ? '</div>' : '</div></section>');
+  };
+
+  CommunityApp.prototype.renderEventOptionSelector = function (title, type, options, selected) {
+    var query = this.eventFilterQuery(type);
+    var needle = normalizeSearch(query);
+    var choices = [{ label: type === "community" ? "Todas las comunidades" : "Todas las ubicaciones", value: "" }].concat(options.map(function (option) { return { label: option, value: option }; }));
+    var visibleCount = 0;
+    var rows = choices.map(function (option) {
+      var active = selected === option.value ? " is-active" : "";
+      var searchText = normalizeSearch(option.label);
+      var hidden = needle && searchText.indexOf(needle) === -1 ? " hidden" : "";
+      if (!hidden) visibleCount += 1;
+      return '<button type="button" class="kc-event-dropdown-option' + active + '"' + hidden + ' data-event-option-search data-search-text="' + escapeHtml(searchText) + '" data-action="select-event-filter" data-type="' + type + '" data-value="' + escapeHtml(option.value) + '">' + icon(type === "community" ? "users" : "map") + '<span><strong>' + escapeHtml(option.label) + '</strong><small>' + (option.value ? "Seleccionar" : "Mostrar todas") + '</small></span>' + icon("arrow") + '</button>';
+    }).join("");
+    return '<section class="kc-event-selector" data-event-selector="' + escapeHtml(type) + '"><h4>' + title + '</h4><label class="kc-event-selector-search">' + icon("search") + '<input type="search" data-event-filter-query data-type="' + escapeHtml(type) + '" value="' + escapeHtml(query) + '" placeholder="Escribe o selecciona ' + (type === "community" ? "comunidad" : "ubicaci&oacute;n") + '" aria-label="Escribe o selecciona ' + (type === "community" ? "comunidad" : "ubicaci&oacute;n") + '" autocomplete="off">' + icon("check") + '</label><div class="kc-event-dropdown-list">' + rows + '</div><div class="kc-event-selector-empty" data-event-selector-empty' + (visibleCount ? " hidden" : "") + '>No encontramos opciones con ese texto.</div></section>';
+  };
+
+  CommunityApp.prototype.eventCommunityOptions = function (eventList) {
+    var seen = {};
+    return eventList.map(function (event) {
+      var community = communities.find(function (item) { return item.id === event.communityId; }) || {};
+      return community.name || "";
+    }).filter(function (name) {
+      if (!name || seen[name]) return false;
+      seen[name] = true;
+      return true;
+    });
+  };
+
+  CommunityApp.prototype.eventLocationOptions = function (eventList) {
+    var seen = {};
+    return eventList.map(function (event) { return event.place || ""; }).filter(function (place) {
+      if (!place || seen[place]) return false;
+      seen[place] = true;
+      return true;
+    });
+  };
+
+  CommunityApp.prototype.renderDirectoryExplore = function (allCommunities) {
+    var categories = [
+      ["Yoga", "y meditación", "users", "violet"],
+      ["Running", "y caminata", "sparkles", "blue"],
+      ["Nutrición", "y cocina", "calendar", "green"],
+      ["Fuerza", "y entrenamiento", "shield", "violet"],
+      ["Salud mental", "y bienestar", "heart", "rose"],
+      ["Bienestar", "integral", "heart", "green"]
+    ];
+    return '<section class="kc-section kc-directory-panel kc-explore-panel"><div class="kc-explore-search"><label>' + icon("search") + '<input type="search" placeholder="Buscar comunidades, temas o actividades" aria-label="Buscar comunidades"></label><button type="button">' + icon("filter") + ' Filtros</button></div>' +
+      '<div class="kc-explore-block"><h3>Explorar por categorías</h3><div class="kc-category-explore-grid" data-pan>' + categories.map(function (item) {
+        return '<button type="button" class="kc-explore-category is-' + item[3] + '">' + icon(item[2]) + '<strong>' + item[0] + '</strong><small>' + item[1] + '</small></button>';
+      }).join("") + '</div></div>' +
+      '<div class="kc-explore-block"><div class="kc-section-title"><div><h2>Comunidades recomendadas para ti</h2></div><button class="kc-title-link" data-action="filter" data-id="explore">Ver todas ' + icon("arrow") + '</button></div><div class="kc-recommended-grid">' + allCommunities.slice(1, 5).map(this.renderExploreCommunity.bind(this)).join("") + '</div></div></section>';
+  };
+
+  CommunityApp.prototype.renderDirectoryExplore = function (allCommunities) {
+    var featured = allCommunities.slice(0, 3);
+    var more = allCommunities.slice(3, 7);
+    var categories = [
+      ["Yoga", "y meditacion", "users", "violet"],
+      ["Running", "y caminata", "sparkles", "blue"],
+      ["Nutricion", "y cocina", "calendar", "green"],
+      ["Fuerza", "y entrenamiento", "shield", "violet"],
+      ["Salud mental", "y bienestar", "heart", "rose"],
+      ["Bienestar", "integral", "heart", "green"]
+    ];
+    return '<section class="kc-section kc-directory-panel kc-explore-panel"><div class="kc-explore-search"><label>' + icon("search") + '<input type="search" placeholder="Buscar comunidades, temas o actividades" aria-label="Buscar comunidades"></label><button type="button">' + icon("filter") + ' Filtros</button></div>' +
+      '<div class="kc-explore-block kc-explore-featured-block"><div class="kc-section-title"><div><h2>Comunidades destacadas</h2></div></div><div class="kc-pan-track kc-directory-featured" data-pan data-carousel="explore-featured">' + featured.map(this.renderCommunity.bind(this)).join("") + '</div></div>' +
+      '<div class="kc-explore-block"><h3>Explorar por categorias</h3><div class="kc-category-explore-grid" data-pan>' + categories.map(function (item) {
+        return '<button type="button" class="kc-explore-category is-' + item[3] + '">' + icon(item[2]) + '<strong>' + item[0] + '</strong><small>' + item[1] + '</small></button>';
+      }).join("") + '</div></div>' +
+      '<div class="kc-explore-block"><div class="kc-section-title"><div><h2>Comunidades recomendadas para ti</h2></div></div><div class="kc-recommended-grid">' + allCommunities.slice(1, 5).map(this.renderExploreCommunity.bind(this)).join("") + '</div></div>' +
+      '<div class="kc-explore-block"><div class="kc-section-title"><div><h2>Mas comunidades para ti</h2></div></div><div class="kc-compact-community-grid">' + (more.length ? more.map(this.renderCompactCommunity.bind(this)).join("") : allCommunities.map(this.renderCompactCommunity.bind(this)).join("")) + '</div></div></section>';
+  };
+
+  CommunityApp.prototype.renderDirectoryMine = function (mine) {
+    return '<section class="kc-section kc-directory-panel kc-mine-panel"><div class="kc-section-title"><div><h2>Mis comunidades</h2><p>Comunidades a las que perteneces.</p></div></div>' +
+      '<div class="kc-mine-list">' + (mine.length ? mine.map(this.renderMineCommunity.bind(this)).join("") : '<div class="kc-empty">Aún no perteneces a ninguna comunidad.</div>') + '</div>' +
+      '<button class="kc-more-inline" data-action="filter" data-id="explore">Explorar comunidades</button></section>';
+  };
+
+  CommunityApp.prototype.renderCompactCommunity = function (community) {
+    return '<article class="kc-compact-community"><span class="kc-compact-mark ' + community.tone + '">' + icon(community.tone === "gold" ? "calendar" : community.tone === "blue" ? "sparkles" : community.tone === "violet" ? "shield" : "users") + '</span>' +
+      '<div><h3>' + escapeHtml(community.name) + '</h3><small>' + escapeHtml(community.category) + ' · ' + (community.access === "open" ? "Abierta" : "Cerrada") + '</small><b>' + community.members + ' miembros</b></div></article>';
+  };
+
+  CommunityApp.prototype.renderExploreCommunity = function (community) {
+    return '<article class="kc-explore-community"><span class="kc-explore-mark ' + community.tone + '">' + escapeHtml(community.initials) + '</span><div><h3>' + escapeHtml(community.name) + '</h3><small>' + escapeHtml(community.category) + ' · ' + (community.access === "open" ? "Abierta" : "Cerrada") + '</small><b>' + community.members + ' miembros</b></div><button type="button" data-action="open-community-panel" data-id="' + community.id + '">Ver comunidad</button></article>';
+  };
+
+  CommunityApp.prototype.renderMineCommunity = function (community) {
+    return '<article class="kc-mine-community"><span class="kc-mine-mark ' + community.tone + '">' + escapeHtml(community.initials) + '</span><div><small>' + escapeHtml(community.category) + ' · ' + (community.access === "open" ? "Abierta" : "Cerrada") + '</small><h3>' + escapeHtml(community.name) + '</h3><p>' + escapeHtml(community.description) + '</p><b>' + icon("users") + ' ' + community.members + ' miembros&nbsp;&nbsp;' + escapeHtml(community.city) + '</b></div><button type="button" data-action="open-community-panel" data-id="' + community.id + '">Ver comunidad</button></article>';
+  };
+
+  CommunityApp.prototype.renderReservationPreview = function (event) {
+    var community = communities.find(function (item) { return item.id === event.communityId; }) || communities[0];
+    return '<article class="kc-reservation-preview"><div class="kc-date-tile"><small>' + event.day + '</small><strong>' + event.number + '</strong><small>' + event.month + '</small></div><div><small>' + escapeHtml(event.category) + '</small><h3>' + escapeHtml(event.title) + '</h3><p>' + event.time + ' · ' + escapeHtml(community.name) + '</p><b>' + (event.modality === "Remoto" ? icon("globe") : icon("map")) + ' ' + escapeHtml(event.place) + '</b></div><button type="button" data-action="open-community-panel" data-id="' + community.id + '">Ver detalles</button></article>';
+  };
+
+  CommunityApp.prototype.renderCarouselSection = function (title, subtitle, content, id, more) {
+    return '<section class="kc-section"><div class="kc-section-title"><div><h2>' + title + '</h2>' + (subtitle ? '<p>' + subtitle + '</p>' : '') + '</div>' +
+      '<div class="kc-carousel-controls"><button data-action="scroll" data-target="' + id + '" data-dir="-1" aria-label="Anterior">' + icon("back") + '</button><button data-action="scroll" data-target="' + id + '" data-dir="1" aria-label="Siguiente">' + icon("arrow") + '</button></div></div>' +
+      '<div class="kc-pan-track" data-pan data-carousel="' + id + '">' + (content || '<div class="kc-empty">Sin elementos por mostrar.</div>') + '</div>' +
+      (more ? '<button class="kc-more-inline" data-action="filter" data-id="reservations">Ver mas</button>' : '<button class="kc-more-inline" data-action="filter" data-id="' + id + '">Ver todas</button>') + '</section>';
+  };
+
+  CommunityApp.prototype.renderCommunity = function (community) {
+    return '<article class="kc-community-card"><div class="kc-community-image ' + community.tone + '"><span>' + community.initials + '</span></div>' +
+      '<div class="kc-community-copy"><small>' + escapeHtml(community.category) + ' · ' + (community.access === "open" ? "Abierta" : "Cerrada") + '</small><h3>' + escapeHtml(community.name) + '</h3><p>' + escapeHtml(community.description) + '</p>' +
+      '<b>' + icon("users") + ' ' + community.members + ' miembros&nbsp;&nbsp;' + escapeHtml(community.city) + '</b></div>' +
+      '<div class="kc-card-actions"><button type="button" data-action="open-community-panel" data-id="' + community.id + '">Ver comunidad</button></div></article>';
+  };
+
+  CommunityApp.prototype.renderReservation = function (event) {
+    var community = communities.find(function (item) { return item.id === event.communityId; });
+    return '<article class="kc-reservation"><div class="kc-date-tile"><small>' + event.day + '</small><strong>' + event.number + '</strong><small>' + event.month + '</small></div>' +
+      '<div><small>' + escapeHtml(event.category) + ' · Reservacion confirmada</small><h3>' + escapeHtml(event.title) + '</h3><b>' + event.time + ' · ' + escapeHtml(community.name) + '</b><p>' + escapeHtml(event.place) + '</p></div>' +
+      '<button data-action="cancel" data-id="' + event.id + '">Cancelar</button></article>';
+  };
+
+  CommunityApp.prototype.renderEventSection = function (title, group) {
+    var self = this;
+    var groupEvents = events.filter(function (event) { return event.group === group; });
+    var visible = groupEvents.slice(0, this.state.limits[group]);
+    return '<section class="kc-event-section"><div class="kc-section-title"><h2>' + title + '</h2></div>' + visible.map(function (event) { return self.renderEvent(event); }).join("") +
+      (visible.length < groupEvents.length ? '<button class="kc-more" data-action="more" data-id="' + group + '">Ver mas</button>' : '') + '</section>';
+  };
+
+  CommunityApp.prototype.renderEvent = function (event) {
+    var community = communities.find(function (item) { return item.id === event.communityId; }) || {};
+    var reserved = !!this.state.reservations[event.id];
+    var country = community.country || "MX Mexico";
+    var city = community.city || "Ciudad de Mexico";
+    var location = event.place || "";
+    var searchText = normalizeSearch([event.title, event.category, event.date, event.time, location, event.modality, community.name, country, city].join(" "));
+    return '<article class="kc-event" data-event-search-card data-event-search-text="' + escapeHtml(searchText) + '" data-event-country="' + escapeHtml(normalizeSearch(country)) + '" data-event-city="' + escapeHtml(normalizeSearch(city)) + '" data-event-community="' + escapeHtml(normalizeSearch(community.name || "")) + '" data-event-location="' + escapeHtml(normalizeSearch(location)) + '"><div class="kc-date-tile ' + (community.tone || "mint") + '"><small>' + event.day + '</small><strong>' + event.number + '-' + event.month + '</strong></div>' +
+      '<div class="kc-event-copy"><small>' + escapeHtml(event.category) + '</small><h3>' + escapeHtml(event.title) + '</h3><p>' + escapeHtml(event.date) + ', ' + event.time + '.</p><p>' + escapeHtml(community.name) + '</p>' +
+      '<b>' + (event.modality === "Remoto" ? icon("globe") : icon("map")) + ' ' + escapeHtml(event.place) + ' <span>Booking open</span></b><small>' + event.available + ' lugares disponibles de ' + event.capacity + '</small></div>' +
+      '<button class="kc-event-action" data-action="' + (reserved ? "cancel" : "reserve") + '" data-id="' + event.id + '">' + (reserved ? "Cancelar" : "Reservar") + '</button></article>';
+  };
+
+  CommunityApp.prototype.renderDetail = function () {
+    var community = communities.find(function (item) { return item.id === this.state.detailId; }, this) || communities[0];
+    var communityEvents = events.filter(function (event) { return event.communityId === community.id; });
+    return '<div class="kc-detail"><button class="kc-back" data-action="back-directory">' + icon("back") + ' Volver a comunidades</button>' +
+      '<section class="kc-detail-hero ' + community.tone + '"><div><small>' + escapeHtml(community.category) + ' · ' + (community.access === "open" ? "Abierta" : "Cerrada") + '</small><h1>' + escapeHtml(community.name) + '</h1><p>' + escapeHtml(community.description) + '</p><b>' + community.members + ' miembros · ' + escapeHtml(community.city) + '</b></div>' +
+      '<button data-action="join" data-id="' + community.id + '">Unirme</button></section>' +
+      '<section class="kc-detail-grid"><div><h2>Sobre esta comunidad</h2><p>Un espacio para compartir metas de bienestar, aprender con especialistas y participar en actividades presenciales y remotas.</p><div class="kc-feature-list"><span>Bienestar integral</span><span>Eventos semanales</span><span>Comunidad activa</span></div></div>' +
+      '<aside><h2>Informacion</h2><p><b>Categoria:</b> ' + escapeHtml(community.category) + '</p><p><b>Ubicacion:</b> ' + escapeHtml(community.city) + '</p><p><b>Acceso:</b> ' + (community.access === "open" ? "Abierto" : "Con aprobacion") + '</p></aside></section>' +
+      '<section class="kc-detail-events"><h2>Eventos de la comunidad</h2>' + communityEvents.map(this.renderEvent.bind(this)).join("") + '</section></div>';
+  };
+
+  CommunityApp.prototype.renderDetail = function () {
+    var community = communities.find(function (item) { return item.id === this.state.detailId; }, this) || communities[0];
+    var communityEvents = events.filter(function (event) { return event.communityId === community.id; });
+    var role = this.communityRole(community);
+    var joined = role === "member" || role === "admin";
+    var requested = role === "requested";
+    var actionLabel = joined ? (role === "admin" ? "Administrar comunidad" : "Miembro activo") : (requested ? "Solicitud enviada" : (community.access === "open" ? "Unirme a la comunidad" : "Solicitar acceso"));
+    var actionDisabled = joined || requested ? " disabled" : "";
+    var heroImage = this.communityHeroImage(community);
+    var visiblePosts = posts.slice(0, 2);
+    var members = [this.patientSummary()].concat(people).slice(0, 5);
+    return '<div class="kc-detail kc-detail-mobile">' +
+      '<button class="kc-back kc-detail-back" data-action="back-directory">' + icon("back") + ' Volver a comunidades</button>' +
+      '<section class="kc-detail-public-hero ' + community.tone + '" style="--community-hero:url(' + "'" + escapeHtml(heroImage) + "'" + ')">' +
+      '<div class="kc-detail-hero-media"><span>' + escapeHtml(community.initials) + '</span></div>' +
+      '<div class="kc-detail-hero-copy"><small>' + escapeHtml(community.category) + ' · ' + (community.access === "open" ? "Comunidad abierta" : "Acceso con solicitud") + '</small><h1>' + escapeHtml(community.name) + '</h1><p>' + escapeHtml(community.description) + '</p></div>' +
+      '<div class="kc-detail-stats"><span>' + icon("users") + '<b>' + community.members + '</b><small>Miembros</small></span><span>' + icon("calendar") + '<b>' + communityEvents.length + '</b><small>Eventos</small></span><span>' + icon("file") + '<b>' + posts.length + '</b><small>Posts</small></span></div>' +
+      '<button class="kc-detail-primary" data-action="join" data-id="' + community.id + '"' + actionDisabled + '>' + icon(joined ? "check" : "users") + escapeHtml(actionLabel) + '</button>' +
+      '</section>' +
+      '<nav class="kc-detail-tabs" data-pan aria-label="Secciones de comunidad"><a href="#kc-community-about">' + icon("info") + 'Acerca</a><a href="#kc-community-events">' + icon("calendar") + 'Eventos</a><a href="#kc-community-members">' + icon("users") + 'Miembros</a><a href="#kc-community-posts">' + icon("message") + 'Posts</a></nav>' +
+      '<section id="kc-community-about" class="kc-detail-panel kc-detail-about"><div class="kc-detail-panel-title"><small>Comunidad</small><h2>Sobre esta comunidad</h2></div><p>Un espacio para compartir metas de bienestar, aprender con especialistas y participar en actividades presenciales y remotas.</p><div class="kc-feature-list"><span>Bienestar integral</span><span>Eventos semanales</span><span>Comunidad activa</span></div><div class="kc-detail-info-list"><p><b>Categoria</b><span>' + escapeHtml(community.category) + '</span></p><p><b>Ubicacion</b><span>' + escapeHtml(community.city) + '</span></p><p><b>Acceso</b><span>' + (community.access === "open" ? "Abierto" : "Con aprobacion") + '</span></p></div></section>' +
+      '<section id="kc-community-events" class="kc-detail-panel kc-detail-events"><div class="kc-detail-panel-title"><small>Agenda</small><h2>Eventos de la comunidad</h2></div>' + (communityEvents.length ? communityEvents.map(this.renderEvent.bind(this)).join("") : '<div class="kc-empty">No hay eventos publicados.</div>') + '</section>' +
+      '<section id="kc-community-members" class="kc-detail-panel kc-detail-members"><div class="kc-detail-panel-title"><small>Participantes</small><h2>Miembros activos</h2></div><div class="kc-detail-member-strip" data-pan>' + members.map(this.renderDetailMember.bind(this)).join("") + '</div></section>' +
+      '<section id="kc-community-posts" class="kc-detail-panel kc-detail-posts"><div class="kc-detail-panel-title"><small>Conversacion</small><h2>Publicaciones recientes</h2></div>' + visiblePosts.map(this.renderDetailMiniPost.bind(this)).join("") + '</section>' +
+      '</div>';
+  };
+
+  CommunityApp.prototype.communityHeroImage = function (community) {
+    var images = {
+      respira: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1100&q=88",
+      ritmo: "https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=1100&q=88",
+      nutricion: "https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=1100&q=88",
+      mente: "https://images.unsplash.com/photo-1593811167562-9cef47bfc4d7?auto=format&fit=crop&w=1100&q=88",
+      sendero: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1100&q=88",
+      fuerza: "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1100&q=88"
+    };
+    return community.heroImage || community.backgroundImage || community.coverImage || images[community.id] || posts[0].image;
+  };
+
+  CommunityApp.prototype.renderDetailMember = function (person) {
+    var avatar = person.avatar || person.profileImage || "";
+    return '<article class="kc-detail-member"><span>' + (avatar ? '<img src="' + escapeHtml(avatar) + '" alt="' + escapeHtml(person.short || person.name) + '">' : escapeHtml((person.short || person.name || "DS").slice(0, 2).toUpperCase())) + '</span><b>' + escapeHtml(person.short || person.name) + '</b><small>Activo</small></article>';
+  };
+
+  CommunityApp.prototype.renderDetailMiniPost = function (post) {
+    return '<article class="kc-detail-post-card"><header><img src="' + escapeHtml(post.author.avatar) + '" alt="' + escapeHtml(post.author.name) + '"><div><strong>' + escapeHtml(post.author.name) + '</strong><small>' + escapeHtml(post.time) + '</small></div></header><p>' + escapeHtml(post.text) + '</p>' + (post.image ? '<img src="' + escapeHtml(post.image) + '" alt="Publicacion de comunidad">' : '') + '<footer><span>' + icon("heart") + ' ' + post.likes + '</span><span>' + icon("message") + ' ' + post.comments + '</span><span>' + icon("send") + ' ' + post.shares + '</span></footer></article>';
+  };
+
+  CommunityApp.prototype.detailPostsForCommunity = function (community) {
+    var specific = {
+      respira: [
+        { author: people[0], time: "Hoy · 8:30 a.m.", text: "Iniciando el dia con gratitud y respiracion consciente. Pequenos pasos, grandes cambios.", image: this.communityHeroImage(community), likes: 128, comments: 24, shares: 15 },
+        { author: people[3], time: "Ayer · 6:10 p.m.", text: "La practica de movilidad suave me ayudo a cerrar el dia con menos tension.", image: "https://images.unsplash.com/photo-1545205597-3d9d02c29597?auto=format&fit=crop&w=1100&q=88", likes: 82, comments: 11, shares: 6 }
+      ],
+      nutricion: [
+        { author: people[2], time: "Hoy · 1:20 p.m.", text: "Lista base para la semana: proteina simple, vegetales listos y colaciones faciles de preparar.", image: this.communityHeroImage(community), likes: 64, comments: 18, shares: 9 },
+        { author: people[1], time: "Ayer · 7:45 p.m.", text: "Guardar porciones listas me ayudo a seguir el plan sin improvisar tanto.", image: "https://images.unsplash.com/photo-1543352634-a1c51d9f1fa7?auto=format&fit=crop&w=1100&q=88", likes: 51, comments: 8, shares: 4 }
+      ]
+    };
+    return specific[community.id] || posts.slice(0, 2);
+  };
+
+  CommunityApp.prototype.detailMembersForCommunity = function (community) {
+    var members = [this.patientSummary()].concat(people);
+    if (community.id === "nutricion") members = [this.patientSummary(), people[2], people[0], people[1], people[3]];
+    return members.slice(0, 5);
+  };
+
+  CommunityApp.prototype.renderDetailClassCard = function (item) {
+    var community = this.findCommunity(item.communityId || this.state.detailId) || this.findCommunity(this.state.detailId) || this.catalogCommunities()[0];
+    var classItem = merge({
+      id: "class-" + slugify(item.title || "actividad"),
+      communityId: community.id,
+      category: community.category || "Actividad",
+      title: item.title || "Actividad de comunidad",
+      date: "martes, 28 de julio",
+      day: "mar",
+      number: "28",
+      month: "jul",
+      time: "06:00 p.m.",
+      place: community.city || "Remoto",
+      modality: "Remoto",
+      capacity: 24,
+      available: 12
+    }, item || {});
+    var reserved = !!this.state.reservations[classItem.id];
+    return '<article class="kc-event kc-class-event"><div class="kc-date-tile ' + community.tone + '"><small>' + escapeHtml(classItem.day) + '</small><strong>' + escapeHtml(classItem.number) + '-' + escapeHtml(classItem.month) + '</strong></div>' +
+      '<div class="kc-event-copy"><small>' + escapeHtml(classItem.category) + '</small><h3>' + escapeHtml(classItem.title) + '</h3><p>' + escapeHtml(classItem.date) + ', ' + escapeHtml(classItem.time) + '.</p><p>' + escapeHtml(community.name) + '</p>' +
+      '<b>' + (classItem.modality === "Remoto" ? icon("globe") : icon("map")) + ' ' + escapeHtml(classItem.place) + ' <span>Booking open</span></b><small>' + classItem.available + ' lugares disponibles de ' + classItem.capacity + '</small></div>' +
+      '<button class="kc-event-action" data-action="' + (reserved ? "cancel" : "reserve") + '" data-id="' + escapeHtml(classItem.id) + '">' + (reserved ? "Cancelar" : "Reservar") + '</button></article>';
+  };
+
+  CommunityApp.prototype.detailReviewsForCommunity = function (community) {
+    var hero = this.communityHeroImage(community);
+    return [
+      {
+        initials: "AL",
+        name: "Ana Lopez",
+        time: "Hace 2 semanas",
+        rating: 5,
+        text: "Las sesiones de respiracion me ayudaron a crear una rutina real. Me gusta que las actividades sean claras y faciles de seguir.",
+        images: [
+          "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=420&q=82",
+          "https://images.unsplash.com/photo-1545205597-3d9d02c29597?auto=format&fit=crop&w=420&q=82"
+        ]
+      },
+      {
+        initials: "DR",
+        name: "Diego Ramirez",
+        time: "Hace 1 mes",
+        rating: 4,
+        text: "La comunidad se siente cercana. Reserve un evento desde aqui y el recordatorio del administrador fue muy util.",
+        images: [
+          "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=420&q=82",
+          "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=420&q=82"
+        ]
+      },
+      {
+        initials: "ML",
+        name: "Mariana Lopez",
+        time: "Hace 3 meses",
+        rating: 5,
+        text: "Me gusto encontrar publicaciones de otros miembros sin sentir presion. Es un espacio tranquilo para retomar habitos.",
+        images: [
+          "https://images.unsplash.com/photo-1545205597-3d9d02c29597?auto=format&fit=crop&w=420&q=82",
+          hero
+        ]
+      },
+      {
+        initials: "CR",
+        name: "Carlos Ruiz",
+        time: "Hace 4 meses",
+        rating: 5,
+        text: "Los eventos tienen buena informacion y el panel de la comunidad facilita seguir el calendario.",
+        images: [
+          "https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=420&q=82"
+        ]
+      }
+    ];
+  };
+
+  CommunityApp.prototype.renderDetailReviews = function (community) {
+    var reviews = this.detailReviewsForCommunity(community);
+    return '<section id="kc-community-reviews" class="kc-detail-panel kc-detail-reviews"><div class="kc-detail-review-head"><div><small>Opiniones</small><h2>Opiniones</h2><p><b>4.8 <span>&#9733;</span> (4499)</b> ' + icon("info") + '</p></div><div class="kc-carousel-controls"><button data-action="scroll" data-target="community-reviews" data-dir="-1" aria-label="Anterior">' + icon("back") + '</button><button data-action="scroll" data-target="community-reviews" data-dir="1" aria-label="Siguiente">' + icon("arrow") + '</button></div></div>' +
+      '<div class="kc-detail-review-track" data-pan data-carousel="community-reviews">' + reviews.map(this.renderDetailReviewCard.bind(this)).join("") + '</div><button type="button" class="kc-detail-review-more">Ver mas ' + icon("arrow") + '</button></section>';
+  };
+
+  CommunityApp.prototype.renderDetailReviewCard = function (review) {
+    var stars = Array.apply(null, { length: 5 }).map(function (_, index) {
+      return '<span class="' + (index < review.rating ? "is-filled" : "") + '">&#9733;</span>';
+    }).join("");
+    var images = (review.images || []).slice(0, 2).map(function (image) {
+      return '<img src="' + escapeHtml(image) + '" alt="Foto de opinion">';
+    }).join("");
+    return '<article class="kc-detail-review-card"><header><span>' + escapeHtml(review.initials) + '</span><div><strong>' + escapeHtml(review.name) + '</strong><p>' + stars + '</p></div><time>' + escapeHtml(review.time) + '</time></header><p>' + escapeHtml(review.text) + ' <button type="button">mas</button></p>' + (images ? '<div class="kc-detail-review-images">' + images + '</div>' : '') + '</article>';
+  };
+
+  CommunityApp.prototype.renderDetailInfoPanel = function (community) {
+    return '<details id="kc-community-info" class="kc-detail-panel kc-detail-collapsible-info"><summary><div class="kc-detail-panel-title"><small>Informacion</small><h2>Detalles de la comunidad</h2></div><span class="kc-detail-toggle-mark"><b class="is-plus">+</b><b class="is-minus">-</b></span></summary>' +
+      '<div class="kc-detail-collapsible-body"><section><div class="kc-detail-panel-title"><small>Comunidad especifica</small><h3>Sobre esta comunidad</h3></div><p>' + escapeHtml(community.longDescription || community.description) + '</p><div class="kc-feature-list">' + (community.features || []).map(function (feature) { return '<span>' + escapeHtml(feature) + '</span>'; }).join("") + '</div><div class="kc-detail-info-list"><p><b>Categoria</b><span>' + escapeHtml(community.category) + '</span></p><p><b>Ubicacion</b><span>' + escapeHtml(community.city) + '</span></p><p><b>Acceso</b><span>' + (community.access === "open" ? "Abierto" : "Con aprobacion") + '</span></p><p><b>Reglas</b><span>' + escapeHtml(community.rules) + '</span></p></div></section>' +
+      '<section><div class="kc-detail-panel-title"><small>Catalogo</small><h3>Repositorio de comunidad</h3></div><div class="kc-detail-info-list"><p><b>ID catalogo</b><span>' + escapeHtml(community.catalogId || community.id) + '</span></p><p><b>Repositorio</b><span>' + (community.repositorySource === "usuario" ? "Creada por usuario" : "Catalogo base") + '</span></p><p><b>Slug</b><span>' + escapeHtml(community.slug || slugify(community.name)) + '</span></p><p><b>Visibilidad</b><span>' + (community.visibility === "hidden" ? "Oculta" : "Publica") + '</span></p></div></section></div></details>';
+  };
+
+  CommunityApp.prototype.renderDetail = function () {
+    var community = this.findCommunity(this.state.detailId) || this.catalogCommunities()[0];
+    var communityEvents = events.filter(function (event) { return event.communityId === community.id; });
+    var role = this.communityRole(community);
+    var joined = role === "member" || role === "admin";
+    var requested = role === "requested";
+    var actionLabel = joined ? (role === "admin" ? "Administrar comunidad" : "Miembro activo") : (requested ? "Solicitud enviada" : (community.access === "open" ? "Unirme a la comunidad" : "Solicitar acceso"));
+    var actionDisabled = joined || requested ? " disabled" : "";
+    var heroImage = this.communityHeroImage(community);
+    var members = this.detailMembersForCommunity(community);
+    var visiblePosts = this.detailPostsForCommunity(community);
+    var classes = community.classes && community.classes.length ? community.classes : [
+      { title: "Actividad principal", detail: community.pinnedMessage || "Participa en las actividades de la comunidad.", icon: "calendar" },
+      { title: "Publicaciones", detail: "Comparte avances, dudas y aprendizajes.", icon: "message" }
+    ];
+    return '<div class="kc-detail kc-detail-mobile">' +
+      '<button class="kc-back kc-detail-back" data-action="back-directory">' + icon("back") + ' Volver a comunidades</button>' +
+      '<section class="kc-detail-public-hero ' + community.tone + '" style="--community-hero:url(' + "'" + escapeHtml(heroImage) + "'" + ')">' +
+      '<div class="kc-detail-hero-media"><span>' + escapeHtml(community.logoInitials || community.initials) + '</span></div>' +
+      '<div class="kc-detail-hero-copy"><small>' + escapeHtml(community.category) + ' · ' + (community.access === "open" ? "Comunidad abierta" : "Acceso con solicitud") + '</small><h1>' + escapeHtml(community.name) + '</h1><p>' + escapeHtml(community.description) + '</p></div>' +
+      '<div class="kc-detail-stats"><span>' + icon("users") + '<b>' + community.members + '</b><small>Miembros</small></span><span>' + icon("calendar") + '<b>' + communityEvents.length + '</b><small>Eventos</small></span><span>' + icon("file") + '<b>' + visiblePosts.length + '</b><small>Posts</small></span></div>' +
+      '<button class="kc-detail-primary" data-action="join" data-id="' + community.id + '"' + actionDisabled + '>' + icon(joined ? "check" : "users") + escapeHtml(actionLabel) + '</button>' +
+      '</section>' +
+      '<nav class="kc-detail-tabs" data-pan aria-label="Secciones de comunidad"><a href="#kc-community-classes">' + icon("sparkles") + 'Clases</a><a href="#kc-community-events">' + icon("calendar") + 'Eventos</a><a href="#kc-community-members">' + icon("users") + 'Miembros</a><a href="#kc-community-posts">' + icon("message") + 'Posts</a><a href="#kc-community-reviews">' + icon("heart") + 'Opiniones</a><a href="#kc-community-info">' + icon("info") + 'Info</a></nav>' +
+      '<section id="kc-community-members" class="kc-detail-panel kc-detail-members"><div class="kc-detail-panel-title"><small>Participantes</small><h2>Miembros activos</h2></div><div class="kc-detail-member-strip" data-pan>' + members.map(this.renderDetailMember.bind(this)).join("") + '</div></section>' +
+      '<section id="kc-community-classes" class="kc-detail-panel kc-detail-classes"><div class="kc-detail-panel-title"><small>Contenido</small><h2>Clases y actividades</h2></div><div class="kc-detail-class-grid">' + classes.map(this.renderDetailClassCard.bind(this)).join("") + '</div></section>' +
+      '<section id="kc-community-events" class="kc-detail-panel kc-detail-events"><div class="kc-detail-panel-title"><small>Agenda</small><h2>Eventos de la comunidad</h2></div>' + (communityEvents.length ? communityEvents.map(this.renderEvent.bind(this)).join("") : '<div class="kc-empty">No hay eventos publicados.</div>') + '</section>' +
+      '<section id="kc-community-posts" class="kc-detail-panel kc-detail-posts"><div class="kc-detail-panel-title"><small>Conversacion</small><h2>Publicaciones recientes</h2></div>' + visiblePosts.map(this.renderDetailMiniPost.bind(this)).join("") + '</section>' +
+      this.renderDetailReviews(community) +
+      this.renderDetailInfoPanel(community) +
+      '</div>';
+  };
+
+  CommunityApp.prototype.renderBottomNav = function () {
+    return '<nav class="kc-bottom-nav" aria-label="Navegacion principal"><button data-action="home">' + icon("home") + '<span>Home</span></button>' +
+      '<button>' + icon("calendar") + '<span>Dispositivos</span></button><button class="register">' + icon("plus") + '<span>Registro</span></button>' +
+      '<button>' + icon("heart") + '<span>Mi salud</span></button><button class="active" data-action="back-feed">' + icon("users") + '<span>Comunidades</span></button></nav>';
+  };
+
+  window.KliniCommunityCatalog = {
+    all: function () { return communities.slice(); },
+    find: function (id) {
+      return communities.find(function (community) {
+        return community.id === id || community.catalogId === id || community.slug === id;
+      }) || null;
+    },
+    upsert: function (community) { return upsertCommunityRecord(community); }
+  };
+
+  window.KliniCommunities = {
+    mount: function (root, options) {
+      if (!root) throw new Error("KliniCommunities.mount requiere un elemento raiz.");
+      return new CommunityApp(root, options || {});
+    }
+  };
+})();

@@ -10512,3 +10512,47 @@
 #23 C:/laragon/www/dr-sam-laravel/artisan(14): Illuminate/Foundation/Application->handleCommand(Object(Symfony/Component/Console/Input/ArgvInput))
 #24 {main}
 "} 
+[2026-08-03 10:53:15] local.ERROR: A temporary file could not be opened to write the process output: fopen(C:\Users\Admin\AppData\Local\Temp\sf_proc_00.out.lock): Failed to open stream: Permission denied {"exception":"[object] (Symfony\\Component\\Process\\Exception\\RuntimeException(code: 0): A temporary file could not be opened to write the process output: fopen(C:\\Users\\Admin\\AppData\\Local\\Temp\\sf_proc_00.out.lock): Failed to open stream: Permission denied at C:/laragon/www/dr-sam/vendor/symfony/process/Pipes/WindowsPipes.php:62)
+[stacktrace]
+#0 C:/laragon/www/dr-sam/vendor/symfony/process/Process.php(1314): Symfony/Component/Process/Pipes/WindowsPipes->__construct(NULL, true)
+#1 C:/laragon/www/dr-sam/vendor/symfony/process/Process.php(325): Symfony/Component/Process/Process->getDescriptors(true)
+#2 C:/laragon/www/dr-sam/vendor/laravel/framework/src/Illuminate/Foundation/Console/ServeCommand.php(199): Symfony/Component/Process/Process->start(Object(Closure))
+#3 C:/laragon/www/dr-sam/vendor/laravel/framework/src/Illuminate/Foundation/Console/ServeCommand.php(138): Illuminate/Foundation/Console/ServeCommand->startProcess(true)
+#4 C:/laragon/www/dr-sam/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate/Foundation/Console/ServeCommand->handle()
+#5 C:/laragon/www/dr-sam/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate/Container/BoundMethod::Illuminate/Container/{closure}()
+#6 C:/laragon/www/dr-sam/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(96): Illuminate/Container/Util::unwrapIfClosure(Object(Closure))
+#7 C:/laragon/www/dr-sam/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate/Container/BoundMethod::callBoundMethod(Object(Illuminate/Foundation/Application), Array, Object(Closure))
+#8 C:/laragon/www/dr-sam/vendor/laravel/framework/src/Illuminate/Container/Container.php(799): Illuminate/Container/BoundMethod::call(Object(Illuminate/Foundation/Application), Array, Array, NULL)
+#9 C:/laragon/www/dr-sam/vendor/laravel/framework/src/Illuminate/Console/Command.php(211): Illuminate/Container/Container->call(Array)
+#10 C:/laragon/www/dr-sam/vendor/symfony/console/Command/Command.php(341): Illuminate/Console/Command->execute(Object(Symfony/Component/Console/Input/ArgvInput), Object(Illuminate/Console/OutputStyle))
+#11 C:/laragon/www/dr-sam/vendor/laravel/framework/src/Illuminate/Console/Command.php(180): Symfony/Component/Console/Command/Command->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Illuminate/Console/OutputStyle))
+#12 C:/laragon/www/dr-sam/vendor/symfony/console/Application.php(1117): Illuminate/Console/Command->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#13 C:/laragon/www/dr-sam/vendor/symfony/console/Application.php(356): Symfony/Component/Console/Application->doRunCommand(Object(Illuminate/Foundation/Console/ServeCommand), Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#14 C:/laragon/www/dr-sam/vendor/symfony/console/Application.php(195): Symfony/Component/Console/Application->doRun(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#15 C:/laragon/www/dr-sam/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(198): Symfony/Component/Console/Application->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#16 C:/laragon/www/dr-sam/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1235): Illuminate/Foundation/Console/Kernel->handle(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#17 C:/laragon/www/dr-sam/artisan(14): Illuminate/Foundation/Application->handleCommand(Object(Symfony/Component/Console/Input/ArgvInput))
+#18 {main}
+"} 
+[2026-08-03 10:53:38] local.ERROR: A temporary file could not be opened to write the process output: fopen(C:\Users\Admin\AppData\Local\Temp\sf_proc_00.out.lock): Failed to open stream: Permission denied {"exception":"[object] (Symfony\\Component\\Process\\Exception\\RuntimeException(code: 0): A temporary file could not be opened to write the process output: fopen(C:\\Users\\Admin\\AppData\\Local\\Temp\\sf_proc_00.out.lock): Failed to open stream: Permission denied at C:/laragon/www/dr-sam/vendor/symfony/process/Pipes/WindowsPipes.php:62)
+[stacktrace]
+#0 C:/laragon/www/dr-sam/vendor/symfony/process/Process.php(1314): Symfony/Component/Process/Pipes/WindowsPipes->__construct(NULL, true)
+#1 C:/laragon/www/dr-sam/vendor/symfony/process/Process.php(325): Symfony/Component/Process/Process->getDescriptors(true)
+#2 C:/laragon/www/dr-sam/vendor/laravel/framework/src/Illuminate/Foundation/Console/ServeCommand.php(199): Symfony/Component/Process/Process->start(Object(Closure))
+#3 C:/laragon/www/dr-sam/vendor/laravel/framework/src/Illuminate/Foundation/Console/ServeCommand.php(138): Illuminate/Foundation/Console/ServeCommand->startProcess(true)
+#4 C:/laragon/www/dr-sam/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate/Foundation/Console/ServeCommand->handle()
+#5 C:/laragon/www/dr-sam/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate/Container/BoundMethod::Illuminate/Container/{closure}()
+#6 C:/laragon/www/dr-sam/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(96): Illuminate/Container/Util::unwrapIfClosure(Object(Closure))
+#7 C:/laragon/www/dr-sam/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate/Container/BoundMethod::callBoundMethod(Object(Illuminate/Foundation/Application), Array, Object(Closure))
+#8 C:/laragon/www/dr-sam/vendor/laravel/framework/src/Illuminate/Container/Container.php(799): Illuminate/Container/BoundMethod::call(Object(Illuminate/Foundation/Application), Array, Array, NULL)
+#9 C:/laragon/www/dr-sam/vendor/laravel/framework/src/Illuminate/Console/Command.php(211): Illuminate/Container/Container->call(Array)
+#10 C:/laragon/www/dr-sam/vendor/symfony/console/Command/Command.php(341): Illuminate/Console/Command->execute(Object(Symfony/Component/Console/Input/ArgvInput), Object(Illuminate/Console/OutputStyle))
+#11 C:/laragon/www/dr-sam/vendor/laravel/framework/src/Illuminate/Console/Command.php(180): Symfony/Component/Console/Command/Command->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Illuminate/Console/OutputStyle))
+#12 C:/laragon/www/dr-sam/vendor/symfony/console/Application.php(1117): Illuminate/Console/Command->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#13 C:/laragon/www/dr-sam/vendor/symfony/console/Application.php(356): Symfony/Component/Console/Application->doRunCommand(Object(Illuminate/Foundation/Console/ServeCommand), Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#14 C:/laragon/www/dr-sam/vendor/symfony/console/Application.php(195): Symfony/Component/Console/Application->doRun(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#15 C:/laragon/www/dr-sam/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(198): Symfony/Component/Console/Application->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#16 C:/laragon/www/dr-sam/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1235): Illuminate/Foundation/Console/Kernel->handle(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#17 C:/laragon/www/dr-sam/artisan(14): Illuminate/Foundation/Application->handleCommand(Object(Symfony/Component/Console/Input/ArgvInput))
+#18 {main}
+"} 

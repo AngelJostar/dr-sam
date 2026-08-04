@@ -1,0 +1,6157 @@
+#wellnessView {
+  --wellness-ink: #102238;
+  --wellness-muted: #63758d;
+  --wellness-line: #d8eef0;
+  --wellness-soft: #f3fffc;
+  --wellness-teal: #12b9a7;
+  --wellness-teal-dark: #008f82;
+  --wellness-blue: #2f82ff;
+  --wellness-purple: #7f5cff;
+  --wellness-gold: #f3ad21;
+  --wellness-orange: #f59f00;
+  --wellness-red: #ef4444;
+  color: var(--wellness-ink);
+}
+
+#wellnessView .wellness-dashboard-panel {
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 82% 6%, rgba(18, 185, 167, 0.12), transparent 28%),
+    linear-gradient(180deg, #ffffff 0%, #f8fffd 100%);
+}
+
+#wellnessView .wellness-dashboard-hero {
+  background:
+    radial-gradient(circle at 70% 34%, rgba(18, 185, 167, 0.13), transparent 18%),
+    repeating-radial-gradient(circle at 73% 40%, rgba(18, 185, 167, 0.16) 0 1px, transparent 1px 12px),
+    linear-gradient(90deg, #ffffff 0%, #f1fffb 100%);
+  border-bottom: 1px solid var(--wellness-line);
+}
+
+#wellnessView .wellness-dashboard-hero-icon {
+  background: linear-gradient(135deg, #eafff9, #ffffff);
+  color: #087e77;
+}
+
+#wellnessView .wellness-dashboard-hero-icon svg,
+#wellnessView svg {
+  width: 1.2em;
+  height: 1.2em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+#wellnessView .wellness-root {
+  padding: 18px;
+  padding-bottom: 116px;
+}
+
+#wellnessView.wellness-admin-mode .wellness-dashboard-hero {
+  display: none;
+}
+
+#wellnessView.wellness-admin-mode .wellness-root {
+  padding-top: 16px;
+}
+
+#wellnessView .wellness-section-tabs,
+#wellnessView [data-wellness-community-view="home"] {
+  display: none !important;
+}
+
+#wellnessView .wellness-section-tabs,
+#wellnessView .wellness-period-tabs,
+#wellnessView .wellness-goal-tabs,
+#wellnessView .wellness-share-format-tabs {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 6px 2px 12px;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+}
+
+#wellnessView .wellness-section-tabs::-webkit-scrollbar,
+#wellnessView .wellness-period-tabs::-webkit-scrollbar,
+#wellnessView .wellness-goal-tabs::-webkit-scrollbar,
+#wellnessView .wellness-share-format-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+#wellnessView .wellness-section-tab,
+#wellnessView .wellness-period-tabs button,
+#wellnessView .wellness-goal-tabs button,
+#wellnessView .wellness-share-format-tabs button {
+  border: 1px solid var(--wellness-line);
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 18px;
+  color: var(--wellness-ink);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex: 0 0 auto;
+  min-height: 46px;
+  padding: 0 16px;
+  font-weight: 800;
+  box-shadow: 0 10px 24px rgba(10, 72, 84, 0.06);
+  scroll-snap-align: start;
+}
+
+#wellnessView .wellness-section-tab span,
+#wellnessView .wellness-bottom-nav span:first-child {
+  display: inline-grid;
+  place-items: center;
+}
+
+#wellnessView .wellness-section-tab.active,
+#wellnessView .wellness-period-tabs button.active,
+#wellnessView .wellness-goal-tabs button.active,
+#wellnessView .wellness-share-format-tabs button.active {
+  background: linear-gradient(135deg, #e3fff8, #ffffff);
+  border-color: rgba(18, 185, 167, 0.42);
+  color: var(--wellness-teal-dark);
+  box-shadow: 0 14px 30px rgba(18, 185, 167, 0.16);
+}
+
+#wellnessView .wellness-quick-tab {
+  background: linear-gradient(135deg, #18ccb7, #0ca596);
+  color: #ffffff;
+  border-color: transparent;
+}
+
+#wellnessView .wellness-today-grid,
+#wellnessView .wellness-subscreen {
+  display: grid;
+  gap: 16px;
+}
+
+#wellnessView .wellness-greeting-card,
+#wellnessView .wellness-score-card,
+#wellnessView .wellness-next-action,
+#wellnessView .wellness-health-alert,
+#wellnessView .wellness-summary-card,
+#wellnessView .wellness-featured-achievement,
+#wellnessView .wellness-history-card {
+  border: 1px solid var(--wellness-line);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 18px 36px rgba(26, 75, 83, 0.08);
+}
+
+#wellnessView .wellness-greeting-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 18px;
+}
+
+#wellnessView small {
+  color: var(--wellness-muted);
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+#wellnessView h3,
+#wellnessView h4,
+#wellnessView p {
+  margin: 0;
+}
+
+#wellnessView .wellness-greeting-card h3,
+#wellnessView .wellness-subscreen-heading h3 {
+  margin-top: 4px;
+  font-size: clamp(1.38rem, 6vw, 2.15rem);
+  line-height: 1.03;
+}
+
+#wellnessView .wellness-greeting-card p,
+#wellnessView .wellness-subscreen-heading p {
+  color: var(--wellness-muted);
+  margin-top: 8px;
+}
+
+#wellnessView .wellness-greeting-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#wellnessView .wellness-avatar,
+#wellnessView .wellness-notification-button {
+  width: 52px;
+  height: 52px;
+  border-radius: 18px;
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid #bceee7;
+  background: #eafff9;
+  color: var(--wellness-teal-dark);
+  font-weight: 900;
+}
+
+#wellnessView .wellness-notification-button {
+  position: relative;
+  cursor: pointer;
+}
+
+#wellnessView .wellness-notification-button span {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--wellness-teal-dark);
+  border: 1px solid #ccefed;
+  display: grid;
+  place-items: center;
+  font-size: 0.68rem;
+}
+
+#wellnessView .wellness-mood-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+#wellnessView .wellness-mood-option {
+  min-height: 92px;
+  border: 1px solid var(--wellness-line);
+  border-radius: 20px;
+  background: #fff;
+  color: var(--wellness-ink);
+  cursor: pointer;
+  display: grid;
+  justify-items: start;
+  gap: 7px;
+  padding: 14px;
+  text-align: left;
+  box-shadow: 0 12px 26px rgba(32, 71, 82, 0.06);
+}
+
+#wellnessView .wellness-mood-option span {
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: #effdfa;
+  color: var(--wellness-teal-dark);
+}
+
+#wellnessView .wellness-mood-option.active {
+  border-color: rgba(18, 185, 167, 0.55);
+  background: linear-gradient(135deg, #e8fff8, #fff);
+  box-shadow: 0 16px 34px rgba(18, 185, 167, 0.16);
+}
+
+#wellnessView .wellness-mood-risk.active {
+  border-color: rgba(239, 68, 68, 0.34);
+  background: #fff7f7;
+}
+
+#wellnessView .wellness-score-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 16px;
+  padding: 18px;
+  overflow: hidden;
+  position: relative;
+}
+
+#wellnessView .wellness-score-ring,
+#wellnessView .wellness-goal-ring {
+  --score: 70;
+  --goal: 70;
+  width: 112px;
+  height: 112px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at center, #fff 0 58%, transparent 59%),
+    conic-gradient(var(--wellness-teal) calc(var(--score) * 1%), #dcecef 0);
+  box-shadow: inset 0 0 0 1px #d8efee, 0 16px 28px rgba(18, 185, 167, 0.15);
+  color: var(--wellness-ink);
+}
+
+#wellnessView .wellness-goal-ring {
+  --score: var(--goal);
+  width: 82px;
+  height: 82px;
+  flex: 0 0 auto;
+}
+
+#wellnessView .wellness-score-ring strong,
+#wellnessView .wellness-goal-ring strong {
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+#wellnessView .wellness-goal-ring strong {
+  font-size: 1rem;
+}
+
+#wellnessView .wellness-score-ring span {
+  font-size: 0.72rem;
+  margin-top: 32px;
+  position: absolute;
+}
+
+#wellnessView .wellness-score-copy {
+  display: grid;
+  align-content: center;
+  gap: 6px;
+}
+
+#wellnessView .wellness-score-copy h3 {
+  color: var(--wellness-teal-dark);
+  font-size: 1.45rem;
+}
+
+#wellnessView .wellness-score-copy p,
+#wellnessView .wellness-modal-copy,
+#wellnessView .wellness-recommendation p {
+  color: var(--wellness-muted);
+  line-height: 1.5;
+}
+
+#wellnessView .wellness-link-button,
+#wellnessView .wellness-source-row button,
+#wellnessView .wellness-card-action {
+  border: 0;
+  background: transparent;
+  color: var(--wellness-teal-dark);
+  cursor: pointer;
+  font-weight: 900;
+  padding: 0;
+  text-align: left;
+}
+
+#wellnessView .wellness-score-trend {
+  grid-column: 1 / -1;
+  color: var(--wellness-teal);
+  display: grid;
+  gap: 4px;
+}
+
+#wellnessView .wellness-score-trend svg {
+  width: 100%;
+  height: 54px;
+}
+
+#wellnessView .wellness-score-trend span {
+  color: var(--wellness-muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+#wellnessView .wellness-next-action,
+#wellnessView .wellness-health-alert {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  padding: 16px;
+}
+
+#wellnessView .wellness-next-action > span,
+#wellnessView .wellness-health-alert > span,
+#wellnessView .wellness-history-icon,
+#wellnessView .wellness-integration-item > span,
+#wellnessView .wellness-history-alert > span {
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  background: #eafff9;
+  color: var(--wellness-teal-dark);
+}
+
+#wellnessView .wellness-next-action button,
+#wellnessView .wellness-alert-actions button,
+#wellnessView .wellness-primary-action,
+#wellnessView .wellness-primary-soft,
+#wellnessView .wellness-secondary-action,
+#wellnessView .wellness-social-actions button,
+#wellnessView .wellness-reward-card button,
+#wellnessView .wellness-goal-actions button {
+  min-height: 42px;
+  border-radius: 16px;
+  border: 1px solid #bfe9e6;
+  background: #fff;
+  color: var(--wellness-teal-dark);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 900;
+  padding: 0 16px;
+}
+
+#wellnessView .wellness-primary-action,
+#wellnessView .wellness-primary-soft {
+  background: linear-gradient(135deg, #22d2bf, #0ca596);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 14px 28px rgba(18, 185, 167, 0.22);
+}
+
+#wellnessView .wellness-primary-soft {
+  background: linear-gradient(135deg, #e9fff9, #fff);
+  color: var(--wellness-teal-dark);
+  border-color: #bceee7;
+  box-shadow: none;
+}
+
+#wellnessView .wellness-goal-actions .wellness-goal-delete-button {
+  border-color: rgba(239, 68, 68, 0.34);
+  background: linear-gradient(135deg, #fffafa, #fff);
+  color: #d73535;
+}
+
+#wellnessView .wellness-goal-actions .wellness-goal-delete-button:hover,
+#wellnessView .wellness-goal-actions .wellness-goal-delete-button:focus-visible {
+  border-color: rgba(239, 68, 68, 0.62);
+  background: #fff4f4;
+  outline: none;
+}
+
+#wellnessView .wellness-health-alert {
+  border-color: rgba(245, 159, 0, 0.38);
+  background: linear-gradient(135deg, #fffaf0, #fff);
+}
+
+#wellnessView .wellness-alert-actions {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+#wellnessView .wellness-metric-grid,
+#wellnessView .wellness-wellbeing-grid,
+#wellnessView .wellness-goal-grid,
+#wellnessView .wellness-reward-grid,
+#wellnessView .wellness-history-grid {
+  display: grid;
+  gap: 14px;
+}
+
+#wellnessView .wellness-metric-card,
+#wellnessView .wellness-wellbeing-card,
+#wellnessView .wellness-goal-card,
+#wellnessView .wellness-reward-card {
+  border: 1px solid var(--wellness-line);
+  background: #fff;
+  border-radius: 22px;
+  padding: 16px;
+  box-shadow: 0 14px 30px rgba(22, 75, 84, 0.07);
+}
+
+#wellnessView .wellness-metric-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+
+#wellnessView .wellness-metric-icon {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 15px;
+  background: #effdfa;
+  color: var(--wellness-teal-dark);
+}
+
+#wellnessView .wellness-metric-card h4,
+#wellnessView .wellness-wellbeing-card h4 {
+  margin: 12px 0 8px;
+  font-size: 1rem;
+}
+
+#wellnessView .wellness-metric-card > strong {
+  display: block;
+  min-height: 22px;
+  font-size: 1.05rem;
+}
+
+#wellnessView .wellness-progress-line {
+  height: 7px;
+  border-radius: 999px;
+  background: #e8f1f2;
+  overflow: hidden;
+  margin: 12px 0;
+}
+
+#wellnessView .wellness-progress-line span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #22d2bf, #0aa595);
+}
+
+#wellnessView .wellness-metric-meta,
+#wellnessView .wellness-source-row,
+#wellnessView .wellness-goal-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--wellness-muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+#wellnessView .wellness-source-row {
+  align-items: center;
+  margin-top: 10px;
+}
+
+#wellnessView .wellness-subscreen-heading {
+  display: grid;
+  gap: 12px;
+  align-items: start;
+}
+
+#wellnessView .wellness-wellbeing-card {
+  display: grid;
+  gap: 10px;
+  position: relative;
+  min-height: 184px;
+}
+
+#wellnessView .wellness-wellbeing-card > div:first-child {
+  display: grid;
+  gap: 5px;
+}
+
+#wellnessView .wellness-wellbeing-card > div:first-child span {
+  width: 46px;
+  height: 46px;
+  border-radius: 15px;
+  display: grid;
+  place-items: center;
+  background: #effdfa;
+  color: var(--wellness-teal-dark);
+}
+
+#wellnessView .wellness-wellbeing-card > strong {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  font-size: 2rem;
+}
+
+#wellnessView .wellness-mini-bars,
+#wellnessView .wellness-bars {
+  display: flex;
+  align-items: end;
+  gap: 5px;
+  min-height: 54px;
+}
+
+#wellnessView .wellness-mini-bars i,
+#wellnessView .wellness-bars i {
+  width: 100%;
+  min-width: 8px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #55e0d3, #0ca596);
+}
+
+#wellnessView .wellness-summary-card {
+  padding: 16px;
+}
+
+#wellnessView .wellness-summary-list {
+  display: grid;
+  gap: 0;
+  margin: 12px 0;
+  border: 1px solid #e1eef0;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+#wellnessView .wellness-summary-list div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+  border-bottom: 1px solid #e1eef0;
+}
+
+#wellnessView .wellness-summary-list div:last-child {
+  border-bottom: 0;
+}
+
+#wellnessView .wellness-summary-list dt {
+  color: var(--wellness-muted);
+  font-weight: 800;
+}
+
+#wellnessView .wellness-summary-list dd {
+  margin: 0;
+  color: var(--wellness-ink);
+  font-weight: 900;
+  text-align: right;
+}
+
+#wellnessView .wellness-goal-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 14px;
+}
+
+#wellnessView .wellness-goal-copy p {
+  color: var(--wellness-muted);
+  line-height: 1.45;
+  margin: 6px 0 10px;
+}
+
+#wellnessView .wellness-goal-actions {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: 8px;
+}
+
+#wellnessView .wellness-achievement-carousel {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 4px 2px 10px;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  cursor: grab;
+  user-select: none;
+}
+
+#wellnessView .wellness-achievement-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+#wellnessView .wellness-achievement-carousel.is-panning {
+  cursor: grabbing;
+}
+
+#wellnessView .wellness-achievement-badge {
+  min-width: 142px;
+  border: 1px solid #f8d98f;
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at 30% 16%, rgba(255, 222, 117, 0.7), transparent 18%),
+    linear-gradient(135deg, #fffaf0, #fff);
+  color: var(--wellness-ink);
+  cursor: pointer;
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 16px;
+  box-shadow: 0 14px 28px rgba(243, 173, 33, 0.16);
+  scroll-snap-align: start;
+}
+
+#wellnessView .wellness-achievement-badge span,
+#wellnessView .wellness-achievement-detail-medal {
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(145deg, #ffd86a, #fff6cf);
+  color: #9a6800;
+  box-shadow: inset -8px -8px 18px rgba(180, 108, 0, 0.12), 0 12px 22px rgba(243, 173, 33, 0.25);
+}
+
+#wellnessView .wellness-achievement-locked {
+  filter: grayscale(0.55);
+  opacity: 0.68;
+}
+
+#wellnessView .wellness-featured-achievement {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  padding: 16px;
+}
+
+#wellnessView .wellness-featured-achievement > span {
+  width: 74px;
+  height: 74px;
+  border-radius: 26px;
+  display: grid;
+  place-items: center;
+  background: #fff7df;
+  color: #b57200;
+}
+
+#wellnessView .wellness-featured-achievement button {
+  grid-column: 1 / -1;
+}
+
+#wellnessView .wellness-reward-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  align-items: center;
+}
+
+#wellnessView .wellness-reward-card > span {
+  width: 58px;
+  height: 58px;
+  border-radius: 20px;
+  display: grid;
+  place-items: center;
+  background: #fff8df;
+  color: #aa7205;
+}
+
+#wellnessView .wellness-reward-card button {
+  grid-column: 1 / -1;
+}
+
+#wellnessView .wellness-reward-card button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+#wellnessView .wellness-achievement-panel,
+#wellnessView .wellness-community-search-card,
+#wellnessView .wellness-community-card,
+#wellnessView .wellness-event-card,
+#wellnessView .wellness-reservation-tile,
+#wellnessView .wellness-request-item,
+#wellnessView .wellness-community-pending-card,
+#wellnessView .wellness-admin-card,
+#wellnessView .wellness-admin-stat {
+  border: 1px solid var(--wellness-line);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 18px 46px rgba(15, 52, 60, 0.08);
+}
+
+#wellnessView .wellness-achievement-panel {
+  padding: 14px;
+  display: grid;
+  gap: 14px;
+}
+
+#wellnessView .wellness-goal-achievement-panel {
+  background:
+    radial-gradient(circle at 88% 8%, rgba(255, 219, 106, 0.16), transparent 26%),
+    rgba(255, 255, 255, 0.96);
+}
+
+#wellnessView .wellness-goal-achievement-panel .wellness-achievement-heading {
+  align-items: flex-start;
+}
+
+#wellnessView .wellness-goal-achievement-panel .wellness-achievement-heading p {
+  margin: 4px 0 0;
+  color: var(--wellness-muted);
+  font-size: 0.86rem;
+  line-height: 1.35;
+}
+
+#wellnessView .wellness-achievement-heading,
+#wellnessView .wellness-community-section-heading,
+#wellnessView .wellness-communities-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+#wellnessView .wellness-achievement-heading h4,
+#wellnessView .wellness-community-section-heading h4 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+#wellnessView .wellness-community-section-heading p {
+  margin: 4px 0 0;
+  color: var(--wellness-muted);
+  font-size: 0.86rem;
+  line-height: 1.35;
+}
+
+#wellnessView .wellness-community-nav {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 2px 2px 12px;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  cursor: grab;
+  user-select: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+#wellnessView .wellness-community-nav::-webkit-scrollbar {
+  display: none;
+}
+
+#wellnessView .wellness-community-nav.is-panning {
+  cursor: grabbing;
+}
+
+#wellnessView .wellness-community-nav button,
+#wellnessView .wellness-community-section-heading button {
+  flex: 0 0 auto;
+  min-height: 44px;
+  border: 1px solid var(--wellness-line);
+  border-radius: 18px;
+  background: #fff;
+  color: var(--wellness-ink);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 14px;
+  font-weight: 900;
+  white-space: nowrap;
+  scroll-snap-align: start;
+  cursor: pointer;
+}
+
+#wellnessView .wellness-community-section-heading .wellness-event-group-more {
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border-color: rgba(0, 153, 137, 0.22);
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--wellness-teal-dark);
+  font-size: 0.78rem;
+  box-shadow: 0 10px 24px rgba(0, 153, 137, 0.08);
+}
+
+#wellnessView .wellness-community-nav button.active {
+  background: #fff;
+  border-color: #9de8dd;
+  color: var(--wellness-teal-dark);
+}
+
+#wellnessView .wellness-community-nav button[data-wellness-community-view="explore"] {
+  background: #fff;
+  border-color: #cfe0ff;
+  color: #1266d8;
+}
+
+#wellnessView .wellness-community-nav button[data-wellness-community-view="mine"] {
+  background: #fff;
+  border-color: #b9efd2;
+  color: #079963;
+}
+
+#wellnessView .wellness-community-nav button[data-wellness-community-view="requests"] {
+  background: #fff;
+  border-color: #ffd99b;
+  color: #c07700;
+}
+
+#wellnessView .wellness-community-nav button[data-wellness-community-view="reservations"] {
+  background: #fff;
+  border-color: #d9c9ff;
+  color: #6c44d9;
+}
+
+#wellnessView .wellness-community-nav button[data-wellness-community-view="admin"] {
+  background: #fff;
+  border-color: #a8ebe0;
+  color: #008978;
+}
+
+#wellnessView .wellness-community-nav button[data-wellness-community-view].active {
+  box-shadow: 0 12px 26px rgba(18, 102, 216, 0.08);
+}
+
+#wellnessView .wellness-community-nav button[data-wellness-community-view="explore"].active {
+  background: #fff;
+  border-color: #79afff;
+}
+
+#wellnessView .wellness-community-nav button[data-wellness-community-view="mine"].active {
+  background: #fff;
+  border-color: #75dcae;
+}
+
+#wellnessView .wellness-community-nav button[data-wellness-community-view="requests"].active {
+  background: #fff;
+  border-color: #ffc15f;
+}
+
+#wellnessView .wellness-community-nav button[data-wellness-community-view="reservations"].active {
+  background: #fff;
+  border-color: #b99cff;
+}
+
+#wellnessView .wellness-community-nav button[data-wellness-community-view="admin"].active {
+  background: #fff;
+  border-color: #6ad9cc;
+}
+
+#wellnessView .wellness-community-nav button small {
+  min-width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #dafbf5;
+  color: var(--wellness-teal-dark);
+}
+
+#wellnessView .wellness-community-home,
+#wellnessView .wellness-communities,
+#wellnessView .wellness-community-layout,
+#wellnessView .wellness-community-admin,
+#wellnessView .wellness-reservations-section,
+#wellnessView .wellness-community-events-stack,
+#wellnessView .wellness-community-events-view,
+#wellnessView .wellness-event-group,
+#wellnessView .wellness-event-list,
+#wellnessView .wellness-request-list {
+  display: grid;
+  gap: 16px;
+}
+
+#wellnessView .wellness-events-view-heading {
+  align-items: end;
+}
+
+#wellnessView .wellness-events-view-heading p {
+  margin: 4px 0 0;
+  color: var(--wellness-muted);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+#wellnessView .wellness-event-list-featured {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+#wellnessView .wellness-community-search-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  padding: 12px;
+}
+
+#wellnessView .wellness-community-search-card > span {
+  width: 42px;
+  height: 42px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  background: #effdfa;
+  color: var(--wellness-teal-dark);
+}
+
+#wellnessView .wellness-community-search-card input {
+  min-height: 44px;
+  border: 1px solid var(--wellness-line);
+  border-radius: 16px;
+  padding: 0 12px;
+  font-weight: 800;
+  color: var(--wellness-ink);
+}
+
+#wellnessView .wellness-community-search-card button,
+#wellnessView .wellness-community-actions button,
+#wellnessView .wellness-event-card > button,
+#wellnessView .wellness-request-item button,
+#wellnessView .wellness-event-reservation-bar button {
+  min-height: 42px;
+  border-radius: 16px;
+  border: 1px solid #aee9e2;
+  background: #effdfa;
+  color: var(--wellness-teal-dark);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+#wellnessView .wellness-community-actions button:last-child,
+#wellnessView .wellness-event-reservation-bar button {
+  background: linear-gradient(135deg, #22d2bf, #0ca596);
+  color: #fff;
+  border-color: transparent;
+}
+
+#wellnessView .wellness-community-actions button:disabled,
+#wellnessView .wellness-event-reservation-bar button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+#wellnessView .wellness-community-carousel {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  width: 100%;
+  margin: 0 -2px;
+  padding: 4px 2px 16px;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  cursor: grab;
+  user-select: none;
+  overscroll-behavior-x: contain;
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+#wellnessView .wellness-community-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+#wellnessView .wellness-community-carousel.is-panning {
+  cursor: grabbing;
+  scroll-snap-type: none;
+  scroll-behavior: auto;
+}
+
+#wellnessView .wellness-community-see-all-row,
+#wellnessView .wellness-reservation-more-row,
+#wellnessView .wellness-event-group-more-row {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: -4px;
+  padding: 0 2px 4px;
+}
+
+#wellnessView .wellness-event-group-more-row {
+  margin-top: 12px;
+  padding-bottom: 16px;
+}
+
+#wellnessView .wellness-community-see-all-button,
+#wellnessView .wellness-reservation-more-button,
+#wellnessView .wellness-event-group-more {
+  min-height: 38px;
+  border: 1px solid rgba(0, 153, 137, 0.28);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--wellness-teal-dark);
+  padding: 0 18px;
+  font-weight: 900;
+  box-shadow: 0 12px 24px rgba(0, 153, 137, 0.08);
+  cursor: pointer;
+}
+
+#wellnessView .wellness-community-see-all-button:hover,
+#wellnessView .wellness-reservation-more-button:hover,
+#wellnessView .wellness-event-group-more:hover {
+  background: #effdfa;
+}
+
+#wellnessView .wellness-reservations-carousel {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  width: 100%;
+  margin: 0 -2px;
+  padding: 4px 2px 14px;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  cursor: grab;
+  user-select: none;
+  overscroll-behavior-x: contain;
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+#wellnessView .wellness-reservations-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+#wellnessView .wellness-reservations-carousel.is-panning {
+  cursor: grabbing;
+  scroll-snap-type: none;
+  scroll-behavior: auto;
+}
+
+#wellnessView .wellness-community-carousel.is-pan-enabled > *,
+#wellnessView .wellness-reservations-carousel.is-pan-enabled > * {
+  -webkit-user-drag: none;
+}
+
+#wellnessView .wellness-reservation-tile {
+  flex: 0 0 min(84vw, 360px);
+  min-width: min(84vw, 360px);
+  padding: 12px;
+  display: grid;
+  gap: 10px;
+  scroll-snap-align: start;
+}
+
+#wellnessView .wellness-reservation-main {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  gap: 12px;
+  text-align: left;
+  color: var(--wellness-ink);
+  cursor: pointer;
+}
+
+#wellnessView .wellness-reservation-date {
+  min-height: 86px;
+  border-radius: 22px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 2px;
+  color: var(--wellness-teal-dark);
+  font-weight: 950;
+  position: relative;
+  overflow: hidden;
+}
+
+#wellnessView .wellness-reservation-date::before {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  background:
+    radial-gradient(circle at 24% 24%, rgba(255, 255, 255, 0.92), transparent 14%),
+    radial-gradient(circle at 72% 34%, rgba(255, 255, 255, 0.65), transparent 18%),
+    radial-gradient(circle at 48% 86%, rgba(255, 255, 255, 0.72), transparent 20%);
+}
+
+#wellnessView .wellness-reservation-date small,
+#wellnessView .wellness-reservation-date strong,
+#wellnessView .wellness-reservation-date em {
+  position: relative;
+  z-index: 1;
+}
+
+#wellnessView .wellness-reservation-date small {
+  text-transform: lowercase;
+  font-size: 0.78rem;
+}
+
+#wellnessView .wellness-reservation-date strong {
+  font-size: 1.28rem;
+}
+
+#wellnessView .wellness-reservation-date em {
+  font-style: normal;
+  font-size: 0.78rem;
+}
+
+#wellnessView .wellness-reservation-copy {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+  align-content: center;
+}
+
+#wellnessView .wellness-reservation-copy small {
+  color: var(--wellness-teal-dark);
+  font-size: 0.72rem;
+  font-weight: 950;
+}
+
+#wellnessView .wellness-reservation-copy strong {
+  font-size: 1rem;
+  line-height: 1.18;
+}
+
+#wellnessView .wellness-reservation-copy span {
+  color: var(--wellness-muted);
+  font-size: 0.84rem;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+#wellnessView .wellness-reservation-cancel {
+  min-height: 40px;
+  border-radius: 15px;
+  border: 1px solid #f5b0a8;
+  background: #fffafa;
+  color: #c83227;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+#wellnessView .wellness-reservation-cancel:hover {
+  background: #fff0ee;
+}
+
+#wellnessView .wellness-community-card {
+  padding: 14px;
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr);
+  gap: 14px;
+  align-items: stretch;
+  scroll-snap-align: start;
+}
+
+#wellnessView .wellness-community-card.compact {
+  flex: 0 0 min(86vw, 460px);
+  min-width: min(86vw, 460px);
+}
+
+#wellnessView .wellness-community-cover,
+#wellnessView .wellness-event-cover,
+#wellnessView .wellness-community-detail-cover {
+  border-radius: 22px;
+  min-height: 126px;
+  display: grid;
+  place-items: center;
+  color: var(--wellness-teal-dark);
+  position: relative;
+  overflow: hidden;
+}
+
+#wellnessView .wellness-community-cover::before,
+#wellnessView .wellness-event-cover::before,
+#wellnessView .wellness-community-detail-cover::before {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  background:
+    radial-gradient(circle at 28% 24%, rgba(255, 255, 255, 0.9), transparent 13%),
+    radial-gradient(circle at 70% 36%, rgba(255, 255, 255, 0.6), transparent 16%),
+    radial-gradient(circle at 42% 84%, rgba(255, 255, 255, 0.7), transparent 18%);
+}
+
+#wellnessView .wellness-community-cover > span,
+#wellnessView .wellness-community-detail-cover > span {
+  position: relative;
+  width: 62px;
+  height: 62px;
+  border-radius: 24px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 18px 34px rgba(15, 52, 60, 0.12);
+}
+
+#wellnessView .wellness-community-cover-mint {
+  background: linear-gradient(135deg, #e9fffb, #c5f7ec);
+}
+
+#wellnessView .wellness-community-cover-aqua {
+  background: linear-gradient(135deg, #e8fbff, #bdeffc);
+}
+
+#wellnessView .wellness-community-cover-gold {
+  background: linear-gradient(135deg, #fff8dd, #ffe8a6);
+  color: #a06a00;
+}
+
+#wellnessView .wellness-community-cover-purple {
+  background: linear-gradient(135deg, #f5efff, #dfcffd);
+  color: #6842d6;
+}
+
+#wellnessView .wellness-community-copy h4,
+#wellnessView .wellness-event-copy h4,
+#wellnessView .wellness-request-item h4 {
+  margin: 4px 0;
+}
+
+#wellnessView .wellness-community-copy p,
+#wellnessView .wellness-event-copy p,
+#wellnessView .wellness-request-item p,
+#wellnessView .wellness-community-pending-card p {
+  margin: 4px 0;
+  color: var(--wellness-muted);
+  line-height: 1.45;
+}
+
+#wellnessView .wellness-community-meta,
+#wellnessView .wellness-event-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0;
+  color: var(--wellness-muted);
+  font-weight: 800;
+}
+
+#wellnessView .wellness-community-meta span,
+#wellnessView .wellness-event-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+#wellnessView .wellness-community-members {
+  display: flex;
+}
+
+#wellnessView .wellness-community-members span,
+#wellnessView .wellness-community-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #eafff9;
+  color: var(--wellness-teal-dark);
+  border: 2px solid #fff;
+  font-weight: 900;
+  font-size: 0.72rem;
+}
+
+#wellnessView .wellness-community-members span + span {
+  margin-left: -8px;
+}
+
+#wellnessView .wellness-community-actions {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+#wellnessView .wellness-community-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 14px;
+}
+
+#wellnessView .wellness-event-card {
+  padding: 12px;
+  display: grid;
+  grid-template-columns: 132px minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+}
+
+#wellnessView .wellness-event-cover {
+  min-height: 120px;
+  align-content: center;
+  gap: 6px;
+  text-align: center;
+  background-position: center;
+  background-size: cover;
+}
+
+#wellnessView .wellness-event-cover.has-image::before {
+  display: none;
+}
+
+#wellnessView .wellness-event-cover span,
+#wellnessView .wellness-event-cover strong {
+  position: relative;
+  z-index: 1;
+}
+
+#wellnessView .wellness-event-image-field {
+  display: grid;
+  gap: 8px;
+  color: var(--wellness-muted);
+  font-weight: 900;
+}
+
+#wellnessView .wellness-event-image-editor {
+  display: grid;
+  grid-template-columns: 132px minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
+  border: 1px solid #d7e7e9;
+  border-radius: 18px;
+  background: #fbfefe;
+  padding: 12px;
+}
+
+#wellnessView .wellness-event-image-preview {
+  width: 132px;
+  min-height: 120px;
+  border-radius: 22px;
+}
+
+#wellnessView .wellness-event-image-controls {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
+#wellnessView .wellness-event-image-controls label {
+  display: grid;
+  gap: 6px;
+}
+
+#wellnessView .wellness-event-image-controls small {
+  color: var(--wellness-muted);
+  line-height: 1.35;
+}
+
+#wellnessView .wellness-event-create-sheet {
+  width: min(100%, 1160px);
+  padding: 28px;
+  border-radius: 18px;
+}
+
+#wellnessView .wellness-event-create-sheet .wellness-modal-close {
+  top: 22px;
+  right: 22px;
+  width: 50px;
+  height: 50px;
+  border-radius: 18px;
+  box-shadow: 0 12px 26px rgba(15, 52, 60, 0.1);
+}
+
+#wellnessView .wellness-event-create-header {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 18px;
+  align-items: center;
+  margin: 0 58px 24px 0;
+}
+
+#wellnessView .wellness-event-create-header > span {
+  width: 76px;
+  height: 76px;
+  border: 1px solid #cde9eb;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #eafff9;
+  color: var(--wellness-teal-dark);
+}
+
+#wellnessView .wellness-event-create-header > span svg {
+  width: 32px;
+  height: 32px;
+}
+
+#wellnessView .wellness-event-create-header small {
+  color: var(--wellness-teal-dark);
+  font-weight: 950;
+}
+
+#wellnessView .wellness-event-create-header h3 {
+  margin: 4px 0;
+  font-size: clamp(1.7rem, 2.2vw, 2.2rem);
+  line-height: 1.05;
+}
+
+#wellnessView .wellness-event-create-header p {
+  margin: 0;
+  color: #4d6380;
+  font-weight: 800;
+}
+
+#wellnessView .wellness-event-create-form {
+  display: grid;
+  gap: 0;
+}
+
+#wellnessView .wellness-event-create-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px 26px;
+}
+
+#wellnessView .wellness-event-field,
+#wellnessView .wellness-event-image-field {
+  display: grid;
+  gap: 9px;
+  color: #536883;
+  font-weight: 950;
+}
+
+#wellnessView .wellness-event-field > span,
+#wellnessView .wellness-event-image-field > span,
+#wellnessView .wellness-event-field small {
+  font-size: 0.82rem;
+}
+
+#wellnessView .wellness-event-field small {
+  color: #6d7f99;
+  font-weight: 850;
+}
+
+#wellnessView .wellness-event-field-full {
+  grid-column: 1 / -1;
+}
+
+#wellnessView .wellness-event-control {
+  min-height: 56px;
+  border: 1px solid #d7e7e9;
+  border-radius: 16px;
+  background: #fbfefe;
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  padding: 6px 12px 6px 8px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+}
+
+#wellnessView .wellness-event-control i,
+#wellnessView .wellness-event-image-copy > span {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: #e6fbf7;
+  color: var(--wellness-teal-dark);
+  font-style: normal;
+}
+
+#wellnessView .wellness-event-control input,
+#wellnessView .wellness-event-control select,
+#wellnessView .wellness-event-control textarea {
+  width: 100%;
+  min-height: 42px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--wellness-ink);
+  font: inherit;
+  font-weight: 900;
+  padding: 0;
+  outline: 0;
+}
+
+#wellnessView .wellness-event-textarea-control {
+  min-height: 100px;
+  align-items: start;
+  padding-top: 10px;
+}
+
+#wellnessView .wellness-event-textarea-control textarea {
+  resize: vertical;
+  padding-top: 8px;
+}
+
+#wellnessView .wellness-event-image-editor {
+  grid-template-columns: 132px minmax(220px, 1fr) minmax(240px, 0.8fr);
+  gap: 18px;
+  align-items: center;
+  border: 1px dashed #8bded4;
+  border-radius: 18px;
+  background:
+    linear-gradient(135deg, rgba(234, 255, 249, 0.88), rgba(255, 255, 255, 0.96)),
+    #fbfefe;
+  padding: 16px 18px;
+}
+
+#wellnessView .wellness-event-image-copy {
+  display: grid;
+  gap: 6px;
+}
+
+#wellnessView .wellness-event-image-copy strong {
+  color: var(--wellness-ink);
+  font-size: 1rem;
+}
+
+#wellnessView .wellness-event-image-actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+}
+
+#wellnessView .wellness-event-image-actions input {
+  min-height: 44px;
+  border: 1px solid #d7e7e9;
+  border-radius: 14px;
+  background: #fff;
+  color: var(--wellness-ink);
+  font: inherit;
+  font-weight: 850;
+  padding: 0 12px;
+}
+
+#wellnessView .wellness-event-upload-button {
+  min-height: 44px;
+  border: 1px solid #bfe9e6;
+  border-radius: 14px;
+  background: #fff;
+  color: var(--wellness-teal-dark);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 14px;
+  font-weight: 950;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+#wellnessView .wellness-event-upload-button input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+#wellnessView .wellness-event-image-note {
+  grid-column: 2 / -1;
+  color: var(--wellness-muted);
+  font-size: 0.72rem;
+  line-height: 1.3;
+}
+
+#wellnessView .wellness-event-location-panel {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px 26px;
+  border: 1px solid #d9f0ef;
+  border-radius: 18px;
+  background:
+    linear-gradient(135deg, rgba(234, 255, 249, 0.7), rgba(255, 255, 255, 0.9)),
+    #fbfefe;
+  padding: 16px;
+}
+
+#wellnessView .wellness-event-location-panel .wellness-event-field:nth-child(n + 3) {
+  grid-column: span 1;
+}
+
+#wellnessView .wellness-event-form-actions {
+  position: sticky;
+  bottom: -28px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 26px;
+  margin: 24px -28px -28px;
+  padding: 18px 28px 20px;
+  border-top: 1px solid #e8f2f3;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+}
+
+#wellnessView .wellness-event-form-actions button {
+  min-height: 52px;
+  border-radius: 14px;
+  font-size: 0.95rem;
+}
+
+#wellnessView .wellness-event-form-actions .wellness-primary-action {
+  background: linear-gradient(135deg, #18c8b5, #008f82);
+  color: #fff;
+  box-shadow: 0 16px 32px rgba(18, 185, 167, 0.24);
+}
+
+#wellnessView .wellness-booking-status {
+  border-radius: 999px;
+  padding: 5px 10px;
+  font-size: 0.72rem;
+}
+
+#wellnessView .wellness-booking-open,
+#wellnessView .wellness-booking-confirmed {
+  background: #dcfaee;
+  color: #007c67;
+}
+
+#wellnessView .wellness-booking-almost,
+#wellnessView .wellness-booking-waitlist {
+  background: #fff3cf;
+  color: #9a6800;
+}
+
+#wellnessView .wellness-booking-full {
+  background: #ffe1e1;
+  color: #b91c1c;
+}
+
+#wellnessView .wellness-booking-neutral {
+  background: #eef3f7;
+  color: var(--wellness-muted);
+}
+
+#wellnessView .wellness-request-item {
+  padding: 14px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+}
+
+#wellnessView .wellness-request-item em {
+  display: block;
+  color: var(--wellness-teal-dark);
+  font-style: normal;
+  font-weight: 800;
+}
+
+#wellnessView .wellness-request-item > div:last-child {
+  display: grid;
+  gap: 8px;
+}
+
+#wellnessView .wellness-community-detail-cover {
+  min-height: 180px;
+  margin-bottom: 14px;
+}
+
+#wellnessView .wellness-community-back-button {
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid var(--wellness-line);
+  border-radius: 16px;
+  color: var(--wellness-teal-dark);
+  cursor: pointer;
+  display: inline-flex;
+  gap: 8px;
+  font-weight: 900;
+  min-height: 40px;
+  margin: 0 0 12px;
+  padding: 0 14px;
+}
+
+#wellnessView .wellness-community-detail-events {
+  display: grid;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+#wellnessView .wellness-community-detail-events .wellness-event-group {
+  margin: 0;
+}
+
+#wellnessView .wellness-community-detail-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 14px 0;
+}
+
+#wellnessView .wellness-community-detail-stats div {
+  border: 1px solid var(--wellness-line);
+  border-radius: 18px;
+  padding: 12px;
+  background: #fbfffe;
+}
+
+#wellnessView .wellness-admin-hero {
+  display: grid;
+  grid-template-columns: 116px minmax(0, 1fr) minmax(220px, 280px);
+  gap: 16px;
+  align-items: center;
+  border: 1px solid var(--wellness-line);
+  border-radius: 24px;
+  padding: 16px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(238, 255, 251, 0.88)),
+    #ffffff;
+  box-shadow: 0 18px 46px rgba(15, 52, 60, 0.08);
+}
+
+#wellnessView .wellness-admin-hero-cover {
+  min-height: 96px;
+  border-radius: 22px;
+  display: grid;
+  place-items: center;
+  color: var(--wellness-teal-dark);
+}
+
+#wellnessView .wellness-admin-hero-cover span,
+#wellnessView .wellness-admin-card-heading > span,
+#wellnessView .wellness-admin-stat > span {
+  width: 52px;
+  height: 52px;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--wellness-teal-dark);
+  box-shadow: 0 12px 26px rgba(15, 52, 60, 0.08);
+}
+
+#wellnessView .wellness-admin-hero-copy h4 {
+  margin: 4px 0 8px;
+  font-size: clamp(1.45rem, 3vw, 2.05rem);
+  line-height: 1.05;
+}
+
+#wellnessView .wellness-admin-hero-copy p,
+#wellnessView .wellness-admin-card-heading p,
+#wellnessView .wellness-admin-stat p,
+#wellnessView .wellness-admin-row p,
+#wellnessView .wellness-admin-public-post p {
+  color: var(--wellness-muted);
+  line-height: 1.45;
+}
+
+#wellnessView .wellness-admin-selector {
+  display: grid;
+  gap: 8px;
+  color: var(--wellness-muted);
+  font-weight: 900;
+}
+
+#wellnessView .wellness-admin-selector select,
+#wellnessView .wellness-admin-row select,
+#wellnessView .wellness-admin-post-form input,
+#wellnessView .wellness-admin-post-form textarea {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid #d7e7e9;
+  border-radius: 16px;
+  background: #fbfefe;
+  color: var(--wellness-ink);
+  font: inherit;
+  font-weight: 800;
+  padding: 10px 12px;
+}
+
+#wellnessView .wellness-admin-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+#wellnessView .wellness-admin-stat {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  padding: 14px;
+}
+
+#wellnessView .wellness-admin-stat strong {
+  display: block;
+  color: var(--wellness-ink);
+  font-size: 1.45rem;
+  line-height: 1;
+}
+
+#wellnessView .wellness-admin-stat p {
+  margin-top: 4px;
+  font-size: 0.82rem;
+}
+
+#wellnessView .wellness-admin-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.12fr) minmax(320px, 0.88fr);
+  gap: 14px;
+  align-items: start;
+}
+
+#wellnessView .wellness-admin-card {
+  padding: 16px;
+  display: grid;
+  gap: 14px;
+}
+
+#wellnessView .wellness-admin-form,
+#wellnessView .wellness-admin-posts-card {
+  grid-row: span 2;
+}
+
+#wellnessView .wellness-admin-card-heading {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+}
+
+#wellnessView .wellness-admin-card-heading h4 {
+  margin: 0 0 4px;
+  font-size: 1.02rem;
+}
+
+#wellnessView .wellness-admin-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+#wellnessView .wellness-admin-full {
+  grid-column: 1 / -1;
+}
+
+#wellnessView .wellness-admin-cover-field {
+  display: grid;
+  gap: 8px;
+  color: var(--wellness-muted);
+  font-weight: 900;
+}
+
+#wellnessView .wellness-admin-cover-swatches {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+#wellnessView .wellness-admin-swatch {
+  min-height: 52px;
+  border: 2px solid transparent;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  color: var(--wellness-ink);
+  overflow: hidden;
+}
+
+#wellnessView .wellness-admin-swatch input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+#wellnessView .wellness-admin-swatch span {
+  border-radius: 999px;
+  padding: 5px 10px;
+  background: rgba(255, 255, 255, 0.78);
+  font-size: 0.72rem;
+  text-transform: capitalize;
+}
+
+#wellnessView .wellness-admin-swatch.active,
+#wellnessView .wellness-admin-swatch:has(input:checked) {
+  border-color: #0ca596;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.86);
+}
+
+#wellnessView .wellness-admin-list,
+#wellnessView .wellness-admin-post-form {
+  display: grid;
+  gap: 10px;
+}
+
+#wellnessView .wellness-admin-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) minmax(126px, auto) auto;
+  gap: 10px;
+  align-items: center;
+  border: 1px solid #e2eff0;
+  border-radius: 18px;
+  padding: 10px;
+  background: #fbfffe;
+}
+
+#wellnessView .wellness-admin-row strong {
+  display: block;
+}
+
+#wellnessView .wellness-admin-row small {
+  margin-top: 2px;
+}
+
+#wellnessView .wellness-admin-row-actions {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+}
+
+#wellnessView .wellness-admin-row button,
+#wellnessView .wellness-admin-row-actions button {
+  width: 42px;
+  height: 42px;
+  border: 1px solid #bfe9e6;
+  border-radius: 14px;
+  background: #ffffff;
+  color: var(--wellness-teal-dark);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+
+#wellnessView .wellness-admin-row button:disabled,
+#wellnessView .wellness-admin-row select:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+#wellnessView .wellness-admin-row .wellness-admin-danger {
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #d73535;
+}
+
+#wellnessView .wellness-admin-date {
+  width: 54px;
+  height: 58px;
+  border: 1px solid #d7ecef;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  background: #effdfa;
+  color: var(--wellness-teal-dark);
+}
+
+#wellnessView .wellness-admin-date strong {
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+#wellnessView .wellness-admin-post-form {
+  border: 1px solid #e2eff0;
+  border-radius: 18px;
+  padding: 12px;
+  background: #fbfffe;
+}
+
+#wellnessView .wellness-admin-post-form label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--wellness-muted);
+  font-weight: 900;
+}
+
+#wellnessView .wellness-admin-post-form input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--wellness-teal);
+}
+
+#wellnessView .wellness-admin-public-posts {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+#wellnessView .wellness-admin-public-post {
+  border: 1px solid #e2eff0;
+  border-radius: 18px;
+  padding: 12px;
+  background: #fbfffe;
+}
+
+#wellnessView .wellness-admin-public-post h4,
+#wellnessView .wellness-admin-public-post p {
+  margin: 0;
+}
+
+#wellnessView .wellness-admin-dashboard {
+  gap: 14px;
+  color: var(--wellness-ink);
+}
+
+#wellnessView .wellness-admin-topbar,
+#wellnessView .wellness-admin-profile-strip,
+#wellnessView .wellness-admin-community-meta,
+#wellnessView .wellness-admin-hero-actions,
+#wellnessView .wellness-admin-panel-heading,
+#wellnessView .wellness-admin-content-tabs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#wellnessView .wellness-admin-topbar,
+#wellnessView .wellness-admin-panel-heading {
+  justify-content: space-between;
+}
+
+#wellnessView .wellness-admin-back,
+#wellnessView .wellness-admin-panel-heading button,
+#wellnessView .wellness-admin-panel-link,
+#wellnessView .wellness-admin-profile-strip button,
+#wellnessView .wellness-admin-edit-community,
+#wellnessView .wellness-admin-event-actions button,
+#wellnessView .wellness-admin-request-row button,
+#wellnessView .wellness-admin-member-row button,
+#wellnessView .wellness-admin-content-tabs button,
+#wellnessView .wellness-admin-content-item > button,
+#wellnessView .wellness-admin-content-item footer button,
+#wellnessView .wellness-admin-next {
+  border: 1px solid #dcebed;
+  background: #ffffff;
+  color: var(--wellness-ink);
+  cursor: pointer;
+  font-weight: 900;
+}
+
+#wellnessView .wellness-admin-back {
+  border: 0;
+  background: transparent;
+  color: #35516e;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+}
+
+#wellnessView .wellness-admin-profile-strip {
+  margin-left: auto;
+}
+
+#wellnessView .wellness-admin-profile-strip button {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  color: #46617d;
+}
+
+#wellnessView .wellness-admin-profile-strip button span {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: #12b9a7;
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-size: 0.65rem;
+}
+
+#wellnessView .wellness-admin-profile-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #e2fff8, #b7efe5);
+  color: var(--wellness-teal-dark);
+  font-weight: 950;
+  overflow: hidden;
+}
+
+#wellnessView .wellness-admin-profile-avatar.has-photo {
+  background: #fff;
+}
+
+#wellnessView .wellness-admin-profile-avatar img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+#wellnessView .wellness-admin-page-title h3 {
+  margin: 0;
+  font-size: 2rem;
+  line-height: 1.05;
+}
+
+#wellnessView .wellness-admin-page-title p {
+  margin: 4px 0 0;
+  color: var(--wellness-muted);
+  font-weight: 800;
+}
+
+#wellnessView .wellness-admin-community-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+  min-height: 232px;
+  border: 1px solid var(--wellness-line);
+  border-radius: 14px;
+  padding: 22px;
+  overflow: hidden;
+  box-shadow: 0 18px 42px rgba(10, 72, 84, 0.09);
+}
+
+#wellnessView .wellness-admin-community-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.96) 0%, rgba(237, 255, 251, 0.88) 46%, rgba(202, 234, 244, 0.28) 100%),
+    linear-gradient(135deg, #f3fffc, #d7f8f3);
+}
+
+#wellnessView .wellness-admin-community-hero::after {
+  content: "";
+  position: absolute;
+  right: 24px;
+  bottom: -18px;
+  width: 300px;
+  height: 220px;
+  background:
+    linear-gradient(145deg, transparent 0 33%, rgba(255, 255, 255, 0.72) 34% 48%, transparent 49%),
+    linear-gradient(135deg, rgba(64, 145, 164, 0.22), rgba(18, 185, 167, 0.08));
+  clip-path: polygon(36% 7%, 55% 20%, 60% 42%, 88% 60%, 82% 78%, 55% 62%, 42% 98%, 24% 96%, 36% 58%, 14% 70%, 4% 54%, 28% 38%);
+  opacity: 0.85;
+}
+
+#wellnessView .wellness-admin-community-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+#wellnessView .wellness-admin-edit-community {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  z-index: 3;
+  min-height: 36px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 14px;
+}
+
+#wellnessView .wellness-admin-community-mark {
+  width: 112px;
+  height: 112px;
+  border-radius: 24px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.82);
+  color: var(--wellness-teal-dark);
+  box-shadow: 0 18px 36px rgba(10, 72, 84, 0.12);
+}
+
+#wellnessView .wellness-admin-community-mark svg {
+  width: 48px;
+  height: 48px;
+}
+
+#wellnessView .wellness-admin-community-copy h4 {
+  margin: 4px 0 8px;
+  font-size: 1.9rem;
+  line-height: 1.05;
+}
+
+#wellnessView .wellness-admin-community-meta {
+  flex-wrap: wrap;
+  color: #526981;
+  font-weight: 900;
+  font-size: 0.82rem;
+}
+
+#wellnessView .wellness-admin-community-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+#wellnessView .wellness-admin-member-stack {
+  display: flex;
+  margin-top: 12px;
+}
+
+#wellnessView .wellness-admin-member-stack span {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  border: 2px solid #fff;
+  background: #eafff9;
+  color: var(--wellness-teal-dark);
+  font-size: 0.68rem;
+  font-weight: 950;
+}
+
+#wellnessView .wellness-admin-member-stack span + span {
+  margin-left: -8px;
+}
+
+#wellnessView .wellness-admin-hero-actions {
+  grid-column: 1 / -1;
+  align-self: end;
+  flex-wrap: wrap;
+}
+
+#wellnessView .wellness-admin-hero-actions button {
+  min-width: 190px;
+}
+
+#wellnessView .wellness-admin-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+#wellnessView .wellness-admin-stat {
+  border-radius: 12px;
+  grid-template-columns: auto minmax(0, 1fr) 86px;
+  min-height: 92px;
+  padding: 14px;
+}
+
+#wellnessView .wellness-admin-stat > span {
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+  background: #ecfffb;
+  color: var(--wellness-teal-dark);
+  box-shadow: none;
+}
+
+#wellnessView .wellness-admin-stat-purple > span {
+  background: #f1edff;
+  color: #6650c7;
+}
+
+#wellnessView .wellness-admin-stat-orange > span {
+  background: #fff1e7;
+  color: #e56d2d;
+}
+
+#wellnessView .wellness-admin-stat small,
+#wellnessView .wellness-admin-stat p {
+  display: block;
+}
+
+#wellnessView .wellness-admin-trend {
+  width: 86px;
+  height: 42px;
+}
+
+#wellnessView .wellness-admin-trend polyline {
+  fill: none;
+  stroke: #0ca596;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+#wellnessView .wellness-admin-trend-orange polyline {
+  stroke: #fb7c3b;
+}
+
+#wellnessView .wellness-admin-trend-purple polyline {
+  stroke: #6b5ce7;
+}
+
+#wellnessView .wellness-admin-dashboard-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(280px, 0.78fr);
+  grid-template-areas:
+    "events requests tools"
+    "members content activity";
+  gap: 14px;
+  align-items: start;
+}
+
+#wellnessView .wellness-admin-panel {
+  border: 1px solid var(--wellness-line);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 16px 36px rgba(15, 52, 60, 0.07);
+  padding: 14px;
+  display: grid;
+  gap: 12px;
+}
+
+#wellnessView .wellness-admin-events-panel {
+  grid-area: events;
+}
+
+#wellnessView .wellness-admin-requests-panel {
+  grid-area: requests;
+}
+
+#wellnessView .wellness-admin-tools-panel {
+  grid-area: tools;
+}
+
+#wellnessView .wellness-admin-members-panel {
+  grid-area: members;
+}
+
+#wellnessView .wellness-admin-content-panel {
+  grid-area: content;
+}
+
+#wellnessView .wellness-admin-activity-panel {
+  grid-area: activity;
+}
+
+#wellnessView .wellness-admin-panel-heading h4 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+#wellnessView .wellness-admin-panel-heading button,
+#wellnessView .wellness-admin-panel-link {
+  min-height: 32px;
+  border: 0;
+  background: transparent;
+  color: var(--wellness-teal-dark);
+  padding: 0;
+}
+
+#wellnessView .wellness-admin-panel-link {
+  justify-self: center;
+}
+
+#wellnessView .wellness-admin-event-list,
+#wellnessView .wellness-admin-request-list,
+#wellnessView .wellness-admin-tool-list,
+#wellnessView .wellness-admin-content-list,
+#wellnessView .wellness-admin-activity-list {
+  display: grid;
+  gap: 10px;
+}
+
+#wellnessView .wellness-admin-event-tile {
+  display: grid;
+  grid-template-columns: 120px 54px minmax(0, 1fr) 96px;
+  gap: 10px;
+  align-items: center;
+}
+
+#wellnessView .wellness-admin-event-art {
+  min-height: 78px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  color: var(--wellness-teal-dark);
+}
+
+#wellnessView .wellness-admin-event-art span {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.78);
+  display: grid;
+  place-items: center;
+}
+
+#wellnessView .wellness-admin-event-date {
+  min-height: 74px;
+  border-radius: 10px;
+  background: #f2fffc;
+  color: var(--wellness-teal-dark);
+  display: grid;
+  place-items: center;
+  align-content: center;
+}
+
+#wellnessView .wellness-admin-event-date strong {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+#wellnessView .wellness-admin-event-copy h5 {
+  margin: 0 0 4px;
+  font-size: 0.92rem;
+}
+
+#wellnessView .wellness-admin-event-copy p,
+#wellnessView .wellness-admin-event-copy small,
+#wellnessView .wellness-admin-request-row p,
+#wellnessView .wellness-admin-tool-row small,
+#wellnessView .wellness-admin-content-item p,
+#wellnessView .wellness-admin-member-row small {
+  color: var(--wellness-muted);
+}
+
+#wellnessView .wellness-admin-progress {
+  height: 6px;
+  border-radius: 999px;
+  background: #e7f1f2;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+#wellnessView .wellness-admin-progress span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #22d2bf, #0ca596);
+}
+
+#wellnessView .wellness-admin-event-actions {
+  display: grid;
+  gap: 7px;
+}
+
+#wellnessView .wellness-admin-event-actions button,
+#wellnessView .wellness-admin-request-row button,
+#wellnessView .wellness-admin-member-row button {
+  min-height: 30px;
+  border-radius: 9px;
+  font-size: 0.72rem;
+}
+
+#wellnessView .wellness-admin-request-row,
+#wellnessView .wellness-admin-tool-row,
+#wellnessView .wellness-admin-content-item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto auto;
+  gap: 10px;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #edf4f5;
+}
+
+#wellnessView .wellness-admin-request-row:last-child,
+#wellnessView .wellness-admin-tool-row:last-child,
+#wellnessView .wellness-admin-content-item:last-child {
+  border-bottom: 0;
+}
+
+#wellnessView .wellness-admin-request-row button:nth-of-type(1) {
+  border-color: transparent;
+  background: #12b9a7;
+  color: #fff;
+}
+
+#wellnessView .wellness-admin-tool-row {
+  grid-template-columns: auto minmax(0, 1fr) auto;
+}
+
+#wellnessView .wellness-admin-tool-row > span {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: #effdfa;
+  color: var(--wellness-teal-dark);
+  display: grid;
+  place-items: center;
+}
+
+#wellnessView .wellness-admin-toggle {
+  width: 42px;
+  height: 24px;
+  border-radius: 999px;
+  border: 0;
+  background: #dce8ea;
+  padding: 3px;
+  display: flex;
+  justify-content: flex-start;
+  cursor: pointer;
+}
+
+#wellnessView .wellness-admin-toggle i {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 3px 8px rgba(15, 52, 60, 0.18);
+}
+
+#wellnessView .wellness-admin-toggle.active {
+  justify-content: flex-end;
+  background: #13bba9;
+}
+
+#wellnessView .wellness-admin-next {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+}
+
+#wellnessView .wellness-admin-member-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 150px 150px auto;
+  gap: 8px;
+}
+
+#wellnessView .wellness-admin-member-controls input,
+#wellnessView .wellness-admin-member-controls select,
+#wellnessView .wellness-admin-member-row select,
+#wellnessView .wellness-admin-activity-panel select {
+  min-height: 34px;
+  border: 1px solid #dcebed;
+  border-radius: 9px;
+  background: #fff;
+  color: var(--wellness-ink);
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 800;
+  padding: 0 9px;
+}
+
+#wellnessView .wellness-admin-member-table {
+  display: grid;
+  gap: 0;
+}
+
+#wellnessView .wellness-admin-member-table-head,
+#wellnessView .wellness-admin-member-row {
+  display: grid;
+  grid-template-columns: minmax(180px, 1.4fr) 126px 90px 110px 66px;
+  gap: 10px;
+  align-items: center;
+}
+
+#wellnessView .wellness-admin-member-table-head {
+  color: var(--wellness-muted);
+  font-size: 0.72rem;
+  font-weight: 900;
+  padding: 7px 0;
+}
+
+#wellnessView .wellness-admin-member-row {
+  min-height: 48px;
+  border-top: 1px solid #edf4f5;
+}
+
+#wellnessView .wellness-admin-member-row > div:first-child {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+#wellnessView .wellness-admin-member-row strong {
+  display: grid;
+  line-height: 1.15;
+}
+
+#wellnessView .wellness-admin-status {
+  display: inline-grid;
+  place-items: center;
+  min-height: 24px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 900;
+  background: #e9fff8;
+  color: var(--wellness-teal-dark);
+}
+
+#wellnessView .wellness-admin-status-invited {
+  background: #fff4df;
+  color: #b87900;
+}
+
+#wellnessView .wellness-admin-status-suspended,
+#wellnessView .wellness-admin-status-inactive {
+  background: #fff0f0;
+  color: #c93e3e;
+}
+
+#wellnessView .wellness-admin-content-tabs {
+  border-bottom: 1px solid #edf4f5;
+}
+
+#wellnessView .wellness-admin-content-tabs button {
+  min-height: 32px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--wellness-muted);
+}
+
+#wellnessView .wellness-admin-content-tabs button.active {
+  color: var(--wellness-teal-dark);
+  box-shadow: inset 0 -2px 0 var(--wellness-teal);
+}
+
+#wellnessView .wellness-admin-post-form {
+  grid-template-columns: minmax(0, 1fr) auto;
+  border-radius: 10px;
+}
+
+#wellnessView .wellness-admin-post-form textarea,
+#wellnessView .wellness-admin-post-form label {
+  grid-column: 1 / -1;
+}
+
+#wellnessView .wellness-admin-content-item {
+  grid-template-columns: auto minmax(0, 1fr) auto;
+}
+
+#wellnessView .wellness-admin-content-item strong small {
+  margin-left: 8px;
+  border-radius: 999px;
+  background: #eef4ff;
+  color: #5671d8;
+  padding: 3px 8px;
+}
+
+#wellnessView .wellness-admin-content-item footer {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-top: 8px;
+  color: var(--wellness-muted);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+#wellnessView .wellness-admin-content-item footer span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+#wellnessView .wellness-admin-content-item footer button {
+  margin-left: auto;
+  border: 0;
+  background: transparent;
+  color: var(--wellness-teal-dark);
+}
+
+#wellnessView .wellness-admin-activity-row {
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr) 42px 86px;
+  gap: 8px;
+  align-items: center;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+#wellnessView .wellness-admin-activity-row div {
+  height: 7px;
+  border-radius: 999px;
+  background: #e7f1f2;
+  overflow: hidden;
+}
+
+#wellnessView .wellness-admin-activity-row i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #22d2bf, #0ca596);
+}
+
+#wellnessView .wellness-admin-activity-row small {
+  color: #079a86;
+  font-size: 0.67rem;
+}
+
+#wellnessView .wellness-admin-activity-chart {
+  min-height: 124px;
+  display: flex;
+  align-items: end;
+  gap: 5px;
+  padding-top: 12px;
+}
+
+#wellnessView .wellness-admin-activity-chart i {
+  flex: 1;
+  min-width: 6px;
+  border-radius: 999px 999px 0 0;
+  background: linear-gradient(180deg, #4fded2, #0ca596);
+}
+
+#wellnessView .wellness-community-admin-access {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+  border: 1px solid #cde9eb;
+  border-radius: 12px;
+  background: #ffffff;
+  padding: 14px;
+  box-shadow: 0 14px 34px rgba(15, 52, 60, 0.07);
+}
+
+#wellnessView .wellness-community-admin-access > span,
+#wellnessView .wellness-admin-brand > span,
+#wellnessView .wellness-admin-access-strip > span,
+#wellnessView .wellness-admin-realtime article > span,
+#wellnessView .wellness-admin-automation-grid article > span,
+#wellnessView .wellness-admin-game-grid article > span {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: #eafff9;
+  color: var(--wellness-teal-dark);
+}
+
+#wellnessView .wellness-community-admin-access h4,
+#wellnessView .wellness-community-admin-access p {
+  margin: 0;
+}
+
+#wellnessView .wellness-community-admin-access p,
+#wellnessView .wellness-admin-access-strip p,
+#wellnessView .wellness-admin-panel-heading p,
+#wellnessView .wellness-admin-realtime p,
+#wellnessView .wellness-admin-automation-grid p,
+#wellnessView .wellness-admin-game-grid p {
+  color: var(--wellness-muted);
+  line-height: 1.4;
+}
+
+#wellnessView .wellness-community-admin-access button,
+#wellnessView .wellness-admin-access-strip a,
+#wellnessView .wellness-admin-standalone-link,
+#wellnessView .wellness-admin-top-actions button,
+#wellnessView .wellness-admin-panel-heading > button,
+#wellnessView .wellness-admin-filter-row button,
+#wellnessView .wellness-admin-calendar-actions button {
+  min-height: 38px;
+  border: 1px solid #bfe9e6;
+  border-radius: 10px;
+  background: #ffffff;
+  color: var(--wellness-teal-dark);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 0 12px;
+  text-decoration: none;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+#wellnessView .wellness-admin-console {
+  display: grid;
+  gap: 12px;
+}
+
+#wellnessView .wellness-admin-access-strip {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  border: 1px solid #cde9eb;
+  border-radius: 12px;
+  background: #ffffff;
+  padding: 12px 14px;
+}
+
+#wellnessView .wellness-admin-access-strip strong,
+#wellnessView .wellness-admin-access-strip p {
+  display: block;
+  margin: 0;
+}
+
+#wellnessView .wellness-admin-console-layout {
+  display: grid;
+  grid-template-columns: 248px minmax(0, 1fr) 304px;
+  gap: 12px;
+  align-items: start;
+}
+
+#wellnessView .wellness-admin-sidebar,
+#wellnessView .wellness-admin-console-main,
+#wellnessView .wellness-admin-realtime {
+  border: 1px solid var(--wellness-line);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 16px 36px rgba(15, 52, 60, 0.07);
+}
+
+#wellnessView .wellness-admin-sidebar {
+  position: sticky;
+  top: 14px;
+  display: grid;
+  gap: 12px;
+  padding: 12px;
+}
+
+#wellnessView .wellness-admin-console [data-wellness-community-view="home"] {
+  display: inline-flex !important;
+}
+
+#wellnessView .wellness-admin-brand {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+#wellnessView .wellness-admin-brand strong,
+#wellnessView .wellness-admin-brand small {
+  display: block;
+}
+
+#wellnessView .wellness-admin-brand small,
+#wellnessView .wellness-admin-community-switch span,
+#wellnessView .wellness-admin-console-topbar small {
+  color: var(--wellness-muted);
+  font-weight: 850;
+}
+
+#wellnessView .wellness-admin-community-switch {
+  display: grid;
+  gap: 7px;
+}
+
+#wellnessView .wellness-admin-community-switch select,
+#wellnessView .wellness-admin-console select,
+#wellnessView .wellness-admin-console input,
+#wellnessView .wellness-admin-console textarea {
+  min-height: 38px;
+  border: 1px solid #dcebed;
+  border-radius: 10px;
+  background: #fff;
+  color: var(--wellness-ink);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 850;
+  padding: 8px 10px;
+}
+
+#wellnessView .wellness-admin-module-nav {
+  display: grid;
+  gap: 6px;
+}
+
+#wellnessView .wellness-admin-module-nav button,
+#wellnessView .wellness-admin-back {
+  min-height: 40px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--wellness-muted);
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 0 10px;
+  font-weight: 950;
+  text-align: left;
+  cursor: pointer;
+}
+
+#wellnessView .wellness-admin-module-nav button.active,
+#wellnessView .wellness-admin-module-nav button:hover,
+#wellnessView .wellness-admin-back:hover {
+  background: #eafff9;
+  color: var(--wellness-teal-dark);
+}
+
+#wellnessView .wellness-admin-standalone-link {
+  width: 100%;
+}
+
+#wellnessView .wellness-admin-console-main {
+  min-width: 0;
+  display: grid;
+  gap: 12px;
+  padding: 12px;
+}
+
+#wellnessView .wellness-admin-console-topbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  border-bottom: 1px solid #eaf3f4;
+  padding-bottom: 12px;
+}
+
+#wellnessView .wellness-admin-console-topbar h3 {
+  margin: 3px 0 0;
+  font-size: clamp(1.35rem, 2vw, 2rem);
+}
+
+#wellnessView .wellness-admin-console-topbar-actions-only {
+  grid-template-columns: 1fr;
+  justify-items: end;
+}
+
+#wellnessView .wellness-admin-top-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: end;
+}
+
+#wellnessView .wellness-admin-creator-button {
+  min-height: 46px;
+  border: 1px solid #bfe9e6;
+  border-radius: 12px;
+  background: #fff;
+  color: var(--wellness-ink);
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 5px 10px 5px 6px;
+  cursor: pointer;
+}
+
+#wellnessView .wellness-admin-creator-button > span:last-child {
+  display: grid;
+  gap: 1px;
+  text-align: left;
+  line-height: 1.1;
+}
+
+#wellnessView .wellness-admin-creator-button strong {
+  font-size: 0.82rem;
+}
+
+#wellnessView .wellness-admin-creator-button small {
+  color: var(--wellness-muted);
+  font-size: 0.7rem;
+  font-weight: 900;
+}
+
+#wellnessView .wellness-admin-notification-button {
+  position: relative;
+  min-width: 112px;
+  height: 40px;
+}
+
+#wellnessView .wellness-admin-notification-wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+#wellnessView .wellness-admin-notification-button.active {
+  background: #eafff9;
+  border-color: #9eece3;
+  color: var(--wellness-teal-dark);
+}
+
+#wellnessView .wellness-admin-notification-button svg {
+  width: 17px;
+  height: 17px;
+  flex: 0 0 auto;
+}
+
+#wellnessView .wellness-admin-notification-button strong {
+  font-size: 0.82rem;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+#wellnessView .wellness-admin-notification-button span {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: var(--wellness-red);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-size: 0.66rem;
+}
+
+#wellnessView .wellness-admin-notification-dropdown {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  z-index: 80;
+  width: min(392px, calc(100vw - 32px));
+  max-height: min(620px, calc(100vh - 160px));
+  overflow-y: auto;
+  border: 1px solid #d9eded;
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 24px 70px rgba(18, 44, 54, 0.2);
+  padding: 14px;
+  text-align: left;
+}
+
+#wellnessView .wellness-admin-notification-dropdown::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  right: 28px;
+  width: 14px;
+  height: 14px;
+  border-top: 1px solid #d9eded;
+  border-left: 1px solid #d9eded;
+  background: #fff;
+  transform: rotate(45deg);
+}
+
+#wellnessView .wellness-admin-notification-dropdown button {
+  min-height: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  display: inline-flex;
+  padding: 0;
+  font: inherit;
+  font-weight: inherit;
+  cursor: pointer;
+}
+
+#wellnessView .wellness-admin-notification-dropdown header {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: center;
+  padding: 2px 2px 12px;
+}
+
+#wellnessView .wellness-admin-notification-dropdown header strong,
+#wellnessView .wellness-admin-notification-summary strong {
+  display: block;
+  color: var(--wellness-ink);
+}
+
+#wellnessView .wellness-admin-notification-dropdown header small,
+#wellnessView .wellness-admin-notification-summary small,
+#wellnessView .wellness-admin-notification-copy small,
+#wellnessView .wellness-admin-notification-copy em {
+  color: var(--wellness-muted);
+  font-size: 0.76rem;
+  font-weight: 850;
+}
+
+#wellnessView .wellness-admin-notification-dropdown header > span {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: #ff4d5f;
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-size: 0.78rem;
+  font-weight: 950;
+}
+
+#wellnessView .wellness-admin-notification-header-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+#wellnessView .wellness-admin-notification-header-actions > span {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: #ff4d5f;
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-size: 0.78rem;
+  font-weight: 950;
+}
+
+#wellnessView .wellness-admin-notification-summary {
+  position: relative;
+  width: 100%;
+  min-height: 66px !important;
+  display: grid !important;
+  grid-template-columns: 58px minmax(0, 1fr) 8px auto;
+  gap: 10px;
+  align-items: center;
+  border-radius: 16px !important;
+  background: #f7fffd !important;
+  padding: 10px !important;
+}
+
+#wellnessView .wellness-admin-notification-summary b {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #4676ff;
+}
+
+#wellnessView .wellness-admin-notification-summary svg,
+#wellnessView .wellness-admin-notification-chevron svg {
+  width: 18px;
+  height: 18px;
+}
+
+#wellnessView .wellness-admin-notification-stack {
+  position: relative;
+  width: 58px;
+  height: 42px;
+}
+
+#wellnessView .wellness-admin-notification-stack i {
+  position: absolute;
+  top: 0;
+  width: 38px;
+  height: 38px;
+  border: 2px solid #fff;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #d9fff5, #c5f4ee);
+  color: var(--wellness-teal-dark);
+  display: grid;
+  place-items: center;
+  font-size: 0.72rem;
+  font-style: normal;
+  font-weight: 950;
+}
+
+#wellnessView .wellness-admin-notification-stack i:nth-child(1) {
+  left: 0;
+}
+
+#wellnessView .wellness-admin-notification-stack i:nth-child(2) {
+  left: 16px;
+}
+
+#wellnessView .wellness-admin-notification-stack i:nth-child(3) {
+  left: 8px;
+  top: 16px;
+}
+
+#wellnessView .wellness-admin-notification-section {
+  display: grid;
+  gap: 4px;
+  padding-top: 14px;
+}
+
+#wellnessView .wellness-admin-notification-section h5 {
+  margin: 0 0 4px;
+  color: var(--wellness-ink);
+  font-size: 0.92rem;
+}
+
+#wellnessView .wellness-admin-notification-row {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: start;
+  border-radius: 16px;
+  padding: 10px 6px;
+}
+
+#wellnessView .wellness-admin-notification-row:hover {
+  background: #f8fcfc;
+}
+
+#wellnessView .wellness-admin-notification-avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #d9fff5, #c7efe9);
+  color: var(--wellness-teal-dark);
+  display: grid;
+  place-items: center;
+  font-weight: 950;
+}
+
+#wellnessView .wellness-admin-notification-copy {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+#wellnessView .wellness-admin-notification-copy p {
+  margin: 0;
+  color: var(--wellness-ink);
+  line-height: 1.25;
+}
+
+#wellnessView .wellness-admin-notification-copy em {
+  font-style: normal;
+}
+
+#wellnessView .wellness-admin-notification-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding-top: 2px;
+}
+
+#wellnessView .wellness-admin-notification-actions button {
+  min-height: 30px;
+  border-radius: 999px;
+  padding: 0 12px;
+  font-weight: 950;
+}
+
+#wellnessView .wellness-admin-notification-actions button:first-child {
+  background: var(--wellness-teal);
+  color: #fff;
+}
+
+#wellnessView .wellness-admin-notification-actions button:last-child {
+  background: #f3f7f8;
+  color: var(--wellness-ink);
+}
+
+#wellnessView .wellness-admin-notification-chevron {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px !important;
+  color: var(--wellness-muted) !important;
+  display: grid !important;
+  place-items: center;
+  margin-top: 4px;
+}
+
+#wellnessView .wellness-admin-notification-chevron:hover {
+  background: #eefafa !important;
+  color: var(--wellness-teal-dark) !important;
+}
+
+#wellnessView .wellness-admin-notification-dropdown footer {
+  border-top: 1px solid #eef6f6;
+  margin-top: 10px;
+  padding-top: 10px;
+}
+
+#wellnessView .wellness-admin-notification-dropdown footer button {
+  width: 100%;
+  min-height: 38px;
+  border-radius: 12px;
+  background: #eafff9;
+  color: var(--wellness-teal-dark);
+  justify-content: center;
+  font-weight: 950;
+}
+
+#wellnessView .wellness-admin-notification-empty {
+  display: grid;
+  place-items: center;
+  gap: 7px;
+  min-height: 150px;
+  color: var(--wellness-muted);
+  text-align: center;
+}
+
+#wellnessView .wellness-admin-notification-empty span {
+  width: 46px;
+  height: 46px;
+  border-radius: 999px;
+  background: #eafff9;
+  color: var(--wellness-teal-dark);
+  display: grid;
+  place-items: center;
+}
+
+#wellnessView .wellness-admin-notification-empty strong {
+  color: var(--wellness-ink);
+}
+
+#wellnessView .wellness-admin-notification-empty p {
+  margin: 0;
+  max-width: 240px;
+}
+
+#wellnessView .wellness-admin-request-flow-dropdown {
+  padding: 0;
+  overflow: hidden;
+}
+
+#wellnessView .wellness-admin-request-flow-dropdown::before {
+  background: #eafff9;
+}
+
+#wellnessView .wellness-admin-request-flow-header {
+  display: grid !important;
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
+  gap: 10px !important;
+  align-items: center !important;
+  border-bottom: 1px solid #e7f1f2;
+  background: linear-gradient(135deg, #eafff9, #ffffff);
+  padding: 14px !important;
+}
+
+#wellnessView .wellness-admin-request-flow-header > div {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+#wellnessView .wellness-admin-request-flow-header strong,
+#wellnessView .wellness-admin-request-flow-header small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#wellnessView .wellness-admin-request-flow-body {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+}
+
+#wellnessView .wellness-admin-request-flow-body p {
+  margin: 0;
+  color: var(--wellness-ink);
+  font-weight: 850;
+  line-height: 1.4;
+}
+
+#wellnessView .wellness-admin-request-flow-meta {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+#wellnessView .wellness-admin-request-flow-meta span {
+  min-height: 66px;
+  border: 1px solid #e1eff0;
+  border-radius: 14px;
+  background: #fbfffe;
+  display: grid;
+  gap: 2px;
+  align-content: center;
+  padding: 10px;
+}
+
+#wellnessView .wellness-admin-request-flow-meta strong {
+  color: var(--wellness-ink);
+  font-size: 0.96rem;
+}
+
+#wellnessView .wellness-admin-request-flow-meta small {
+  color: var(--wellness-muted);
+  font-size: 0.7rem;
+  font-weight: 900;
+}
+
+#wellnessView .wellness-admin-request-flow-body dl {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+}
+
+#wellnessView .wellness-admin-request-flow-body dl div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid #eef6f6;
+  padding-bottom: 8px;
+}
+
+#wellnessView .wellness-admin-request-flow-body dt,
+#wellnessView .wellness-admin-request-flow-body dd {
+  margin: 0;
+  color: var(--wellness-muted);
+  font-weight: 900;
+}
+
+#wellnessView .wellness-admin-request-flow-body dd {
+  color: var(--wellness-ink);
+}
+
+#wellnessView .wellness-admin-request-flow-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  border-top: 1px solid #eef6f6;
+  margin: 0;
+  padding: 12px;
+}
+
+#wellnessView .wellness-admin-request-flow-actions button {
+  min-height: 42px;
+  border-radius: 13px;
+  justify-content: center;
+  font-weight: 950;
+}
+
+#wellnessView .wellness-admin-request-flow-actions button:first-child {
+  background: #f4f7f8;
+  color: var(--wellness-ink);
+}
+
+#wellnessView .wellness-admin-request-flow-actions button:last-child {
+  background: var(--wellness-teal);
+  color: #fff;
+}
+
+#wellnessView .wellness-admin-message-dropdown {
+  width: min(410px, calc(100vw - 32px));
+}
+
+#wellnessView .wellness-admin-message-dropdown header {
+  align-items: start;
+}
+
+#wellnessView .wellness-admin-message-header-actions,
+#wellnessView .wellness-admin-message-thread-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+#wellnessView .wellness-admin-message-compose {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px !important;
+  background: #f7fffd !important;
+  color: var(--wellness-ink) !important;
+  display: grid !important;
+  place-items: center;
+}
+
+#wellnessView .wellness-admin-message-close {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px !important;
+  background: #fff6f6 !important;
+  color: #d94343 !important;
+  display: grid !important;
+  place-items: center;
+}
+
+#wellnessView .wellness-admin-message-compose svg,
+#wellnessView .wellness-admin-message-close svg {
+  width: 18px;
+  height: 18px;
+}
+
+#wellnessView .wellness-admin-message-search {
+  min-height: 44px;
+  border-radius: 999px;
+  background: #f1f5f7;
+  color: #6b788c;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 0 14px;
+  font-weight: 850;
+}
+
+#wellnessView .wellness-admin-message-search svg {
+  width: 18px;
+  height: 18px;
+}
+
+#wellnessView .wellness-admin-message-notes {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 14px 1px 6px;
+  scrollbar-width: none;
+}
+
+#wellnessView .wellness-admin-message-notes::-webkit-scrollbar {
+  display: none;
+}
+
+#wellnessView .wellness-admin-message-notes button {
+  position: relative;
+  flex: 0 0 68px;
+  display: grid !important;
+  justify-items: center;
+  gap: 7px;
+  color: var(--wellness-ink);
+  text-align: center;
+}
+
+#wellnessView .wellness-admin-message-notes .wellness-admin-notification-avatar {
+  width: 58px;
+  height: 58px;
+  box-shadow: inset 0 0 0 3px #fff;
+}
+
+#wellnessView .wellness-admin-message-notes i,
+#wellnessView .wellness-admin-message-row i {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: #4676ff;
+}
+
+#wellnessView .wellness-admin-message-notes i {
+  position: absolute;
+  top: 6px;
+  right: 7px;
+  border: 2px solid #fff;
+}
+
+#wellnessView .wellness-admin-message-notes small {
+  width: 100%;
+  overflow: hidden;
+  color: var(--wellness-muted);
+  font-size: 0.72rem;
+  font-weight: 850;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#wellnessView .wellness-admin-message-tab-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 2px 8px;
+}
+
+#wellnessView .wellness-admin-message-tab-row strong {
+  color: var(--wellness-ink);
+  font-size: 1.05rem;
+}
+
+#wellnessView .wellness-admin-message-tab-row button {
+  color: #4f61ff;
+  font-weight: 950;
+}
+
+#wellnessView .wellness-admin-message-list {
+  display: grid;
+  gap: 3px;
+}
+
+#wellnessView .wellness-admin-message-row {
+  width: 100% !important;
+  min-height: 62px !important;
+  display: grid !important;
+  grid-template-columns: 50px minmax(0, 1fr) 12px;
+  gap: 11px;
+  align-items: center;
+  border-radius: 16px !important;
+  padding: 8px 6px !important;
+  text-align: left;
+}
+
+#wellnessView .wellness-admin-message-row:hover {
+  background: #f8fcfc !important;
+}
+
+#wellnessView .wellness-admin-message-copy {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+#wellnessView .wellness-admin-message-copy strong {
+  overflow: hidden;
+  color: var(--wellness-ink);
+  font-size: 0.96rem;
+  font-weight: 950;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#wellnessView .wellness-admin-message-copy small {
+  overflow: hidden;
+  color: var(--wellness-muted);
+  font-size: 0.86rem;
+  font-weight: 850;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#wellnessView .wellness-admin-message-row:not(:has(i)) {
+  grid-template-columns: 50px minmax(0, 1fr);
+}
+
+#wellnessView .wellness-admin-message-thread-dropdown {
+  padding: 0;
+  overflow: hidden;
+}
+
+#wellnessView .wellness-admin-message-thread-dropdown::before {
+  background: #eafff9;
+}
+
+#wellnessView .wellness-admin-message-thread-header {
+  display: grid !important;
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
+  gap: 10px !important;
+  align-items: center !important;
+  min-height: 86px;
+  border-bottom: 1px solid #e7f1f2;
+  background: linear-gradient(135deg, #e9fff9, #ffffff 56%, #eef8ff);
+  padding: 14px !important;
+}
+
+#wellnessView .wellness-admin-message-back {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.88) !important;
+  color: var(--wellness-ink) !important;
+  display: grid !important;
+  place-items: center;
+  box-shadow: 0 8px 22px rgba(20, 52, 62, 0.12);
+}
+
+#wellnessView .wellness-admin-message-back svg,
+#wellnessView .wellness-admin-message-thread-actions svg,
+#wellnessView .wellness-admin-message-composer svg {
+  width: 18px;
+  height: 18px;
+}
+
+#wellnessView .wellness-admin-message-thread-header > div:not(.wellness-admin-message-thread-actions) {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+#wellnessView .wellness-admin-message-thread-header strong,
+#wellnessView .wellness-admin-message-thread-header small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#wellnessView .wellness-admin-message-thread-actions button {
+  width: 38px;
+  height: 38px;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  color: var(--wellness-ink);
+  display: grid !important;
+  place-items: center;
+  box-shadow: 0 8px 22px rgba(20, 52, 62, 0.1);
+}
+
+#wellnessView .wellness-admin-message-thread-actions .wellness-admin-message-close {
+  color: #d94343 !important;
+}
+
+#wellnessView .wellness-admin-message-thread-body {
+  display: grid;
+  gap: 12px;
+  max-height: min(460px, calc(100vh - 285px));
+  overflow-y: auto;
+  padding: 16px 18px;
+  background: #fff;
+}
+
+#wellnessView .wellness-admin-message-thread-body time {
+  justify-self: center;
+  color: #7b8796;
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+#wellnessView .wellness-admin-chat-bubble {
+  max-width: 78%;
+  margin: 0;
+  border-radius: 20px;
+  padding: 10px 14px;
+  color: var(--wellness-ink);
+  font-weight: 850;
+  line-height: 1.3;
+}
+
+#wellnessView .wellness-admin-chat-bubble.outgoing {
+  justify-self: end;
+  background: linear-gradient(135deg, #874fff, #c13cff);
+  color: #fff;
+}
+
+#wellnessView .wellness-admin-chat-bubble.incoming {
+  justify-self: start;
+  background: #f1f4f6;
+}
+
+#wellnessView .wellness-admin-chat-bubble.small {
+  max-width: 68%;
+}
+
+#wellnessView .wellness-admin-message-divider {
+  display: grid;
+  grid-template-columns: minmax(40px, 1fr) auto minmax(40px, 1fr);
+  gap: 12px;
+  align-items: center;
+  color: #7b8796;
+  font-size: 0.82rem;
+  font-weight: 850;
+}
+
+#wellnessView .wellness-admin-message-divider::before,
+#wellnessView .wellness-admin-message-divider::after {
+  content: "";
+  height: 1px;
+  background: #cfd8df;
+}
+
+#wellnessView .wellness-admin-message-post-preview {
+  justify-self: center;
+  width: min(280px, 100%);
+  overflow: hidden;
+  border-radius: 20px;
+  background: #eef2f5;
+  box-shadow: 0 12px 30px rgba(22, 48, 62, 0.1);
+}
+
+#wellnessView .wellness-admin-message-post-preview > div {
+  min-height: 184px;
+  display: grid;
+  align-content: start;
+  gap: 82px;
+  padding: 16px;
+  background:
+    linear-gradient(160deg, rgba(9, 143, 130, 0.18), rgba(127, 92, 255, 0.1)),
+    radial-gradient(circle at 24% 16%, rgba(255, 255, 255, 0.95), transparent 23%),
+    linear-gradient(135deg, #cff9ed, #9edff8);
+  color: var(--wellness-ink);
+}
+
+#wellnessView .wellness-admin-message-post-preview > div span {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: #102238;
+  color: #fff;
+  display: grid;
+  place-items: center;
+}
+
+#wellnessView .wellness-admin-message-post-preview > div strong {
+  max-width: 190px;
+  color: #fff;
+  font-size: 1.25rem;
+  line-height: 1;
+  text-shadow: 0 2px 12px rgba(15, 35, 44, 0.35);
+}
+
+#wellnessView .wellness-admin-message-post-preview section {
+  padding: 12px 14px;
+}
+
+#wellnessView .wellness-admin-message-post-preview section strong,
+#wellnessView .wellness-admin-message-post-preview section p {
+  margin: 0;
+}
+
+#wellnessView .wellness-admin-message-post-preview section p {
+  color: var(--wellness-muted);
+  font-weight: 800;
+}
+
+#wellnessView .wellness-admin-message-composer {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto auto;
+  gap: 8px;
+  align-items: center;
+  border-top: 1px solid #e7f1f2;
+  background: #fff;
+  padding: 12px;
+}
+
+#wellnessView .wellness-admin-message-composer button {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px !important;
+  background: #f2f6f8 !important;
+  color: var(--wellness-ink);
+  display: grid !important;
+  place-items: center;
+}
+
+#wellnessView .wellness-admin-message-composer button:first-child {
+  background: linear-gradient(135deg, #4676ff, #7f5cff) !important;
+  color: #fff;
+}
+
+#wellnessView .wellness-admin-message-composer input {
+  min-height: 38px;
+  border: 0;
+  border-radius: 999px;
+  background: #f2f4f6;
+  color: var(--wellness-ink);
+  font: inherit;
+  font-weight: 850;
+  padding: 0 14px;
+}
+
+#wellnessView .wellness-admin-module-content,
+#wellnessView .wellness-admin-dashboard-panels,
+#wellnessView .wellness-admin-event-manager-list,
+#wellnessView .wellness-admin-content-list-rich,
+#wellnessView .wellness-admin-mission-list {
+  display: grid;
+  gap: 12px;
+}
+
+#wellnessView .wellness-admin-console-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) 144px;
+  gap: 16px;
+  align-items: center;
+  border-radius: 12px;
+  padding: 16px;
+  background-position: center;
+  background-size: cover;
+  overflow: hidden;
+}
+
+#wellnessView .wellness-admin-console-hero h4 {
+  margin: 4px 0 6px;
+  font-size: clamp(1.35rem, 2.4vw, 2.1rem);
+}
+
+#wellnessView .wellness-admin-media-actions {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 3;
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+
+#wellnessView .wellness-admin-media-actions button {
+  min-height: 32px;
+  border: 1px solid rgba(191, 233, 230, 0.88);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.88);
+  color: var(--wellness-teal-dark);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 9px;
+  font-size: 0.72rem;
+  font-weight: 950;
+  backdrop-filter: blur(8px);
+}
+
+#wellnessView .wellness-admin-community-mark {
+  position: relative;
+  overflow: hidden;
+}
+
+#wellnessView .wellness-admin-community-mark strong {
+  font-size: 2rem;
+  letter-spacing: 0;
+  color: var(--wellness-teal-dark);
+}
+
+#wellnessView .wellness-admin-community-mark:not(.has-image) svg {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  width: 24px;
+  height: 24px;
+  opacity: 0.4;
+}
+
+#wellnessView .wellness-admin-community-mark.has-image img,
+#wellnessView .wellness-creator-community-logo.has-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#wellnessView .wellness-admin-health-score {
+  display: grid;
+  place-items: center;
+  gap: 3px;
+  min-height: 116px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.76);
+  text-align: center;
+}
+
+#wellnessView .wellness-admin-health-score strong {
+  font-size: 2.6rem;
+  line-height: 1;
+  color: var(--wellness-teal-dark);
+}
+
+#wellnessView .wellness-admin-kpi-grid-large {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+#wellnessView .wellness-admin-kpi {
+  min-height: 98px;
+  border: 1px solid #e1eff0;
+  border-radius: 12px;
+  background: #fff;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  padding: 12px;
+}
+
+#wellnessView .wellness-admin-kpi > span {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: #eafff9;
+  color: var(--wellness-teal-dark);
+}
+
+#wellnessView .wellness-admin-kpi-blue > span { background: #edf5ff; color: #246bd9; }
+#wellnessView .wellness-admin-kpi-green > span { background: #ecfbef; color: #26834a; }
+#wellnessView .wellness-admin-kpi-purple > span { background: #f1edff; color: #6650c7; }
+#wellnessView .wellness-admin-kpi-orange > span { background: #fff1e7; color: #e56d2d; }
+#wellnessView .wellness-admin-kpi-red > span { background: #fff0f0; color: #d63b3b; }
+
+#wellnessView .wellness-admin-kpi strong {
+  display: block;
+  margin: 2px 0;
+  font-size: 1.42rem;
+  line-height: 1;
+}
+
+#wellnessView .wellness-admin-kpi p {
+  margin: 0;
+  color: var(--wellness-muted);
+  font-size: 0.78rem;
+}
+
+#wellnessView .wellness-admin-chart-grid,
+#wellnessView .wellness-admin-dashboard-panels,
+#wellnessView .wellness-admin-analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+#wellnessView .wellness-admin-chart-grid {
+  grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+  gap: 8px;
+}
+
+#wellnessView .wellness-admin-chart-card,
+#wellnessView .wellness-admin-heatmap,
+#wellnessView .wellness-admin-funnel,
+#wellnessView .wellness-admin-settings-grid > article,
+#wellnessView .wellness-admin-setting-row,
+#wellnessView .wellness-admin-automation-grid article,
+#wellnessView .wellness-admin-game-grid article,
+#wellnessView .wellness-admin-mission-list article {
+  border: 1px solid #e1eff0;
+  border-radius: 12px;
+  background: #fff;
+  padding: 12px;
+}
+
+#wellnessView .wellness-admin-chart-card {
+  display: grid;
+  gap: 5px;
+  min-height: 86px;
+  padding: 8px 10px;
+  border-radius: 10px;
+}
+
+#wellnessView .wellness-admin-chart-card strong,
+#wellnessView .wellness-admin-chart-card small {
+  display: block;
+}
+
+#wellnessView .wellness-admin-chart-card strong {
+  font-size: 0.78rem;
+  line-height: 1.1;
+}
+
+#wellnessView .wellness-admin-chart-card small {
+  font-size: 0.62rem;
+  line-height: 1.1;
+}
+
+#wellnessView .wellness-admin-chart-bars {
+  display: flex;
+  align-items: end;
+  gap: 4px;
+  min-height: 42px;
+}
+
+#wellnessView .wellness-admin-chart-bars i {
+  flex: 1;
+  min-width: 4px;
+  border-radius: 999px 999px 4px 4px;
+  background: linear-gradient(180deg, #4fded2, #0ca596);
+}
+
+#wellnessView .wellness-admin-chart-purple i { background: linear-gradient(180deg, #9b88ff, #6650c7); }
+#wellnessView .wellness-admin-chart-orange i { background: linear-gradient(180deg, #ffc067, #e56d2d); }
+#wellnessView .wellness-admin-chart-blue i { background: linear-gradient(180deg, #8ec0ff, #246bd9); }
+#wellnessView .wellness-admin-chart-green i { background: linear-gradient(180deg, #8be3a5, #26834a); }
+
+#wellnessView .wellness-admin-members-console,
+#wellnessView .wellness-admin-panel {
+  min-width: 0;
+}
+
+#wellnessView .wellness-admin-panel-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 12px;
+}
+
+#wellnessView .wellness-admin-panel-heading h4,
+#wellnessView .wellness-admin-panel-heading p {
+  margin: 0;
+}
+
+#wellnessView .wellness-admin-member-controls {
+  grid-template-columns: minmax(220px, 1fr) repeat(3, minmax(140px, 0.32fr));
+}
+
+#wellnessView .wellness-admin-member-table-wide {
+  overflow-x: auto;
+}
+
+#wellnessView .wellness-admin-member-table-wide .wellness-admin-member-table-head,
+#wellnessView .wellness-admin-member-row-wide {
+  min-width: 1120px;
+  grid-template-columns: minmax(210px, 1.35fr) 120px 92px 130px 74px 98px 130px minmax(280px, 1.5fr);
+}
+
+#wellnessView .wellness-admin-meter {
+  display: block;
+  height: 7px;
+  border-radius: 999px;
+  background: #e7f1f2;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+
+#wellnessView .wellness-admin-meter b {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--wellness-teal);
+}
+
+#wellnessView .wellness-admin-row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+#wellnessView .wellness-admin-row-actions button {
+  min-height: 28px;
+  border-radius: 8px;
+  font-size: 0.7rem;
+}
+
+#wellnessView .wellness-admin-request-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+#wellnessView .wellness-admin-request-card {
+  border: 1px solid #e1eff0;
+  border-radius: 12px;
+  background: #fff;
+  padding: 12px;
+  display: grid;
+  gap: 10px;
+}
+
+#wellnessView .wellness-admin-request-card.compact {
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+}
+
+#wellnessView .wellness-admin-request-card h4,
+#wellnessView .wellness-admin-request-card p,
+#wellnessView .wellness-admin-request-card dl {
+  margin: 0;
+}
+
+#wellnessView .wellness-admin-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+#wellnessView .wellness-admin-chip-row span {
+  border-radius: 999px;
+  background: #effdfa;
+  color: var(--wellness-teal-dark);
+  padding: 4px 8px;
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+#wellnessView .wellness-admin-request-card dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 8px;
+}
+
+#wellnessView .wellness-admin-request-card dt,
+#wellnessView .wellness-admin-request-card dd {
+  margin: 0;
+}
+
+#wellnessView .wellness-admin-request-card dt {
+  color: var(--wellness-muted);
+  font-size: 0.72rem;
+}
+
+#wellnessView .wellness-admin-request-card footer {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7px;
+}
+
+#wellnessView .wellness-admin-request-card footer button,
+#wellnessView .wellness-admin-event-actions button {
+  min-height: 32px;
+  border-radius: 9px;
+  font-size: 0.72rem;
+}
+
+#wellnessView .wellness-admin-request-card footer button:first-child {
+  border-color: transparent;
+  background: var(--wellness-teal);
+  color: #fff;
+}
+
+#wellnessView .wellness-admin-event-manager {
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr) 128px 250px;
+  gap: 10px;
+  align-items: center;
+  border: 1px solid #e1eff0;
+  border-radius: 12px;
+  background: #fff;
+  padding: 10px;
+}
+
+#wellnessView .wellness-admin-event-manager.compact {
+  grid-template-columns: 96px minmax(0, 1fr);
+}
+
+#wellnessView .wellness-admin-event-manager.compact select,
+#wellnessView .wellness-admin-event-manager.compact .wellness-admin-event-actions {
+  display: none;
+}
+
+#wellnessView .wellness-admin-event-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0;
+}
+
+#wellnessView .wellness-admin-event-meta span {
+  border-radius: 999px;
+  background: #f3fafb;
+  color: var(--wellness-muted);
+  padding: 3px 8px;
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+#wellnessView .wellness-admin-event-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+
+#wellnessView .wellness-admin-filter-row {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+}
+
+#wellnessView .wellness-admin-filter-row button.active {
+  background: #eafff9;
+  border-color: #9eece3;
+}
+
+#wellnessView .wellness-admin-post-form-rich {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr) auto;
+  gap: 8px;
+}
+
+#wellnessView .wellness-admin-post-form-rich textarea,
+#wellnessView .wellness-admin-post-form-rich label {
+  grid-column: 1 / -1;
+}
+
+#wellnessView .wellness-admin-post-form-rich label {
+  display: grid;
+  gap: 6px;
+  color: var(--wellness-muted);
+  font-weight: 900;
+}
+
+#wellnessView .wellness-admin-calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 8px;
+}
+
+#wellnessView .wellness-admin-calendar-grid article {
+  min-height: 230px;
+  border: 1px solid #e1eff0;
+  border-radius: 12px;
+  background: #fbfffe;
+  padding: 10px;
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+
+#wellnessView .wellness-admin-calendar-grid button {
+  border: 1px solid #bfe9e6;
+  border-radius: 10px;
+  background: #fff;
+  color: var(--wellness-ink);
+  display: grid;
+  gap: 2px;
+  padding: 8px;
+  text-align: left;
+  font-weight: 900;
+  cursor: grab;
+}
+
+#wellnessView .wellness-admin-calendar-grid button small {
+  color: var(--wellness-teal-dark);
+}
+
+#wellnessView .wellness-admin-calendar-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+#wellnessView .wellness-admin-heatmap div {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  margin-top: 12px;
+}
+
+#wellnessView .wellness-admin-heatmap i {
+  aspect-ratio: 1;
+  border-radius: 6px;
+  background: var(--wellness-teal);
+}
+
+#wellnessView .wellness-admin-funnel {
+  display: grid;
+  gap: 10px;
+}
+
+#wellnessView .wellness-admin-funnel div {
+  display: grid;
+  grid-template-columns: 100px minmax(0, 1fr) 46px;
+  gap: 8px;
+  align-items: center;
+}
+
+#wellnessView .wellness-admin-funnel i {
+  height: 9px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--wellness-teal), #7f5cff);
+}
+
+#wellnessView .wellness-admin-settings-grid,
+#wellnessView .wellness-admin-automation-grid,
+#wellnessView .wellness-admin-game-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+#wellnessView .wellness-admin-setting-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 6px;
+  align-items: center;
+}
+
+#wellnessView .wellness-admin-setting-row small {
+  grid-column: 1;
+}
+
+#wellnessView .wellness-admin-create-user-card {
+  display: grid;
+  gap: 8px;
+}
+
+#wellnessView .wellness-admin-create-user-card h5,
+#wellnessView .wellness-admin-create-user-card p {
+  margin: 0;
+}
+
+#wellnessView .wellness-admin-create-user-card label {
+  display: grid;
+  gap: 5px;
+  color: var(--wellness-muted);
+  font-weight: 900;
+}
+
+#wellnessView .wellness-admin-create-user-card button {
+  min-height: 36px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--wellness-teal);
+  color: #fff;
+  font-weight: 950;
+}
+
+#wellnessView .wellness-admin-brand-editor {
+  display: grid;
+  grid-template-columns: minmax(260px, 1.2fr) repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  align-items: end;
+  border: 1px solid #e1eff0;
+  border-radius: 12px;
+  background: #fbfffe;
+  padding: 12px;
+}
+
+#wellnessView .wellness-admin-brand-preview {
+  min-height: 138px;
+  border-radius: 12px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  padding: 14px;
+  background-position: center;
+  background-size: cover;
+}
+
+#wellnessView .wellness-admin-brand-preview strong,
+#wellnessView .wellness-admin-brand-preview span {
+  display: block;
+}
+
+#wellnessView .wellness-admin-brand-preview > div:last-child {
+  display: grid;
+  gap: 3px;
+}
+
+#wellnessView .wellness-creator-profile-sheet {
+  width: min(100%, 680px);
+}
+
+#wellnessView .wellness-creator-profile-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  border: 1px solid #e1eff0;
+  border-radius: 12px;
+  background: #fbfffe;
+  padding: 14px;
+  margin-bottom: 12px;
+}
+
+#wellnessView .wellness-creator-profile-card .wellness-admin-profile-avatar {
+  width: 62px;
+  height: 62px;
+}
+
+#wellnessView .wellness-creator-photo-editor {
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+}
+
+#wellnessView .wellness-creator-profile-card .wellness-creator-profile-edit-avatar {
+  width: 76px;
+  height: 76px;
+  font-size: 1.05rem;
+}
+
+#wellnessView .wellness-creator-photo-upload,
+#wellnessView .wellness-creator-photo-remove {
+  min-height: 32px;
+  border: 1px solid #bfe9e6;
+  border-radius: 10px;
+  background: #fff;
+  color: var(--wellness-teal-dark);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 10px;
+  font-size: 0.74rem;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+#wellnessView .wellness-creator-photo-upload svg {
+  width: 15px;
+  height: 15px;
+}
+
+#wellnessView .wellness-creator-photo-upload input {
+  display: none;
+}
+
+#wellnessView .wellness-creator-photo-remove {
+  border-color: #ffd5d5;
+  color: #c94242;
+}
+
+#wellnessView .wellness-creator-profile-card strong,
+#wellnessView .wellness-creator-profile-card p,
+#wellnessView .wellness-creator-profile-card small {
+  display: block;
+  margin: 0;
+}
+
+#wellnessView .wellness-admin-request-profile-sheet {
+  width: min(100%, 460px);
+  text-align: center;
+}
+
+#wellnessView .wellness-admin-request-profile-cover {
+  min-height: 128px;
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at 22% 18%, rgba(255, 255, 255, 0.88), transparent 28%),
+    linear-gradient(135deg, #d8fff6, #eaf7ff 55%, #f6edff);
+  display: grid;
+  place-items: end center;
+  margin-bottom: 44px;
+}
+
+#wellnessView .wellness-admin-request-profile-photo {
+  width: 112px;
+  height: 112px;
+  border: 5px solid #fff;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 30% 24%, rgba(255, 255, 255, 0.78), transparent 28%),
+    linear-gradient(135deg, #c8fff2, #98ded6);
+  color: var(--wellness-teal-dark);
+  display: grid;
+  place-items: center;
+  font-size: 1.55rem;
+  font-weight: 950;
+  transform: translateY(50%);
+  box-shadow: 0 20px 36px rgba(13, 113, 104, 0.18);
+}
+
+#wellnessView .wellness-admin-request-profile-sheet h3 {
+  margin-bottom: 6px;
+}
+
+#wellnessView .wellness-admin-instagram-link {
+  width: 100%;
+  min-height: 62px;
+  border: 0;
+  border-radius: 18px;
+  background: #fff;
+  color: var(--wellness-ink);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  margin: 16px 0;
+  padding: 10px 14px;
+  text-align: left;
+  text-decoration: none;
+  box-shadow: inset 0 0 0 1px #eceff4, 0 16px 32px rgba(38, 47, 78, 0.08);
+}
+
+#wellnessView .wellness-admin-instagram-link span {
+  grid-row: span 2;
+  width: 44px;
+  height: 44px;
+  border-radius: 15px;
+  background: radial-gradient(circle at 30% 90%, #ffd66b, transparent 34%), linear-gradient(135deg, #7f4dff, #f23aa4 52%, #ff8f3d);
+  color: #fff;
+  display: grid;
+  place-items: center;
+}
+
+#wellnessView .wellness-admin-instagram-link svg {
+  width: 24px;
+  height: 24px;
+}
+
+#wellnessView .wellness-admin-instagram-link strong,
+#wellnessView .wellness-admin-instagram-link small {
+  display: block;
+  min-width: 0;
+}
+
+#wellnessView .wellness-admin-instagram-link small {
+  overflow: hidden;
+  color: var(--wellness-muted);
+  font-weight: 900;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#wellnessView .wellness-creator-community-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+#wellnessView .wellness-creator-community-list button {
+  min-height: 58px;
+  border: 1px solid #d7e7e9;
+  border-radius: 12px;
+  background: #fff;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  padding: 8px;
+  color: var(--wellness-ink);
+  text-align: left;
+  font-weight: 900;
+}
+
+#wellnessView .wellness-creator-community-logo {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: #eafff9;
+  color: var(--wellness-teal-dark);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+#wellnessView .wellness-creator-community-logo svg {
+  display: none;
+}
+
+#wellnessView .wellness-community-card-logo,
+#wellnessView .wellness-community-detail-logo {
+  width: 62px;
+  height: 62px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.86);
+  color: var(--wellness-teal-dark);
+  box-shadow: 0 12px 28px rgba(15, 52, 60, 0.12);
+  overflow: hidden;
+  position: relative;
+}
+
+#wellnessView .wellness-community-detail-logo {
+  width: 82px;
+  height: 82px;
+  border-radius: 20px;
+}
+
+#wellnessView .wellness-community-card-logo strong,
+#wellnessView .wellness-community-detail-logo strong {
+  font-size: 1.3rem;
+}
+
+#wellnessView .wellness-community-card-logo svg,
+#wellnessView .wellness-community-detail-logo svg {
+  position: absolute;
+  right: 7px;
+  bottom: 7px;
+  width: 18px;
+  height: 18px;
+  opacity: 0.42;
+}
+
+#wellnessView .wellness-community-card-logo.has-image img,
+#wellnessView .wellness-community-detail-logo.has-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#wellnessView .wellness-admin-automation-grid article {
+  position: relative;
+  display: grid;
+  gap: 8px;
+  padding-right: 58px;
+}
+
+#wellnessView .wellness-admin-automation-grid .wellness-admin-toggle {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+
+#wellnessView .wellness-admin-game-grid article {
+  display: grid;
+  gap: 8px;
+}
+
+#wellnessView .wellness-admin-realtime {
+  position: sticky;
+  top: 14px;
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+}
+
+#wellnessView .wellness-admin-realtime-heading {
+  border-bottom: 1px solid #eaf3f4;
+  padding-bottom: 10px;
+}
+
+#wellnessView .wellness-admin-realtime-heading strong,
+#wellnessView .wellness-admin-realtime-heading small {
+  display: block;
+}
+
+#wellnessView .wellness-admin-realtime article {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  border: 1px solid #edf4f5;
+  border-radius: 12px;
+  padding: 10px;
+  background: #fbfffe;
+}
+
+#wellnessView .wellness-admin-realtime article strong,
+#wellnessView .wellness-admin-realtime article p {
+  margin: 0;
+}
+
+#wellnessView .wellness-event-reservation-bar {
+  position: sticky;
+  bottom: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid var(--wellness-line);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 -12px 32px rgba(15, 52, 60, 0.1);
+}
+
+#wellnessView .wellness-event-reservation-bar span {
+  font-weight: 900;
+  color: var(--wellness-teal-dark);
+}
+
+#wellnessView .wellness-history-card {
+  padding: 16px;
+}
+
+#wellnessView .wellness-history-card h4 {
+  margin-bottom: 12px;
+}
+
+#wellnessView .wellness-history-item,
+#wellnessView .wellness-history-alert,
+#wellnessView .wellness-integration-item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #e6f0f1;
+}
+
+#wellnessView .wellness-history-item:last-child,
+#wellnessView .wellness-history-alert:last-child,
+#wellnessView .wellness-integration-item:last-child {
+  border-bottom: 0;
+}
+
+#wellnessView .wellness-history-item b {
+  grid-column: 1 / -1;
+  margin-left: 60px;
+}
+
+#wellnessView .wellness-history-alert p {
+  color: var(--wellness-muted);
+  line-height: 1.45;
+}
+
+#wellnessView .wellness-history-alert button,
+#wellnessView .wellness-integration-item button {
+  grid-column: 1 / -1;
+  min-height: 38px;
+  border-radius: 14px;
+  border: 1px solid #bfe9e6;
+  background: #fff;
+  color: var(--wellness-teal-dark);
+  font-weight: 900;
+}
+
+#wellnessView .wellness-empty-state {
+  min-height: 180px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 10px;
+  color: var(--wellness-muted);
+  text-align: center;
+  padding: 18px;
+}
+
+#wellnessView .wellness-empty-state span {
+  width: 58px;
+  height: 58px;
+  border-radius: 20px;
+  display: grid;
+  place-items: center;
+  background: #effdfa;
+  color: var(--wellness-teal-dark);
+}
+
+#wellnessView .wellness-bottom-nav {
+  position: sticky;
+  bottom: 92px;
+  z-index: 12;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 4px;
+  margin: 18px auto 0;
+  max-width: 760px;
+  border: 1px solid var(--wellness-line);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.94);
+  padding: 8px;
+  box-shadow: 0 18px 46px rgba(15, 52, 60, 0.15);
+  backdrop-filter: blur(14px);
+}
+
+#wellnessView .wellness-bottom-nav button {
+  border: 0;
+  background: transparent;
+  color: var(--wellness-muted);
+  border-radius: 16px;
+  min-height: 54px;
+  display: grid;
+  place-items: center;
+  gap: 2px;
+  cursor: pointer;
+  font-weight: 900;
+  font-size: 0.67rem;
+}
+
+#wellnessView .wellness-bottom-nav button.active {
+  background: #eafff9;
+  color: var(--wellness-teal-dark);
+}
+
+#wellnessView .wellness-bottom-nav .wellness-bottom-plus {
+  transform: translateY(-16px);
+  background: linear-gradient(135deg, #22d2bf, #0ca596);
+  color: #fff;
+  box-shadow: 0 16px 28px rgba(18, 185, 167, 0.26);
+}
+
+#wellnessView .wellness-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 260;
+  display: grid;
+  place-items: end center;
+  padding: 18px;
+  background: rgba(15, 28, 38, 0.42);
+  backdrop-filter: blur(8px);
+}
+
+#wellnessView .wellness-sheet {
+  width: min(100%, 620px);
+  max-height: min(86vh, 820px);
+  overflow-y: auto;
+  border: 1px solid var(--wellness-line);
+  border-radius: 28px;
+  background: #fff;
+  box-shadow: 0 28px 70px rgba(7, 29, 40, 0.25);
+  padding: 22px;
+  position: relative;
+}
+
+#wellnessView .wellness-sheet-wide {
+  width: min(100%, 880px);
+}
+
+#wellnessView .wellness-modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  border: 1px solid #d7e7e9;
+  background: #fff;
+  color: var(--wellness-ink);
+  cursor: pointer;
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+#wellnessView .wellness-sheet h3 {
+  margin: 4px 46px 16px 0;
+  font-size: 1.5rem;
+}
+
+#wellnessView .wellness-quick-options {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  cursor: grab;
+  user-select: none;
+}
+
+#wellnessView .wellness-quick-options::-webkit-scrollbar {
+  display: none;
+}
+
+#wellnessView .wellness-quick-options.is-panning {
+  cursor: grabbing;
+}
+
+#wellnessView .wellness-quick-options button {
+  flex: 0 0 auto;
+  min-height: 42px;
+  border: 1px solid var(--wellness-line);
+  border-radius: 15px;
+  background: #fff;
+  color: var(--wellness-ink);
+  font-weight: 900;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px;
+  scroll-snap-align: start;
+}
+
+#wellnessView .wellness-quick-options button.active {
+  background: #eafff9;
+  border-color: #9eece3;
+  color: var(--wellness-teal-dark);
+}
+
+#wellnessView .wellness-form {
+  display: grid;
+  gap: 12px;
+}
+
+#wellnessView .wellness-goal-form {
+  grid-template-columns: 1fr;
+}
+
+#wellnessView .wellness-form label {
+  display: grid;
+  gap: 7px;
+  color: var(--wellness-muted);
+  font-weight: 900;
+}
+
+#wellnessView .wellness-form input,
+#wellnessView .wellness-form select,
+#wellnessView .wellness-form textarea {
+  min-height: 46px;
+  border: 1px solid #d7e7e9;
+  border-radius: 16px;
+  background: #fbfefe;
+  color: var(--wellness-ink);
+  font: inherit;
+  font-weight: 800;
+  padding: 10px 12px;
+}
+
+#wellnessView .wellness-attachment-field {
+  display: grid;
+  gap: 7px;
+  color: var(--wellness-muted);
+  font-weight: 900;
+}
+
+#wellnessView .wellness-attachment-control {
+  position: relative;
+  min-height: 60px;
+  border: 1px solid #d7e7e9;
+  border-radius: 18px;
+  background: #fbfefe;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+}
+
+#wellnessView .wellness-attachment-plus {
+  width: 42px;
+  height: 42px;
+  border: 1px solid #bfe9e6;
+  border-radius: 15px;
+  background: linear-gradient(135deg, #eafff9, #ffffff);
+  color: var(--wellness-teal-dark);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+
+#wellnessView .wellness-attachment-copy {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+#wellnessView .wellness-attachment-copy strong {
+  color: var(--wellness-ink);
+  font-size: 0.92rem;
+}
+
+#wellnessView .wellness-attachment-copy small {
+  color: var(--wellness-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#wellnessView .wellness-form input.wellness-hidden-file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  min-height: 0;
+  border: 0;
+  opacity: 0;
+  padding: 0;
+  pointer-events: none;
+}
+
+#wellnessView .wellness-attachment-menu {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  top: calc(100% + 8px);
+  z-index: 8;
+  display: none;
+  gap: 8px;
+  border: 1px solid #d7e7e9;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 22px 44px rgba(12, 29, 58, 0.16);
+  padding: 10px;
+  backdrop-filter: blur(12px);
+}
+
+#wellnessView .wellness-attachment-control.open .wellness-attachment-menu {
+  display: grid;
+}
+
+#wellnessView .wellness-attachment-menu button {
+  min-height: 48px;
+  border: 0;
+  border-radius: 16px;
+  background: #f8fcfd;
+  color: var(--wellness-ink);
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  column-gap: 10px;
+  padding: 8px 12px;
+  text-align: left;
+  font-weight: 900;
+}
+
+#wellnessView .wellness-attachment-menu button svg {
+  color: var(--wellness-teal-dark);
+}
+
+#wellnessView .wellness-attachment-menu button small {
+  grid-column: 2;
+  color: var(--wellness-muted);
+  font-weight: 800;
+}
+
+#wellnessView .wellness-sheet-actions,
+#wellnessView .wellness-social-actions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+#wellnessView .wellness-score-breakdown {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+#wellnessView .wellness-score-breakdown div {
+  border: 1px solid #e3f1f2;
+  border-radius: 16px;
+  padding: 12px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-weight: 900;
+}
+
+#wellnessView .wellness-detail-chart {
+  min-height: 190px;
+  border: 1px solid #e3f1f2;
+  border-radius: 20px;
+  padding: 16px;
+  display: grid;
+}
+
+#wellnessView .wellness-bars {
+  min-height: 160px;
+}
+
+#wellnessView .wellness-detail-records {
+  border: 1px solid #e3f1f2;
+  border-radius: 18px;
+  padding: 8px 14px;
+  margin-top: 12px;
+}
+
+#wellnessView .wellness-recommendation {
+  border: 1px solid #d8efee;
+  border-radius: 18px;
+  padding: 14px;
+  background: #f7fffd;
+  margin: 12px 0;
+}
+
+#wellnessView .wellness-social-preview {
+  min-height: 320px;
+  border-radius: 26px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 12px;
+  text-align: center;
+  padding: 24px;
+  color: #fff;
+  background:
+    radial-gradient(circle at 20% 22%, rgba(255, 255, 255, 0.26), transparent 18%),
+    radial-gradient(circle at 80% 18%, rgba(255, 215, 87, 0.45), transparent 14%),
+    linear-gradient(145deg, #0ca596, #12c9b6 58%, #0d7c89);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+#wellnessView .wellness-social-preview span {
+  width: 86px;
+  height: 86px;
+  border-radius: 30px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.22);
+}
+
+#wellnessView .wellness-social-preview strong {
+  font-size: 1.6rem;
+}
+
+#wellnessView .wellness-share-channel-shell {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr) 42px;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+#wellnessView .wellness-share-channel-arrow {
+  width: 42px;
+  height: 42px;
+  border: 1px solid #d7ecef;
+  border-radius: 18px;
+  background: #ffffff;
+  color: var(--wellness-teal-dark);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 12px 24px rgba(10, 72, 84, 0.08);
+}
+
+#wellnessView .wellness-share-channel-track {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  padding: 8px 2px 12px;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  cursor: grab;
+  user-select: none;
+}
+
+#wellnessView .wellness-share-channel-track::-webkit-scrollbar {
+  display: none;
+}
+
+#wellnessView .wellness-share-channel-track.is-panning {
+  cursor: grabbing;
+}
+
+#wellnessView .wellness-share-channel {
+  flex: 0 0 84px;
+  border: 0;
+  background: transparent;
+  color: var(--wellness-ink);
+  cursor: pointer;
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  scroll-snap-align: start;
+  text-align: center;
+}
+
+#wellnessView .wellness-share-channel-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  color: #ffffff;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 16px 26px rgba(12, 29, 58, 0.14);
+}
+
+#wellnessView .wellness-share-channel-icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+#wellnessView .wellness-share-channel strong {
+  max-width: 86px;
+  color: #1e314d;
+  font-size: 0.78rem;
+  line-height: 1.15;
+}
+
+#wellnessView .wellness-share-instagram .wellness-share-channel-icon,
+#wellnessView .wellness-share-stories .wellness-share-channel-icon {
+  background: radial-gradient(circle at 30% 90%, #ffd66b, transparent 34%), linear-gradient(135deg, #7f4dff, #f23aa4 52%, #ff8f3d);
+}
+
+#wellnessView .wellness-share-tiktok .wellness-share-channel-icon {
+  background: linear-gradient(135deg, #101827, #0e7488);
+}
+
+#wellnessView .wellness-share-facebook .wellness-share-channel-icon,
+#wellnessView .wellness-share-messenger .wellness-share-channel-icon {
+  background: linear-gradient(135deg, #2f80ff, #1458d9);
+}
+
+#wellnessView .wellness-share-whatsapp .wellness-share-channel-icon,
+#wellnessView .wellness-share-messages .wellness-share-channel-icon {
+  background: linear-gradient(135deg, #26d66d, #08a854);
+}
+
+#wellnessView .wellness-share-telegram .wellness-share-channel-icon {
+  background: linear-gradient(135deg, #38bdf8, #168bc2);
+}
+
+#wellnessView .wellness-share-download .wellness-share-channel-icon,
+#wellnessView .wellness-share-copy .wellness-share-channel-icon,
+#wellnessView .wellness-share-device .wellness-share-channel-icon {
+  background: linear-gradient(135deg, #22d2bf, #0ca596);
+}
+
+#wellnessView .wellness-accent-blue .wellness-metric-icon,
+#wellnessView .wellness-accent-blue > div:first-child span,
+#wellnessView .wellness-accent-blue.wellness-history-icon {
+  background: #edf6ff;
+  color: var(--wellness-blue);
+}
+
+#wellnessView .wellness-accent-purple .wellness-metric-icon,
+#wellnessView .wellness-accent-purple > div:first-child span,
+#wellnessView .wellness-accent-purple.wellness-history-icon {
+  background: #f2edff;
+  color: var(--wellness-purple);
+}
+
+#wellnessView .wellness-accent-gold .wellness-metric-icon,
+#wellnessView .wellness-accent-gold > div:first-child span,
+#wellnessView .wellness-accent-gold.wellness-history-icon {
+  background: #fff7dd;
+  color: var(--wellness-gold);
+}
+
+#wellnessView .wellness-accent-orange .wellness-metric-icon,
+#wellnessView .wellness-accent-orange > div:first-child span,
+#wellnessView .wellness-accent-orange.wellness-history-icon {
+  background: #fff5e7;
+  color: var(--wellness-orange);
+}
+
+#wellnessView .wellness-accent-red .wellness-metric-icon,
+#wellnessView .wellness-accent-red > div:first-child span,
+#wellnessView .wellness-accent-red.wellness-history-icon {
+  background: #fff1f1;
+  color: var(--wellness-red);
+}
+
+@media (min-width: 680px) {
+  #wellnessView .wellness-root {
+    padding: 24px;
+    padding-bottom: 124px;
+  }
+
+  #wellnessView .wellness-mood-row {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  #wellnessView .wellness-score-card {
+    grid-template-columns: auto minmax(0, 1fr) 260px;
+    align-items: center;
+  }
+
+  #wellnessView .wellness-score-trend {
+    grid-column: auto;
+  }
+
+  #wellnessView .wellness-metric-grid,
+  #wellnessView .wellness-wellbeing-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #wellnessView .wellness-alert-actions,
+  #wellnessView .wellness-goal-actions,
+  #wellnessView .wellness-sheet-actions,
+  #wellnessView .wellness-social-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #wellnessView .wellness-goal-form {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #wellnessView .wellness-goal-form label:nth-child(3),
+  #wellnessView .wellness-goal-form .wellness-sheet-actions {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 1024px) {
+  #wellnessView .wellness-metric-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  #wellnessView .wellness-wellbeing-grid,
+  #wellnessView .wellness-goal-grid,
+  #wellnessView .wellness-reward-grid,
+  #wellnessView .wellness-history-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #wellnessView .wellness-bottom-nav {
+    display: none;
+  }
+
+  #wellnessView .wellness-root {
+    padding-bottom: 36px;
+  }
+
+  #wellnessView .wellness-modal-backdrop {
+    place-items: center;
+  }
+}
+
+@media (max-width: 1180px) {
+  #wellnessView .wellness-admin-kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #wellnessView .wellness-admin-dashboard-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas:
+      "events requests"
+      "tools activity"
+      "members members"
+      "content content";
+  }
+
+  #wellnessView .wellness-admin-event-tile {
+    grid-template-columns: 96px 54px minmax(0, 1fr);
+  }
+
+  #wellnessView .wellness-admin-event-actions {
+    grid-column: 2 / -1;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 860px) {
+  #wellnessView .wellness-admin-topbar,
+  #wellnessView .wellness-admin-profile-strip {
+    align-items: flex-start;
+  }
+
+  #wellnessView .wellness-admin-topbar {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  #wellnessView .wellness-admin-profile-strip {
+    margin-left: 0;
+  }
+
+  #wellnessView .wellness-admin-community-hero,
+  #wellnessView .wellness-admin-dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  #wellnessView .wellness-admin-dashboard-grid {
+    grid-template-areas:
+      "events"
+      "requests"
+      "tools"
+      "members"
+      "content"
+      "activity";
+  }
+
+  #wellnessView .wellness-admin-community-hero::after {
+    opacity: 0.28;
+    right: -90px;
+  }
+
+  #wellnessView .wellness-admin-edit-community {
+    position: static;
+    justify-self: start;
+  }
+
+  #wellnessView .wellness-admin-community-mark {
+    width: 94px;
+    height: 94px;
+  }
+
+  #wellnessView .wellness-admin-hero-actions button {
+    width: 100%;
+    min-width: 0;
+  }
+
+  #wellnessView .wellness-admin-member-controls,
+  #wellnessView .wellness-admin-member-table-head,
+  #wellnessView .wellness-admin-member-row,
+  #wellnessView .wellness-admin-activity-row {
+    grid-template-columns: 1fr;
+  }
+
+  #wellnessView .wellness-admin-member-table-head {
+    display: none;
+  }
+
+  #wellnessView .wellness-admin-member-row {
+    gap: 8px;
+    padding: 10px 0;
+  }
+
+  #wellnessView .wellness-admin-hero,
+  #wellnessView .wellness-admin-layout,
+  #wellnessView .wellness-admin-row {
+    grid-template-columns: 1fr;
+  }
+
+  #wellnessView .wellness-admin-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #wellnessView .wellness-admin-hero-cover {
+    min-height: 132px;
+  }
+
+  #wellnessView .wellness-admin-card-heading {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  #wellnessView .wellness-admin-card-heading .wellness-primary-soft {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  #wellnessView .wellness-community-layout {
+    grid-template-columns: 1fr;
+  }
+
+  #wellnessView .wellness-event-list-featured {
+    grid-template-columns: 1fr;
+  }
+
+  #wellnessView .wellness-community-card,
+  #wellnessView .wellness-event-card,
+  #wellnessView .wellness-request-item {
+    grid-template-columns: 1fr;
+  }
+
+  #wellnessView .wellness-community-card {
+    align-items: start;
+  }
+
+  #wellnessView .wellness-community-card.compact {
+    min-width: min(88vw, 360px);
+  }
+
+  #wellnessView .wellness-community-cover,
+  #wellnessView .wellness-event-cover {
+    min-height: 156px;
+  }
+
+  #wellnessView .wellness-event-card > button,
+  #wellnessView .wellness-request-item > div:last-child {
+    width: 100%;
+  }
+
+  #wellnessView .wellness-community-detail-stats {
+    grid-template-columns: 1fr;
+  }
+
+  #wellnessView .wellness-event-reservation-bar {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  #wellnessView .wellness-dashboard-hero {
+    align-items: start;
+  }
+
+  #wellnessView .wellness-dashboard-hero .patient-section-hero-copy h2 {
+    font-size: 1.9rem;
+  }
+
+  #wellnessView .wellness-root {
+    padding: 14px;
+    padding-bottom: 104px;
+  }
+
+  #wellnessView .wellness-section-tab {
+    min-width: 132px;
+  }
+
+  #wellnessView .wellness-score-card {
+    grid-template-columns: 1fr;
+  }
+
+  #wellnessView .wellness-score-ring {
+    margin: 0 auto;
+  }
+
+  #wellnessView .wellness-greeting-card {
+    align-items: start;
+  }
+
+  #wellnessView .wellness-notification-button,
+  #wellnessView .wellness-avatar {
+    width: 46px;
+    height: 46px;
+    border-radius: 16px;
+  }
+
+  #wellnessView .wellness-bottom-nav {
+    bottom: 82px;
+    border-radius: 22px;
+  }
+
+  #wellnessView .wellness-bottom-nav button span:last-child {
+    display: none;
+  }
+
+  #wellnessView .wellness-bottom-nav button {
+    min-height: 48px;
+  }
+
+  #wellnessView .wellness-admin-page-title h3,
+  #wellnessView .wellness-admin-community-copy h4 {
+    font-size: 1.45rem;
+  }
+
+  #wellnessView .wellness-admin-kpi-grid,
+  #wellnessView .wellness-admin-stat,
+  #wellnessView .wellness-admin-event-tile,
+  #wellnessView .wellness-admin-request-row,
+  #wellnessView .wellness-admin-content-item,
+  #wellnessView .wellness-admin-post-form {
+    grid-template-columns: 1fr;
+  }
+
+  #wellnessView .wellness-admin-trend {
+    display: none;
+  }
+
+  #wellnessView .wellness-admin-request-row button,
+  #wellnessView .wellness-admin-event-actions {
+    width: 100%;
+  }
+
+  #wellnessView .wellness-admin-stats,
+  #wellnessView .wellness-admin-form-grid,
+  #wellnessView .wellness-admin-cover-swatches {
+    grid-template-columns: 1fr;
+  }
+
+  #wellnessView .wellness-admin-row-actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #wellnessView .wellness-admin-row button,
+  #wellnessView .wellness-admin-row-actions button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 1023px) {
+  body[data-patient-view="wellnessView"] .assistant-composer {
+    bottom: 0;
+    width: min(760px, calc(100dvw - 20px));
+    max-width: calc(100dvw - 20px);
+    grid-template-columns: 52px minmax(0, 1fr);
+    align-items: end;
+    gap: 10px;
+    padding: 78px 12px calc(12px + env(safe-area-inset-bottom));
+    border-radius: 28px 28px 0 0;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow:
+      0 -24px 60px rgba(244, 252, 252, 0.98),
+      0 -10px 34px rgba(10, 72, 84, 0.12);
+    z-index: 142;
+  }
+
+  body[data-patient-view="wellnessView"] .assistant-composer::before {
+    right: -10px;
+    bottom: calc(100% - 8px);
+    left: -10px;
+    height: 72px;
+    border-radius: 30px 30px 0 0;
+    background: linear-gradient(180deg, rgba(248, 252, 253, 0), rgba(248, 252, 253, 0.94));
+  }
+
+  body[data-patient-view="wellnessView"] #wellnessView .wellness-root {
+    padding-bottom: 188px;
+  }
+
+  body[data-patient-view="wellnessView"] #wellnessView .wellness-bottom-nav {
+    position: fixed;
+    right: auto;
+    bottom: calc(72px + env(safe-area-inset-bottom));
+    left: 50%;
+    z-index: 143;
+    width: min(724px, calc(100dvw - 44px));
+    max-width: calc(100dvw - 44px);
+    margin: 0;
+    transform: translateX(-50%);
+    border-color: rgba(216, 238, 240, 0.92);
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 16px 40px rgba(10, 72, 84, 0.11);
+  }
+
+  body[data-patient-view="wellnessView"] #wellnessView .wellness-bottom-nav .wellness-bottom-plus {
+    transform: translateY(-14px);
+  }
+}
+
+@media (max-width: 520px) {
+  body[data-patient-view="wellnessView"] .assistant-composer {
+    width: calc(100dvw - 16px);
+    max-width: calc(100dvw - 16px);
+    padding: 76px 10px calc(10px + env(safe-area-inset-bottom));
+  }
+
+  body[data-patient-view="wellnessView"] #wellnessView .wellness-root {
+    padding-bottom: 182px;
+  }
+
+  body[data-patient-view="wellnessView"] #wellnessView .wellness-bottom-nav {
+    bottom: calc(68px + env(safe-area-inset-bottom));
+    width: calc(100dvw - 36px);
+    max-width: calc(100dvw - 36px);
+    padding: 7px;
+  }
+}
+
+/* Final Wellness shell position: Dr. Sam bar arriba, Wellness nav abajo */
+body[data-patient-view="wellnessView"] .assistant-composer {
+  top: calc(92px + env(safe-area-inset-top));
+  bottom: auto;
+  width: min(1120px, calc(100dvw - 32px));
+  max-width: calc(100dvw - 32px);
+  grid-template-columns: 52px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow:
+    0 22px 54px rgba(248, 252, 253, 0.94),
+    0 18px 48px rgba(31, 45, 52, 0.09);
+  z-index: 180;
+}
+
+body[data-patient-view="wellnessView"] .assistant-composer::before {
+  top: calc(100% - 2px);
+  right: -18px;
+  bottom: auto;
+  left: -18px;
+  height: 96px;
+  border-radius: 0 0 22px 22px;
+  background: linear-gradient(180deg, rgba(248, 252, 253, 0.96), rgba(248, 252, 253, 0));
+}
+
+body[data-patient-view="wellnessView"] #wellnessView .wellness-root {
+  padding-bottom: 118px;
+}
+
+body[data-patient-view="wellnessView"] #wellnessView .wellness-bottom-nav {
+  position: fixed;
+  right: auto;
+  bottom: calc(14px + env(safe-area-inset-bottom));
+  left: 50%;
+  z-index: 170;
+  display: grid;
+  width: min(760px, calc(100dvw - 32px));
+  max-width: calc(100dvw - 32px);
+  margin: 0;
+  transform: translateX(-50%);
+  border-color: rgba(216, 238, 240, 0.92);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 16px 40px rgba(10, 72, 84, 0.11);
+}
+
+body[data-patient-view="wellnessView"] #wellnessView .wellness-bottom-nav .wellness-bottom-plus {
+  transform: translateY(-16px);
+}
+
+@media (max-width: 760px) {
+  body[data-patient-view="wellnessView"] .assistant-composer {
+    top: calc(72px + env(safe-area-inset-top));
+    width: calc(100dvw - 28px);
+    max-width: calc(100dvw - 28px);
+    grid-template-columns: 50px minmax(0, 1fr);
+    gap: 8px;
+    padding: 8px;
+  }
+
+  body.patient-demo-embedded[data-patient-view="wellnessView"] .assistant-composer {
+    top: calc(66px + env(safe-area-inset-top));
+  }
+
+  body[data-patient-view="wellnessView"] .assistant-composer::before {
+    right: -12px;
+    left: -12px;
+    height: 76px;
+  }
+
+  body[data-patient-view="wellnessView"] #wellnessView .wellness-root {
+    padding-bottom: 104px;
+  }
+
+  body[data-patient-view="wellnessView"] #wellnessView .wellness-bottom-nav {
+    bottom: calc(12px + env(safe-area-inset-bottom));
+    width: calc(100dvw - 36px);
+    max-width: calc(100dvw - 36px);
+    padding: 7px;
+  }
+}
+
+/* Wellness keeps the unified patient header while its own nav stays fixed below */
+body[data-patient-view="wellnessView"] .assistant-composer {
+  top: calc(24px + env(safe-area-inset-top));
+  right: 330px;
+  bottom: auto;
+  left: 36px;
+  width: auto;
+  max-width: none;
+  grid-template-columns: 52px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 12px 30px rgba(31, 45, 52, 0.06);
+  transform: none;
+}
+
+body[data-patient-view="wellnessView"] .assistant-composer::before {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  body[data-patient-view="wellnessView"] .assistant-composer {
+    right: 96px;
+    left: 20px;
+  }
+}
+
+@media (max-width: 760px) {
+  body[data-patient-view="wellnessView"] .assistant-composer,
+  body.patient-demo-embedded[data-patient-view="wellnessView"] .assistant-composer {
+    top: calc(12px + env(safe-area-inset-top));
+    right: 64px;
+    bottom: auto;
+    left: 14px;
+    width: auto;
+    max-width: none;
+    grid-template-columns: 50px minmax(0, 1fr);
+    gap: 8px;
+    padding: 8px;
+    border: 0;
+    border-radius: 18px;
+    background: transparent;
+    box-shadow: none;
+  }
+}
+
+/* Final Wellness top bar alignment with patient profile */
+body[data-patient-view="wellnessView"] .assistant-composer {
+  top: calc(16px + env(safe-area-inset-top));
+  right: 330px;
+  bottom: auto;
+  left: 30px;
+  width: auto;
+  max-width: none;
+  padding: 0;
+  border: 0;
+  border-radius: 18px;
+  background: transparent;
+  box-shadow: none;
+  transform: none;
+}
+
+body[data-patient-view="wellnessView"] .assistant-composer::before {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  body[data-patient-view="wellnessView"] .assistant-composer {
+    right: 92px;
+    left: 20px;
+  }
+}
+
+@media (max-width: 760px) {
+  body[data-patient-view="wellnessView"] .assistant-composer,
+  body.patient-demo-embedded[data-patient-view="wellnessView"] .assistant-composer {
+    top: calc(14px + env(safe-area-inset-top));
+    right: 58px;
+    bottom: auto;
+    left: 18px;
+    width: auto;
+    max-width: none;
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: 8px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+}
+
+/* Shared patient shell: keep one global bottom menu and align Dr. Sam submit button */
+body[data-patient-view="wellnessView"] #wellnessView .wellness-bottom-nav {
+  display: none !important;
+}
+
+body[data-patient-view="wellnessView"] .assistant-composer,
+body.patient-demo-embedded[data-patient-view="wellnessView"] .assistant-composer {
+  right: 92px !important;
+  left: 24px !important;
+  width: auto !important;
+  max-width: none !important;
+}
+
+body[data-patient-view="wellnessView"] #assistantQuestionForm.assistant-question-form,
+body.patient-demo-embedded[data-patient-view="wellnessView"] #assistantQuestionForm.assistant-question-form {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 42px !important;
+  gap: 10px !important;
+  align-items: center !important;
+}
+
+body[data-patient-view="wellnessView"] #assistantQuestionInput,
+body.patient-demo-embedded[data-patient-view="wellnessView"] #assistantQuestionInput {
+  padding-right: 14px !important;
+}
+
+body[data-patient-view="wellnessView"] #assistantQuestionForm .assistant-question-submit,
+body[data-patient-view="wellnessView"] #assistantQuestionForm .dr-sam-arrow-submit,
+body.patient-demo-embedded[data-patient-view="wellnessView"] #assistantQuestionForm .assistant-question-submit,
+body.patient-demo-embedded[data-patient-view="wellnessView"] #assistantQuestionForm .dr-sam-arrow-submit {
+  position: static !important;
+  width: 42px !important;
+  min-width: 42px !important;
+  height: 42px !important;
+  min-height: 42px !important;
+  transform: none !important;
+}
+
+@media (max-width: 760px) {
+  body[data-patient-view="wellnessView"] .assistant-composer,
+  body.patient-demo-embedded[data-patient-view="wellnessView"] .assistant-composer {
+    right: 80px !important;
+    left: 24px !important;
+  }
+
+  body[data-patient-view="wellnessView"] #assistantQuestionForm.assistant-question-form,
+  body.patient-demo-embedded[data-patient-view="wellnessView"] #assistantQuestionForm.assistant-question-form {
+    grid-template-columns: minmax(0, 1fr) 40px !important;
+    gap: 9px !important;
+  }
+
+  body[data-patient-view="wellnessView"] #assistantQuestionForm .assistant-question-submit,
+  body[data-patient-view="wellnessView"] #assistantQuestionForm .dr-sam-arrow-submit,
+  body.patient-demo-embedded[data-patient-view="wellnessView"] #assistantQuestionForm .assistant-question-submit,
+  body.patient-demo-embedded[data-patient-view="wellnessView"] #assistantQuestionForm .dr-sam-arrow-submit {
+    width: 40px !important;
+    min-width: 40px !important;
+    height: 40px !important;
+    min-height: 40px !important;
+  }
+}
+
+/* Wellness uses the same fixed top command-bar axis as the rest of patient */
+body[data-patient-view="wellnessView"] .assistant-card-header .medical-profile,
+body.patient-demo-embedded[data-patient-view="wellnessView"] .assistant-card-header .medical-profile {
+  top: var(--patient-topbar-y) !important;
+  right: var(--patient-topbar-edge) !important;
+  height: var(--patient-topbar-height) !important;
+  align-items: center !important;
+}
+
+body[data-patient-view="wellnessView"] .assistant-card-header .profile-avatar,
+body[data-patient-view="wellnessView"] .assistant-card-header .profile-avatar-button,
+body.patient-demo-embedded[data-patient-view="wellnessView"] .assistant-card-header .profile-avatar,
+body.patient-demo-embedded[data-patient-view="wellnessView"] .assistant-card-header .profile-avatar-button {
+  width: var(--patient-topbar-profile-size) !important;
+  min-width: var(--patient-topbar-profile-size) !important;
+  height: var(--patient-topbar-profile-size) !important;
+  min-height: var(--patient-topbar-profile-size) !important;
+  align-self: center !important;
+}
+
+body[data-patient-view="wellnessView"] .assistant-composer,
+body.patient-demo-embedded[data-patient-view="wellnessView"] .assistant-composer {
+  top: var(--patient-topbar-y) !important;
+  right: calc(var(--patient-topbar-edge) + var(--patient-topbar-profile-size) + var(--patient-topbar-gap)) !important;
+  left: var(--patient-topbar-edge) !important;
+  min-height: var(--patient-topbar-height) !important;
+  height: var(--patient-topbar-height) !important;
+  grid-template-columns: var(--patient-topbar-height) minmax(0, 1fr) !important;
+  align-items: center !important;
+}
+
+body[data-patient-view="wellnessView"] #assistantQuestionForm.assistant-question-form,
+body.patient-demo-embedded[data-patient-view="wellnessView"] #assistantQuestionForm.assistant-question-form {
+  height: var(--patient-topbar-height) !important;
+  grid-template-columns: minmax(0, 1fr) var(--patient-topbar-send-size) !important;
+  align-items: center !important;
+}
+
+body[data-patient-view="wellnessView"] #assistantQuestionInput,
+body.patient-demo-embedded[data-patient-view="wellnessView"] #assistantQuestionInput {
+  height: var(--patient-topbar-height) !important;
+  min-height: var(--patient-topbar-height) !important;
+}
+
+body[data-patient-view="wellnessView"] #assistantQuestionForm .assistant-question-submit,
+body[data-patient-view="wellnessView"] #assistantQuestionForm .dr-sam-arrow-submit,
+body.patient-demo-embedded[data-patient-view="wellnessView"] #assistantQuestionForm .assistant-question-submit,
+body.patient-demo-embedded[data-patient-view="wellnessView"] #assistantQuestionForm .dr-sam-arrow-submit {
+  width: var(--patient-topbar-send-size) !important;
+  min-width: var(--patient-topbar-send-size) !important;
+  height: var(--patient-topbar-send-size) !important;
+  min-height: var(--patient-topbar-send-size) !important;
+  align-self: center !important;
+}
+
+body[data-patient-view="wellnessView"] .assistant-card-header .medical-profile,
+body.patient-demo-embedded[data-patient-view="wellnessView"] .assistant-card-header .medical-profile {
+  top: calc(var(--patient-topbar-y) + var(--patient-topbar-profile-offset, 3px)) !important;
+  height: var(--patient-topbar-profile-size) !important;
+  min-height: var(--patient-topbar-profile-size) !important;
+  display: grid !important;
+  place-items: center !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 1 !important;
+  transform: none !important;
+}
+
+body[data-patient-view="wellnessView"] .assistant-card-header .profile-avatar,
+body[data-patient-view="wellnessView"] .assistant-card-header .profile-avatar-button,
+body.patient-demo-embedded[data-patient-view="wellnessView"] .assistant-card-header .profile-avatar,
+body.patient-demo-embedded[data-patient-view="wellnessView"] .assistant-card-header .profile-avatar-button {
+  width: var(--patient-topbar-profile-size) !important;
+  min-width: var(--patient-topbar-profile-size) !important;
+  height: var(--patient-topbar-profile-size) !important;
+  min-height: var(--patient-topbar-profile-size) !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+  place-self: center !important;
+  align-self: center !important;
+  justify-self: center !important;
+  line-height: 1 !important;
+  transform: none !important;
+}
+
+@media (max-width: 1320px) {
+  #wellnessView .wellness-admin-console-layout {
+    grid-template-columns: 228px minmax(0, 1fr);
+  }
+
+  #wellnessView .wellness-admin-realtime {
+    position: static;
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  #wellnessView .wellness-admin-realtime-heading {
+    grid-column: 1 / -1;
+  }
+
+  #wellnessView .wellness-admin-kpi-grid-large {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  #wellnessView .wellness-admin-request-grid,
+  #wellnessView .wellness-admin-settings-grid,
+  #wellnessView .wellness-admin-automation-grid,
+  #wellnessView .wellness-admin-game-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #wellnessView .wellness-admin-event-manager {
+    grid-template-columns: 96px minmax(0, 1fr);
+  }
+
+  #wellnessView .wellness-admin-event-manager select,
+  #wellnessView .wellness-admin-event-actions {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 980px) {
+  #wellnessView .wellness-admin-console-layout,
+  #wellnessView .wellness-admin-access-strip,
+  #wellnessView .wellness-community-admin-access,
+  #wellnessView .wellness-admin-console-topbar,
+  #wellnessView .wellness-admin-console-hero {
+    grid-template-columns: 1fr;
+  }
+
+  #wellnessView .wellness-admin-sidebar,
+  #wellnessView .wellness-admin-realtime {
+    position: static;
+  }
+
+  #wellnessView .wellness-admin-module-nav {
+    display: flex;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  #wellnessView .wellness-admin-module-nav button {
+    flex: 0 0 auto;
+    min-width: 150px;
+  }
+
+  #wellnessView .wellness-admin-top-actions {
+    justify-content: start;
+  }
+
+  #wellnessView .wellness-admin-kpi-grid-large,
+  #wellnessView .wellness-admin-chart-grid,
+  #wellnessView .wellness-admin-dashboard-panels,
+  #wellnessView .wellness-admin-analytics-grid,
+  #wellnessView .wellness-admin-realtime,
+  #wellnessView .wellness-admin-request-grid,
+  #wellnessView .wellness-admin-settings-grid,
+  #wellnessView .wellness-admin-automation-grid,
+  #wellnessView .wellness-admin-game-grid,
+  #wellnessView .wellness-admin-calendar-grid {
+    grid-template-columns: 1fr;
+  }
+
+  #wellnessView .wellness-admin-member-controls,
+  #wellnessView .wellness-admin-post-form-rich,
+  #wellnessView .wellness-admin-brand-editor {
+    grid-template-columns: 1fr;
+  }
+
+  #wellnessView .wellness-admin-health-score {
+    place-items: start;
+    text-align: left;
+    padding: 12px;
+  }
+}
+
+@media (max-width: 560px) {
+  #wellnessView .wellness-admin-console-main,
+  #wellnessView .wellness-admin-sidebar,
+  #wellnessView .wellness-admin-realtime,
+  #wellnessView .wellness-admin-access-strip {
+    padding: 10px;
+  }
+
+  #wellnessView .wellness-admin-kpi,
+  #wellnessView .wellness-admin-request-card.compact,
+  #wellnessView .wellness-admin-event-manager,
+  #wellnessView .wellness-admin-content-item {
+    grid-template-columns: 1fr;
+  }
+
+  #wellnessView .wellness-admin-request-card footer,
+  #wellnessView .wellness-admin-event-actions {
+    grid-template-columns: 1fr;
+  }
+
+  #wellnessView .wellness-admin-top-actions button,
+  #wellnessView .wellness-admin-access-strip a,
+  #wellnessView .wellness-community-admin-access button {
+    width: 100%;
+  }
+
+  #wellnessView .wellness-admin-notification-wrap {
+    width: 100%;
+  }
+
+  #wellnessView .wellness-admin-notification-dropdown {
+    left: 0;
+    right: auto;
+    width: min(360px, calc(100vw - 38px));
+  }
+
+  #wellnessView .wellness-admin-notification-dropdown::before {
+    left: 22px;
+    right: auto;
+  }
+
+  #wellnessView .wellness-admin-notification-dropdown button,
+  #wellnessView .wellness-admin-notification-actions button {
+    width: auto;
+  }
+
+  #wellnessView .wellness-admin-notification-summary,
+  #wellnessView .wellness-admin-notification-dropdown footer button {
+    width: 100%;
+  }
+
+  #wellnessView .wellness-admin-creator-button > span:last-child {
+    display: block;
+  }
+
+  #wellnessView .wellness-admin-brand-preview,
+  #wellnessView .wellness-creator-profile-card {
+    grid-template-columns: 1fr;
+  }
+
+  #wellnessView .wellness-admin-media-actions {
+    position: static;
+    grid-column: 1 / -1;
+    order: 4;
+  }
+
+  #wellnessView .wellness-admin-media-actions button {
+    flex: 1 1 120px;
+  }
+
+  #wellnessView .wellness-event-create-sheet {
+    padding: 18px;
+  }
+
+  #wellnessView .wellness-event-create-header,
+  #wellnessView .wellness-event-create-grid,
+  #wellnessView .wellness-event-image-editor,
+  #wellnessView .wellness-event-location-panel,
+  #wellnessView .wellness-event-image-actions,
+  #wellnessView .wellness-event-form-actions {
+    grid-template-columns: 1fr;
+  }
+
+  #wellnessView .wellness-event-image-note {
+    grid-column: 1;
+  }
+
+  #wellnessView .wellness-event-image-preview {
+    width: 132px;
+  }
+
+  #wellnessView .wellness-event-form-actions {
+    bottom: -18px;
+    gap: 10px;
+    margin: 18px -18px -18px;
+    padding: 14px 18px 16px;
+  }
+}
