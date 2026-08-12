@@ -994,7 +994,7 @@
 
     <section class="patient-profile-support-group" data-profile-support-group>
       <button class="patient-profile-row" type="button" data-profile-support-toggle aria-expanded="false">
-        <span class="patient-profile-row-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 13v-2a8 8 0 0 1 16 0v2"/><path d="M4 13h3v6H5a2 2 0 0 1-2-2v-2a2 2 0 0 1 1-2Zm16 0h-3v6h2a2 2 0 0 0 2-2v-2a2 2 0 0 0-1-2ZM17 19c0 1.1-2.2 2-5 2"/></svg></span>
+        <span class="patient-profile-row-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="2.7"/><circle cx="6.3" cy="9.4" r="2"/><circle cx="17.7" cy="9.4" r="2"/><path d="M7.7 18.8c.7-2.9 2.2-4.4 4.3-4.4s3.6 1.5 4.3 4.4"/><path d="M2.8 18.7c.5-2.2 1.7-3.4 3.6-3.4.7 0 1.3.1 1.8.4"/><path d="M21.2 18.7c-.5-2.2-1.7-3.4-3.6-3.4-.7 0-1.3.1-1.8.4"/></svg></span>
         <span class="patient-profile-row-copy"><strong>Interacciones</strong><small>Solicitudes, mensajes, alertas y enlaces</small></span>
         <span class="patient-profile-row-action patient-profile-support-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></span>
       </button>
@@ -1065,6 +1065,7 @@
       profileStorageKey: <?php echo json_encode('drsam_patient_profile_panel_'.$patient->id, 15, 512) ?>,
       onAction: event => window.dispatchEvent(new CustomEvent('drsam:communities-action', { detail: event })),
     });
+    window.KliniCommunitiesApp = communitiesApp;
   };
   const openView = (name) => {
     portal.querySelectorAll('[data-patient-view]').forEach(el => el.classList.toggle('is-active', el.dataset.patientView === name));
@@ -1872,7 +1873,8 @@
     portal.querySelector('[data-support-toggle]')?.setAttribute('aria-expanded', 'false');
     portal.querySelector('[data-support-menu]')?.setAttribute('aria-hidden', 'true');
   });
-  const initial = <?php echo json_encode($errors->any() ? (old('policy_number') ? 'insurance' : 'profile') : null, 15, 512) ?> || sessionStorage.getItem('patientPortalView') || 'home';
+  const initialHashView = window.location.hash?.startsWith('#community-admin-') ? 'communities' : null;
+  const initial = initialHashView || <?php echo json_encode($errors->any() ? (old('policy_number') ? 'insurance' : 'profile') : null, 15, 512) ?> || sessionStorage.getItem('patientPortalView') || 'home';
   openView(portal.querySelector(`[data-patient-view="${initial}"]`) ? initial : 'home');
 
   portal.querySelectorAll('[data-table-search]').forEach(input => input.addEventListener('input', () => {
