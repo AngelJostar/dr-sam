@@ -198,7 +198,13 @@
     { id: "menu-inteligente", catalogId: "community-menu-inteligente", slug: "menu-inteligente", repositorySource: "catalogo-base", exploreCategory: "nutricion", name: "Menu Inteligente", category: "Nutricion", access: "closed", visibility: "public", members: 69, city: "Ciudad de Mexico", description: "Planeacion de comidas, adherencia y recetas practicas.", longDescription: "Grupo para preparar menus semanales, revisar objetivos nutricionales y compartir alternativas saludables.", initials: "MI", logoInitials: "MI", tone: "gold", role: "none", heroImage: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=1400&q=88", features: ["Menu", "Recetas", "Adherencia"] },
     { id: "core-seguro", catalogId: "community-core-seguro", slug: "core-seguro", repositorySource: "catalogo-base", exploreCategory: "fuerza", name: "Core Seguro", category: "Fuerza", access: "open", visibility: "public", members: 60, city: "Monterrey", description: "Fuerza central, estabilidad y progresion sin dolor.", longDescription: "Ejercicios de core y estabilidad con niveles para avanzar de forma segura.", initials: "CO", logoInitials: "CO", tone: "violet", role: "none", heroImage: "https://images.unsplash.com/photo-1571019613914-85f342c6a11e?auto=format&fit=crop&w=1400&q=88", features: ["Core", "Estabilidad", "Progresion"] },
     { id: "descanso-profundo", catalogId: "community-descanso-profundo", slug: "descanso-profundo", repositorySource: "catalogo-base", exploreCategory: "salud-mental", name: "Descanso Profundo", category: "Salud mental", access: "closed", visibility: "public", members: 79, city: "Ciudad de Mexico", description: "Rutinas de descanso, sueno y pausas para recuperar energia.", longDescription: "Practicas para mejorar descanso, reducir tension y preparar el cuerpo para dormir mejor.", initials: "DP", logoInitials: "DP", tone: "violet", role: "none", heroImage: "https://images.unsplash.com/photo-1520206183501-b80df61043c2?auto=format&fit=crop&w=1400&q=88", features: ["Sueno", "Descanso", "Calma"] },
-    { id: "bienestar-integral-klini", catalogId: "community-bienestar-integral-klini", slug: "bienestar-integral-klini", repositorySource: "catalogo-base", exploreCategory: "bienestar", name: "Bienestar Integral Klini", category: "Bienestar", access: "open", visibility: "public", members: 93, city: "Guadalajara", description: "Seguimiento integral para metas pequenas y sostenibles.", longDescription: "Comunidad para combinar hidratacion, movimiento, descanso y seguimiento de metas personales.", initials: "BI", logoInitials: "BI", tone: "mint", role: "none", heroImage: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1400&q=88", features: ["Integral", "Metas", "Seguimiento"] }
+    { id: "bienestar-integral-klini", catalogId: "community-bienestar-integral-klini", slug: "bienestar-integral-klini", repositorySource: "catalogo-base", exploreCategory: "bienestar", name: "Bienestar Integral Klini", category: "Bienestar", access: "open", visibility: "public", members: 93, city: "Guadalajara", description: "Seguimiento integral para metas pequenas y sostenibles.", longDescription: "Comunidad para combinar hidratacion, movimiento, descanso y seguimiento de metas personales.", initials: "BI", logoInitials: "BI", tone: "mint", role: "none", heroImage: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1400&q=88", features: ["Integral", "Metas", "Seguimiento"] },
+    { id: "respira-profundo", catalogId: "community-respira-profundo", slug: "respira-profundo", repositorySource: "catalogo-base", exploreCategory: "yoga", name: "Respira Profundo", category: "Yoga", access: "open", visibility: "public", members: 102, city: "Puebla", description: "Respiracion guiada y calma para todos los dias.", longDescription: "Comunidad para practicar respiracion profunda, estiramientos suaves y pausas de bienestar en grupo.", initials: "RP", logoInitials: "RP", tone: "mint", role: "none", heroImage: "https://images.unsplash.com/photo-1593810450967-f9c42742e326?auto=format&fit=crop&w=1400&q=88", features: ["Respiracion", "Calma", "Pausas"] },
+    { id: "energia-matutina", catalogId: "community-energia-matutina", slug: "energia-matutina", repositorySource: "catalogo-base", exploreCategory: "bienestar", name: "Energia Matutina", category: "Bienestar", access: "open", visibility: "public", members: 57, city: "Ciudad de Mexico", description: "Rutinas cortas para iniciar el dia con energia.", longDescription: "Grupo para compartir rituales de manana, hidratacion, movilidad breve y metas personales.", initials: "EM", logoInitials: "EM", tone: "gold", role: "none", heroImage: "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=1400&q=88", features: ["Manana", "Energia", "Habitos"] },
+    { id: "control-glucosa", catalogId: "community-control-glucosa", slug: "control-glucosa", repositorySource: "catalogo-base", exploreCategory: "nutricion", name: "Control de Glucosa", category: "Nutricion", access: "closed", visibility: "public", members: 48, city: "Ciudad de Mexico", description: "Habitos, comida y seguimiento para control metabolico.", longDescription: "Comunidad de apoyo para registrar glucosa, preparar menus sencillos y compartir avances de adherencia.", initials: "CG", logoInitials: "CG", tone: "blue", role: "none", heroImage: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=1400&q=88", features: ["Glucosa", "Menu", "Seguimiento"] },
+    { id: "movimiento-suave", catalogId: "community-movimiento-suave", slug: "movimiento-suave", repositorySource: "catalogo-base", exploreCategory: "fuerza", name: "Movimiento Suave", category: "Fuerza", access: "open", visibility: "public", members: 66, city: "Merida", description: "Movilidad, fuerza ligera y rutinas seguras.", longDescription: "Espacio para retomar movimiento con ejercicios simples, fuerza progresiva y cuidado articular.", initials: "MV", logoInitials: "MV", tone: "violet", role: "none", heroImage: "https://images.unsplash.com/photo-1518459031867-a89b944bffe4?auto=format&fit=crop&w=1400&q=88", features: ["Movilidad", "Fuerza ligera", "Rutinas"] },
+    { id: "familia-saludable", catalogId: "community-familia-saludable", slug: "familia-saludable", repositorySource: "catalogo-base", exploreCategory: "bienestar", name: "Familia Saludable", category: "Bienestar", access: "open", visibility: "public", members: 90, city: "Monterrey", description: "Metas de bienestar para pacientes y familias.", longDescription: "Comunidad para coordinar habitos familiares, movimiento, alimentacion sencilla y recordatorios de salud.", initials: "FS", logoInitials: "FS", tone: "mint", role: "none", heroImage: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=1400&q=88", features: ["Familia", "Recordatorios", "Metas"] },
+    { id: "estres-bajo-control", catalogId: "community-estres-bajo-control", slug: "estres-bajo-control", repositorySource: "catalogo-base", exploreCategory: "salud-mental", name: "Estres Bajo Control", category: "Salud mental", access: "closed", visibility: "public", members: 52, city: "Queretaro", description: "Tecnicas sencillas para regular estres y descansar mejor.", longDescription: "Grupo para practicar respiracion, pausas conscientes, higiene del sueno y seguimiento emocional.", initials: "EC", logoInitials: "EC", tone: "violet", role: "none", heroImage: "https://images.unsplash.com/photo-1520206183501-b80df61043c2?auto=format&fit=crop&w=1400&q=88", features: ["Estres", "Descanso", "Regulacion"] }
   ]);
 
   var events = [
@@ -272,6 +278,32 @@
       .toLowerCase()
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "");
+  }
+
+  var EVENT_DAY_LABELS = ["DOM", "LUN", "MAR", "MIE", "JUE", "VIE", "SAB"];
+  var EVENT_MONTH_INDEX = {
+    ene: 0, enero: 0,
+    feb: 1, febrero: 1,
+    mar: 2, marzo: 2,
+    abr: 3, abril: 3,
+    may: 4, mayo: 4,
+    jun: 5, junio: 5,
+    jul: 6, julio: 6,
+    ago: 7, agosto: 7,
+    sep: 8, sept: 8, septiembre: 8,
+    oct: 9, octubre: 9,
+    nov: 10, noviembre: 10,
+    dic: 11, diciembre: 11
+  };
+
+  function pad2(value) {
+    value = String(value);
+    return value.length < 2 ? "0" + value : value;
+  }
+
+  function dateKeyFromDate(date) {
+    if (!(date instanceof Date) || isNaN(date.getTime())) return "";
+    return date.getFullYear() + "-" + pad2(date.getMonth() + 1) + "-" + pad2(date.getDate());
   }
 
   function normalizeCommunityRecord(community) {
@@ -362,6 +394,7 @@
       send: '<path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/>',
       map: '<path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/>',
       globe: '<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/>',
+      analytics: '<path d="M4 19V5"/><path d="M4 19h17"/><rect x="7" y="11" width="3" height="5" rx="1"/><rect x="12" y="8" width="3" height="8" rx="1"/><rect x="17" y="4" width="3" height="12" rx="1"/>',
       arrow: '<path d="m9 18 6-6-6-6"/>',
       back: '<path d="m15 18-6-6 6-6"/>',
       home: '<path d="m3 11 9-8 9 8v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9Z"/><path d="M9 22V12h6v10"/>',
@@ -422,12 +455,27 @@
       replyDrafts: {},
       storyIndex: null,
       storyUploads: {},
+      adminCommunityEdits: {},
+      adminTextEdit: null,
+      adminTextDrafts: {},
+      adminCreatedEvents: [],
+      adminEventDrafts: {},
+      adminEventMode: "list",
+      adminEventStep: 1,
+      adminEventSuccess: null,
+      adminCreatedClasses: [],
+      adminClassDrafts: {},
+      adminClassMode: "list",
+      adminClassStep: 1,
+      adminClassSuccess: null,
+      memberRequestDecisions: {},
+      approvedCommunityMembers: {},
       cancelConfirmId: null,
       reservationFlow: null,
       createdCommunities: [],
       createStep: 1, createDraft: defaultCreateDraft(), createCompleted: false, createdCommunityId: null,
       eventSearch: "",
-      eventFilters: { country: "MX Mexico", city: "", community: "", location: "" },
+      eventFilters: { country: "MX Mexico", city: "", community: "", location: "", date: "" },
       eventFilterQueries: {},
       activeEventFilter: "",
       eventCountryExpanded: false,
@@ -440,6 +488,7 @@
     this.load();
     this.bind();
     this.render();
+    this.handleHashRoute();
   }
 
   CommunityApp.prototype.patientProfilePhoto = function () {
@@ -537,11 +586,19 @@
         this.state.likes = saved.likes || {};
         this.state.replyThreads = saved.replyThreads || {};
         this.state.storyUploads = saved.storyUploads || {};
+        this.state.adminCommunityEdits = saved.adminCommunityEdits || {};
+        this.state.adminCreatedEvents = Array.isArray(saved.adminCreatedEvents) ? saved.adminCreatedEvents : [];
+        this.state.adminEventDrafts = saved.adminEventDrafts || {};
+        this.state.adminCreatedClasses = Array.isArray(saved.adminCreatedClasses) ? saved.adminCreatedClasses : [];
+        this.state.adminClassDrafts = saved.adminClassDrafts || {};
+        this.state.memberRequestDecisions = saved.memberRequestDecisions || {};
+        this.state.approvedCommunityMembers = saved.approvedCommunityMembers || {};
         this.state.eventFilters = merge(this.defaultEventFilters(), saved.eventFilters || {});
         this.state.createdCommunities = saved.createdCommunities || this.state.createdCommunities || [];
       }
     } catch (error) {}
     this.restoreCreatedCommunities();
+    this.applyAdminCommunityEdits();
   };
 
   CommunityApp.prototype.save = function () {
@@ -554,6 +611,13 @@
         likes: this.state.likes,
         replyThreads: this.state.replyThreads,
         storyUploads: this.state.storyUploads,
+        adminCommunityEdits: this.state.adminCommunityEdits,
+        adminCreatedEvents: this.state.adminCreatedEvents,
+        adminEventDrafts: this.state.adminEventDrafts,
+        adminCreatedClasses: this.state.adminCreatedClasses,
+        adminClassDrafts: this.state.adminClassDrafts,
+        memberRequestDecisions: this.state.memberRequestDecisions,
+        approvedCommunityMembers: this.state.approvedCommunityMembers,
         eventFilters: this.currentEventFilters(),
         createdCommunities: this.state.createdCommunities
       }));
@@ -564,20 +628,56 @@
     this.options.onAction({ type: type, data: data || null, state: this.state });
   };
 
+  CommunityApp.prototype.navigateAdminPanel = function (id) {
+    this.openAdminPanel(id);
+    if (this.state.view !== "admin") return false;
+    this.save();
+    this.render();
+    this.scrollToScreenTop("auto");
+    return true;
+  };
+
+  CommunityApp.prototype.handleHashRoute = function () {
+    var match = window.location.hash.match(/^#community-admin-(.+)$/);
+    if (!match) return;
+    var id = decodeURIComponent(match[1]);
+    if (this.navigateAdminPanel(id) && window.history && window.history.replaceState) {
+      window.history.replaceState(null, "", window.location.pathname + window.location.search);
+    }
+  };
+
   CommunityApp.prototype.bind = function () {
     var self = this;
+    function closestFromEvent(event, selector) {
+      var target = event.target;
+      if (!target) return null;
+      if (target.closest) return target.closest(selector);
+      var parent = target.parentElement || target.parentNode;
+      return parent && parent.closest ? parent.closest(selector) : null;
+    }
     window.addEventListener("drsam:patient-profile", function (event) {
       var action = event.detail && event.detail.action;
       if (action === "profile:photo-updated" || action === "profile:photo-removed") self.render();
     });
+    window.addEventListener("hashchange", function () {
+      self.handleHashRoute();
+    });
     this.root.addEventListener("click", function (event) {
-      var control = event.target.closest("[data-action]");
-      var panTrack = event.target.closest("[data-pan]");
+      var adminControl = closestFromEvent(event, "[data-admin-panel-link]");
+      if (!adminControl || !self.root.contains(adminControl)) return;
+      event.preventDefault();
+      event.stopPropagation();
+      self.navigateAdminPanel(adminControl.getAttribute("data-id"));
+    }, true);
+    this.root.addEventListener("click", function (event) {
+      var control = closestFromEvent(event, "[data-action]");
+      var panTrack = closestFromEvent(event, "[data-pan]");
       if (panTrack && panTrack.dataset.ignoreClick === "1") {
         var actionInPan = control ? control.getAttribute("data-action") : "";
         var wasDrag = panTrack.dataset.moved === "1";
+        var allowedPanClick = actionInPan === "open-community-panel" || actionInPan === "open-admin-panel" || actionInPan === "confirm-cancel-reservation";
         panTrack.dataset.ignoreClick = "0";
-        if (wasDrag || actionInPan !== "open-community-panel") {
+        if (wasDrag || !allowedPanClick) {
           event.preventDefault();
           event.stopPropagation();
           return;
@@ -588,6 +688,12 @@
       var id = control.getAttribute("data-id");
       var preserveScroll = self.shouldPreserveFilterScroll(action);
       var scrollSnapshot = preserveScroll ? self.captureScrollPosition() : null;
+      if (action === "open-admin-panel") {
+        event.preventDefault();
+        event.stopPropagation();
+        self.navigateAdminPanel(id);
+        return;
+      }
       if (action === "create-open") { self.state.view = "create"; self.state.createStep = 1; self.state.createCompleted = false; self.state.createdCommunityId = null; }
       if (action === "create-cancel") { self.state.view = "feed"; self.state.createStep = 1; self.state.createCompleted = false; }
       if (action === "create-next") self.state.createStep = Math.min(5, self.state.createStep + 1);
@@ -605,6 +711,17 @@
         self.state.activeEventFilter = "";
         self.state.eventCountryExpanded = false;
       }
+      if (action === "select-event-date") {
+        var dateFilters = self.currentEventFilters();
+        dateFilters.date = dateFilters.date === id ? "" : id;
+        self.state.activeEventFilter = "";
+      }
+      if (action === "scroll-event-dates") {
+        var dateTrack = control.closest(".kc-event-date-row");
+        dateTrack = dateTrack && dateTrack.querySelector("[data-event-date-scroller]");
+        if (dateTrack && dateTrack.scrollBy) dateTrack.scrollBy({ left: (Number(control.getAttribute("data-dir")) || 1) * 180, behavior: "smooth" });
+        return;
+      }
       if (action === "toggle-event-country-more") self.state.eventCountryExpanded = !self.state.eventCountryExpanded;
       if (action === "toggle-event-filter") self.state.activeEventFilter = self.state.activeEventFilter === id ? "" : id;
       if (action === "select-event-filter") {
@@ -621,8 +738,29 @@
       if (action === "open-directory-filter") self.selectDirectoryFilter(id || "explore", false);
       if (action === "back-feed" || action === "home") self.state.view = "feed";
       if (action === "open-detail" || action === "open-community-panel") self.openCommunityPanel(id);
-      if (action === "open-admin-panel") self.openAdminPanel(id);
       if (action === "open-admin-tool") self.openAdminTool(id);
+      if (action === "admin-member-request") self.respondToMemberRequest(control.getAttribute("data-community"), id, control.getAttribute("data-decision"));
+      if (action === "admin-create-event") self.openAdminEventCreate();
+      if (action === "admin-event-cancel") self.closeAdminEventCreate();
+      if (action === "admin-event-prev") self.state.adminEventStep = Math.max(1, self.state.adminEventStep - 1);
+      if (action === "admin-event-next") self.state.adminEventStep = Math.min(4, self.state.adminEventStep + 1);
+      if (action === "admin-event-choice") self.updateAdminEventDraft(control.getAttribute("data-field"), control.getAttribute("data-value"));
+      if (action === "admin-event-toggle") self.toggleAdminEventDraft(control.getAttribute("data-field"));
+      if (action === "admin-event-submit") self.submitAdminEvent();
+      if (action === "admin-event-dismiss-success") self.state.adminEventSuccess = null;
+      if (action === "admin-create-class") self.openAdminClassCreate();
+      if (action === "admin-class-cancel") self.closeAdminClassCreate();
+      if (action === "admin-class-prev") self.state.adminClassStep = Math.max(1, self.state.adminClassStep - 1);
+      if (action === "admin-class-next") self.state.adminClassStep = Math.min(4, self.state.adminClassStep + 1);
+      if (action === "admin-class-step") self.state.adminClassStep = Math.max(1, Math.min(4, Number(control.getAttribute("data-step")) || 1));
+      if (action === "admin-class-choice") self.updateAdminClassDraft(control.getAttribute("data-field"), control.getAttribute("data-value"));
+      if (action === "admin-class-toggle") self.toggleAdminClassDraft(control.getAttribute("data-field"));
+      if (action === "admin-class-submit") self.submitAdminClass();
+      if (action === "admin-class-dismiss-success") self.state.adminClassSuccess = null;
+      if (action === "admin-upload-image") { self.uploadAdminCommunityImage(id, control.getAttribute("data-field")); return; }
+      if (action === "admin-edit-text") { self.editAdminCommunityText(id, control.getAttribute("data-field")); return; }
+      if (action === "admin-save-text") { self.saveAdminCommunityTextEdit(id, control.getAttribute("data-field")); return; }
+      if (action === "admin-cancel-text") { self.cancelAdminCommunityTextEdit(); return; }
       if (action === "back-directory") self.state.view = "directory";
       if (action === "filter") self.selectDirectoryFilter(id || "explore", false);
       if (action === "explore-category") self.state.selectedExploreCategory = id || "";
@@ -667,7 +805,11 @@
       }
       self.save(); self.render();
       if (preserveScroll) self.restoreScrollPosition(scrollSnapshot);
-      if (!preserveScroll && (action === "open-detail" || action === "open-community-panel" || action === "open-admin-panel" || action === "open-directory" || action === "open-directory-filter" || action === "filter" || action === "back-directory" || action === "back-feed" || action === "home" || action === "reserve" || action === "reservation-submit" || action === "reservation-view-reservations" || action === "reservation-open-community")) {
+      if (action === "admin-create-event" || action === "admin-event-next" || action === "admin-event-prev" || action === "admin-create-class" || action === "admin-class-next" || action === "admin-class-prev" || action === "admin-class-step") {
+        self.scrollToAdminEventSection("smooth");
+        return;
+      }
+      if (!preserveScroll && (action === "open-detail" || action === "open-community-panel" || action === "open-admin-panel" || action === "open-directory" || action === "open-directory-filter" || action === "filter" || action === "back-directory" || action === "back-feed" || action === "home" || action === "reserve" || action === "reservation-submit" || action === "reservation-view-reservations" || action === "reservation-open-community" || action === "admin-create-event" || action === "admin-event-next" || action === "admin-event-prev" || action === "admin-event-submit" || action === "admin-event-cancel" || action === "admin-create-class" || action === "admin-class-next" || action === "admin-class-prev" || action === "admin-class-submit" || action === "admin-class-cancel")) {
         self.scrollToScreenTop(action === "filter" ? "smooth" : "auto");
       }
     });
@@ -689,6 +831,21 @@
         self.state.replyDrafts[replyField] = event.target.value;
         return;
       }
+      var adminEventField = event.target.getAttribute("data-admin-event-field");
+      if (adminEventField) {
+        self.updateAdminEventDraft(adminEventField, event.target.type === "checkbox" ? event.target.checked : event.target.value);
+        return;
+      }
+      var adminClassField = event.target.getAttribute("data-admin-class-field");
+      if (adminClassField) {
+        self.updateAdminClassDraft(adminClassField, event.target.type === "checkbox" ? event.target.checked : event.target.value);
+        return;
+      }
+      var adminEditField = event.target.getAttribute("data-admin-edit-field");
+      if (adminEditField) {
+        self.updateAdminCommunityTextDraft(event.target.getAttribute("data-id"), adminEditField, event.target.value);
+        return;
+      }
       var field = event.target.getAttribute("data-create-field");
       if (!field) return;
       self.state.createDraft[field] = event.target.type === "checkbox" ? event.target.checked : event.target.value;
@@ -696,6 +853,14 @@
       self.refreshCreatePreview();
     });
     this.root.addEventListener("change", function (event) {
+      if (event.target.hasAttribute("data-admin-community-select")) {
+        var adminScrollSnapshot = self.captureScrollPosition();
+        self.openAdminPanel(event.target.value);
+        self.save();
+        self.render();
+        self.restoreScrollPosition(adminScrollSnapshot);
+        return;
+      }
       if (event.target.hasAttribute("data-event-filter-query")) {
         var queryType = event.target.getAttribute("data-type") || "";
         var matchedValue = self.findTypedEventFilterValue(queryType, event.target.value);
@@ -739,6 +904,16 @@
       var replyField = event.target.getAttribute("data-reply-field");
       if (replyField) {
         self.state.replyDrafts[replyField] = event.target.value;
+        return;
+      }
+      var adminEventField = event.target.getAttribute("data-admin-event-field");
+      if (adminEventField) {
+        self.updateAdminEventDraft(adminEventField, event.target.type === "checkbox" ? event.target.checked : event.target.value);
+        return;
+      }
+      var adminClassField = event.target.getAttribute("data-admin-class-field");
+      if (adminClassField) {
+        self.updateAdminClassDraft(adminClassField, event.target.type === "checkbox" ? event.target.checked : event.target.value);
         return;
       }
       var field = event.target.getAttribute("data-create-field");
@@ -819,7 +994,7 @@
   };
 
   CommunityApp.prototype.shouldPreserveFilterScroll = function (action) {
-    return ["toggle-event-filter", "select-event-filter", "toggle-event-country-more", "clear-event-search", "open-admin-tool", "explore-category"].indexOf(action) !== -1;
+    return ["toggle-event-filter", "select-event-filter", "select-event-date", "toggle-event-country-more", "clear-event-search", "open-admin-tool", "explore-category", "admin-event-choice", "admin-event-toggle", "admin-event-dismiss-success", "admin-class-choice", "admin-class-toggle", "admin-class-dismiss-success", "admin-member-request"].indexOf(action) !== -1;
   };
 
   CommunityApp.prototype.captureScrollPosition = function () {
@@ -879,13 +1054,75 @@
     });
   };
 
+  CommunityApp.prototype.scrollToAdminEventSection = function (behavior) {
+    var root = this.root;
+    var mode = behavior || "auto";
+    window.requestAnimationFrame(function () {
+      var target = root.querySelector(".kc-admin-event-wizard") || root.querySelector(".kc-admin-events-panel") || root.querySelector(".kc-admin-main");
+      if (!target) return;
+      var topBar = document.querySelector(".patient-topbar, .patient-header, .patient-portal-topbar, .app-topbar");
+      var offset = topBar ? topBar.getBoundingClientRect().height + 14 : 14;
+      var scrollingElement = document.scrollingElement || document.documentElement;
+      var pageTop = target.getBoundingClientRect().top + (window.pageYOffset || 0) - offset;
+      if (scrollingElement && scrollingElement.scrollTo) scrollingElement.scrollTo({ top: Math.max(0, pageTop), behavior: mode });
+      window.scrollTo({ top: Math.max(0, pageTop), behavior: mode });
+      [root.closest("[data-patient-portal], .patient-portal"), root.closest(".patient-portal-content")].forEach(function (container) {
+        if (!container || !container.scrollTo) return;
+        var localTop = target.getBoundingClientRect().top - container.getBoundingClientRect().top + container.scrollTop - offset;
+        container.scrollTo({ top: Math.max(0, localTop), behavior: mode });
+      });
+    });
+  };
+
   CommunityApp.prototype.defaultEventFilters = function () {
-    return { country: "MX Mexico", city: "", community: "", location: "" };
+    return { country: "MX Mexico", city: "", community: "", location: "", date: "" };
   };
 
   CommunityApp.prototype.currentEventFilters = function () {
     this.state.eventFilters = merge(this.defaultEventFilters(), this.state.eventFilters || {});
     return this.state.eventFilters;
+  };
+
+  CommunityApp.prototype.todayDateStart = function () {
+    var now = new Date();
+    return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  };
+
+  CommunityApp.prototype.eventDateFromRecord = function (event) {
+    if (!event) return null;
+    if (event.dateKey || event.isoDate) {
+      var rawDate = String(event.dateKey || event.isoDate);
+      var isoParts = rawDate.match(/^(\d{4})-(\d{2})-(\d{2})/);
+      if (isoParts) return new Date(Number(isoParts[1]), Number(isoParts[2]) - 1, Number(isoParts[3]));
+      var parsed = new Date(rawDate);
+      if (!isNaN(parsed.getTime())) return parsed;
+    }
+    var monthIndex = EVENT_MONTH_INDEX[normalizeSearch(event.month || "")];
+    var dayNumber = Number(event.number);
+    if (monthIndex == null || !dayNumber) return null;
+    var today = this.todayDateStart();
+    return new Date(today.getFullYear(), monthIndex, dayNumber);
+  };
+
+  CommunityApp.prototype.eventDateKey = function (event) {
+    if (!event) return "";
+    var date = this.eventDateFromRecord(event);
+    if (date) return dateKeyFromDate(date);
+    return normalizeSearch([event.number || "", event.month || "", event.day || ""].join("-"));
+  };
+
+  CommunityApp.prototype.renderEventDateButtons = function (count) {
+    var filters = this.currentEventFilters();
+    var today = this.todayDateStart();
+    var total = count || 21;
+    var buttons = [];
+    for (var index = 0; index < total; index += 1) {
+      var date = new Date(today.getFullYear(), today.getMonth(), today.getDate() + index);
+      var dateKey = dateKeyFromDate(date);
+      var active = filters.date === dateKey;
+      buttons.push('<button type="button" class="' + (active ? "is-active" : "") + '" data-action="select-event-date" data-id="' + escapeHtml(dateKey) + '" aria-pressed="' + (active ? "true" : "false") + '"><strong>' + pad2(date.getDate()) + '</strong><span>' + EVENT_DAY_LABELS[date.getDay()] + '</span></button>');
+    }
+    return buttons.join("");
   };
 
   CommunityApp.prototype.findEventCountry = function (value) {
@@ -957,6 +1194,7 @@
       if (show && filters.city) show = card.getAttribute("data-event-city") === normalizeSearch(filters.city);
       if (show && filters.community) show = card.getAttribute("data-event-community") === normalizeSearch(filters.community);
       if (show && filters.location) show = card.getAttribute("data-event-location") === normalizeSearch(filters.location);
+      if (show && filters.date) show = card.getAttribute("data-event-date") === normalizeSearch(filters.date);
       card.hidden = !show;
       if (show) visible += 1;
     });
@@ -1036,6 +1274,15 @@
     return communities.filter(function (community) { return community.visibility !== "hidden"; });
   };
 
+  CommunityApp.prototype.adminCommunities = function () {
+    var seen = {};
+    return communities.filter(function (community) {
+      if (!community || seen[community.id]) return false;
+      seen[community.id] = true;
+      return this.communityRole(community) === "admin";
+    }, this);
+  };
+
   CommunityApp.prototype.findCommunity = function (id) {
     return communities.find(function (community) {
       return community.id === id || community.catalogId === id || community.slug === id;
@@ -1072,6 +1319,33 @@
     this.state.createdCommunities = this.createdCommunityRecords();
   };
 
+  CommunityApp.prototype.applyAdminCommunityEdits = function () {
+    var edits = this.state.adminCommunityEdits || {};
+    Object.keys(edits).forEach(function (id) {
+      var community = this.findCommunity(id);
+      if (!community) return;
+      var patch = edits[id] || {};
+      Object.keys(patch).forEach(function (field) {
+        community[field] = patch[field];
+      });
+    }, this);
+  };
+
+  CommunityApp.prototype.saveAdminCommunityEdit = function (community, changes) {
+    if (!community || !changes) return;
+    var key = community.id;
+    var edits = this.state.adminCommunityEdits || (this.state.adminCommunityEdits = {});
+    edits[key] = merge(edits[key] || {}, changes);
+    Object.keys(changes).forEach(function (field) {
+      community[field] = changes[field];
+    });
+    if (changes.name && !changes.logoImage) {
+      community.initials = community.initials || initialsFromName(changes.name);
+      community.logoInitials = community.logoInitials || initialsFromName(changes.name);
+    }
+    this.state.createdCommunities = this.createdCommunityRecords();
+  };
+
   CommunityApp.prototype.openCommunityPanel = function (id) {
     var community = this.findCommunity(id);
     if (!community) return;
@@ -1094,8 +1368,604 @@
   };
 
   CommunityApp.prototype.openAdminTool = function (id) {
-    if (["stories", "communityPosts", "events", "classes", "editPage"].indexOf(id) === -1) return;
+    if (["stories", "communityPosts", "events", "classes", "calendar", "members", "editPage", "analytics"].indexOf(id) === -1) return;
     this.state.adminTool = id;
+  };
+
+  CommunityApp.prototype.currentAdminCommunity = function () {
+    return this.findCommunity(this.state.detailId) || this.adminCommunities()[0] || null;
+  };
+
+  CommunityApp.prototype.defaultAdminEventDraft = function (community) {
+    community = community || {};
+    return {
+      title: "Respiracion y movilidad suave",
+      category: community.category || "Bienestar",
+      shortDescription: community.description || "Yoga suave, respiracion y constancia semanal.",
+      description: "Un taller practico para mejorar movilidad, respirar mejor y conectar con la comunidad.",
+      eventType: "Taller",
+      communityId: community.id || "",
+      modality: "Hibrido",
+      date: "24/06/2025",
+      day: "sab",
+      number: "15",
+      month: "jun",
+      startTime: "10:00 AM",
+      endTime: "12:00 PM",
+      timezone: "(GMT-05:00) Bogota",
+      location: "Carrera 13 # 93A-34, Bogota, Colombia",
+      venue: "Sala principal - Piso 2",
+      virtualLink: "https://meet.google.com/xyz-abcd-efg",
+      host: "Maria Camila Perez",
+      addCalendar: true,
+      capacity: "20",
+      waitlist: true,
+      priceMode: "Gratis",
+      price: "0.00",
+      currency: "MXN - Peso mexicano",
+      registrationDeadline: "24/06/2025",
+      manualApproval: false,
+      allowCancellations: true,
+      reminder: "24 h antes",
+      access: "Abierto a todos",
+      coverImage: this.communityHeroImage ? this.communityHeroImage(community) : (community.heroImage || "/images/communities/create-cover.png")
+    };
+  };
+
+  CommunityApp.prototype.adminEventDraftFor = function (community) {
+    community = community || this.currentAdminCommunity();
+    if (!community) return this.defaultAdminEventDraft({});
+    var key = community.id || "default";
+    this.state.adminEventDrafts = this.state.adminEventDrafts || {};
+    this.state.adminEventDrafts[key] = merge(this.defaultAdminEventDraft(community), this.state.adminEventDrafts[key] || {});
+    return this.state.adminEventDrafts[key];
+  };
+
+  CommunityApp.prototype.updateAdminEventDraft = function (field, value) {
+    if (!field) return;
+    var draft = this.adminEventDraftFor(this.currentAdminCommunity());
+    draft[field] = value;
+  };
+
+  CommunityApp.prototype.toggleAdminEventDraft = function (field) {
+    if (!field) return;
+    var draft = this.adminEventDraftFor(this.currentAdminCommunity());
+    draft[field] = !draft[field];
+  };
+
+  CommunityApp.prototype.openAdminEventCreate = function () {
+    this.state.adminTool = "events";
+    this.state.adminEventMode = "create";
+    this.state.adminEventStep = 1;
+    this.state.adminEventSuccess = null;
+    this.adminEventDraftFor(this.currentAdminCommunity());
+  };
+
+  CommunityApp.prototype.closeAdminEventCreate = function () {
+    this.state.adminEventMode = "list";
+    this.state.adminEventStep = 1;
+  };
+
+  CommunityApp.prototype.adminEventsForCommunity = function (community) {
+    if (!community) return [];
+    var created = this.state.adminCreatedEvents || [];
+    return events.filter(function (event) { return event.communityId === community.id; })
+      .concat(created.filter(function (event) { return event.communityId === community.id; }));
+  };
+
+  CommunityApp.prototype.submitAdminEvent = function () {
+    var community = this.currentAdminCommunity();
+    if (!community) return;
+    var draft = this.adminEventDraftFor(community);
+    var capacity = Math.max(1, parseInt(draft.capacity, 10) || 20);
+    var enrolled = Math.min(capacity, 7);
+    var ticket = draft.priceMode === "Con costo" ? "$" + escapeHtml(draft.price || "0.00") + " " + String(draft.currency || "MXN").split(" ")[0] : "Gratis";
+    var eventId = "admin-event-" + community.id + "-" + Date.now();
+    var eventRecord = {
+      id: eventId,
+      repositoryId: "evt_20240615_abc123",
+      group: "week",
+      communityId: community.id,
+      category: draft.category || community.category || "Bienestar",
+      title: draft.title || "Respiracion y movilidad suave",
+      description: draft.shortDescription || draft.description || community.description,
+      date: "15 de junio, 2024",
+      day: draft.day || "sab",
+      number: draft.number || "15",
+      month: draft.month || "jun",
+      time: (draft.startTime || "10:00 AM") + " - " + (draft.endTime || "12:00 PM"),
+      place: draft.modality === "Virtual" ? "Remoto" : (draft.venue || draft.location || community.city),
+      modality: draft.modality || "Hibrido",
+      capacity: capacity,
+      enrolled: enrolled,
+      available: Math.max(0, capacity - enrolled),
+      price: ticket,
+      status: "Publicado",
+      host: draft.host || ((this.options.patient && this.options.patient.name) || "Administrador"),
+      type: draft.eventType || "Taller",
+      coverImage: draft.coverImage || this.communityHeroImage(community),
+      updatedAt: "15 de mayo, 2024 a las 11:32 a.m."
+    };
+    this.state.adminCreatedEvents = (this.state.adminCreatedEvents || []).concat([eventRecord]);
+    this.state.adminEventMode = "list";
+    this.state.adminEventStep = 1;
+    this.state.adminEventSuccess = eventRecord.id;
+    this.emit("community.admin.event.created", eventRecord);
+  };
+
+  CommunityApp.prototype.renderAdminEventProgress = function (step) {
+    var labels = ["Informacion general", "Fecha y modalidad", "Cupo y registro", "Revision"];
+    return '<div class="kc-admin-event-progress">' + labels.map(function (label, index) {
+      var number = index + 1;
+      return '<span class="' + (number === step ? "is-active " : "") + (number < step ? "is-complete" : "") + '"><b>' + number + '</b><small>' + escapeHtml(label) + '</small></span>';
+    }).join("") + '</div>';
+  };
+
+  CommunityApp.prototype.renderAdminEventField = function (field, label, value, placeholder, help, type) {
+    var id = "admin-event-" + field;
+    var input = type === "textarea"
+      ? '<textarea id="' + id + '" data-admin-event-field="' + escapeHtml(field) + '" placeholder="' + escapeHtml(placeholder || "") + '">' + escapeHtml(value || "") + '</textarea>'
+      : '<input id="' + id + '" data-admin-event-field="' + escapeHtml(field) + '" value="' + escapeHtml(value || "") + '" placeholder="' + escapeHtml(placeholder || "") + '">';
+    return '<label class="kc-admin-event-field"><span>' + escapeHtml(label) + '</span>' + input + (help ? '<small>' + help + '</small>' : '') + '</label>';
+  };
+
+  CommunityApp.prototype.renderAdminEventSelect = function (field, label, value, options, help) {
+    return '<label class="kc-admin-event-field"><span>' + escapeHtml(label) + '</span><select data-admin-event-field="' + escapeHtml(field) + '">' + options.map(function (option) {
+      var optionValue = typeof option === "object" ? option.value : option;
+      var optionLabel = typeof option === "object" ? option.label : option;
+      return '<option value="' + escapeHtml(optionValue) + '"' + (optionValue === value ? " selected" : "") + '>' + escapeHtml(optionLabel) + '</option>';
+    }).join("") + '</select>' + (help ? '<small>' + help + '</small>' : '') + '</label>';
+  };
+
+  CommunityApp.prototype.renderAdminEventChoice = function (field, value, current, label, iconName) {
+    return '<button type="button" class="kc-admin-event-choice ' + (value === current ? "is-selected" : "") + '" data-action="admin-event-choice" data-field="' + escapeHtml(field) + '" data-value="' + escapeHtml(value) + '">' + icon(iconName) + '<span>' + escapeHtml(label) + '</span>' + (value === current ? '<b>' + icon("check") + '</b>' : '') + '</button>';
+  };
+
+  CommunityApp.prototype.renderAdminEventToggle = function (field, label, text, isOn) {
+    return '<button type="button" class="kc-admin-event-toggle ' + (isOn ? "is-on" : "") + '" data-action="admin-event-toggle" data-field="' + escapeHtml(field) + '"><span><strong>' + escapeHtml(label) + '</strong><small>' + escapeHtml(text) + '</small></span><b></b></button>';
+  };
+
+  CommunityApp.prototype.renderAdminEventPreview = function (draft, compact) {
+    return '<aside class="kc-admin-event-preview ' + (compact ? "is-compact" : "") + '"><h3>Vista previa del evento</h3><div class="kc-admin-event-preview-media">' +
+      (draft.coverImage ? '<img src="' + escapeHtml(draft.coverImage) + '" alt="Imagen de portada del evento">' : icon("image") + '<span>Imagen de portada<br>1200 x 628 px recomendados</span>') +
+      '</div><small>Borrador</small><h4>' + escapeHtml(draft.title || "Titulo del evento") + '</h4><p>' + escapeHtml(draft.category || "Categoria del evento") + '</p><ul><li>' + icon("calendar") + ' ' + escapeHtml(draft.date || "24/06/2025") + '</li><li>' + icon("clock") + ' ' + escapeHtml((draft.startTime || "10:00 AM") + " - " + (draft.endTime || "12:00 PM")) + '</li><li>' + icon("globe") + ' ' + escapeHtml(draft.timezone || "") + '</li><li>' + icon("map") + ' ' + escapeHtml(draft.location || "") + '</li><li>' + icon("users") + ' ' + escapeHtml(draft.host || "") + '</li><li>' + icon("calendar") + ' Modalidad: ' + escapeHtml(draft.modality || "") + '</li></ul></aside>';
+  };
+
+  CommunityApp.prototype.renderAdminEventStepOne = function (community, draft) {
+    var typeChoices = '<div class="kc-admin-event-choice-grid">' +
+      this.renderAdminEventChoice("eventType", "Clase", draft.eventType, "Clase", "users") +
+      this.renderAdminEventChoice("eventType", "Taller", draft.eventType, "Taller", "sparkles") +
+      this.renderAdminEventChoice("eventType", "Charla", draft.eventType, "Charla", "message") +
+      this.renderAdminEventChoice("eventType", "Encuentro", draft.eventType, "Encuentro", "users") +
+      '</div>';
+    return '<div class="kc-admin-event-form-grid">' +
+      '<div class="kc-admin-event-form">' +
+      this.renderAdminEventField("title", "Titulo del evento *", draft.title, "Escribe un titulo claro y atractivo para tu evento", "Se especifico y claro para que tu comunidad entienda de que se trata.") +
+      this.renderAdminEventField("shortDescription", "Descripcion breve *", draft.shortDescription, "Resumen corto que aparecera en listados y tarjetas", "Maximo 120 caracteres.") +
+      this.renderAdminEventField("description", "Descripcion completa *", draft.description, "Describe los objetivos, contenidos, beneficios y lo que las personas pueden esperar del evento.", "Incluye todos los detalles importantes para inspirar a tu comunidad.", "textarea") +
+      '</div><div class="kc-admin-event-form">' +
+      this.renderAdminEventSelect("category", "Categoria *", draft.category, ["Bienestar", "Yoga", "Nutricion", "Running", "Salud mental", "Fuerza"], "Elige la categoria que mejor describa tu evento.") +
+      '<div class="kc-admin-event-field"><span>Tipo de evento *</span>' + typeChoices + '<small>Selecciona el tipo que mejor se ajusta a tu evento.</small></div>' +
+      '<div class="kc-admin-event-field"><span>Imagen de portada *</span><button type="button" class="kc-admin-event-upload">' + icon("image") + '<em>Arrastra una imagen aqui<br>o haz clic para seleccionar</em></button><small>Recomendado: 1200 x 628 px. Formato JPG o PNG.</small></div>' +
+      '</div><div class="kc-admin-event-wide">' + this.renderAdminEventSelect("communityId", "Comunidad relacionada *", community.id, [community].concat(this.adminCommunities().filter(function (item) { return item.id !== community.id; })).map(function (item) { return { value: item.id, label: item.name }; }), "La comunidad a la que pertenecera este evento.") + '</div>' +
+      '</div>';
+  };
+
+  CommunityApp.prototype.renderAdminEventStepTwo = function (community, draft) {
+    return '<div class="kc-admin-event-step-split"><div class="kc-admin-event-form">' +
+      '<div class="kc-admin-event-field"><span>Modalidad del evento *</span><div class="kc-admin-event-choice-grid is-three">' +
+      this.renderAdminEventChoice("modality", "Presencial", draft.modality, "Presencial", "users") +
+      this.renderAdminEventChoice("modality", "Virtual", draft.modality, "Virtual", "video") +
+      this.renderAdminEventChoice("modality", "Hibrido", draft.modality, "Hibrido", "globe") +
+      '</div></div>' +
+      '<div class="kc-admin-event-grid-4">' +
+      this.renderAdminEventField("date", "Fecha del evento *", draft.date, "24/06/2025") +
+      this.renderAdminEventField("startTime", "Hora de inicio *", draft.startTime, "10:00 AM") +
+      this.renderAdminEventField("endTime", "Hora de fin *", draft.endTime, "12:00 PM") +
+      this.renderAdminEventSelect("timezone", "Zona horaria *", draft.timezone, ["(GMT-06:00) Mexico", "(GMT-05:00) Bogota", "(GMT-05:00) Lima", "(GMT-04:00) Miami"], "") +
+      '</div>' +
+      this.renderAdminEventField("location", "Ubicacion *", draft.location, "Direccion completa donde se realizara el evento presencial.", "Direccion completa donde se realizara el evento presencial.") +
+      '<div class="kc-admin-event-grid-2">' +
+      this.renderAdminEventField("venue", "Sala o sede *", draft.venue, "Sala principal - Piso 2", "Especifica la sala, sede o espacio fisico.") +
+      this.renderAdminEventField("virtualLink", "Enlace virtual *", draft.virtualLink, "https://meet.google.com/xyz-abcd-efg", "Enlace de la reunion o transmision en vivo.") +
+      '</div>' +
+      this.renderAdminEventField("host", "Instructor o anfitrion *", draft.host, "Maria Camila Perez", "Persona encargada de liderar el evento.") +
+      this.renderAdminEventToggle("addCalendar", "Agregar al calendario de la comunidad", "Activa esta opcion para que el evento se muestre en el calendario de la comunidad.", draft.addCalendar) +
+      '</div>' + this.renderAdminEventPreview(draft, false) + '</div>';
+  };
+
+  CommunityApp.prototype.renderAdminEventStepThree = function (community, draft) {
+    return '<div class="kc-admin-event-step-split"><div class="kc-admin-event-form">' +
+      '<div class="kc-admin-event-grid-2">' +
+      this.renderAdminEventField("capacity", "Cupo maximo *", draft.capacity, "20", "Numero maximo de asistentes permitidos.") +
+      this.renderAdminEventToggle("waitlist", "Lista de espera", "Activa una lista de espera cuando el evento este lleno.", draft.waitlist) +
+      '</div><div class="kc-admin-event-field"><span>Evento gratuito o con costo *</span><div class="kc-admin-event-choice-grid is-two">' +
+      this.renderAdminEventChoice("priceMode", "Gratis", draft.priceMode, "Gratuito", "check") +
+      this.renderAdminEventChoice("priceMode", "Con costo", draft.priceMode, "Con costo", "ticket") +
+      '</div></div><div class="kc-admin-event-grid-2">' +
+      this.renderAdminEventField("price", "Precio por persona *", draft.price, "350.00") +
+      this.renderAdminEventSelect("currency", "Moneda *", draft.currency, ["MXN - Peso mexicano", "USD - Dolar", "COP - Peso colombiano"], "") +
+      '</div><div class="kc-admin-event-grid-2">' +
+      this.renderAdminEventField("registrationDeadline", "Fecha limite de registro *", draft.registrationDeadline, "24/06/2025", "Despues de esta fecha ya no se aceptaran nuevos registros.") +
+      this.renderAdminEventToggle("manualApproval", "Aprobacion manual de asistentes", "Revisa y aprueba cada solicitud antes de confirmar.", draft.manualApproval) +
+      '</div>' +
+      this.renderAdminEventToggle("allowCancellations", "Permitir cancelaciones", "Los asistentes podran cancelar su registro.", draft.allowCancellations) +
+      this.renderAdminEventSelect("reminder", "Enviar recordatorio automatico", draft.reminder, ["24 h antes", "12 h antes", "2 h antes", "Sin recordatorio"], "Se enviara un recordatorio automatico a los asistentes.") +
+      '<div class="kc-admin-event-field"><span>Tipo de acceso *</span><div class="kc-admin-event-choice-grid is-three">' +
+      this.renderAdminEventChoice("access", "Abierto a todos", draft.access, "Abierto a todos", "globe") +
+      this.renderAdminEventChoice("access", "Solo miembros de la comunidad", draft.access, "Solo miembros", "users") +
+      this.renderAdminEventChoice("access", "Invitacion", draft.access, "Invitacion", "message") +
+      '</div><small>Define quien puede ver y registrarse a este evento.</small></div></div>' +
+      '<aside class="kc-admin-event-summary-card"><h3>Resumen de registro</h3><p>Asi se configurara el registro para este evento.</p><article>' + icon("users") + '<div><strong>' + escapeHtml(draft.capacity || "20") + ' lugares</strong><span>Cupo maximo del evento.</span></div></article><article>' + icon("clock") + '<div><strong>Lista de espera ' + (draft.waitlist ? "activa" : "inactiva") + '</strong><span>Se habilitara cuando el cupo este lleno.</span></div></article><article>' + icon("ticket") + '<div><strong>' + (draft.priceMode === "Con costo" ? "Pago requerido" : "Evento gratuito") + '</strong><span>' + (draft.priceMode === "Con costo" ? "Con costo de $" + escapeHtml(draft.price || "0.00") + " MXN por persona." : "Sin costo para asistentes.") + '</span></div></article></aside></div>';
+  };
+
+  CommunityApp.prototype.renderAdminEventStepFour = function (community, draft) {
+    return '<div class="kc-admin-event-review"><section><h3>Revision del evento</h3><p>Confirma que la informacion este lista para publicarse.</p><dl>' +
+      '<div><dt>Evento</dt><dd>' + escapeHtml(draft.title) + '</dd></div>' +
+      '<div><dt>Categoria</dt><dd>' + escapeHtml(draft.category) + '</dd></div>' +
+      '<div><dt>Tipo</dt><dd>' + escapeHtml(draft.eventType) + '</dd></div>' +
+      '<div><dt>Fecha</dt><dd>' + escapeHtml(draft.date) + '</dd></div>' +
+      '<div><dt>Horario</dt><dd>' + escapeHtml(draft.startTime + " - " + draft.endTime) + '</dd></div>' +
+      '<div><dt>Modalidad</dt><dd>' + escapeHtml(draft.modality) + '</dd></div>' +
+      '<div><dt>Cupo</dt><dd>' + escapeHtml(draft.capacity) + ' personas</dd></div>' +
+      '<div><dt>Acceso</dt><dd>' + escapeHtml(draft.access) + '</dd></div>' +
+      '</dl></section>' + this.renderAdminEventPreview(draft, true) + '</div>';
+  };
+
+  CommunityApp.prototype.renderAdminEventWizard = function (community) {
+    var step = Math.max(1, Math.min(4, Number(this.state.adminEventStep) || 1));
+    var draft = this.adminEventDraftFor(community);
+    var subtitles = ["Completa la informacion general de tu evento.", "Define la fecha, modalidad y ubicacion del evento.", "Configura el cupo, el registro y las reglas de asistencia.", "Revisa la informacion antes de crear el evento."];
+    var content = step === 1 ? this.renderAdminEventStepOne(community, draft) : step === 2 ? this.renderAdminEventStepTwo(community, draft) : step === 3 ? this.renderAdminEventStepThree(community, draft) : this.renderAdminEventStepFour(community, draft);
+    return '<section class="kc-admin-event-wizard"><div class="kc-admin-event-wizard-head"><div><h2>Crear evento - Paso ' + step + ' de 4</h2><p>' + escapeHtml(subtitles[step - 1]) + '</p></div><button type="button" data-action="' + (step === 4 ? "admin-event-submit" : "admin-event-next") + '">Crear evento</button></div>' + this.renderAdminEventProgress(step) + '<div class="kc-admin-event-wizard-body">' + content + '</div><div class="kc-admin-event-footer"><button type="button" class="kc-admin-event-secondary" data-action="' + (step === 1 ? "admin-event-cancel" : "admin-event-prev") + '">' + (step === 1 ? "Cancelar" : "Atras") + '</button><button type="button" class="kc-admin-event-primary" data-action="' + (step === 4 ? "admin-event-submit" : "admin-event-next") + '">' + (step === 4 ? "Crear evento" : "Continuar") + '</button></div></section>';
+  };
+
+  CommunityApp.prototype.renderAdminCreatedEventCard = function (event) {
+    return '<article class="kc-admin-event-created-card"><div class="kc-admin-event-created-media"><img src="' + escapeHtml(event.coverImage || "/images/communities/create-cover.png") + '" alt="' + escapeHtml(event.title) + '"></div><div class="kc-admin-event-created-copy"><span>Destacado</span><h3>' + escapeHtml(event.title) + '</h3><div class="kc-admin-event-created-meta"><p>' + icon("calendar") + '<b>' + escapeHtml(event.date) + '</b><small>Sabado</small></p><p>' + icon("clock") + '<b>' + escapeHtml(event.time) + '</b><small>1 hora</small></p><p>' + icon("users") + '<b>' + escapeHtml(event.type) + '</b><small>Modalidad</small></p><p>' + icon("map") + '<b>' + escapeHtml(event.place) + '</b><small>' + escapeHtml(event.modality) + '</small></p></div><div class="kc-admin-event-created-footer"><p><small>Anfitrion</small><b>' + escapeHtml(event.host) + '</b></p><p><small>Precio</small><b>' + escapeHtml(event.price || "Gratis") + '</b></p><p><small>Estado</small><b class="is-published">Publicado</b></p><div><button type="button">' + icon("eye") + ' Ver evento</button><button type="button">' + icon("edit") + ' Editar</button><button type="button">' + icon("file") + ' Duplicar</button></div></div></div></article>';
+  };
+
+  CommunityApp.prototype.renderAdminEventsTool = function (community) {
+    if (this.state.adminEventMode === "create") return this.renderAdminEventWizard(community);
+    var self = this;
+    var communityEvents = this.adminEventsForCommunity(community);
+    var createdSuccess = this.state.adminEventSuccess ? communityEvents.find(function (item) { return item.id === self.state.adminEventSuccess; }) : null;
+    var primaryEvent = communityEvents[communityEvents.length - 1];
+    return '<section class="kc-admin-tool-view kc-admin-events-panel"><div class="kc-section-title"><div><h2>Eventos</h2><p>Calendario y eventos activos de la comunidad.</p></div><button type="button" data-action="admin-create-event">Crear evento</button></div>' +
+      (createdSuccess ? '<div class="kc-admin-event-success"><span>' + icon("check") + '</span><div><strong>Evento creado con exito</strong><p>"' + escapeHtml(createdSuccess.title) + '" ya esta publicado y visible para los miembros de la comunidad.</p></div><button type="button" data-action="admin-event-dismiss-success">x</button></div>' : '') +
+      (communityEvents.length ? '<section class="kc-admin-event-list"><div class="kc-section-title"><div><h2>Proximos eventos</h2><p>Gestiona y consulta los eventos programados de tu comunidad.</p></div></div>' + this.renderAdminCreatedEventCard(primaryEvent) + '<dl class="kc-admin-event-repository"><div><dt>ID del evento</dt><dd>' + escapeHtml(primaryEvent.repositoryId || primaryEvent.id) + '</dd></div><div><dt>Capacidad</dt><dd>' + escapeHtml(primaryEvent.capacity) + ' personas</dd></div><div><dt>Inscritos</dt><dd><span><i style="width:' + Math.min(100, Math.round(((primaryEvent.enrolled || 0) / Math.max(1, primaryEvent.capacity || 1)) * 100)) + '%"></i></span>' + escapeHtml(primaryEvent.enrolled || 0) + ' personas</dd></div><div><dt>Administrador</dt><dd>' + escapeHtml((this.options.patient && this.options.patient.name) || "Administrador") + '</dd></div><div><dt>Ultima actualizacion</dt><dd>' + escapeHtml(primaryEvent.updatedAt || "Hoy") + '</dd></div></dl></section>' : '<div class="kc-admin-mini-list"><article><strong>Sin eventos activos</strong><p>Crea el primer evento de esta comunidad.</p></article></div>') +
+      '</section>';
+  };
+
+  CommunityApp.prototype.defaultAdminClassDraft = function (community) {
+    community = community || {};
+    return {
+      title: "Yoga suave y respiracion",
+      category: "Bienestar fisico",
+      shortDescription: "Una practica suave de yoga enfocada en la respiracion consciente.",
+      description: "Clase guiada para reducir el estres, mejorar la movilidad y reconectar con la respiracion.",
+      classType: "Clase guiada",
+      communityId: community.id || "",
+      modality: "Presencial",
+      startDate: "Lunes, 10 de junio de 2024",
+      day: "mar",
+      number: "27",
+      month: "may",
+      startTime: "08:00 a.m.",
+      endTime: "09:00 a.m.",
+      duration: "60 minutos",
+      frequency: "Semanal",
+      weekDays: "Todos los lunes",
+      timezone: "(GMT-06:00) Ciudad de Mexico",
+      location: "Klini Wellness - Sala de Movimiento",
+      room: "Sala Wellness",
+      virtualLink: "https://",
+      instructor: "Mariana Lopez",
+      addCalendar: true,
+      capacity: "30",
+      waitlist: true,
+      priceMode: "Gratuita",
+      price: "0.00",
+      currency: "MXN - Peso mexicano",
+      registrationDeadline: "20/06/2025",
+      manualApproval: false,
+      allowCancellations: true,
+      reminder: "24 horas antes del inicio",
+      access: "Abierto a todos",
+      coverImage: "https://images.unsplash.com/photo-1599447421416-3414500d18a5?auto=format&fit=crop&w=1200&q=88"
+    };
+  };
+
+  CommunityApp.prototype.adminClassDraftFor = function (community) {
+    community = community || this.currentAdminCommunity();
+    if (!community) return this.defaultAdminClassDraft({});
+    var key = community.id || "default";
+    this.state.adminClassDrafts = this.state.adminClassDrafts || {};
+    this.state.adminClassDrafts[key] = merge(this.defaultAdminClassDraft(community), this.state.adminClassDrafts[key] || {});
+    return this.state.adminClassDrafts[key];
+  };
+
+  CommunityApp.prototype.updateAdminClassDraft = function (field, value) {
+    if (!field) return;
+    var draft = this.adminClassDraftFor(this.currentAdminCommunity());
+    draft[field] = value;
+  };
+
+  CommunityApp.prototype.toggleAdminClassDraft = function (field) {
+    if (!field) return;
+    var draft = this.adminClassDraftFor(this.currentAdminCommunity());
+    draft[field] = !draft[field];
+  };
+
+  CommunityApp.prototype.openAdminClassCreate = function () {
+    this.state.adminTool = "classes";
+    this.state.adminClassMode = "create";
+    this.state.adminClassStep = 1;
+    this.state.adminClassSuccess = null;
+    this.adminClassDraftFor(this.currentAdminCommunity());
+  };
+
+  CommunityApp.prototype.closeAdminClassCreate = function () {
+    this.state.adminClassMode = "list";
+    this.state.adminClassStep = 1;
+  };
+
+  CommunityApp.prototype.adminClassesForCommunity = function (community) {
+    if (!community) return [];
+    var created = this.state.adminCreatedClasses || [];
+    return (community.classes || []).concat(created.filter(function (item) { return item.communityId === community.id; }));
+  };
+
+  CommunityApp.prototype.submitAdminClass = function () {
+    var community = this.currentAdminCommunity();
+    if (!community) return;
+    var draft = this.adminClassDraftFor(community);
+    var capacity = Math.max(1, parseInt(draft.capacity, 10) || 30);
+    var enrolled = Math.min(capacity, 8);
+    var classId = "admin-class-" + community.id + "-" + Date.now();
+    var price = draft.priceMode === "Con costo" ? "$" + (draft.price || "0.00") + " " + String(draft.currency || "MXN").split(" ")[0] + " por sesion" : "Gratis";
+    var classRecord = {
+      id: classId,
+      repositoryId: "CLS-2025-0057",
+      communityId: community.id,
+      category: draft.category || "Bienestar fisico",
+      title: draft.title || "Yoga suave y respiracion",
+      description: draft.shortDescription || draft.description || community.description,
+      date: "Martes, 27 de mayo 2025",
+      day: draft.day || "mar",
+      number: draft.number || "27",
+      month: draft.month || "may",
+      time: (draft.startTime || "08:00 a.m.") + " - " + (draft.endTime || "09:00 a.m."),
+      place: draft.location || draft.room || community.city,
+      modality: draft.modality || "Presencial",
+      capacity: capacity,
+      enrolled: enrolled,
+      available: Math.max(0, capacity - enrolled),
+      price: price,
+      status: "Publicada",
+      instructor: draft.instructor || "Mariana Lopez",
+      type: draft.classType || "Clase guiada",
+      frequency: draft.frequency || "Semanal",
+      coverImage: draft.coverImage || "/images/communities/create-cover.png",
+      updatedAt: "Hoy, 22 de mayo de 2025 a las 10:24 a.m."
+    };
+    this.state.adminCreatedClasses = (this.state.adminCreatedClasses || []).concat([classRecord]);
+    this.state.adminClassMode = "list";
+    this.state.adminClassStep = 1;
+    this.state.adminClassSuccess = classRecord.id;
+    this.emit("community.admin.class.created", classRecord);
+  };
+
+  CommunityApp.prototype.renderAdminClassProgress = function (step) {
+    var labels = ["Informacion general", "Horario y modalidad", "Cupo y registro", "Revision"];
+    return '<div class="kc-admin-event-progress">' + labels.map(function (label, index) {
+      var number = index + 1;
+      return '<span class="' + (number === step ? "is-active " : "") + (number < step ? "is-complete" : "") + '"><b>' + number + '</b><small>' + escapeHtml(label) + '</small></span>';
+    }).join("") + '</div>';
+  };
+
+  CommunityApp.prototype.renderAdminClassField = function (field, label, value, placeholder, help, type) {
+    var id = "admin-class-" + field;
+    var input = type === "textarea"
+      ? '<textarea id="' + id + '" data-admin-class-field="' + escapeHtml(field) + '" placeholder="' + escapeHtml(placeholder || "") + '">' + escapeHtml(value || "") + '</textarea>'
+      : '<input id="' + id + '" data-admin-class-field="' + escapeHtml(field) + '" value="' + escapeHtml(value || "") + '" placeholder="' + escapeHtml(placeholder || "") + '">';
+    return '<label class="kc-admin-event-field"><span>' + escapeHtml(label) + '</span>' + input + (help ? '<small>' + help + '</small>' : '') + '</label>';
+  };
+
+  CommunityApp.prototype.renderAdminClassSelect = function (field, label, value, options, help) {
+    return '<label class="kc-admin-event-field"><span>' + escapeHtml(label) + '</span><select data-admin-class-field="' + escapeHtml(field) + '">' + options.map(function (option) {
+      var optionValue = typeof option === "object" ? option.value : option;
+      var optionLabel = typeof option === "object" ? option.label : option;
+      return '<option value="' + escapeHtml(optionValue) + '"' + (optionValue === value ? " selected" : "") + '>' + escapeHtml(optionLabel) + '</option>';
+    }).join("") + '</select>' + (help ? '<small>' + help + '</small>' : '') + '</label>';
+  };
+
+  CommunityApp.prototype.renderAdminClassChoice = function (field, value, current, label, iconName) {
+    return '<button type="button" class="kc-admin-event-choice ' + (value === current ? "is-selected" : "") + '" data-action="admin-class-choice" data-field="' + escapeHtml(field) + '" data-value="' + escapeHtml(value) + '">' + icon(iconName) + '<span>' + escapeHtml(label) + '</span>' + (value === current ? '<b>' + icon("check") + '</b>' : '') + '</button>';
+  };
+
+  CommunityApp.prototype.renderAdminClassToggle = function (field, label, text, isOn) {
+    return '<button type="button" class="kc-admin-event-toggle ' + (isOn ? "is-on" : "") + '" data-action="admin-class-toggle" data-field="' + escapeHtml(field) + '"><span><strong>' + escapeHtml(label) + '</strong><small>' + escapeHtml(text) + '</small></span><b></b></button>';
+  };
+
+  CommunityApp.prototype.renderAdminClassPreview = function (draft, compact) {
+    return '<aside class="kc-admin-event-preview ' + (compact ? "is-compact" : "") + '"><h3>Vista previa de la clase</h3><div class="kc-admin-event-preview-media">' +
+      (draft.coverImage ? '<img src="' + escapeHtml(draft.coverImage) + '" alt="Imagen de portada de la clase">' : icon("image") + '<span>Imagen de portada<br>Se mostrara en tu clase</span>') +
+      '</div><small>' + escapeHtml(draft.classType || "Clase guiada") + '</small><h4>' + escapeHtml(draft.title || "Titulo de la clase") + '</h4><p>' + escapeHtml(draft.shortDescription || draft.category || "Categoria de la clase") + '</p><ul><li>' + icon("calendar") + ' Fecha de inicio: ' + escapeHtml(draft.startDate || "--") + '</li><li>' + icon("clock") + ' Horario: ' + escapeHtml((draft.startTime || "--") + " - " + (draft.endTime || "--")) + '</li><li>' + icon("clock") + ' Frecuencia: ' + escapeHtml(draft.frequency || "--") + '</li><li>' + icon("map") + ' Ubicacion: ' + escapeHtml(draft.location || "--") + '</li><li>' + icon("users") + ' Instructor: ' + escapeHtml(draft.instructor || "--") + '</li><li>' + icon("ticket") + ' Precio: ' + escapeHtml(draft.priceMode === "Con costo" ? "$" + (draft.price || "0.00") + " MXN" : "Gratis") + '</li></ul></aside>';
+  };
+
+  CommunityApp.prototype.renderAdminClassStepOne = function (community, draft) {
+    var typeChoices = '<div class="kc-admin-event-choice-grid">' +
+      this.renderAdminClassChoice("classType", "Clase guiada", draft.classType, "Clase guiada", "users") +
+      this.renderAdminClassChoice("classType", "Taller", draft.classType, "Taller", "sparkles") +
+      this.renderAdminClassChoice("classType", "Meditacion", draft.classType, "Meditacion", "leaf") +
+      this.renderAdminClassChoice("classType", "Entrenamiento", draft.classType, "Entrenamiento", "clock") +
+      '</div>';
+    return '<div class="kc-admin-event-form-grid">' +
+      '<div class="kc-admin-event-form">' +
+      this.renderAdminClassField("title", "Titulo de la clase *", draft.title, "Ej. Yoga restaurativo para el bienestar") +
+      this.renderAdminClassField("shortDescription", "Descripcion breve *", draft.shortDescription, "Una breve descripcion que resuma el proposito de la clase.", "0/140") +
+      this.renderAdminClassField("description", "Descripcion completa *", draft.description, "Describe en detalle el contenido, beneficios y lo que los participantes pueden esperar.", "0/1000", "textarea") +
+      this.renderAdminClassSelect("communityId", "Comunidad relacionada *", draft.communityId || community.id, [community].concat(this.adminCommunities().filter(function (item) { return item.id !== community.id; })).map(function (item) { return { value: item.id, label: item.name }; }), "") +
+      '</div><div class="kc-admin-event-form">' +
+      this.renderAdminClassSelect("category", "Categoria *", draft.category, ["Bienestar fisico", "Yoga", "Nutricion", "Running", "Salud mental", "Fuerza"], "") +
+      '<div class="kc-admin-event-field"><span>Tipo de clase *</span>' + typeChoices + '</div>' +
+      '<div class="kc-admin-event-field"><span>Imagen de portada *</span><button type="button" class="kc-admin-event-upload">' + icon("image") + '<em>Arrastra y suelta una imagen aqui<br>o selecciona un archivo</em></button><small>JPG, PNG o WEBP. Max. 5MB.</small></div>' +
+      '</div></div>';
+  };
+
+  CommunityApp.prototype.renderAdminClassStepTwo = function (community, draft) {
+    return '<div class="kc-admin-event-step-split"><div class="kc-admin-event-form">' +
+      '<div class="kc-admin-event-field"><span>Modalidad de la clase *</span><div class="kc-admin-event-choice-grid is-three">' +
+      this.renderAdminClassChoice("modality", "Presencial", draft.modality, "Presencial", "users") +
+      this.renderAdminClassChoice("modality", "Virtual", draft.modality, "Virtual", "video") +
+      this.renderAdminClassChoice("modality", "Hibrida", draft.modality, "Hibrida", "globe") +
+      '</div></div><div class="kc-admin-event-grid-3">' +
+      this.renderAdminClassField("startDate", "Fecha de inicio *", draft.startDate, "Selecciona una fecha") +
+      this.renderAdminClassField("startTime", "Hora de inicio *", draft.startTime, "Selecciona una hora") +
+      this.renderAdminClassSelect("duration", "Duracion *", draft.duration, ["45 minutos", "60 minutos", "75 minutos", "90 minutos"], "") +
+      '</div><div class="kc-admin-event-field"><span>Frecuencia *</span><div class="kc-admin-event-choice-grid is-three">' +
+      this.renderAdminClassChoice("frequency", "Unica", draft.frequency, "Unica", "calendar") +
+      this.renderAdminClassChoice("frequency", "Semanal", draft.frequency, "Semanal", "calendar") +
+      this.renderAdminClassChoice("frequency", "Recurrente", draft.frequency, "Recurrente", "clock") +
+      '</div></div><div class="kc-admin-event-field"><span>Dias de la semana</span><div class="kc-admin-class-day-row">' +
+      ["Lun", "Mar", "Mie", "Jue", "Vie", "Sab", "Dom"].map(function (day) { return '<button type="button">' + day + '</button>'; }).join("") +
+      '</div></div><div class="kc-admin-event-grid-2">' +
+      this.renderAdminClassSelect("timezone", "Zona horaria *", draft.timezone, ["(GMT-06:00) Ciudad de Mexico", "(GMT-05:00) Bogota", "(GMT-05:00) Lima", "(GMT-04:00) Miami"], "") +
+      this.renderAdminClassSelect("location", "Ubicacion *", draft.location, ["Klini Wellness - Sala de Movimiento", "Sala Wellness, Ash and Olmo", "Casa Klini Condesa", "Remoto"], "") +
+      '</div><div class="kc-admin-event-grid-2">' +
+      this.renderAdminClassField("room", "Sala o estudio *", draft.room, "Escribe el nombre de la sala o estudio") +
+      this.renderAdminClassField("virtualLink", "Enlace virtual *", draft.virtualLink, "https://") +
+      '</div>' +
+      this.renderAdminClassSelect("instructor", "Instructor *", draft.instructor, ["Mariana Lopez", "Maria Fernanda Lopez", "Diego Ramirez", "Camila Perez"], "") +
+      this.renderAdminClassToggle("addCalendar", "Mostrar tambien en el calendario de la comunidad", "La clase sera visible para los miembros en el calendario general de la comunidad.", draft.addCalendar) +
+      '</div>' + this.renderAdminClassPreview(draft, false) + '</div>';
+  };
+
+  CommunityApp.prototype.renderAdminClassStepThree = function (community, draft) {
+    return '<div class="kc-admin-event-step-split"><div class="kc-admin-event-form">' +
+      '<div class="kc-admin-event-grid-2">' +
+      this.renderAdminClassField("capacity", "Cupo maximo *", draft.capacity, "30") +
+      this.renderAdminClassToggle("waitlist", "Lista de espera", "Activa una lista de espera si se alcanza el cupo maximo.", draft.waitlist) +
+      '</div><div class="kc-admin-event-field"><span>Clase gratuita o con costo *</span><div class="kc-admin-event-choice-grid is-two">' +
+      this.renderAdminClassChoice("priceMode", "Gratuita", draft.priceMode, "Gratuita", "check") +
+      this.renderAdminClassChoice("priceMode", "Con costo", draft.priceMode, "Con costo", "ticket") +
+      '</div></div><div class="kc-admin-event-grid-2">' +
+      this.renderAdminClassField("price", "Precio por clase *", draft.price, "$0.00") +
+      this.renderAdminClassSelect("currency", "Moneda *", draft.currency, ["MXN - Peso mexicano", "USD - Dolar", "COP - Peso colombiano"], "") +
+      '</div><div class="kc-admin-event-grid-2">' +
+      this.renderAdminClassField("registrationDeadline", "Fecha limite de registro *", draft.registrationDeadline, "20/06/2025") +
+      this.renderAdminClassToggle("manualApproval", "Aprobacion manual de asistentes", "Requiere que apruebes cada solicitud de registro.", draft.manualApproval) +
+      '</div>' +
+      this.renderAdminClassToggle("allowCancellations", "Permitir cancelaciones", "Los participantes podran cancelar su asistencia.", draft.allowCancellations) +
+      this.renderAdminClassSelect("reminder", "Recordatorio automatico", draft.reminder, ["24 horas antes del inicio", "12 horas antes del inicio", "2 horas antes del inicio", "Sin recordatorio"], "") +
+      '<div class="kc-admin-event-field"><span>Tipo de acceso *</span><div class="kc-admin-event-choice-grid is-three">' +
+      this.renderAdminClassChoice("access", "Abierto a todos", draft.access, "Abierto a todos", "globe") +
+      this.renderAdminClassChoice("access", "Solo miembros de la comunidad", draft.access, "Solo miembros", "users") +
+      this.renderAdminClassChoice("access", "Invitacion", draft.access, "Invitacion", "message") +
+      '</div><small>Cualquier persona podra ver y registrarse a esta clase.</small></div></div>' +
+      '<aside class="kc-admin-event-summary-card"><h3>Resumen de registro</h3><article>' + icon("users") + '<div><strong>Cupo maximo</strong><span>' + escapeHtml(draft.capacity || "30") + ' asistentes</span></div></article><article>' + icon("clock") + '<div><strong>Lista de espera</strong><span>' + (draft.waitlist ? "Activada" : "Desactivada") + '</span></div></article><article>' + icon("ticket") + '<div><strong>Requiere pago</strong><span>' + (draft.priceMode === "Con costo" ? "Si, $" + escapeHtml(draft.price || "0.00") : "No, esta clase sera gratuita.") + '</span></div></article></aside></div>';
+  };
+
+  CommunityApp.prototype.renderAdminClassStepFour = function (community, draft) {
+    return '<div class="kc-admin-event-review"><section><h3>Informacion general</h3><button type="button" class="kc-admin-review-edit" data-action="admin-class-step" data-step="1">Editar</button><dl>' +
+      '<div><dt>Titulo de la clase</dt><dd>' + escapeHtml(draft.title) + '</dd></div>' +
+      '<div><dt>Categoria</dt><dd>' + escapeHtml(draft.category) + '</dd></div>' +
+      '<div><dt>Tipo de clase</dt><dd>' + escapeHtml(draft.classType) + '</dd></div>' +
+      '<div><dt>Descripcion</dt><dd>' + escapeHtml(draft.shortDescription) + '</dd></div>' +
+      '<div><dt>Comunidad relacionada</dt><dd>' + escapeHtml(community.name) + '</dd></div>' +
+      '</dl></section><section><h3>Horario y modalidad</h3><button type="button" class="kc-admin-review-edit" data-action="admin-class-step" data-step="2">Editar</button><dl>' +
+      '<div><dt>Fecha de inicio</dt><dd>' + escapeHtml(draft.startDate) + '</dd></div>' +
+      '<div><dt>Horario</dt><dd>' + escapeHtml(draft.startTime + " - " + draft.endTime) + '</dd></div>' +
+      '<div><dt>Frecuencia</dt><dd>' + escapeHtml(draft.frequency + " (" + draft.weekDays + ")") + '</dd></div>' +
+      '<div><dt>Modalidad</dt><dd>' + escapeHtml(draft.modality) + '</dd></div>' +
+      '<div><dt>Ubicacion</dt><dd>' + escapeHtml(draft.location) + '</dd></div>' +
+      '</dl></section><section><h3>Cupo y registro</h3><button type="button" class="kc-admin-review-edit" data-action="admin-class-step" data-step="3">Editar</button><dl>' +
+      '<div><dt>Cupo total</dt><dd>' + escapeHtml(draft.capacity) + ' participantes</dd></div>' +
+      '<div><dt>Cupo disponible</dt><dd>8 participantes</dd></div>' +
+      '<div><dt>Lista de espera</dt><dd>' + (draft.waitlist ? "Activada" : "Desactivada") + '</dd></div>' +
+      '<div><dt>Precio</dt><dd>' + escapeHtml(draft.priceMode === "Con costo" ? "$" + draft.price + " MXN" : "Gratis") + '</dd></div>' +
+      '<div><dt>Registro</dt><dd>Requiere inscripcion</dd></div>' +
+      '</dl></section>' + this.renderAdminClassPreview(draft, true) + '</div>';
+  };
+
+  CommunityApp.prototype.renderAdminClassWizard = function (community) {
+    var step = Math.max(1, Math.min(4, Number(this.state.adminClassStep) || 1));
+    var draft = this.adminClassDraftFor(community);
+    var subtitles = ["Completa la informacion general de tu clase.", "Define el horario, modalidad y ubicacion de tu clase.", "Configura el cupo, el registro y las condiciones de asistencia.", "Revisa la informacion antes de publicar la clase."];
+    var content = step === 1 ? this.renderAdminClassStepOne(community, draft) : step === 2 ? this.renderAdminClassStepTwo(community, draft) : step === 3 ? this.renderAdminClassStepThree(community, draft) : this.renderAdminClassStepFour(community, draft);
+    return '<section class="kc-admin-event-wizard kc-admin-class-wizard"><div class="kc-admin-event-wizard-head"><div><h2>Crear clase - Paso ' + step + ' de 4</h2><p>' + escapeHtml(subtitles[step - 1]) + '</p></div><button type="button" data-action="' + (step === 4 ? "admin-class-submit" : "admin-class-next") + '">Crear clase</button></div>' + this.renderAdminClassProgress(step) + '<div class="kc-admin-event-wizard-body">' + content + '</div><div class="kc-admin-event-footer"><button type="button" class="kc-admin-event-secondary" data-action="' + (step === 1 ? "admin-class-cancel" : "admin-class-prev") + '">' + (step === 1 ? "Cancelar" : "Atras") + '</button>' + (step === 4 ? '<button type="button" class="kc-admin-event-secondary">Guardar borrador</button>' : '') + '<button type="button" class="kc-admin-event-primary" data-action="' + (step === 4 ? "admin-class-submit" : "admin-class-next") + '">' + (step === 4 ? "Publicar clase" : "Continuar") + '</button></div></section>';
+  };
+
+  CommunityApp.prototype.renderAdminClassCard = function (item) {
+    var cover = item.coverImage || item.image || "https://images.unsplash.com/photo-1599447421416-3414500d18a5?auto=format&fit=crop&w=900&q=88";
+    var enrolled = Number(item.enrolled || 8);
+    var capacity = Math.max(1, Number(item.capacity || 20));
+    return '<article class="kc-admin-event-created-card kc-admin-class-created-card"><div class="kc-admin-event-created-media"><img src="' + escapeHtml(cover) + '" alt="' + escapeHtml(item.title) + '"></div><div class="kc-admin-event-created-copy"><span>Destacada</span><h3>' + escapeHtml(item.title) + '</h3><div class="kc-admin-event-created-meta"><p>' + icon("calendar") + '<b>' + escapeHtml(item.date || "Martes, 27 de mayo 2025") + '</b><small>' + escapeHtml(item.day || "mar") + '</small></p><p>' + icon("clock") + '<b>' + escapeHtml(item.time || "8:00 a.m. - 9:00 a.m.") + '</b><small>Horario</small></p><p>' + icon("video") + '<b>' + escapeHtml(item.modality || "Presencial") + '</b><small>Modalidad</small></p><p>' + icon("map") + '<b>' + escapeHtml(item.place || "Sala Wellness") + '</b><small>Ubicacion</small></p></div><div class="kc-admin-event-created-footer"><p><small>Instructora</small><b>' + escapeHtml(item.instructor || "Mariana Lopez") + '</b></p><p><small>Precio</small><b>' + escapeHtml(item.price || "Gratis") + '</b></p><p><small>Estado</small><b class="is-published">' + escapeHtml(item.status || "Publicada") + '</b></p><div><button type="button">' + icon("eye") + ' Ver clase</button><button type="button">' + icon("edit") + ' Editar</button><button type="button">' + icon("file") + ' Duplicar</button></div></div></div></article><dl class="kc-admin-event-repository"><div><dt>ID de la clase</dt><dd>' + escapeHtml(item.repositoryId || item.id || "CLS-2025-0057") + '</dd></div><div><dt>Capacidad</dt><dd>' + escapeHtml(capacity) + ' personas</dd></div><div><dt>Inscritos</dt><dd><span><i style="width:' + Math.min(100, Math.round((enrolled / capacity) * 100)) + '%"></i></span>' + escapeHtml(enrolled) + ' / ' + escapeHtml(capacity) + '</dd></div><div><dt>Administrador</dt><dd>Klini Wellness (Tu)</dd></div><div><dt>Ultima actualizacion</dt><dd>' + escapeHtml(item.updatedAt || "Hoy") + '</dd></div></dl>';
+  };
+
+  CommunityApp.prototype.renderAdminClassesTool = function (community) {
+    if (this.state.adminClassMode === "create") return this.renderAdminClassWizard(community);
+    var self = this;
+    var communityClasses = this.adminClassesForCommunity(community);
+    var createdSuccess = this.state.adminClassSuccess ? communityClasses.find(function (item) { return item.id === self.state.adminClassSuccess; }) : null;
+    var primaryClass = communityClasses[communityClasses.length - 1];
+    return '<section class="kc-admin-tool-view kc-admin-events-panel kc-admin-classes-panel"><div class="kc-section-title"><div><h2>Clases y actividades</h2><p>Sesiones publicadas para miembros de la comunidad.</p></div><button type="button" data-action="admin-create-class">Crear clase</button></div>' +
+      (createdSuccess ? '<div class="kc-admin-event-success"><span>' + icon("check") + '</span><div><strong>Clase creada con exito</strong><p>"' + escapeHtml(createdSuccess.title) + '" ya esta publicada y visible para los miembros de la comunidad.</p></div><button type="button" data-action="admin-class-dismiss-success">x</button></div>' : '') +
+      (communityClasses.length ? '<section class="kc-admin-event-list"><div class="kc-section-title"><div><h2>Proximas clases</h2><p>Gestiona y consulta las clases programadas de tu comunidad.</p></div></div>' + this.renderAdminClassCard(primaryClass) + '</section>' : '<div class="kc-admin-mini-list"><article><strong>Sin clases activas</strong><p>Crea una clase o actividad para esta comunidad.</p></article></div>') +
+      '</section>';
+  };
+
+  CommunityApp.prototype.memberRequestBasePeopleFor = function (community) {
+    if (!community) return [];
+    var explicit = Number(community.pendingMemberRequests || community.pendingRequests || 0);
+    var count = explicit > 0 ? explicit : community.id === "ash-olmo" ? 3 : community.id === "respira" ? 2 : 0;
+    return count ? people.slice(4, 4 + count) : [];
+  };
+
+  CommunityApp.prototype.memberRequestKey = function (communityId, personId) {
+    return String(communityId || "") + ":" + String(personId || "");
+  };
+
+  CommunityApp.prototype.pendingMemberPeopleFor = function (community) {
+    if (!community) return [];
+    var self = this;
+    var decisions = this.state.memberRequestDecisions || {};
+    return this.memberRequestBasePeopleFor(community).filter(function (person) {
+      return !decisions[self.memberRequestKey(community.id, person.id)];
+    });
+  };
+
+  CommunityApp.prototype.approvedMemberPeopleFor = function (community) {
+    if (!community) return [];
+    var ids = (this.state.approvedCommunityMembers && this.state.approvedCommunityMembers[community.id]) || [];
+    return ids.map(function (personId) {
+      return people.find(function (person) { return person.id === personId; }) || null;
+    }).filter(Boolean);
+  };
+
+  CommunityApp.prototype.pendingMemberRequestsFor = function (community) {
+    return this.pendingMemberPeopleFor(community).length;
+  };
+
+  CommunityApp.prototype.memberCountFor = function (community) {
+    return Number(community && community.members || 0) + this.approvedMemberPeopleFor(community).length;
+  };
+
+  CommunityApp.prototype.respondToMemberRequest = function (communityId, personId, decision) {
+    var community = this.findCommunity(communityId) || this.currentAdminCommunity();
+    var person = people.find(function (item) { return item.id === personId; });
+    if (!community || !person) return;
+    var decisions = this.state.memberRequestDecisions || (this.state.memberRequestDecisions = {});
+    var approved = this.state.approvedCommunityMembers || (this.state.approvedCommunityMembers = {});
+    decisions[this.memberRequestKey(community.id, person.id)] = decision === "approved" ? "approved" : "rejected";
+    if (decision === "approved") {
+      var current = approved[community.id] || [];
+      if (current.indexOf(person.id) === -1) current.push(person.id);
+      approved[community.id] = current;
+      this.emit("community.member.approved", { community: community, person: person });
+      return;
+    }
+    this.emit("community.member.rejected", { community: community, person: person });
   };
 
   CommunityApp.prototype.join = function (id) {
@@ -1111,10 +1981,10 @@
     var classItem = null;
     var classCommunity = null;
     communities.some(function (community) {
-      classItem = (community.classes || []).find(function (item) { return item.id === id; }) || null;
+      classItem = this.adminClassesForCommunity(community).find(function (item) { return item.id === id; }) || null;
       if (classItem) classCommunity = community;
       return !!classItem;
-    });
+    }, this);
     return classItem ? { type: "class", item: classItem, community: classCommunity } : { type: id.indexOf("class-") === 0 ? "class" : "event", item: { id: id }, community: communities[0] };
   };
 
@@ -1222,7 +2092,7 @@
     ];
     return '<div class="kc-blank-hero" aria-hidden="true"></div>' +
       '<div class="kc-feed-wrap">' +
-      '<section class="kc-community-shortcuts" aria-label="Accesos de comunidades">' + shortcuts.map(function (item) {
+      '<section class="kc-community-shortcuts" data-pan data-carousel="community-shortcuts" aria-label="Accesos de comunidades">' + shortcuts.map(function (item) {
         return '<button class="kc-community-shortcut ' + item[4] + '" data-action="' + item[0] + '"' + (item[1] ? ' data-id="' + item[1] + '"' : "") + '><span>' + icon(item[3]) + '</span><strong>' + item[2] + '</strong></button>';
       }).join("") + '</section>' +
       this.renderStories() + '<div class="kc-post-list">' + posts.map(this.renderPost.bind(this)).join("") + '</div></div>';
@@ -1264,11 +2134,11 @@
     return '<div class="kc-cancel-confirm-backdrop" role="presentation">' +
       '<section class="kc-cancel-confirm-dialog" role="dialog" aria-modal="true" aria-labelledby="kc-cancel-confirm-title">' +
       '<div class="kc-cancel-confirm-icon" aria-hidden="true"><span>!</span></div>' +
-      '<h2 id="kc-cancel-confirm-title">&iquest;Est&aacute;s segura que deseas cancelar?</h2>' +
-      '<p>Esta acci&oacute;n no se puede deshacer.</p>' +
+      '<h2 id="kc-cancel-confirm-title">&iquest;Estas seguro que quieres cancelar?</h2>' +
+      '<p>Selecciona una opci&oacute;n para continuar.</p>' +
       '<div class="kc-cancel-confirm-actions">' +
       '<button type="button" class="kc-cancel-confirm-no" data-action="dismiss-cancel-reservation">No</button>' +
-      '<button type="button" class="kc-cancel-confirm-yes" data-action="confirm-cancel-reservation-submit" data-id="' + escapeHtml(this.state.cancelConfirmId) + '">S&iacute;, cancelar</button>' +
+      '<button type="button" class="kc-cancel-confirm-yes" data-action="confirm-cancel-reservation-submit" data-id="' + escapeHtml(this.state.cancelConfirmId) + '">Si</button>' +
       '</div></section></div>';
   };
 
@@ -1347,6 +2217,7 @@
     var activityLabel = context.reservable.type === "class" ? "clase" : "evento";
     var reminderPhrase = context.reservable.type === "class" ? "de la clase" : "del evento";
     return '<div class="kc-booking-shell kc-booking-success">' +
+      '<button type="button" class="kc-booking-success-close" data-action="reservation-cancel" aria-label="Cerrar">&times;</button>' +
       '<section class="kc-booking-success-hero"><div class="kc-booking-confetti" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span>' + icon("check") + '</span><h1>&iexcl;Confirmado,<br><b>te esperamos!</b></h1><p>Tu reservaci&oacute;n ha sido realizada con &eacute;xito.<br>Recibir&aacute;s un recordatorio antes ' + reminderPhrase + '.</p></section>' +
       '<section class="kc-booking-card kc-booking-success-details"><h2>' + icon("calendar") + ' Detalles de tu reserva</h2>' + this.renderReservationDetailCard(context, true) + '</section>' +
       '<section class="kc-booking-note">' + icon("info") + '<p>Recibir&aacute;s un recordatorio 24 horas antes ' + reminderPhrase + '.<br>Puedes cancelar tu reservaci&oacute;n desde Mis Reservas.</p></section>' +
@@ -1587,6 +2458,112 @@
     });
     document.body.appendChild(input);
     input.click();
+  };
+
+  CommunityApp.prototype.uploadAdminCommunityImage = function (id, field) {
+    var self = this;
+    var community = this.findCommunity(id) || this.findCommunity(this.state.detailId);
+    var safeField = field === "logoImage" ? "logoImage" : "adminHeroImage";
+    if (!community || this.communityRole(community) !== "admin") return;
+    var input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.style.position = "fixed";
+    input.style.left = "-9999px";
+    input.style.top = "0";
+    input.setAttribute("aria-hidden", "true");
+    input.addEventListener("change", function () {
+      var file = input.files && input.files[0];
+      if (!file) {
+        if (input.parentNode) input.parentNode.removeChild(input);
+        return;
+      }
+      if (file.type && !/^image\//.test(file.type)) {
+        if (input.parentNode) input.parentNode.removeChild(input);
+        window.alert("Selecciona una imagen para actualizar la comunidad.");
+        return;
+      }
+      var reader = new FileReader();
+      reader.onload = function () {
+        var changes = {};
+        changes[safeField] = String(reader.result || "");
+        if (safeField === "logoImage") changes.profileImage = changes[safeField];
+        self.saveAdminCommunityEdit(community, changes);
+        if (input.parentNode) input.parentNode.removeChild(input);
+        self.emit("community.admin.image.updated", { id: community.id, field: safeField });
+        self.save();
+        self.render();
+      };
+      reader.onerror = function () {
+        if (input.parentNode) input.parentNode.removeChild(input);
+      };
+      reader.readAsDataURL(file);
+    });
+    document.body.appendChild(input);
+    input.click();
+  };
+
+  CommunityApp.prototype.adminTextDraftKey = function (id, field) {
+    return String(id || "default") + ":" + String(field || "name");
+  };
+
+  CommunityApp.prototype.editAdminCommunityText = function (id, field) {
+    var community = this.findCommunity(id) || this.findCommunity(this.state.detailId);
+    var safeField = field === "description" ? "description" : "name";
+    if (!community || this.communityRole(community) !== "admin") return;
+    var key = this.adminTextDraftKey(community.id, safeField);
+    this.state.adminTextEdit = { id: community.id, field: safeField };
+    this.state.adminTextDrafts = this.state.adminTextDrafts || {};
+    this.state.adminTextDrafts[key] = community[safeField] || "";
+    this.render();
+  };
+
+  CommunityApp.prototype.updateAdminCommunityTextDraft = function (id, field, value) {
+    var safeField = field === "description" ? "description" : "name";
+    var key = this.adminTextDraftKey(id || this.state.detailId, safeField);
+    this.state.adminTextDrafts = this.state.adminTextDrafts || {};
+    this.state.adminTextDrafts[key] = value;
+  };
+
+  CommunityApp.prototype.cancelAdminCommunityTextEdit = function () {
+    this.state.adminTextEdit = null;
+    this.render();
+  };
+
+  CommunityApp.prototype.saveAdminCommunityTextEdit = function (id, field) {
+    var community = this.findCommunity(id) || this.findCommunity(this.state.detailId);
+    var safeField = field === "description" ? "description" : "name";
+    if (!community || this.communityRole(community) !== "admin") return;
+    var key = this.adminTextDraftKey(community.id, safeField);
+    var drafts = this.state.adminTextDrafts || {};
+    var value = String(drafts[key] != null ? drafts[key] : community[safeField] || "").trim();
+    if (!value) return;
+    var changes = {};
+    changes[safeField] = value;
+    if (safeField === "name" && !community.logoImage) {
+      changes.initials = initialsFromName(value);
+      changes.logoInitials = initialsFromName(value);
+    }
+    this.saveAdminCommunityEdit(community, changes);
+    this.state.adminTextEdit = null;
+    this.emit("community.admin.text.updated", { id: community.id, field: safeField });
+    this.save();
+    this.render();
+  };
+
+  CommunityApp.prototype.renderAdminEditableText = function (community, field) {
+    var safeField = field === "description" ? "description" : "name";
+    var editing = this.state.adminTextEdit && this.state.adminTextEdit.id === community.id && this.state.adminTextEdit.field === safeField;
+    var key = this.adminTextDraftKey(community.id, safeField);
+    var drafts = this.state.adminTextDrafts || {};
+    var value = editing && drafts[key] != null ? drafts[key] : community[safeField] || "";
+    if (editing) {
+      var control = safeField === "description"
+        ? '<textarea data-admin-edit-field="' + safeField + '" data-id="' + escapeHtml(community.id) + '">' + escapeHtml(value) + '</textarea>'
+        : '<input data-admin-edit-field="' + safeField + '" data-id="' + escapeHtml(community.id) + '" value="' + escapeHtml(value) + '">';
+      return '<div class="kc-admin-editable-line is-editing ' + (safeField === "name" ? "kc-admin-title-line" : "") + '"><label class="kc-admin-edit-inline"><span>' + (safeField === "name" ? "Nombre de la comunidad" : "Descripcion de la comunidad") + '</span>' + control + '</label><div class="kc-admin-edit-actions"><button type="button" class="is-primary" data-action="admin-save-text" data-id="' + escapeHtml(community.id) + '" data-field="' + safeField + '">' + icon("check") + ' Guardar</button><button type="button" data-action="admin-cancel-text">' + icon("minus") + ' Cancelar</button></div></div>';
+    }
+    return '<div class="kc-admin-editable-line ' + (safeField === "name" ? "kc-admin-title-line" : "") + '">' + (safeField === "name" ? '<h1>' + escapeHtml(value) + '</h1>' : '<p>' + escapeHtml(value) + '</p>') + '<button type="button" data-action="admin-edit-text" data-id="' + escapeHtml(community.id) + '" data-field="' + safeField + '">' + icon("edit") + ' Editar</button></div>';
   };
 
   CommunityApp.prototype.finishCreate = function () {
@@ -2049,9 +3026,7 @@
     var first = eventList[0] || {};
     var firstCommunity = communities.find(function (item) { return item.id === first.communityId; }) || communities[0] || {};
     var filters = this.currentEventFilters();
-    var dates = eventList.slice(0, 7).map(function (event, index) {
-      return '<button type="button" class="' + (index === 0 ? "is-active" : "") + '"><strong>' + escapeHtml(event.number) + '</strong><span>' + escapeHtml(event.day) + '</span></button>';
-    }).join("");
+    var dates = this.renderEventDateButtons(21);
     return '<div class="kc-event-search-tools">' +
       '<label class="kc-event-search-box">' + icon("search") + '<input type="search" data-event-search value="' + escapeHtml(query) + '" placeholder="Buscar evento, clase o actividad" aria-label="Buscar evento, clase o actividad"></label>' +
       '<div class="kc-event-filter-grid">' +
@@ -2059,7 +3034,7 @@
       this.renderEventFilter("map", "city", "Ciudad", filters.city || "Selecciona ciudad") +
       this.renderEventFilter("users", "community", "Comunidad", filters.community || firstCommunity.name || "Todas") +
       this.renderEventFilter("map", "location", "Ubicaci&oacute;n", filters.location || first.place || "Todas") +
-      '</div>' + this.renderEventFilterSelector(eventList) + '<div class="kc-event-date-row"><b>Fecha del evento</b><div>' + dates + '<button type="button" class="kc-event-date-next" aria-label="Siguiente">' + icon("arrow") + '</button></div><button type="button" class="kc-event-clear" data-action="clear-event-search">' + icon("filter") + ' Borrar filtros</button></div></div>';
+      '</div>' + this.renderEventFilterSelector(eventList) + '<div class="kc-event-date-row"><b>Fecha del evento</b><div data-event-date-scroller>' + dates + '<button type="button" class="kc-event-date-next" data-action="scroll-event-dates" data-dir="1" aria-label="Siguiente">' + icon("arrow") + '</button></div><button type="button" class="kc-event-clear" data-action="clear-event-search">' + icon("filter") + ' Borrar filtros</button></div></div>';
   };
 
   CommunityApp.prototype.renderEventFilter = function (iconName, type, label, value) {
@@ -2199,7 +3174,8 @@
 
   CommunityApp.prototype.renderDirectoryExplore = function (allCommunities) {
     var featured = allCommunities.slice(0, 3);
-    var more = allCommunities.slice(3, 7);
+    var recommended = allCommunities.slice(1, 13);
+    var more = allCommunities.slice(4);
     var categories = this.exploreCategoryDefinitions();
     var selectedCategory = this.state.selectedExploreCategory || "";
     var selectedPanel = this.renderExploreCategoryRecommendations(selectedCategory, allCommunities);
@@ -2210,8 +3186,8 @@
         return '<button type="button" class="kc-explore-category is-' + item.tone + (active ? " is-active" : "") + '" data-action="explore-category" data-id="' + item.id + '" aria-expanded="' + (active ? "true" : "false") + '">' + icon(item.icon) + '<strong>' + escapeHtml(item.title) + '</strong><small>' + escapeHtml(item.subtitle) + '</small></button>';
       }).join("") + '</div></div>' +
       selectedPanel +
-      '<div class="kc-explore-block"><div class="kc-section-title"><div><h2>Comunidades recomendadas para ti</h2></div></div><div class="kc-recommended-grid">' + allCommunities.slice(1, 5).map(this.renderExploreCommunity.bind(this)).join("") + '</div></div>' +
-      '<div class="kc-explore-block"><div class="kc-section-title"><div><h2>Mas comunidades para ti</h2></div></div><div class="kc-compact-community-grid">' + (more.length ? more.map(this.renderCompactCommunity.bind(this)).join("") : allCommunities.map(this.renderCompactCommunity.bind(this)).join("")) + '</div></div></section>';
+      '<div class="kc-explore-block"><div class="kc-section-title"><div><h2>Comunidades recomendadas para ti</h2></div></div><div class="kc-community-carousel" data-pan data-carousel="explore-recommended"><div class="kc-recommended-grid">' + (recommended.length ? recommended : allCommunities).map(this.renderExploreCommunity.bind(this)).join("") + '</div></div></div>' +
+      '<div class="kc-explore-block"><div class="kc-section-title"><div><h2>Mas comunidades para ti</h2></div></div><div class="kc-community-carousel" data-pan data-carousel="explore-more"><div class="kc-compact-community-grid">' + (more.length ? more.map(this.renderCompactCommunity.bind(this)).join("") : allCommunities.map(this.renderCompactCommunity.bind(this)).join("")) + '</div></div></div></section>';
   };
 
   CommunityApp.prototype.renderDirectoryMine = function (mine) {
@@ -2221,8 +3197,10 @@
   };
 
   CommunityApp.prototype.renderCompactCommunity = function (community) {
+    var id = escapeHtml(community.id);
     return '<article class="kc-compact-community"><span class="kc-compact-mark ' + community.tone + '">' + icon(community.tone === "gold" ? "calendar" : community.tone === "blue" ? "sparkles" : community.tone === "violet" ? "shield" : "users") + '</span>' +
-      '<div><h3>' + escapeHtml(community.name) + '</h3><small>' + escapeHtml(community.category) + ' · ' + (community.access === "open" ? "Abierta" : "Cerrada") + '</small><b>' + community.members + ' miembros</b></div></article>';
+      '<div><h3>' + escapeHtml(community.name) + '</h3><small>' + escapeHtml(community.category) + ' · ' + (community.access === "open" ? "Abierta" : "Cerrada") + '</small><b>' + community.members + ' miembros</b></div>' +
+      '<button type="button" data-action="open-community-panel" data-id="' + id + '">Ver comunidad</button></article>';
   };
 
   CommunityApp.prototype.renderExploreCommunity = function (community) {
@@ -2232,8 +3210,9 @@
 
   CommunityApp.prototype.renderMineCommunity = function (community) {
     var isAdmin = this.communityRole(community) === "admin";
-    var adminButton = isAdmin ? '<button class="kc-mine-admin-button" type="button" data-action="open-admin-panel" data-id="' + community.id + '" aria-label="Abrir panel de administrador de ' + escapeHtml(community.name) + '">Panel de administrador</button>' : "";
-    return '<article class="kc-mine-community"><span class="kc-mine-mark ' + community.tone + '">' + escapeHtml(community.initials) + '</span><div><small>' + escapeHtml(community.category) + ' · ' + (community.access === "open" ? "Abierta" : "Cerrada") + '</small><h3>' + escapeHtml(community.name) + '</h3><p>' + escapeHtml(community.description) + '</p><b>' + icon("users") + ' ' + community.members + ' miembros&nbsp;&nbsp;' + escapeHtml(community.city) + '</b></div><div class="kc-mine-actions"><button type="button" data-action="open-community-panel" data-id="' + community.id + '">Ver comunidad</button>' + adminButton + '</div></article>';
+    var id = escapeHtml(community.id);
+    var adminButton = isAdmin ? '<button type="button" class="kc-mine-admin-button" data-action="open-admin-panel" data-id="' + id + '" aria-label="Abrir panel de administrador de ' + escapeHtml(community.name) + '">Panel de administrador</button>' : "";
+    return '<article class="kc-mine-community"><span class="kc-mine-mark ' + community.tone + '">' + escapeHtml(community.initials) + '</span><div><small>' + escapeHtml(community.category) + ' · ' + (community.access === "open" ? "Abierta" : "Cerrada") + '</small><h3>' + escapeHtml(community.name) + '</h3><p>' + escapeHtml(community.description) + '</p><b>' + icon("users") + ' ' + community.members + ' miembros&nbsp;&nbsp;' + escapeHtml(community.city) + '</b></div><div class="kc-mine-actions"><button type="button" data-action="open-community-panel" data-id="' + id + '">Ver comunidad</button>' + adminButton + '</div></article>';
   };
 
   CommunityApp.prototype.renderAdminPanel = function () {
@@ -2252,42 +3231,103 @@
       editPage: true
     };
     var tools = [
-      ["stories", "Historias", "Subir stories como administrador.", "camera"],
-      ["communityPosts", "Publicaciones", "Crear publicaciones para la comunidad.", "message"],
-      ["events", "Eventos", "Crear y editar eventos.", "calendar"],
-      ["classes", "Clases", "Crear clases y actividades.", "sparkles"],
-      ["editPage", "Informacion", "Editar datos de la pagina de comunidad.", "edit"]
+      ["stories", "Historias", "camera"],
+      ["communityPosts", "Publicaciones", "message"],
+      ["events", "Eventos", "calendar"],
+      ["classes", "Clases", "sparkles"],
+      ["calendar", "Calendario", "clock"],
+      ["members", "Miembros", "users"],
+      ["editPage", "Informacion", "edit"],
+      ["analytics", "Analytics", "analytics"]
     ];
     var activeTool = this.state.adminTool || "stories";
-    var communityEvents = events.filter(function (event) { return event.communityId === community.id; });
-    return '<div class="kc-admin-panel kc-admin-modern"><button class="kc-back kc-admin-back" type="button" data-action="back-directory">' + icon("back") + ' Volver a mis comunidades</button>' +
-      '<section class="kc-admin-hero ' + community.tone + '"><span class="kc-admin-hero-mark">' + escapeHtml(community.logoInitials || community.initials) + '</span><div class="kc-admin-hero-copy"><small>Panel de administrador</small><h1>' + escapeHtml(community.name) + '</h1><p>' + escapeHtml(community.description) + '</p></div></section>' +
-      '<section class="kc-admin-summary" aria-label="Resumen de la comunidad"><article><b>' + community.members + '</b><span>Miembros</span></article><article><b>' + communityEvents.length + '</b><span>Eventos</span></article><article><b>' + ((community.classes || []).length) + '</b><span>Clases</span></article></section>' +
-      '<section class="kc-admin-tools"><div class="kc-section-title kc-admin-tools-heading"><div><h2>Herramientas de administracion</h2><p>Acciones disponibles segun permisos.</p></div></div><div class="kc-admin-tools-list">' + tools.map(function (tool) {
+    if (!tools.some(function (tool) { return tool[0] === activeTool; })) activeTool = "stories";
+    var communityEvents = this.adminEventsForCommunity(community);
+    var adminCommunities = this.adminCommunities();
+    var communityOptions = adminCommunities.map(function (item) {
+      return '<option value="' + escapeHtml(item.id) + '"' + (item.id === community.id ? " selected" : "") + '>' + escapeHtml(item.name) + '</option>';
+    }).join("");
+    var pendingRequests = this.pendingMemberRequestsFor(community);
+    var communityMemberCount = this.memberCountFor(community);
+    var heroImage = community.adminHeroImage || "";
+    var logoImage = community.logoImage || "";
+    var logoContent = logoImage ? '<img src="' + escapeHtml(logoImage) + '" alt="' + escapeHtml(community.name) + '">' : escapeHtml(community.logoInitials || community.initials);
+    var sidebar = '<aside class="kc-admin-sidebar" aria-label="Menu de administrador de comunidad">' +
+      '<div class="kc-admin-sidebar-brand"><span class="kc-admin-sidebar-logo">' + icon("shield") + '</span><div><strong>Klini Wellness</strong><small>Admin de comunidad</small></div></div>' +
+      '<label class="kc-admin-active-community"><span>Comunidad activa</span><select data-admin-community-select>' + communityOptions + '</select></label>' +
+      '<nav class="kc-admin-side-menu">' + tools.map(function (tool) {
         var enabled = permissions[tool[0]] !== false;
-        return '<article class="kc-admin-tool ' + (enabled ? "" : "is-disabled") + (activeTool === tool[0] ? " is-active" : "") + '"><span class="kc-admin-tool-icon">' + icon(tool[3]) + '</span><div><strong>' + tool[1] + '</strong><p>' + tool[2] + '</p></div><button type="button"' + (enabled ? ' data-action="open-admin-tool" data-id="' + tool[0] + '"' : " disabled") + '>' + (enabled ? "Abrir" : "Sin permiso") + '</button></article>';
-      }).join("") + '</div></section>' +
-      this.renderAdminToolView(community) +
-      '<section class="kc-admin-repository"><div class="kc-section-title"><div><h2>Catalogo y repositorio</h2><p>Registro base donde se almacena esta comunidad.</p></div></div><dl><div><dt>ID catalogo</dt><dd>' + escapeHtml(community.catalogId || community.slug || community.id) + '</dd></div><div><dt>Repositorio</dt><dd>' + escapeHtml(community.repositorySource || "catalogo-base") + '</dd></div><div><dt>Administrador</dt><dd>' + escapeHtml((self.options.patient && self.options.patient.name) || "Usuario administrador") + '</dd></div></dl></section></div>';
+        return '<button type="button" class="' + (activeTool === tool[0] ? "is-active " : "") + (enabled ? "" : "is-disabled") + '"' + (enabled ? ' data-action="open-admin-tool" data-id="' + escapeHtml(tool[0]) + '"' : " disabled") + '>' + icon(tool[2]) + '<span>' + escapeHtml(tool[1]) + '</span>' + (tool[0] === "members" && pendingRequests ? '<b>' + pendingRequests + '</b>' : '') + '</button>';
+      }).join("") + '</nav>' +
+      '<button class="kc-admin-public-button" type="button" data-action="open-community-panel" data-id="' + escapeHtml(community.id) + '">' + icon("globe") + ' Vista publica</button>' +
+      '</aside>';
+    var repository = '<section class="kc-admin-repository"><div class="kc-section-title"><div><h2>Catalogo y repositorio</h2><p>Registro base donde se almacena esta comunidad.</p></div></div><dl><div><dt>ID catalogo</dt><dd>' + escapeHtml(community.catalogId || community.slug || community.id) + '</dd></div><div><dt>Repositorio</dt><dd>' + escapeHtml(community.repositorySource || "catalogo-base") + '</dd></div><div><dt>Administrador</dt><dd>' + escapeHtml((self.options.patient && self.options.patient.name) || "Usuario administrador") + '</dd></div></dl></section>';
+    return '<div class="kc-admin-panel kc-admin-modern"><button class="kc-back kc-admin-back" type="button" data-action="back-directory">' + icon("back") + ' Volver a mis comunidades</button>' +
+      '<section class="kc-admin-hero ' + community.tone + '">' +
+      (heroImage ? '<img class="kc-admin-hero-bg" src="' + escapeHtml(heroImage) + '" alt="Imagen de portada de ' + escapeHtml(community.name) + '">' : '') +
+      '<button class="kc-admin-cover-edit" type="button" data-action="admin-upload-image" data-id="' + escapeHtml(community.id) + '" data-field="heroImage">' + icon("camera") + ' Subir imagen</button>' +
+      '<span class="kc-admin-hero-mark">' + logoContent + '<button type="button" data-action="admin-upload-image" data-id="' + escapeHtml(community.id) + '" data-field="logoImage" aria-label="Subir imagen de perfil de la comunidad">' + icon("camera") + '</button></span>' +
+      '<div class="kc-admin-hero-copy"><small>Panel de administrador</small>' + this.renderAdminEditableText(community, "name") + this.renderAdminEditableText(community, "description") + '</div></section>' +
+      '<section class="kc-admin-summary" aria-label="Resumen de la comunidad"><article><b>' + communityMemberCount + '</b><span>Miembros</span></article><article><b>' + communityEvents.length + '</b><span>Eventos</span></article><article><b>' + this.adminClassesForCommunity(community).length + '</b><span>Clases</span></article></section>' +
+      '<div class="kc-admin-workspace">' + sidebar + '<main class="kc-admin-main">' + this.renderAdminToolView(community) + repository + '</main></div></div>';
   };
 
   CommunityApp.prototype.renderAdminToolView = function (community) {
     var activeTool = this.state.adminTool || "stories";
     var storyId = "community:" + (community.slug || community.id);
-    var communityEvents = events.filter(function (event) { return event.communityId === community.id; });
-    var communityClasses = community.classes || [];
+    var communityEvents = this.adminEventsForCommunity(community);
+    var communityClasses = this.adminClassesForCommunity(community);
+    var pendingMembers = this.pendingMemberPeopleFor(community);
+    var pendingRequests = pendingMembers.length;
+    var communityMemberCount = this.memberCountFor(community);
+    var activeMembers = this.detailMembersForCommunity ? this.detailMembersForCommunity(community).slice(0, 8) : [this.patientSummary()].concat(people).slice(0, 8);
+    var approvedMembers = this.approvedMemberPeopleFor(community);
+    if (approvedMembers.length) {
+      var activeIds = {};
+      activeMembers.forEach(function (person) { activeIds[person.id] = true; });
+      approvedMembers.forEach(function (person) {
+        if (!activeIds[person.id]) {
+          activeMembers.push(person);
+          activeIds[person.id] = true;
+        }
+      });
+    }
     if (activeTool === "communityPosts") {
       return '<section class="kc-admin-tool-view"><div class="kc-section-title"><div><h2>Publicaciones</h2><p>Crea y administra publicaciones visibles en la comunidad.</p></div></div><div class="kc-admin-post-composer"><textarea placeholder="Escribe una publicacion para ' + escapeHtml(community.name) + '"></textarea><button type="button">Publicar</button></div><div class="kc-admin-mini-list"><article><strong>Publicacion fijada</strong><p>' + escapeHtml(community.pinnedMessage || "Mensaje principal de la comunidad.") + '</p></article></div></section>';
     }
     if (activeTool === "events") {
+      return this.renderAdminEventsTool(community);
+    }
+    if (activeTool === "events-disabled") {
       return '<section class="kc-admin-tool-view"><div class="kc-section-title"><div><h2>Eventos</h2><p>Calendario y eventos activos de la comunidad.</p></div><button type="button">Crear evento</button></div><div class="kc-admin-mini-list">' + (communityEvents.length ? communityEvents.map(function (event) {
         return '<article><strong>' + escapeHtml(event.title) + '</strong><p>' + escapeHtml(event.date) + ' · ' + escapeHtml(event.time) + ' · ' + escapeHtml(event.place) + '</p></article>';
       }).join("") : '<article><strong>Sin eventos activos</strong><p>Crea el primer evento de esta comunidad.</p></article>') + '</div></section>';
     }
     if (activeTool === "classes") {
+      return this.renderAdminClassesTool(community);
+    }
+    if (activeTool === "classes-disabled") {
       return '<section class="kc-admin-tool-view"><div class="kc-section-title"><div><h2>Clases y actividades</h2><p>Sesiones publicadas para miembros de la comunidad.</p></div><button type="button">Crear clase</button></div><div class="kc-admin-mini-list">' + (communityClasses.length ? communityClasses.map(function (item) {
         return '<article><strong>' + escapeHtml(item.title) + '</strong><p>' + escapeHtml(item.date) + ' · ' + escapeHtml(item.time) + ' · ' + escapeHtml(item.place) + '</p></article>';
       }).join("") : '<article><strong>Sin clases activas</strong><p>Crea una clase o actividad para esta comunidad.</p></article>') + '</div></section>';
+    }
+    if (activeTool === "calendar") {
+      var calendarItems = communityEvents.concat(communityClasses);
+      return '<section class="kc-admin-tool-view"><div class="kc-section-title"><div><h2>Calendario</h2><p>Agenda de eventos, clases y actividades programadas.</p></div></div><div class="kc-admin-calendar-list">' + (calendarItems.length ? calendarItems.map(function (item) {
+        return '<article class="kc-admin-calendar-row"><span><small>' + escapeHtml(item.day || "dia") + '</small><b>' + escapeHtml(item.number || "--") + '</b><small>' + escapeHtml(item.month || "") + '</small></span><div><strong>' + escapeHtml(item.title) + '</strong><p>' + escapeHtml(item.date || "") + ' &middot; ' + escapeHtml(item.time || "") + ' &middot; ' + escapeHtml(item.place || "") + '</p></div><button type="button">Editar</button></article>';
+      }).join("") : '<article class="kc-admin-calendar-row"><span><small>sin</small><b>0</b><small>act</small></span><div><strong>Sin actividades programadas</strong><p>Agrega eventos o clases para llenar el calendario.</p></div></article>') + '</div></section>';
+    }
+    if (activeTool === "members") {
+      return '<section class="kc-admin-tool-view"><div class="kc-section-title"><div><h2>Miembros</h2><p>Solicitudes pendientes y miembros activos de la comunidad.</p></div></div><div class="kc-admin-member-block"><h3>Solicitudes pendientes <span>' + pendingRequests + '</span></h3>' + (pendingMembers.length ? pendingMembers.map(function (person) {
+        return '<article class="kc-admin-member-row"><span class="kc-admin-member-avatar"><img src="' + escapeHtml(person.avatar) + '" alt="' + escapeHtml(person.name) + '"></span><div><strong>' + escapeHtml(person.name) + '</strong><p>Solicitud para unirse a ' + escapeHtml(community.name) + '.</p></div><div class="kc-admin-member-actions"><button type="button" data-action="admin-member-request" data-community="' + escapeHtml(community.id) + '" data-id="' + escapeHtml(person.id) + '" data-decision="approved">Aprobar</button><button type="button" data-action="admin-member-request" data-community="' + escapeHtml(community.id) + '" data-id="' + escapeHtml(person.id) + '" data-decision="rejected">Rechazar</button></div></article>';
+      }).join("") : '<article class="kc-admin-member-row"><span class="kc-admin-member-avatar">' + icon("check") + '</span><div><strong>Sin solicitudes pendientes</strong><p>Cuando lleguen solicitudes apareceran en esta seccion.</p></div></article>') + '</div><div class="kc-admin-member-block"><h3>Miembros activos</h3><div class="kc-admin-member-grid">' + activeMembers.map(function (person) {
+        var avatar = person.avatar || person.profileImage || "";
+        return '<article><span>' + (avatar ? '<img src="' + escapeHtml(avatar) + '" alt="' + escapeHtml(person.short || person.name) + '">' : escapeHtml((person.short || person.name || "DS").slice(0, 2).toUpperCase())) + '</span><strong>' + escapeHtml(person.short || person.name) + '</strong><small>Activo</small></article>';
+      }).join("") + '</div></div></section>';
+    }
+    if (activeTool === "analytics") {
+      var postCount = this.detailPostsForCommunity ? this.detailPostsForCommunity(community).length : posts.length;
+      return '<section class="kc-admin-tool-view"><div class="kc-section-title"><div><h2>Analytics</h2><p>Resumen de actividad y crecimiento de la comunidad.</p></div></div><div class="kc-admin-analytics-grid"><article><small>Miembros</small><strong>' + communityMemberCount + '</strong><span>+12% este mes</span></article><article><small>Solicitudes pendientes</small><strong>' + pendingRequests + '</strong><span>Por revisar</span></article><article><small>Eventos y clases</small><strong>' + (communityEvents.length + communityClasses.length) + '</strong><span>Activos</span></article><article><small>Publicaciones</small><strong>' + postCount + '</strong><span>Recientes</span></article></div></section>';
     }
     if (activeTool === "editPage") {
       return '<section class="kc-admin-tool-view"><div class="kc-section-title"><div><h2>Informacion de la pagina</h2><p>Edita los datos publicos de la comunidad.</p></div></div><div class="kc-admin-edit-grid"><label>Nombre<input value="' + escapeHtml(community.name) + '"></label><label>Categoria<input value="' + escapeHtml(community.category) + '"></label><label>Ciudad<input value="' + escapeHtml(community.city) + '"></label><label>Descripcion<textarea>' + escapeHtml(community.description) + '</textarea></label><button type="button">Guardar cambios</button></div></section>';
@@ -2337,7 +3377,7 @@
     var city = community.city || "Ciudad de Mexico";
     var location = event.place || "";
     var searchText = normalizeSearch([event.title, event.category, event.date, event.time, location, event.modality, community.name, country, city].join(" "));
-    return '<article class="kc-event" data-event-search-card data-event-search-text="' + escapeHtml(searchText) + '" data-event-country="' + escapeHtml(normalizeSearch(country)) + '" data-event-city="' + escapeHtml(normalizeSearch(city)) + '" data-event-community="' + escapeHtml(normalizeSearch(community.name || "")) + '" data-event-location="' + escapeHtml(normalizeSearch(location)) + '"><div class="kc-date-tile ' + (community.tone || "mint") + '"><small>' + event.day + '</small><strong>' + event.number + '-' + event.month + '</strong></div>' +
+    return '<article class="kc-event" data-event-search-card data-event-search-text="' + escapeHtml(searchText) + '" data-event-country="' + escapeHtml(normalizeSearch(country)) + '" data-event-city="' + escapeHtml(normalizeSearch(city)) + '" data-event-community="' + escapeHtml(normalizeSearch(community.name || "")) + '" data-event-location="' + escapeHtml(normalizeSearch(location)) + '" data-event-date="' + escapeHtml(this.eventDateKey(event)) + '"><div class="kc-date-tile ' + (community.tone || "mint") + '"><small>' + event.day + '</small><strong>' + event.number + '-' + event.month + '</strong></div>' +
       '<div class="kc-event-copy"><small>' + escapeHtml(event.category) + '</small><h3>' + escapeHtml(event.title) + '</h3><p>' + escapeHtml(event.date) + ', ' + event.time + '.</p><p>' + escapeHtml(community.name) + '</p>' +
       '<b>' + (event.modality === "Remoto" ? icon("globe") : icon("map")) + ' ' + escapeHtml(event.place) + ' <span>Booking open</span></b><small>' + event.available + ' lugares disponibles de ' + event.capacity + '</small></div>' +
       '<button class="kc-event-action" data-action="' + (reserved ? "cancel" : "reserve") + '" data-id="' + event.id + '">' + (reserved ? "Cancelar" : "Reservar") + '</button></article>';
@@ -2345,7 +3385,7 @@
 
   CommunityApp.prototype.renderDetail = function () {
     var community = communities.find(function (item) { return item.id === this.state.detailId; }, this) || communities[0];
-    var communityEvents = events.filter(function (event) { return event.communityId === community.id; });
+    var communityEvents = this.adminEventsForCommunity(community);
     return '<div class="kc-detail"><button class="kc-back" data-action="back-directory">' + icon("back") + ' Volver a comunidades</button>' +
       '<section class="kc-detail-hero ' + community.tone + '"><div><small>' + escapeHtml(community.category) + ' · ' + (community.access === "open" ? "Abierta" : "Cerrada") + '</small><h1>' + escapeHtml(community.name) + '</h1><p>' + escapeHtml(community.description) + '</p><b>' + community.members + ' miembros · ' + escapeHtml(community.city) + '</b></div>' +
       '<button data-action="join" data-id="' + community.id + '">Unirme</button></section>' +
@@ -2356,7 +3396,7 @@
 
   CommunityApp.prototype.renderDetail = function () {
     var community = communities.find(function (item) { return item.id === this.state.detailId; }, this) || communities[0];
-    var communityEvents = events.filter(function (event) { return event.communityId === community.id; });
+    var communityEvents = this.adminEventsForCommunity(community);
     var role = this.communityRole(community);
     var joined = role === "member" || role === "admin";
     var requested = role === "requested";
@@ -2519,7 +3559,7 @@
 
   CommunityApp.prototype.renderDetail = function () {
     var community = this.findCommunity(this.state.detailId) || this.catalogCommunities()[0];
-    var communityEvents = events.filter(function (event) { return event.communityId === community.id; });
+    var communityEvents = this.adminEventsForCommunity(community);
     var role = this.communityRole(community);
     var joined = role === "member" || role === "admin";
     var requested = role === "requested";

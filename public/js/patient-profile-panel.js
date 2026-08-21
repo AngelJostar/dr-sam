@@ -705,3 +705,35 @@
 
   updateUI();
 })();
+(() => {
+  if (window.__drSamSubscriptionsMobilePanLoader) return;
+  // Carga el carrusel táctil de suscripciones en las vistas del paciente.
+  window.__drSamSubscriptionsMobilePanLoader = true;
+
+  const source = document.currentScript?.src || `${window.location.origin}/js/patient-profile-panel.js`;
+  const cssHref = new URL("../css/subscriptions-mobile-pan.css", source).href;
+  const jsSrc = new URL("subscriptions-mobile-pan.js", source).href;
+
+  if (!document.querySelector('link[data-drsam-subscriptions-pan]')) {
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = cssHref;
+    link.dataset.drsamSubscriptionsPan = "";
+    (document.head || document.documentElement).appendChild(link);
+  }
+
+  const loadPanBehavior = () => {
+    if (document.querySelector('script[data-drsam-subscriptions-pan]')) return;
+    const script = document.createElement("script");
+    script.src = jsSrc;
+    script.defer = true;
+    script.dataset.drsamSubscriptionsPan = "";
+    (document.head || document.documentElement).appendChild(script);
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", loadPanBehavior, { once: true });
+  } else {
+    loadPanBehavior();
+  }
+})();
