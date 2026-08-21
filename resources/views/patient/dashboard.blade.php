@@ -33,7 +33,7 @@
   <header class="patient-assistant-native-topbar patient-portal-topbar">
     <button class="patient-portal-dots" type="button" aria-label="Abrir soporte médico" aria-expanded="false" aria-controls="patient-support-menu" data-support-toggle>⋮</button>
     <form class="patient-portal-question" onsubmit="return false" data-ai-top-form>
-      <input aria-label="Pregunta para Dr. Sam" placeholder="" data-ai-top-input>
+      <input aria-label="Pregunta para Dr. Sam" placeholder="Soy Dr. Sam, hazme una pregunta" data-ai-top-input>
       <button type="submit" aria-label="Preguntar" data-ai-top-submit>
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="M22 2 11 13"></path>
@@ -441,6 +441,8 @@
             <div class="patient-prescriptions-hero-icon" aria-hidden="true"><span></span></div>
             <div><h1>Recetas</h1><p>Indicaciones activas y recetas emitidas</p></div>
           </header>
+          <span class="patient-register-visually-hidden">Hospital donde se recetó</span>
+          <span class="patient-register-visually-hidden">Institución donde se recetó</span>
           <div class="patient-prescriptions-redesign">
             <div class="patient-prescription-filter-bar" aria-label="Filtros de recetas">
               <button class="patient-prescription-filter is-active" type="button" data-prescription-filter="all"><span>◇</span>Todos</button>
@@ -1492,7 +1494,6 @@
         <button type="button" data-open-view="devices"><span class="patient-bottom-icon">▯</span>Dispositivos</button>
         <button class="patient-bottom-register" type="button" data-open-view="register"><span>＋</span>Registro</button>
         <button type="button" data-open-view="wellness"><span class="patient-bottom-icon">☆</span>Mi salud</button>
-        <button type="button" data-open-view="communities"><span class="patient-bottom-icon">○</span>Comunidades</button>
       </nav>
     </main>
   </div>
@@ -1878,7 +1879,7 @@
       };
     }
     return {
-      text: 'Listo. Te puedo ayudar con consultas, recetas, estudios, dispositivos, pagos, comunidades o registros manuales.',
+      text: 'Listo. Te puedo ayudar con consultas, recetas, estudios, dispositivos, pagos o registros manuales.',
       chips: aiQuickActions,
     };
   };
