@@ -7,12 +7,17 @@ use App\Models\Doctor;
 use App\Models\DoctorAvailabilityRule;
 use App\Models\DoctorClinic;
 use App\Models\ClinicalEncounter;
+use App\Models\MedicalUnit;
+use App\Models\MixtureIntegration;
 use App\Models\Patient;
 use App\Models\PatientOrder;
 use App\Models\Prescription;
 use App\Models\ProviderRequest;
+use App\Models\ProviderRequestStatusEvent;
 use App\Models\User;
+use App\Services\Integrations\Cbta\MixtureIntegrationSyncService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
 class DoctorPortalTest extends TestCase
@@ -81,6 +86,124 @@ class DoctorPortalTest extends TestCase
             ['Nutrici' . "\u{00F3}" . 'n parenteral', 'An' . "\u{00E1}" . 'lisis Cl' . "\u{00ED}" . 'nicos'],
             collect($doctor->metadata['service_assignments'] ?? [])->pluck('name')->all()
         );
+    }
+
+    public function test_doctor_sees_important_cbta_mixture_updates(): void
+    {
+        [$user, $doctor] = $this->createDoctor();
+        $patient = Patient::query()->create([
+            'platform_number' => 'PAC-NOTIFY-1',
+            'full_name' => 'Paciente Notificado',
+            'primary_doctor_id' => $doctor->id,
+            'status' => 'active',
+        ]);
+        $providerRequest = ProviderRequest::query()->create([
+            'patient_id' => $patient->id,
+            'external_id' => 'NPT-NOTIFY-1',
+            'request_type' => 'npt',
+            'status' => 'ready',
+            'requested_at' => now(),
+            'payload' => ['doctor_id' => $doctor->id, 'service' => 'Nutricion parenteral'],
+        ]);
+        ProviderRequestStatusEvent::query()->create([
+            'provider_request_id' => $providerRequest->id,
+            'status' => 'ready',
+            'actor' => 'cbta.integration',
+            'occurred_at' => now(),
+        ]);
+
+        $this->actingAs($user)
+            ->get(route('doctor.dashboard', ['section' => 'services']))
+            ->assertOk()
+            ->assertSee('Actualizaciones de Mezclas')
+            ->assertSee('NPT-NOTIFY-1')
+            ->assertSeeText('La mezcla está lista para entrega.');
+    }
+
+    public function test_doctor_can_download_own_cbta_document_through_the_private_proxy(): void
+    {
+        [$user, $doctor] = $this->createDoctor();
+        $patient = Patient::query()->create([
+            'platform_number' => 'PAC-DOCUMENT-1',
+            'full_name' => 'Paciente Documento',
+            'primary_doctor_id' => $doctor->id,
+            'status' => 'active',
+        ]);
+        $providerRequest = ProviderRequest::query()->create([
+            'patient_id' => $patient->id,
+            'external_id' => 'NPT-DOCUMENT-1',
+            'request_type' => 'npt',
+            'status' => 'requested',
+            'requested_at' => now(),
+            'payload' => ['doctor_id' => $doctor->id],
+        ]);
+        MixtureIntegration::query()->create([
+            'provider_request_id' => $providerRequest->id,
+            'local_external_id' => (string) str()->uuid(),
+            'cbta_request_id' => 'CBTA-DOCUMENT-1',
+            'sync_status' => 'synced',
+            'metadata' => ['remote_documents' => [[
+                'id' => 91,
+                'type' => 'authorization',
+                'name' => 'autorizacion.pdf',
+            ]]],
+        ]);
+        config()->set('cbta.base_url', 'https://cbta.test');
+        config()->set('cbta.token', 'service-token');
+        Http::fake([
+            'https://cbta.test/api/internal/v1/mixture-requests/CBTA-DOCUMENT-1/documents/91' => Http::response(
+                'private-pdf', 200, ['Content-Type' => 'application/pdf']
+            ),
+        ]);
+
+        $response = $this->actingAs($user)->get(route(
+            'doctor.service_requests.documents.download',
+            [$providerRequest, 91]
+        ));
+
+        $response->assertOk()
+            ->assertHeader('content-type', 'application/pdf')
+            ->assertHeader('content-disposition', 'attachment; filename="autorizacion.pdf"');
+        $this->assertStringContainsString('private', (string) $response->headers->get('cache-control'));
+        $this->assertStringContainsString('no-store', (string) $response->headers->get('cache-control'));
+        $this->assertSame('private-pdf', $response->getContent());
+    }
+
+    public function test_doctor_can_download_the_official_cbta_remission(): void
+    {
+        [$user, $doctor] = $this->createDoctor();
+        $patient = Patient::query()->create([
+            'platform_number' => 'PAC-REMISSION-1', 'full_name' => 'Paciente Remision',
+            'primary_doctor_id' => $doctor->id, 'status' => 'active',
+        ]);
+        $providerRequest = ProviderRequest::query()->create([
+            'patient_id' => $patient->id, 'external_id' => 'NPT-REMISSION-1',
+            'request_type' => 'npt', 'status' => 'ready', 'requested_at' => now(),
+            'payload' => ['doctor_id' => $doctor->id, 'cbta' => ['remission' => [
+                'available' => true, 'number' => 'REM-1001',
+            ]]],
+        ]);
+        MixtureIntegration::query()->create([
+            'provider_request_id' => $providerRequest->id,
+            'local_external_id' => (string) str()->uuid(),
+            'cbta_request_id' => 'CBTA-REMISSION-1', 'sync_status' => 'synced',
+        ]);
+        config()->set('cbta.base_url', 'https://cbta.test');
+        config()->set('cbta.token', 'service-token');
+        Http::fake([
+            'https://cbta.test/api/internal/v1/mixture-requests/CBTA-REMISSION-1/remission' => Http::response(
+                'remission-pdf', 200, ['Content-Type' => 'application/pdf']
+            ),
+        ]);
+
+        $response = $this->actingAs($user)->get(route(
+            'doctor.service_requests.remission.download', $providerRequest
+        ));
+
+        $response->assertOk()
+            ->assertHeader('content-type', 'application/pdf')
+            ->assertHeader('content-disposition', 'attachment; filename="remision-REM-1001.pdf"');
+        $this->assertSame('remission-pdf', $response->getContent());
     }
 
     public function test_doctor_agenda_renders_its_calendar_workspace(): void
@@ -530,6 +653,308 @@ class DoctorPortalTest extends TestCase
         $this->assertSame(1200, (int) ProviderRequest::query()->where('request_type', 'npt')->firstOrFail()->payload['clinical_format']['total_volume']);
         $this->assertSame('Cisplatino', ProviderRequest::query()->where('request_type', 'chemo')->firstOrFail()->payload['clinical_format']['medications'][0]['medication']);
         $this->assertDatabaseCount('provider_request_status_events', 3);
+    }
+
+    public function test_npt_create_url_renders_the_focused_request_form(): void
+    {
+        [$user] = $this->createDoctor();
+
+        $response = $this->actingAs($user)->get(route('doctor.dashboard', [
+            'section' => 'services',
+            'type' => 'npt',
+            'action' => 'create',
+        ]));
+
+        $response->assertOk()
+            ->assertSee('doctor-service-request-page', false)
+            ->assertSee('Solicitud de nutrición parenteral')
+            ->assertSee('name="request_type" value="npt"', false)
+            ->assertSee('name="npt[total_volume]"', false)
+            ->assertSee('Datos generales de la solicitud')
+            ->assertSee('Datos clínicos y ubicación')
+            ->assertSee('Administración de la mezcla')
+            ->assertSee('Componentes de la nutrición parenteral')
+            ->assertSee('Entrega y responsable médico')
+            ->assertDontSee('name="npt[infusion_set]"', false)
+            ->assertDontSee('name="request_type" value="chemo"', false)
+            ->assertDontSee('name="request_type" value="clinical_labs"', false);
+    }
+
+    public function test_npt_form_shows_medicine_additives_and_excludes_auxiliary_materials(): void
+    {
+        config(['cbta.base_url' => 'http://cbta.test', 'cbta.token' => 'test-token']);
+        [$user, $doctor] = $this->createDoctor();
+        $unit = MedicalUnit::query()->create([
+            'name' => 'Hospital con aditivos',
+            'code' => 'DRSAM-ADDITIVES',
+            'cbta_external_code' => 'CBTA-ADDITIVES',
+            'status' => 'active',
+        ]);
+        $doctor->update([
+            'medical_unit_id' => $unit->id,
+            'metadata' => [
+                'service_assignments' => [[
+                    'context' => 'institutional',
+                    'institution' => 'Hospital con aditivos',
+                    'name' => 'Nutrición parenteral',
+                    'category' => 'Nutrición',
+                    'specialty' => 'Nutrición clínica',
+                    'request_type' => 'npt',
+                    'status' => 'active',
+                ]],
+            ],
+        ]);
+        $user->unsetRelation('doctor');
+
+        Http::fake([
+            'http://cbta.test/api/internal/v1/medical-units/CBTA-ADDITIVES/catalogs/npt' => Http::response(['data' => [
+                'catalog_version' => 'npt-additives-v1',
+                'items' => [
+                    ['product_code' => 'ALBUMIN-25', 'presentation_code' => 'ALBUMIN-25-50ML', 'generic_name' => 'ALBÚMINA 25%', 'commercial_name' => 'ALBÚMINA HUMANA', 'presentation' => 'FCO AMP 50ML', 'category' => 'Aditivos'],
+                    ['product_code' => 'EVA-3000', 'presentation_code' => 'EVA-3000-UNIT', 'generic_name' => 'BOLSA EVA 3000 ML', 'commercial_name' => 'Bolsa', 'presentation' => 'UNIDAD', 'category' => 'Bolsa Eva'],
+                    ['product_code' => 'WATER-500', 'presentation_code' => 'WATER-500ML', 'generic_name' => 'AGUA INYECTABLE', 'commercial_name' => 'Agua', 'presentation' => 'FRASCO 500ML', 'category' => 'Otra'],
+                    ['product_code' => 'INFUSION-SET', 'presentation_code' => 'INFUSION-SET-UNIT', 'generic_name' => 'SET DE INFUSIÓN', 'commercial_name' => 'Optima', 'presentation' => 'UNIDAD', 'category' => 'Set de Infusión'],
+                ],
+            ]]),
+            'http://cbta.test/api/internal/v1/medical-units/CBTA-ADDITIVES/catalogs/oncology' => Http::response(['data' => [
+                'catalog_version' => 'oncology-empty-v1',
+                'items' => [],
+            ]]),
+        ]);
+
+        $response = $this->actingAs($user)->get(route('doctor.dashboard', [
+            'section' => 'services',
+            'type' => 'npt',
+            'action' => 'create',
+        ]));
+
+        Http::assertSent(fn ($request): bool => str_ends_with($request->url(), '/medical-units/CBTA-ADDITIVES/catalogs/npt'));
+        $response->assertOk()
+            ->assertSee('Aditivos')
+            ->assertSee('ALBÚMINA 25%')
+            ->assertDontSee('BOLSA EVA 3000 ML')
+            ->assertDontSee('AGUA INYECTABLE')
+            ->assertDontSee('SET DE INFUSIÓN');
+    }
+
+    public function test_real_npt_form_prevalidates_with_cbta_and_persists_the_integration_result(): void
+    {
+        config(['cbta.base_url' => 'http://cbta.test', 'cbta.token' => 'test-token']);
+        [$user, $doctor] = $this->createDoctor();
+        $unit = MedicalUnit::query()->create([
+            'name' => 'Hospital Integrado',
+            'code' => 'DRSAM-INT',
+            'cbta_external_code' => 'CBTA-HOSP-01',
+            'status' => 'active',
+        ]);
+        $doctor->update(['medical_unit_id' => $unit->id]);
+        $patient = Patient::query()->create([
+            'platform_number' => 'PAC-CBTA-01',
+            'full_name' => 'Paciente Integrado',
+            'primary_doctor_id' => $doctor->id,
+            'status' => 'active',
+        ]);
+
+        Http::fake([
+            'http://cbta.test/api/internal/v1/mixture-requests/prevalidate' => Http::response([
+                'data' => [
+                    'valid' => true,
+                    'catalog_type' => 'npt',
+                    'catalog_version' => 'npt-v3',
+                    'medical_unit' => ['external_code' => 'CBTA-HOSP-01'],
+                    'items' => [[
+                        'product_code' => 'GLUCOSE-50',
+                        'presentation_code' => 'GLUCOSE-50-500ML',
+                        'quantity' => 100,
+                        'unit' => 'ml',
+                    ]],
+                    'errors' => [],
+                ],
+            ]),
+            'http://cbta.test/api/internal/v1/mixture-requests' => Http::response([
+                'data' => [
+                    'request_id' => '019ca6bc-b8f0-7bd7-a819-913ccfc1045d',
+                    'local_external_id' => 'ignored-in-assertion',
+                    'status' => 'received',
+                    'catalog_type' => 'npt',
+                    'catalog_version' => 'npt-v3',
+                ],
+            ], 201),
+        ]);
+
+        $response = $this->actingAs($user)->post(route('doctor.service_requests.store'), array_merge(
+            $this->validNptRequestPayload($patient, $doctor),
+            [
+                'integration_catalog_version' => 'npt-v3',
+                'integration_items' => [[
+                    'catalog_item' => 'GLUCOSE-50|GLUCOSE-50-500ML',
+                    'quantity' => 100,
+                    'unit' => 'ml',
+                ]],
+            ]
+        ));
+
+        $response->assertSessionHasNoErrors()
+            ->assertSessionHas('sweet_alert.title', 'Solicitud creada correctamente')
+            ->assertRedirect(route('doctor.dashboard', ['section' => 'requests']));
+
+        $providerRequest = ProviderRequest::query()->sole();
+        $integration = MixtureIntegration::query()->sole();
+        $this->assertSame($providerRequest->id, $integration->provider_request_id);
+        $this->assertSame('awaiting_authorizations', $integration->sync_status);
+        $this->assertSame('npt-v3', $integration->catalog_version);
+        $this->assertNull($integration->cbta_request_id);
+        Http::assertNotSent(fn ($request): bool => $request->url() === 'http://cbta.test/api/internal/v1/mixture-requests');
+
+        $payload = $providerRequest->payload;
+        $payload['authorizations'] = ['operational' => 'approved', 'pharmacy' => 'approved'];
+        $providerRequest->update(['payload' => $payload]);
+
+        $this->assertTrue(app(MixtureIntegrationSyncService::class)->sync($integration->fresh()));
+        $integration->refresh();
+
+        $this->assertSame('synced', $integration->sync_status);
+        $this->assertSame('019ca6bc-b8f0-7bd7-a819-913ccfc1045d', $integration->cbta_request_id);
+        $this->assertSame('received', $integration->remote_status);
+        $this->assertSame('npt', $integration->metadata['catalog_type']);
+        $this->assertNotNull($integration->payload_hash);
+
+        Http::assertSent(fn ($request): bool => $request->url() === 'http://cbta.test/api/internal/v1/mixture-requests/prevalidate'
+            && $request['medical_unit_code'] === 'CBTA-HOSP-01'
+            && $request['catalog_version'] === 'npt-v3'
+            && $request['items'][0]['product_code'] === 'GLUCOSE-50');
+    }
+
+    public function test_rejected_cbta_prevalidation_does_not_create_request_or_integration(): void
+    {
+        config(['cbta.base_url' => 'http://cbta.test', 'cbta.token' => 'test-token']);
+        [$user, $doctor] = $this->createDoctor();
+        $unit = MedicalUnit::query()->create([
+            'name' => 'Hospital Integrado',
+            'code' => 'DRSAM-REJECT',
+            'cbta_external_code' => 'CBTA-HOSP-02',
+            'status' => 'active',
+        ]);
+        $doctor->update(['medical_unit_id' => $unit->id]);
+        $patient = Patient::query()->create([
+            'platform_number' => 'PAC-CBTA-02',
+            'full_name' => 'Paciente Rechazado',
+            'primary_doctor_id' => $doctor->id,
+            'status' => 'active',
+        ]);
+
+        Http::fake([
+            'http://cbta.test/api/internal/v1/mixture-requests/prevalidate' => Http::response([
+                'data' => [
+                    'valid' => false,
+                    'catalog_type' => 'npt',
+                    'catalog_version' => 'npt-v4',
+                    'medical_unit' => ['external_code' => 'CBTA-HOSP-02'],
+                    'items' => [],
+                    'errors' => [['code' => 'insufficient_stock', 'message' => 'Stock insuficiente para el producto solicitado.']],
+                ],
+            ]),
+        ]);
+
+        $this->actingAs($user)->from(route('doctor.dashboard'))->post(
+            route('doctor.service_requests.store'),
+            array_merge($this->validNptRequestPayload($patient, $doctor), [
+                'integration_catalog_version' => 'npt-v4',
+                'integration_items' => [[
+                    'catalog_item' => 'GLUCOSE-50|GLUCOSE-50-500ML',
+                    'quantity' => 999999,
+                    'unit' => 'ml',
+                ]],
+            ])
+        )->assertRedirect(route('doctor.dashboard'))
+            ->assertSessionHasErrors('integration_items');
+
+        $this->assertDatabaseCount('provider_requests', 0);
+        $this->assertDatabaseCount('mixture_integrations', 0);
+    }
+
+    public function test_cbta_creation_failure_keeps_the_local_request_ready_for_retry(): void
+    {
+        config(['cbta.base_url' => 'http://cbta.test', 'cbta.token' => 'test-token']);
+        [$user, $doctor] = $this->createDoctor();
+        $unit = MedicalUnit::query()->create([
+            'name' => 'Hospital Reintento',
+            'code' => 'DRSAM-RETRY',
+            'cbta_external_code' => 'CBTA-HOSP-RETRY',
+            'status' => 'active',
+        ]);
+        $doctor->update(['medical_unit_id' => $unit->id]);
+        $patient = Patient::query()->create([
+            'platform_number' => 'PAC-CBTA-RETRY',
+            'full_name' => 'Paciente Reintento',
+            'primary_doctor_id' => $doctor->id,
+            'status' => 'active',
+        ]);
+
+        Http::fake([
+            'http://cbta.test/api/internal/v1/mixture-requests/prevalidate' => Http::response(['data' => [
+                'valid' => true,
+                'catalog_type' => 'npt',
+                'catalog_version' => 'npt-v5',
+                'medical_unit' => ['external_code' => 'CBTA-HOSP-RETRY'],
+                'items' => [['valid' => true]],
+                'errors' => [],
+            ]]),
+            'http://cbta.test/api/internal/v1/mixture-requests' => Http::response(['message' => 'Temporalmente no disponible'], 503),
+        ]);
+
+        $this->actingAs($user)->post(route('doctor.service_requests.store'), array_merge(
+            $this->validNptRequestPayload($patient, $doctor),
+            [
+                'integration_catalog_version' => 'npt-v5',
+                'integration_items' => [[
+                    'catalog_item' => 'GLUCOSE-50|GLUCOSE-50-500ML',
+                    'quantity' => 100,
+                    'unit' => 'ml',
+                ]],
+            ]
+        ))->assertSessionHasNoErrors();
+
+        $this->assertDatabaseCount('provider_requests', 1);
+        $integration = MixtureIntegration::query()->sole();
+        $this->assertSame('awaiting_authorizations', $integration->sync_status);
+
+        $providerRequest = ProviderRequest::query()->sole();
+        $payload = $providerRequest->payload;
+        $payload['authorizations'] = ['operational' => 'approved', 'pharmacy' => 'approved'];
+        $providerRequest->update(['payload' => $payload]);
+
+        $this->assertFalse(app(MixtureIntegrationSyncService::class)->sync($integration->fresh()));
+        $integration->refresh();
+        $this->assertSame('failed', $integration->sync_status);
+        $this->assertNull($integration->cbta_request_id);
+        $this->assertNotNull($integration->last_error);
+    }
+
+    private function validNptRequestPayload(Patient $patient, Doctor $doctor): array
+    {
+        return [
+            'request_type' => 'npt',
+            'patient_id' => $patient->id,
+            'service' => 'Nutricion parenteral',
+            'diagnosis' => 'Diagnostico de integracion',
+            'priority' => 'routine',
+            'npt' => [
+                'clinical_service' => 'Nutricion clinica',
+                'registration' => 'REG-CBTA',
+                'weight' => 70,
+                'sex' => 'Masculino',
+                'birth_date' => '1980-01-01',
+                'route' => 'Central',
+                'infusion_hours' => 24,
+                'total_volume' => 1200,
+                'npt_type' => 'Individualizada',
+                'delivery_at' => '2026-08-06 10:00:00',
+                'destination_hospital' => 'Hospital Integrado',
+                'doctor_name' => $doctor->full_name,
+                'professional_license' => $doctor->professional_license,
+            ],
+        ];
     }
 
     private function createDoctor(): array

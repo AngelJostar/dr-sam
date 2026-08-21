@@ -12,6 +12,7 @@ use App\Models\DoctorAvailabilityRule;
 use App\Models\DoctorClinic;
 use App\Models\Patient;
 use App\Models\MedicationCatalogItem;
+use App\Models\MixtureIntegration;
 use App\Models\Prescription;
 use App\Models\Provider;
 use App\Models\ProviderRequest;
@@ -21,13 +22,19 @@ use App\Services\AppointmentSchedulingService;
 use App\Services\Platform\DomainStateTransitionService;
 use App\Services\Platform\PlatformAuditService;
 use App\Services\PrescriptionPharmacyService;
+use App\Services\Integrations\Cbta\CbtaCatalogClient;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 class DoctorPortalController extends Controller
 {
@@ -95,12 +102,39 @@ class DoctorPortalController extends Controller
             : null;
 
         $providerRequests = ProviderRequest::query()
-            ->with(['patient', 'provider', 'medicalUnit'])
+            ->with([
+                'patient',
+                'provider',
+                'medicalUnit',
+                'mixtureIntegration',
+                'statusEvents' => fn ($query) => $query
+                    ->where('actor', 'cbta.integration')
+                    ->whereIn('status', ['ready', 'delivered', 'cancelled', 'rejected'])
+                    ->latest('occurred_at'),
+            ])
             ->when($doctor->medical_unit_id, fn ($query) => $query->where('medical_unit_id', $doctor->medical_unit_id))
             ->where('payload->doctor_id', $doctor->id)
             ->latest('requested_at')
             ->limit(20)
             ->get();
+        $mixtureNotifications = $providerRequests
+            ->flatMap(fn (ProviderRequest $providerRequest) => $providerRequest->statusEvents->map(fn ($event) => (object) [
+                'request' => $providerRequest,
+                'event' => $event,
+            ]))
+            ->sortByDesc(fn ($notification) => $notification->event->occurred_at)
+            ->unique(fn ($notification) => $notification->request->id.'|'.$notification->event->status)
+            ->take(5)
+            ->values();
+
+        $providerRequests->each(function (ProviderRequest $providerRequest): void {
+            $documents = data_get($providerRequest->mixtureIntegration?->metadata, 'remote_documents', []);
+            if (is_array($documents) && $documents !== []) {
+                $payload = $providerRequest->payload ?? [];
+                data_set($payload, 'cbta.documents', $documents);
+                $providerRequest->setAttribute('payload', $payload);
+            }
+        });
 
         $operationalServices = $this->operationalServices($doctor);
         $availableRequestTypes = $operationalServices
@@ -108,6 +142,32 @@ class DoctorPortalController extends Controller
             ->filter()
             ->unique()
             ->values();
+
+        $cbtaCatalogs = ['npt' => collect(), 'oncology' => collect()];
+        $cbtaCatalogVersions = ['npt' => null, 'oncology' => null];
+        $cbtaCatalogError = null;
+        if ($doctor->medicalUnit?->cbta_external_code) {
+            try {
+                $client = app(CbtaCatalogClient::class);
+                $unitCode = $doctor->medicalUnit->cbta_external_code;
+                $nptCatalog = Cache::remember(
+                    "cbta.catalog.{$unitCode}.npt",
+                    now()->addMinutes(5),
+                    fn () => $client->nptCatalog($unitCode)
+                );
+                $oncologyCatalog = Cache::remember(
+                    "cbta.catalog.{$unitCode}.oncology",
+                    now()->addMinutes(5),
+                    fn () => $client->oncologyCatalog($unitCode)
+                );
+                $cbtaCatalogs['npt'] = collect($nptCatalog['items'] ?? []);
+                $cbtaCatalogs['oncology'] = collect($oncologyCatalog['items'] ?? []);
+                $cbtaCatalogVersions['npt'] = $nptCatalog['catalog_version'] ?? null;
+                $cbtaCatalogVersions['oncology'] = $oncologyCatalog['catalog_version'] ?? null;
+            } catch (Throwable) {
+                $cbtaCatalogError = 'No fue posible consultar el catalogo operativo de Mezclas. Intenta nuevamente.';
+            }
+        }
 
         $videoScheduleConfirmation = $request->session()->get('video_schedule_confirmation');
         $scheduledAppointmentId = $request->integer('appointment') ?: (int) data_get($videoScheduleConfirmation, 'appointment_id');
@@ -155,6 +215,7 @@ class DoctorPortalController extends Controller
             'services' => $operationalServices,
             'availableRequestTypes' => $availableRequestTypes,
             'providerRequests' => $providerRequests,
+            'mixtureNotifications' => $mixtureNotifications,
             'clinics' => $doctor->clinics->sortBy('name')->values(),
             'selectedClinic' => $selectedClinic,
             'availabilityRules' => $doctor->availabilityRules->sortBy(fn ($rule) => sprintf('%d-%s', $rule->weekday, $rule->start_time))->values(),
@@ -162,6 +223,9 @@ class DoctorPortalController extends Controller
             'medications' => MedicationCatalogItem::query()->where('status', 'active')->orderBy('generic_name')->limit(500)->get(),
             'scheduledVideoAppointment' => $scheduledVideoAppointment,
             'videoScheduleComplete' => $videoScheduleComplete,
+            'cbtaCatalogs' => $cbtaCatalogs,
+            'cbtaCatalogVersions' => $cbtaCatalogVersions,
+            'cbtaCatalogError' => $cbtaCatalogError,
         ]);
     }
 
@@ -754,7 +818,7 @@ class DoctorPortalController extends Controller
         return redirect()->route('doctor.dashboard', ['section' => 'prescriptions'])->with('status', 'Receta actualizada y sincronizada con Farmacia Externa.');
     }
 
-    public function storeServiceRequest(Request $request, PlatformAuditService $audit): RedirectResponse
+    public function storeServiceRequest(Request $request, PlatformAuditService $audit, CbtaCatalogClient $cbta): RedirectResponse
     {
         $doctor = $this->resolveDoctor($request);
         $data = $request->validate([
@@ -814,6 +878,13 @@ class DoctorPortalController extends Controller
             'npt.destination_hospital' => ['nullable', 'string', 'max:255'],
             'npt.doctor_name' => ['nullable', 'string', 'max:180'],
             'npt.professional_license' => ['nullable', 'string', 'max:120'],
+            'integration_items' => ['nullable', 'array', 'max:100'],
+            'integration_catalog_version' => ['nullable', 'string', 'max:100'],
+            'integration_items.*.catalog_item' => ['nullable', 'string', 'max:220'],
+            'integration_items.*.product_code' => ['nullable', 'string', 'max:100'],
+            'integration_items.*.presentation_code' => ['nullable', 'string', 'max:100'],
+            'integration_items.*.quantity' => ['nullable', 'numeric', 'gt:0'],
+            'integration_items.*.unit' => ['nullable', Rule::in(['ml', 'mg', 'unit'])],
         ]);
         abort_unless($this->patientBelongsToDoctor($doctor, (int) $data['patient_id']), 404);
 
@@ -832,6 +903,65 @@ class DoctorPortalController extends Controller
             }
         }
 
+        $integrationItems = collect($data['integration_items'] ?? [])
+            ->map(function (array $item): array {
+                if (filled($item['catalog_item'] ?? null)) {
+                    [$productCode, $presentationCode] = array_pad(explode('|', $item['catalog_item'], 2), 2, null);
+                    $item['product_code'] = $productCode;
+                    $item['presentation_code'] = $presentationCode;
+                }
+
+                unset($item['catalog_item']);
+
+                return $item;
+            })
+            ->filter(fn (array $item): bool => filled($item['product_code'] ?? null)
+                && filled($item['presentation_code'] ?? null)
+                && filled($item['quantity'] ?? null)
+                && filled($item['unit'] ?? null))
+            ->values()
+            ->all();
+        $mixtureType = $data['request_type'] === 'chemo' ? 'oncology' : ($data['request_type'] === 'npt' ? 'npt' : null);
+        $unitCode = $doctor->medicalUnit?->cbta_external_code;
+        $prevalidationPayload = null;
+        $prevalidation = null;
+
+        if ($mixtureType && $unitCode) {
+            if ($integrationItems === []) {
+                throw ValidationException::withMessages([
+                    'integration_items' => 'Selecciona al menos un producto del catalogo operativo de Mezclas.',
+                ]);
+            }
+
+            $prevalidationPayload = [
+                'medical_unit_code' => $unitCode,
+                'catalog_type' => $mixtureType,
+                'items' => $integrationItems,
+            ];
+            if (filled($data['integration_catalog_version'] ?? null)) {
+                $prevalidationPayload['catalog_version'] = $data['integration_catalog_version'];
+            }
+
+            try {
+                $prevalidation = $cbta->prevalidateMixture($prevalidationPayload);
+            } catch (Throwable) {
+                throw ValidationException::withMessages([
+                    'integration_items' => 'Mezclas no esta disponible para prevalidar la solicitud. No se guardo ningun registro.',
+                ]);
+            }
+
+            if (! $prevalidation['valid']) {
+                $messages = collect($prevalidation['errors'])
+                    ->pluck('message')
+                    ->filter()
+                    ->unique()
+                    ->join(' ');
+                throw ValidationException::withMessages([
+                    'integration_items' => $messages ?: 'La solicitud fue rechazada durante la prevalidacion de Mezclas.',
+                ]);
+            }
+        }
+
         $prefix = ['clinical_labs' => 'LAB', 'npt' => 'NPT', 'chemo' => 'ONC'][$data['request_type']];
         $provider = Provider::query()->where('provider_type', $data['request_type'])->where('status', 'active')->first()
             ?? Provider::query()->where('status', 'active')->first();
@@ -845,7 +975,8 @@ class DoctorPortalController extends Controller
         $firstMedication = $oncologyMedications[0] ?? [];
         $requiredAt = $data['required_at'] ?? data_get($data, 'npt.delivery_at');
 
-        $providerRequest = DB::transaction(function () use ($doctor, $data, $provider, $prefix, $clinicalFormat, $firstMedication, $requiredAt, $attachment, $attachmentPath): ProviderRequest {
+        try {
+            $providerRequest = DB::transaction(function () use ($doctor, $data, $provider, $prefix, $clinicalFormat, $firstMedication, $requiredAt, $attachment, $attachmentPath, $integrationItems, $prevalidationPayload, $prevalidation): ProviderRequest {
             $providerRequest = ProviderRequest::query()->create([
                 'provider_id' => $provider?->id,
                 'patient_id' => $data['patient_id'],
@@ -867,12 +998,20 @@ class DoctorPortalController extends Controller
                     'volume' => $data['volume'] ?? data_get($data, 'npt.total_volume'),
                     'priority' => $data['priority'] ?? 'routine',
                     'clinical_format' => $clinicalFormat,
+                    'integration_items' => $integrationItems,
                     'attachment' => $attachmentPath ? [
                         'disk' => 'local',
                         'path' => $attachmentPath,
                         'original_name' => $attachment?->getClientOriginalName(),
+                        'mime' => $attachment?->getMimeType(),
+                        'size' => $attachment?->getSize(),
                     ] : null,
-                    'authorizations' => ['operational' => 'pending', 'pharmacy' => 'pending'],
+                    'authorizations' => $data['request_type'] === 'chemo'
+                        ? ['oncology' => 'pending', 'pharmacy' => 'pending']
+                        : ['operational' => 'pending', 'pharmacy' => 'pending'],
+                    'authorization_requirements' => $data['request_type'] === 'chemo'
+                        ? ['oncology', 'pharmacy']
+                        : ['operational', 'pharmacy'],
                 ],
             ]);
             ProviderRequestStatusEvent::query()->create([
@@ -883,12 +1022,102 @@ class DoctorPortalController extends Controller
                 'metadata' => ['source' => 'doctor_module'],
             ]);
 
-            return $providerRequest;
-        });
+            if ($prevalidation && $prevalidationPayload) {
+                MixtureIntegration::query()->create([
+                    'provider_request_id' => $providerRequest->id,
+                    'local_external_id' => (string) Str::uuid(),
+                    'sync_status' => 'awaiting_authorizations',
+                    'catalog_version' => $prevalidation['catalog_version'],
+                    'payload_hash' => hash('sha256', json_encode($prevalidationPayload, JSON_THROW_ON_ERROR)),
+                    'last_synced_at' => now(),
+                    'metadata' => [
+                        'catalog_type' => $prevalidation['catalog_type'],
+                        'medical_unit_code' => data_get($prevalidation, 'medical_unit.external_code'),
+                        'items_count' => count($prevalidation['items']),
+                        'prevalidation_valid' => true,
+                    ],
+                ]);
+            }
+
+                return $providerRequest;
+            });
+        } catch (Throwable $exception) {
+            if ($attachmentPath) {
+                Storage::disk('local')->delete($attachmentPath);
+            }
+
+            report($exception);
+
+            return back()->withInput()->with('sweet_alert', [
+                'icon' => 'error',
+                'title' => 'No fue posible crear la solicitud',
+                'text' => 'Ocurrió un problema al guardar la solicitud. No se creó ningún registro; revisa los datos e inténtalo nuevamente.',
+            ]);
+        }
 
         $audit->record($request, 'doctor.service_request.created', $providerRequest, 'doctor');
 
-        return redirect()->route('doctor.dashboard', ['section' => 'requests'])->with('status', 'Solicitud enviada al área operativa.');
+        return redirect()->route('doctor.dashboard', ['section' => 'requests'])
+            ->with('sweet_alert', [
+                'icon' => 'success',
+                'title' => 'Solicitud creada correctamente',
+                'text' => 'La solicitud fue prevalidada y enviada al área operativa. Se enviará a Mezclas cuando se completen las autorizaciones.',
+            ]);
+    }
+
+    public function downloadMixtureDocument(
+        Request $request,
+        ProviderRequest $providerRequest,
+        int $document,
+        CbtaCatalogClient $client
+    ): Response {
+        $doctor = $this->resolveDoctor($request);
+        abort_unless((int) data_get($providerRequest->payload, 'doctor_id') === $doctor->id, 404);
+
+        $integration = $providerRequest->mixtureIntegration;
+        abort_unless($integration?->cbta_request_id, 404);
+
+        $documents = collect(data_get($integration->metadata, 'remote_documents', []));
+        $metadata = $documents->first(fn ($item) => (int) data_get($item, 'id') === $document);
+        abort_unless(is_array($metadata), 404);
+
+        $download = $client->downloadMixtureDocument($integration->cbta_request_id, $document);
+        $filename = basename((string) data_get($metadata, 'name', 'documento-'.$document));
+        $filename = str_replace(['"', "\r", "\n"], '', $filename) ?: 'documento-'.$document;
+
+        return response($download['contents'], 200, [
+            'Content-Type' => $download['mime_type'],
+            'Content-Disposition' => 'attachment; filename="'.$filename.'"',
+            'X-Content-Type-Options' => 'nosniff',
+            'Cache-Control' => 'private, no-store',
+        ]);
+    }
+
+    public function downloadMixtureRemission(
+        Request $request,
+        ProviderRequest $providerRequest,
+        CbtaCatalogClient $client
+    ): Response {
+        $doctor = $this->resolveDoctor($request);
+        abort_unless((int) data_get($providerRequest->payload, 'doctor_id') === $doctor->id, 404);
+
+        $integration = $providerRequest->mixtureIntegration;
+        abort_unless($integration?->cbta_request_id, 404);
+        abort_unless(data_get($providerRequest->payload, 'cbta.remission.available') === true, 404);
+
+        $download = $client->downloadMixtureRemission($integration->cbta_request_id);
+        $number = preg_replace('/[^A-Za-z0-9_-]/', '-', (string) data_get(
+            $providerRequest->payload,
+            'cbta.remission.number',
+            $providerRequest->external_id
+        ));
+
+        return response($download['contents'], 200, [
+            'Content-Type' => $download['mime_type'],
+            'Content-Disposition' => 'attachment; filename="remision-'.$number.'.pdf"',
+            'X-Content-Type-Options' => 'nosniff',
+            'Cache-Control' => 'private, no-store',
+        ]);
     }
 
     private function transitionAppointment(Appointment $appointment, string $nextStatus, Request $request, string $source): void

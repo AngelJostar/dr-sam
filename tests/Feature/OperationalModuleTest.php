@@ -7,6 +7,7 @@ use App\Models\Doctor;
 use App\Models\Institution;
 use App\Models\InventoryItem;
 use App\Models\MedicalUnit;
+use App\Models\MixtureIntegration;
 use App\Models\OperationalArea;
 use App\Models\OperationalProfile;
 use App\Models\Patient;
@@ -19,6 +20,7 @@ use App\Models\Service;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
 class OperationalModuleTest extends TestCase
@@ -115,7 +117,7 @@ class OperationalModuleTest extends TestCase
             'status' => 'active',
         ]);
 
-        ProviderRequest::query()->create([
+        $operationalRequest = ProviderRequest::query()->create([
             'provider_id' => $provider->id,
             'patient_id' => $patient->id,
             'medical_unit_id' => $unit->id,
@@ -124,6 +126,14 @@ class OperationalModuleTest extends TestCase
             'status' => 'requested',
             'requested_at' => now(),
             'required_at' => now()->addDay(),
+        ]);
+        MixtureIntegration::query()->create([
+            'provider_request_id' => $operationalRequest->id,
+            'local_external_id' => '10000000-0000-4000-8000-000000000001',
+            'cbta_request_id' => 'CBTA-OP-001',
+            'remote_status' => 'preparing',
+            'sync_status' => 'synced',
+            'metadata' => ['catalog_type' => 'npt'],
         ]);
 
         $oncologyPatient = Patient::query()->create([
@@ -166,6 +176,7 @@ class OperationalModuleTest extends TestCase
             ->assertSee('operational-native-table')
             ->assertSee('Unidad Operativa Test')
             ->assertSee('REQ-OP-001')
+            ->assertSee('En preparación')
             ->assertSee('Solicitudes enviadas por hospitales')
             ->assertDontSee('<iframe');
 
@@ -173,7 +184,17 @@ class OperationalModuleTest extends TestCase
             ->get(route('operational.dashboard', ['section' => 'history']))
             ->assertOk()
             ->assertSee('Historial de solicitudes enviadas por hospitales')
-            ->assertSee('REQ-OP-001');
+            ->assertSee('REQ-OP-001')
+            ->assertSee('detail_request='.$operationalRequest->id, false);
+
+        $this->actingAs($user)
+            ->get(route('operational.dashboard', ['section' => 'history', 'detail_request' => $operationalRequest->id]))
+            ->assertOk()
+            ->assertSee('Detalle de solicitud')
+            ->assertSee('REQ-OP-001')
+            ->assertSee('Paciente Operativo')
+            ->assertSee('Componentes solicitados')
+            ->assertSee('Seguimiento');
 
         $this->actingAs($user)
             ->get(route('operational.dashboard', ['section' => 'patients']))
@@ -464,7 +485,26 @@ class OperationalModuleTest extends TestCase
 
     public function test_authorizations_are_independent_and_restricted_to_the_operational_area(): void
     {
-        $unit = MedicalUnit::query()->create(['name' => 'Unidad Autorizaciones', 'status' => 'active']);
+        config(['cbta.base_url' => 'http://cbta.test', 'cbta.token' => 'test-token']);
+        Http::fake([
+            'http://cbta.test/api/internal/v1/mixture-requests/prevalidate' => Http::response(['data' => [
+                'valid' => true,
+                'catalog_type' => 'npt',
+                'catalog_version' => 'npt-final-v2',
+                'medical_unit' => ['external_code' => 'CBTA-AUTH-01'],
+                'items' => [['product_code' => 'GLUCOSE', 'presentation_code' => 'GLUCOSE-500', 'quantity' => 100, 'unit' => 'ml']],
+                'errors' => [],
+            ]]),
+            'http://cbta.test/api/internal/v1/mixture-requests' => Http::response(['data' => [
+                'request_id' => 'CBTA-AUTHORIZED-1',
+                'status' => 'received',
+                'catalog_type' => 'npt',
+                'catalog_version' => 'npt-final-v2',
+                'documents' => [],
+            ]], 201),
+        ]);
+
+        $unit = MedicalUnit::query()->create(['name' => 'Unidad Autorizaciones', 'cbta_external_code' => 'CBTA-AUTH-01', 'status' => 'active']);
         $nursingArea = OperationalArea::query()->create(['key' => 'nursing', 'label' => 'Enfermeria']);
         $pharmacyArea = OperationalArea::query()->create(['key' => 'inpatient-pharmacy', 'label' => 'Farmacia intrahospitalaria']);
         $nursingUser = User::query()->create(['name' => 'Operador Enfermeria', 'username' => 'op.auth.nursing', 'email' => 'nursing.auth@test.local', 'role' => 'operational', 'module' => 'operational', 'status' => 'active']);
@@ -476,7 +516,18 @@ class OperationalModuleTest extends TestCase
             'request_type' => 'npt',
             'status' => 'requested',
             'requested_at' => now(),
-            'payload' => ['authorizations' => ['operational' => 'pending', 'pharmacy' => 'pending']],
+            'payload' => [
+                'authorizations' => ['operational' => 'pending', 'pharmacy' => 'pending'],
+                'authorization_requirements' => ['operational', 'pharmacy'],
+                'integration_items' => [['product_code' => 'GLUCOSE', 'presentation_code' => 'GLUCOSE-500', 'quantity' => 100, 'unit' => 'ml']],
+            ],
+        ]);
+        $integration = MixtureIntegration::query()->create([
+            'provider_request_id' => $providerRequest->id,
+            'local_external_id' => '10000000-0000-4000-8000-000000000099',
+            'sync_status' => 'awaiting_authorizations',
+            'catalog_version' => 'npt-initial-v1',
+            'metadata' => ['catalog_type' => 'npt'],
         ]);
 
         $this->actingAs($nursingUser)
@@ -489,6 +540,8 @@ class OperationalModuleTest extends TestCase
         $this->assertSame('approved', data_get($providerRequest->payload, 'authorizations.operational'));
         $this->assertSame('pending', data_get($providerRequest->payload, 'authorizations.pharmacy'));
         $this->assertSame('requested', $providerRequest->status);
+        $this->assertSame('awaiting_authorizations', $integration->fresh()->sync_status);
+        Http::assertNotSent(fn ($request): bool => $request->url() === 'http://cbta.test/api/internal/v1/mixture-requests');
 
         $this->actingAs($pharmacyUser)
             ->patch(route('operational.provider-requests.authorizations.update', $providerRequest), [
@@ -505,6 +558,9 @@ class OperationalModuleTest extends TestCase
         $providerRequest->refresh();
         $this->assertSame('approved', data_get($providerRequest->payload, 'authorizations.pharmacy'));
         $this->assertSame('requested', $providerRequest->status);
+        $this->assertSame('synced', $integration->fresh()->sync_status);
+        $this->assertSame('CBTA-AUTHORIZED-1', $integration->fresh()->cbta_request_id);
+        $this->assertSame('npt-final-v2', $integration->fresh()->catalog_version);
         $this->assertDatabaseHas('provider_request_status_events', [
             'provider_request_id' => $providerRequest->id,
             'status' => 'authorization_approved',

@@ -7462,6 +7462,15 @@ body.is-register-modal-open {
 .native-shell .doctor-patient-history-grid p:first-of-type { border-top: 0; }
 .native-shell .doctor-patient-history-grid span { color: var(--muted); }
 .native-shell .doctor-workspace-notice, .native-shell .doctor-workspace-error { margin: 12px 14px 0; padding: 9px 11px; border: 1px solid #cbd8d7; border-radius: 7px; background: #f7faf9; }
+.native-shell .doctor-mixture-notifications { display: grid; gap: 8px; margin: 14px; padding: 14px; border: 1px solid #cfe2df; border-radius: 10px; background: #fff; }
+.native-shell .doctor-mixture-notifications header { display: grid; gap: 2px; }
+.native-shell .doctor-mixture-notifications header small { color: #65757a; }
+.native-shell .doctor-mixture-notifications article { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 10px 12px; border-left: 3px solid #0aa393; border-radius: 7px; background: #effbf8; }
+.native-shell .doctor-mixture-notifications article > span { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: #d6f5ed; color: #087f76; font-weight: 800; }
+.native-shell .doctor-mixture-notifications article p { margin: 2px 0 0; color: #53666b; }
+.native-shell .doctor-mixture-notifications article time { color: #68797e; font-size: 11px; white-space: nowrap; }
+.native-shell .doctor-mixture-notifications article.is-cancelled, .native-shell .doctor-mixture-notifications article.is-rejected { border-left-color: #d64545; background: #fff5f5; }
+.native-shell .doctor-mixture-notifications article.is-cancelled > span, .native-shell .doctor-mixture-notifications article.is-rejected > span { background: #ffe1e1; color: #bd2f2f; }
 .native-shell .doctor-workspace-error { border-color: #e4b7b2; }
 .native-shell .doctor-workspace-encounter { margin: 14px; grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .native-shell .doctor-workspace-complete { display: flex; gap: 6px; min-width: 220px; }
@@ -9827,6 +9836,157 @@ body.is-register-modal-open {
 .native-shell .operational-modal-card h2,
 .native-shell .operational-modal-card p {
   margin: 0;
+}
+
+.native-shell .operational-request-detail-card {
+  width: min(980px, calc(100vw - 40px));
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+}
+
+.native-shell .operational-request-detail-body {
+  display: grid;
+  gap: 18px;
+}
+
+.native-shell .operational-request-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+}
+
+.native-shell .operational-request-detail-grid > div {
+  border: 1px solid #d7e3e5;
+  border-radius: 9px;
+  padding: 11px 12px;
+  background: #fff;
+}
+
+.native-shell .operational-request-detail-grid dt,
+.native-shell .operational-request-detail-table-wrap th {
+  color: #60727c;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.native-shell .operational-request-detail-grid dd {
+  margin: 5px 0 0;
+  color: #08243a;
+  font-weight: 700;
+}
+
+.native-shell .operational-request-detail-section {
+  border-top: 1px solid #dbe5e7;
+  padding-top: 14px;
+}
+
+.native-shell .operational-integration-alert {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  border: 1px solid #f1c56d;
+  border-left: 4px solid #e49a13;
+  border-radius: 10px;
+  background: #fff9ea;
+  padding: 13px 15px;
+  color: #6d4a08;
+}
+
+.native-shell .operational-integration-alert.is-error {
+  border-color: #f2aaaa;
+  border-left-color: #dc2626;
+  background: #fff1f1;
+  color: #8d1717;
+}
+
+.native-shell .operational-integration-alert.is-success {
+  border-color: #9edbc8;
+  border-left-color: #0a9f82;
+  background: #eefbf7;
+  color: #086b59;
+}
+
+.native-shell .operational-integration-alert p,
+.native-shell .operational-integration-alert dl,
+.native-shell .operational-integration-alert dd {
+  margin: 4px 0 0;
+}
+
+.native-shell .operational-integration-alert dl {
+  display: flex;
+  gap: 18px;
+  flex: 0 0 auto;
+}
+
+.native-shell .operational-integration-alert dt {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.native-shell .operational-integration-alert dd {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+@media (max-width: 720px) {
+  .native-shell .operational-integration-alert,
+  .native-shell .operational-integration-alert dl {
+    flex-direction: column;
+  }
+}
+
+.native-shell .operational-request-detail-section h3 {
+  margin: 0 0 10px;
+  font-size: 14px;
+}
+
+.native-shell .operational-request-detail-table-wrap table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.native-shell .operational-request-detail-table-wrap th,
+.native-shell .operational-request-detail-table-wrap td {
+  border-bottom: 1px solid #dbe5e7;
+  padding: 10px;
+  text-align: left;
+}
+
+.native-shell .operational-request-timeline {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.native-shell .operational-request-timeline li {
+  display: grid;
+  grid-template-columns: 12px 1fr;
+  gap: 9px;
+}
+
+.native-shell .operational-request-timeline li > span {
+  width: 10px;
+  height: 10px;
+  margin-top: 4px;
+  border-radius: 50%;
+  background: #11b8aa;
+}
+
+.native-shell .operational-request-timeline small {
+  display: block;
+  color: #6c7e86;
+}
+
+@media (max-width: 760px) {
+  .native-shell .operational-request-detail-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .native-shell .operational-modal-card h2 {
@@ -20809,6 +20969,57 @@ body.is-register-modal-open {
 .native-shell .doctor-npt-history-page #doctor-video,
 .native-shell .doctor-npt-history-page #doctor-encounters,
 .native-shell .doctor-npt-history-page #doctor-patients { display:none !important; }
+
+/* Solicitudes especializadas: la URL de alta muestra únicamente el formulario solicitado. */
+.native-shell .doctor-service-request-page .doctor-assistant-native-main {
+  display: block;
+  padding: 28px clamp(18px, 4vw, 64px) 120px;
+}
+.native-shell .doctor-service-request-page .doctor-assistant-native-main > section:not(#doctor-requests) {
+  display: none !important;
+}
+.native-shell .doctor-service-request-page #doctor-requests {
+  width: min(1320px, 100%);
+  margin: 0 auto;
+}
+.native-shell .doctor-service-request-page .doctor-service-request-focus > .doctor-assistant-native-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+}
+.native-shell .doctor-service-request-page .doctor-service-request-focus .doctor-request-types {
+  display: block;
+  padding: 24px;
+  border-bottom: 0;
+}
+.native-shell .doctor-service-request-page .doctor-service-request-focus .doctor-request-card {
+  width: 100%;
+}
+.native-shell .doctor-service-request-page .doctor-service-request-focus .doctor-request-card > summary {
+  min-height: 0;
+  padding: 16px 18px;
+}
+.native-shell .doctor-service-request-page .doctor-service-request-focus .doctor-specialized-request-form {
+  padding: 22px;
+}
+.native-shell .doctor-service-request-page .doctor-npt-form-section,
+.native-shell .doctor-service-request-page .doctor-npt-catalog-section { margin:0; padding:18px; border-color:#d3e1e3; border-radius:10px; background:#fff; }
+.native-shell .doctor-service-request-page .doctor-npt-form-section legend,
+.native-shell .doctor-service-request-page .doctor-npt-catalog-section legend { color:#087f76; font-size:13px; }
+.native-shell .doctor-npt-catalog-help { margin:0 0 14px; color:#62747b; font-size:11px; }
+.native-shell .doctor-npt-groups { display:grid; gap:14px; }
+.native-shell .doctor-npt-product-group { padding:14px; border:1px solid #dce7e8; border-radius:9px; background:#fbfdfd; }
+.native-shell .doctor-npt-product-group h3 { margin:0 0 10px; color:#183238; font-size:12px; text-transform:uppercase; }
+.native-shell .doctor-npt-product-group label { align-content:start; }
+.native-shell .doctor-npt-product-group label > span:first-child { color:#173238; font-weight:800; }
+.native-shell .doctor-npt-product-group label > small { min-height:26px; color:#718087; font-weight:500; }
+.native-shell .doctor-npt-quantity { display:grid; grid-template-columns:minmax(0, 1fr) auto; align-items:center; }
+.native-shell .doctor-npt-quantity input { border-radius:7px 0 0 7px !important; }
+.native-shell .doctor-npt-quantity b { align-self:stretch; display:grid; place-items:center; min-width:42px; border:1px solid #cbd8da; border-left:0; border-radius:0 7px 7px 0; background:#eef7f6; color:#087f76; font-size:11px; }
+.native-shell .doctor-npt-supplies { background:#f4fbfa; }
+@media (min-width:1101px) { .native-shell .doctor-service-request-page .doctor-npt-form-section .doctor-specialized-grid { grid-template-columns:repeat(3, minmax(0, 1fr)); } }
+
 .native-shell .doctor-npt-history { width:min(1240px, 100%); margin:22px auto; border:1px solid #d8e6ea; border-radius:16px; background:#fff; overflow:hidden; }
 .native-shell .doctor-npt-history > header { display:flex; align-items:center; justify-content:space-between; padding:18px; border-bottom:1px solid #e1ecef; }.native-shell .doctor-npt-history header div,.native-shell .doctor-npt-history-title div,.native-shell .doctor-npt-ai div { display:grid; gap:5px; }.native-shell .doctor-npt-history small { color:#60788a; font-size:10px; }.native-shell .doctor-npt-history > header a { padding:10px 18px; border:1px solid #d5e3e8; border-radius:10px; color:#153c55; font-size:10px; font-weight:800; text-decoration:none; }.native-shell .doctor-npt-history-title { display:flex; justify-content:space-between; align-items:center; padding:18px; }.native-shell .doctor-npt-history-title > b { padding:9px 14px; border:1px solid #f0c364; border-radius:999px; background:#fff7e4; color:#9a6100; font-size:10px; }.native-shell .doctor-npt-history-table { margin:0 18px; overflow:auto; border:1px solid #d8e6ea; border-radius:13px; }.native-shell .doctor-npt-history-table table { min-width:1120px; width:100%; border-collapse:collapse; font-size:10px; }.native-shell .doctor-npt-history-table th { padding:14px 12px; color:#426075; text-align:left; white-space:nowrap; }.native-shell .doctor-npt-history-table td { padding:90px 12px; border-top:1px solid #e4edef; text-align:center; color:#466277; }.native-shell .doctor-npt-history-table tbody tr:not(:has(td[colspan])) td { padding:13px 12px; text-align:left; }.native-shell .doctor-npt-ai { display:grid; grid-template-columns:1fr auto; gap:14px; margin:18px; padding:16px; border:1px solid #d8e6ea; border-radius:14px; }.native-shell .doctor-npt-ai > b { align-self:start; padding:8px 12px; border-radius:999px; background:#f1f6f5; color:#5a7281; font-size:9px; }.native-shell .doctor-npt-ai p { grid-column:1/-1; display:grid; gap:16px; margin:0; padding:18px; border:1px dashed #bfe6e1; border-radius:9px; color:#60788a; font-size:10px; }
 /* Provider Integral NPT — visual parity with the legacy history workspace. */
@@ -21190,4 +21401,77 @@ body.is-register-modal-open {
 
 .native-shell .patient-portal-layout {
   padding-top: 70px;
+}
+
+/* Alerta modal temporal para confirmaciones y errores del flujo de mezclas. */
+.native-shell .doctor-sweet-alert {
+  position: fixed;
+  inset: 0;
+  z-index: 250;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  animation: doctor-sweet-alert-in 180ms ease-out;
+}
+
+.native-shell .doctor-sweet-alert.is-closing {
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
+
+.native-shell .doctor-sweet-alert-backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 0;
+  background: rgba(15, 35, 42, 0.48);
+  box-shadow: none;
+  cursor: default;
+}
+
+.native-shell .doctor-sweet-alert-card {
+  position: relative;
+  z-index: 1;
+  width: min(430px, 100%);
+  padding: 28px 30px 24px;
+  border: 1px solid #d6e2e4;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 22px 54px rgba(20, 49, 58, 0.22);
+  text-align: center;
+}
+
+.native-shell .doctor-sweet-alert-icon {
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  margin: 0 auto 16px;
+  border: 3px solid currentColor;
+  border-radius: 50%;
+  font-size: 31px;
+  font-weight: 700;
+}
+
+.native-shell .doctor-sweet-alert-success .doctor-sweet-alert-icon { color: #0aaE9d; }
+.native-shell .doctor-sweet-alert-error .doctor-sweet-alert-icon { color: #e04e55; }
+.native-shell .doctor-sweet-alert-card h2 { margin: 0 0 9px; color: #102b3b; font-size: 21px; }
+.native-shell .doctor-sweet-alert-card p { margin: 0; color: #526b78; line-height: 1.55; }
+
+.native-shell .doctor-sweet-alert-confirm {
+  min-width: 112px;
+  margin-top: 21px;
+  padding: 10px 18px;
+  border: 1px solid #08a99b;
+  border-radius: 8px;
+  background: #08a99b;
+  color: #fff;
+  font-weight: 800;
+}
+
+@keyframes doctor-sweet-alert-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
 }

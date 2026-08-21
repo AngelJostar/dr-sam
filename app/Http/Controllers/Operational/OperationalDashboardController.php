@@ -16,6 +16,7 @@ use App\Models\ProviderRequest;
 use App\Models\ProviderRequestStatusEvent;
 use App\Services\Platform\PlatformAuditService;
 use App\Services\Platform\DomainStateTransitionService;
+use App\Services\Integrations\Cbta\MixtureIntegrationSyncService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -70,7 +71,7 @@ class OperationalDashboardController extends Controller
         ];
 
         $providerRequests = ProviderRequest::query()
-            ->with(['provider', 'patient', 'medicalUnit', 'statusEvents' => fn ($query) => $query->latest('occurred_at')->latest()])
+            ->with(['provider', 'patient', 'medicalUnit', 'mixtureIntegration', 'statusEvents' => fn ($query) => $query->latest('occurred_at')->latest()])
             ->when($unitId, fn ($query) => $query->where('medical_unit_id', $unitId))
             ->when($areaRequestTypes[$areaKey] ?? null, fn ($query, $types) => $query->whereIn('request_type', $types))
             ->when($request->filled('status'), fn ($query) => $query->where('status', $request->string('status')->toString()))
@@ -397,7 +398,7 @@ class OperationalDashboardController extends Controller
         return back()->with('status', 'Solicitud de proveedor actualizada.');
     }
 
-    public function updateProviderRequestAuthorization(Request $request, ProviderRequest $providerRequest, PlatformAuditService $audit): RedirectResponse
+    public function updateProviderRequestAuthorization(Request $request, ProviderRequest $providerRequest, PlatformAuditService $audit, MixtureIntegrationSyncService $mixtureSync): RedirectResponse
     {
         $this->authorizeProviderRequestOwnership($request, $providerRequest);
 
@@ -491,12 +492,30 @@ class OperationalDashboardController extends Controller
             ]);
         });
 
+        $integration = $providerRequest->fresh()->mixtureIntegration;
+        $statusMessage = 'Autorización actualizada.';
+        if ($integration && ! $integration->cbta_request_id) {
+            if ($data['status'] === 'rejected') {
+                $integration->update([
+                    'sync_status' => 'cancelled',
+                    'last_error' => 'La solicitud fue rechazada antes de enviarse a Mezclas.',
+                ]);
+            } elseif ($mixtureSync->hasRequiredAuthorizations($integration)) {
+                $integration->update(['sync_status' => 'prevalidated', 'last_error' => null]);
+                $statusMessage = $mixtureSync->sync($integration->fresh())
+                    ? 'Autorización actualizada. Solicitud creada en Mezclas.'
+                    : 'Autorización actualizada. La prevalidación final o el envío a Mezclas falló y se reintentará.';
+            } else {
+                $integration->update(['sync_status' => 'awaiting_authorizations', 'last_error' => null]);
+            }
+        }
+
         $audit->record($request, 'operational.provider_request.authorization_updated', $providerRequest, 'operational', [
             'authorization' => $data['authorization'],
             'status' => $data['status'],
         ]);
 
-        return back()->with('status', 'Autorización actualizada.');
+        return back()->with('status', $statusMessage);
     }
 
     public function storeInfusionRoom(Request $request, PlatformAuditService $audit): RedirectResponse

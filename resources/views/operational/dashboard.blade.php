@@ -224,7 +224,15 @@
                       ->every(fn ($key) => ($requestAuthorizations[$key] ?? 'pending') === 'approved');
                     $latestAuthorizationEvent = $providerRequest->statusEvents
                       ->first(fn ($event) => data_get($event->metadata, 'type') === 'authorization');
+                    $remoteMixtureStatus = $providerRequest->mixtureIntegration?->remote_status;
                     $centralStatus = match (true) {
+                      $remoteMixtureStatus === 'delivered' => 'Entregada',
+                      $remoteMixtureStatus === 'ready' => 'Lista',
+                      $remoteMixtureStatus === 'preparing' => 'En preparación',
+                      $remoteMixtureStatus === 'authorized' => 'Autorizada',
+                      in_array($remoteMixtureStatus, ['cancelled', 'rejected'], true) => $remoteMixtureStatus === 'rejected' ? 'Rechazada' : 'Cancelada',
+                      $remoteMixtureStatus === 'materialization_failed' => 'Error en Mezclas',
+                      in_array($remoteMixtureStatus, ['pending', 'received', 'materialized'], true) => 'Pendiente',
                       data_get($providerRequest->payload, 'cancellation') !== null,
                       in_array($providerRequest->status, ['cancelled', 'rejected'], true) => 'Cancelada',
                       $providerRequest->status === 'delivered' => 'Entregada',
@@ -340,7 +348,7 @@
                         @endif
                       </td>
                     @endunless
-                    <td><a class="operational-view-button" href="{{ route('operational.dashboard', ['area' => $areaKey, 'section' => $section]) }}">Ver</a></td>
+                    <td><a class="operational-view-button" href="{{ route('operational.dashboard', ['area' => $areaKey, 'section' => $section, 'detail_request' => $providerRequest->id]) }}#solicitud-detalle">Ver</a></td>
                     <td><span class="operational-chip">{{ $centralStatus }}</span></td>
                     <td>{{ $latestAuthorizationEvent?->notes ?: ($providerRequest->statusEvents->first()?->notes ?? ($isOncology ? 'Primera validacion pendiente por Centro Oncologico.' : 'Sin observaciones')) }}</td>
                     @if ($isInpatientPharmacy)
@@ -366,6 +374,113 @@
             </table>
           </div>
         </section>
+
+        @php
+          $detailRequestId = (int) request('detail_request');
+          $detailRequest = $visibleRequests->firstWhere('id', $detailRequestId);
+        @endphp
+        @if ($detailRequest)
+          @php
+            $detailPayload = $detailRequest->payload ?? [];
+            $detailAuthorizations = data_get($detailPayload, 'authorizations', []);
+            $detailItems = collect(data_get($detailPayload, 'integration_items', []));
+            $detailRemission = data_get($detailPayload, 'cbta.remission', []);
+            $detailRemoteStatus = $detailRequest->mixtureIntegration?->remote_status;
+            $detailIntegration = $detailRequest->mixtureIntegration;
+            $detailIntegrationError = $detailIntegration?->last_error;
+            $detailIntegrationMessage = data_get($detailIntegration?->metadata, 'remote_status_message');
+            $detailIntegrationStage = data_get($detailIntegration?->metadata, 'remote_integration_stage');
+            $detailIntegrationHasError = (bool) data_get($detailIntegration?->metadata, 'remote_has_error', false) || filled($detailIntegrationError);
+            $detailStatusEvents = $detailRequest->statusEvents
+              ->sortBy('occurred_at')
+              ->unique(fn ($event) => implode('|', [$event->status, $event->occurred_at?->toIso8601String(), $event->notes]));
+          @endphp
+          <div id="solicitud-detalle" class="operational-modal is-open" role="dialog" aria-modal="true" aria-labelledby="solicitud-detalle-title">
+            <a class="operational-modal-backdrop" href="{{ route('operational.dashboard', ['area' => $areaKey, 'section' => $section]) }}" aria-label="Cerrar"></a>
+            <article class="operational-modal-card operational-request-detail-card">
+              <header>
+                <div>
+                  <p class="eyebrow">Detalle de solicitud</p>
+                  <h2 id="solicitud-detalle-title">{{ $detailRequest->external_id ?? 'Solicitud '.$detailRequest->id }}</h2>
+                  <p>{{ data_get($detailPayload, 'service', 'Servicio de mezclas') }} · {{ $detailRequest->patient?->full_name ?? 'Sin paciente' }}</p>
+                </div>
+                <a href="{{ route('operational.dashboard', ['area' => $areaKey, 'section' => $section]) }}">Cerrar</a>
+              </header>
+              <div class="operational-modal-body operational-request-detail-body">
+                <dl class="operational-request-detail-grid">
+                  <div><dt>Folio</dt><dd>{{ $detailRequest->external_id ?? '—' }}</dd></div>
+                  <div><dt>Paciente</dt><dd>{{ $detailRequest->patient?->full_name ?? 'Sin paciente' }}</dd></div>
+                  <div><dt>Registro</dt><dd>{{ data_get($detailPayload, 'clinical_format.registration', 'REG-'.str_pad((string) $detailRequest->id, 4, '0', STR_PAD_LEFT)) }}</dd></div>
+                  <div><dt>Médico</dt><dd>{{ data_get($detailPayload, 'doctor', 'Sin médico') }}</dd></div>
+                  <div><dt>Unidad</dt><dd>{{ $detailRequest->medicalUnit?->name ?? 'Sin unidad' }}</dd></div>
+                  <div><dt>Servicio</dt><dd>{{ data_get($detailPayload, 'service', $detailRequest->request_type) }}</dd></div>
+                  <div><dt>Volumen</dt><dd>{{ data_get($detailPayload, 'clinical_format.total_volume', data_get($detailPayload, 'volume', '—')) }} ml</dd></div>
+                  <div><dt>Diagnóstico</dt><dd>{{ data_get($detailPayload, 'diagnosis', 'No informado') }}</dd></div>
+                  <div><dt>Estado Dr. Sam</dt><dd>{{ $statusText($detailRequest->status) }}</dd></div>
+                  <div><dt>Estado CBTA</dt><dd>{{ $detailRemoteStatus ? $statusText($detailRemoteStatus) : 'Sin sincronización' }}</dd></div>
+                  <div><dt>Enfermería</dt><dd>{{ $statusText(data_get($detailAuthorizations, 'operational', 'pending')) }}</dd></div>
+                  <div><dt>Farmacia intrahospitalaria</dt><dd>{{ $statusText(data_get($detailAuthorizations, 'pharmacy', 'pending')) }}</dd></div>
+                </dl>
+
+                @if ($detailIntegration)
+                  <section class="operational-integration-alert {{ $detailIntegrationHasError ? 'is-error' : ($detailRemoteStatus === 'delivered' ? 'is-success' : 'is-pending') }}" role="status">
+                    <div>
+                      <strong>{{ $detailIntegrationHasError ? 'CBTA requiere atención' : 'Sincronización con CBTA' }}</strong>
+                      <p>{{ $detailIntegrationError ?: $detailIntegrationMessage ?: 'La solicitud está sincronizada y su estado se consulta automáticamente.' }}</p>
+                    </div>
+                    <dl>
+                      <div><dt>Etapa</dt><dd>{{ $detailIntegrationStage ? str($detailIntegrationStage)->replace('_', ' ')->title() : 'Sincronización' }}</dd></div>
+                      <div><dt>Última consulta</dt><dd>{{ $detailIntegration->last_synced_at?->format('d/m/Y H:i') ?? 'Pendiente' }}</dd></div>
+                    </dl>
+                  </section>
+                @endif
+
+                <section class="operational-request-detail-section">
+                  <h3>Componentes solicitados</h3>
+                  <div class="operational-request-detail-table-wrap">
+                    <table>
+                      <thead><tr><th>Producto</th><th>Presentación</th><th>Cantidad</th></tr></thead>
+                      <tbody>
+                        @forelse ($detailItems as $item)
+                          <tr><td>{{ data_get($item, 'product_code', 'Sin código') }}</td><td>{{ data_get($item, 'presentation_code', 'No informada') }}</td><td>{{ data_get($item, 'quantity', '—') }} {{ data_get($item, 'unit') }}</td></tr>
+                        @empty
+                          <tr><td colspan="3">La solicitud no contiene componentes desglosados.</td></tr>
+                        @endforelse
+                      </tbody>
+                    </table>
+                  </div>
+                </section>
+
+                <section class="operational-request-detail-section">
+                  <h3>Seguimiento</h3>
+                  <ol class="operational-request-timeline">
+                    @forelse ($detailStatusEvents as $event)
+                      <li><span></span><div><strong>{{ $statusText($event->status) }}</strong><small>{{ $event->occurred_at?->format('d/m/Y H:i') }}</small>@if($event->notes)<p>{{ $event->notes }}</p>@endif</div></li>
+                    @empty
+                      <li><span></span><div><strong>Solicitud registrada</strong></div></li>
+                    @endforelse
+                  </ol>
+                </section>
+
+                <section class="operational-request-detail-section operational-request-remission-summary">
+                  <h3>Remisión</h3>
+                  @if (data_get($detailRemission, 'available') === true)
+                    <p>
+                      Remisión No. <strong>{{ data_get($detailRemission, 'number', 'Sin número') }}</strong>
+                      @if (data_get($detailRemission, 'issued_at'))
+                        , emitida el {{ \Illuminate\Support\Carbon::parse(data_get($detailRemission, 'issued_at'))->format('d/m/Y H:i') }}
+                      @endif
+                      .
+                    </p>
+                  @else
+                    <p>La remisión todavía no está disponible.</p>
+                  @endif
+                </section>
+              </div>
+              <footer><a href="{{ route('operational.dashboard', ['area' => $areaKey, 'section' => $section]) }}">Cerrar</a></footer>
+            </article>
+          </div>
+        @endif
       @elseif (in_array($section, ['services-pending', 'services-history', 'service-create', 'service-format', 'mixes', 'mix-history', 'calendar', 'infusion-rooms'], true))
         @include('operational.sections.oncology')
       @else

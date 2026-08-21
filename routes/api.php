@@ -2,9 +2,13 @@
 
 use App\Http\Controllers\Api\DashboardSummaryController;
 use App\Http\Controllers\Api\Insurance\InsuranceApiController;
+use App\Http\Controllers\Api\Integrations\CbtaWebhookController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['web', 'auth'])->get('/dashboard-summary', DashboardSummaryController::class);
+
+Route::post('/integrations/cbta/mixture-status', CbtaWebhookController::class)
+    ->name('api.integrations.cbta.mixture-status');
 
 Route::middleware(['web', 'auth'])
     ->prefix('insurance')

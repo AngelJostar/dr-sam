@@ -8,6 +8,12 @@
     'scheduled' => 'Programada',
     'created' => 'Creado',
     'requested' => 'Solicitada',
+    'accepted' => 'Autorizada',
+    'approved' => 'Aprobada',
+    'preparing' => 'En preparación',
+    'ready' => 'Lista para entrega',
+    'delivered' => 'Entregada',
+    'rejected' => 'Rechazada',
     'pending' => 'Pendiente',
     'completed' => 'Completada',
     'cancelled' => 'Cancelada',
@@ -16,14 +22,38 @@
   $statusText = fn (?string $value) => $statusLabels[$value ?? ''] ?? ($value ? ucfirst(str_replace('_', ' ', $value)) : 'Sin estatus');
   $doctorInitials = collect(explode(' ', str_replace(['Dr.', 'Dra.'], '', $doctor->full_name)))->filter()->take(2)->map(fn ($part) => mb_substr($part, 0, 1))->implode('');
   $activeSection = request('section', 'home');
+  $serviceAction = request('action', 'request') === 'create' ? 'request' : request('action', 'request');
+  $focusedServiceType = $activeSection === 'services' && in_array(request('type'), ['npt', 'chemo', 'clinical_labs'], true)
+    ? request('type')
+    : null;
+  $isServiceRequest = $focusedServiceType !== null && $serviceAction === 'request';
   $isNptHistory = $activeSection === 'services' && request('type') === 'npt' && request('action') === 'history';
   // Valores seguros cuando otro apartado se renderiza con una confirmación de video en sesión.
   $videoPatientName = 'Paciente';
   $videoPatientNumber = 'Sin registro';
+  $serviceRequestAlert = session('sweet_alert');
+  if (! $serviceRequestAlert && $errors->any() && old('request_type') === 'npt') {
+    $serviceRequestAlert = [
+      'icon' => 'error',
+      'title' => 'No fue posible crear la solicitud',
+      'text' => collect($errors->all())->unique()->join(' '),
+    ];
+  }
 @endphp
 
 @section('content')
-  <div class="doctor-assistant-native-screen doctor-section-{{ $activeSection }} {{ $isNptHistory ? 'doctor-npt-history-page' : '' }}">
+  <div class="doctor-assistant-native-screen doctor-section-{{ $activeSection }} {{ $isNptHistory ? 'doctor-npt-history-page' : '' }} {{ $isServiceRequest ? 'doctor-service-request-page' : '' }}">
+    @if($serviceRequestAlert)
+      <div class="doctor-sweet-alert" data-doctor-sweet-alert role="alertdialog" aria-modal="true" aria-labelledby="doctor-sweet-alert-title">
+        <button type="button" class="doctor-sweet-alert-backdrop" data-doctor-sweet-alert-close aria-label="Cerrar notificación"></button>
+        <section class="doctor-sweet-alert-card doctor-sweet-alert-{{ $serviceRequestAlert['icon'] === 'success' ? 'success' : 'error' }}">
+          <span class="doctor-sweet-alert-icon" aria-hidden="true">{{ $serviceRequestAlert['icon'] === 'success' ? '✓' : '!' }}</span>
+          <h2 id="doctor-sweet-alert-title">{{ $serviceRequestAlert['title'] }}</h2>
+          <p>{{ $serviceRequestAlert['text'] }}</p>
+          <button type="button" class="doctor-sweet-alert-confirm" data-doctor-sweet-alert-close>Aceptar</button>
+        </section>
+      </div>
+    @endif
     <header class="doctor-assistant-native-topbar">
       <div class="doctor-assistant-native-brand">
         <span>+</span>
@@ -80,7 +110,7 @@
           <strong>Nutrici&oacute;n</strong>
           <strong>Nutrici&oacute;n parenteral</strong>
           <a href="{{ url('/doctor?section=services&type=npt&action=history') }}" data-npt-history-link>Ver solicitudes</a>
-          <a class="{{ request('section') === 'services' && request('type') === 'npt' && request('action', 'request') === 'request' ? 'is-active' : '' }}" href="{{ route('doctor.dashboard', ['section' => 'services', 'type' => 'npt', 'action' => 'request']) }}">Solicitud de mezcla</a>
+          <a class="{{ $focusedServiceType === 'npt' && $serviceAction === 'request' ? 'is-active' : '' }}" href="{{ route('doctor.dashboard', ['section' => 'services', 'type' => 'npt', 'action' => 'create']) }}">Solicitud de mezcla</a>
         </div>
 
         <div class="doctor-menu-panel" data-doctor-menu-panel="oncology" hidden>
@@ -96,6 +126,28 @@
           <a href="{{ route('doctor.dashboard', ['section' => 'services', 'type' => 'chemo', 'action' => 'history']) }}">Ver solicitudes</a>
         </div>
       </aside>
+
+      @if ($activeSection === 'services' && ! $isServiceRequest && $mixtureNotifications->isNotEmpty())
+        <section class="doctor-mixture-notifications" aria-label="Actualizaciones de solicitudes de mezclas">
+          <header><strong>Actualizaciones de Mezclas</strong><small>Cambios recientes recibidos desde el sistema operativo.</small></header>
+          @foreach ($mixtureNotifications as $notification)
+            @php
+              $notificationStatus = $notification->event->status;
+              $notificationMessages = [
+                'ready' => 'La mezcla está lista para entrega.',
+                'delivered' => 'La mezcla fue entregada.',
+                'cancelled' => 'La solicitud fue cancelada.',
+                'rejected' => 'La solicitud fue rechazada.',
+              ];
+            @endphp
+            <article class="is-{{ $notificationStatus }}">
+              <span aria-hidden="true">{{ in_array($notificationStatus, ['cancelled', 'rejected'], true) ? '!' : '✓' }}</span>
+              <div><strong>{{ $notification->request->external_id }} · {{ $notification->request->patient?->full_name ?: 'Paciente' }}</strong><p>{{ $notificationMessages[$notificationStatus] ?? $statusText($notificationStatus) }}</p></div>
+              <time datetime="{{ $notification->event->occurred_at?->toIso8601String() }}">{{ $notification->event->occurred_at?->format('d/m/Y H:i') }}</time>
+            </article>
+          @endforeach
+        </section>
+      @endif
 
       @if ($activeSection === 'clinics')
         <section class="doctor-clinics-native-view">
@@ -613,15 +665,20 @@
         <section class="doctor-npt-history">
           <header><div><strong>Historial de Solicitudes</strong><small>Servicio médico integral</small></div><a href="{{ route('doctor.dashboard', ['section' => 'services', 'type' => 'npt', 'action' => 'request']) }}">← Atrás</a></header>
           <div class="doctor-npt-history-title"><div><strong>Solicitudes — Nutrición Parenteral PRODIFEM</strong><small>Historial de solicitudes enviadas por hospitales</small></div><b>{{ $nptRequests->whereIn('status', ['pending', 'requested'])->count() }} pendientes</b></div>
-          <div class="doctor-npt-history-table"><table><thead><tr><th>Folio</th><th>Fecha solicitud</th><th>Paciente</th><th>Registro</th><th>Unidad</th><th>Volumen ml</th><th>Médico</th><th>Autorizaciones</th><th>Mezcla</th><th>Visualizar solicitud</th><th>Estado</th></tr></thead><tbody>@forelse($nptRequests as $request)<tr><td>{{ $request->external_id }}</td><td>{{ $request->requested_at?->format('d/m/Y H:i') }}</td><td>{{ $request->patient?->full_name }}</td><td>{{ $request->patient?->platform_number }}</td><td>Privada</td><td>{{ data_get($request->payload, 'clinical_format.total_volume', '—') }}</td><td>{{ $doctor->full_name }}</td><td>Operativa: {{ $statusText(data_get($request->payload, 'authorizations.operational')) }}</td><td>{{ data_get($request->payload, 'clinical_format.npt_type', '—') }}</td><td>Ver solicitud</td><td>{{ $statusText($request->status) }}</td></tr>@empty<tr><td colspan="11">Sin solicitudes registradas.</td></tr>@endforelse</tbody></table></div>
+          <div class="doctor-npt-history-table"><table><thead><tr><th>Folio</th><th>Fecha solicitud</th><th>Paciente</th><th>Registro</th><th>Unidad</th><th>Volumen ml</th><th>Médico</th><th>Autorizaciones</th><th>Mezcla</th><th>Remisión</th><th>Visualizar solicitud</th><th>Estado</th></tr></thead><tbody>@forelse($nptRequests as $request)<tr><td>{{ $request->external_id }}</td><td>{{ $request->requested_at?->format('d/m/Y H:i') }}</td><td>{{ $request->patient?->full_name }}</td><td>{{ $request->patient?->platform_number }}</td><td>Privada</td><td>{{ data_get($request->payload, 'clinical_format.total_volume', '—') }}</td><td>{{ $doctor->full_name }}</td><td>Operativa: {{ $statusText(data_get($request->payload, 'authorizations.operational')) }}</td><td>{{ data_get($request->payload, 'clinical_format.npt_type', '—') }}</td><td>@if(data_get($request->payload, 'cbta.remission.available') === true)<a href="{{ route('doctor.service_requests.remission.download', $request) }}">Remisión {{ data_get($request->payload, 'cbta.remission.number') }}</a>@else Pendiente @endif @foreach(data_get($request->payload, 'cbta.documents', []) as $document)<br><a href="{{ route('doctor.service_requests.documents.download', [$request, data_get($document, 'id')]) }}">Descargar {{ data_get($document, 'type') === 'authorization' ? 'autorización' : 'soporte' }}</a>@endforeach</td><td>Ver solicitud</td><td>{{ $statusText($request->status) }}</td></tr>@empty<tr><td colspan="12">Sin solicitudes registradas.</td></tr>@endforelse</tbody></table></div>
           <section class="doctor-npt-ai"><div><strong>Asistente IA</strong><small>Análisis del historial de solicitudes enviadas por hospitales</small></div><b>Historial PRODIFEM</b><p><strong>Sin pregunta activa.</strong><span>Las respuestas se generarán con la información visible de este historial.</span></p></section>
         </section>
       @endif
 
-      <section id="doctor-requests" class="doctor-assistant-native-table-card doctor-workspace-card">
+      <section id="doctor-requests" class="doctor-assistant-native-table-card doctor-workspace-card {{ $isServiceRequest ? 'doctor-service-request-focus' : '' }}">
         <div class="doctor-assistant-native-heading">
-          <div><h2>Solicitudes cl&iacute;nicas</h2><p>Env&iacute;a estudios, nutrici&oacute;n parenteral y mezclas oncol&oacute;gicas al &aacute;rea operativa de la unidad.</p></div>
-          <span>{{ $providerRequests->count() }} solicitudes</span>
+          @if($isServiceRequest)
+            <div><h2>{{ $focusedServiceType === 'npt' ? 'Solicitud de nutrición parenteral' : ($focusedServiceType === 'chemo' ? 'Solicitud de mezcla oncológica' : 'Solicitud de estudios clínicos') }}</h2><p>Completa los datos requeridos para enviar la solicitud al área operativa.</p></div>
+            <a class="doctor-workspace-secondary" href="{{ route('doctor.dashboard') }}">&larr; Atr&aacute;s</a>
+          @else
+            <div><h2>Solicitudes cl&iacute;nicas</h2><p>Env&iacute;a estudios, nutrici&oacute;n parenteral y mezclas oncol&oacute;gicas al &aacute;rea operativa de la unidad.</p></div>
+            <span>{{ $providerRequests->count() }} solicitudes</span>
+          @endif
         </div>
         <div class="doctor-request-types">
           @if(request('section') === 'services' && request('type') && !$availableRequestTypes->contains(request('type')))
@@ -633,16 +690,30 @@
             'chemo' => ['Oncologa / Quimioterapia', 'Solicitud de mezcla oncolgica y autorizacin operativa.'],
           ] as $requestType => [$requestTitle, $requestDescription])
             @continue(!$availableRequestTypes->contains($requestType))
-            <details class="doctor-request-card" data-request-type="{{ $requestType }}" @if((request('section') === 'requests' && old('request_type') === $requestType) || (request('section') === 'services' && request('type') === $requestType && request('action', 'request') === 'request')) open @endif>
+            @continue($isServiceRequest && $requestType !== $focusedServiceType)
+            <details class="doctor-request-card" data-request-type="{{ $requestType }}" @if((request('section') === 'requests' && old('request_type') === $requestType) || ($focusedServiceType === $requestType && in_array($serviceAction, ['request', 'create'], true))) open @endif>
               <summary><strong>{{ $requestTitle }}</strong><span>{{ $requestDescription }}</span></summary>
               <form method="post" action="{{ route('doctor.service_requests.store') }}" class="doctor-workspace-form doctor-specialized-request-form" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="request_type" value="{{ $requestType }}">
-                <label>Paciente<select name="patient_id" required><option value="">Seleccionar paciente</option>@foreach($patients as $patient)<option value="{{ $patient->id }}">{{ $patient->full_name }} - {{ $patient->platform_number }}</option>@endforeach</select></label>
-                <label>Servicio<input name="service" value="{{ $requestTitle }}" required></label>
-                <label>Fecha requerida<input type="datetime-local" name="required_at"></label>
-                <label>Prioridad<select name="priority"><option value="routine">Rutina</option><option value="urgent">Urgente</option></select></label>
-                <label class="wide">Diagn&oacute;stico<textarea name="diagnosis" rows="3" required></textarea></label>
+                @if($requestType === 'npt')
+                  <fieldset class="doctor-specialized-section doctor-npt-form-section wide">
+                    <legend>Datos generales de la solicitud</legend>
+                    <div class="doctor-specialized-grid">
+                      <label>Paciente*<select name="patient_id" required><option value="">Seleccionar paciente</option>@foreach($patients as $patient)<option value="{{ $patient->id }}" @selected((string) old('patient_id') === (string) $patient->id)>{{ $patient->full_name }} - {{ $patient->platform_number }}</option>@endforeach</select></label>
+                      <label>Servicio*<input name="service" value="{{ old('service', $requestTitle) }}" required></label>
+                      <label>Fecha requerida<input type="datetime-local" name="required_at" value="{{ old('required_at') }}"></label>
+                      <label>Prioridad<select name="priority"><option value="routine" @selected(old('priority', 'routine') === 'routine')>Rutina</option><option value="urgent" @selected(old('priority') === 'urgent')>Urgente</option></select></label>
+                      <label class="wide">Diagn&oacute;stico*<textarea name="diagnosis" rows="3" required>{{ old('diagnosis') }}</textarea></label>
+                    </div>
+                  </fieldset>
+                @else
+                  <label>Paciente<select name="patient_id" required><option value="">Seleccionar paciente</option>@foreach($patients as $patient)<option value="{{ $patient->id }}">{{ $patient->full_name }} - {{ $patient->platform_number }}</option>@endforeach</select></label>
+                  <label>Servicio<input name="service" value="{{ $requestTitle }}" required></label>
+                  <label>Fecha requerida<input type="datetime-local" name="required_at"></label>
+                  <label>Prioridad<select name="priority"><option value="routine">Rutina</option><option value="urgent">Urgente</option></select></label>
+                  <label class="wide">Diagn&oacute;stico<textarea name="diagnosis" rows="3" required></textarea></label>
+                @endif
                 @include('doctor.partials.specialized-request-fields', compact('requestType', 'doctor'))
                 <label class="wide">Indicaciones y observaciones<textarea name="notes" rows="3"></textarea></label>
                 <button type="submit">Enviar solicitud</button>
@@ -650,6 +721,7 @@
             </details>
           @endforeach
         </div>
+        @unless($isServiceRequest)
         <div class="doctor-assistant-native-table-scroll">
           <table class="doctor-assistant-native-table"><thead><tr><th>Folio</th><th>Fecha</th><th>Paciente</th><th>Tipo</th><th>Servicio</th><th>Autorizaciones</th><th>Estatus</th><th>Detalle</th></tr></thead><tbody>
             @forelse($providerRequests as $providerRequest)
@@ -661,11 +733,12 @@
                 <td>{{ data_get($providerRequest->payload, 'service') }}</td>
                 <td>Operativa: {{ $statusText(data_get($providerRequest->payload, 'authorizations.operational')) }}<br>Farmacia: {{ $statusText(data_get($providerRequest->payload, 'authorizations.pharmacy')) }}</td>
                 <td>{{ $statusText($providerRequest->status) }}</td>
-                <td><details class="doctor-inline-editor"><summary>Ver solicitud</summary><p><strong>Diagn&oacute;stico:</strong> {{ data_get($providerRequest->payload, 'diagnosis') }}</p><p><strong>Indicaciones:</strong> {{ data_get($providerRequest->payload, 'notes') ?: 'Sin observaciones' }}</p>@if($providerRequest->request_type === 'npt')<p><strong>Volumen total:</strong> {{ data_get($providerRequest->payload, 'clinical_format.total_volume') }} ml</p><p><strong>V&iacute;a:</strong> {{ data_get($providerRequest->payload, 'clinical_format.route') }}</p>@elseif($providerRequest->request_type === 'chemo')<p><strong>Medicamentos:</strong> {{ collect(data_get($providerRequest->payload, 'clinical_format.medications', []))->pluck('medication')->filter()->join(', ') }}</p>@endif</details></td>
+                <td><details class="doctor-inline-editor"><summary>Ver solicitud</summary><p><strong>Diagn&oacute;stico:</strong> {{ data_get($providerRequest->payload, 'diagnosis') }}</p><p><strong>Indicaciones:</strong> {{ data_get($providerRequest->payload, 'notes') ?: 'Sin observaciones' }}</p>@if($providerRequest->request_type === 'npt')<p><strong>Volumen total:</strong> {{ data_get($providerRequest->payload, 'clinical_format.total_volume') }} ml</p><p><strong>V&iacute;a:</strong> {{ data_get($providerRequest->payload, 'clinical_format.route') }}</p>@elseif($providerRequest->request_type === 'chemo')<p><strong>Medicamentos:</strong> {{ collect(data_get($providerRequest->payload, 'clinical_format.medications', []))->pluck('medication')->filter()->join(', ') }}</p>@endif @foreach(data_get($providerRequest->payload, 'cbta.documents', []) as $document)<p><a href="{{ route('doctor.service_requests.documents.download', [$providerRequest, data_get($document, 'id')]) }}">Descargar {{ data_get($document, 'name', 'documento') }}</a></p>@endforeach</details></td>
               </tr>
             @empty<tr><td colspan="8">Sin solicitudes cl&iacute;nicas registradas.</td></tr>@endforelse
           </tbody></table>
         </div>
+        @endunless
       </section>
 
       <section id="doctor-availability" class="doctor-assistant-native-table-card doctor-workspace-card">
@@ -980,6 +1053,20 @@
   </template>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+  const sweetAlert = document.querySelector('[data-doctor-sweet-alert]');
+  if (sweetAlert) {
+    const closeSweetAlert = () => {
+      sweetAlert.classList.add('is-closing');
+      window.setTimeout(() => sweetAlert.remove(), 180);
+    };
+    sweetAlert.querySelectorAll('[data-doctor-sweet-alert-close]').forEach(button => button.addEventListener('click', closeSweetAlert));
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && sweetAlert.isConnected) closeSweetAlert();
+    });
+    window.setTimeout(() => {
+      if (sweetAlert.isConnected) closeSweetAlert();
+    }, 6500);
+  }
   const menu = document.querySelector('[data-doctor-menu]');
   const menuButton = document.querySelector('[data-doctor-menu-button]');
   const showDoctorMenuPanel = name => {
@@ -1302,7 +1389,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const requestedServiceType = @json(request('section') === 'services' ? request('type') : null);
-  const requestedServiceAction = @json(request('action', 'request'));
+  const requestedServiceAction = @json($serviceAction);
   if (requestedServiceType) {
     const requestCard = document.querySelector(`[data-request-type="${CSS.escape(requestedServiceType)}"]`);
     if (requestCard && requestedServiceAction === 'request') requestCard.open = true;

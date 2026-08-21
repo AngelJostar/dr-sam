@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class ProviderRequest extends BaseModel
 {
@@ -39,5 +40,10 @@ class ProviderRequest extends BaseModel
     public function deliveryRoutes(): HasMany
     {
         return $this->hasMany(DeliveryRoute::class);
+    }
+
+    public function mixtureIntegration(): HasOne
+    {
+        return $this->hasOne(MixtureIntegration::class);
     }
 }

@@ -353,6 +353,8 @@
           $diagnosis = data_get($request->payload, 'diagnosis');
           $prescriptionCode = data_get($request->payload, 'prescription_code');
           $serviceName = data_get($request->payload, 'service') ?: ($type === 'chemotherapy' ? 'Oncologica' : 'NPT');
+          $operationalAuthorization = data_get($request->payload, 'authorizations.operational', 'pending');
+          $pharmacyAuthorization = data_get($request->payload, 'authorizations.pharmacy', 'pending');
           $observations = $request->status === 'rejected'
               ? 'Con Observacion'
               : trim(collect([$prescriptionCode ? 'Receta CE '.$prescriptionCode : null, $diagnosis, $prescriptionItems->count() ? $prescriptionItems->count().' partida(s)' : null])->filter()->join(' / '));
@@ -364,6 +366,9 @@
               'patient' => $request->patient?->full_name ?? 'Sin paciente',
               'doctor' => data_get($request->payload, 'doctor') ?: 'Sin medico',
               'auth' => $prescriptionCode ? ['Consulta Ext.', 'Central'] : ['Enfermeria', 'Farm. Intra.'],
+              'auth_states' => $prescriptionCode
+                  ? ['approved', 'approved']
+                  : [$operationalAuthorization, $pharmacyAuthorization],
               'date' => $request->requested_at?->format('d/m/Y') ?? 'Sin fecha',
               'obs' => $observations !== '' ? $observations : 'Sin Observacion',
               'obs_state' => $request->status === 'rejected' ? 'danger' : ($prescriptionCode || $diagnosis ? 'success' : 'neutral'),
@@ -378,15 +383,25 @@
               'request_id' => $request->id,
               'detail' => data_get($request->payload, 'clinical_summary') ?: data_get($request->payload, 'diagnosis') ?: 'Solicitud registrada en la central de mezclas.',
               'location_url' => data_get($request->payload, 'location_url'),
-              'remission' => data_get($request->payload, 'remission') ?: 'Remision pendiente de carga.',
+              'remission' => data_get($request->payload, 'cbta.remission') ?: data_get($request->mixtureIntegration?->metadata, 'remote_remission'),
+              'remission_items' => collect(data_get($request->payload, 'cbta.remission.items', []))
+                  ->whenEmpty(fn () => collect(data_get($request->payload, 'integration_items', []))->map(fn ($item) => [
+                      'product' => data_get($item, 'product_code', 'Producto sin código'),
+                      'presentation' => data_get($item, 'presentation_code'),
+                      'quantity' => data_get($item, 'quantity'),
+                      'unit' => data_get($item, 'unit'),
+                  ]))
+                  ->values()->all(),
           ];
       });
 
       $providerRows = $providerRows->map(fn ($row) => array_merge([
           'request_id' => null,
+          'auth_states' => collect($row['auth'])->map(fn () => 'approved')->all(),
           'detail' => $row['obs'] === 'Sin Observacion' ? 'La solicitud no tiene observaciones registradas.' : 'La solicitud requiere revision antes de continuar.',
           'location_url' => 'https://www.google.com/maps/search/?api=1&query=19.4125,-99.1528',
           'remission' => $row['delivery'] === 'Entregada' ? 'Remision de entrega registrada y confirmada.' : 'Remision pendiente de entrega.',
+          'remission_items' => [],
       ], $row));
 
       $allProviderRows = $requestRows->concat($providerRows);
@@ -526,7 +541,7 @@
                                 <tbody>
                                     @foreach ($displayProviderRows as $row)
                                         @php
-                                          $centralEnabled = collect($row['auth'])->every(fn ($auth) => ! str_contains($auth, 'Pendiente'));
+                                          $centralEnabled = collect($row['auth_states'] ?? [])->every(fn ($state) => $state === 'approved');
                                           $rowKey = \Illuminate\Support\Str::slug($row['folio']);
                                         @endphp
                                         <tr data-provider-request-row="{{ $rowKey }}">
@@ -536,8 +551,11 @@
                                             <td><strong>{{ $row['patient'] }}</strong></td>
                                             <td>{{ $row['doctor'] }}</td>
                                             <td>
-                                                @foreach ($row['auth'] as $auth)
-                                                    <span class="provider-native-mini-badge {{ str_contains($auth, 'Farm') ? 'is-warning' : 'is-success' }}">{{ $auth }}</span>
+                                                @foreach ($row['auth'] as $authIndex => $auth)
+                                                    @php
+                                                      $authorizationState = data_get($row, 'auth_states.'.$authIndex, 'pending');
+                                                    @endphp
+                                                    <span class="provider-native-mini-badge {{ $authorizationState === 'approved' ? 'is-success' : ($authorizationState === 'rejected' ? 'is-danger' : 'is-warning') }}">{{ $auth }}</span>
                                                 @endforeach
                                             </td>
                                             <td>{{ $row['date'] }}</td>
@@ -593,16 +611,19 @@
                                             <dialog id="remission-{{ $rowKey }}" class="provider-native-dialog">
                                               @php
                                                 $isOncologyRemission = $row['service'] === 'Oncologica';
-                                                $remissionProduct = $isOncologyRemission ? 'Docetaxel' : 'Mezcla de nutricion parenteral';
-                                                $remissionQuantity = $isOncologyRemission ? '1 mg (1 frasco facturado)' : '1 bolsa (1 preparacion)';
-                                                $remissionPriceType = $isOncologyRemission ? 'Precio unitario por frasco' : 'Precio unitario por mezcla';
-                                                $remissionAmount = $isOncologyRemission ? '$100.00' : '$1,250.00';
+                                                $realRemission = is_array($row['remission'] ?? null) ? $row['remission'] : null;
+                                                $remissionNumber = data_get($realRemission, 'number');
+                                                $remissionIssuedAt = data_get($realRemission, 'issued_at');
+                                                $remissionDate = $remissionIssuedAt
+                                                    ? \Illuminate\Support\Carbon::parse($remissionIssuedAt)->locale('es')->translatedFormat('d/m/Y, H:i')
+                                                    : null;
+                                                $remissionItems = collect($row['remission_items'] ?? []);
                                               @endphp
                                               <header class="provider-native-remission-header">
                                                 <div>
                                                   <small>REMISION DE ENTREGA</small>
-                                                  <strong>Remision de entrega {{ $row['folio'] }}</strong>
-                                                  <span>{{ $row['hospital'] }} - {{ $row['date'] }} - {{ $row['service'] }}</span>
+                                                  <strong>Remisión {{ $remissionNumber ? 'No. '.$remissionNumber : 'de entrega' }} · {{ $row['folio'] }}</strong>
+                                                  <span>{{ $row['hospital'] }} - {{ $remissionDate ?: $row['date'] }} - {{ $row['service'] }}</span>
                                                 </div>
                                                 <button type="button" data-provider-dialog-close>Cerrar</button>
                                               </header>
@@ -611,7 +632,7 @@
                                                   <div>
                                                     <small>{{ strtoupper($row['service']) }}</small>
                                                     <strong>Productos entregados y precios</strong>
-                                                    <span>Precio de referencia {{ $row['service'] }}: {{ $remissionAmount }} por {{ $isOncologyRemission ? 'frasco' : 'mezcla' }}</span>
+                                                    <span>{{ $realRemission ? 'Información sincronizada desde CBTA' : 'Información de referencia local' }}</span>
                                                   </div>
                                                   <span class="provider-native-remission-status">{{ $row['central'] }}</span>
                                                 </div>
@@ -620,8 +641,8 @@
                                                   <div><dt>Hospital</dt><dd>{{ $row['hospital'] }}</dd></div>
                                                   <div><dt>Paciente</dt><dd>{{ $row['patient'] }}</dd></div>
                                                   <div><dt>Medico</dt><dd>{{ $row['doctor'] }}</dd></div>
-                                                  <div><dt>Fecha de entrega</dt><dd>{{ $row['date'] }}, 10:40 a.m.</dd></div>
-                                                  <div><dt>Total remision</dt><dd>{{ $remissionAmount }}</dd></div>
+                                                  <div><dt>Fecha de entrega</dt><dd>{{ $remissionDate ?: 'No informada por CBTA' }}</dd></div>
+                                                  <div><dt>Número de remisión</dt><dd>{{ $remissionNumber ?: 'No informado' }}</dd></div>
                                                 </dl>
                                                 <div class="provider-native-remission-table-wrap">
                                                   <table class="provider-native-remission-table">
@@ -635,21 +656,24 @@
                                                       </tr>
                                                     </thead>
                                                     <tbody>
-                                                      <tr>
-                                                        <td><strong>{{ $remissionProduct }}</strong><small>Precio de referencia del catalogo</small></td>
-                                                        <td>{{ $remissionQuantity }}</td>
-                                                        <td>{{ $remissionPriceType }}</td>
-                                                        <td>{{ $remissionAmount }}</td>
-                                                        <td>{{ $remissionAmount }}</td>
-                                                      </tr>
+                                                      @forelse ($remissionItems as $remissionItem)
+                                                        <tr>
+                                                          <td><strong>{{ data_get($remissionItem, 'product') }}</strong><small>{{ data_get($remissionItem, 'presentation') ?: 'Sin presentación informada' }}</small></td>
+                                                          <td>{{ data_get($remissionItem, 'quantity', '—') }} {{ data_get($remissionItem, 'unit') }}</td>
+                                                          <td>{{ data_get($remissionItem, 'price_type', 'No informado') }}</td>
+                                                          <td>{{ data_get($remissionItem, 'unit_price') !== null ? '$'.number_format((float) data_get($remissionItem, 'unit_price'), 2) : 'No informado' }}</td>
+                                                          <td>{{ data_get($remissionItem, 'amount') !== null ? '$'.number_format((float) data_get($remissionItem, 'amount'), 2) : 'No informado' }}</td>
+                                                        </tr>
+                                                      @empty
+                                                        <tr><td colspan="5">CBTA no proporcionó el desglose de productos para esta remisión.</td></tr>
+                                                      @endforelse
                                                     </tbody>
                                                     <tfoot>
-                                                      <tr><th colspan="4">Subtotal</th><td>{{ $remissionAmount }}</td></tr>
-                                                      <tr><th colspan="4">Total</th><td>{{ $remissionAmount }}</td></tr>
+                                                      <tr><th colspan="4">Total</th><td>{{ data_get($realRemission, 'total') !== null ? '$'.number_format((float) data_get($realRemission, 'total'), 2).' '.data_get($realRemission, 'currency', 'MXN') : 'No informado por CBTA' }}</td></tr>
                                                     </tfoot>
                                                   </table>
                                                 </div>
-                                                <p class="provider-native-remission-note">Hay productos sin precio en la lista asignada. Se uso el precio de referencia del catalogo para mantener la remision visible.</p>
+                                                <p class="provider-native-remission-note">{{ data_get($realRemission, 'total') !== null ? 'Productos, cantidades e importes sincronizados desde la remisión oficial de CBTA.' : 'Los productos y cantidades corresponden a la solicitud sincronizada; CBTA no informó importes para esta remisión.' }}</p>
                                                 <div class="provider-native-remission-signatures">
                                                   <span>Entrega proveedor integral</span>
                                                   <span>Recibe area operativa</span>

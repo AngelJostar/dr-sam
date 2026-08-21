@@ -54,6 +54,8 @@ Route::middleware('auth')->group(function (): void {
     Route::post('/doctor/prescriptions', [DoctorPortalController::class, 'storePrescription'])->middleware('role:superadmin,admin,doctor')->name('doctor.prescriptions.store');
     Route::patch('/doctor/prescriptions/{prescription}', [DoctorPortalController::class, 'updatePrescription'])->middleware('role:superadmin,admin,doctor')->name('doctor.prescriptions.update');
     Route::post('/doctor/service-requests', [DoctorPortalController::class, 'storeServiceRequest'])->middleware('role:superadmin,admin,doctor')->name('doctor.service_requests.store');
+    Route::get('/doctor/service-requests/{providerRequest}/documents/{document}', [DoctorPortalController::class, 'downloadMixtureDocument'])->middleware('role:superadmin,admin,doctor')->name('doctor.service_requests.documents.download');
+    Route::get('/doctor/service-requests/{providerRequest}/remission', [DoctorPortalController::class, 'downloadMixtureRemission'])->middleware('role:superadmin,admin,doctor')->name('doctor.service_requests.remission.download');
     Route::get('/patient', PatientPortalController::class)
         ->middleware('role:superadmin,admin,patient')
         ->name('patient.dashboard');

@@ -64,6 +64,7 @@ class ProviderPortalController extends Controller
                 'patient',
                 'medicalUnit.institution',
                 'provider',
+                'mixtureIntegration',
                 'statusEvents' => fn ($query) => $query->latest('occurred_at')->latest(),
                 'deliveryRoutes.messenger.user',
             ])
