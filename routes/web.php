@@ -65,6 +65,9 @@ Route::middleware('auth')->group(function (): void {
     Route::post('/patient/insurance', [PatientPortalController::class, 'saveInsurance'])
         ->middleware('role:superadmin,admin,patient')
         ->name('patient.insurance.save');
+    Route::post('/patient/appointments', [PatientPortalController::class, 'storeAppointment'])
+        ->middleware('role:superadmin,admin,patient')
+        ->name('patient.appointments.store');
     Route::get('/orders', [PatientOrderController::class, 'index'])
         ->middleware('role:superadmin,admin,patient,operational')
         ->name('orders.index');
