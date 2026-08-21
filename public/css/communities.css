@@ -723,6 +723,13 @@ body.native-shell .patient-portal-communities-view .kc-message-reply-trigger {
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 28px;
   margin: 0 0 32px;
+  overscroll-behavior-inline: contain;
+  touch-action: pan-y;
+  cursor: grab;
+}
+.kc-community-shortcuts.is-panning {
+  cursor: grabbing;
+  user-select: none;
 }
 .kc-community-shortcut {
   display: grid;
@@ -1387,6 +1394,9 @@ body.native-shell .patient-portal-communities-view .kc-community-shortcut strong
     margin-bottom: 18px;
     padding: 0 1px 4px;
     scrollbar-width: none;
+    scroll-snap-type: x proximity;
+    touch-action: pan-y;
+    cursor: grab;
   }
   .patient-portal-communities-view .kc-community-shortcuts::-webkit-scrollbar { display: none; }
   .patient-portal-communities-view .kc-community-shortcut {

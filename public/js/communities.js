@@ -2092,7 +2092,7 @@
     ];
     return '<div class="kc-blank-hero" aria-hidden="true"></div>' +
       '<div class="kc-feed-wrap">' +
-      '<section class="kc-community-shortcuts" aria-label="Accesos de comunidades">' + shortcuts.map(function (item) {
+      '<section class="kc-community-shortcuts" data-pan data-carousel="community-shortcuts" aria-label="Accesos de comunidades">' + shortcuts.map(function (item) {
         return '<button class="kc-community-shortcut ' + item[4] + '" data-action="' + item[0] + '"' + (item[1] ? ' data-id="' + item[1] + '"' : "") + '><span>' + icon(item[3]) + '</span><strong>' + item[2] + '</strong></button>';
       }).join("") + '</section>' +
       this.renderStories() + '<div class="kc-post-list">' + posts.map(this.renderPost.bind(this)).join("") + '</div></div>';

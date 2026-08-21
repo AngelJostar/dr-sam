@@ -3,6 +3,9 @@
 <?php $__env->startPush('styles'); ?>
   <link rel="stylesheet" href="<?php echo e(asset('css/patient-profile-panel.css')); ?>?v=<?php echo e(filemtime(public_path('css/patient-profile-panel.css'))); ?>">
   <link rel="stylesheet" href="<?php echo e(asset('css/communities.css')); ?>?v=<?php echo e(filemtime(public_path('css/communities.css'))); ?>">
+  <link rel="stylesheet" href="<?php echo e(asset('css/policy-saved-overlay.css')); ?>?v=<?php echo e(filemtime(public_path('css/policy-saved-overlay.css'))); ?>">
+  <link rel="stylesheet" href="<?php echo e(asset('css/patient-history-mobile.css')); ?>?v=<?php echo e(filemtime(public_path('css/patient-history-mobile.css'))); ?>">
+  <link rel="stylesheet" href="<?php echo e(asset('css/patient-bottom-nav-mobile.css')); ?>?v=<?php echo e(filemtime(public_path('css/patient-bottom-nav-mobile.css'))); ?>">
 <?php $__env->stopPush(); ?>
 
 <?php
@@ -26,7 +29,7 @@
 <?php $__env->startSection('content'); ?>
 <div class="patient-assistant-native-screen patient-portal" data-patient-portal>
   <header class="patient-assistant-native-topbar patient-portal-topbar">
-    <button class="patient-portal-dots" type="button" aria-label="Abrir interacciones" aria-expanded="false" aria-controls="patient-support-menu" data-support-toggle>⋮</button>
+    <button class="patient-portal-dots" type="button" aria-label="Abrir soporte médico" aria-expanded="false" aria-controls="patient-support-menu" data-support-toggle>⋮</button>
     <form class="patient-portal-question" onsubmit="return false" data-ai-top-form>
       <input aria-label="Pregunta para Dr. Sam" placeholder="" data-ai-top-input>
       <button type="submit" aria-label="Preguntar" data-ai-top-submit>
@@ -59,7 +62,7 @@
 
   <div class="patient-portal-layout">
     <aside id="patient-support-menu" class="patient-assistant-native-menu patient-portal-menu" aria-label="Menú del paciente" aria-hidden="true" data-support-menu>
-      <strong class="patient-portal-menu-title">Interacciones</strong>
+      <strong class="patient-portal-menu-title">Soporte médico</strong>
       <?php $__currentLoopData = $supportViews; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => [$label, $icon]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         <button type="button" data-open-view="<?php echo e($key); ?>">
           <span class="patient-support-icon patient-support-icon-<?php echo e($icon); ?>" aria-hidden="true"></span><?php echo e($label); ?>
@@ -69,8 +72,40 @@
     </aside>
 
     <main class="patient-portal-content">
-      <?php if(session('patient_notice')): ?>
-        <div class="patient-portal-notice"><?php echo e(session('patient_notice')); ?></div>
+      <?php
+        $patientNotice = session('patient_notice');
+        $patientNoticeText = is_string($patientNotice) ? $patientNotice : null;
+        $normalizedPatientNotice = $patientNoticeText
+          ? str_replace(
+              ['á', 'é', 'í', 'ó', 'ú', 'Á', 'É', 'Í', 'Ó', 'Ú'],
+              ['a', 'e', 'i', 'o', 'u', 'a', 'e', 'i', 'o', 'u'],
+              strtolower($patientNoticeText)
+            )
+          : '';
+        $showPolicySavedNotice = $patientNoticeText
+          && strpos($normalizedPatientNotice, 'poliza') !== false
+          && strpos($normalizedPatientNotice, 'guard') !== false;
+      ?>
+
+      <?php if($patientNoticeText && ! $showPolicySavedNotice): ?>
+        <div class="patient-portal-notice"><?php echo e($patientNoticeText); ?></div>
+      <?php endif; ?>
+
+      <?php if($showPolicySavedNotice): ?>
+        <div class="policy-saved-overlay" data-policy-saved-overlay role="dialog" aria-modal="true" aria-labelledby="policySavedTitle">
+          <div class="policy-saved-dialog">
+            <button class="policy-saved-close" type="button" data-policy-saved-close aria-label="Cerrar">&times;</button>
+            <div class="policy-saved-illustration" aria-hidden="true">
+              <span class="policy-confetti policy-confetti-one"></span>
+              <span class="policy-confetti policy-confetti-two"></span>
+              <span class="policy-confetti policy-confetti-three"></span>
+              <span class="policy-confetti policy-confetti-four"></span>
+              <span class="policy-saved-check">&#10003;</span>
+            </div>
+            <h2 id="policySavedTitle"><span>¡Póliza</span><strong>guardada!</strong></h2>
+            <p>La póliza se guardó satisfactoriamente.</p>
+          </div>
+        </div>
       <?php endif; ?>
       <?php if($errors->any()): ?>
         <div class="patient-portal-notice is-error"><?php echo e($errors->first()); ?></div>
@@ -156,7 +191,7 @@
               <?php endif; ?>
             </aside>
           </div>
-          <nav class="patient-insurance-tabs" aria-label="Secciones de Mi Seguro">
+          <nav class="patient-insurance-tabs" data-insurance-tabs-carousel aria-label="Secciones de Mi Seguro">
             <button type="button" aria-label="Anterior" data-insurance-tab-step="-1">‹</button>
             <button class="is-active" type="button" data-insurance-tab="summary">▣&nbsp; Resumen</button>
             <button type="button" data-insurance-tab="coverage">♢&nbsp; Cobertura</button>
@@ -199,12 +234,102 @@
         </article>
       </section>
 
-      <section class="patient-portal-view" data-patient-view="analyses">
-        <div class="patient-portal-view-heading"><div><small>EXPEDIENTE DIGITAL</small><h1>Análisis clínicos</h1><p>Resultados y documentos médicos cargados a tu cuenta.</p></div><span><?php echo e($clinicalAnalyses->count()); ?> estudios</span></div>
-        <div class="patient-portal-table-card"><table><thead><tr><th>Estudio</th><th>Fecha</th><th>Tipo</th><th>Estatus</th><th>Archivo</th></tr></thead><tbody>
-          <?php $__empty_1 = true; $__currentLoopData = $clinicalAnalyses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $document): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?><tr><td><strong><?php echo e($document->name); ?></strong></td><td><?php echo e($document->loaded_at?->format('d/m/Y') ?? $document->created_at?->format('d/m/Y')); ?></td><td><?php echo e(ucfirst(str_replace('_', ' ', $document->document_type))); ?></td><td><span class="patient-portal-status"><?php echo e($statusText($document->status)); ?></span></td><td><?php if($document->file_path): ?><a href="<?php echo e(asset('storage/'.$document->file_path)); ?>" target="_blank">Ver documento</a><?php else: ?> Sin archivo <?php endif; ?></td></tr>
-          <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?> <tr><td colspan="5" class="patient-portal-empty">Aún no hay análisis clínicos registrados.</td></tr><?php endif; ?>
-        </tbody></table></div>
+      <section class="patient-portal-view patient-analyses-view" data-patient-view="analyses">
+        <?php
+          $analysisMonthLabels = [1 => 'ene', 2 => 'feb', 3 => 'mar', 4 => 'abr', 5 => 'may', 6 => 'jun', 7 => 'jul', 8 => 'ago', 9 => 'sep', 10 => 'oct', 11 => 'nov', 12 => 'dic'];
+          $analysisTypeFor = function ($document) {
+            $type = strtolower((string) $document->document_type);
+            $mime = strtolower((string) ($document->file_mime ?? ''));
+            $path = strtolower((string) ($document->file_path ?? ''));
+            if (str_contains($type, 'imag') || str_starts_with($mime, 'image/')) return 'image';
+            if ($type === 'pdf' || str_contains($mime, 'pdf') || str_ends_with($path, '.pdf')) return 'pdf';
+            return 'laboratory';
+          };
+          $analysisTypeLabel = ['laboratory' => 'Laboratorio', 'image' => 'Imagen', 'pdf' => 'PDF'];
+          $analysisTypeIcon = ['laboratory' => 'lab', 'image' => 'image', 'pdf' => 'pdf'];
+        ?>
+        <article class="patient-analyses-panel">
+          <header class="patient-analyses-hero">
+            <div class="patient-analyses-hero-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"></path><path d="M14 3v5h4"></path><path d="M9 13h6"></path><path d="M9 17h6"></path></svg>
+            </div>
+            <div>
+              <small>EXPEDIENTE DIGITAL</small>
+              <h1>An&aacute;lisis cl&iacute;nicos</h1>
+              <p>Resultados y documentos m&eacute;dicos cargados a tu cuenta.</p>
+            </div>
+            <span class="patient-analyses-count"><b><?php echo e($clinicalAnalyses->count()); ?></b> estudios</span>
+          </header>
+
+          <div class="patient-analyses-body">
+            <nav class="patient-analyses-filter-bar" aria-label="Filtros de an&aacute;lisis cl&iacute;nicos">
+              <button class="is-active" type="button" data-analysis-filter="all"><span>◇</span>Todos</button>
+              <button class="is-lab" type="button" data-analysis-filter="laboratory"><span>♙</span>Laboratorio</button>
+              <button class="is-image" type="button" data-analysis-filter="image"><span>▧</span>Imagen</button>
+              <button class="is-pdf" type="button" data-analysis-filter="pdf"><span>▤</span>PDF</button>
+            </nav>
+
+            <div class="patient-analyses-toolbar">
+              <button class="patient-analyses-sort" type="button" data-analysis-sort data-analysis-sort-direction="desc">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect x="3" y="4" width="18" height="18" rx="3"></rect><path d="M3 10h18"></path></svg>
+                <span data-analysis-sort-label>Ordenar por fecha</span>
+                <b aria-hidden="true">⌄</b>
+              </button>
+              <button class="patient-analyses-filter-action" type="button" data-analysis-reset>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10"></path><path d="M18 7h2"></path><path d="M16 5v4"></path><path d="M4 17h2"></path><path d="M10 17h10"></path><path d="M8 15v4"></path></svg>
+                <span>Filtrar</span>
+              </button>
+            </div>
+
+            <div class="patient-analyses-list" data-analysis-list>
+              <?php $__empty_1 = true; $__currentLoopData = $clinicalAnalyses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $document): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                <?php
+                  $analysisType = $analysisTypeFor($document);
+                  $analysisDate = $document->loaded_at ?? $document->created_at;
+                  $analysisDateLabel = $analysisDate
+                    ? $analysisDate->format('j').' '.$analysisMonthLabels[(int) $analysisDate->format('n')].' '.$analysisDate->format('Y')
+                    : 'Sin fecha';
+                  $originName = data_get($document->metadata, 'origin')
+                    ?? data_get($document->metadata, 'laboratory')
+                    ?? data_get($document->metadata, 'provider')
+                    ?? data_get($document->metadata, 'hospital')
+                    ?? 'Laboratorio Central';
+                  $isNewAnalysis = in_array($document->status, ['new', 'pending', 'requested', 'created'], true);
+                  $analysisStatusLabel = $isNewAnalysis ? 'Nuevo' : 'Cargado';
+                  $analysisStatusClass = $isNewAnalysis ? 'is-new' : 'is-loaded';
+                ?>
+                <article class="patient-analysis-card" data-analysis-card data-analysis-type="<?php echo e($analysisType); ?>" data-analysis-date="<?php echo e($analysisDate?->timestamp ?? 0); ?>" data-analysis-status="<?php echo e($analysisStatusClass); ?>">
+                  <span class="patient-analysis-card-icon is-<?php echo e($analysisTypeIcon[$analysisType] ?? 'lab'); ?>" aria-hidden="true">
+                    <?php if($analysisType === 'image'): ?>
+                      <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"></rect><circle cx="8" cy="10" r="1.6"></circle><path d="m7 17 4-5 3 3 2-2 3 4"></path></svg>
+                    <?php elseif($analysisType === 'pdf'): ?>
+                      <svg viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"></path><path d="M14 3v5h4"></path><path d="M9 13h6"></path><path d="M9 17h5"></path></svg>
+                    <?php else: ?>
+                      <svg viewBox="0 0 24 24"><path d="M9 3v6l-4 7a4 4 0 0 0 3.5 6h7a4 4 0 0 0 3.5-6l-4-7V3"></path><path d="M8 3h8"></path><path d="M7 16h10"></path></svg>
+                    <?php endif; ?>
+                  </span>
+                  <div class="patient-analysis-card-copy">
+                    <h2><?php echo e($document->name); ?></h2>
+                    <p><span aria-hidden="true">▣</span><?php echo e($analysisDateLabel); ?></p>
+                    <p><?php echo e($originName); ?></p>
+                    <span class="patient-analysis-type-pill is-<?php echo e($analysisType); ?>"><?php echo e($analysisTypeLabel[$analysisType] ?? 'Laboratorio'); ?></span>
+                  </div>
+                  <span class="patient-analysis-status <?php echo e($analysisStatusClass); ?>"><?php echo e($analysisStatusLabel); ?></span>
+                  <?php if($document->file_path): ?>
+                    <a class="patient-analysis-view-link" href="<?php echo e(asset('storage/'.$document->file_path)); ?>" target="_blank" rel="noopener">Ver estudio <b aria-hidden="true">›</b></a>
+                  <?php else: ?>
+                    <button class="patient-analysis-view-link" type="button" disabled>Ver estudio <b aria-hidden="true">›</b></button>
+                  <?php endif; ?>
+                </article>
+              <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                <div class="patient-analyses-empty" data-analysis-empty>A&uacute;n no hay an&aacute;lisis cl&iacute;nicos registrados.</div>
+              <?php endif; ?>
+            </div>
+            <?php if($clinicalAnalyses->isNotEmpty()): ?>
+              <div class="patient-analyses-empty" data-analysis-empty hidden>No hay estudios para este filtro.</div>
+            <?php endif; ?>
+          </div>
+        </article>
       </section>
 
       <section class="patient-portal-view" data-patient-view="history">
@@ -320,34 +445,80 @@
               <button class="patient-prescription-filter is-active" type="button" data-prescription-filter="all"><span>◇</span>Todos</button>
               <button class="patient-prescription-filter patient-prescription-filter-active" type="button" data-prescription-filter="active"><span>▣</span>Vigentes</button>
               <button class="patient-prescription-filter patient-prescription-filter-expired" type="button" data-prescription-filter="expired"><span>□</span>Vencidas</button>
-              <button class="patient-prescription-filter patient-prescription-filter-medications" type="button" data-prescription-filter="medications"><span>▤</span>Medicamentos</button>
-              <button class="patient-prescription-filter patient-prescription-filter-analysis" type="button" data-prescription-filter="analysis"><span>♙</span>Análisis clínicos</button>
             </div>
-            <div class="patient-prescriptions-table-card">
-              <table class="patient-prescriptions-table">
-                <thead><tr><th>Médico tratante</th><th>Especialidad</th><th>Fecha</th><th>Medicamento, dosis, presentación</th><th>Análisis clínico</th><th>Ver receta</th><th>Hospital donde se recetó</th><th>Institución donde se recetó</th></tr></thead>
-                <tbody>
-                <?php $__empty_1 = true; $__currentLoopData = $patient->prescriptions->sortByDesc('issued_at'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $prescription): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                  <?php
-                    $prescriptionMeta = $prescription->metadata ?? [];
-                    $isExpiredPrescription = in_array($prescription->status, ['expired', 'inactive'], true)
-                      || ($prescriptionMeta['expires_at'] ?? null) && \Illuminate\Support\Carbon::parse($prescriptionMeta['expires_at'])->isPast();
-                    $hasAnalysis = !empty($prescriptionMeta['clinical_analysis']) || !empty($prescriptionMeta['clinical_analyses']);
-                  ?>
-                  <tr data-prescription-row data-status="<?php echo e($isExpiredPrescription ? 'expired' : 'active'); ?>" data-has-medications="<?php echo e($prescription->items->isNotEmpty() ? '1' : '0'); ?>" data-has-analysis="<?php echo e($hasAnalysis ? '1' : '0'); ?>">
-                    <td><?php echo e($prescription->doctor?->full_name ?? 'Sin médico asignado'); ?></td>
-                    <td><?php echo e($prescription->doctor?->specialty ?? 'Medicina general'); ?></td>
-                    <td><?php echo e($prescription->issued_at?->format('d/m/Y') ?? 'Sin fecha'); ?></td>
-                    <td class="patient-prescription-medications"><?php $__empty_2 = true; $__currentLoopData = $prescription->items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_2 = false; ?><div><?php echo e($item->medication_name); ?> <?php if($item->dose): ?>| <?php echo e($item->dose); ?> <?php endif; ?> <?php if($item->metadata['presentation'] ?? null): ?>| <?php echo e($item->metadata['presentation']); ?> <?php endif; ?> <?php if($item->frequency): ?>| <?php echo e($item->frequency); ?> <?php endif; ?></div><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_2): ?> Sin medicamentos indicados <?php endif; ?></td>
-                    <td><?php echo e($prescriptionMeta['clinical_analysis'] ?? ($hasAnalysis ? 'Análisis relacionados' : '—')); ?></td>
-                    <td><button class="patient-prescription-view-button" type="button" title="<?php echo e($prescription->code ?? 'Receta médica'); ?>" data-prescription-open="patient-prescription-<?php echo e($prescription->id); ?>">Ver</button></td>
-                    <td><?php echo e($prescriptionMeta['hospital'] ?? $prescriptionMeta['medical_unit'] ?? 'Privada'); ?></td>
-                    <td><?php echo e($prescriptionMeta['institution'] ?? 'Privada'); ?></td>
-                  </tr>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?> <tr><td colspan="8" class="patient-portal-empty">No hay recetas registradas.</td></tr><?php endif; ?>
-                </tbody>
-              </table>
+            <?php
+              $prescriptionMonthLabels = [1 => 'ene', 2 => 'feb', 3 => 'mar', 4 => 'abr', 5 => 'may', 6 => 'jun', 7 => 'jul', 8 => 'ago', 9 => 'sep', 10 => 'oct', 11 => 'nov', 12 => 'dic'];
+            ?>
+            <div class="patient-prescription-card-list" data-prescription-list>
+              <?php $__empty_1 = true; $__currentLoopData = $patient->prescriptions->sortByDesc('issued_at'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $prescription): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                <?php
+                  $prescriptionMeta = $prescription->metadata ?? [];
+                  $expiresAt = $prescriptionMeta['expires_at'] ?? null;
+                  $isExpiredPrescription = in_array($prescription->status, ['expired', 'inactive'], true)
+                    || ($expiresAt && \Illuminate\Support\Carbon::parse($expiresAt)->isPast());
+                  $hasAnalysis = !empty($prescriptionMeta['clinical_analysis']) || !empty($prescriptionMeta['clinical_analyses']);
+                  $primaryItem = $prescription->items->first();
+                  $doctorName = $prescription->doctor?->full_name ?? 'Sin médico asignado';
+                  $doctorInitials = collect(explode(' ', $doctorName))->filter()->take(2)->map(fn ($part) => mb_substr($part, 0, 1))->implode('') ?: 'DR';
+                  $issuedAt = $prescription->issued_at ?? $prescription->created_at;
+                  $issuedLabel = $issuedAt
+                    ? $issuedAt->format('j').' '.$prescriptionMonthLabels[(int) $issuedAt->format('n')].' '.$issuedAt->format('Y')
+                    : 'Sin fecha';
+                  $quantity = data_get($primaryItem?->metadata, 'quantity');
+                  $presentation = data_get($primaryItem?->metadata, 'presentation');
+                  $quantityLabel = $quantity && $presentation ? trim($quantity.' '.$presentation) : null;
+                  $medicationTitle = $primaryItem
+                    ? collect([$primaryItem->medication_name, $primaryItem->dose])->filter()->implode(' ')
+                    : ($prescriptionMeta['clinical_analysis'] ?? 'Sin medicamentos indicados');
+                  $medicationSubtitle = $primaryItem
+                    ? (collect([$quantityLabel, $primaryItem->frequency])->filter()->implode(' ') ?: ($primaryItem->duration ?: 'Frecuencia no registrada'))
+                    : ($hasAnalysis ? 'Análisis clínico solicitado' : 'Sin indicación registrada');
+                  $instructions = $primaryItem?->instructions ?: ($prescription->notes ?: 'Indicaciones médicas emitidas.');
+                  $statusLabel = $isExpiredPrescription ? 'Vencida' : 'Vigente';
+                  $statusClass = $isExpiredPrescription ? 'is-expired' : 'is-active';
+                ?>
+                <article class="patient-prescription-card <?php echo e($statusClass); ?>" data-prescription-row data-status="<?php echo e($isExpiredPrescription ? 'expired' : 'active'); ?>" data-has-medications="<?php echo e($prescription->items->isNotEmpty() ? '1' : '0'); ?>" data-has-analysis="<?php echo e($hasAnalysis ? '1' : '0'); ?>">
+                  <div class="patient-prescription-card-top">
+                    <div class="patient-prescription-doctor">
+                      <span class="patient-prescription-avatar"><?php echo e($doctorInitials); ?></span>
+                      <div>
+                        <h2><?php echo e($doctorName); ?></h2>
+                        <p><?php echo e($prescription->doctor?->specialty ?? 'Medicina general'); ?></p>
+                      </div>
+                    </div>
+                    <span class="patient-prescription-status <?php echo e($statusClass); ?>"><i></i><?php echo e($statusLabel); ?></span>
+                  </div>
+                  <div class="patient-prescription-card-body">
+                    <div class="patient-prescription-info-row">
+                      <span class="patient-prescription-row-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24"><path d="M10.5 20.5 20.5 10.5a5 5 0 0 0-7-7L3.5 13.5a5 5 0 0 0 7 7Z"></path><path d="m8 9 7 7"></path></svg>
+                      </span>
+                      <div><strong><?php echo e($medicationTitle); ?></strong><p><?php echo e($medicationSubtitle); ?></p></div>
+                    </div>
+                    <div class="patient-prescription-info-row">
+                      <span class="patient-prescription-row-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect x="3" y="4" width="18" height="18" rx="3"></rect><path d="M3 10h18"></path><path d="M8 14h.01"></path><path d="M12 14h.01"></path><path d="M16 14h.01"></path><path d="M8 18h.01"></path><path d="M12 18h.01"></path></svg>
+                      </span>
+                      <div><strong>Fecha de emisión</strong><p><?php echo e($issuedLabel); ?></p></div>
+                    </div>
+                    <div class="patient-prescription-info-row">
+                      <span class="patient-prescription-row-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7z"></path><path d="M14 3v6h5"></path><path d="M10 13h6"></path><path d="M10 17h6"></path></svg>
+                      </span>
+                      <div><strong>Indicaciones</strong><p><?php echo e($instructions); ?></p></div>
+                    </div>
+                  </div>
+                  <button class="patient-prescription-card-action" type="button" title="<?php echo e($prescription->code ?? 'Receta médica'); ?>" data-prescription-open="patient-prescription-<?php echo e($prescription->id); ?>">
+                    <span>Ver receta</span><b aria-hidden="true">›</b>
+                  </button>
+                </article>
+              <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                <div class="patient-prescriptions-empty" data-prescription-empty>No hay recetas registradas.</div>
+              <?php endif; ?>
             </div>
+            <?php if($patient->prescriptions->isNotEmpty()): ?>
+              <div class="patient-prescriptions-empty" data-prescription-empty hidden>No hay recetas para este filtro.</div>
+            <?php endif; ?>
           </div>
         </article>
         <?php $__currentLoopData = $patient->prescriptions->sortByDesc('issued_at'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $prescription): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -397,7 +568,25 @@
 
       <section class="patient-portal-view" data-patient-view="calendar">
         <?php
-          $calendarAppointments = $patient->appointments->sortBy('starts_at')->values();
+          $calendarNow = now();
+          $isCalendarScheduled = fn ($item) => $item->starts_at?->gt($calendarNow)
+            && !in_array($item->status, ['cancelled', 'completed'], true);
+          $calendarGroup = function ($item) use ($calendarNow, $isCalendarScheduled) {
+            if ($isCalendarScheduled($item)) return 0;
+            if ($item->starts_at?->lte($calendarNow)) return 1;
+            return 2;
+          };
+          $calendarAppointments = $patient->appointments->sort(function ($first, $second) use ($calendarGroup) {
+            $firstGroup = $calendarGroup($first);
+            $secondGroup = $calendarGroup($second);
+            if ($firstGroup !== $secondGroup) return $firstGroup <=> $secondGroup;
+
+            $firstTimestamp = $first->starts_at?->timestamp;
+            $secondTimestamp = $second->starts_at?->timestamp;
+            if ($firstGroup === 0) return ($firstTimestamp ?? PHP_INT_MAX) <=> ($secondTimestamp ?? PHP_INT_MAX);
+            if ($firstGroup === 1) return ($secondTimestamp ?? PHP_INT_MIN) <=> ($firstTimestamp ?? PHP_INT_MIN);
+            return ($firstTimestamp ?? PHP_INT_MAX) <=> ($secondTimestamp ?? PHP_INT_MAX);
+          })->values();
           $calendarMonths = $calendarAppointments->filter(fn ($item) => $item->starts_at)->map(fn ($item) => ['key' => $item->starts_at->format('Y-m'), 'label' => ucfirst($item->starts_at->translatedFormat('F Y'))])->unique('key')->values();
           $consultationHistory = $patient->clinicalRecords->sortByDesc('recorded_at')->values();
         ?>
@@ -407,7 +596,7 @@
             <div><h1>Calendario</h1><p>Citas y estudios programados</p></div>
           </header>
           <div class="patient-calendar-toolbar">
-            <div class="patient-calendar-filters" aria-label="Filtrar calendario">
+            <div class="patient-calendar-filters" data-calendar-filter-carousel aria-label="Filtrar calendario">
               <button class="is-active" type="button" data-calendar-filter="all"><span>✓</span>Todas</button>
               <button type="button" data-calendar-filter="upcoming"><span>▣</span>Próximas</button>
               <button type="button" data-calendar-filter="laboratory"><span>♙</span>Laboratorios</button>
@@ -415,7 +604,7 @@
             </div>
             <div class="patient-calendar-month-nav">
               <button type="button" aria-label="Mes anterior" data-calendar-month-step="-1">‹</button>
-              <span><b>☺</b> <?php echo e($calendarAppointments->filter(fn ($item) => $item->starts_at?->isFuture())->count()); ?> próximas citas</span>
+              <span><b>☺</b> <?php echo e($calendarAppointments->filter($isCalendarScheduled)->count()); ?> próximas citas</span>
               <strong data-calendar-month-label><?php echo e($calendarMonths->first()['label'] ?? ucfirst(now()->translatedFormat('F Y'))); ?></strong>
               <button type="button" aria-label="Mes siguiente" data-calendar-month-step="1">›</button>
             </div>
@@ -425,7 +614,7 @@
               <?php
                 $calendarText = mb_strtolower(collect([$appointment->specialty, $appointment->modality, $appointment->reason])->filter()->implode(' '));
                 $calendarType = str_contains($calendarText, 'laborat') || str_contains($calendarText, 'análisis') || str_contains($calendarText, 'muestra') ? 'laboratory' : 'consultation';
-                $isUpcoming = $appointment->starts_at?->isFuture() && !in_array($appointment->status, ['cancelled', 'completed'], true);
+                $isUpcoming = $isCalendarScheduled($appointment);
                 $appointmentUnit = $appointment->medicalUnit?->name ?? $appointment->location ?? 'Ubicación no registrada';
                 $appointmentTitle = $calendarType === 'laboratory' ? 'Laboratorio' : ($appointment->specialty ?: 'Consulta médica');
               ?>
@@ -467,7 +656,7 @@
           </div>
           <p class="patient-calendar-timezone">ⓘ Las citas y estudios se muestran en la zona horaria de tu ubicación actual.</p>
         </div>
-        <section class="patient-calendar-history">
+        <section class="patient-calendar-history" hidden>
           <header><h2>Historial de consultas</h2><p>Consultas anteriores del paciente</p></header>
           <div class="patient-calendar-history-scroll">
             <table>
@@ -497,12 +686,335 @@
         </section>
       </section>
 
-      <section class="patient-portal-view" data-patient-view="doctors">
-        <div class="patient-portal-view-heading"><div><small>RED MÉDICA</small><h1>Médicos y terapeutas</h1><p>Consulta los profesionales disponibles en la plataforma.</p></div><span><?php echo e($doctors->count()); ?> profesionales</span></div>
-        <div class="patient-portal-filters"><input type="search" placeholder="Buscar médico, especialidad o unidad" data-card-search="doctor-grid"></div>
-        <div class="patient-portal-doctor-grid" id="doctor-grid">
-          <?php $__empty_1 = true; $__currentLoopData = $doctors; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $doctor): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?><article><div class="patient-portal-avatar"><?php echo e(collect(explode(' ', $doctor->full_name))->filter()->take(2)->map(fn($part) => mb_substr($part,0,1))->implode('')); ?></div><div><h2><?php echo e($doctor->full_name); ?></h2><strong><?php echo e($doctor->specialty ?? 'Medicina general'); ?></strong><p><?php echo e($doctor->subspecialty ?? $doctor->service_name ?? 'Atención médica'); ?></p><small><?php echo e($doctor->medicalUnit?->name ?? 'Consulta privada'); ?></small></div></article>
-          <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?> <div class="patient-portal-empty">No hay médicos activos.</div><?php endif; ?>
+      <section class="patient-portal-view patient-doctors-view" data-patient-view="doctors">
+        <?php
+          $doctorCountryOptions = collect([
+            ['name' => 'México', 'flag' => '🇲🇽'],
+            ['name' => 'Estados Unidos', 'flag' => '🇺🇸'],
+            ['name' => 'Colombia', 'flag' => '🇨🇴'],
+            ['name' => 'España', 'flag' => '🇪🇸'],
+            ['name' => 'Chile', 'flag' => '🇨🇱'],
+            ['name' => 'Argentina', 'flag' => '🇦🇷'],
+            ['name' => 'Perú', 'flag' => '🇵🇪'],
+          ]);
+          $doctorInsuranceOptions = collect([
+            ['name' => 'Allianz', 'mark' => 'AZ'],
+            ['name' => 'AXA', 'mark' => 'AXA'],
+            ['name' => 'Bupa', 'mark' => 'B'],
+            ['name' => 'GNP', 'mark' => 'GNP'],
+            ['name' => 'MetLife', 'mark' => 'M'],
+            ['name' => 'Seguros Monterrey', 'mark' => 'SM'],
+          ]);
+          $doctorLocationOptions = $doctors->map(function ($doctor) {
+            $country = data_get($doctor->medicalUnit?->metadata, 'country')
+              ?? data_get($doctor->medicalUnit?->metadata, 'country_name')
+              ?? data_get($doctor->medicalUnit?->metadata, 'pais')
+              ?? 'México';
+            $city = $doctor->medicalUnit?->city ?? $doctor->medicalUnit?->municipality ?? $doctor->medicalUnit?->state;
+            return ['country' => $country, 'city' => $city];
+          })->filter(fn ($location) => filled($location['city']))
+            ->unique(fn ($location) => mb_strtolower($location['country'].'|'.$location['city']))
+            ->sortBy('city')->values();
+          $doctorSpecialties = $doctors->map(fn ($doctor) => $doctor->specialty ?: 'Medicina general')->unique()->sort()->values();
+        ?>
+        <div class="patient-doctors-shell">
+          <header class="patient-doctors-hero">
+            <span class="patient-doctors-hero-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M6 3v5a4 4 0 0 0 8 0V3"></path><path d="M4 3h4M12 3h4"></path><path d="M10 12v2a5 5 0 0 0 10 0v-1"></path><circle cx="20" cy="10" r="2"></circle></svg>
+            </span>
+            <div><h1>Médicos y terapeutas</h1><p>Encuentra médicos disponibles<br>por unidad y servicio</p></div>
+          </header>
+
+          <section class="patient-doctors-locator" aria-labelledby="patient-doctors-location-title" data-doctor-search-form>
+            <header>
+              <span class="patient-doctors-location-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+              </span>
+              <div><small>UBICACIÓN DEL PACIENTE</small><h2 id="patient-doctors-location-title">Selecciona país y ciudad</h2><p>Indícanos tu ubicación para mostrarte opciones disponibles en tu área.</p></div>
+            </header>
+
+            <div class="patient-doctors-fields">
+              <div class="patient-doctors-field-group">
+                <label for="patient-doctor-country">País</label>
+                <div class="patient-doctors-select">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
+                  <select id="patient-doctor-country" data-doctor-country-filter>
+                    <option value="">Escribe o selecciona país</option>
+                    <?php $__currentLoopData = $doctorCountryOptions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $country): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                      <option value="<?php echo e($country['name']); ?>"><?php echo e($country['name']); ?></option>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                  </select>
+                  <span aria-hidden="true">⌄</span>
+                </div>
+                <div class="patient-doctors-country-shortcuts" aria-label="Países frecuentes">
+                  <?php $__currentLoopData = $doctorCountryOptions->take(4); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $country): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <button type="button" data-doctor-country-shortcut="<?php echo e($country['name']); ?>" aria-pressed="false"><span><?php echo e($country['flag']); ?></span><?php echo e($country['name']); ?></button>
+                  <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                  <span id="patient-doctors-more-countries" data-doctor-extra-countries hidden>
+                    <?php $__currentLoopData = $doctorCountryOptions->skip(4); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $country): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                      <button type="button" data-doctor-country-shortcut="<?php echo e($country['name']); ?>" aria-pressed="false"><span><?php echo e($country['flag']); ?></span><?php echo e($country['name']); ?></button>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                  </span>
+                  <button class="patient-doctors-more" type="button" data-doctor-more-countries aria-expanded="false" aria-controls="patient-doctors-more-countries">Ver más <span aria-hidden="true">⌄</span></button>
+                </div>
+              </div>
+
+              <div class="patient-doctors-field-group">
+                <label for="patient-doctor-city">Ciudad <small>Primero selecciona un país para ver las ciudades disponibles.</small></label>
+                <div class="patient-doctors-select">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
+                  <select id="patient-doctor-city" data-doctor-city-filter disabled>
+                    <option value="" data-doctor-city-placeholder>Primero selecciona país</option>
+                    <?php $__currentLoopData = $doctorLocationOptions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $location): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                      <option value="<?php echo e($location['city']); ?>" data-country="<?php echo e($location['country']); ?>"><?php echo e($location['city']); ?></option>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                  </select>
+                  <span aria-hidden="true">⌄</span>
+                </div>
+              </div>
+
+              <div class="patient-doctors-field-group">
+                <label for="patient-doctor-specialty">Especialidad <em>Opcional</em></label>
+                <div class="patient-doctors-select">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
+                  <select id="patient-doctor-specialty" data-doctor-specialty-filter>
+                    <option value="">Escribe o selecciona especialidad</option>
+                    <?php $__currentLoopData = $doctorSpecialties; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $specialty): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                      <option value="<?php echo e($specialty); ?>"><?php echo e($specialty); ?></option>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                  </select>
+                  <span aria-hidden="true">⌄</span>
+                </div>
+              </div>
+
+              <div class="patient-doctors-field-group">
+                <label for="patient-doctor-insurer">Aseguradora <em>Opcional</em></label>
+                <div class="patient-doctors-select">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
+                  <select id="patient-doctor-insurer" data-doctor-insurer-filter>
+                    <option value="">Escribe o selecciona aseguradora</option>
+                    <?php $__currentLoopData = $doctorInsuranceOptions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $insurer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                      <option value="<?php echo e($insurer['name']); ?>"><?php echo e($insurer['name']); ?></option>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                  </select>
+                  <span aria-hidden="true">⌄</span>
+                </div>
+                <div class="patient-doctors-country-shortcuts patient-doctors-insurer-shortcuts" aria-label="Aseguradoras frecuentes">
+                  <?php $__currentLoopData = $doctorInsuranceOptions->take(4); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $insurer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <button type="button" data-doctor-insurer-shortcut="<?php echo e($insurer['name']); ?>" aria-pressed="false"><span><?php echo e($insurer['mark']); ?></span><?php echo e($insurer['name']); ?></button>
+                  <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                  <span id="patient-doctors-more-insurers" data-doctor-extra-insurers hidden>
+                    <?php $__currentLoopData = $doctorInsuranceOptions->skip(4); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $insurer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                      <button type="button" data-doctor-insurer-shortcut="<?php echo e($insurer['name']); ?>" aria-pressed="false"><span><?php echo e($insurer['mark']); ?></span><?php echo e($insurer['name']); ?></button>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                  </span>
+                  <button class="patient-doctors-more" type="button" data-doctor-more-insurers aria-expanded="false" aria-controls="patient-doctors-more-insurers">Ver m&aacute;s <span aria-hidden="true">⌄</span></button>
+                </div>
+              </div>
+
+              <div class="patient-doctors-field-group">
+                <label for="patient-doctor-name">Nombre del m&eacute;dico</label>
+                <div class="patient-doctors-name-search">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
+                  <input id="patient-doctor-name" type="search" placeholder="Escribe el nombre del m&eacute;dico" autocomplete="off" data-doctor-name-filter>
+                </div>
+              </div>
+
+              <button class="patient-doctors-search-action" type="button" data-doctor-search-action aria-controls="doctor-grid">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
+                <span>Buscar</span>
+              </button>
+            </div>
+          </section>
+
+          <section class="patient-doctors-search-summary" data-doctor-search-summary hidden aria-live="polite">
+            <small>BÚSQUEDA</small>
+            <strong data-doctor-search-location>Todas las ubicaciones</strong>
+            <p data-doctor-search-details>Todos los profesionales</p>
+            <button type="button" data-doctor-edit-search>Editar búsqueda</button>
+          </section>
+
+          <section class="patient-doctors-results" aria-labelledby="patient-doctors-results-title" data-doctor-results-section hidden>
+            <header>
+              <h2 id="patient-doctors-results-title">Resultados (<span data-doctor-count><?php echo e($doctors->count()); ?></span>)</h2>
+              <button type="button" data-doctor-edit-search>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10"></path><path d="M18 7h2"></path><circle cx="16" cy="7" r="2"></circle><path d="M4 17h2"></path><path d="M10 17h10"></path><circle cx="8" cy="17" r="2"></circle></svg>
+                <span>Filtrar</span>
+              </button>
+            </header>
+            <div class="patient-doctors-grid" id="doctor-grid" data-doctor-results>
+              <?php $__empty_1 = true; $__currentLoopData = $doctors; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $doctor): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                <?php
+                  $doctorCountry = data_get($doctor->medicalUnit?->metadata, 'country')
+                    ?? data_get($doctor->medicalUnit?->metadata, 'country_name')
+                    ?? data_get($doctor->medicalUnit?->metadata, 'pais')
+                    ?? 'México';
+                  $doctorCity = $doctor->medicalUnit?->city ?? $doctor->medicalUnit?->municipality ?? $doctor->medicalUnit?->state ?? '';
+                  $doctorSpecialty = $doctor->specialty ?: 'Medicina general';
+                  $doctorInsurerMetadata = data_get($doctor->metadata, 'accepted_insurers')
+                    ?? data_get($doctor->metadata, 'insurance_carriers')
+                    ?? data_get($doctor->metadata, 'insurers')
+                    ?? [];
+                  $doctorInsurers = collect(is_array($doctorInsurerMetadata) ? $doctorInsurerMetadata : [$doctorInsurerMetadata])
+                    ->filter(fn ($insurer) => is_string($insurer) && filled($insurer))
+                    ->values();
+                  $doctorInitials = collect(explode(' ', $doctor->full_name))->filter()->take(2)->map(fn ($part) => mb_substr($part, 0, 1))->implode('');
+                  $doctorPhoto = data_get($doctor->metadata, 'photo_url') ?? data_get($doctor->metadata, 'avatar_url');
+                  $doctorRating = data_get($doctor->metadata, 'rating');
+                  $doctorReviews = data_get($doctor->metadata, 'reviews_count');
+                  $doctorAvailability = data_get($doctor->metadata, 'availability_label') ?? data_get($doctor->metadata, 'availability');
+                  $doctorAvailability = is_string($doctorAvailability) && filled($doctorAvailability)
+                    ? $doctorAvailability
+                    : 'Disponible para consulta';
+                ?>
+                <article data-doctor-card data-doctor-name="<?php echo e($doctor->full_name); ?>" data-doctor-country="<?php echo e($doctorCountry); ?>" data-doctor-city="<?php echo e($doctorCity); ?>" data-doctor-specialty="<?php echo e($doctorSpecialty); ?>" data-doctor-insurers="<?php echo e($doctorInsurers->implode('|')); ?>">
+                  <button class="patient-doctor-result-card" type="button" data-doctor-select="<?php echo e($doctor->id); ?>" aria-label="Seleccionar a <?php echo e($doctor->full_name); ?>" aria-pressed="false">
+                    <span class="patient-doctors-avatar">
+                      <?php if(is_string($doctorPhoto) && filled($doctorPhoto)): ?>
+                        <img src="<?php echo e($doctorPhoto); ?>" alt="">
+                      <?php else: ?>
+                        <?php echo e($doctorInitials); ?>
+
+                      <?php endif; ?>
+                    </span>
+                    <span class="patient-doctor-result-copy">
+                      <span class="patient-doctor-result-name"><?php echo e($doctor->full_name); ?></span>
+                      <span class="patient-doctor-result-specialty"><?php echo e($doctorSpecialty); ?></span>
+                      <?php if(is_numeric($doctorRating)): ?>
+                        <span class="patient-doctor-rating">★ <?php echo e(number_format((float) $doctorRating, 1)); ?><?php if(is_numeric($doctorReviews)): ?> (<?php echo e((int) $doctorReviews); ?>)<?php endif; ?></span>
+                      <?php endif; ?>
+                      <span class="patient-doctor-result-service"><?php echo e($doctor->subspecialty ?? $doctor->service_name ?? 'Atención médica'); ?></span>
+                      <span class="patient-doctor-result-unit"><?php echo e($doctor->medicalUnit?->name ?? 'Consulta privada'); ?><?php echo e($doctorCity ? ' · '.$doctorCity : ''); ?></span>
+                      <span class="patient-doctor-result-availability"><?php echo e($doctorAvailability); ?></span>
+                    </span>
+                    <svg class="patient-doctor-result-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"></path></svg>
+                  </button>
+                </article>
+              <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                <div class="patient-doctors-empty">No hay médicos activos.</div>
+              <?php endif; ?>
+              <?php if($doctors->isNotEmpty()): ?>
+                <div class="patient-doctors-empty" data-doctor-filter-empty hidden>No encontramos profesionales con estos filtros.</div>
+              <?php endif; ?>
+            </div>
+          </section>
+
+          <script type="application/json" data-doctor-booking-data><?php echo json_encode($doctorBookingOptions, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?></script>
+          <script type="application/json" data-doctor-booking-confirmation><?php echo json_encode($bookingConfirmation, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?></script>
+
+          <div class="patient-doctor-booking" data-doctor-booking data-booking-old-doctor="<?php echo e(old('doctor_id')); ?>" data-booking-old-start="<?php echo e(old('starts_at')); ?>" data-booking-old-reason="<?php echo e(old('reason_type')); ?>" data-booking-old-notes="<?php echo e(old('reason_notes')); ?>" hidden>
+            <?php if($errors->hasAny(['doctor_id', 'starts_at', 'reason_type', 'reason_notes'])): ?>
+              <div class="patient-doctor-booking-error" role="alert" data-booking-error><?php echo e($errors->first()); ?></div>
+            <?php endif; ?>
+
+            <section class="patient-doctor-booking-step patient-doctor-profile-step" data-doctor-booking-step="profile" hidden>
+              <header class="patient-doctor-booking-heading is-profile">
+                <button type="button" data-booking-back="results" aria-label="Volver a resultados">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
+                </button>
+              </header>
+              <div class="patient-doctor-profile-identity">
+                <span class="patient-doctor-profile-avatar" data-booking-profile-avatar><span data-booking-profile-initials></span><img data-booking-profile-photo alt="" hidden></span>
+                <h2 data-booking-doctor-name>Médico</h2>
+                <p><span data-booking-doctor-specialty>Especialidad</span><i aria-hidden="true">•</i><span data-booking-doctor-license>Cédula por confirmar</span></p>
+              </div>
+              <div class="patient-doctor-profile-stats">
+                <span data-booking-rating hidden>★ <b></b></span>
+                <span data-booking-experience hidden><b></b> años de experiencia</span>
+              </div>
+              <section class="patient-doctor-profile-section">
+                <h3>Acerca de mí</h3>
+                <p data-booking-doctor-bio></p>
+              </section>
+              <section class="patient-doctor-profile-section patient-doctor-profile-location">
+                <div><h3>Ubicación</h3><strong data-booking-doctor-unit></strong><p data-booking-doctor-address></p></div>
+                <span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg></span>
+              </section>
+              <section class="patient-doctor-profile-section">
+                <h3>Disponibilidad</h3>
+                <p>Consulta los próximos horarios disponibles para agendar tu cita.</p>
+                <div class="patient-doctor-availability-preview" data-booking-profile-dates></div>
+              </section>
+              <button class="patient-doctor-booking-primary" type="button" data-booking-next="schedule">Ver horarios disponibles</button>
+            </section>
+
+            <section class="patient-doctor-booking-step" data-doctor-booking-step="schedule" hidden>
+              <header class="patient-doctor-booking-heading">
+                <button type="button" data-booking-back="profile" aria-label="Volver al perfil">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
+                </button>
+                <h2>Selecciona fecha y hora</h2>
+              </header>
+              <section class="patient-doctor-date-picker">
+                <h3 data-booking-month>Próximas fechas</h3>
+                <div class="patient-doctor-date-carousel" data-booking-date-options aria-label="Fechas disponibles"></div>
+              </section>
+              <section class="patient-doctor-time-picker">
+                <p>Horas disponibles para <strong data-booking-selected-date-label>la fecha seleccionada</strong></p>
+                <div class="patient-doctor-time-options" data-booking-time-options></div>
+                <div class="patient-doctor-booking-empty" data-booking-no-slots hidden>No hay horarios disponibles para esta fecha.</div>
+              </section>
+              <button class="patient-doctor-booking-primary" type="button" data-booking-next="reason" disabled>Continuar</button>
+            </section>
+
+            <section class="patient-doctor-booking-step" data-doctor-booking-step="reason" hidden>
+              <header class="patient-doctor-booking-heading">
+                <button type="button" data-booking-back="schedule" aria-label="Volver a fecha y hora">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
+                </button>
+                <h2>Motivo de consulta</h2>
+              </header>
+              <fieldset class="patient-doctor-reason-options">
+                <legend>Selecciona el motivo de tu consulta</legend>
+                <?php $__currentLoopData = ['Chequeo general', 'Hipertensión arterial', 'Diabetes', 'Colesterol alto', 'Enfermedades respiratorias', 'Dolor de cabeza / Migraña', 'Otro motivo']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $bookingReason): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                  <label><input type="radio" name="booking_reason_preview" value="<?php echo e($bookingReason); ?>" data-booking-reason><span></span><?php echo e($bookingReason); ?></label>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+              </fieldset>
+              <label class="patient-doctor-reason-notes">Describe brevemente tu motivo <small>(opcional)</small>
+                <textarea maxlength="200" placeholder="Cuéntanos más sobre tu consulta..." data-booking-notes></textarea>
+                <span><b data-booking-notes-count>0</b>/200</span>
+              </label>
+              <button class="patient-doctor-booking-primary" type="button" data-booking-next="summary" disabled>Continuar</button>
+            </section>
+
+            <section class="patient-doctor-booking-step" data-doctor-booking-step="summary" hidden>
+              <header class="patient-doctor-booking-heading">
+                <button type="button" data-booking-back="reason" aria-label="Volver al motivo">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
+                </button>
+                <h2>Resumen de tu cita</h2>
+              </header>
+              <div class="patient-doctor-summary-list">
+                <section><h3>Profesional</h3><div class="patient-doctor-summary-professional"><span data-booking-summary-initials></span><div><strong data-booking-summary-doctor></strong><small data-booking-summary-specialty></small><small data-booking-summary-license></small></div></div></section>
+                <section><h3>Fecha y hora</h3><div class="patient-doctor-summary-row"><span aria-hidden="true">▣</span><strong data-booking-summary-date></strong></div></section>
+                <section><h3>Ubicación</h3><div class="patient-doctor-summary-row"><span aria-hidden="true">⌖</span><div><strong data-booking-summary-unit></strong><small data-booking-summary-address></small></div></div></section>
+                <section><h3>Motivo de consulta</h3><div class="patient-doctor-summary-value" data-booking-summary-reason></div></section>
+                <section class="is-duration"><div class="patient-doctor-summary-row"><span aria-hidden="true">✓</span><div><strong>Duración aproximada</strong><small>30 minutos</small></div></div></section>
+              </div>
+              <form method="post" action="<?php echo e(route('patient.appointments.store')); ?>" data-booking-form>
+                <?php echo csrf_field(); ?>
+                <input type="hidden" name="doctor_id" data-booking-form-doctor>
+                <input type="hidden" name="starts_at" data-booking-form-start>
+                <input type="hidden" name="reason_type" data-booking-form-reason>
+                <input type="hidden" name="reason_notes" data-booking-form-notes>
+                <button class="patient-doctor-booking-primary" type="submit">Confirmar cita</button>
+              </form>
+            </section>
+
+            <section class="patient-doctor-booking-step patient-doctor-booking-success" data-doctor-booking-step="success" hidden>
+              <span class="patient-doctor-success-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"></path></svg></span>
+              <h2>¡Cita agendada con éxito!</h2>
+              <p>Los detalles de tu cita ya están disponibles en tu calendario.</p>
+              <section class="patient-doctor-success-card">
+                <div class="patient-doctor-success-professional"><span data-booking-success-initials></span><div><strong data-booking-success-doctor></strong><small data-booking-success-specialty></small></div></div>
+                <div><span aria-hidden="true">▣</span><p><strong data-booking-success-date></strong><b data-booking-success-time></b></p></div>
+                <div><span aria-hidden="true">⌖</span><p><strong data-booking-success-unit></strong><small data-booking-success-location></small></p></div>
+                <div><span aria-hidden="true">▤</span><p data-booking-success-reason></p></div>
+              </section>
+              <button class="patient-doctor-booking-secondary" type="button" data-booking-open-calendar>Ver mis citas</button>
+              <button class="patient-doctor-booking-primary" type="button" data-booking-download-calendar>Agregar al calendario</button>
+            </section>
+          </div>
         </div>
       </section>
 
@@ -711,7 +1223,7 @@
           </header>
 
           <div class="patient-devices-redesign">
-            <nav class="patient-device-filters" aria-label="Filtros de dispositivos">
+            <nav class="patient-device-filters" data-device-filter-carousel aria-label="Filtros de dispositivos">
               <button class="is-active" type="button" data-device-filter="all" aria-pressed="true"><span class="patient-device-filter-icon patient-device-filter-menu" aria-hidden="true"></span>Todos</button>
               <button class="is-linked" type="button" data-device-filter="linked" aria-pressed="false"><span class="patient-device-filter-icon patient-device-filter-check" aria-hidden="true"></span>Vinculados</button>
               <button class="is-pending" type="button" data-device-filter="pending" aria-pressed="false"><span class="patient-device-filter-icon patient-device-filter-clock" aria-hidden="true"></span>Pendientes</button>
@@ -791,12 +1303,58 @@
           <div class="patient-register-workspace">
             <section class="patient-register-sheet patient-register-view-sheet" aria-labelledby="patient-register-title">
               <header class="patient-register-heading">
-                <button class="patient-register-back" type="button" data-open-view="home" aria-label="Volver">←</button>
                 <div>
                   <small>REGISTRO R&Aacute;PIDO</small>
-                  <h2 id="patient-register-title">Registrar par&aacute;metro</h2>
                 </div>
               </header>
+
+              <section class="patient-register-history-selector" aria-labelledby="patient-register-history-title">
+                <h3 id="patient-register-history-title">Historial Cl&iacute;nico</h3>
+                <div class="patient-register-history-carousel" data-register-history-carousel aria-label="Categor&iacute;as del historial cl&iacute;nico">
+                  <button class="is-consultation" type="button" data-register-history-category="consultation" aria-pressed="false"><span aria-hidden="true">♧</span><b>Consulta m&eacute;dica</b></button>
+                  <button class="is-laboratory" type="button" data-register-history-category="laboratory" aria-pressed="false"><span aria-hidden="true">♙</span><b>An&aacute;lisis de laboratorio</b></button>
+                  <button class="is-study" type="button" data-register-history-category="study" aria-pressed="false"><span aria-hidden="true">▧</span><b>Estudios</b></button>
+                  <button class="is-prescription" type="button" data-register-history-category="prescription" aria-pressed="false"><span aria-hidden="true">▤</span><b>Recetas</b></button>
+                  <button class="is-hospitalization" type="button" data-register-history-category="hospitalization" aria-pressed="false"><span aria-hidden="true">⚑</span><b>Hospitalizaci&oacute;n</b></button>
+                  <button class="is-vaccine" type="button" data-register-history-category="vaccine" aria-pressed="false"><span aria-hidden="true">□</span><b>Vacunas</b></button>
+                  <button class="is-manual" type="button" data-register-history-category="manual" aria-pressed="false"><span aria-hidden="true">+</span><b>Registro manual</b></button>
+                </div>
+                <section class="patient-register-history-composer" data-register-history-composer aria-live="polite" hidden>
+                  <header>
+                    <span class="patient-register-history-composer-icon" data-register-history-composer-icon aria-hidden="true">♧</span>
+                    <div>
+                      <h4 data-register-history-composer-title>Registrar en Consulta m&eacute;dica</h4>
+                      <p data-register-history-composer-description>La informaci&oacute;n registrada se almacenar&aacute; en Consulta m&eacute;dica.</p>
+                    </div>
+                  </header>
+                  <div class="patient-register-history-textarea">
+                    <textarea maxlength="2000" placeholder="Escribe aqu&iacute; el registro manual..." data-register-history-manual aria-label="Registro manual para historial cl&iacute;nico"></textarea>
+                    <small data-register-history-manual-count>0/2000</small>
+                  </div>
+                  <div class="patient-register-history-divider"><span>o</span></div>
+                  <div class="patient-register-history-actions">
+                    <button class="patient-register-history-photo" type="button" data-register-history-photo-pick aria-label="Tomar fotograf&iacute;a">
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M14.5 4 16 7h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h3l1.5-3h5Z"></path>
+                        <circle cx="12" cy="13" r="3.5"></circle>
+                      </svg>
+                    </button>
+                    <button class="patient-register-history-submit" type="button" data-register-history-submit>
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M5 3h12l2 2v16H5V3Z"></path>
+                        <path d="M8 3v6h8V3"></path>
+                        <path d="M8 15h8"></path>
+                      </svg>
+                      <span>Guardar</span>
+                    </button>
+                  </div>
+                  <input type="file" accept="image/*" capture="environment" data-register-history-photo-input hidden>
+                  <small class="patient-register-history-photo-name" data-register-history-photo-name hidden></small>
+                  <p class="patient-register-history-feedback" data-register-history-feedback hidden></p>
+                </section>
+              </section>
+
+              <h2 class="patient-register-main-title" id="patient-register-title">Par&aacute;metros</h2>
 
               <section class="patient-register-option-block patient-register-option-block-favorites">
                 <div class="patient-register-strip-title">
@@ -805,14 +1363,15 @@
                 <div class="patient-register-options patient-register-favorite-options" data-register-favorites data-register-carousel aria-label="Parametros favoritos"></div>
               </section>
 
-              <section class="patient-register-option-block">
+              <section class="patient-register-option-block patient-register-option-block-all">
                 <div class="patient-register-strip-title">
-                  <span>Todos los par&aacute;metros</span>
+                  <span>Todos</span>
                 </div>
                 <div class="patient-register-options" data-register-options data-register-carousel aria-label="Tipo de parametro"></div>
               </section>
 
               <form class="patient-register-form" data-register-form>
+                <input type="hidden" name="historyCategory" value="" data-register-history-category-input>
                 <input type="hidden" name="metricType" value="water" data-register-metric-input>
                 <div class="patient-register-selected-metric" data-register-selected-panel>
                   <span class="patient-register-selected-icon" data-register-selected-icon aria-hidden="true"></span>
@@ -843,35 +1402,37 @@
                     <i aria-hidden="true">▦</i>
                   </div>
                 </label>
-                <label>
-                  <span>Comentario opcional</span>
+                <label class="patient-register-parameter-text">
+                  <span class="patient-register-visually-hidden">Comentario opcional</span>
                   <div class="patient-register-notes-wrap">
-                    <textarea name="notes" rows="3" maxlength="200" placeholder="Agrega contexto si lo necesitas" data-register-notes></textarea>
-                    <small data-register-notes-count>0/200</small>
+                    <textarea name="notes" rows="5" maxlength="2000" placeholder="Escribe aqu&iacute; el registro manual..." data-register-notes></textarea>
+                    <small data-register-notes-count>0/2000</small>
                   </div>
                 </label>
-                <div class="patient-register-attachment">
-                  <span>Fotograf&iacute;a o documento <em>(opcional)</em></span>
-                  <button class="patient-register-attachment-box" type="button" data-register-attachment-pick aria-label="Agregar fotografia o documento">
-                    <span class="patient-register-attachment-button" aria-hidden="true">
-                      <svg viewBox="0 0 24 24">
-                        <path d="M14.5 4.5 13.2 3h-2.4L9.5 4.5H6.2A2.2 2.2 0 0 0 4 6.7v10.1A2.2 2.2 0 0 0 6.2 19h11.6a2.2 2.2 0 0 0 2.2-2.2V6.7a2.2 2.2 0 0 0-2.2-2.2h-3.3Z"></path>
-                        <circle cx="12" cy="12" r="3.4"></circle>
+                <div class="patient-register-attachment patient-register-parameter-attachment">
+                  <div class="patient-register-parameter-actions">
+                    <button class="patient-register-history-photo patient-register-parameter-photo-button" type="button" data-register-attachment-pick aria-label="Tomar fotograf&iacute;a">
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M14.5 4 16 7h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h3l1.5-3h5Z"></path>
+                        <circle cx="12" cy="13" r="3.5"></circle>
                       </svg>
-                    </span>
-                    <div>
-                      <strong>Agregar evidencia</strong>
-                      <small data-register-attachment-name>Sin archivo seleccionado</small>
-                    </div>
-                    <i aria-hidden="true">›</i>
-                  </button>
-                  <input type="file" accept="image/*,.pdf" name="attachment" data-register-attachment-input hidden>
+                    </button>
+                    <button class="patient-register-primary patient-register-parameter-submit" type="submit">
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M5 3h12l2 2v16H5V3Z"></path>
+                        <path d="M8 3v6h8V3"></path>
+                        <path d="M8 15h8"></path>
+                      </svg>
+                      <span>Guardar</span>
+                    </button>
+                  </div>
+                  <input type="file" accept="image/*" capture="environment" name="attachment" data-register-attachment-input hidden>
                   <section class="patient-register-uploaded-card" data-register-uploaded hidden>
                     <div class="patient-register-uploaded-file">
                       <span class="patient-register-file-type" data-register-file-type>PDF</span>
                       <div>
-                        <b>Archivo cargado</b>
-                        <strong data-register-file-name>Archivo cargado</strong>
+                        <b>Fotograf&iacute;a cargada</b>
+                        <strong data-register-file-name>Fotograf&iacute;a cargada</strong>
                         <small data-register-file-size></small>
                       </div>
                       <button type="button" data-register-attachment-clear aria-label="Eliminar archivo">
@@ -886,8 +1447,8 @@
                     </div>
                     <div class="patient-register-uploaded-status">
                       <span aria-hidden="true">✓</span>
-                      <strong>Documento cargado correctamente</strong>
-                      <button type="button" data-register-attachment-change>Cambiar archivo</button>
+                      <strong>Fotograf&iacute;a cargada correctamente</strong>
+                      <button type="button" data-register-attachment-change>Cambiar fotograf&iacute;a</button>
                     </div>
                   </section>
                   <section class="patient-register-transcript-card" data-register-transcript-card hidden>
@@ -917,19 +1478,8 @@
                     <small>La categor&iacute;a solo aplica al archivo adjunto y a su transcripci&oacute;n.</small>
                   </label>
                 </div>
-                <div class="patient-register-safe-note" aria-live="polite">
-                  <span aria-hidden="true">⌄</span>
-                  <div>
-                    <strong>Tu informaci&oacute;n est&aacute; segura</strong>
-                    <p>Este registro se guardar&aacute; en tu historial manual y solo t&uacute; podr&aacute;s verlo.</p>
-                  </div>
-                </div>
                 <div class="patient-register-success" data-register-success hidden>
                   Registro guardado. Se agrego a tus datos manuales.
-                </div>
-                <div class="patient-register-actions">
-                  <button class="patient-register-secondary" type="reset">Limpiar</button>
-                  <button class="patient-register-primary" type="submit"><span aria-hidden="true">▣</span>Guardar registro</button>
                 </div>
               </form>
             </section>
@@ -1075,16 +1625,57 @@
     if (name === 'register') {
       if (registerSuccess) registerSuccess.hidden = true;
       if (registerDateInput && !registerDateInput.value) registerDateInput.value = registerDateValue();
+      const selectedHistoryCategory = getRegisterHistorySelectedCategoryKey();
+      if (selectedHistoryCategory && isRegisterHistoryComposerVisible()) {
+        selectRegisterHistoryCategory(selectedHistoryCategory);
+      } else {
+        hideRegisterHistoryComposer();
+      }
       selectRegisterMetric(registerMetricInput?.value || 'water');
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  const policySavedOverlay = document.querySelector('[data-policy-saved-overlay]');
+  if (policySavedOverlay) {
+    openView('insurance');
+    document.body.classList.add('has-policy-saved-overlay');
+
+    const closePolicySavedNotice = () => {
+      openView('insurance');
+      document.body.classList.remove('has-policy-saved-overlay');
+      policySavedOverlay.classList.add('is-closing');
+      window.setTimeout(() => policySavedOverlay.remove(), 260);
+    };
+
+    policySavedOverlay.querySelector('[data-policy-saved-close]')
+      ?.addEventListener('click', closePolicySavedNotice);
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && document.body.contains(policySavedOverlay)) {
+        closePolicySavedNotice();
+      }
+    });
+  }
   const healthScreenLayer = portal.querySelector('[data-health-screen-layer]');
   const healthScreens = [...portal.querySelectorAll('[data-health-screen]')];
   const registerForm = document.querySelector('[data-register-form]');
   const registerOptions = document.querySelector('[data-register-options]');
   const registerFavorites = document.querySelector('[data-register-favorites]');
   const registerMetricInput = document.querySelector('[data-register-metric-input]');
+  const registerHistoryCategoryInput = document.querySelector('[data-register-history-category-input]');
+  const registerHistoryCarousel = portal.querySelector('[data-register-history-carousel]');
+  const registerHistoryComposer = portal.querySelector('[data-register-history-composer]');
+  const registerHistoryComposerIcon = portal.querySelector('[data-register-history-composer-icon]');
+  const registerHistoryComposerTitle = portal.querySelector('[data-register-history-composer-title]');
+  const registerHistoryComposerDescription = portal.querySelector('[data-register-history-composer-description]');
+  const registerHistoryManualInput = portal.querySelector('[data-register-history-manual]');
+  const registerHistoryManualCount = portal.querySelector('[data-register-history-manual-count]');
+  const registerHistoryPhotoPick = portal.querySelector('[data-register-history-photo-pick]');
+  const registerHistoryPhotoInput = portal.querySelector('[data-register-history-photo-input]');
+  const registerHistoryPhotoName = portal.querySelector('[data-register-history-photo-name]');
+  const registerHistorySubmit = portal.querySelector('[data-register-history-submit]');
+  const registerHistoryFeedback = portal.querySelector('[data-register-history-feedback]');
   const registerValueInput = document.querySelector('[data-register-value]');
   const registerValueLabel = document.querySelector('[data-register-value-label]');
   const registerUnit = document.querySelector('[data-register-unit]');
@@ -1157,13 +1748,13 @@
     custom: { description: 'Crea un registro manual con el parametro que necesites.', meta: 'Registro manual personalizado', valueLabel: 'Valor' },
   };
   const registerAttachmentCategoryConfig = {
-    consultation: { label: 'Consulta Medica', historyFilter: 'consultation', service: 'Documento de consulta' },
-    laboratory: { label: 'Analisis de Laboratorio', historyFilter: 'laboratory', service: 'Resultados de laboratorio' },
-    study: { label: 'Estudios', historyFilter: 'study', service: 'Estudio clinico' },
-    prescription: { label: 'Recetas', historyFilter: 'prescription', service: 'Documento de receta' },
-    hospitalization: { label: 'Hospitalizacion', historyFilter: 'hospitalization', service: 'Documento hospitalario' },
-    manual: { label: 'Registro Manual', historyFilter: 'manual', service: 'Adjunto de registro manual' },
-    vaccine: { label: 'Vacunas', historyFilter: 'vaccine', service: 'Cartilla o comprobante de vacuna' },
+    consultation: { label: 'Consulta Médica', historyFilter: 'consultation', service: 'Documento de consulta', parameterService: 'Parámetro de consulta médica' },
+    laboratory: { label: 'Análisis de Laboratorio', historyFilter: 'laboratory', service: 'Resultados de laboratorio', parameterService: 'Parámetro de laboratorio' },
+    study: { label: 'Estudios', historyFilter: 'study', service: 'Estudio clínico', parameterService: 'Parámetro de estudio clínico' },
+    prescription: { label: 'Recetas', historyFilter: 'prescription', service: 'Documento de receta', parameterService: 'Parámetro relacionado a receta' },
+    hospitalization: { label: 'Hospitalización', historyFilter: 'hospitalization', service: 'Documento hospitalario', parameterService: 'Parámetro hospitalario' },
+    manual: { label: 'Registro Manual', historyFilter: 'manual', service: 'Adjunto de registro manual', parameterService: 'Registro manual de parámetro' },
+    vaccine: { label: 'Vacunas', historyFilter: 'vaccine', service: 'Cartilla o comprobante de vacuna', parameterService: 'Parámetro de vacunación' },
   };
   const registerStorageKey = <?php echo json_encode('drsam_patient_manual_records_'.$patient->id, 15, 512) ?>;
   const registerFavoriteStorageKey = <?php echo json_encode('drsam_patient_register_favorites_'.$patient->id, 15, 512) ?>;
@@ -1335,6 +1926,81 @@
   const saveRegisterFavorites = () => {
     localStorage.setItem(registerFavoriteStorageKey, JSON.stringify(registerFavoriteMetrics));
   };
+  const getRegisterHistorySelectedCategoryKey = () => {
+    const current = registerHistoryCategoryInput?.value || '';
+    return registerAttachmentCategoryConfig[current] ? current : '';
+  };
+  const getRegisterHistoryCategoryKey = () => {
+    const current = getRegisterHistorySelectedCategoryKey() || 'manual';
+    return registerAttachmentCategoryConfig[current] ? current : 'manual';
+  };
+  const getRegisterHistoryCategoryIcon = key => {
+    const button = [...(registerHistoryCarousel?.querySelectorAll('[data-register-history-category]') || [])]
+      .find(item => item.dataset.registerHistoryCategory === key);
+    return button?.querySelector('span')?.textContent?.trim() || '+';
+  };
+  const isRegisterHistoryComposerVisible = () => Boolean(registerHistoryComposer && !registerHistoryComposer.hidden);
+  const updateRegisterHistoryComposer = (key, options = {}) => {
+    const safeKey = registerAttachmentCategoryConfig[key] ? key : 'consultation';
+    const category = registerAttachmentCategoryConfig[safeKey] || registerAttachmentCategoryConfig.consultation;
+    const showComposer = options.show !== false;
+    if (registerHistoryComposer) registerHistoryComposer.hidden = !showComposer;
+    if (registerHistoryComposerIcon) registerHistoryComposerIcon.textContent = getRegisterHistoryCategoryIcon(safeKey);
+    if (registerHistoryComposerTitle) registerHistoryComposerTitle.textContent = `Registrar en ${category.label}`;
+    if (registerHistoryComposerDescription) registerHistoryComposerDescription.textContent = `La información registrada se almacenará en ${category.label}.`;
+    if (registerHistoryFeedback) registerHistoryFeedback.hidden = true;
+  };
+  const updateRegisterHistoryManualCount = () => {
+    if (!registerHistoryManualInput || !registerHistoryManualCount) return;
+    registerHistoryManualCount.textContent = `${registerHistoryManualInput.value.length}/2000`;
+  };
+  const setRegisterHistoryPhoto = file => {
+    if (!registerHistoryPhotoName) return;
+    if (!file) {
+      registerHistoryPhotoName.hidden = true;
+      registerHistoryPhotoName.textContent = '';
+      return;
+    }
+    registerHistoryPhotoName.hidden = false;
+    registerHistoryPhotoName.textContent = file.name;
+  };
+  const setRegisterHistoryFeedback = (message, type = 'success') => {
+    if (!registerHistoryFeedback) return;
+    registerHistoryFeedback.hidden = false;
+    registerHistoryFeedback.textContent = message;
+    registerHistoryFeedback.classList.toggle('is-error', type === 'error');
+  };
+  const selectRegisterHistoryCategory = (key, options = {}) => {
+    const safeKey = registerAttachmentCategoryConfig[key] ? key : 'consultation';
+    if (registerHistoryCategoryInput) registerHistoryCategoryInput.value = safeKey;
+    if (registerAttachmentCategoryInput) registerAttachmentCategoryInput.value = safeKey;
+    portal.querySelectorAll('[data-register-history-category]').forEach(button => {
+      const active = button.dataset.registerHistoryCategory === safeKey;
+      button.classList.toggle('is-active', active);
+      button.setAttribute('aria-pressed', active ? 'true' : 'false');
+      if (active && options.scroll !== false) {
+        button.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+    });
+    updateRegisterHistoryComposer(safeKey, { show: options.showComposer !== false });
+  };
+  const hideRegisterHistoryComposer = () => {
+    if (registerHistoryComposer) registerHistoryComposer.hidden = true;
+    if (registerHistoryFeedback) registerHistoryFeedback.hidden = true;
+    if (registerHistoryCategoryInput) registerHistoryCategoryInput.value = '';
+    if (registerAttachmentCategoryInput) registerAttachmentCategoryInput.value = '';
+    portal.querySelectorAll('[data-register-history-category]').forEach(button => {
+      button.classList.remove('is-active');
+      button.setAttribute('aria-pressed', 'false');
+    });
+  };
+  const toggleRegisterHistoryComposer = categoryKey => {
+    if (categoryKey === getRegisterHistoryCategoryKey() && isRegisterHistoryComposerVisible()) {
+      hideRegisterHistoryComposer();
+      return;
+    }
+    selectRegisterHistoryCategory(categoryKey, { showComposer: true });
+  };
   const renderRegisterMetricButton = (type) => {
     const config = registerMetricConfig[type] || registerMetricConfig.water;
     const active = (registerMetricInput?.value || 'water') === type;
@@ -1439,7 +2105,7 @@
   };
   const updateRegisterNotesCount = () => {
     if (!registerNotesInput || !registerNotesCount) return;
-    registerNotesCount.textContent = `${registerNotesInput.value.length}/200`;
+    registerNotesCount.textContent = `${registerNotesInput.value.length}/2000`;
   };
   const formatRegisterFileSize = bytes => {
     const size = Number(bytes || 0);
@@ -1501,10 +2167,10 @@
     if (registerAttachmentPick) registerAttachmentPick.hidden = hasFile;
     if (registerUploadedCard) registerUploadedCard.hidden = !hasFile;
     if (registerTranscriptCard) registerTranscriptCard.hidden = !hasFile;
-    if (registerAttachmentCategoryWrap) registerAttachmentCategoryWrap.hidden = !hasFile;
+    if (registerAttachmentCategoryWrap) registerAttachmentCategoryWrap.hidden = true;
     if (registerAttachmentCategoryInput) {
-      registerAttachmentCategoryInput.required = hasFile;
-      if (!hasFile) registerAttachmentCategoryInput.value = '';
+      registerAttachmentCategoryInput.required = false;
+      registerAttachmentCategoryInput.value = hasFile ? getRegisterHistoryCategoryKey() : '';
       registerAttachmentCategoryInput.setCustomValidity('');
     }
     if (!hasFile) {
@@ -1557,30 +2223,32 @@
       const value = escapeManualHistoryText(record.value || 'Sin valor');
       const notes = String(record.notes || '').trim();
       const attachment = String(record.attachmentName || '').trim();
+      const categoryKey = record.historyCategory || 'manual';
+      const category = registerAttachmentCategoryConfig[categoryKey] || registerAttachmentCategoryConfig.manual;
       const row = document.createElement('tr');
-      row.dataset.historyRow = 'manual';
+      row.dataset.historyRow = category.historyFilter;
       row.dataset.historyManualRow = '1';
       row.innerHTML = `
         <td><div class="patient-history-date"><span>+</span><strong>${escapeManualHistoryText(date.date)}<small>${escapeManualHistoryText(date.day)}</small></strong></div></td>
-        <td><span class="patient-history-category is-manual">Registro manual</span></td>
+        <td><span class="patient-history-category is-${escapeManualHistoryText(category.historyFilter)}">${escapeManualHistoryText(record.historyCategoryLabel || category.label)}</span></td>
         <td><div class="patient-history-origin"><span>◇</span><strong>Paciente</strong></div></td>
-        <td><div class="patient-history-service"><span>▣</span><strong>${label}</strong></div></td>
+        <td><div class="patient-history-service"><span>▣</span><strong>${escapeManualHistoryText(record.historyCategoryService || category.parameterService || category.service)}</strong></div></td>
         <td><strong>${label}: ${value}${unit}</strong>${notes ? `<p class="patient-history-manual-note">${escapeManualHistoryText(notes)}</p>` : ''}</td>
         <td><span class="patient-history-not-registered">No registrado</span></td>
       `;
       fragment.appendChild(row);
       if (attachment) {
-        const categoryKey = record.attachmentCategory || 'manual';
-        const category = registerAttachmentCategoryConfig[categoryKey] || registerAttachmentCategoryConfig.manual;
+        const attachmentCategoryKey = record.attachmentCategory || record.historyCategory || 'manual';
+        const attachmentCategory = registerAttachmentCategoryConfig[attachmentCategoryKey] || category || registerAttachmentCategoryConfig.manual;
         const transcript = String(record.attachmentTranscript || '').trim();
         const attachmentRow = document.createElement('tr');
-        attachmentRow.dataset.historyRow = category.historyFilter;
+        attachmentRow.dataset.historyRow = attachmentCategory.historyFilter;
         attachmentRow.dataset.historyManualRow = '1';
         attachmentRow.innerHTML = `
           <td><div class="patient-history-date"><span>+</span><strong>${escapeManualHistoryText(date.date)}<small>${escapeManualHistoryText(date.day)}</small></strong></div></td>
-          <td><span class="patient-history-category is-${escapeManualHistoryText(category.historyFilter)}">${escapeManualHistoryText(record.attachmentCategoryLabel || category.label)}</span></td>
+          <td><span class="patient-history-category is-${escapeManualHistoryText(attachmentCategory.historyFilter)}">${escapeManualHistoryText(record.attachmentCategoryLabel || attachmentCategory.label)}</span></td>
           <td><div class="patient-history-origin"><span>◇</span><strong>Registro manual</strong></div></td>
-          <td><div class="patient-history-service"><span>▣</span><strong>${escapeManualHistoryText(category.service)}</strong></div></td>
+          <td><div class="patient-history-service"><span>▣</span><strong>${escapeManualHistoryText(attachmentCategory.service)}</strong></div></td>
           <td><strong>${escapeManualHistoryText(attachment)}</strong>${transcript ? `<p class="patient-history-manual-note patient-history-manual-transcript">${escapeManualHistoryText(transcript)}</p>` : ''}</td>
           <td><div class="patient-history-manual-evidence"><span>▣</span><div><strong>Archivo cargado</strong><p>${escapeManualHistoryText(attachment)}</p><small>Transcripcion automatica revisable.</small></div></div></td>
         `;
@@ -1618,32 +2286,238 @@
     healthScreenLayer.scrollTop = 0;
     target.scrollTop = 0;
   };
+  const deviceFilterCarousel = portal.querySelector('[data-device-filter-carousel]');
+  if (deviceFilterCarousel) {
+    const deviceFilterButtons = [...deviceFilterCarousel.querySelectorAll('[data-device-filter]')];
+    const deviceCards = [...portal.querySelectorAll('[data-device-card]')];
+    const deviceEmpty = portal.querySelector('[data-device-empty]');
+    const deviceReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    let isDeviceFilterDragging = false;
+    let deviceDragStart = 0;
+    let deviceDragScroll = 0;
+    let devicePreviousScroll = 0;
+    let devicePreviousTime = 0;
+    let deviceDragVelocity = 0;
+    let deviceDragMoved = false;
+    let blockDeviceFilterClick = false;
+    let deviceGlideFrame = 0;
+    let deviceClickTimer = 0;
+
+    const renderDeviceFilter = filter => {
+      let visible = 0;
+      deviceCards.forEach(card => {
+        const matches = filter === 'all' || card.dataset.deviceStatus === filter || card.dataset.deviceKind === filter;
+        card.hidden = !matches;
+        if (matches) visible++;
+      });
+      if (deviceEmpty) deviceEmpty.hidden = visible > 0;
+    };
+    const stopDeviceGlide = () => {
+      if (deviceGlideFrame) cancelAnimationFrame(deviceGlideFrame);
+      deviceGlideFrame = 0;
+      deviceFilterCarousel.classList.remove('is-gliding');
+    };
+    const snapDeviceFilter = () => {
+      if (!deviceFilterButtons.length) return;
+      const carouselCenter = deviceFilterCarousel.scrollLeft + (deviceFilterCarousel.clientWidth / 2);
+      const closest = deviceFilterButtons.reduce((selected, button) => {
+        const selectedCenter = selected.offsetLeft + (selected.offsetWidth / 2);
+        const buttonCenter = button.offsetLeft + (button.offsetWidth / 2);
+        return Math.abs(buttonCenter - carouselCenter) < Math.abs(selectedCenter - carouselCenter) ? button : selected;
+      }, deviceFilterButtons[0]);
+      closest.scrollIntoView({ behavior: deviceReducedMotion ? 'auto' : 'smooth', block: 'nearest', inline: 'center' });
+    };
+    const startDeviceGlide = () => {
+      if (deviceReducedMotion || Math.abs(deviceDragVelocity) < .03) {
+        snapDeviceFilter();
+        return;
+      }
+      let speed = Math.max(-20, Math.min(20, deviceDragVelocity * 16));
+      deviceFilterCarousel.classList.add('is-gliding');
+      const glide = () => {
+        const previousPosition = deviceFilterCarousel.scrollLeft;
+        deviceFilterCarousel.scrollLeft += speed;
+        const reachedEdge = Math.abs(deviceFilterCarousel.scrollLeft - previousPosition) < .1;
+        speed *= .92;
+        if (Math.abs(speed) < .35 || reachedEdge) {
+          deviceGlideFrame = 0;
+          deviceFilterCarousel.classList.remove('is-gliding');
+          snapDeviceFilter();
+          return;
+        }
+        deviceGlideFrame = requestAnimationFrame(glide);
+      };
+      deviceGlideFrame = requestAnimationFrame(glide);
+    };
+    const finishDeviceDrag = (event, withGlide) => {
+      if (!isDeviceFilterDragging) return;
+      isDeviceFilterDragging = false;
+      deviceFilterCarousel.classList.remove('is-dragging');
+      if (deviceFilterCarousel.hasPointerCapture?.(event.pointerId)) deviceFilterCarousel.releasePointerCapture(event.pointerId);
+      if (deviceDragMoved) {
+        blockDeviceFilterClick = true;
+        window.clearTimeout(deviceClickTimer);
+        deviceClickTimer = window.setTimeout(() => {
+          blockDeviceFilterClick = false;
+        }, 240);
+        if (withGlide) startDeviceGlide();
+      }
+      deviceDragVelocity = 0;
+    };
+
+    deviceFilterCarousel.addEventListener('pointerdown', event => {
+      if (event.button !== undefined && event.button !== 0) return;
+      stopDeviceGlide();
+      isDeviceFilterDragging = true;
+      deviceDragStart = event.clientX;
+      deviceDragScroll = deviceFilterCarousel.scrollLeft;
+      devicePreviousScroll = deviceDragScroll;
+      devicePreviousTime = performance.now();
+      deviceDragVelocity = 0;
+      deviceDragMoved = false;
+      deviceFilterCarousel.classList.add('is-dragging');
+      deviceFilterCarousel.setPointerCapture?.(event.pointerId);
+    });
+    deviceFilterCarousel.addEventListener('pointermove', event => {
+      if (!isDeviceFilterDragging) return;
+      const movement = event.clientX - deviceDragStart;
+      const now = performance.now();
+      const elapsed = Math.max(1, now - devicePreviousTime);
+      deviceFilterCarousel.scrollLeft = deviceDragScroll - movement;
+      const instantVelocity = (deviceFilterCarousel.scrollLeft - devicePreviousScroll) / elapsed;
+      deviceDragVelocity = (deviceDragVelocity * .68) + (instantVelocity * .32);
+      devicePreviousScroll = deviceFilterCarousel.scrollLeft;
+      devicePreviousTime = now;
+      if (Math.abs(movement) > 6) {
+        deviceDragMoved = true;
+        event.preventDefault();
+      }
+    });
+    deviceFilterCarousel.addEventListener('pointerup', event => finishDeviceDrag(event, true));
+    deviceFilterCarousel.addEventListener('pointercancel', event => finishDeviceDrag(event, false));
+    deviceFilterCarousel.addEventListener('lostpointercapture', event => finishDeviceDrag(event, false));
+    deviceFilterButtons.forEach(button => {
+      button.addEventListener('click', event => {
+        if (blockDeviceFilterClick) {
+          event.preventDefault();
+          return;
+        }
+        deviceFilterButtons.forEach(item => {
+          const active = item === button;
+          item.classList.toggle('is-active', active);
+          item.setAttribute('aria-pressed', active ? 'true' : 'false');
+        });
+        renderDeviceFilter(button.dataset.deviceFilter || 'all');
+        button.scrollIntoView({ behavior: deviceReducedMotion ? 'auto' : 'smooth', block: 'nearest', inline: 'center' });
+      });
+    });
+    renderDeviceFilter('all');
+  }
   const healthFilterCarousel = portal.querySelector('[data-health-filter-carousel]');
   if (healthFilterCarousel) {
+    const healthFilterButtons = [...healthFilterCarousel.querySelectorAll('[data-health-filter]')];
+    const healthReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
     let isDragging = false;
     let dragStart = 0;
     let dragScroll = 0;
+    let previousScroll = 0;
+    let previousTime = 0;
+    let dragVelocity = 0;
+    let dragMoved = false;
+    let blockHealthFilterClick = false;
+    let healthGlideFrame = 0;
+    let healthClickTimer = 0;
+    const stopHealthGlide = () => {
+      if (healthGlideFrame) cancelAnimationFrame(healthGlideFrame);
+      healthGlideFrame = 0;
+      healthFilterCarousel.classList.remove('is-gliding');
+    };
+    const snapHealthFilter = () => {
+      if (!healthFilterButtons.length) return;
+      const carouselCenter = healthFilterCarousel.scrollLeft + (healthFilterCarousel.clientWidth / 2);
+      const closest = healthFilterButtons.reduce((selected, button) => {
+        const selectedCenter = selected.offsetLeft + (selected.offsetWidth / 2);
+        const buttonCenter = button.offsetLeft + (button.offsetWidth / 2);
+        return Math.abs(buttonCenter - carouselCenter) < Math.abs(selectedCenter - carouselCenter) ? button : selected;
+      }, healthFilterButtons[0]);
+      closest.scrollIntoView({ behavior: healthReducedMotion ? 'auto' : 'smooth', block: 'nearest', inline: 'center' });
+    };
+    const startHealthGlide = () => {
+      if (healthReducedMotion || Math.abs(dragVelocity) < .03) {
+        snapHealthFilter();
+        return;
+      }
+      let speed = Math.max(-20, Math.min(20, dragVelocity * 16));
+      healthFilterCarousel.classList.add('is-gliding');
+      const glide = () => {
+        const previousPosition = healthFilterCarousel.scrollLeft;
+        healthFilterCarousel.scrollLeft += speed;
+        const reachedEdge = Math.abs(healthFilterCarousel.scrollLeft - previousPosition) < .1;
+        speed *= .9;
+        if (Math.abs(speed) < .35 || reachedEdge) {
+          healthGlideFrame = 0;
+          healthFilterCarousel.classList.remove('is-gliding');
+          snapHealthFilter();
+          return;
+        }
+        healthGlideFrame = requestAnimationFrame(glide);
+      };
+      healthGlideFrame = requestAnimationFrame(glide);
+    };
+    const finishHealthDrag = (event, withGlide) => {
+      if (!isDragging) return;
+      isDragging = false;
+      healthFilterCarousel.classList.remove('is-dragging');
+      if (healthFilterCarousel.hasPointerCapture?.(event.pointerId)) healthFilterCarousel.releasePointerCapture(event.pointerId);
+      if (dragMoved) {
+        blockHealthFilterClick = true;
+        window.clearTimeout(healthClickTimer);
+        healthClickTimer = window.setTimeout(() => {
+          blockHealthFilterClick = false;
+        }, 240);
+        if (withGlide) startHealthGlide();
+      }
+      dragVelocity = 0;
+    };
     healthFilterCarousel.addEventListener('pointerdown', event => {
+      if (event.button !== undefined && event.button !== 0) return;
+      stopHealthGlide();
       isDragging = true;
       dragStart = event.clientX;
       dragScroll = healthFilterCarousel.scrollLeft;
+      previousScroll = dragScroll;
+      previousTime = performance.now();
+      dragVelocity = 0;
+      dragMoved = false;
       healthFilterCarousel.classList.add('is-dragging');
       healthFilterCarousel.setPointerCapture?.(event.pointerId);
     });
     healthFilterCarousel.addEventListener('pointermove', event => {
       if (!isDragging) return;
-      healthFilterCarousel.scrollLeft = dragScroll - (event.clientX - dragStart);
+      const movement = event.clientX - dragStart;
+      const nextScroll = dragScroll - movement;
+      const now = performance.now();
+      const elapsed = Math.max(1, now - previousTime);
+      healthFilterCarousel.scrollLeft = nextScroll;
+      const instantVelocity = (healthFilterCarousel.scrollLeft - previousScroll) / elapsed;
+      dragVelocity = (dragVelocity * .68) + (instantVelocity * .32);
+      previousScroll = healthFilterCarousel.scrollLeft;
+      previousTime = now;
+      if (Math.abs(movement) > 6) {
+        dragMoved = true;
+        event.preventDefault();
+      }
     });
-    ['pointerup', 'pointercancel', 'pointerleave'].forEach(type => {
-      healthFilterCarousel.addEventListener(type, event => {
-        isDragging = false;
-        healthFilterCarousel.classList.remove('is-dragging');
-        if (healthFilterCarousel.hasPointerCapture?.(event.pointerId)) healthFilterCarousel.releasePointerCapture(event.pointerId);
-      });
-    });
-    healthFilterCarousel.querySelectorAll('[data-health-filter]').forEach(button => {
-      button.addEventListener('click', () => {
-        healthFilterCarousel.querySelectorAll('[data-health-filter]').forEach(item => {
+    healthFilterCarousel.addEventListener('pointerup', event => finishHealthDrag(event, true));
+    healthFilterCarousel.addEventListener('pointercancel', event => finishHealthDrag(event, false));
+    healthFilterCarousel.addEventListener('lostpointercapture', event => finishHealthDrag(event, false));
+    healthFilterButtons.forEach(button => {
+      button.addEventListener('click', event => {
+        if (blockHealthFilterClick) {
+          event.preventDefault();
+          return;
+        }
+        healthFilterButtons.forEach(item => {
           const active = item === button;
           item.classList.toggle('is-active', active);
           item.setAttribute('aria-pressed', active ? 'true' : 'false');
@@ -1729,6 +2603,112 @@
     });
   };
   renderRegisterMetricRows();
+  hideRegisterHistoryComposer();
+  let historyPanMoved = false;
+  let historyClickBlocked = false;
+  if (registerHistoryCarousel) {
+    let isHistoryPanning = false;
+    let historyPanStart = 0;
+    let historyPanScroll = 0;
+    let historyClickBlockTimer = null;
+
+    registerHistoryCarousel.addEventListener('pointerdown', event => {
+      if (event.pointerType === 'mouse' && event.button !== 0) return;
+      if (historyClickBlockTimer) window.clearTimeout(historyClickBlockTimer);
+      isHistoryPanning = true;
+      historyPanStart = event.clientX;
+      historyPanScroll = registerHistoryCarousel.scrollLeft;
+      historyPanMoved = false;
+      historyClickBlocked = false;
+      registerHistoryCarousel.setPointerCapture?.(event.pointerId);
+    });
+
+    registerHistoryCarousel.addEventListener('pointermove', event => {
+      if (!isHistoryPanning) return;
+      const movement = event.clientX - historyPanStart;
+      registerHistoryCarousel.scrollLeft = historyPanScroll - movement;
+      if (Math.abs(movement) > 8) {
+        historyPanMoved = true;
+        registerHistoryCarousel.classList.add('is-panning');
+      }
+      if (historyPanMoved) event.preventDefault();
+    });
+
+    const finishHistoryPan = event => {
+      if (!isHistoryPanning) return;
+      isHistoryPanning = false;
+      registerHistoryCarousel.classList.remove('is-panning');
+      if (registerHistoryCarousel.hasPointerCapture?.(event.pointerId)) {
+        registerHistoryCarousel.releasePointerCapture(event.pointerId);
+      }
+      if (!historyPanMoved) return;
+      historyClickBlocked = true;
+      historyClickBlockTimer = window.setTimeout(() => {
+        historyClickBlocked = false;
+        historyPanMoved = false;
+      }, 180);
+    };
+
+    ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(type => {
+      registerHistoryCarousel.addEventListener(type, finishHistoryPan);
+    });
+  }
+  registerHistoryCarousel?.addEventListener('click', event => {
+    if (historyClickBlocked || historyPanMoved) {
+      event.preventDefault();
+      return;
+    }
+    const button = event.target.closest('[data-register-history-category]');
+    if (!button || !registerHistoryCarousel.contains(button)) return;
+    toggleRegisterHistoryComposer(button.dataset.registerHistoryCategory);
+  });
+  registerHistoryManualInput?.addEventListener('input', updateRegisterHistoryManualCount);
+  registerHistoryPhotoPick?.addEventListener('click', () => {
+    registerHistoryPhotoInput?.click();
+  });
+  registerHistoryPhotoInput?.addEventListener('change', () => {
+    const file = registerHistoryPhotoInput.files && registerHistoryPhotoInput.files[0];
+    setRegisterHistoryPhoto(file || null);
+    if (registerHistoryFeedback) registerHistoryFeedback.hidden = true;
+  });
+  registerHistorySubmit?.addEventListener('click', () => {
+    const historyCategoryKey = getRegisterHistoryCategoryKey();
+    const historyCategory = registerAttachmentCategoryConfig[historyCategoryKey] || registerAttachmentCategoryConfig.consultation;
+    const text = String(registerHistoryManualInput?.value || '').trim();
+    const photo = registerHistoryPhotoInput?.files?.[0] || null;
+    if (!text && !photo) {
+      setRegisterHistoryFeedback('Escribe un registro o toma una fotografía antes de guardar.', 'error');
+      registerHistoryManualInput?.focus({ preventScroll: true });
+      return;
+    }
+    const preview = text
+      ? (text.length > 90 ? `${text.slice(0, 87)}...` : text)
+      : 'Fotografía';
+    saveRegisterRecord({
+      id: Date.now(),
+      metricType: 'clinical-history-note',
+      label: `Registro en ${historyCategory.label}`,
+      value: preview,
+      unit: '',
+      recordedAt: registerDateValue(),
+      notes: text.length > 90 ? text : '',
+      historyCategory: historyCategory.historyFilter,
+      historyCategoryLabel: historyCategory.label,
+      historyCategoryService: historyCategory.service,
+      attachmentName: photo ? photo.name : '',
+      attachmentSize: photo ? photo.size : 0,
+      attachmentTranscript: text,
+      attachmentCategory: photo ? historyCategory.historyFilter : '',
+      attachmentCategoryLabel: photo ? historyCategory.label : '',
+      source: 'Registro manual',
+    });
+    renderManualHistoryRecords();
+    setRegisterHistoryFeedback(`Registro guardado en ${historyCategory.label}.`);
+    if (registerHistoryManualInput) registerHistoryManualInput.value = '';
+    if (registerHistoryPhotoInput) registerHistoryPhotoInput.value = '';
+    setRegisterHistoryPhoto(null);
+    updateRegisterHistoryManualCount();
+  });
   portal.querySelectorAll('[data-register-carousel]').forEach(bindRegisterCarousel);
   registerSelectedFavoriteButton?.addEventListener('click', () => {
     addRegisterFavorite(registerMetricInput?.value || 'water');
@@ -1762,14 +2742,11 @@
     const config = registerMetricConfig[metricType] || registerMetricConfig.water;
     const customMetric = String(data.get('customMetric') || '').trim();
     const attachment = registerAttachmentInput?.files?.[0];
-    const attachmentCategoryKey = attachment ? String(data.get('attachmentCategory') || '') : '';
-    if (attachment && !attachmentCategoryKey) {
-      registerAttachmentCategoryInput?.setCustomValidity('Selecciona una categoria para guardar el adjunto.');
-      registerAttachmentCategoryInput?.reportValidity();
-      return;
-    }
+    const historyCategoryKey = registerAttachmentCategoryConfig[String(data.get('historyCategory') || '')] ? String(data.get('historyCategory')) : 'manual';
+    const historyCategory = registerAttachmentCategoryConfig[historyCategoryKey] || registerAttachmentCategoryConfig.manual;
+    const attachmentCategoryKey = attachment ? String(data.get('attachmentCategory') || historyCategoryKey) : '';
     registerAttachmentCategoryInput?.setCustomValidity('');
-    const attachmentCategory = registerAttachmentCategoryConfig[attachmentCategoryKey] || null;
+    const attachmentCategory = attachment ? (registerAttachmentCategoryConfig[attachmentCategoryKey] || historyCategory) : null;
     saveRegisterRecord({
       id: Date.now(),
       metricType,
@@ -1778,6 +2755,9 @@
       unit: config.unit,
       recordedAt: String(data.get('recordedAt') || ''),
       notes: String(data.get('notes') || '').trim(),
+      historyCategory: historyCategory.historyFilter,
+      historyCategoryLabel: historyCategory.label,
+      historyCategoryService: historyCategory.parameterService || historyCategory.service,
       attachmentName: attachment ? attachment.name : '',
       attachmentSize: attachment ? attachment.size : 0,
       attachmentTranscript: attachment ? String(data.get('attachmentTranscript') || '').trim() : '',
@@ -1786,11 +2766,15 @@
       source: 'Registro manual',
     });
     renderManualHistoryRecords();
-    if (registerSuccess) registerSuccess.hidden = false;
+    if (registerSuccess) {
+      registerSuccess.textContent = `Registro guardado en ${historyCategory.label}.`;
+      registerSuccess.hidden = false;
+    }
     registerForm.reset();
     if (registerDateInput) registerDateInput.value = registerDateValue();
     updateRegisterNotesCount();
     setRegisterAttachmentState(null);
+    hideRegisterHistoryComposer();
     selectRegisterMetric(metricType);
   });
   registerForm?.addEventListener('reset', () => {
@@ -1799,10 +2783,12 @@
       updateRegisterNotesCount();
       setRegisterAttachmentState(null);
       if (registerSuccess) registerSuccess.hidden = true;
+      hideRegisterHistoryComposer();
       selectRegisterMetric(registerMetricInput?.value || 'water');
     });
   });
   updateRegisterNotesCount();
+  updateRegisterHistoryManualCount();
   setRegisterAttachmentState(null);
   aiTopForm?.addEventListener('submit', event => {
     event.preventDefault();
@@ -1874,7 +2860,9 @@
     portal.querySelector('[data-support-menu]')?.setAttribute('aria-hidden', 'true');
   });
   const initialHashView = window.location.hash?.startsWith('#community-admin-') ? 'communities' : null;
-  const initial = initialHashView || <?php echo json_encode($errors->any() ? (old('policy_number') ? 'insurance' : 'profile') : null, 15, 512) ?> || sessionStorage.getItem('patientPortalView') || 'home';
+  const serverRequestedView = <?php echo json_encode(session('patient_open_view'), 15, 512) ?>;
+  const validationErrorView = <?php echo json_encode($errors->any() ? (old('doctor_id') ? 'doctors' : (old('policy_number') ? 'insurance' : 'profile')) : null, 15, 512) ?>;
+  const initial = initialHashView || serverRequestedView || validationErrorView || sessionStorage.getItem('patientPortalView') || 'home';
   openView(portal.querySelector(`[data-patient-view="${initial}"]`) ? initial : 'home');
 
   portal.querySelectorAll('[data-table-search]').forEach(input => input.addEventListener('input', () => {
@@ -1884,6 +2872,448 @@
   portal.querySelectorAll('[data-card-search]').forEach(input => input.addEventListener('input', () => {
     document.getElementById(input.dataset.cardSearch)?.querySelectorAll('article').forEach(card => card.hidden = !card.innerText.toLowerCase().includes(input.value.toLowerCase()));
   }));
+  const doctorCards = [...portal.querySelectorAll('[data-doctor-card]')];
+  const doctorCountryFilter = portal.querySelector('[data-doctor-country-filter]');
+  const doctorCityFilter = portal.querySelector('[data-doctor-city-filter]');
+  const doctorSpecialtyFilter = portal.querySelector('[data-doctor-specialty-filter]');
+  const doctorInsurerFilter = portal.querySelector('[data-doctor-insurer-filter]');
+  const doctorNameFilter = portal.querySelector('[data-doctor-name-filter]');
+  const doctorSearchAction = portal.querySelector('[data-doctor-search-action]');
+  const doctorSearchForm = portal.querySelector('[data-doctor-search-form]');
+  const doctorSearchSummary = portal.querySelector('[data-doctor-search-summary]');
+  const doctorSearchLocation = portal.querySelector('[data-doctor-search-location]');
+  const doctorSearchDetails = portal.querySelector('[data-doctor-search-details]');
+  const doctorResultsSection = portal.querySelector('[data-doctor-results-section]');
+  const doctorEditSearchButtons = [...portal.querySelectorAll('[data-doctor-edit-search]')];
+  const doctorSelectButtons = [...portal.querySelectorAll('[data-doctor-select]')];
+  const doctorCount = portal.querySelector('[data-doctor-count]');
+  const doctorFilterEmpty = portal.querySelector('[data-doctor-filter-empty]');
+  const doctorHero = portal.querySelector('.patient-doctors-view .patient-doctors-hero');
+  const doctorBookingRoot = portal.querySelector('[data-doctor-booking]');
+  const doctorBookingSteps = [...portal.querySelectorAll('[data-doctor-booking-step]')];
+  const parseDoctorBookingJson = selector => {
+    try {
+      return JSON.parse(portal.querySelector(selector)?.textContent || 'null');
+    } catch (error) {
+      return null;
+    }
+  };
+  const doctorBookingData = parseDoctorBookingJson('[data-doctor-booking-data]') || {};
+  const doctorBookingConfirmation = parseDoctorBookingJson('[data-doctor-booking-confirmation]');
+  let activeBookingDoctor = null;
+  let activeBookingDate = null;
+  let activeBookingSlot = null;
+  let activeBookingReason = '';
+  const normalizeDoctorValue = value => String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim().toLowerCase();
+  const renderDoctorDirectory = () => {
+    const country = normalizeDoctorValue(doctorCountryFilter?.value);
+    const city = normalizeDoctorValue(doctorCityFilter?.value);
+    const specialty = normalizeDoctorValue(doctorSpecialtyFilter?.value);
+    const insurer = normalizeDoctorValue(doctorInsurerFilter?.value);
+    const doctorName = normalizeDoctorValue(doctorNameFilter?.value);
+    let visible = 0;
+    doctorCards.forEach(card => {
+      const matchesCountry = !country || normalizeDoctorValue(card.dataset.doctorCountry) === country;
+      const matchesCity = !city || normalizeDoctorValue(card.dataset.doctorCity) === city;
+      const matchesSpecialty = !specialty || normalizeDoctorValue(card.dataset.doctorSpecialty) === specialty;
+      const acceptedInsurers = String(card.dataset.doctorInsurers || '').split('|').map(normalizeDoctorValue).filter(Boolean);
+      const matchesInsurer = !insurer || acceptedInsurers.includes(insurer);
+      const matchesName = !doctorName || normalizeDoctorValue(card.dataset.doctorName).includes(doctorName);
+      card.hidden = !(matchesCountry && matchesCity && matchesSpecialty && matchesInsurer && matchesName);
+      if (!card.hidden) visible++;
+    });
+    portal.querySelectorAll('[data-doctor-country-shortcut]').forEach(button => {
+      const isActive = Boolean(country) && normalizeDoctorValue(button.dataset.doctorCountryShortcut) === country;
+      button.classList.toggle('is-active', isActive);
+      button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    });
+    portal.querySelectorAll('[data-doctor-insurer-shortcut]').forEach(button => {
+      const isActive = Boolean(insurer) && normalizeDoctorValue(button.dataset.doctorInsurerShortcut) === insurer;
+      button.classList.toggle('is-active', isActive);
+      button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    });
+    if (doctorCount) doctorCount.textContent = String(visible);
+    if (doctorFilterEmpty) doctorFilterEmpty.hidden = visible > 0;
+    return visible;
+  };
+  const updateDoctorSearchSummary = () => {
+    const country = doctorCountryFilter?.value?.trim() || '';
+    const city = doctorCityFilter?.value?.trim() || '';
+    const details = [
+      doctorSpecialtyFilter?.value?.trim() || '',
+      doctorInsurerFilter?.value ? `Aseguradora: ${doctorInsurerFilter.value}` : '',
+      doctorNameFilter?.value?.trim() ? `Nombre: ${doctorNameFilter.value.trim()}` : '',
+    ].filter(Boolean);
+    if (doctorSearchLocation) {
+      doctorSearchLocation.textContent = [city, country].filter(Boolean).join(', ') || 'Todas las ubicaciones';
+    }
+    if (doctorSearchDetails) {
+      doctorSearchDetails.textContent = details.join(' · ') || 'Todos los profesionales';
+    }
+  };
+  const selectDoctorResult = selectedButton => {
+    doctorSelectButtons.forEach(button => {
+      const isSelected = button === selectedButton;
+      button.classList.toggle('is-selected', isSelected);
+      button.closest('[data-doctor-card]')?.classList.toggle('is-selected', isSelected);
+      button.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
+    });
+  };
+  const showDoctorSearchForm = () => {
+    if (doctorHero) doctorHero.hidden = false;
+    if (doctorBookingRoot) doctorBookingRoot.hidden = true;
+    if (doctorSearchForm) doctorSearchForm.hidden = false;
+    if (doctorSearchSummary) doctorSearchSummary.hidden = true;
+    if (doctorResultsSection) doctorResultsSection.hidden = true;
+    requestAnimationFrame(() => doctorSearchForm?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+  };
+  const showDoctorSearchResults = () => {
+    renderDoctorDirectory();
+    updateDoctorSearchSummary();
+    selectDoctorResult(null);
+    if (doctorHero) doctorHero.hidden = false;
+    if (doctorBookingRoot) doctorBookingRoot.hidden = true;
+    if (doctorSearchForm) doctorSearchForm.hidden = true;
+    if (doctorSearchSummary) doctorSearchSummary.hidden = false;
+    if (doctorResultsSection) doctorResultsSection.hidden = false;
+    requestAnimationFrame(() => doctorSearchSummary?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+  };
+  const setBookingText = (selector, value) => {
+    const element = doctorBookingRoot?.querySelector(selector);
+    if (element) element.textContent = value || '';
+  };
+  const doctorInitials = name => String(name || '').split(/\s+/).filter(Boolean).slice(0, 2).map(part => part.charAt(0)).join('').toUpperCase();
+  const showDoctorBookingStep = stepName => {
+    if (!doctorBookingRoot) return;
+    if (doctorHero) doctorHero.hidden = true;
+    if (doctorSearchForm) doctorSearchForm.hidden = true;
+    if (doctorSearchSummary) doctorSearchSummary.hidden = true;
+    if (doctorResultsSection) doctorResultsSection.hidden = true;
+    doctorBookingRoot.hidden = false;
+    doctorBookingSteps.forEach(step => {
+      step.hidden = step.dataset.doctorBookingStep !== stepName;
+    });
+    const activeStep = doctorBookingSteps.find(step => step.dataset.doctorBookingStep === stepName);
+    requestAnimationFrame(() => activeStep?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+  };
+  const populateDoctorProfile = doctor => {
+    if (!doctorBookingRoot || !doctor) return;
+    const initials = doctor.initials || doctorInitials(doctor.name);
+    setBookingText('[data-booking-profile-initials]', initials);
+    setBookingText('[data-booking-doctor-name]', doctor.name);
+    setBookingText('[data-booking-doctor-specialty]', doctor.specialty);
+    setBookingText('[data-booking-doctor-license]', doctor.license ? `Cédula ${doctor.license}` : 'Cédula por confirmar');
+    setBookingText('[data-booking-doctor-bio]', doctor.bio);
+    setBookingText('[data-booking-doctor-unit]', doctor.unit);
+    setBookingText('[data-booking-doctor-address]', doctor.address);
+    const photo = doctorBookingRoot.querySelector('[data-booking-profile-photo]');
+    const initialsElement = doctorBookingRoot.querySelector('[data-booking-profile-initials]');
+    if (photo) {
+      photo.hidden = !doctor.photo;
+      if (doctor.photo) photo.src = doctor.photo;
+    }
+    if (initialsElement) initialsElement.hidden = Boolean(doctor.photo);
+    const rating = doctorBookingRoot.querySelector('[data-booking-rating]');
+    if (rating) {
+      const hasRating = doctor.rating !== null && doctor.rating !== '' && Number.isFinite(Number(doctor.rating));
+      rating.hidden = !hasRating;
+      const value = rating.querySelector('b');
+      if (value && hasRating) value.textContent = `${Number(doctor.rating).toFixed(1)}${doctor.reviews !== null && doctor.reviews !== '' ? ` (${doctor.reviews} reseñas)` : ''}`;
+    }
+    const experience = doctorBookingRoot.querySelector('[data-booking-experience]');
+    if (experience) {
+      const hasExperience = doctor.experience !== null && doctor.experience !== '' && Number.isFinite(Number(doctor.experience));
+      experience.hidden = !hasExperience;
+      const value = experience.querySelector('b');
+      if (value && hasExperience) value.textContent = String(doctor.experience);
+    }
+    const preview = doctorBookingRoot.querySelector('[data-booking-profile-dates]');
+    preview?.replaceChildren();
+    (doctor.slots || []).slice(0, 5).forEach(date => {
+      const item = document.createElement('span');
+      item.textContent = `${date.weekday} ${date.day}\n${date.slots?.[0]?.label || ''}`;
+      preview?.appendChild(item);
+    });
+    if (preview && !doctor.slots?.length) {
+      const empty = document.createElement('span');
+      empty.textContent = 'Sin horarios disponibles';
+      preview.appendChild(empty);
+    }
+    const profileNext = doctorBookingRoot.querySelector('[data-doctor-booking-step="profile"] [data-booking-next="schedule"]');
+    if (profileNext) {
+      profileNext.disabled = !doctor.slots?.length;
+      profileNext.textContent = doctor.slots?.length ? 'Ver horarios disponibles' : 'Sin horarios disponibles';
+    }
+  };
+  const selectBookingTime = (button, slot) => {
+    activeBookingSlot = slot;
+    doctorBookingRoot?.querySelectorAll('[data-booking-time-options] button').forEach(item => item.classList.toggle('is-selected', item === button));
+    const scheduleNext = doctorBookingRoot?.querySelector('[data-doctor-booking-step="schedule"] [data-booking-next="reason"]');
+    if (scheduleNext) scheduleNext.disabled = false;
+  };
+  const selectBookingDate = dateIndex => {
+    const dates = activeBookingDoctor?.slots || [];
+    activeBookingDate = dates[dateIndex] || null;
+    activeBookingSlot = null;
+    doctorBookingRoot?.querySelectorAll('[data-booking-date-options] button').forEach((button, index) => {
+      button.classList.toggle('is-selected', index === dateIndex);
+      button.setAttribute('aria-pressed', index === dateIndex ? 'true' : 'false');
+    });
+    setBookingText('[data-booking-month]', activeBookingDate?.month || 'Próximas fechas');
+    setBookingText('[data-booking-selected-date-label]', activeBookingDate?.label || 'la fecha seleccionada');
+    const timeOptions = doctorBookingRoot?.querySelector('[data-booking-time-options]');
+    timeOptions?.replaceChildren();
+    (activeBookingDate?.slots || []).forEach(slot => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'patient-doctor-time-option';
+      button.textContent = slot.label;
+      button.addEventListener('click', () => selectBookingTime(button, slot));
+      timeOptions?.appendChild(button);
+    });
+    const noSlots = doctorBookingRoot?.querySelector('[data-booking-no-slots]');
+    if (noSlots) noSlots.hidden = Boolean(activeBookingDate?.slots?.length);
+    const scheduleNext = doctorBookingRoot?.querySelector('[data-doctor-booking-step="schedule"] [data-booking-next="reason"]');
+    if (scheduleNext) scheduleNext.disabled = true;
+  };
+  const renderBookingSchedule = () => {
+    const dateOptions = doctorBookingRoot?.querySelector('[data-booking-date-options]');
+    dateOptions?.replaceChildren();
+    (activeBookingDoctor?.slots || []).forEach((date, index) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'patient-doctor-date-option';
+      button.setAttribute('aria-pressed', 'false');
+      const weekday = document.createElement('span');
+      weekday.textContent = date.weekday;
+      const day = document.createElement('strong');
+      day.textContent = date.day;
+      button.append(weekday, day);
+      button.addEventListener('click', () => selectBookingDate(index));
+      dateOptions?.appendChild(button);
+    });
+    selectBookingDate(0);
+  };
+  const updateBookingSummary = () => {
+    if (!activeBookingDoctor || !activeBookingDate || !activeBookingSlot) return;
+    const initials = activeBookingDoctor.initials || doctorInitials(activeBookingDoctor.name);
+    setBookingText('[data-booking-summary-initials]', initials);
+    setBookingText('[data-booking-summary-doctor]', activeBookingDoctor.name);
+    setBookingText('[data-booking-summary-specialty]', activeBookingDoctor.specialty);
+    setBookingText('[data-booking-summary-license]', activeBookingDoctor.license ? `Cédula ${activeBookingDoctor.license}` : 'Cédula por confirmar');
+    setBookingText('[data-booking-summary-date]', `${activeBookingDate.label} · ${activeBookingSlot.label}`);
+    setBookingText('[data-booking-summary-unit]', activeBookingDoctor.unit);
+    setBookingText('[data-booking-summary-address]', activeBookingDoctor.address);
+    setBookingText('[data-booking-summary-reason]', activeBookingReason);
+    const formDoctor = doctorBookingRoot?.querySelector('[data-booking-form-doctor]');
+    const formStart = doctorBookingRoot?.querySelector('[data-booking-form-start]');
+    const formReason = doctorBookingRoot?.querySelector('[data-booking-form-reason]');
+    const formNotes = doctorBookingRoot?.querySelector('[data-booking-form-notes]');
+    if (formDoctor) formDoctor.value = activeBookingDoctor.id;
+    if (formStart) formStart.value = activeBookingSlot.value;
+    if (formReason) formReason.value = activeBookingReason;
+    if (formNotes) formNotes.value = doctorBookingRoot?.querySelector('[data-booking-notes]')?.value || '';
+  };
+  const startDoctorBooking = button => {
+    const doctor = doctorBookingData[String(button?.dataset.doctorSelect || '')];
+    if (!doctor) return;
+    activeBookingDoctor = doctor;
+    activeBookingDate = null;
+    activeBookingSlot = null;
+    activeBookingReason = '';
+    selectDoctorResult(button);
+    doctorBookingRoot?.querySelectorAll('[data-booking-reason]').forEach(input => { input.checked = false; });
+    const notes = doctorBookingRoot?.querySelector('[data-booking-notes]');
+    if (notes) notes.value = '';
+    setBookingText('[data-booking-notes-count]', '0');
+    const reasonNext = doctorBookingRoot?.querySelector('[data-doctor-booking-step="reason"] [data-booking-next="summary"]');
+    if (reasonNext) reasonNext.disabled = true;
+    populateDoctorProfile(doctor);
+    showDoctorBookingStep('profile');
+  };
+  const renderBookingSuccess = confirmation => {
+    if (!confirmation) return;
+    const initials = doctorInitials(confirmation.doctor);
+    setBookingText('[data-booking-success-initials]', initials);
+    setBookingText('[data-booking-success-doctor]', confirmation.doctor);
+    setBookingText('[data-booking-success-specialty]', confirmation.specialty);
+    setBookingText('[data-booking-success-date]', confirmation.date);
+    setBookingText('[data-booking-success-time]', confirmation.time);
+    setBookingText('[data-booking-success-unit]', confirmation.unit);
+    setBookingText('[data-booking-success-location]', confirmation.location);
+    setBookingText('[data-booking-success-reason]', confirmation.reason);
+    showDoctorBookingStep('success');
+  };
+  const updateDoctorCities = () => {
+    if (!doctorCityFilter) return;
+    const country = normalizeDoctorValue(doctorCountryFilter?.value);
+    const placeholder = doctorCityFilter.querySelector('[data-doctor-city-placeholder]');
+    let availableCities = 0;
+    [...doctorCityFilter.options].forEach(option => {
+      if (!option.dataset.country) return;
+      const isAvailable = Boolean(country) && normalizeDoctorValue(option.dataset.country) === country;
+      option.hidden = !isAvailable;
+      option.disabled = !isAvailable;
+      if (isAvailable) availableCities++;
+    });
+    doctorCityFilter.value = '';
+    doctorCityFilter.disabled = !country || availableCities === 0;
+    if (placeholder) {
+      placeholder.textContent = !country
+        ? 'Primero selecciona país'
+        : availableCities > 0 ? 'Selecciona una ciudad' : 'No hay ciudades disponibles';
+    }
+  };
+  doctorCountryFilter?.addEventListener('change', () => {
+    updateDoctorCities();
+    renderDoctorDirectory();
+  });
+  doctorCityFilter?.addEventListener('change', renderDoctorDirectory);
+  doctorSpecialtyFilter?.addEventListener('change', renderDoctorDirectory);
+  doctorInsurerFilter?.addEventListener('change', renderDoctorDirectory);
+  doctorNameFilter?.addEventListener('input', renderDoctorDirectory);
+  doctorNameFilter?.addEventListener('keydown', event => {
+    if (event.key !== 'Enter') return;
+    event.preventDefault();
+    doctorSearchAction?.click();
+  });
+  doctorSearchAction?.addEventListener('click', () => {
+    showDoctorSearchResults();
+  });
+  doctorEditSearchButtons.forEach(button => button.addEventListener('click', showDoctorSearchForm));
+  doctorSelectButtons.forEach(button => button.addEventListener('click', () => startDoctorBooking(button)));
+  doctorBookingRoot?.querySelectorAll('[data-booking-back]').forEach(button => button.addEventListener('click', () => {
+    const destination = button.dataset.bookingBack;
+    if (destination === 'results') {
+      showDoctorSearchResults();
+      return;
+    }
+    showDoctorBookingStep(destination);
+  }));
+  doctorBookingRoot?.querySelectorAll('[data-booking-next]').forEach(button => button.addEventListener('click', () => {
+    const destination = button.dataset.bookingNext;
+    if (destination === 'schedule') {
+      renderBookingSchedule();
+    }
+    if (destination === 'reason' && !activeBookingSlot) return;
+    if (destination === 'summary') {
+      if (!activeBookingReason) return;
+      updateBookingSummary();
+    }
+    showDoctorBookingStep(destination);
+  }));
+  doctorBookingRoot?.querySelectorAll('[data-booking-reason]').forEach(input => input.addEventListener('change', () => {
+    activeBookingReason = input.value;
+    const reasonNext = doctorBookingRoot.querySelector('[data-doctor-booking-step="reason"] [data-booking-next="summary"]');
+    if (reasonNext) reasonNext.disabled = false;
+  }));
+  doctorBookingRoot?.querySelector('[data-booking-notes]')?.addEventListener('input', event => {
+    setBookingText('[data-booking-notes-count]', String(event.currentTarget.value.length));
+  });
+  doctorBookingRoot?.querySelector('[data-booking-form]')?.addEventListener('submit', event => {
+    if (!activeBookingDoctor || !activeBookingSlot || !activeBookingReason) {
+      event.preventDefault();
+      return;
+    }
+    updateBookingSummary();
+    const submit = event.currentTarget.querySelector('button[type="submit"]');
+    if (submit) {
+      submit.disabled = true;
+      submit.textContent = 'Agendando...';
+    }
+  });
+  doctorBookingRoot?.querySelector('[data-booking-open-calendar]')?.addEventListener('click', () => {
+    openView('calendar');
+    requestAnimationFrame(() => portal.querySelector('[data-patient-view="calendar"]')?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+  });
+  doctorBookingRoot?.querySelector('[data-booking-download-calendar]')?.addEventListener('click', () => {
+    if (!doctorBookingConfirmation?.starts_at || !doctorBookingConfirmation?.ends_at) return;
+    const formatCalendarDate = value => new Date(value).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+    const escapeCalendarText = value => String(value || '').replace(/\\/g, '\\\\').replace(/\n/g, '\\n').replace(/,/g, '\\,').replace(/;/g, '\\;');
+    const calendarContent = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Dr Sam//Cita medica//ES',
+      'BEGIN:VEVENT',
+      `UID:drsam-${Date.now()}@drsam.local`,
+      `DTSTAMP:${formatCalendarDate(new Date().toISOString())}`,
+      `DTSTART:${formatCalendarDate(doctorBookingConfirmation.starts_at)}`,
+      `DTEND:${formatCalendarDate(doctorBookingConfirmation.ends_at)}`,
+      `SUMMARY:${escapeCalendarText(`Cita con ${doctorBookingConfirmation.doctor}`)}`,
+      `DESCRIPTION:${escapeCalendarText(doctorBookingConfirmation.reason)}`,
+      `LOCATION:${escapeCalendarText(doctorBookingConfirmation.location || doctorBookingConfirmation.unit)}`,
+      'END:VEVENT',
+      'END:VCALENDAR',
+    ].join('\r\n');
+    const calendarUrl = URL.createObjectURL(new Blob([calendarContent], { type: 'text/calendar;charset=utf-8' }));
+    const link = document.createElement('a');
+    link.href = calendarUrl;
+    link.download = 'cita-medica-drsam.ics';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(calendarUrl);
+  });
+  portal.querySelectorAll('[data-doctor-country-shortcut]').forEach(button => button.addEventListener('click', () => {
+    if (!doctorCountryFilter) return;
+    doctorCountryFilter.value = button.dataset.doctorCountryShortcut || '';
+    updateDoctorCities();
+    renderDoctorDirectory();
+  }));
+  portal.querySelectorAll('[data-doctor-insurer-shortcut]').forEach(button => button.addEventListener('click', () => {
+    if (!doctorInsurerFilter) return;
+    doctorInsurerFilter.value = button.dataset.doctorInsurerShortcut || '';
+    renderDoctorDirectory();
+  }));
+  portal.querySelector('[data-doctor-more-countries]')?.addEventListener('click', event => {
+    const button = event.currentTarget;
+    const extraCountries = portal.querySelector('[data-doctor-extra-countries]');
+    if (!extraCountries) return;
+    const willOpen = extraCountries.hidden;
+    extraCountries.hidden = !willOpen;
+    button.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+    button.firstChild.textContent = willOpen ? 'Ver menos ' : 'Ver más ';
+  });
+  portal.querySelector('[data-doctor-more-insurers]')?.addEventListener('click', event => {
+    const button = event.currentTarget;
+    const extraInsurers = portal.querySelector('[data-doctor-extra-insurers]');
+    if (!extraInsurers) return;
+    const willOpen = extraInsurers.hidden;
+    extraInsurers.hidden = !willOpen;
+    button.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+    button.firstChild.textContent = willOpen ? 'Ver menos ' : 'Ver más ';
+  });
+  updateDoctorCities();
+  renderDoctorDirectory();
+  if (doctorBookingConfirmation) {
+    renderBookingSuccess(doctorBookingConfirmation);
+  } else if (doctorBookingRoot?.dataset.bookingOldDoctor) {
+    const oldDoctorButton = doctorSelectButtons.find(button => button.dataset.doctorSelect === doctorBookingRoot.dataset.bookingOldDoctor);
+    if (oldDoctorButton) {
+      startDoctorBooking(oldDoctorButton);
+      renderBookingSchedule();
+      const oldStart = doctorBookingRoot.dataset.bookingOldStart;
+      const oldDateIndex = (activeBookingDoctor?.slots || []).findIndex(date => date.slots?.some(slot => slot.value === oldStart));
+      if (oldDateIndex >= 0) {
+        selectBookingDate(oldDateIndex);
+        const oldSlotIndex = activeBookingDate?.slots?.findIndex(slot => slot.value === oldStart) ?? -1;
+        const oldSlotButton = doctorBookingRoot.querySelectorAll('[data-booking-time-options] button')[oldSlotIndex];
+        if (oldSlotIndex >= 0 && oldSlotButton) selectBookingTime(oldSlotButton, activeBookingDate.slots[oldSlotIndex]);
+      }
+      const oldReason = doctorBookingRoot.dataset.bookingOldReason;
+      const oldReasonInput = [...doctorBookingRoot.querySelectorAll('[data-booking-reason]')].find(input => input.value === oldReason);
+      if (oldReasonInput) {
+        oldReasonInput.checked = true;
+        activeBookingReason = oldReason;
+      }
+      const oldNotes = doctorBookingRoot.querySelector('[data-booking-notes]');
+      if (oldNotes) {
+        oldNotes.value = doctorBookingRoot.dataset.bookingOldNotes || '';
+        setBookingText('[data-booking-notes-count]', String(oldNotes.value.length));
+      }
+      showDoctorBookingStep('schedule');
+    }
+  }
   const historyFilters = [...portal.querySelectorAll('[data-history-filter]')];
   const selectHistoryFilter = button => {
     if (!button) return;
@@ -1903,14 +3333,114 @@
   portal.querySelectorAll('[data-prescription-filter]').forEach(button => button.addEventListener('click', () => {
     const filter = button.dataset.prescriptionFilter;
     portal.querySelectorAll('[data-prescription-filter]').forEach(item => item.classList.toggle('is-active', item === button));
-    portal.querySelectorAll('[data-prescription-row]').forEach(row => {
+    const prescriptionRows = [...portal.querySelectorAll('[data-prescription-row]')];
+    prescriptionRows.forEach(row => {
       row.hidden = filter === 'active' ? row.dataset.status !== 'active'
         : filter === 'expired' ? row.dataset.status !== 'expired'
         : filter === 'medications' ? row.dataset.hasMedications !== '1'
         : filter === 'analysis' ? row.dataset.hasAnalysis !== '1'
         : false;
     });
+    const emptyState = portal.querySelector('[data-prescription-empty]');
+    if (emptyState && prescriptionRows.length) {
+      emptyState.hidden = prescriptionRows.some(row => !row.hidden);
+    }
   }));
+  const analysisCards = [...portal.querySelectorAll('[data-analysis-card]')];
+  const analysisFilters = [...portal.querySelectorAll('[data-analysis-filter]')];
+  const analysisList = portal.querySelector('[data-analysis-list]');
+  const analysisFilterBar = portal.querySelector('.patient-analyses-filter-bar');
+  const analysisFilteredEmpty = portal.querySelector('.patient-analyses-body > [data-analysis-empty]');
+  let analysisFilter = 'all';
+  let analysisFilterPanMoved = false;
+  const renderAnalyses = () => {
+    let visible = 0;
+    analysisCards.forEach(card => {
+      const matchesFilter = analysisFilter === 'all' || card.dataset.analysisType === analysisFilter;
+      card.hidden = !matchesFilter;
+      if (matchesFilter) visible++;
+    });
+    if (analysisFilteredEmpty) {
+      analysisFilteredEmpty.hidden = visible > 0 || analysisCards.length === 0;
+    }
+  };
+  if (analysisFilterBar) {
+    let isAnalysisFilterPanning = false;
+    let analysisFilterPanStart = 0;
+    let analysisFilterPanScroll = 0;
+
+    analysisFilterBar.addEventListener('pointerdown', event => {
+      isAnalysisFilterPanning = true;
+      analysisFilterPanStart = event.clientX;
+      analysisFilterPanScroll = analysisFilterBar.scrollLeft;
+      analysisFilterPanMoved = false;
+      analysisFilterBar.setPointerCapture?.(event.pointerId);
+    });
+
+    analysisFilterBar.addEventListener('pointermove', event => {
+      if (!isAnalysisFilterPanning) return;
+      const movement = event.clientX - analysisFilterPanStart;
+      analysisFilterBar.scrollLeft = analysisFilterPanScroll - movement;
+      if (Math.abs(movement) > 8) {
+        analysisFilterPanMoved = true;
+        analysisFilterBar.classList.add('is-panning');
+        event.preventDefault();
+      }
+    });
+
+    ['pointerup', 'pointercancel', 'pointerleave'].forEach(type => {
+      analysisFilterBar.addEventListener(type, event => {
+        isAnalysisFilterPanning = false;
+        analysisFilterBar.classList.remove('is-panning');
+        if (analysisFilterBar.hasPointerCapture?.(event.pointerId)) {
+          analysisFilterBar.releasePointerCapture(event.pointerId);
+        }
+        if (type === 'pointerup' && analysisFilterPanMoved) {
+          window.setTimeout(() => {
+            analysisFilterPanMoved = false;
+          }, 180);
+        } else if (type !== 'pointerup') {
+          analysisFilterPanMoved = false;
+        }
+      });
+    });
+  }
+  analysisFilters.forEach(button => button.addEventListener('click', event => {
+    if (analysisFilterPanMoved) {
+      event.preventDefault();
+      window.setTimeout(() => {
+        analysisFilterPanMoved = false;
+      }, 180);
+      return;
+    }
+    analysisFilter = button.dataset.analysisFilter || 'all';
+    analysisFilters.forEach(item => item.classList.toggle('is-active', item === button));
+    button.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    renderAnalyses();
+  }));
+  portal.querySelector('[data-analysis-sort]')?.addEventListener('click', event => {
+    if (!analysisList || !analysisCards.length) return;
+    const button = event.currentTarget;
+    const currentDirection = button.dataset.analysisSortDirection === 'asc' ? 'asc' : 'desc';
+    const nextDirection = currentDirection === 'asc' ? 'desc' : 'asc';
+    button.dataset.analysisSortDirection = nextDirection;
+    const sortedCards = [...analysisCards].sort((first, second) => {
+      const firstDate = Number(first.dataset.analysisDate || 0);
+      const secondDate = Number(second.dataset.analysisDate || 0);
+      return nextDirection === 'asc' ? firstDate - secondDate : secondDate - firstDate;
+    });
+    sortedCards.forEach(card => analysisList.appendChild(card));
+    const label = button.querySelector('[data-analysis-sort-label]');
+    if (label) label.textContent = nextDirection === 'asc' ? 'Fecha antigua' : 'Fecha reciente';
+    renderAnalyses();
+  });
+  portal.querySelector('[data-analysis-reset]')?.addEventListener('click', () => {
+    analysisFilter = 'all';
+    analysisFilters.forEach(button => button.classList.toggle('is-active', button.dataset.analysisFilter === 'all'));
+    analysisFilters.find(button => button.dataset.analysisFilter === 'all')?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+    renderAnalyses();
+  });
+  renderAnalyses();
   const insuranceForm = portal.querySelector('[data-insurance-form]');
   portal.querySelectorAll('[data-insurance-form-open]').forEach(button => button.addEventListener('click', () => {
     if (!insuranceForm) return;
@@ -1921,6 +3451,7 @@
     insuranceForm.hidden = true;
   });
   const insuranceTabs = [...portal.querySelectorAll('[data-insurance-tab]')];
+  const insuranceTabsCarousel = portal.querySelector('[data-insurance-tabs-carousel]');
   const selectInsuranceTab = button => {
     if (!button) return;
     insuranceTabs.forEach(item => item.classList.toggle('is-active', item === button));
@@ -1928,8 +3459,61 @@
       pane.classList.toggle('is-active', pane.dataset.insurancePane === button.dataset.insuranceTab);
     });
   };
-  insuranceTabs.forEach(button => button.addEventListener('click', () => selectInsuranceTab(button)));
+  let insuranceTabsPanMoved = false;
+  let insuranceTabsClickBlocked = false;
+  if (insuranceTabsCarousel) {
+    let isInsuranceTabsPanning = false;
+    let insuranceTabsPanStart = 0;
+    let insuranceTabsPanScroll = 0;
+
+    insuranceTabsCarousel.addEventListener('pointerdown', event => {
+      isInsuranceTabsPanning = true;
+      insuranceTabsPanStart = event.clientX;
+      insuranceTabsPanScroll = insuranceTabsCarousel.scrollLeft;
+      insuranceTabsPanMoved = false;
+      insuranceTabsClickBlocked = false;
+      insuranceTabsCarousel.setPointerCapture?.(event.pointerId);
+    });
+
+    insuranceTabsCarousel.addEventListener('pointermove', event => {
+      if (!isInsuranceTabsPanning) return;
+      const movement = event.clientX - insuranceTabsPanStart;
+      insuranceTabsCarousel.scrollLeft = insuranceTabsPanScroll - movement;
+      if (Math.abs(movement) > 8) {
+        insuranceTabsPanMoved = true;
+        insuranceTabsCarousel.classList.add('is-panning');
+      }
+      if (insuranceTabsPanMoved) event.preventDefault();
+    });
+
+    ['pointerup', 'pointercancel', 'pointerleave'].forEach(type => {
+      insuranceTabsCarousel.addEventListener(type, event => {
+        isInsuranceTabsPanning = false;
+        insuranceTabsCarousel.classList.remove('is-panning');
+        if (insuranceTabsCarousel.hasPointerCapture?.(event.pointerId)) {
+          insuranceTabsCarousel.releasePointerCapture(event.pointerId);
+        }
+        if (type === 'pointerup' && insuranceTabsPanMoved) {
+          insuranceTabsClickBlocked = true;
+          window.setTimeout(() => {
+            insuranceTabsClickBlocked = false;
+            insuranceTabsPanMoved = false;
+          }, 180);
+        } else if (type !== 'pointerup') {
+          insuranceTabsPanMoved = false;
+        }
+      });
+    });
+  }
+  insuranceTabs.forEach(button => button.addEventListener('click', event => {
+    if (insuranceTabsClickBlocked) {
+      event.preventDefault();
+      return;
+    }
+    selectInsuranceTab(button);
+  }));
   portal.querySelectorAll('[data-insurance-tab-step]').forEach(button => button.addEventListener('click', () => {
+    if (insuranceTabsClickBlocked) return;
     const current = Math.max(0, insuranceTabs.findIndex(item => item.classList.contains('is-active')));
     const next = (current + Number(button.dataset.insuranceTabStep) + insuranceTabs.length) % insuranceTabs.length;
     selectInsuranceTab(insuranceTabs[next]);
@@ -1947,10 +3531,12 @@
   });
   const calendarItems = [...portal.querySelectorAll('[data-calendar-item]')];
   const calendarFilters = [...portal.querySelectorAll('[data-calendar-filter]')];
+  const calendarFilterCarousel = portal.querySelector('[data-calendar-filter-carousel]');
   const calendarMonths = <?php echo json_encode($calendarMonths ?? collect(), 15, 512) ?>;
   let calendarFilter = 'all';
   let calendarMonthIndex = 0;
   let calendarMonthEnabled = false;
+  let calendarFilterPanMoved = false;
   const renderCalendar = () => {
     let visible = 0;
     calendarItems.forEach(item => {
@@ -1966,7 +3552,53 @@
     const empty = portal.querySelector('[data-calendar-filter-empty]');
     if (empty) empty.hidden = visible > 0 || calendarItems.length === 0;
   };
-  calendarFilters.forEach(button => button.addEventListener('click', () => {
+  if (calendarFilterCarousel) {
+    let isCalendarFilterPanning = false;
+    let calendarFilterPanStart = 0;
+    let calendarFilterPanScroll = 0;
+
+    calendarFilterCarousel.addEventListener('pointerdown', event => {
+      if (event.button !== undefined && event.button !== 0) return;
+      isCalendarFilterPanning = true;
+      calendarFilterPanStart = event.clientX;
+      calendarFilterPanScroll = calendarFilterCarousel.scrollLeft;
+      calendarFilterPanMoved = false;
+      calendarFilterCarousel.setPointerCapture?.(event.pointerId);
+    });
+
+    calendarFilterCarousel.addEventListener('pointermove', event => {
+      if (!isCalendarFilterPanning) return;
+      const movement = event.clientX - calendarFilterPanStart;
+      calendarFilterCarousel.scrollLeft = calendarFilterPanScroll - movement;
+      if (Math.abs(movement) > 8) {
+        calendarFilterPanMoved = true;
+        calendarFilterCarousel.classList.add('is-panning');
+        event.preventDefault();
+      }
+    });
+
+    ['pointerup', 'pointercancel', 'pointerleave'].forEach(type => {
+      calendarFilterCarousel.addEventListener(type, event => {
+        isCalendarFilterPanning = false;
+        calendarFilterCarousel.classList.remove('is-panning');
+        if (calendarFilterCarousel.hasPointerCapture?.(event.pointerId)) {
+          calendarFilterCarousel.releasePointerCapture(event.pointerId);
+        }
+        if (type === 'pointerup' && calendarFilterPanMoved) {
+          window.setTimeout(() => {
+            calendarFilterPanMoved = false;
+          }, 180);
+        } else if (type !== 'pointerup') {
+          calendarFilterPanMoved = false;
+        }
+      });
+    });
+  }
+  calendarFilters.forEach(button => button.addEventListener('click', event => {
+    if (calendarFilterPanMoved) {
+      event.preventDefault();
+      return;
+    }
     calendarFilter = button.dataset.calendarFilter;
     calendarFilters.forEach(item => item.classList.toggle('is-active', item === button));
     renderCalendar();

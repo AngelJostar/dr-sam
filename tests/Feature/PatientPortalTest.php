@@ -2,9 +2,13 @@
 
 namespace Tests\Feature;
 
+use App\Models\Appointment;
+use App\Models\Doctor;
+use App\Models\MedicalUnit;
 use App\Models\Patient;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Carbon;
 use Tests\TestCase;
 
 class PatientPortalTest extends TestCase
@@ -73,6 +77,54 @@ class PatientPortalTest extends TestCase
         ]);
     }
 
+    public function test_calendar_orders_scheduled_appointments_before_past_appointments(): void
+    {
+        Carbon::setTestNow('2026-08-17 12:00:00');
+
+        try {
+            [$user, $patient] = $this->makePatient();
+            $appointments = [
+                ['reason' => 'Futura lejana de control', 'starts_at' => now()->addDays(20), 'status' => 'scheduled'],
+                ['reason' => 'Pasada antigua de control', 'starts_at' => now()->subDays(12), 'status' => 'completed'],
+                ['reason' => 'Futura próxima de control', 'starts_at' => now()->addDays(2), 'status' => 'scheduled'],
+                ['reason' => 'Pasada reciente de control', 'starts_at' => now()->subDay(), 'status' => 'completed'],
+            ];
+
+            foreach ($appointments as $appointment) {
+                Appointment::query()->create([
+                    'patient_id' => $patient->id,
+                    'specialty' => 'Medicina interna',
+                    ...$appointment,
+                ]);
+            }
+
+            $response = $this->actingAs($user)->get(route('patient.dashboard'))->assertOk();
+            $html = $response->getContent();
+            $calendarStart = strpos($html, 'data-patient-view="calendar"');
+            $calendarEnd = strpos($html, 'data-patient-view="doctors"', $calendarStart);
+
+            $this->assertNotFalse($calendarStart);
+            $this->assertNotFalse($calendarEnd);
+            $calendarHtml = substr($html, $calendarStart, $calendarEnd - $calendarStart);
+            $expectedOrder = [
+                'Futura próxima de control',
+                'Futura lejana de control',
+                'Pasada reciente de control',
+                'Pasada antigua de control',
+            ];
+            $positions = array_map(fn ($text) => strpos($calendarHtml, $text), $expectedOrder);
+
+            foreach ($positions as $position) {
+                $this->assertNotFalse($position);
+            }
+            for ($index = 0; $index < count($positions) - 1; $index++) {
+                $this->assertTrue($positions[$index] < $positions[$index + 1]);
+            }
+        } finally {
+            Carbon::setTestNow();
+        }
+    }
+
     public function test_patient_can_register_insurance_policy(): void
     {
         [$user, $patient] = $this->makePatient();
@@ -93,6 +145,56 @@ class PatientPortalTest extends TestCase
             'policy_number' => 'POL-2026-001',
             'insurer_name' => 'Aseguradora Demo',
         ]);
+    }
+
+    public function test_patient_can_schedule_an_available_doctor_appointment(): void
+    {
+        Carbon::setTestNow('2026-08-17 08:00:00');
+
+        try {
+            [$user, $patient] = $this->makePatient();
+            $unit = MedicalUnit::query()->create([
+                'name' => 'Hospital de Prueba',
+                'city' => 'Ciudad de México',
+                'address' => 'Consultorio 12',
+                'status' => 'active',
+            ]);
+            $doctor = Doctor::query()->create([
+                'medical_unit_id' => $unit->id,
+                'full_name' => 'Dra. Elena Prueba',
+                'professional_license' => 'CED-TEST-001',
+                'specialty' => 'Medicina interna',
+                'status' => 'active',
+            ]);
+
+            $response = $this->actingAs($user)->post(route('patient.appointments.store'), [
+                'doctor_id' => $doctor->id,
+                'starts_at' => '2026-08-17 09:00',
+                'reason_type' => 'Chequeo general',
+                'reason_notes' => 'Consulta preventiva anual.',
+            ]);
+
+            $response->assertRedirect(route('patient.dashboard'))
+                ->assertSessionHas('patient_open_view', 'doctors')
+                ->assertSessionHas('patient_scheduled_appointment_id');
+            $this->assertDatabaseHas('appointments', [
+                'patient_id' => $patient->id,
+                'doctor_id' => $doctor->id,
+                'medical_unit_id' => $unit->id,
+                'status' => 'scheduled',
+                'reason' => 'Chequeo general',
+                'location' => 'Hospital de Prueba',
+            ]);
+            $appointment = Appointment::query()->firstOrFail();
+            $this->assertSame('2026-08-17 09:00', $appointment->starts_at?->format('Y-m-d H:i'));
+            $this->assertDatabaseHas('appointment_status_events', [
+                'appointment_id' => $appointment->id,
+                'to_status' => 'scheduled',
+                'notes' => 'Cita agendada por el paciente.',
+            ]);
+        } finally {
+            Carbon::setTestNow();
+        }
     }
 
     private function makePatient(): array
