@@ -1,0 +1,9 @@
+﻿﻿﻿
+   PASS  Tests\Feature\UnitModuleTest
+  ✓ unit user can open native dashboard                                                                          6.08s  
+  ✓ unit user can update appointment status                                                                      0.04s  
+  ✓ unit user can create edit and cancel a consultation appointment                                              0.09s  
+
+  Tests:    3 passed (186 assertions)
+  Duration: 6.38s
+

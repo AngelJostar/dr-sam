@@ -4,6 +4,7 @@
 
 <?php $__env->startSection('content'); ?>
   <div class="insurance-health-native-screen insurance-health-native-screen--sidebar">
+    <?php echo $__env->make('insurance._topbar', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
     <?php echo $__env->make('insurance._sidebar', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
     <main class="insurance-health-native-workspace">
@@ -14,13 +15,6 @@
           <p class="eyebrow">Modulo aseguradora</p>
           <h1>Control clinico-administrativo</h1>
           <p>Trazabilidad de pacientes asegurados, tratamientos continuos, entregas, hospitalizaciones, autorizaciones y facturacion.</p>
-        </div>
-        <div class="insurance-health-native-session">
-          <span><?php echo e(auth()->user()?->name ?? 'Superadministrador'); ?></span>
-          <form method="post" action="<?php echo e(route('logout')); ?>">
-            <?php echo csrf_field(); ?>
-            <button type="submit">Salir</button>
-          </form>
         </div>
       </div>
 

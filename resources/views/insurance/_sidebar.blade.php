@@ -16,14 +16,6 @@
 @endphp
 
 <aside class="insurance-health-native-sidebar">
-  <div class="insurance-health-native-sidebar-brand">
-    <span>DS</span>
-    <div>
-      <strong>Aseguradora salud</strong>
-      <small>Control clinico</small>
-    </div>
-  </div>
-
   <nav class="insurance-health-native-sidebar-menu" aria-label="Menu aseguradora salud">
     @foreach($insuranceMenu as $item)
       <a @class(['is-active' => request()->routeIs($item['match'])]) href="{{ route($item['route']) }}">

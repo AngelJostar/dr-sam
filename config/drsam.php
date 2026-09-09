@@ -41,19 +41,19 @@ return [
             'roles' => ['superadmin', 'admin', 'institution', 'unit'],
         ],
         'operational' => [
-            'label' => 'Area operativa',
+            'label' => 'Modulo operativo',
             'target' => 'operational.dashboard',
             'route' => 'operational.dashboard',
             'roles' => ['superadmin', 'admin', 'institution', 'unit', 'operational'],
         ],
         'operational_outpatient' => [
-            'label' => 'Area Operativa Consulta Externa',
+            'label' => 'Modulo operativo Consulta Externa',
             'target' => 'outpatient.dashboard',
             'route' => 'outpatient.dashboard',
             'roles' => ['superadmin', 'admin', 'institution', 'unit', 'operational'],
         ],
         'external_pharmacy' => [
-            'label' => 'Area Operativa Farmacia',
+            'label' => 'Modulo operativo Farmacia',
             'target' => 'external-pharmacy.dashboard',
             'route' => 'external-pharmacy.dashboard',
             'roles' => ['superadmin', 'admin', 'operational'],

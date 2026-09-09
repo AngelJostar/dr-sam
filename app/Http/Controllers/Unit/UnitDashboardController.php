@@ -13,14 +13,19 @@ use App\Models\MedicalUnit;
 use App\Models\OperationalArea;
 use App\Models\OperationalProfile;
 use App\Models\Patient;
+use App\Models\Prescription;
+use App\Models\Provider;
 use App\Models\ProviderRequest;
+use App\Models\ProviderRequestStatusEvent;
 use App\Models\ProcedureArea;
 use App\Models\Service;
 use App\Models\User;
+use App\Services\AppointmentSchedulingService;
 use App\Services\Platform\PlatformAuditService;
 use App\Services\Platform\DomainStateTransitionService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
@@ -36,16 +41,52 @@ class UnitDashboardController extends Controller
         abort_unless((int) $contract->medical_unit_id === (int) $unit->id, 403);
 
         $contract->loadMissing('service');
-        $serviceText = str(($contract->service?->name ?? '').' '.($contract->service?->category ?? '').' '.($contract->service?->specialty ?? ''))->lower();
-        $requestTypes = $serviceText->contains('oncolo') || $serviceText->contains('quimio') ? ['chemo', 'chemotherapy'] : ['npt'];
+        $serviceKey = $this->serviceKey($contract->service);
+        $filename = 'reporte-'.str($contract->service?->name ?? 'servicio')->slug().'-'.now()->format('Ymd-His').'.csv';
+
+        if ($serviceKey === 'consulta-externa') {
+            $appointments = Appointment::query()
+                ->with(['patient', 'doctor', 'medicalUnit'])
+                ->where('medical_unit_id', $unit->id)
+                ->latest('starts_at')
+                ->get();
+
+            return response()->streamDownload(function () use ($appointments): void {
+                $output = fopen('php://output', 'wb');
+                fwrite($output, "\xEF\xBB\xBF");
+                fputcsv($output, ['Folio', 'Fecha', 'Paciente', 'Hospital', 'Medico', 'Especialidad', 'Estatus', 'Ultima actualizacion']);
+                foreach ($appointments as $appointment) {
+                    fputcsv($output, [
+                        data_get($appointment->metadata, 'folio') ?? 'CE-'.optional($appointment->created_at)->format('Y').'-'.str_pad((string) $appointment->id, 5, '0', STR_PAD_LEFT),
+                        optional($appointment->starts_at)->format('d/m/Y H:i'),
+                        $appointment->patient?->full_name,
+                        $appointment->medicalUnit?->name,
+                        $appointment->doctor?->full_name,
+                        $appointment->specialty,
+                        $appointment->status,
+                        optional($appointment->updated_at)->format('d/m/Y H:i'),
+                    ]);
+                }
+                fclose($output);
+            }, $filename, ['Content-Type' => 'text/csv; charset=UTF-8']);
+        }
+
+        $requestTypes = match ($serviceKey) {
+            'nutricion-parenteral' => ['npt', 'nutrition'],
+            'quimioterapias' => ['chemo', 'chemotherapy'],
+            'central-de-mezclas' => ['npt', 'nutrition', 'chemo', 'chemotherapy'],
+            'laboratorio' => ['lab', 'laboratory', 'clinical-lab', 'clinical-laboratory'],
+            'hemodinamia' => ['hemodynamics', 'hemodinamia'],
+            'mantenimiento-equipo-medico' => ['maintenance', 'equipment-maintenance'],
+            'osteosintesis' => ['osteosynthesis', 'osteosintesis'],
+            default => [$serviceKey],
+        };
         $requests = ProviderRequest::query()
             ->with(['patient', 'provider'])
             ->where('medical_unit_id', $unit->id)
             ->whereIn('request_type', $requestTypes)
             ->orderByDesc('requested_at')
             ->get();
-
-        $filename = 'reporte-'.str($contract->service?->name ?? 'servicio')->slug().'-'.now()->format('Ymd-His').'.csv';
 
         return response()->streamDownload(function () use ($requests): void {
             $output = fopen('php://output', 'wb');
@@ -66,11 +107,49 @@ class UnitDashboardController extends Controller
         }, $filename, ['Content-Type' => 'text/csv; charset=UTF-8']);
     }
 
+    private function serviceKey(?Service $service): string
+    {
+        $externalId = str($service?->external_id ?? '')->lower()->slug('-')->toString();
+        $knownExternalIds = [
+            'consulta-externa',
+            'hemodinamia',
+            'laboratorio',
+            'nutricion-parenteral',
+            'quimioterapias',
+            'central-de-mezclas',
+            'mantenimiento-equipo-medico',
+            'osteosintesis',
+        ];
+
+        if (in_array($externalId, $knownExternalIds, true)) {
+            return $externalId;
+        }
+
+        $serviceText = str(collect([
+            $service?->external_id,
+            $service?->name,
+            $service?->category,
+            $service?->specialty,
+        ])->filter()->implode(' '))->lower()->toString();
+
+        return match (true) {
+            str_contains($serviceText, 'consulta') => 'consulta-externa',
+            str_contains($serviceText, 'hemodinam') => 'hemodinamia',
+            str_contains($serviceText, 'laboratorio') || str_contains($serviceText, 'analisis') => 'laboratorio',
+            str_contains($serviceText, 'nutricion') => 'nutricion-parenteral',
+            str_contains($serviceText, 'central') && str_contains($serviceText, 'mezcla') => 'central-de-mezclas',
+            str_contains($serviceText, 'quimio') || str_contains($serviceText, 'oncolo') => 'quimioterapias',
+            str_contains($serviceText, 'mantenimiento') || str_contains($serviceText, 'equipo') => 'mantenimiento-equipo-medico',
+            str_contains($serviceText, 'osteo') => 'osteosintesis',
+            default => $externalId ?: str($service?->name ?? 'servicio')->slug('-')->toString(),
+        };
+    }
+
     public function index(Request $request): View
     {
         $unit = $this->resolveUnit($request);
         $section = $request->string('section')->toString() ?: 'services';
-        if (! in_array($section, ['profile', 'services', 'users', 'patients', 'doctors', 'specialties', 'external-pharmacy', 'procedure-areas'], true)) {
+        if (! in_array($section, ['profile', 'services', 'users', 'patients', 'doctors', 'specialties', 'external-pharmacy', 'procedure-areas', 'medications'], true)) {
             $section = 'services';
         }
 
@@ -80,20 +159,19 @@ class UnitDashboardController extends Controller
             'operationalProfiles.user',
             'operationalProfiles.area',
             'doctors.user',
+            'doctors.availabilityRules',
         ]);
 
         $appointments = Appointment::query()
-            ->with(['patient', 'doctor'])
+            ->with(['patient', 'doctor', 'medicalUnit', 'procedureArea'])
             ->where('medical_unit_id', $unit->id)
             ->latest('starts_at')
-            ->limit(10)
             ->get();
 
         $providerRequests = ProviderRequest::query()
-            ->with(['provider', 'patient'])
+            ->with(['provider', 'patient', 'medicalUnit'])
             ->where('medical_unit_id', $unit->id)
             ->latest('requested_at')
-            ->limit(10)
             ->get();
 
         $inventory = InventoryItem::query()
@@ -109,12 +187,35 @@ class UnitDashboardController extends Controller
             ->orderBy('full_name')
             ->get();
 
+        $consultationPatientCatalog = Patient::query()
+            ->where('status', 'active')
+            ->orderBy('full_name')
+            ->limit(300)
+            ->get();
+
+        $consultationRooms = ProcedureArea::query()
+            ->with('schedules')
+            ->where('medical_unit_id', $unit->id)
+            ->where('type', 'consulting')
+            ->orderBy('unit_number')
+            ->get();
+
+        $consultationPrescriptions = Prescription::query()
+            ->with(['patient', 'doctor', 'items.medication'])
+            ->where(function ($query) use ($unit): void {
+                $query->whereHas('doctor', fn ($doctorQuery) => $doctorQuery->where('medical_unit_id', $unit->id))
+                    ->orWhere('metadata->medical_unit_id', $unit->id);
+            })
+            ->latest('issued_at')
+            ->limit(100)
+            ->get();
+
         $specialties = Service::query()
             ->orderBy('specialty')
             ->orderBy('name')
             ->get();
 
-        $externalPharmacyCatalog = MedicationCatalogItem::query()
+        $medicationCatalog = MedicationCatalogItem::query()
             ->when($unit->institution_id, fn ($query) => $query->where(function ($subQuery) use ($unit): void {
                 $subQuery->where('institution_id', $unit->institution_id)
                     ->orWhereNull('institution_id');
@@ -129,8 +230,12 @@ class UnitDashboardController extends Controller
             'providerRequests' => $providerRequests,
             'inventory' => $inventory,
             'patients' => $patients,
+            'consultationPatientCatalog' => $consultationPatientCatalog,
             'specialties' => $specialties,
-            'externalPharmacyCatalog' => $externalPharmacyCatalog,
+            'consultationRooms' => $consultationRooms,
+            'consultationPrescriptions' => $consultationPrescriptions,
+            'externalPharmacyCatalog' => $medicationCatalog,
+            'medicationCatalog' => $medicationCatalog,
             'operationalAreas' => OperationalArea::query()->orderBy('label')->get(),
             'metrics' => [
                 'Camas' => $unit->beds,
@@ -149,13 +254,228 @@ class UnitDashboardController extends Controller
         ]);
     }
 
+    public function storeAppointment(
+        Request $request,
+        PlatformAuditService $audit,
+        AppointmentSchedulingService $scheduling,
+    ): RedirectResponse {
+        $unit = $this->resolveUnit($request);
+        $data = $this->validateConsultationAppointment($request, $unit);
+        [$doctor, $room, $startsAt, $endsAt] = $this->resolveConsultationSchedule($data, $unit);
+
+        $scheduling->assertAvailable($doctor, $startsAt, $endsAt, $room);
+
+        $appointment = DB::transaction(function () use ($data, $doctor, $unit, $room, $startsAt, $endsAt): Appointment {
+            $appointment = Appointment::query()->create([
+                'patient_id' => $data['patient_id'],
+                'doctor_id' => $doctor->id,
+                'medical_unit_id' => $unit->id,
+                'procedure_area_id' => $room->id,
+                'specialty' => $data['specialty'],
+                'modality' => $data['modality'],
+                'location' => $room->unit_number ?: $room->location,
+                'status' => 'scheduled',
+                'starts_at' => $startsAt,
+                'ends_at' => $endsAt,
+                'reason' => $data['reason'],
+                'metadata' => [
+                    'source' => 'unit_consultation_calendar',
+                    'notes' => $data['notes'] ?? null,
+                ],
+            ]);
+
+            $metadata = $appointment->metadata ?? [];
+            $metadata['folio'] = 'CE-'.$startsAt->format('Y').'-'.str_pad((string) $appointment->id, 6, '0', STR_PAD_LEFT);
+            $appointment->forceFill(['metadata' => $metadata])->save();
+
+            return $appointment;
+        });
+
+        $audit->record($request, 'unit.appointment.created', $appointment, 'unit', [
+            'unit_id' => $unit->id,
+            'starts_at' => $startsAt->toISOString(),
+        ]);
+
+        return redirect()->route('unit.dashboard', [
+            'unit' => $unit->id,
+            'calendar_date' => $startsAt->toDateString(),
+        ])->with('status', 'Cita agendada correctamente.');
+    }
+
+    public function storeNutritionRequest(Request $request, PlatformAuditService $audit): RedirectResponse
+    {
+        $unit = $this->resolveUnit($request);
+        $data = $request->validate([
+            'service_contract_id' => ['required', 'integer', 'exists:contracted_services,id'],
+            'patient_id' => ['required', 'integer', 'exists:patients,id'],
+            'doctor_id' => ['required', 'integer', 'exists:doctors,id'],
+            'clinical_service' => ['required', 'string', 'max:180'],
+            'priority' => ['required', Rule::in(['routine', 'urgent'])],
+            'delivery_at' => ['required', 'date'],
+            'route' => ['required', Rule::in(['Central', 'Periferica'])],
+            'npt_type' => ['required', Rule::in(['Individualizada', 'Tricamara', 'Pediatrica'])],
+            'total_volume' => ['required', 'numeric', 'min:0.01', 'max:100000'],
+            'infusion_hours' => ['required', 'numeric', 'min:0.01', 'max:168'],
+            'diagnosis' => ['required', 'string', 'max:2000'],
+            'components' => ['nullable', 'string', 'max:3000'],
+            'notes' => ['nullable', 'string', 'max:3000'],
+        ]);
+
+        $contract = ContractedService::query()
+            ->with('service')
+            ->whereKey($data['service_contract_id'])
+            ->where('medical_unit_id', $unit->id)
+            ->where('status', 'active')
+            ->firstOrFail();
+        abort_unless($this->serviceKey($contract->service) === 'nutricion-parenteral', 422, 'El servicio seleccionado no corresponde a nutricion parenteral.');
+
+        $patient = Patient::query()->whereKey($data['patient_id'])->where('status', 'active')->firstOrFail();
+        $doctor = Doctor::query()
+            ->whereKey($data['doctor_id'])
+            ->where('medical_unit_id', $unit->id)
+            ->where('status', 'active')
+            ->firstOrFail();
+        $provider = Provider::query()
+            ->whereIn('provider_type', ['npt', 'nutrition'])
+            ->where('status', 'active')
+            ->first()
+            ?? Provider::query()->where('status', 'active')->first();
+        $requiredAt = Carbon::parse($data['delivery_at']);
+        $externalId = 'NPT-'.now()->format('Ymd').'-'.str_pad((string) (ProviderRequest::query()->max('id') + 1), 4, '0', STR_PAD_LEFT);
+
+        $providerRequest = DB::transaction(function () use ($request, $unit, $patient, $doctor, $provider, $contract, $data, $requiredAt, $externalId): ProviderRequest {
+            $providerRequest = ProviderRequest::query()->create([
+                'provider_id' => $provider?->id,
+                'patient_id' => $patient->id,
+                'medical_unit_id' => $unit->id,
+                'external_id' => $externalId,
+                'request_type' => 'npt',
+                'status' => 'requested',
+                'requested_at' => now(),
+                'required_at' => $requiredAt,
+                'payload' => [
+                    'source' => 'unit_nutrition_board',
+                    'service_contract_id' => $contract->id,
+                    'request_number' => $externalId,
+                    'request_type_label' => 'Nutricional',
+                    'service' => $contract->service?->name ?? 'Nutricion Parenteral',
+                    'doctor_id' => $doctor->id,
+                    'doctor' => $doctor->full_name,
+                    'diagnosis' => $data['diagnosis'],
+                    'notes' => $data['notes'] ?? null,
+                    'priority' => $data['priority'],
+                    'volume' => $data['total_volume'],
+                    'clinical_format' => [
+                        'clinical_service' => $data['clinical_service'],
+                        'registration' => $patient->platform_number,
+                        'birth_date' => $patient->birth_date?->toDateString(),
+                        'sex' => $patient->sex,
+                        'route' => $data['route'],
+                        'infusion_hours' => $data['infusion_hours'],
+                        'total_volume' => $data['total_volume'],
+                        'npt_type' => $data['npt_type'],
+                        'components' => $data['components'] ?? null,
+                        'delivery_at' => $requiredAt->toDateTimeString(),
+                        'destination_hospital' => $unit->name,
+                        'doctor_name' => $doctor->full_name,
+                        'professional_license' => $doctor->professional_license,
+                    ],
+                    'authorizations' => ['operational' => 'pending', 'pharmacy' => 'pending'],
+                    'authorization_requirements' => ['operational', 'pharmacy'],
+                ],
+            ]);
+
+            ProviderRequestStatusEvent::query()->create([
+                'provider_request_id' => $providerRequest->id,
+                'status' => 'requested',
+                'actor' => $request->user()?->name,
+                'occurred_at' => now(),
+                'metadata' => ['source' => 'unit_nutrition_board'],
+            ]);
+
+            return $providerRequest;
+        });
+
+        $audit->record($request, 'unit.nutrition_request.created', $providerRequest, 'unit', [
+            'unit_id' => $unit->id,
+            'service_contract_id' => $contract->id,
+        ]);
+
+        return redirect()->route('unit.dashboard', [
+            'unit' => $unit->id,
+            'section' => 'services',
+            'service' => $contract->id,
+        ])->with('status', 'Solicitud de mezcla registrada correctamente.');
+    }
+
+    public function updateAppointment(
+        Request $request,
+        Appointment $appointment,
+        PlatformAuditService $audit,
+        DomainStateTransitionService $transitions,
+        AppointmentSchedulingService $scheduling,
+    ): RedirectResponse {
+        $this->authorizeAppointmentOwnership($request, $appointment);
+        $unit = $this->resolveUnit($request);
+        $data = $this->validateConsultationAppointment($request, $unit, true);
+        [$doctor, $room, $startsAt, $endsAt] = $this->resolveConsultationSchedule($data, $unit);
+
+        $scheduling->assertAvailable($doctor, $startsAt, $endsAt, $room, $appointment->id);
+
+        $previousStatus = $appointment->status;
+        if ($previousStatus !== $data['status']) {
+            $transitions->assertAllowed('appointment', $previousStatus, $data['status']);
+        }
+
+        $metadata = $appointment->metadata ?? [];
+        $metadata['notes'] = $data['notes'] ?? null;
+        $metadata['last_updated_from'] = 'unit_consultation_calendar';
+        $metadata['last_updated_by'] = $request->user()?->id;
+
+        DB::transaction(function () use ($appointment, $data, $doctor, $room, $startsAt, $endsAt, $metadata, $previousStatus, $request): void {
+            $appointment->update([
+                'doctor_id' => $doctor->id,
+                'procedure_area_id' => $room->id,
+                'specialty' => $data['specialty'],
+                'modality' => $data['modality'],
+                'location' => $room->unit_number ?: $room->location,
+                'status' => $data['status'],
+                'starts_at' => $startsAt,
+                'ends_at' => $endsAt,
+                'reason' => $data['reason'],
+                'metadata' => $metadata,
+            ]);
+
+            if ($previousStatus !== $data['status']) {
+                AppointmentStatusEvent::query()->create([
+                    'appointment_id' => $appointment->id,
+                    'changed_by' => $request->user()?->id,
+                    'from_status' => $previousStatus,
+                    'to_status' => $data['status'],
+                    'notes' => $data['notes'] ?? null,
+                    'metadata' => ['source' => 'unit_consultation_calendar'],
+                ]);
+            }
+        });
+
+        $audit->record($request, 'unit.appointment.updated', $appointment, 'unit', [
+            'starts_at' => $startsAt->toISOString(),
+            'status' => $data['status'],
+        ]);
+
+        return redirect()->route('unit.dashboard', [
+            'unit' => $unit->id,
+            'calendar_date' => $startsAt->toDateString(),
+        ])->with('status', 'Cita actualizada correctamente.');
+    }
+
     public function updateAppointmentStatus(Request $request, Appointment $appointment, PlatformAuditService $audit, DomainStateTransitionService $transitions): RedirectResponse
     {
         $this->authorizeAppointmentOwnership($request, $appointment);
 
         $data = $request->validate([
             'status' => ['required', Rule::in(['scheduled', 'confirmed', 'in_progress', 'completed', 'cancelled', 'no_show'])],
-            'notes' => ['nullable', 'string', 'max:500'],
+            'notes' => [Rule::requiredIf(fn () => $request->string('status')->toString() === 'cancelled'), 'nullable', 'string', 'max:500'],
         ]);
 
         $previousStatus = $appointment->status;
@@ -327,7 +647,7 @@ class UnitDashboardController extends Controller
     {
         $unit = $this->resolveUnit($request);
         $data = $request->validate([
-            'type' => ['required', Rule::in(['consulting', 'infusion', 'operating', 'recovery'])],
+            'type' => ['required', Rule::in(['consulting', 'infusion', 'operating', 'uci', 'uti', 'recovery'])],
             'location' => ['required', 'string', 'max:180'],
             'floor' => ['required', 'string', 'max:40'],
             'unit_number' => ['required', 'string', 'max:80'],
@@ -352,14 +672,14 @@ class UnitDashboardController extends Controller
             $this->persistProcedureArea($unit, $areaId, $data);
         });
         $audit->record($request, 'unit.procedure_area.created', $unit, 'unit', ['type' => $data['type'], 'unit_number' => $data['unit_number']]);
-        return redirect()->route('unit.dashboard', ['section' => 'procedure-areas'])->with('status', 'Subunidad registrada.');
+        return redirect()->route('unit.dashboard', ['section' => 'procedure-areas', 'catalog' => $data['type']])->with('status', 'Subunidad registrada.');
     }
 
     public function updateProcedureArea(Request $request, string $areaId, PlatformAuditService $audit): RedirectResponse
     {
         $unit = $this->resolveUnit($request);
         $data = $request->validate([
-            'type' => ['required', Rule::in(['consulting', 'infusion', 'operating', 'recovery'])],
+            'type' => ['required', Rule::in(['consulting', 'infusion', 'operating', 'uci', 'uti', 'recovery'])],
             'location' => ['required', 'string', 'max:180'], 'floor' => ['required', 'string', 'max:40'],
             'unit_number' => ['required', 'string', 'max:80'], 'capacity' => ['required', 'integer', 'min:1', 'max:999'],
             'responsible' => ['nullable', 'string', 'max:180'], 'schedule' => ['nullable', 'array'],
@@ -381,7 +701,7 @@ class UnitDashboardController extends Controller
             $this->persistProcedureArea($unit, $areaId, $data);
         });
         $audit->record($request, 'unit.procedure_area.updated', $unit, 'unit', ['area_id' => $areaId]);
-        return redirect()->route('unit.dashboard', ['section' => 'procedure-areas'])->with('status', 'Subunidad actualizada.');
+        return redirect()->route('unit.dashboard', ['section' => 'procedure-areas', 'catalog' => $data['type']])->with('status', 'Subunidad actualizada.');
     }
 
     private function persistProcedureArea(MedicalUnit $unit, string $sourceId, array $data): void
@@ -431,6 +751,47 @@ class UnitDashboardController extends Controller
         ]);
     }
 
+    private function validateConsultationAppointment(Request $request, MedicalUnit $unit, bool $updating = false): array
+    {
+        return $request->validate([
+            'patient_id' => ['required', 'integer', Rule::exists('patients', 'id')->where('status', 'active')],
+            'doctor_id' => ['required', 'integer', Rule::exists('doctors', 'id')->where(fn ($query) => $query
+                ->where('medical_unit_id', $unit->id)
+                ->where('status', 'active'))],
+            'procedure_area_id' => [
+                'required',
+                'integer',
+                Rule::exists('procedure_areas', 'id')->where(fn ($query) => $query
+                    ->where('medical_unit_id', $unit->id)
+                    ->where('type', 'consulting')
+                    ->where('status', 'active')),
+            ],
+            'specialty' => ['required', 'string', 'max:160'],
+            'modality' => ['required', Rule::in(['Presencial', 'Video llamada'])],
+            'appointment_date' => ['required', 'date_format:Y-m-d', ...($updating ? [] : ['after_or_equal:today'])],
+            'appointment_time' => ['required', 'date_format:H:i'],
+            'duration' => ['required', 'integer', Rule::in([20, 30, 45, 60])],
+            'reason' => ['required', 'string', 'max:500'],
+            'notes' => ['nullable', 'string', 'max:500'],
+            'status' => [$updating ? 'required' : 'nullable', Rule::in(['scheduled', 'confirmed', 'in_progress', 'completed'])],
+        ]);
+    }
+
+    private function resolveConsultationSchedule(array $data, MedicalUnit $unit): array
+    {
+        $doctor = Doctor::query()
+            ->where('medical_unit_id', $unit->id)
+            ->findOrFail($data['doctor_id']);
+        $room = ProcedureArea::query()
+            ->where('medical_unit_id', $unit->id)
+            ->where('type', 'consulting')
+            ->findOrFail($data['procedure_area_id']);
+        $startsAt = Carbon::createFromFormat('Y-m-d H:i', $data['appointment_date'].' '.$data['appointment_time']);
+        $endsAt = $startsAt->copy()->addMinutes((int) $data['duration']);
+
+        return [$doctor, $room, $startsAt, $endsAt];
+    }
+
     private function authorizeAppointmentOwnership(Request $request, Appointment $appointment): void
     {
         $user = $request->user();
@@ -451,6 +812,20 @@ class UnitDashboardController extends Controller
     private function resolveUnit(Request $request): MedicalUnit
     {
         $user = $request->user();
+
+        if ($request->filled('unit')) {
+            $requestedUnit = MedicalUnit::query()
+                ->with('institution')
+                ->findOrFail($request->integer('unit'));
+
+            $canUseUnit = in_array($user?->role, ['superadmin', 'admin'], true)
+                || ($user?->role === 'unit' && $requestedUnit->unit_username === $user->username)
+                || ($user?->role === 'institution' && (int) $requestedUnit->institution_id === (int) $user->institution?->id);
+
+            abort_unless($canUseUnit, 403, 'No puedes consultar otra unidad.');
+
+            return $requestedUnit;
+        }
 
         if ($user?->role === 'unit') {
             return MedicalUnit::query()

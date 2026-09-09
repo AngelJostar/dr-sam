@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Patient extends BaseModel
@@ -89,5 +91,47 @@ class Patient extends BaseModel
     public function documents(): HasMany
     {
         return $this->hasMany(Document::class);
+    }
+
+    public function administeredProfileLinks(): HasMany
+    {
+        return $this->hasMany(PatientProfileRelationship::class, 'administrator_patient_id');
+    }
+
+    public function activeAdministeredProfileLinks(): HasMany
+    {
+        return $this->administeredProfileLinks()->where('status', 'active');
+    }
+
+    public function administeredProfiles(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Patient::class,
+            'patient_profile_relationships',
+            'administrator_patient_id',
+            'managed_patient_id'
+        )
+            ->withPivot(['relationship_type_id', 'access_user_id', 'status', 'starts_at', 'ends_at', 'permissions', 'metadata'])
+            ->withTimestamps()
+            ->wherePivot('status', 'active');
+    }
+
+    public function administratorProfileLink(): HasOne
+    {
+        return $this->hasOne(PatientProfileRelationship::class, 'managed_patient_id')
+            ->where('status', 'active');
+    }
+
+    public function administratorProfiles(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Patient::class,
+            'patient_profile_relationships',
+            'managed_patient_id',
+            'administrator_patient_id'
+        )
+            ->withPivot(['relationship_type_id', 'access_user_id', 'status', 'starts_at', 'ends_at', 'permissions', 'metadata'])
+            ->withTimestamps()
+            ->wherePivot('status', 'active');
     }
 }

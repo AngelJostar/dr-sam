@@ -12,5 +12,6 @@
       @yield('content')
     </main>
     @stack('scripts')
+    <script src="{{ asset('js/drsam-table-filters.js') }}?v={{ filemtime(public_path('js/drsam-table-filters.js')) }}" defer></script>
   </body>
 </html>

@@ -1345,18 +1345,20 @@ body.native-shell .patient-portal-communities-view .kc-community-shortcut strong
 }
 .patient-portal-communities-view .kc-post-list {
   display: grid;
-  gap: 18px;
+  gap: 0;
+  overflow: hidden;
+  background: #fff;
 }
 .patient-portal-communities-view .kc-post {
   margin: 0;
-  padding: 14px;
-  border: 1px solid #d8ebef;
-  border-radius: 17px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
   background: #fff;
-  box-shadow: 0 18px 36px rgba(20, 66, 82, .07);
+  box-shadow: none;
 }
 .patient-portal-communities-view .kc-post header {
-  padding: 0 0 5px;
+  padding: 14px 14px 8px;
 }
 .patient-portal-communities-view .kc-post header img {
   width: 42px;
@@ -1374,14 +1376,24 @@ body.native-shell .patient-portal-communities-view .kc-community-shortcut strong
   font-weight: 700;
 }
 .patient-portal-communities-view .kc-post > p {
-  padding: 0 0 3px;
+  padding: 0 14px 10px;
   color: #21334d;
   font-size: 13px;
   line-height: 1.35;
 }
 .patient-portal-communities-view .kc-post-image {
   max-height: 560px;
-  border-radius: 12px;
+  border-radius: 0;
+}
+.patient-portal-communities-view .kc-post-actions {
+  padding: 12px 14px 6px;
+}
+.patient-portal-communities-view .kc-liked-by {
+  padding: 4px 14px 16px;
+}
+.patient-portal-communities-view .kc-post-messages,
+.patient-portal-communities-view .kc-post-share-panel {
+  margin-inline: 14px;
 }
 
 @media (max-width: 720px) {
@@ -1432,7 +1444,7 @@ body.native-shell .patient-portal-communities-view .kc-community-shortcut strong
   .patient-portal-communities-view .kc-story-add,
   .patient-portal-communities-view .kc-story-thumb { width: 68px; height: 68px; }
   .patient-portal-communities-view .kc-story b { font-size: 11px; }
-  .patient-portal-communities-view .kc-post { padding: 12px; }
+  .patient-portal-communities-view .kc-post { padding: 0; }
 }
 
 body.native-shell .patient-portal-communities-view .kc-category-card {

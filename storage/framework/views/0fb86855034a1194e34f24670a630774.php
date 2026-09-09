@@ -1,6 +1,6 @@
 
 
-<?php $__env->startSection('body_class', 'external-pharmacy-native-body'); ?>
+<?php $__env->startSection('body_class', 'operational-native-body external-pharmacy-native-body external-pharmacy-module-body'); ?>
 
 <?php
   $statusLabels = [
@@ -18,25 +18,22 @@
   $statusText = fn (?string $value) => $statusLabels[$value ?? ''] ?? ($value ? ucfirst(str_replace('_', ' ', $value)) : 'Sin estatus');
   $unitName = $profile?->medicalUnit?->name ?? 'B. Hospital General con Especialidades Juan Maria de Salvatierra';
   $unitCode = $profile?->medicalUnit?->code ?? $profile?->medicalUnit?->clues ?? 'BSIMB000672';
+  $institutionName = $profile?->medicalUnit?->institution?->name ?? 'IMSS BIENESTAR ESTADO DE MEXICO';
   $areaName = $profile?->area?->label ?? 'Area Operativa Farmacia';
-  $unitDescription = $unitName.' - '.$unitCode.' - '.$areaName.' - '.$unitName;
-  $sectionTitles = [
-    'pending' => 'Recetas y surtimiento',
-    'filled' => 'Recetas surtidas',
-    'prescription' => 'Formato de Receta Medica',
-    'inventory' => 'Inventario de farmacia externa',
-    'movements' => 'Bitacora de movimientos',
-    'warehouses' => 'Almacenes externos',
-    'catalog' => 'Catalogo de farmacia',
-  ];
   $menu = [
     'pending' => ['R', 'Recetas pendientes'],
-    'filled' => ['S', 'Recetas Surtidas'],
+    'filled' => ['S', 'Recetas surtidas'],
     'prescription' => ['F', 'Formato de Receta Medica'],
     'inventory' => ['I', 'Inventario'],
     'movements' => ['M', 'Movimientos'],
     'warehouses' => ['A', 'Almacenes'],
     'catalog' => ['C', 'Catalogo de farmacia'],
+  ];
+  $patientCatalogRouteParameters = $profile?->medicalUnit ? ['unit' => $profile->medicalUnit->id] : [];
+  $areaDefaultRoutes = [
+    'nursing' => ['area' => 'nursing', 'section' => 'pending'],
+    'oncology' => ['area' => 'oncology', 'section' => 'calendar', 'oncology_track' => 'infusions'],
+    'inpatient-pharmacy' => ['area' => 'inpatient-pharmacy', 'section' => 'pending'],
   ];
   $orderRows = $section === 'filled' ? $filledOrders : $pendingOrders;
   $warehouseRows = $inventory->groupBy(fn ($item) => $item->warehouse ?: 'Farmacia externa');
@@ -44,26 +41,76 @@
 ?>
 
 <?php $__env->startSection('content'); ?>
-  <div class="external-pharmacy-native-screen">
-    <aside class="external-pharmacy-native-sidebar" aria-label="Navegacion farmacia externa">
-      <div class="external-pharmacy-native-brand">
-        <span aria-hidden="true">+</span>
+  <div class="operational-native-screen external-pharmacy-operational-screen">
+    <header class="operational-native-topbar" aria-label="Barra superior operativa">
+      <strong>MODULO OPERATIVO</strong>
+      <span><?php echo e(strtoupper($institutionName)); ?></span>
+      <div class="operational-native-user">
+        <button type="button" aria-label="Notificaciones">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z"/><path d="M10 21h4"/></svg>
+        </button>
         <div>
-          <strong>Farmacia Externa</strong>
-          <small>Panel independiente</small>
+          <strong>Usuario activo</strong>
+          <small><?php echo e($unitName); ?></small>
         </div>
+        <form method="post" action="<?php echo e(route('logout')); ?>" class="operational-native-logout">
+          <?php echo csrf_field(); ?>
+          <button type="submit">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/><path d="M15 4h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4"/></svg>
+            Cerrar sesion
+          </button>
+        </form>
       </div>
+    </header>
 
-      <nav class="external-pharmacy-native-menu">
-        <?php $__currentLoopData = $menu; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => [$icon, $label]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-          <a class="<?php echo \Illuminate\Support\Arr::toCssClasses(['is-active' => $section === $key]); ?>" href="<?php echo e(route('external-pharmacy.dashboard', ['section' => $key])); ?>"><span><?php echo e($icon); ?></span><?php echo e($label); ?></a>
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+    <aside class="operational-native-sidebar" aria-label="Navegacion operativa">
+      <nav class="operational-native-menu operational-area-menu">
+        <a href="<?php echo e(route('operational.dashboard', $areaDefaultRoutes['nursing'])); ?>">
+          <span aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 21V5a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v16"/><path d="M16 9h3a1 1 0 0 1 1 1v11"/><path d="M8 8h4M10 6v4M8 14h4M8 18h4"/></svg>
+          </span>
+          Hospitalizacion
+          <i aria-hidden="true">›</i>
+        </a>
+        <a href="<?php echo e(route('operational.dashboard', $areaDefaultRoutes['oncology'])); ?>">
+          <span aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 6h16v15H4z"/><path d="M9 3h6v3H9z"/><path d="M12 10v7M8.5 13.5h7"/></svg>
+          </span>
+          Centro Oncologico
+          <i aria-hidden="true">›</i>
+        </a>
+        <a href="<?php echo e(route('operational.dashboard', $areaDefaultRoutes['inpatient-pharmacy'])); ?>">
+          <span aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="m7 16 9-9a3 3 0 0 1 4 4l-9 9a3 3 0 0 1-4-4Z"/><path d="m12 11 4 4"/></svg>
+          </span>
+          Farmacia intrahospitalaria
+          <i aria-hidden="true">›</i>
+        </a>
+        <a href="<?php echo e(route('outpatient.dashboard')); ?>">
+          <span aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M6 4v5a5 5 0 0 0 10 0V4"/><path d="M9 4H5"/><path d="M17 4h-4"/><path d="M11 14v2a4 4 0 0 0 8 0v-3"/><circle cx="19" cy="10" r="2"/></svg>
+          </span>
+          Consulta Externa
+          <i aria-hidden="true">›</i>
+        </a>
+        <a class="is-active" href="<?php echo e(route('external-pharmacy.dashboard')); ?>">
+          <span aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 9v11h16V9"/><path d="M3 9h18l-2-5H5L3 9Z"/><path d="M12 12v5M9.5 14.5h5"/></svg>
+          </span>
+          Farmacia Externa
+          <i aria-hidden="true">›</i>
+        </a>
+        <a href="<?php echo e(route('operational.patients.index', $patientCatalogRouteParameters)); ?>">
+          <span aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="9.5" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </span>
+          Catalogo de pacientes
+          <i aria-hidden="true">›</i>
+        </a>
       </nav>
-
-      <a class="external-pharmacy-native-back" href="<?php echo e(route('dashboard')); ?>">â† Modulo de acceso</a>
     </aside>
 
-    <section class="external-pharmacy-native-workspace">
+    <section class="operational-native-workspace external-pharmacy-module-main">
       <?php if(session('status')): ?>
         <div class="notice success"><?php echo e(session('status')); ?></div>
       <?php endif; ?>
@@ -79,34 +126,32 @@
         </div>
       <?php endif; ?>
 
-      <header class="external-pharmacy-native-header">
-        <div>
-          <p class="eyebrow">Farmacia externa</p>
-          <h1><?php echo e($sectionTitles[$section]); ?></h1>
-          <p><?php echo e($unitDescription); ?></p>
+      <section class="operational-oncology-carousel operational-compact-carousel external-pharmacy-module-carousel" aria-label="Modulo de Farmacia Externa" data-external-pharmacy-carousel>
+        <button class="operational-oncology-carousel-arrow" type="button" data-operational-carousel-prev aria-label="Anterior">‹</button>
+        <div class="operational-oncology-carousel-track">
+          <a class="operational-oncology-filter is-active" href="<?php echo e(route('external-pharmacy.dashboard', ['section' => 'pending'])); ?>">
+            <span class="operational-oncology-filter-initial" aria-hidden="true">F</span>
+            <span class="operational-oncology-filter-copy">
+              <strong>Farmacia Externa</strong>
+              <small>✓ Seleccionada</small>
+            </span>
+          </a>
         </div>
-        <div class="external-pharmacy-native-selectors">
-          <label>
-            Operar como
-            <select>
-              <option><?php echo e($areaName); ?> - <?php echo e($unitName); ?></option>
-            </select>
-          </label>
-          <label>
-            Unidad
-            <select>
-              <option><?php echo e($unitName); ?> - <?php echo e($unitCode); ?></option>
-            </select>
-          </label>
-          <time><?php echo e(strtolower(now()->format('d M Y'))); ?></time>
-        </div>
-      </header>
+        <button class="operational-oncology-carousel-arrow" type="button" data-operational-carousel-next aria-label="Siguiente">›</button>
+      </section>
+
+      <nav class="operational-section-tabs external-pharmacy-module-tabs" aria-label="Secciones de Farmacia Externa">
+        <?php $__currentLoopData = $menu; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => [$icon, $label]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+          <a class="<?php echo \Illuminate\Support\Arr::toCssClasses(['is-active' => $section === $key]); ?>" href="<?php echo e(route('external-pharmacy.dashboard', ['section' => $key])); ?>"><?php echo e($label); ?></a>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+      </nav>
 
       <?php if(in_array($section, ['pending', 'filled'], true)): ?>
-        <section class="external-pharmacy-native-card">
-          <div class="external-pharmacy-native-heading">
+        <section class="external-pharmacy-native-card operational-native-table-card operational-section-card external-pharmacy-module-card">
+          <div class="external-pharmacy-native-heading operational-native-table-heading">
             <div>
-              <h2><?php echo e($section === 'filled' ? 'Recetas surtidas' : 'Recetas activas'); ?></h2>
+              <p class="eyebrow"><?php echo e($section === 'filled' ? 'Historial de surtimiento' : 'Recetas activas'); ?></p>
+              <h2><?php echo e($section === 'filled' ? 'Recetas surtidas' : 'Recetas y surtimiento'); ?></h2>
                 <?php
                     $visibleMedicationCount = $orderRows->sum(function ($order) {
                         return $order->items->count();
@@ -134,8 +179,8 @@
             </form>
           <?php endif; ?>
 
-          <div class="external-pharmacy-native-table-scroll">
-            <table class="external-pharmacy-native-table">
+          <div class="external-pharmacy-native-table-scroll operational-native-table-scroll">
+            <table class="external-pharmacy-native-table operational-native-table">
               <thead>
                 <tr>
                   <th>Folio</th>
@@ -155,7 +200,10 @@
                   <?php $__currentLoopData = $order->items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <?php
                       $prescribedQuantity = (int) data_get($item->metadata, 'prescribed_quantity', $item->quantity);
-                      $filledQuantity = (int) data_get($item->metadata, 'filled_quantity', 0);
+                      $orderIsFilled = in_array($order->status, ['in_route', 'delivered'], true);
+                      $filledQuantity = $orderIsFilled
+                        ? $prescribedQuantity
+                        : (int) data_get($item->metadata, 'filled_quantity', 0);
                       $remainingQuantity = max(0, $prescribedQuantity - $filledQuantity);
                       $itemStatus = $remainingQuantity === 0 ? 'Surtida' : ($filledQuantity > 0 ? 'Parcial' : 'Pendiente');
                     ?>
@@ -198,7 +246,7 @@
       <?php endif; ?>
 
       <?php if($section === 'prescription'): ?>
-        <section class="external-pharmacy-native-card external-prescription-paper">
+        <section class="external-pharmacy-native-card operational-section-card external-prescription-paper external-pharmacy-module-card">
           <div class="external-prescription-inner">
             <header>
               <div>
@@ -274,11 +322,12 @@
       <?php endif; ?>
 
       <?php if($section === 'inventory'): ?>
-        <section class="external-pharmacy-native-card">
-          <div class="external-pharmacy-native-heading external-heading-action">
+        <section class="external-pharmacy-native-card operational-native-table-card operational-section-card external-pharmacy-module-card">
+          <div class="external-pharmacy-native-heading operational-native-table-heading external-heading-action">
             <div>
-              <h2>Inventario operativo</h2>
-              <p><?php echo e($inventory->count()); ?> visibles - <?php echo e($products->count()); ?> medicamentos</p>
+              <p class="eyebrow">Inventario operativo</p>
+              <h2>Inventario de farmacia externa</h2>
+              <p><?php echo e($inventory->count()); ?> registros visibles - <?php echo e($products->count()); ?> medicamentos</p>
             </div>
             <button type="button">Descargar</button>
           </div>
@@ -286,8 +335,8 @@
             <label class="search">Buscar<input placeholder="CNIS, insumo, descripcion, almacen o lote"></label>
             <label>Estado<select><option>Todos</option></select></label>
           </form>
-          <div class="external-pharmacy-native-table-scroll">
-            <table class="external-pharmacy-native-table external-inventory-table">
+          <div class="external-pharmacy-native-table-scroll operational-native-table-scroll">
+            <table class="external-pharmacy-native-table operational-native-table external-inventory-table">
               <thead><tr><th>Clave CNIS</th><th>Insumo</th><th>Existencia</th><th>Almacen</th><th>Lote / caducidad</th><th>Cobertura</th><th>Estado</th><th>Actualizado</th><th>Acciones</th></tr></thead>
               <tbody>
                 <?php $__empty_1 = true; $__currentLoopData = $inventory; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
@@ -313,7 +362,7 @@
           </div>
           <?php if($selectedMovementItem): ?>
             <div class="external-inventory-movement-panel">
-              <div class="external-pharmacy-native-heading">
+              <div class="external-pharmacy-native-heading operational-native-table-heading">
                 <div>
                   <h2>Registrar movimiento</h2>
                   <p><?php echo e($selectedMovementItem->product?->name); ?> Â· existencia actual <?php echo e($selectedMovementItem->quantity); ?></p>
@@ -339,10 +388,11 @@
       <?php endif; ?>
 
       <?php if($section === 'movements'): ?>
-        <section class="external-pharmacy-native-card">
-          <div class="external-pharmacy-native-heading external-heading-action">
+        <section class="external-pharmacy-native-card operational-native-table-card operational-section-card external-pharmacy-module-card">
+          <div class="external-pharmacy-native-heading operational-native-table-heading external-heading-action">
             <div>
-              <h2>Movimientos de inventario</h2>
+              <p class="eyebrow">Movimientos de inventario</p>
+              <h2>Bitacora de movimientos</h2>
               <p><?php echo e($movements->count()); ?> movimientos visibles</p>
             </div>
             <button type="button">Descargar</button>
@@ -351,8 +401,8 @@
             <label class="search">Buscar<input placeholder="CNIS, insumo, usuario, almacen o nota"></label>
             <label>Tipo<select><option>Todos</option></select></label>
           </form>
-          <div class="external-pharmacy-native-table-scroll">
-            <table class="external-pharmacy-native-table">
+          <div class="external-pharmacy-native-table-scroll operational-native-table-scroll">
+            <table class="external-pharmacy-native-table operational-native-table">
               <thead><tr><th>Fecha</th><th>Tipo</th><th>Clave CNIS</th><th>Insumo</th><th>Cantidad</th><th>Almacen</th><th>Usuario / origen</th><th>Notas</th></tr></thead>
               <tbody>
                 <?php $__empty_1 = true; $__currentLoopData = $movements; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $movement): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
@@ -376,7 +426,13 @@
       <?php endif; ?>
 
       <?php if($section === 'warehouses'): ?>
-        <section class="external-warehouse-grid">
+        <section class="external-pharmacy-warehouse-section operational-section-card">
+          <header class="external-pharmacy-section-heading">
+            <p class="eyebrow">Farmacia externa</p>
+            <h2>Almacenes externos</h2>
+            <p>Administra ubicaciones de resguardo, responsables y disponibilidad.</p>
+          </header>
+          <div class="external-warehouse-grid">
           <article class="external-pharmacy-native-card">
             <div class="external-pharmacy-native-heading"><h2>Nuevo almacen</h2><p>Alta rapida de ubicaciones de resguardo.</p></div>
             <form class="external-warehouse-form" method="post" action="<?php echo e(route('external-pharmacy.warehouses.store')); ?>">
@@ -427,21 +483,25 @@
               <?php endif; ?>
             </div>
           </article>
+          </div>
         </section>
       <?php endif; ?>
 
       <?php if($section === 'catalog'): ?>
-        <section class="external-pharmacy-native-card">
-          <div class="external-pharmacy-native-heading">
-            <h2>Catalogo de farmacia</h2>
-            <p><?php echo e($products->count()); ?> visibles - <?php echo e($products->count()); ?> medicamentos - <?php echo e($products->where('status', 'active')->count()); ?> activos / <?php echo e($products->where('status', '!=', 'active')->count()); ?> inactivos</p>
+        <section class="external-pharmacy-native-card operational-native-table-card operational-section-card external-pharmacy-module-card">
+          <div class="external-pharmacy-native-heading operational-native-table-heading">
+            <div>
+              <p class="eyebrow">Farmacia externa</p>
+              <h2>Catalogo de farmacia</h2>
+              <p><?php echo e($products->count()); ?> visibles - <?php echo e($products->count()); ?> medicamentos - <?php echo e($products->where('status', 'active')->count()); ?> activos / <?php echo e($products->where('status', '!=', 'active')->count()); ?> inactivos</p>
+            </div>
           </div>
           <form class="external-pharmacy-native-filters">
             <label class="search">Buscar<input placeholder="CNIS, medicamento, descripcion o grupo"></label>
             <label>Estado<select><option>Todos</option></select></label>
           </form>
-          <div class="external-pharmacy-native-table-scroll">
-            <table class="external-pharmacy-native-table">
+          <div class="external-pharmacy-native-table-scroll operational-native-table-scroll">
+            <table class="external-pharmacy-native-table operational-native-table">
               <thead><tr><th>Clave CNIS</th><th>Medicamento</th><th>Descripcion</th><th>Grupo</th><th>Cobertura</th><th>Estado</th><th>Actualizado</th></tr></thead>
               <tbody>
                 <?php $__empty_1 = true; $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
@@ -467,6 +527,22 @@
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startPush('scripts'); ?>
+  <script>
+    (() => {
+      document.querySelectorAll('[data-operational-carousel-prev], [data-operational-carousel-next]').forEach((button) => {
+        button.addEventListener('click', () => {
+          const carousel = button.closest('[data-external-pharmacy-carousel]');
+          const track = carousel?.querySelector('.operational-oncology-carousel-track');
+          if (!track) return;
+
+          track.scrollBy({
+            left: button.matches('[data-operational-carousel-prev]') ? -260 : 260,
+            behavior: 'smooth',
+          });
+        });
+      });
+    })();
+  </script>
   <?php if($section === 'prescription'): ?>
     <template id="external-prescription-medication-template">
       <tr data-prescription-medication-row>

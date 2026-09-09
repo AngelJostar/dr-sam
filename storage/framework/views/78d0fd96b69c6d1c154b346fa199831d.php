@@ -15,6 +15,9 @@
   ];
 
   $statusText = fn (?string $value) => $statusLabels[$value ?? ''] ?? ($value ? ucfirst(str_replace('_', ' ', $value)) : 'Sin estatus');
+  $syncLabels = ['not_synced' => 'No', 'pending' => 'Pendiente', 'approved' => 'Si', 'synced' => 'Si'];
+  $syncText = fn (?string $value) => $syncLabels[$value ?? 'not_synced'] ?? 'No';
+  $syncClass = fn (?string $value) => in_array($value, ['approved', 'synced'], true) ? 'is-ok' : ($value === 'pending' ? 'is-warning' : 'is-danger');
   $section = $section ?? 'home';
   $selectedPatient = $selectedPolicy?->patient;
   $totalPolicies = $allPolicies->count();
@@ -156,7 +159,21 @@
                 <h2>Listado de polizas</h2>
                 <p><?php echo e($totalPolicies); ?> registros</p>
               </div>
-              <button type="button">Descargar Datos</button>
+              <div class="insurance-advisor-native-heading-actions">
+                <details class="insurance-advisor-native-sync-bulk">
+                  <summary>Sincronizacion</summary>
+                  <form method="post" action="<?php echo e(route('insurance-advisor.policies.sync.bulk')); ?>">
+                    <?php echo csrf_field(); ?>
+                    <?php $__currentLoopData = ['search', 'status', 'insurer', 'sort']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $filter): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                      <?php if(request()->filled($filter)): ?><input type="hidden" name="<?php echo e($filter); ?>" value="<?php echo e(request($filter)); ?>"><?php endif; ?>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    <button name="target" value="no">Enviar a no sincronizados</button>
+                    <button name="target" value="pending">Reenviar pendientes</button>
+                    <button name="target" value="both">Enviar ambas</button>
+                  </form>
+                </details>
+                <a href="<?php echo e(route('insurance-advisor.policies.export', request()->only(['search', 'status', 'insurer', 'sort']))); ?>">Descargar Datos</a>
+              </div>
             </div>
 
             <form class="insurance-advisor-native-filters" method="get">
@@ -203,6 +220,7 @@
                     <th>Prima</th>
                     <th>Estatus</th>
                     <th>Acciones</th>
+                    <th>Sincronizacion</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -211,6 +229,7 @@
                       $isExpired = $policy->status === 'expired' || ($policy->ends_at && $policy->ends_at->isPast());
                       $daysUntilExpiration = $policy->ends_at ? now()->startOfDay()->diffInDays($policy->ends_at->copy()->startOfDay(), false) : null;
                       $isDue = ! $isExpired && $daysUntilExpiration !== null && $daysUntilExpiration <= 60;
+                      $policySyncStatus = data_get($policy->metadata, 'doctor_sync.status', 'not_synced');
                     ?>
                     <tr class="<?php echo e($selectedPolicy?->is($policy) ? 'is-selected' : ($isExpired ? 'is-expired' : ($isDue ? 'is-due' : ''))); ?>">
                       <td>
@@ -242,13 +261,24 @@
                               data-amount="<?php echo e((float) data_get($policy->metadata, 'premium', 31750)); ?>"
                             >Subir pago</button>
                           <?php endif; ?>
-                          <span>No</span>
+                          <button type="button" data-open-policy-assistant data-policy-id="<?php echo e($policy->id); ?>">Consultar</button>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="insurance-advisor-native-sync-cell">
+                          <span class="insurance-advisor-native-status <?php echo e($syncClass($policySyncStatus)); ?>"><?php echo e($syncText($policySyncStatus)); ?></span>
+                          <?php if (! (in_array($policySyncStatus, ['approved', 'synced'], true))): ?>
+                            <form method="post" action="<?php echo e(route('insurance-advisor.policies.sync', $policy)); ?>">
+                              <?php echo csrf_field(); ?>
+                              <button type="submit"><?php echo e($policySyncStatus === 'pending' ? 'Reenviar' : 'Enviar'); ?></button>
+                            </form>
+                          <?php endif; ?>
                         </div>
                       </td>
                     </tr>
                   <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                     <tr>
-                      <td colspan="9">No hay polizas registradas.</td>
+                      <td colspan="10">No hay polizas registradas.</td>
                     </tr>
                   <?php endif; ?>
                 </tbody>
@@ -273,6 +303,8 @@
                 <div><span>Coaseguro</span><strong><?php echo e(data_get($selectedPolicy->metadata, 'coinsurance', '10%')); ?></strong></div>
                 <div><span>Prima anual</span><strong>$<?php echo e(number_format((float) data_get($selectedPolicy->metadata, 'premium_annual', 42800), 0)); ?></strong></div>
                 <div><span>Pago</span><strong><?php echo e(data_get($selectedPolicy->metadata, 'payment_status', 'Pendiente de renovacion')); ?></strong></div>
+                <div><span>Sincronizacion</span><strong><?php echo e($syncText(data_get($selectedPolicy->metadata, 'doctor_sync.status', 'not_synced'))); ?></strong></div>
+                <div><span>Medico tratante</span><strong><?php echo e(data_get($selectedPolicy->metadata, 'doctor_sync.doctor_name', $selectedPatient?->primaryDoctor?->full_name ?? 'Por asignar')); ?></strong></div>
               </div>
               <div class="insurance-advisor-native-detail-actions">
                 <form method="post" action="<?php echo e(route('insurance-advisor.policies.messages.store', $selectedPolicy)); ?>"><?php echo csrf_field(); ?><button type="submit">Enviar mensaje</button></form>
@@ -284,8 +316,16 @@
                   data-policy="<?php echo e($selectedPolicy->policy_number); ?>"
                   data-amount="<?php echo e((float) data_get($selectedPolicy->metadata, 'premium', 31750)); ?>"
                 >Subir pago</button>
+                <button class="is-wide" type="button" data-open-policy-assistant data-policy-id="<?php echo e($selectedPolicy->id); ?>">Consultar poliza con Dr. Sam</button>
               </div>
-              <p class="insurance-advisor-native-note"><strong>Sin renovaciones cargadas</strong><br>El siguiente pago actualizara el periodo.</p>
+              <?php
+                $latestRenewal = collect(data_get($selectedPolicy->metadata, 'renewal_history', []))->first();
+              ?>
+              <p class="insurance-advisor-native-note">
+                <strong><?php echo e($latestRenewal ? 'Ultima renovacion registrada' : 'Sin renovaciones cargadas'); ?></strong><br>
+                <?php echo e($latestRenewal ? (($latestRenewal['paid_at'] ?? 'Sin fecha').' / $'.number_format((float) ($latestRenewal['amount'] ?? 0), 0)) : 'El siguiente pago actualizara el periodo.'); ?>
+
+              </p>
             <?php else: ?>
               <p class="empty-state">Selecciona una poliza para ver el detalle.</p>
             <?php endif; ?>
@@ -312,7 +352,7 @@
                     data-policy="<?php echo e($policy->policy_number); ?>"
                     data-amount="<?php echo e((float) data_get($policy->metadata, 'premium', 31750)); ?>"
                   >Subir pago</button>
-                  <button type="button">Avisar</button>
+                  <form method="post" action="<?php echo e(route('insurance-advisor.policies.messages.store', $policy)); ?>"><?php echo csrf_field(); ?><button type="submit">Avisar</button></form>
                 </div>
               </article>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
@@ -341,7 +381,7 @@
                     data-policy="<?php echo e($policy->policy_number); ?>"
                     data-amount="<?php echo e((float) data_get($policy->metadata, 'premium', 31750)); ?>"
                   >Subir pago</button>
-                  <button type="button">Avisar</button>
+                  <form method="post" action="<?php echo e(route('insurance-advisor.policies.messages.store', $policy)); ?>"><?php echo csrf_field(); ?><button type="submit">Avisar</button></form>
                 </div>
               </article>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
@@ -389,7 +429,7 @@
         <div class="insurance-advisor-native-claims-title">
           <div>
             <h2>Siniestros</h2>
-            <p>Consulta y gestiona tus siniestros de reembolso.</p>
+            <p>Consulta y gestiona reembolsos, pagos directos y altas hospitalarias.</p>
           </div>
           <button type="button" data-new-claim-toggle>+ Nuevo siniestro</button>
         </div>
@@ -410,6 +450,7 @@
               <select name="type" required>
                 <option value="reimbursement" <?php if(old('type') === 'reimbursement'): echo 'selected'; endif; ?>>Reembolso</option>
                 <option value="direct_payment" <?php if(old('type') === 'direct_payment'): echo 'selected'; endif; ?>>Pago directo a hospital</option>
+                <option value="hospital_discharge" <?php if(old('type') === 'hospital_discharge'): echo 'selected'; endif; ?>>Alta hospitalaria</option>
               </select>
             </label>
             <label>Hospital<input name="hospital" value="<?php echo e(old('hospital')); ?>" required></label>
@@ -428,23 +469,29 @@
             <div class="insurance-advisor-native-claim-columns" aria-hidden="true">
               <span>Siniestro</span><span>Asegurado</span><span>Fecha</span><span>Documentos pendientes</span><span>Estatus</span>
             </div>
-            <?php $__currentLoopData = $claims; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $claim): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-              <article class="<?php echo e($loop->first ? 'is-open' : ''); ?>" data-claim-card>
-                <button class="insurance-advisor-native-claim-row" type="button" data-claim-toggle aria-expanded="<?php echo e($loop->first ? 'true' : 'false'); ?>">
+            <?php $__empty_1 = true; $__currentLoopData = $claims; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $claim): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+              <?php
+                $claimIsOpen = request()->filled('claim') ? request('claim') === $claim['folio'] : $loop->first;
+                $claimPendingDocuments = $claim['documents_pending'];
+                $claimInReview = in_array($claim['stage'], ['En revision aseguradora', 'Alta hospitalaria'], true);
+                $claimResolved = $claim['stage'] === 'Resolucion / pago';
+              ?>
+              <article class="<?php echo e($claimIsOpen ? 'is-open' : ''); ?>" data-claim-card data-claim-folio="<?php echo e($claim['folio']); ?>">
+                <button class="insurance-advisor-native-claim-row" type="button" data-claim-toggle aria-expanded="<?php echo e($claimIsOpen ? 'true' : 'false'); ?>">
                   <div><strong><?php echo e($claim['folio']); ?></strong><span><?php echo e($claim['type']); ?></span></div>
                   <div><strong><?php echo e($claim['patient']); ?></strong><span><?php echo e($claim['hospital']); ?></span></div>
                   <div><?php echo e($claim['date']); ?></div>
-                  <div><span class="insurance-advisor-native-status is-warning">Pendiente</span><small><?php echo e($claim['documents']); ?> por subir</small></div>
-                  <div><span class="insurance-advisor-native-status is-ok"><?php echo e($claim['status']); ?></span><small data-claim-toggle-label><?php echo e($loop->first ? 'Ocultar detalle ^' : 'Ver detalle >'); ?></small></div>
+                  <div><span class="insurance-advisor-native-status <?php echo e($claimPendingDocuments ? 'is-warning' : 'is-ok'); ?>"><?php echo e($claimPendingDocuments ? 'Pendiente' : 'Completo'); ?></span><small><?php echo e($claimPendingDocuments); ?> por subir</small></div>
+                  <div><span class="insurance-advisor-native-status <?php echo e($claimInReview || $claimResolved ? 'is-ok' : 'is-warning'); ?>"><?php echo e($claim['status']); ?></span><small data-claim-toggle-label><?php echo e($claimIsOpen ? 'Ocultar detalle ^' : 'Ver detalle >'); ?></small></div>
                 </button>
-                <div class="insurance-advisor-native-claim-detail" data-claim-detail <?php if(! $loop->first): ?> hidden <?php endif; ?>>
+                <div class="insurance-advisor-native-claim-detail" data-claim-detail <?php if(! $claimIsOpen): ?> hidden <?php endif; ?>>
                     <div class="insurance-advisor-native-claim-summary">
                       <div>
-                    <span>Reembolso</span>
+                    <span><?php echo e($claim['type']); ?></span>
                     <h2><?php echo e($claim['folio']); ?> / <?php echo e($claim['patient']); ?></h2>
                     <p><?php echo e($claim['hospital']); ?> / <?php echo e($claim['date']); ?></p>
                       </div>
-                      <strong><?php echo e($claim['documents']); ?> docs pendientes</strong>
+                      <strong><?php echo e($claimPendingDocuments ? $claimPendingDocuments.' docs pendientes' : 'Documentos completos'); ?></strong>
                     </div>
                     <div class="insurance-advisor-native-claim-meta">
                       <div><span>Poliza</span><strong><?php echo e($claim['policy']->policy_number); ?></strong></div>
@@ -453,29 +500,74 @@
                       <div><span>Monto estimado</span><strong>$<?php echo e(number_format($claim['amount'])); ?></strong></div>
                     </div>
                     <div class="insurance-advisor-native-claim-steps">
-                      <div class="is-active"><strong>Documentacion</strong><span>Etapa actual</span></div>
-                      <div><strong>En revision aseguradora</strong><span>Pendiente</span></div>
-                      <div><strong>Resolucion / pago</strong><span>Pendiente</span></div>
+                      <div class="<?php echo e(! $claimInReview && ! $claimResolved ? 'is-active' : ''); ?>"><strong>Documentacion</strong><span><?php echo e(! $claimInReview && ! $claimResolved ? 'Etapa actual' : 'Completada'); ?></span></div>
+                      <div class="<?php echo e($claimInReview ? 'is-active' : ''); ?>"><strong>En revision aseguradora</strong><span><?php echo e($claimInReview ? 'Etapa actual' : ($claimResolved ? 'Completada' : 'Pendiente')); ?></span></div>
+                      <div class="<?php echo e($claimResolved ? 'is-active' : ''); ?>"><strong>Resolucion / pago</strong><span><?php echo e($claimResolved ? 'Etapa actual' : 'Pendiente'); ?></span></div>
                     </div>
                     <div class="insurance-advisor-native-claim-actions">
-                      <button type="button">Solicitar documentos</button>
-                      <button type="button">Tramitar alta hospitalaria</button>
-                      <button type="button">Seguimiento</button>
-                      <button type="button">Enviar a aseguradora</button>
+                      <form method="post" action="<?php echo e(route('insurance-advisor.claims.documents.request', [$claim['policy'], $claim['folio']])); ?>"><?php echo csrf_field(); ?><button type="submit">Solicitar documentos</button></form>
+                      <form method="post" action="<?php echo e(route('insurance-advisor.claims.discharge', [$claim['policy'], $claim['folio']])); ?>"><?php echo csrf_field(); ?><button type="submit">Tramitar alta hospitalaria</button></form>
+                      <button type="button" data-open-claim-follow-up data-action="<?php echo e(route('insurance-advisor.claims.follow-up', [$claim['policy'], $claim['folio']])); ?>" data-claim="<?php echo e($claim['folio']); ?>">Seguimiento</button>
+                      <form method="post" action="<?php echo e(route('insurance-advisor.claims.send-insurer', [$claim['policy'], $claim['folio']])); ?>"><?php echo csrf_field(); ?><button type="submit">Enviar a aseguradora</button></form>
                     </div>
                     <table class="insurance-advisor-native-documents">
                       <thead><tr><th>Documento</th><th>Requerido</th><th>Estatus</th><th>Archivo cargado</th><th>Subir archivo</th></tr></thead>
                       <tbody>
-                        <?php $__currentLoopData = ['Identificacion oficial', 'Informe medico', 'Facturas CFDI', 'Comprobantes de pago', 'Estado de cuenta', 'Solicitud de reembolso']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $document): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                          <?php ($received = ! in_array($document, ['Comprobantes de pago', 'Solicitud de reembolso'], true)); ?>
-                          <tr class="<?php echo e($received ? 'is-received' : 'is-pending'); ?>"><td><?php echo e($document); ?> *</td><td>Si</td><td><span class="insurance-advisor-native-status <?php echo e($received ? 'is-ok' : 'is-warning'); ?>"><?php echo e($received ? 'Recibido' : 'Pendiente'); ?></span></td><td><?php echo e($received ? Str::slug($document).'.pdf' : 'Sin archivo'); ?></td><td><input type="file"></td></tr>
+                        <?php $__currentLoopData = $claim['documents']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $document): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                          <?php ($received = filled($document['file_path'] ?? null) || filled($document['file_name'] ?? null) || ($document['status'] ?? null) === 'received'); ?>
+                          <tr class="<?php echo e($received ? 'is-received' : 'is-pending'); ?>">
+                            <td><?php echo e($document['name']); ?> <?php echo e($document['required'] ? '*' : ''); ?></td>
+                            <td><?php echo e($document['required'] ? 'Si' : 'No'); ?></td>
+                            <td><span class="insurance-advisor-native-status <?php echo e($received ? 'is-ok' : 'is-warning'); ?>"><?php echo e($received ? 'Recibido' : 'Pendiente'); ?></span></td>
+                            <td><?php echo e($document['file_name'] ?? 'Sin archivo'); ?></td>
+                            <td>
+                              <form class="insurance-advisor-native-document-upload" method="post" enctype="multipart/form-data" action="<?php echo e(route('insurance-advisor.claims.documents.store', [$claim['policy'], $claim['folio']])); ?>">
+                                <?php echo csrf_field(); ?>
+                                <input type="hidden" name="document_key" value="<?php echo e($document['key']); ?>">
+                                <input name="document_file" type="file" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" required>
+                                <button type="submit"><?php echo e($received ? 'Reemplazar' : 'Subir'); ?></button>
+                              </form>
+                            </td>
+                          </tr>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                       </tbody>
                     </table>
-                    <p class="insurance-advisor-native-claim-note"><?php echo e(now()->subDays(5)->format('d M Y')); ?> - El paciente solicito reembolso por gastos hospitalarios.</p>
+                    <details class="insurance-advisor-native-quotations">
+                      <summary><span>Cotizaciones</span><small><?php echo e(count($claim['quotations']) ? count($claim['quotations']).' solicitudes registradas' : 'Sin cotizaciones solicitadas'); ?></small></summary>
+                      <div>
+                        <?php if(count($claim['quotations'])): ?>
+                          <table>
+                            <thead><tr><th>Folio</th><th>Servicio</th><th>Institucion / unidad</th><th>Fecha</th><th>Estatus</th></tr></thead>
+                            <tbody>
+                              <?php $__currentLoopData = $claim['quotations']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $quotation): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <tr><td><?php echo e($quotation['id']); ?></td><td><?php echo e($quotation['service_label']); ?></td><td><?php echo e($quotation['institution']); ?> / <?php echo e($quotation['unit']); ?></td><td><?php echo e(filled($quotation['created_at'] ?? null) ? \Illuminate\Support\Carbon::parse($quotation['created_at'])->format('d M Y') : 'Sin fecha'); ?></td><td><span class="insurance-advisor-native-status is-warning"><?php echo e($quotation['status'] ?? 'Solicitada'); ?></span></td></tr>
+                              <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </tbody>
+                          </table>
+                        <?php endif; ?>
+                        <form class="insurance-advisor-native-quotation-form" method="post" enctype="multipart/form-data" action="<?php echo e(route('insurance-advisor.claims.quotations.store', [$claim['policy'], $claim['folio']])); ?>">
+                          <?php echo csrf_field(); ?>
+                          <label>Servicio<select name="service" required><?php $__currentLoopData = $quotationServices; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><option value="<?php echo e($key); ?>"><?php echo e($label); ?></option><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?></select></label>
+                          <label>Institucion<input name="institution" required></label>
+                          <label>Unidad<input name="unit" required></label>
+                          <label>Receta<input name="prescription_file" type="file" accept=".pdf,.jpg,.jpeg,.png" required></label>
+                          <label>Resumen clinico<input name="clinical_summary_file" type="file" accept=".pdf,.jpg,.jpeg,.png" required></label>
+                          <button type="submit">Solicitar cotizacion</button>
+                        </form>
+                      </div>
+                    </details>
+                    <div class="insurance-advisor-native-claim-notes" aria-label="Bitacora del siniestro">
+                      <?php $__empty_2 = true; $__currentLoopData = $claim['notes']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $note): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_2 = false; ?>
+                        <p><?php echo e(filled($note['at'] ?? null) ? \Illuminate\Support\Carbon::parse($note['at'])->format('d M Y, H:i') : 'Sin fecha'); ?> - <?php echo e($note['text']); ?></p>
+                      <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_2): ?>
+                        <p>Sin seguimientos registrados.</p>
+                      <?php endif; ?>
+                    </div>
                 </div>
               </article>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+              <p class="empty-state">No hay siniestros registrados.</p>
+            <?php endif; ?>
           </div>
           <a class="insurance-advisor-native-claims-footer" href="<?php echo e(route('insurance-advisor.dashboard', ['section' => 'claims'])); ?>">Ver todos los siniestros</a>
         </section>
@@ -504,6 +596,47 @@
         </form>
       </section>
     </div>
+
+    <div class="insurance-advisor-renewal-backdrop" data-claim-follow-up-modal hidden>
+      <section class="insurance-advisor-renewal-dialog" role="dialog" aria-modal="true" aria-labelledby="insurance-claim-follow-up-title">
+        <header>
+          <div>
+            <h2 id="insurance-claim-follow-up-title">Seguimiento de siniestro</h2>
+            <span data-claim-follow-up-label>Selecciona un siniestro</span>
+          </div>
+          <button type="button" data-close-claim-follow-up aria-label="Cerrar">Cerrar</button>
+        </header>
+        <form method="post" data-claim-follow-up-form>
+          <?php echo csrf_field(); ?>
+          <label class="is-wide">Nota de seguimiento<textarea name="note" rows="5" maxlength="1200" required placeholder="Acuerdo, llamada, documento solicitado o avance del tramite"></textarea></label>
+          <div class="insurance-advisor-renewal-actions is-wide">
+            <button type="submit">Guardar seguimiento</button>
+            <button type="button" data-close-claim-follow-up>Cancelar</button>
+          </div>
+        </form>
+      </section>
+    </div>
+
+    <div class="insurance-advisor-renewal-backdrop" data-policy-assistant-modal hidden>
+      <section class="insurance-advisor-native-assistant" role="dialog" aria-modal="true" aria-labelledby="insurance-policy-assistant-title">
+        <header>
+          <div class="insurance-advisor-native-assistant-identity">
+            <span>DS</span>
+            <div><h2 id="insurance-policy-assistant-title">Dr. Sam</h2><small>Asistente de polizas</small></div>
+          </div>
+          <div><strong data-policy-assistant-status>Poliza</strong><small data-policy-assistant-label>Selecciona una poliza</small></div>
+          <button type="button" data-close-policy-assistant aria-label="Cerrar">X</button>
+        </header>
+        <div class="insurance-advisor-native-assistant-messages" data-policy-assistant-messages aria-live="polite"></div>
+        <form class="insurance-advisor-native-assistant-form" data-policy-assistant-form>
+          <button type="button" data-policy-assistant-attach>Adjuntar</button>
+          <input type="file" data-policy-assistant-file accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" hidden>
+          <input name="question" autocomplete="off" placeholder="Escribe tu pregunta sobre la poliza" required>
+          <button type="button" data-policy-assistant-voice>Dictar</button>
+          <button type="submit">Enviar</button>
+        </form>
+      </section>
+    </div>
   </div>
 <?php $__env->stopSection(); ?>
 
@@ -513,6 +646,9 @@
       const modal = document.querySelector('[data-renewal-modal]');
       const form = document.querySelector('[data-renewal-form]');
       const policyLabel = document.querySelector('[data-renewal-policy]');
+      const followUpModal = document.querySelector('[data-claim-follow-up-modal]');
+      const followUpForm = document.querySelector('[data-claim-follow-up-form]');
+      const followUpLabel = document.querySelector('[data-claim-follow-up-label]');
       if (!modal || !form || !policyLabel) return;
       let selectedCard = null;
 
@@ -524,8 +660,28 @@
         selectedCard?.classList.remove('is-selected');
         selectedCard = null;
       };
+      const closeFollowUp = () => {
+        if (!followUpModal || !followUpForm || !followUpLabel) return;
+        followUpModal.hidden = true;
+        followUpForm.reset();
+        followUpLabel.textContent = 'Selecciona un siniestro';
+      };
 
       document.addEventListener('click', (event) => {
+        const followUpOpener = event.target.closest('[data-open-claim-follow-up]');
+        if (followUpOpener && followUpModal && followUpForm && followUpLabel) {
+          followUpForm.action = followUpOpener.dataset.action;
+          followUpLabel.textContent = followUpOpener.dataset.claim;
+          followUpModal.hidden = false;
+          followUpForm.querySelector('textarea')?.focus();
+          return;
+        }
+
+        if (event.target.closest('[data-close-claim-follow-up]') || event.target === followUpModal) {
+          closeFollowUp();
+          return;
+        }
+
         const newClaimToggle = event.target.closest('[data-new-claim-toggle]');
         if (newClaimToggle) {
           const newClaimPanel = document.querySelector('[data-new-claim-panel]');
@@ -576,6 +732,141 @@
           return;
         }
         if (event.target.closest('[data-close-renewal]') || event.target === modal) close();
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && !modal.hidden) close();
+        if (event.key === 'Escape' && followUpModal && !followUpModal.hidden) closeFollowUp();
+      });
+    })();
+
+    (() => {
+      const policies = <?php echo e(Illuminate\Support\Js::from($policyAssistantData)); ?>;
+      const modal = document.querySelector('[data-policy-assistant-modal]');
+      const messages = document.querySelector('[data-policy-assistant-messages]');
+      const form = document.querySelector('[data-policy-assistant-form]');
+      const label = document.querySelector('[data-policy-assistant-label]');
+      const status = document.querySelector('[data-policy-assistant-status]');
+      const fileInput = document.querySelector('[data-policy-assistant-file]');
+      if (!modal || !messages || !form || !label || !status || !fileInput) return;
+
+      let activePolicy = null;
+      let recognition = null;
+      const conversations = new Map();
+      const currency = new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN', maximumFractionDigits: 0 });
+      const normalize = (value) => String(value || '').toLocaleLowerCase('es').normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+      const addMessage = (role, content, persist = true) => {
+        const node = document.createElement('p');
+        node.className = role === 'user' ? 'is-user' : 'is-assistant';
+        node.textContent = content;
+        messages.appendChild(node);
+        messages.scrollTop = messages.scrollHeight;
+        if (activePolicy && persist) {
+          const thread = conversations.get(String(activePolicy.id)) || [];
+          thread.push({ role, content });
+          conversations.set(String(activePolicy.id), thread.slice(-30));
+        }
+      };
+
+      const responseFor = (policy, question) => {
+        const query = normalize(question);
+        const claims = Array.isArray(policy.claims) ? policy.claims : [];
+        const pendingDocuments = claims.reduce((total, claim) => total + Number(claim.documents_pending || 0), 0);
+        const syncLabel = ['approved', 'synced'].includes(policy.sync_status) ? 'sincronizada' : (policy.sync_status === 'pending' ? 'pendiente' : 'no sincronizada');
+
+        if (/(venc|vigenc|fecha|estatus)/.test(query)) {
+          return `La poliza ${policy.policy_number} tiene vigencia del ${policy.starts_at} al ${policy.ends_at}. Su estatus registrado es ${policy.status}.`;
+        }
+        if (/(pago|prima|renov|recibo|comprobante)/.test(query)) {
+          return `La prima registrada es ${currency.format(policy.premium)} y el estatus de pago es ${policy.payment_status}. La renovacion se registra desde Subir pago.`;
+        }
+        if (/(deduc|coaseg|participacion)/.test(query)) {
+          return `El deducible es ${currency.format(policy.deductible)} y el coaseguro registrado es ${policy.coinsurance}.`;
+        }
+        if (/(siniestro|reembolso|hospital|tramite|document)/.test(query)) {
+          if (!claims.length) return 'Esta poliza no tiene siniestros registrados.';
+          return `Hay ${claims.length} siniestro(s) relacionado(s) y ${pendingDocuments} documento(s) pendiente(s). Puedes abrir Siniestros para gestionar archivos, seguimiento y envio a la aseguradora.`;
+        }
+        if (/(sincron|medico|vincul|plataforma)/.test(query)) {
+          return `La poliza esta ${syncLabel} con el expediente medico. Puedes enviar o reenviar la solicitud desde la columna Sincronizacion.`;
+        }
+        if (/(cancer|oncolog|quimio|cobertura|cubre)/.test(query)) {
+          return `La cobertura especifica debe validarse contra las condiciones generales, endosos, diagnostico, periodos de espera y autorizacion de ${policy.insurer}. Los datos actuales muestran ${policy.product}, deducible ${currency.format(policy.deductible)} y coaseguro ${policy.coinsurance}.`;
+        }
+
+        return `Resumen: ${policy.patient}, poliza ${policy.policy_number} con ${policy.insurer}, producto ${policy.product}, prima ${currency.format(policy.premium)}, sincronizacion ${syncLabel} y ${claims.length} siniestro(s).`;
+      };
+
+      const renderThread = () => {
+        messages.replaceChildren();
+        const thread = conversations.get(String(activePolicy.id));
+        if (thread?.length) {
+          thread.forEach((entry) => addMessage(entry.role, entry.content, false));
+          return;
+        }
+        addMessage('assistant', `Puedo ayudarte a revisar la poliza ${activePolicy.policy_number}, su vigencia, renovacion, documentos, sincronizacion y siniestros.`);
+      };
+
+      const open = (policyId) => {
+        activePolicy = policies[String(policyId)];
+        if (!activePolicy) return;
+        label.textContent = `${activePolicy.patient} / ${activePolicy.policy_number}`;
+        status.textContent = activePolicy.status === 'active' ? 'Poliza activa' : 'Poliza '+activePolicy.status;
+        renderThread();
+        modal.hidden = false;
+        form.querySelector('[name="question"]')?.focus();
+      };
+
+      const close = () => {
+        modal.hidden = true;
+        form.reset();
+        recognition?.stop();
+        recognition = null;
+      };
+
+      document.addEventListener('click', (event) => {
+        const opener = event.target.closest('[data-open-policy-assistant]');
+        if (opener) {
+          open(opener.dataset.policyId);
+          return;
+        }
+        if (event.target.closest('[data-close-policy-assistant]') || event.target === modal) close();
+        if (event.target.closest('[data-policy-assistant-attach]')) fileInput.click();
+        if (event.target.closest('[data-policy-assistant-voice]')) {
+          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+          if (!SpeechRecognition) {
+            addMessage('assistant', 'El dictado no esta disponible en este navegador.');
+            return;
+          }
+          recognition?.stop();
+          recognition = new SpeechRecognition();
+          recognition.lang = 'es-MX';
+          recognition.interimResults = false;
+          recognition.onresult = (speechEvent) => {
+            form.querySelector('[name="question"]').value = speechEvent.results[0][0].transcript;
+          };
+          recognition.start();
+        }
+      });
+
+      fileInput.addEventListener('change', () => {
+        const file = fileInput.files?.[0];
+        if (!file) return;
+        addMessage('user', `Archivo adjunto: ${file.name}`);
+        addMessage('assistant', 'Archivo recibido en esta consulta. Indica que dato deseas revisar.');
+        fileInput.value = '';
+      });
+
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        if (!activePolicy) return;
+        const input = form.querySelector('[name="question"]');
+        const question = input.value.trim();
+        if (!question) return;
+        addMessage('user', question);
+        input.value = '';
+        window.setTimeout(() => addMessage('assistant', responseFor(activePolicy, question)), 120);
       });
 
       document.addEventListener('keydown', (event) => {

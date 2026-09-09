@@ -12,6 +12,7 @@
       <?php echo $__env->yieldContent('content'); ?>
     </main>
     <?php echo $__env->yieldPushContent('scripts'); ?>
+    <script src="<?php echo e(asset('js/drsam-table-filters.js')); ?>?v=<?php echo e(filemtime(public_path('js/drsam-table-filters.js'))); ?>" defer></script>
   </body>
 </html>
 <?php /**PATH C:\laragon\www\dr-sam\resources\views/layouts/app.blade.php ENDPATH**/ ?>

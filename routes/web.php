@@ -105,6 +105,9 @@ Route::middleware('auth')->group(function (): void {
     Route::get('/operational', [OperationalDashboardController::class, 'index'])
         ->middleware('role:superadmin,admin,institution,unit,operational')
         ->name('operational.dashboard');
+    Route::get('/operational/patients', [OperationalDashboardController::class, 'patientCatalog'])
+        ->middleware('role:superadmin,admin,institution,unit,operational')
+        ->name('operational.patients.index');
     Route::patch('/operational/provider-requests/{providerRequest}/status', [OperationalDashboardController::class, 'updateProviderRequestStatus'])
         ->middleware(['role:superadmin,admin,institution,unit,operational', 'permission:operational.provider_requests.update'])
         ->name('operational.provider-requests.status');
@@ -129,6 +132,9 @@ Route::middleware('auth')->group(function (): void {
     Route::patch('/operational/provider-requests/{providerRequest}/infusion-assignment', [OperationalDashboardController::class, 'assignInfusionRoom'])
         ->middleware('role:superadmin,admin,institution,unit,operational')
         ->name('operational.infusion-assignments.update');
+    Route::patch('/operational/provider-requests/{providerRequest}/mixture-schedule', [OperationalDashboardController::class, 'updateMixtureSchedule'])
+        ->middleware('role:superadmin,admin,institution,unit,operational')
+        ->name('operational.mixture-schedules.update');
     Route::get('/outpatient', [OutpatientDashboardController::class, 'index'])
         ->middleware('role:superadmin,admin,institution,unit,operational')
         ->name('outpatient.dashboard');
@@ -194,6 +200,15 @@ Route::middleware('auth')->group(function (): void {
     Route::get('/unit/services/{contract}/report', [UnitDashboardController::class, 'downloadServiceReport'])
         ->middleware('role:superadmin,admin,institution,unit')
         ->name('unit.services.report');
+    Route::post('/unit/nutrition-requests', [UnitDashboardController::class, 'storeNutritionRequest'])
+        ->middleware(['role:superadmin,admin,institution,unit', 'permission:operational.service_requests.create'])
+        ->name('unit.nutrition-requests.store');
+    Route::post('/unit/appointments', [UnitDashboardController::class, 'storeAppointment'])
+        ->middleware(['role:superadmin,admin,institution,unit', 'permission:outpatient.appointments.create'])
+        ->name('unit.appointments.store');
+    Route::patch('/unit/appointments/{appointment}', [UnitDashboardController::class, 'updateAppointment'])
+        ->middleware(['role:superadmin,admin,institution,unit', 'permission:outpatient.appointments.update'])
+        ->name('unit.appointments.update');
     Route::patch('/unit/appointments/{appointment}/status', [UnitDashboardController::class, 'updateAppointmentStatus'])
         ->middleware(['role:superadmin,admin,institution,unit', 'permission:unit.appointments.update'])
         ->name('unit.appointments.status');
@@ -248,6 +263,9 @@ Route::middleware('auth')->group(function (): void {
     Route::patch('/institution/units/{unit}', [InstitutionDashboardController::class, 'updateUnit'])
         ->middleware(['role:superadmin,admin,institution', 'permission:institution.units.update'])
         ->name('institution.units.update');
+    Route::patch('/institution/units/{unit}/password', [InstitutionDashboardController::class, 'updateUnitPassword'])
+        ->middleware(['role:superadmin,admin,institution', 'permission:institution.units.update'])
+        ->name('institution.units.password');
     Route::get('/superadmin', [SuperAdminDashboardController::class, 'index'])
         ->middleware('role:superadmin')
         ->name('superadmin.dashboard');
@@ -317,9 +335,18 @@ Route::middleware('auth')->group(function (): void {
     Route::get('/insurance-advisor', [InsuranceAdvisorController::class, 'index'])
         ->middleware('role:superadmin,admin,insurance_advisor')
         ->name('insurance-advisor.dashboard');
+    Route::get('/insurance-advisor/policies/export', [InsuranceAdvisorController::class, 'exportPolicies'])
+        ->middleware('role:superadmin,admin,insurance_advisor')
+        ->name('insurance-advisor.policies.export');
     Route::post('/insurance-advisor/alerts/sync', [InsuranceAdvisorController::class, 'syncAlerts'])
         ->middleware(['role:superadmin,admin,insurance_advisor', 'permission:insurance_advisor.policies.update'])
         ->name('insurance-advisor.alerts.sync');
+    Route::post('/insurance-advisor/policies/sync', [InsuranceAdvisorController::class, 'bulkPolicySync'])
+        ->middleware(['role:superadmin,admin,insurance_advisor', 'permission:insurance_advisor.policies.update'])
+        ->name('insurance-advisor.policies.sync.bulk');
+    Route::post('/insurance-advisor/policies/{policy}/sync', [InsuranceAdvisorController::class, 'requestPolicySync'])
+        ->middleware(['role:superadmin,admin,insurance_advisor', 'permission:insurance_advisor.policies.update'])
+        ->name('insurance-advisor.policies.sync');
     Route::post('/insurance-advisor/policies/{policy}/messages', [InsuranceAdvisorController::class, 'sendPolicyMessage'])
         ->middleware(['role:superadmin,admin,insurance_advisor', 'permission:insurance_advisor.policies.update'])
         ->name('insurance-advisor.policies.messages.store');
@@ -332,6 +359,24 @@ Route::middleware('auth')->group(function (): void {
     Route::post('/insurance-advisor/claims', [InsuranceAdvisorController::class, 'storeClaim'])
         ->middleware(['role:superadmin,admin,insurance_advisor', 'permission:insurance_advisor.policies.update'])
         ->name('insurance-advisor.claims.store');
+    Route::post('/insurance-advisor/policies/{policy}/claims/{claim}/documents', [InsuranceAdvisorController::class, 'uploadClaimDocument'])
+        ->middleware(['role:superadmin,admin,insurance_advisor', 'permission:insurance_advisor.policies.update'])
+        ->name('insurance-advisor.claims.documents.store');
+    Route::post('/insurance-advisor/policies/{policy}/claims/{claim}/request-documents', [InsuranceAdvisorController::class, 'requestClaimDocuments'])
+        ->middleware(['role:superadmin,admin,insurance_advisor', 'permission:insurance_advisor.policies.update'])
+        ->name('insurance-advisor.claims.documents.request');
+    Route::post('/insurance-advisor/policies/{policy}/claims/{claim}/hospital-discharge', [InsuranceAdvisorController::class, 'processClaimDischarge'])
+        ->middleware(['role:superadmin,admin,insurance_advisor', 'permission:insurance_advisor.policies.update'])
+        ->name('insurance-advisor.claims.discharge');
+    Route::post('/insurance-advisor/policies/{policy}/claims/{claim}/follow-up', [InsuranceAdvisorController::class, 'storeClaimFollowUp'])
+        ->middleware(['role:superadmin,admin,insurance_advisor', 'permission:insurance_advisor.policies.update'])
+        ->name('insurance-advisor.claims.follow-up');
+    Route::post('/insurance-advisor/policies/{policy}/claims/{claim}/send-insurer', [InsuranceAdvisorController::class, 'sendClaimToInsurer'])
+        ->middleware(['role:superadmin,admin,insurance_advisor', 'permission:insurance_advisor.policies.update'])
+        ->name('insurance-advisor.claims.send-insurer');
+    Route::post('/insurance-advisor/policies/{policy}/claims/{claim}/quotations', [InsuranceAdvisorController::class, 'storeClaimQuotation'])
+        ->middleware(['role:superadmin,admin,insurance_advisor', 'permission:insurance_advisor.policies.update'])
+        ->name('insurance-advisor.claims.quotations.store');
 
     Route::prefix('insurance')
         ->name('insurance.')

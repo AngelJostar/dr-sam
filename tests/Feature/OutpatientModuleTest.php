@@ -29,9 +29,23 @@ class OutpatientModuleTest extends TestCase
         $patient = Patient::query()->create(['full_name' => 'Arturo Hernandez', 'platform_number' => 'USR-HGCH-0001', 'status' => 'active']);
         $doctor = Doctor::query()->create(['medical_unit_id' => $unit->id, 'full_name' => 'Dr. Carter Jimmy', 'specialty' => 'Medicina Interna', 'status' => 'active']);
 
-        foreach (['agenda' => 'Agenda institucional generada', 'prescriptions' => 'Recetas emitidas', 'patients' => 'Catálogo de pacientes', 'rooms' => 'Catálogo de consultorios'] as $section => $text) {
+        foreach (['agenda' => 'Agenda institucional generada', 'prescriptions' => 'Recetas emitidas', 'rooms' => 'Catálogo de consultorios'] as $section => $text) {
             $this->actingAs($user)->get(route('outpatient.dashboard', ['section' => $section]))->assertOk()->assertSee($text);
         }
+
+        $this->actingAs($user)
+            ->get(route('outpatient.dashboard', ['section' => 'patients']))
+            ->assertRedirect(route('operational.patients.index', ['unit' => $unit->id]));
+
+        $this->actingAs($user)
+            ->get(route('outpatient.dashboard'))
+            ->assertSee('data-outpatient-carousel', false)
+            ->assertSee('class="operational-oncology-carousel operational-compact-carousel outpatient-module-carousel"', false)
+            ->assertSee('Calendario')
+            ->assertSee(route('outpatient.dashboard', ['section' => 'agenda']), false)
+            ->assertSee('Farmacia Externa')
+            ->assertSee(route('external-pharmacy.dashboard'), false)
+            ->assertSee(route('operational.patients.index', ['unit' => $unit->id]), false);
 
         $this->actingAs($user)
             ->get(route('outpatient.dashboard', ['section' => 'agenda']))
@@ -107,14 +121,14 @@ class OutpatientModuleTest extends TestCase
         OperationalProfile::query()->create(['user_id' => $user->id, 'medical_unit_id' => $unit->id, 'operational_area_id' => $area->id, 'status' => 'active']);
 
         $payload = ['first_name' => 'Arturo', 'last_name' => 'Hernandez', 'age' => 54, 'curp' => 'HEAA720314HMCRRR08', 'nss_federal' => '04967231458', 'nss_estatal' => 'MEX-248391', 'platform_number' => 'USR-HGCH-0001', 'state' => 'México'];
-        $this->actingAs($user)->post(route('outpatient.patients.store'), $payload)->assertRedirect(route('outpatient.dashboard', ['section' => 'patients']));
+        $this->actingAs($user)->post(route('outpatient.patients.store'), $payload)->assertRedirect(route('operational.patients.index', ['unit' => $unit->id]));
         $patient = Patient::query()->firstOrFail();
 
-        $this->actingAs($user)->get(route('outpatient.dashboard', ['section' => 'patients']))
+        $this->actingAs($user)->get(route('operational.patients.index', ['unit' => $unit->id]))
             ->assertOk()->assertSee('NSS federal')->assertSee('Editar')->assertSee('04967231458');
 
         $this->actingAs($user)->patch(route('outpatient.patients.update', $patient), [...$payload, 'last_name' => 'Hernandez Villanueva', 'nss_estatal' => 'MEX-830422'])
-            ->assertRedirect(route('outpatient.dashboard', ['section' => 'patients']));
+            ->assertRedirect(route('operational.patients.index', ['unit' => $unit->id]));
         $this->assertDatabaseHas('patients', ['id' => $patient->id, 'full_name' => 'Arturo Hernandez Villanueva']);
         $this->assertSame('MEX-830422', Patient::query()->findOrFail($patient->id)->metadata['nss_estatal']);
     }

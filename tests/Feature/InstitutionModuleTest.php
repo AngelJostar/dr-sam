@@ -18,6 +18,7 @@ use App\Models\ProviderRequest;
 use App\Models\Service;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class InstitutionModuleTest extends TestCase
@@ -391,6 +392,101 @@ class InstitutionModuleTest extends TestCase
             'service_id' => $service->id,
             'status' => 'active',
         ]);
+    }
+
+    public function test_institution_user_can_open_grouped_unit_registration_form(): void
+    {
+        $user = User::query()->create([
+            'name' => 'Institucion Alta Unidad',
+            'username' => 'institucion.alta.unidad',
+            'email' => 'institucion.alta.unidad@test.local',
+            'role' => 'institution',
+            'module' => 'institution',
+            'status' => 'active',
+        ]);
+
+        $institution = Institution::query()->create([
+            'owner_user_id' => $user->id,
+            'external_id' => 'inst-unit-form',
+            'name' => 'Institucion Formulario Unidad',
+            'status' => 'active',
+        ]);
+
+        $this->actingAs($user)
+            ->get(route('institution.dashboard', [
+                'institution' => $institution->id,
+                'section' => 'create-unit',
+            ]))
+            ->assertOk()
+            ->assertSee('institution-unit-registration-card', false)
+            ->assertSee('Datos generales')
+            ->assertSee('Ubicación')
+            ->assertSee('Acceso al sistema')
+            ->assertSee('data-unit-address-count', false)
+            ->assertSee('data-unit-password-toggle', false)
+            ->assertSee('Cancelar')
+            ->assertSee('Guardar unidad');
+    }
+
+    public function test_institution_user_can_view_and_update_a_unit_password(): void
+    {
+        $institutionUser = User::query()->create([
+            'name' => 'Institucion Credenciales',
+            'username' => 'institucion.credenciales',
+            'email' => 'institucion.credenciales@test.local',
+            'role' => 'institution',
+            'module' => 'institution',
+            'status' => 'active',
+        ]);
+
+        $institution = Institution::query()->create([
+            'owner_user_id' => $institutionUser->id,
+            'external_id' => 'inst-credentials',
+            'name' => 'Institucion Credenciales',
+            'status' => 'active',
+        ]);
+
+        $unitUser = User::query()->create([
+            'name' => 'Unidad Credenciales',
+            'username' => 'unidad.credenciales',
+            'email' => 'unidad.credenciales@test.local',
+            'password' => Hash::make('Demo2026'),
+            'role' => 'unit',
+            'module' => 'unit',
+            'status' => 'active',
+        ]);
+
+        $unit = MedicalUnit::query()->create([
+            'institution_id' => $institution->id,
+            'name' => 'Unidad Credenciales',
+            'unit_username' => $unitUser->username,
+            'status' => 'active',
+            'metadata' => [
+                'demo_password' => 'Demo2026',
+                'user_id' => $unitUser->id,
+            ],
+        ]);
+
+        $this->actingAs($institutionUser)
+            ->get(route('institution.dashboard', ['institution' => $institution->id]))
+            ->assertOk()
+            ->assertSeeInOrder(['<th>Usuario</th>', '<th>Contraseña</th>'], false)
+            ->assertSee('unidad.credenciales')
+            ->assertSee('Demo2026')
+            ->assertSee('data-unit-password-open="'.$unit->id.'"', false)
+            ->assertSee('Editar contraseña');
+
+        $this->actingAs($institutionUser)
+            ->patch(route('institution.units.password', $unit), [
+                'institution' => $institution->id,
+                'form_context' => 'unit-password',
+                'unit_id' => $unit->id,
+                'unit_password' => 'NuevaClave2026',
+            ])
+            ->assertRedirect(route('institution.dashboard', ['institution' => $institution->id]));
+
+        $this->assertSame('NuevaClave2026', data_get($unit->fresh()->metadata, 'demo_password'));
+        $this->assertTrue(Hash::check('NuevaClave2026', $unitUser->fresh()->password));
     }
 
     public function test_institution_user_can_update_unit_status(): void

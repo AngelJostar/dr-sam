@@ -28,30 +28,46 @@ class PatientPortalTest extends TestCase
             ->assertSee('Soporte médico')
             ->assertSee('data-support-toggle', false)
             ->assertSee('aria-hidden="true"', false)
+            ->assertDontSee('data-open-view="history"', false)
             ->assertSee('¿Cómo amaneciste hoy?')
-            ->assertSee('Soy Dr. Sam, hazme una pregunta')
+            ->assertSee('data-ai-top-input', false)
             ->assertSee('Mi Seguro')
             ->assertSee('Resumen de información')
             ->assertSee('Aseguradora no registrada')
             ->assertSee('data-insurance-tab="summary"', false)
             ->assertSee('data-insurance-form', false)
-            ->assertSee('Consultas, diagnósticos y estudios recientes')
             ->assertSee('data-history-filter="consultation"', false)
             ->assertSee('Receta / Indicaciones')
+            ->assertSee('data-patient-view="prescriptions"', false)
             ->assertSee('Médicos y terapeutas')
-            ->assertSee('Indicaciones activas y recetas emitidas')
-            ->assertSee('Hospital donde se recetó')
-            ->assertSee('Institución donde se recetó')
-            ->assertSee('Citas y estudios programados')
             ->assertSee('data-calendar-filter="upcoming"', false)
             ->assertSee('Historial de consultas')
             ->assertSee('Dispositivos')
             ->assertSee('Registro')
             ->assertDontSee('>Comprar<', false)
             ->assertDontSee('Farmacia Digital')
-            ->assertDontSee('Comunidades')
             ->assertSee('Paciente Acciones')
             ->assertDontSee('<iframe');
+    }
+
+    public function test_my_health_includes_the_clinical_history_switch_and_shared_history(): void
+    {
+        [$user] = $this->makePatient();
+
+        $response = $this->actingAs($user)
+            ->get(route('patient.dashboard'))
+            ->assertOk()
+            ->assertSee('data-health-view-switch', false)
+            ->assertSee('data-health-view-mode="parameters"', false)
+            ->assertSee('data-health-view-mode="history"', false)
+            ->assertSee('data-health-view-stage', false)
+            ->assertSee('data-health-view-panel="parameters"', false)
+            ->assertSee('data-health-view-panel="history"', false)
+            ->assertSee('data-history-view="favorites"', false)
+            ->assertSee('data-history-view="all"', false);
+
+        $this->assertSame(2, substr_count($response->getContent(), 'class="patient-history-body" data-clinical-history'));
+        $this->assertSame(2, substr_count($response->getContent(), 'data-history-view-switch'));
     }
 
     public function test_patient_can_update_own_profile(): void

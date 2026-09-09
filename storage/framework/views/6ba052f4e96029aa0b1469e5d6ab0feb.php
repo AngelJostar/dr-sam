@@ -4,6 +4,7 @@
 
 <?php $__env->startSection('content'); ?>
   <div class="insurance-health-native-screen insurance-health-native-screen--sidebar">
+    <?php echo $__env->make('insurance._topbar', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
     <?php echo $__env->make('insurance._sidebar', ['abilities' => ['admin_users' => true]], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
     <main class="insurance-health-native-workspace">

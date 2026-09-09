@@ -16,14 +16,6 @@
 ?>
 
 <aside class="insurance-health-native-sidebar">
-  <div class="insurance-health-native-sidebar-brand">
-    <span>DS</span>
-    <div>
-      <strong>Aseguradora salud</strong>
-      <small>Control clinico</small>
-    </div>
-  </div>
-
   <nav class="insurance-health-native-sidebar-menu" aria-label="Menu aseguradora salud">
     <?php $__currentLoopData = $insuranceMenu; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
       <a class="<?php echo \Illuminate\Support\Arr::toCssClasses(['is-active' => request()->routeIs($item['match'])]); ?>" href="<?php echo e(route($item['route'])); ?>">

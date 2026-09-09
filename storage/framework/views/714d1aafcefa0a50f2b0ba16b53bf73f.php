@@ -1,37 +1,123 @@
-
-
-<?php $__env->startSection('body_class', 'outpatient-module-body'); ?>
+<?php $__env->startSection('body_class', 'operational-native-body outpatient-module-body'); ?>
 
 <?php
   $unitName = $unit?->name ?? 'H.G. CHIMALHUACAN';
   $unitCode = $unit?->code ?? $unit?->clues ?? 'MCIMB001841';
+  $institutionName = $unit?->institution?->name ?? 'IMSS BIENESTAR ESTADO DE MEXICO';
   $statusLabels = ['scheduled' => 'Agendada', 'in_progress' => 'En consulta', 'completed' => 'Atendida', 'cancelled' => 'Cancelada'];
+  $sectionNavigation = [
+    ['section' => 'agenda', 'label' => 'Consulta externa'],
+    ['section' => 'prescriptions', 'label' => 'Recetas'],
+    ['section' => 'rooms', 'label' => 'Catalogo de consultorios'],
+  ];
+  $patientCatalogRouteParameters = $unit ? ['unit' => $unit->id] : [];
+  $areaDefaultRoutes = [
+    'nursing' => ['area' => 'nursing', 'section' => 'pending'],
+    'oncology' => ['area' => 'oncology', 'section' => 'calendar', 'oncology_track' => 'infusions'],
+    'inpatient-pharmacy' => ['area' => 'inpatient-pharmacy', 'section' => 'pending'],
+  ];
 ?>
 
 <?php $__env->startSection('content'); ?>
-  <div class="outpatient-module-screen">
-    <aside class="outpatient-module-sidebar">
-      <div class="outpatient-module-brand"><span>+</span><div><strong>Consulta Externa</strong><small><?php echo e($unitName); ?></small></div></div>
-      <nav>
-        <a class="<?php echo \Illuminate\Support\Arr::toCssClasses(['is-active' => $section === 'agenda']); ?>" href="<?php echo e(route('outpatient.dashboard')); ?>">▣ Consulta externa</a>
-        <a class="<?php echo \Illuminate\Support\Arr::toCssClasses(['is-active' => $section === 'prescriptions']); ?>" href="<?php echo e(route('outpatient.dashboard', ['section' => 'prescriptions'])); ?>">▤ Recetas</a>
-        <a class="<?php echo \Illuminate\Support\Arr::toCssClasses(['is-active' => $section === 'patients']); ?>" href="<?php echo e(route('outpatient.dashboard', ['section' => 'patients'])); ?>">♧ Catálogo de pacientes</a>
-        <a class="<?php echo \Illuminate\Support\Arr::toCssClasses(['is-active' => $section === 'rooms']); ?>" href="<?php echo e(route('outpatient.dashboard', ['section' => 'rooms'])); ?>">▥ Catálogo de consultorios</a>
+  <div class="operational-native-screen outpatient-operational-screen">
+    <header class="operational-native-topbar" aria-label="Barra superior operativa">
+      <strong>MODULO OPERATIVO</strong>
+      <span><?php echo e(strtoupper($institutionName)); ?></span>
+      <div class="operational-native-user">
+        <button type="button" aria-label="Notificaciones">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z"/><path d="M10 21h4"/></svg>
+        </button>
+        <div>
+          <strong>Usuario activo</strong>
+          <small><?php echo e($unitName); ?></small>
+        </div>
+        <form method="post" action="<?php echo e(route('logout')); ?>" class="operational-native-logout">
+          <?php echo csrf_field(); ?>
+          <button type="submit">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/><path d="M15 4h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4"/></svg>
+            Cerrar sesion
+          </button>
+        </form>
+      </div>
+    </header>
+
+    <aside class="operational-native-sidebar" aria-label="Navegacion operativa">
+      <nav class="operational-native-menu operational-area-menu">
+        <a href="<?php echo e(route('operational.dashboard', $areaDefaultRoutes['nursing'])); ?>">
+          <span aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 21V5a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v16"/><path d="M16 9h3a1 1 0 0 1 1 1v11"/><path d="M8 8h4M10 6v4M8 14h4M8 18h4"/></svg>
+          </span>
+          Hospitalizacion
+          <i aria-hidden="true">›</i>
+        </a>
+        <a href="<?php echo e(route('operational.dashboard', $areaDefaultRoutes['oncology'])); ?>">
+          <span aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 6h16v15H4z"/><path d="M9 3h6v3H9z"/><path d="M12 10v7M8.5 13.5h7"/></svg>
+          </span>
+          Centro Oncologico
+          <i aria-hidden="true">›</i>
+        </a>
+        <a href="<?php echo e(route('operational.dashboard', $areaDefaultRoutes['inpatient-pharmacy'])); ?>">
+          <span aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="m7 16 9-9a3 3 0 0 1 4 4l-9 9a3 3 0 0 1-4-4Z"/><path d="m12 11 4 4"/></svg>
+          </span>
+          Farmacia intrahospitalaria
+          <i aria-hidden="true">›</i>
+        </a>
+        <a class="is-active" href="<?php echo e(route('outpatient.dashboard')); ?>">
+          <span aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M6 4v5a5 5 0 0 0 10 0V4"/><path d="M9 4H5"/><path d="M17 4h-4"/><path d="M11 14v2a4 4 0 0 0 8 0v-3"/><circle cx="19" cy="10" r="2"/></svg>
+          </span>
+          Consulta Externa
+          <i aria-hidden="true">›</i>
+        </a>
+        <a href="<?php echo e(route('external-pharmacy.dashboard')); ?>">
+          <span aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 9v11h16V9"/><path d="M3 9h18l-2-5H5L3 9Z"/><path d="M12 12v5M9.5 14.5h5"/></svg>
+          </span>
+          Farmacia Externa
+          <i aria-hidden="true">›</i>
+        </a>
+        <a href="<?php echo e(route('operational.patients.index', $patientCatalogRouteParameters)); ?>">
+          <span aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="9.5" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </span>
+          Catalogo de pacientes
+          <i aria-hidden="true">›</i>
+        </a>
       </nav>
     </aside>
 
-    <main class="outpatient-module-main">
+    <section class="operational-native-workspace outpatient-module-main">
       <?php if(session('status')): ?><div class="notice success"><?php echo e(session('status')); ?></div><?php endif; ?>
       <?php if($errors->any()): ?><div class="notice danger"><?php echo e($errors->first()); ?></div><?php endif; ?>
 
-      <header class="outpatient-module-header">
-        <div><p class="eyebrow">MODULO CONSULTA EXTERNA</p><h1><?php echo e($section === 'agenda' ? 'Agenda de pacientes de la unidad' : match($section) {'prescriptions' => 'Recetas de consulta externa', 'patients' => 'Catálogo de pacientes', default => 'Catálogo de consultorios'}); ?></h1><span><?php echo e($unitName); ?> - <?php echo e($unitCode); ?></span></div>
-        <time><?php echo e(now()->translatedFormat('l, d \d\e F \d\e Y')); ?></time>
-      </header>
+      <section class="operational-oncology-carousel operational-compact-carousel outpatient-module-carousel" aria-label="Filtros de Consulta Externa" data-outpatient-carousel>
+        <button class="operational-oncology-carousel-arrow" type="button" data-operational-carousel-prev aria-label="Anterior">‹</button>
+        <div class="operational-oncology-carousel-track">
+          <a class="operational-oncology-filter is-active" href="<?php echo e(route('outpatient.dashboard', ['section' => 'agenda'])); ?>">
+            <span class="operational-oncology-filter-initial" aria-hidden="true">C</span>
+            <span class="operational-oncology-filter-copy">
+              <strong>Calendario</strong>
+              <small>✓ Seleccionada</small>
+            </span>
+          </a>
+        </div>
+        <button class="operational-oncology-carousel-arrow" type="button" data-operational-carousel-next aria-label="Siguiente">›</button>
+      </section>
+
+      <nav class="operational-section-tabs outpatient-module-tabs" aria-label="Secciones de Consulta Externa">
+        <?php $__currentLoopData = $sectionNavigation; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $navigationItem): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+          <a class="<?php echo \Illuminate\Support\Arr::toCssClasses(['is-active' => $section === $navigationItem['section']]); ?>" href="<?php echo e(route('outpatient.dashboard', ['section' => $navigationItem['section']])); ?>">
+            <?php echo e($navigationItem['label']); ?>
+
+          </a>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+      </nav>
 
       <?php if($section === 'agenda'): ?>
-        <section class="outpatient-module-card">
-          <div class="outpatient-module-card-head"><div><h2>Agenda institucional generada</h2><p>Citas sincronizadas con agenda institucional del médico.</p></div><div><strong><?php echo e($appointments->count()); ?> <?php echo e($appointments->count() === 1 ? 'cita' : 'citas'); ?></strong><a class="is-secondary" href="<?php echo e(route('outpatient.dashboard', ['admin' => 1])); ?>">Administrar Calendario</a><a href="<?php echo e(route('outpatient.dashboard', ['new' => 1])); ?>">+ Nueva consulta</a></div></div>
+        <section class="outpatient-module-card operational-native-table-card operational-section-card">
+          <div class="outpatient-module-card-head operational-native-table-heading"><div><p class="eyebrow">CONSULTA EXTERNA</p><h2>Agenda institucional generada</h2><p>Citas sincronizadas con agenda institucional del médico.</p></div><div><strong><?php echo e($appointments->count()); ?> <?php echo e($appointments->count() === 1 ? 'cita' : 'citas'); ?></strong><a class="operational-secondary-button is-secondary" href="<?php echo e(route('outpatient.dashboard', ['admin' => 1])); ?>">Administrar Calendario</a><a class="operational-primary-button" href="<?php echo e(route('outpatient.dashboard', ['new' => 1])); ?>">+ Nueva consulta</a></div></div>
           <?php if(request('admin')): ?>
             <section class="outpatient-calendar-admin">
               <form method="post" data-calendar-admin-form>
@@ -76,53 +162,21 @@
           $viewingPrescription = request('view') ? $prescriptions->firstWhere('id', (int) request('view')) : null;
           $formItems = old('items', $editingPrescription?->items?->map(fn($item) => ['medication_catalog_item_id' => $item->medication_catalog_item_id, 'medication_name' => $item->medication_name, 'cnis' => data_get($item->metadata, 'cnis'), 'dose' => $item->dose, 'presentation' => data_get($item->metadata, 'presentation'), 'route' => data_get($item->metadata, 'route'), 'frequency' => $item->frequency, 'duration' => $item->duration, 'quantity' => data_get($item->metadata, 'quantity'), 'instructions' => $item->instructions])->all() ?? [['medication_name' => '']]);
         ?>
-        <section class="outpatient-module-card">
-          <div class="outpatient-module-card-head"><div><h2>Recetas emitidas</h2><p>Formatos asociados a las consultas de la unidad.</p></div><div><strong><?php echo e($prescriptions->count()); ?> recetas</strong><a href="<?php echo e(route('outpatient.dashboard', ['section' => 'prescriptions', 'new' => 1])); ?>">+ Nueva receta</a></div></div>
+        <section class="outpatient-module-card operational-native-table-card operational-section-card">
+          <div class="outpatient-module-card-head operational-native-table-heading"><div><p class="eyebrow">CONSULTA EXTERNA</p><h2>Recetas emitidas</h2><p>Formatos asociados a las consultas de la unidad.</p></div><div><strong><?php echo e($prescriptions->count()); ?> recetas</strong><a class="operational-primary-button" href="<?php echo e(route('outpatient.dashboard', ['section' => 'prescriptions', 'new' => 1])); ?>">+ Nueva receta</a></div></div>
           <div class="outpatient-table-wrap"><table><thead><tr><th>Fecha</th><th>Paciente</th><th>Usuario plataforma</th><th>Médico</th><th>Especialidad</th><th>Receta</th><th>Estado</th></tr></thead><tbody>
           <?php $__empty_1 = true; $__currentLoopData = $prescriptions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $prescription): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?><tr><td><?php echo e($prescription->issued_at?->format('d/m/Y')); ?></td><td><strong><?php echo e($prescription->patient?->full_name); ?></strong></td><td><?php echo e($prescription->patient?->platform_number ?? 'Sin usuario'); ?></td><td><?php echo e($prescription->doctor?->full_name); ?></td><td><?php echo e($prescription->doctor?->specialty); ?></td><td><strong><?php echo e($prescription->code ?? 'REC-'.$prescription->id); ?></strong><small><?php echo e($prescription->items->count()); ?> medicamento(s)</small></td><td><span class="outpatient-status"><?php echo e(ucfirst($prescription->status)); ?></span></td></tr><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?><tr><td colspan="7">Sin recetas registradas.</td></tr><?php endif; ?>
           </tbody></table></div>
         </section>
         <?php if($viewingPrescription): ?>
-          <section class="outpatient-module-card outpatient-prescription-detail"><div class="outpatient-module-card-head"><div><h2>Receta <?php echo e($viewingPrescription->code); ?></h2><p><?php echo e($viewingPrescription->patient?->full_name); ?> · Diagnóstico: <?php echo e(data_get($viewingPrescription->metadata, 'diagnosis')); ?></p></div><a class="is-secondary" href="<?php echo e(route('outpatient.dashboard', ['section' => 'prescriptions'])); ?>">Cerrar</a></div><div class="outpatient-table-wrap"><table><thead><tr><th>No.</th><th>Clave CNIS</th><th>Medicamento</th><th>Dosis</th><th>Presentación</th><th>Vía</th><th>Frecuencia</th><th>Duración</th><th>Cantidad</th><th>Indicaciones</th></tr></thead><tbody><?php $__currentLoopData = $viewingPrescription->items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><tr><td><?php echo e($loop->iteration); ?></td><td><?php echo e(data_get($item->metadata, 'cnis')); ?></td><td><strong><?php echo e($item->medication_name); ?></strong></td><td><?php echo e($item->dose); ?></td><td><?php echo e(data_get($item->metadata, 'presentation')); ?></td><td><?php echo e(data_get($item->metadata, 'route')); ?></td><td><?php echo e($item->frequency); ?></td><td><?php echo e($item->duration); ?></td><td><?php echo e(data_get($item->metadata, 'quantity')); ?></td><td><?php echo e($item->instructions); ?></td></tr><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?></tbody></table></div></section>
+          <section class="outpatient-module-card operational-native-table-card operational-section-card outpatient-prescription-detail"><div class="outpatient-module-card-head operational-native-table-heading"><div><h2>Receta <?php echo e($viewingPrescription->code); ?></h2><p><?php echo e($viewingPrescription->patient?->full_name); ?> · Diagnóstico: <?php echo e(data_get($viewingPrescription->metadata, 'diagnosis')); ?></p></div><a class="operational-secondary-button is-secondary" href="<?php echo e(route('outpatient.dashboard', ['section' => 'prescriptions'])); ?>">Cerrar</a></div><div class="outpatient-table-wrap"><table><thead><tr><th>No.</th><th>Clave CNIS</th><th>Medicamento</th><th>Dosis</th><th>Presentación</th><th>Vía</th><th>Frecuencia</th><th>Duración</th><th>Cantidad</th><th>Indicaciones</th></tr></thead><tbody><?php $__currentLoopData = $viewingPrescription->items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><tr><td><?php echo e($loop->iteration); ?></td><td><?php echo e(data_get($item->metadata, 'cnis')); ?></td><td><strong><?php echo e($item->medication_name); ?></strong></td><td><?php echo e($item->dose); ?></td><td><?php echo e(data_get($item->metadata, 'presentation')); ?></td><td><?php echo e(data_get($item->metadata, 'route')); ?></td><td><?php echo e($item->frequency); ?></td><td><?php echo e($item->duration); ?></td><td><?php echo e(data_get($item->metadata, 'quantity')); ?></td><td><?php echo e($item->instructions); ?></td></tr><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?></tbody></table></div></section>
         <?php endif; ?>
         <?php if(request('new') || $editingPrescription): ?>
-          <section class="outpatient-module-card outpatient-prescription-form-card"><div class="outpatient-module-card-head"><div><h2><?php echo e($editingPrescription ? 'Editar receta médica' : 'Nueva receta médica'); ?></h2><p>Formato para Consulta Externa y Farmacia Externa.</p></div><a class="is-secondary" href="<?php echo e(route('outpatient.dashboard', ['section' => 'prescriptions'])); ?>">Regresar</a></div>
+          <section class="outpatient-module-card operational-native-table-card operational-section-card outpatient-prescription-form-card"><div class="outpatient-module-card-head operational-native-table-heading"><div><h2><?php echo e($editingPrescription ? 'Editar receta médica' : 'Nueva receta médica'); ?></h2><p>Formato para Consulta Externa y Farmacia Externa.</p></div><a class="operational-secondary-button is-secondary" href="<?php echo e(route('outpatient.dashboard', ['section' => 'prescriptions'])); ?>">Regresar</a></div>
             <form method="post" action="<?php echo e($editingPrescription ? route('outpatient.prescriptions.update', $editingPrescription) : route('outpatient.prescriptions.store')); ?>" data-outpatient-prescription><?php echo csrf_field(); ?> <?php if($editingPrescription): ?> <?php echo method_field('PATCH'); ?> <?php endif; ?>
               <div class="outpatient-prescription-fields"><label>Folio<input name="code" value="<?php echo e(old('code', $editingPrescription?->code)); ?>" placeholder="Se genera automáticamente"></label><label>Fecha<input type="date" name="issued_at" required value="<?php echo e(old('issued_at', $editingPrescription?->issued_at?->format('Y-m-d') ?? now()->format('Y-m-d'))); ?>"></label><label>Paciente<select name="patient_id" required><option value="">Seleccionar paciente</option><?php $__currentLoopData = $patients; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $patient): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><option value="<?php echo e($patient->id); ?>" <?php if((int) old('patient_id', $editingPrescription?->patient_id) === $patient->id): echo 'selected'; endif; ?>><?php echo e($patient->full_name); ?> · <?php echo e($patient->platform_number); ?></option><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?></select></label><label>Médico tratante<select name="doctor_id" required><option value="">Seleccionar médico</option><?php $__currentLoopData = $doctors; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $doctor): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><option value="<?php echo e($doctor->id); ?>" <?php if((int) old('doctor_id', $editingPrescription?->doctor_id) === $doctor->id): echo 'selected'; endif; ?>><?php echo e($doctor->full_name); ?> · <?php echo e($doctor->specialty); ?></option><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?></select></label><label class="span-2">Diagnóstico<textarea name="diagnosis" required><?php echo e(old('diagnosis', data_get($editingPrescription?->metadata, 'diagnosis'))); ?></textarea></label><label>Estado<select name="status"><?php $__currentLoopData = ['active'=>'Activa','pending'=>'Pendiente','filled'=>'Surtida','cancelled'=>'Cancelada']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value=>$label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><option value="<?php echo e($value); ?>" <?php if(old('status', $editingPrescription?->status ?? 'active') === $value): echo 'selected'; endif; ?>><?php echo e($label); ?></option><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?></select></label><label>Notas<textarea name="notes"><?php echo e(old('notes', $editingPrescription?->notes)); ?></textarea></label></div>
               <div class="outpatient-prescription-items"><h3>Medicamentos indicados</h3><div class="outpatient-table-wrap"><table><thead><tr><th>No.</th><th>Clave CNIS</th><th>Medicamento</th><th>Dosis</th><th>Presentación</th><th>Vía</th><th>Frecuencia</th><th>Duración</th><th>Cantidad</th><th>Indicaciones</th></tr></thead><tbody data-prescription-items><?php $__currentLoopData = $formItems; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><tr data-prescription-item><td><span data-item-number><?php echo e($loop->iteration); ?></span><button type="button" data-remove-prescription-item>−</button></td><td><input name="items[<?php echo e($loop->index); ?>][cnis]" value="<?php echo e(data_get($item, 'cnis')); ?>"></td><td><input type="hidden" name="items[<?php echo e($loop->index); ?>][medication_catalog_item_id]" value="<?php echo e(data_get($item, 'medication_catalog_item_id')); ?>"><input name="items[<?php echo e($loop->index); ?>][medication_name]" list="outpatient-medications" required value="<?php echo e(data_get($item, 'medication_name')); ?>"></td><td><input name="items[<?php echo e($loop->index); ?>][dose]" value="<?php echo e(data_get($item, 'dose')); ?>"></td><td><input name="items[<?php echo e($loop->index); ?>][presentation]" value="<?php echo e(data_get($item, 'presentation')); ?>"></td><td><input name="items[<?php echo e($loop->index); ?>][route]" value="<?php echo e(data_get($item, 'route')); ?>"></td><td><input name="items[<?php echo e($loop->index); ?>][frequency]" value="<?php echo e(data_get($item, 'frequency')); ?>"></td><td><input name="items[<?php echo e($loop->index); ?>][duration]" value="<?php echo e(data_get($item, 'duration')); ?>"></td><td><input name="items[<?php echo e($loop->index); ?>][quantity]" value="<?php echo e(data_get($item, 'quantity')); ?>"></td><td><textarea name="items[<?php echo e($loop->index); ?>][instructions]"><?php echo e(data_get($item, 'instructions')); ?></textarea></td></tr><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?></tbody></table></div><button type="button" class="outpatient-add-prescription-item" data-add-prescription-item>+</button></div>
               <datalist id="outpatient-medications"><?php $__currentLoopData = $medications; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $medication): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><option value="<?php echo e($medication->generic_name ?? $medication->name); ?>"><?php echo e($medication->code); ?></option><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?></datalist><div class="outpatient-form-actions"><a href="<?php echo e(route('outpatient.dashboard', ['section' => 'prescriptions'])); ?>">Cancelar</a><button type="submit">Guardar receta</button></div>
-            </form>
-          </section>
-        <?php endif; ?>
-      <?php elseif($section === 'patients'): ?>
-        <?php $editingPatient = request('edit') ? $patients->firstWhere('id', (int) request('edit')) : null; ?>
-        <section class="outpatient-module-card">
-          <div class="outpatient-module-card-head"><div><p class="eyebrow">CONSULTA EXTERNA</p><h2>Catálogo de pacientes</h2><p><?php echo e($unitName); ?> - Pacientes registrados</p></div><a href="<?php echo e(route('outpatient.dashboard', ['section' => 'patients', 'new' => 1])); ?>">+ Nuevo paciente</a></div>
-          <div class="outpatient-table-wrap"><table><thead><tr><th>Nombre</th><th>Apellidos</th><th>Edad</th><th>CURP</th><th>NSS federal</th><th>NSS estatal</th><th>Usuario plataforma</th><th>Entidad federativa</th><th>Acciones</th></tr></thead><tbody>
-          <?php $__empty_1 = true; $__currentLoopData = $patients; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $patient): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-            <?php
-              $names = trim($patient->first_name ?: str($patient->full_name)->before(' '));
-              $lastNames = trim($patient->last_name ?: str($patient->full_name)->after(' '));
-            ?>
-            <tr><td><strong><?php echo e($names); ?></strong></td><td><strong><?php echo e($lastNames); ?></strong></td><td><?php echo e($patient->birth_date?->age ?? data_get($patient->metadata, 'age', 'Sin edad')); ?></td><td><strong><?php echo e($patient->curp ?? 'Sin CURP'); ?></strong></td><td><?php echo e(data_get($patient->metadata, 'nss_federal', 'Sin NSS')); ?></td><td><?php echo e(data_get($patient->metadata, 'nss_estatal', 'Sin NSS')); ?></td><td><?php echo e($patient->platform_number ?? 'Sin usuario'); ?></td><td><?php echo e(data_get($patient->metadata, 'state', 'México')); ?></td><td><a class="outpatient-row-action" href="<?php echo e(route('outpatient.dashboard', ['section' => 'patients', 'edit' => $patient->id])); ?>">Editar</a></td></tr>
-          <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?> <tr><td colspan="9">Sin pacientes registrados.</td></tr> <?php endif; ?>
-          </tbody></table></div>
-        </section>
-
-        <?php if(request('new') || $editingPatient): ?>
-          <section class="outpatient-module-card outpatient-patient-form-card">
-            <div class="outpatient-module-card-head"><div><h2><?php echo e($editingPatient ? 'Editar paciente' : 'Alta de paciente'); ?></h2><p>Información de identificación para Consulta Externa.</p></div></div>
-            <form class="outpatient-patient-form" method="post" action="<?php echo e($editingPatient ? route('outpatient.patients.update', $editingPatient) : route('outpatient.patients.store')); ?>">
-              <?php echo csrf_field(); ?> <?php if($editingPatient): ?> <?php echo method_field('PATCH'); ?> <?php endif; ?>
-              <label>Nombre<input name="first_name" required value="<?php echo e(old('first_name', $editingPatient?->first_name ?: ($editingPatient ? str($editingPatient->full_name)->before(' ') : ''))); ?>"></label>
-              <label>Apellidos<input name="last_name" required value="<?php echo e(old('last_name', $editingPatient?->last_name ?: ($editingPatient ? str($editingPatient->full_name)->after(' ') : ''))); ?>"></label>
-              <label>Edad<input name="age" type="number" min="0" max="130" required value="<?php echo e(old('age', $editingPatient?->birth_date?->age)); ?>"></label>
-              <label>CURP<input name="curp" maxlength="18" required value="<?php echo e(old('curp', $editingPatient?->curp)); ?>"></label>
-              <label>NSS federal<input name="nss_federal" value="<?php echo e(old('nss_federal', data_get($editingPatient?->metadata, 'nss_federal'))); ?>"></label>
-              <label>NSS estatal<input name="nss_estatal" value="<?php echo e(old('nss_estatal', data_get($editingPatient?->metadata, 'nss_estatal'))); ?>"></label>
-              <label>Usuario plataforma<input name="platform_number" value="<?php echo e(old('platform_number', $editingPatient?->platform_number)); ?>"></label>
-              <label>Entidad federativa<input name="state" required value="<?php echo e(old('state', data_get($editingPatient?->metadata, 'state', 'México'))); ?>"></label>
-              <div class="span-2 outpatient-form-actions"><a href="<?php echo e(route('outpatient.dashboard', ['section' => 'patients'])); ?>">Cancelar</a><button type="submit">Guardar paciente</button></div>
             </form>
           </section>
         <?php endif; ?>
@@ -132,8 +186,8 @@
           $roomDays = ['monday' => [1, 'Lunes'], 'tuesday' => [2, 'Martes'], 'wednesday' => [3, 'Miércoles'], 'thursday' => [4, 'Jueves'], 'friday' => [5, 'Viernes'], 'saturday' => [6, 'Sábado'], 'sunday' => [0, 'Domingo']];
           $dayLabels = collect($roomDays)->mapWithKeys(fn ($value) => [$value[0] => $value[1]]);
         ?>
-        <section class="outpatient-module-card">
-          <div class="outpatient-module-card-head"><div><p class="eyebrow">CONSULTA EXTERNA</p><h2>Catálogo de consultorios</h2><p>Consultorios registrados en la unidad</p></div><a href="<?php echo e(route('outpatient.dashboard', ['section' => 'rooms', 'new' => 1])); ?>">+ Nuevo consultorio</a></div>
+        <section class="outpatient-module-card operational-native-table-card operational-section-card">
+          <div class="outpatient-module-card-head operational-native-table-heading"><div><p class="eyebrow">CONSULTA EXTERNA</p><h2>Catálogo de consultorios</h2><p>Consultorios registrados en la unidad</p></div><a class="operational-primary-button" href="<?php echo e(route('outpatient.dashboard', ['section' => 'rooms', 'new' => 1])); ?>">+ Nuevo consultorio</a></div>
           <div class="outpatient-table-wrap"><table class="outpatient-room-catalog-table"><thead><tr><th>Consultorio</th><th>Clave</th><th>Ubicación</th><th>Especialidad</th><th>Tipo</th><th>Disponibilidad</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>
           <?php $__empty_1 = true; $__currentLoopData = $rooms; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $room): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
             <?php
@@ -147,7 +201,7 @@
         </section>
 
         <?php if(request('new') || $editingRoom): ?>
-          <section class="outpatient-module-card outpatient-room-form-card">
+          <section class="outpatient-module-card operational-native-table-card operational-section-card outpatient-room-form-card">
             <?php
               $initialRanges = collect(data_get($editingRoom, 'availability_ranges', []));
               if ($initialRanges->isEmpty() && $editingRoom) {
@@ -193,10 +247,23 @@
           </section>
         <?php endif; ?>
       <?php endif; ?>
-    </main>
+    </section>
   </div>
   <script>
     (() => {
+      document.querySelectorAll('[data-operational-carousel-prev], [data-operational-carousel-next]').forEach((button) => {
+        button.addEventListener('click', () => {
+          const carousel = button.closest('[data-outpatient-carousel]');
+          const track = carousel?.querySelector('.operational-oncology-carousel-track');
+          if (!track) return;
+
+          track.scrollBy({
+            left: button.matches('[data-operational-carousel-prev]') ? -260 : 260,
+            behavior: 'smooth',
+          });
+        });
+      });
+
       const patient = document.querySelector('[data-outpatient-patient]');
       const fillPatient = () => {
         const option = patient?.selectedOptions[0];
@@ -304,4 +371,4 @@
   </script>
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('layouts.app', ['title' => 'Consulta Externa'], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\dr-sam\resources\views\operational\outpatient.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.app', ['title' => 'Modulo operativo - Consulta Externa'], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\dr-sam\resources\views\operational\outpatient.blade.php ENDPATH**/ ?>

@@ -25,12 +25,16 @@ use Illuminate\View\View;
 
 class OutpatientDashboardController extends Controller
 {
-    public function index(Request $request): View
+    public function index(Request $request): View|RedirectResponse
     {
         $section = $request->string('section')->toString() ?: 'agenda';
         abort_unless(in_array($section, ['agenda', 'prescriptions', 'patients', 'rooms'], true), 404);
 
         $unit = $this->contextUnit($request);
+        if ($section === 'patients') {
+            return redirect()->route('operational.patients.index', $unit ? ['unit' => $unit->id] : []);
+        }
+
         $search = $request->string('search')->toString();
 
         $appointments = Appointment::query()
@@ -161,19 +165,21 @@ class OutpatientDashboardController extends Controller
     public function storePatient(Request $request, PlatformAuditService $audit): RedirectResponse
     {
         $data = $this->validatePatient($request);
-        $patient = Patient::query()->create($this->patientPayload($data));
+        $unit = $this->contextUnit($request);
+        $patient = Patient::query()->create($this->patientPayload($data, medicalUnitId: $unit?->id));
         $audit->record($request, 'outpatient.patient.created', $patient, 'operational');
 
-        return redirect()->route('outpatient.dashboard', ['section' => 'patients'])->with('status', 'Paciente registrado correctamente.');
+        return redirect()->route('operational.patients.index', $unit ? ['unit' => $unit->id] : [])->with('status', 'Paciente registrado correctamente.');
     }
 
     public function updatePatient(Request $request, Patient $patient, PlatformAuditService $audit): RedirectResponse
     {
         $data = $this->validatePatient($request, $patient);
-        $patient->update($this->patientPayload($data, $patient));
+        $unit = $this->contextUnit($request);
+        $patient->update($this->patientPayload($data, $patient, $unit?->id));
         $audit->record($request, 'outpatient.patient.updated', $patient, 'operational');
 
-        return redirect()->route('outpatient.dashboard', ['section' => 'patients'])->with('status', 'Paciente actualizado correctamente.');
+        return redirect()->route('operational.patients.index', $unit ? ['unit' => $unit->id] : [])->with('status', 'Paciente actualizado correctamente.');
     }
 
     public function storeRoom(Request $request, PlatformAuditService $audit): RedirectResponse
@@ -448,7 +454,7 @@ class OutpatientDashboardController extends Controller
         ]);
     }
 
-    private function patientPayload(array $data, ?Patient $patient = null): array
+    private function patientPayload(array $data, ?Patient $patient = null, ?int $medicalUnitId = null): array
     {
         return [
             'first_name' => $data['first_name'],
@@ -463,6 +469,7 @@ class OutpatientDashboardController extends Controller
                 'nss_federal' => $data['nss_federal'] ?? null,
                 'nss_estatal' => $data['nss_estatal'] ?? null,
                 'state' => $data['state'],
+                'medical_unit_id' => $medicalUnitId ?? data_get($patient?->metadata, 'medical_unit_id'),
                 'source' => 'outpatient_module',
             ],
         ];
