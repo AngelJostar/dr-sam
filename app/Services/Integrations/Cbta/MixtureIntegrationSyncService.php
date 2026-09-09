@@ -5,6 +5,7 @@ namespace App\Services\Integrations\Cbta;
 use App\Models\MixtureIntegration;
 use App\Models\ProviderRequest;
 use App\Models\ProviderRequestStatusEvent;
+use App\Support\MixtureAuthorizationPolicy;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Throwable;
@@ -97,13 +98,7 @@ class MixtureIntegrationSyncService
             return false;
         }
 
-        $payload = $request->payload ?? [];
-        $required = $payload['authorization_requirements']
-            ?? ($request->request_type === 'chemo' ? ['oncology', 'pharmacy'] : ['operational', 'pharmacy']);
-        $authorizations = $payload['authorizations'] ?? [];
-
-        return $required !== [] && collect($required)
-            ->every(fn (string $area): bool => ($authorizations[$area] ?? 'pending') === 'approved');
+        return MixtureAuthorizationPolicy::allApproved($request->payload ?? [], $request->request_type);
     }
 
     private function prevalidateBeforeCreation(MixtureIntegration $integration): void
@@ -169,6 +164,7 @@ class MixtureIntegrationSyncService
         $status = match ($remoteStatus) {
             'pending', 'received', 'materialized' => 'requested',
             'authorized' => 'accepted',
+            'dispensed' => 'dispensed',
             'preparing' => 'preparing',
             'ready' => 'ready',
             'delivered' => 'delivered',

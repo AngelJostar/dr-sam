@@ -136,7 +136,7 @@ class ProviderPortalController extends Controller
         }
 
         $data = $request->validate([
-            'status' => ['required', Rule::in(['requested', 'accepted', 'preparing', 'in_route', 'delivered', 'rejected', 'cancelled'])],
+            'status' => ['required', Rule::in(['requested', 'accepted', 'dispensed', 'preparing', 'ready', 'in_route', 'delivered', 'rejected', 'cancelled'])],
             'notes' => ['nullable', 'string', 'max:500'],
         ]);
 

@@ -6,11 +6,18 @@
   $statusLabels = [
     'draft' => 'Borrador',
     'requested' => 'Pendiente',
-    'accepted' => 'Aceptada',
-    'preparing' => 'En revision',
+    'accepted' => 'Aprobada',
+    'authorized' => 'Aprobada',
+    'approved' => 'Aprobada',
+    'dispensed' => 'Dispensada',
+    'preparing' => 'Preparada',
+    'ready' => 'Inspeccionada',
     'in_route' => 'En ruta',
     'delivered' => 'Entregada',
-    'rejected' => 'Rechazada',
+    'rejected' => 'No aprobada',
+    'received' => 'Pendiente',
+    'materialized' => 'Pendiente',
+    'materialization_failed' => 'Error de integración',
     'cancelled' => 'Cancelada',
   ];
 
@@ -168,7 +175,7 @@
               Estado
               <select name="status">
                 <option value="">Todos</option>
-                @foreach (['requested', 'accepted', 'preparing', 'in_route', 'delivered', 'rejected', 'cancelled'] as $status)
+                @foreach (['requested', 'accepted', 'dispensed', 'preparing', 'ready', 'in_route', 'delivered', 'rejected', 'cancelled'] as $status)
                   <option value="{{ $status }}">{{ $statusText($status) }}</option>
                 @endforeach
               </select>
@@ -204,12 +211,12 @@
                 @forelse ($visibleRequests as $providerRequest)
                   @php
                     $requestAuthorizations = data_get($providerRequest->payload, 'authorizations', []);
-                    $authorizationRequirements = data_get($providerRequest->payload, 'authorization_requirements', $isOncology ? ['oncology', 'pharmacy'] : ['operational', 'pharmacy']);
+                    $authorizationRequirements = \App\Support\MixtureAuthorizationPolicy::requirements($providerRequest->request_type);
                     $authorizationLabels = $isOncology
                       ? ['oncology' => 'Centro Onc.', 'pharmacy' => 'Farm. Intra.']
-                      : ['operational' => 'Enfermeria', 'pharmacy' => 'Farm. Intra.'];
+                      : ['nursing' => 'Enfermeria', 'pharmacy' => 'Farm. Intra.'];
                     $authorizationAreaKeys = [
-                      'nursing' => 'operational', 'enfermeria' => 'operational',
+                      'nursing' => 'nursing', 'enfermeria' => 'nursing',
                       'inpatient-pharmacy' => 'pharmacy', 'farmacia' => 'pharmacy',
                       'oncology' => 'oncology', 'oncologia' => 'oncology',
                     ];
@@ -220,24 +227,18 @@
                       && $currentAuthorization !== null;
                     $authorizationIsLocked = in_array($providerRequest->status, ['delivered', 'cancelled', 'rejected'], true);
                     $canEditAuthorization = $canOperateCurrentArea;
-                    $allAuthorizationsApproved = collect($authorizationRequirements)
-                      ->every(fn ($key) => ($requestAuthorizations[$key] ?? 'pending') === 'approved');
+                    $allAuthorizationsApproved = \App\Support\MixtureAuthorizationPolicy::allApproved($providerRequest->payload ?? [], $providerRequest->request_type);
                     $latestAuthorizationEvent = $providerRequest->statusEvents
                       ->first(fn ($event) => data_get($event->metadata, 'type') === 'authorization');
                     $remoteMixtureStatus = $providerRequest->mixtureIntegration?->remote_status;
+                    $cancellationLockedByCbta = \App\Support\MixtureAuthorizationPolicy::cancellationLockedByCbta($remoteMixtureStatus);
                     $centralStatus = match (true) {
-                      $remoteMixtureStatus === 'delivered' => 'Entregada',
-                      $remoteMixtureStatus === 'ready' => 'Lista',
-                      $remoteMixtureStatus === 'preparing' => 'En preparación',
-                      $remoteMixtureStatus === 'authorized' => 'Autorizada',
-                      in_array($remoteMixtureStatus, ['cancelled', 'rejected'], true) => $remoteMixtureStatus === 'rejected' ? 'Rechazada' : 'Cancelada',
-                      $remoteMixtureStatus === 'materialization_failed' => 'Error en Mezclas',
-                      in_array($remoteMixtureStatus, ['pending', 'received', 'materialized'], true) => 'Pendiente',
+                      filled($remoteMixtureStatus) => \App\Support\MixtureIntegrationStatus::label($remoteMixtureStatus),
                       data_get($providerRequest->payload, 'cancellation') !== null,
                       in_array($providerRequest->status, ['cancelled', 'rejected'], true) => 'Cancelada',
                       $providerRequest->status === 'delivered' => 'Entregada',
                       $providerRequest->status === 'in_route' => 'En ruta',
-                      $providerRequest->status === 'preparing' => 'En preparación',
+                      $providerRequest->status === 'preparing' => 'Preparada',
                       $allAuthorizationsApproved => 'Pendiente',
                       default => 'En revisión',
                     };
@@ -260,7 +261,7 @@
                       <div class="operational-authorization-list">
                         @foreach ($authorizationLabels as $authorizationKey => $authorizationLabel)
                           @php
-                            $authorizationStatus = $requestAuthorizations[$authorizationKey] ?? 'pending';
+                            $authorizationStatus = \App\Support\MixtureAuthorizationPolicy::status($requestAuthorizations, $authorizationKey, $providerRequest->request_type);
                             $authorizationStatusLabel = ['approved' => 'Autorizado', 'rejected' => 'Rechazado', 'pending' => 'Pendiente'][$authorizationStatus] ?? 'Pendiente';
                             $authorizationClass = ['approved' => 'success', 'rejected' => 'danger', 'pending' => 'warning'][$authorizationStatus] ?? 'warning';
                             $canEditThisAuthorization = ! $authorizationIsLocked
@@ -273,7 +274,7 @@
                                 class="authorization-pill authorization-button auth-{{ $authorizationStatus }}"
                                 type="button"
                                 data-authorization-toggle="true"
-                                data-authorization-area="{{ $authorizationKey === 'operational' ? 'nursing' : $authorizationKey }}"
+                                data-authorization-area="{{ $authorizationKey }}"
                                 data-authorization-folio="{{ $providerRequest->external_id ?? 'NPT-'.$providerRequest->id }}"
                                 data-authorization-scope="{{ $section }}"
                                 aria-expanded="false"
@@ -334,7 +335,7 @@
                         @endif
                       </td>
                       <td>
-                        @if ($isInpatientPharmacy && $allAuthorizationsApproved && ! $authorizationIsLocked)
+                        @if ($isInpatientPharmacy && $allAuthorizationsApproved && ! $authorizationIsLocked && ! $cancellationLockedByCbta)
                           <form class="operational-mini-form" method="post" action="{{ route('operational.provider-requests.status', $providerRequest) }}">
                             @csrf
                             @method('patch')
@@ -344,7 +345,7 @@
                             <button type="submit" class="danger">Cancelar</button>
                           </form>
                         @else
-                          <button type="button" class="operational-disabled-action" disabled title="Solo Farmacia intrahospitalaria puede cancelar cuando ambas autorizaciones están aprobadas">Cancelar</button>
+                          <button type="button" class="operational-disabled-action" disabled title="{{ $cancellationLockedByCbta ? 'La solicitud ya fue aprobada en Mezclas y no puede cancelarse desde Dr. Sam' : 'Solo Farmacia intrahospitalaria puede cancelar cuando ambas autorizaciones están aprobadas' }}">Cancelar</button>
                         @endif
                       </td>
                     @endunless

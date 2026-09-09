@@ -1008,10 +1008,8 @@ class DoctorPortalController extends Controller
                     ] : null,
                     'authorizations' => $data['request_type'] === 'chemo'
                         ? ['oncology' => 'pending', 'pharmacy' => 'pending']
-                        : ['operational' => 'pending', 'pharmacy' => 'pending'],
-                    'authorization_requirements' => $data['request_type'] === 'chemo'
-                        ? ['oncology', 'pharmacy']
-                        : ['operational', 'pharmacy'],
+                        : ['nursing' => 'pending', 'pharmacy' => 'pending'],
+                    'authorization_requirements' => \App\Support\MixtureAuthorizationPolicy::requirements($data['request_type']),
                 ],
             ]);
             ProviderRequestStatusEvent::query()->create([

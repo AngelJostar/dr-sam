@@ -7,13 +7,19 @@
     'active' => 'Activo',
     'scheduled' => 'Programada',
     'created' => 'Creado',
-    'requested' => 'Solicitada',
-    'accepted' => 'Autorizada',
+    'requested' => 'Pendiente',
+    'received' => 'Pendiente',
+    'materialized' => 'Pendiente',
+    'accepted' => 'Aprobada',
+    'authorized' => 'Aprobada',
     'approved' => 'Aprobada',
-    'preparing' => 'En preparación',
-    'ready' => 'Lista para entrega',
+    'dispensed' => 'Dispensada',
+    'preparing' => 'Preparada',
+    'ready' => 'Inspeccionada',
+    'in_route' => 'En ruta',
     'delivered' => 'Entregada',
-    'rejected' => 'Rechazada',
+    'rejected' => 'No aprobada',
+    'materialization_failed' => 'Error de integración',
     'pending' => 'Pendiente',
     'completed' => 'Completada',
     'cancelled' => 'Cancelada',
@@ -665,7 +671,7 @@
         <section class="doctor-npt-history">
           <header><div><strong>Historial de Solicitudes</strong><small>Servicio médico integral</small></div><a href="{{ route('doctor.dashboard', ['section' => 'services', 'type' => 'npt', 'action' => 'request']) }}">← Atrás</a></header>
           <div class="doctor-npt-history-title"><div><strong>Solicitudes — Nutrición Parenteral PRODIFEM</strong><small>Historial de solicitudes enviadas por hospitales</small></div><b>{{ $nptRequests->whereIn('status', ['pending', 'requested'])->count() }} pendientes</b></div>
-          <div class="doctor-npt-history-table"><table><thead><tr><th>Folio</th><th>Fecha solicitud</th><th>Paciente</th><th>Registro</th><th>Unidad</th><th>Volumen ml</th><th>Médico</th><th>Autorizaciones</th><th>Mezcla</th><th>Remisión</th><th>Visualizar solicitud</th><th>Estado</th></tr></thead><tbody>@forelse($nptRequests as $request)<tr><td>{{ $request->external_id }}</td><td>{{ $request->requested_at?->format('d/m/Y H:i') }}</td><td>{{ $request->patient?->full_name }}</td><td>{{ $request->patient?->platform_number }}</td><td>Privada</td><td>{{ data_get($request->payload, 'clinical_format.total_volume', '—') }}</td><td>{{ $doctor->full_name }}</td><td>Operativa: {{ $statusText(data_get($request->payload, 'authorizations.operational')) }}</td><td>{{ data_get($request->payload, 'clinical_format.npt_type', '—') }}</td><td>@if(data_get($request->payload, 'cbta.remission.available') === true)<a href="{{ route('doctor.service_requests.remission.download', $request) }}">Remisión {{ data_get($request->payload, 'cbta.remission.number') }}</a>@else Pendiente @endif @foreach(data_get($request->payload, 'cbta.documents', []) as $document)<br><a href="{{ route('doctor.service_requests.documents.download', [$request, data_get($document, 'id')]) }}">Descargar {{ data_get($document, 'type') === 'authorization' ? 'autorización' : 'soporte' }}</a>@endforeach</td><td>Ver solicitud</td><td>{{ $statusText($request->status) }}</td></tr>@empty<tr><td colspan="12">Sin solicitudes registradas.</td></tr>@endforelse</tbody></table></div>
+          <div class="doctor-npt-history-table"><table><thead><tr><th>Folio</th><th>Fecha solicitud</th><th>Paciente</th><th>Registro</th><th>Unidad</th><th>Volumen ml</th><th>Médico</th><th>Autorizaciones</th><th>Mezcla</th><th>Remisión</th><th>Visualizar solicitud</th><th>Estado</th></tr></thead><tbody>@forelse($nptRequests as $request)<tr><td>{{ $request->external_id }}</td><td>{{ $request->requested_at?->format('d/m/Y H:i') }}</td><td>{{ $request->patient?->full_name }}</td><td>{{ $request->patient?->platform_number }}</td><td>Privada</td><td>{{ data_get($request->payload, 'clinical_format.total_volume', '—') }}</td><td>{{ $doctor->full_name }}</td><td>Enfermería: {{ $statusText(\App\Support\MixtureAuthorizationPolicy::status(data_get($request->payload, 'authorizations', []), 'nursing', 'npt')) }}<br>Farmacia intrahospitalaria: {{ $statusText(data_get($request->payload, 'authorizations.pharmacy')) }}</td><td>{{ data_get($request->payload, 'clinical_format.npt_type', '—') }}</td><td>@if(data_get($request->payload, 'cbta.remission.available') === true)<a href="{{ route('doctor.service_requests.remission.download', $request) }}">Remisión {{ data_get($request->payload, 'cbta.remission.number') }}</a>@else Pendiente @endif @foreach(data_get($request->payload, 'cbta.documents', []) as $document)<br><a href="{{ route('doctor.service_requests.documents.download', [$request, data_get($document, 'id')]) }}">Descargar {{ data_get($document, 'type') === 'authorization' ? 'autorización' : 'soporte' }}</a>@endforeach</td><td>Ver solicitud</td><td>{{ $statusText($request->status) }}</td></tr>@empty<tr><td colspan="12">Sin solicitudes registradas.</td></tr>@endforelse</tbody></table></div>
           <section class="doctor-npt-ai"><div><strong>Asistente IA</strong><small>Análisis del historial de solicitudes enviadas por hospitales</small></div><b>Historial PRODIFEM</b><p><strong>Sin pregunta activa.</strong><span>Las respuestas se generarán con la información visible de este historial.</span></p></section>
         </section>
       @endif
@@ -731,7 +737,7 @@
                 <td>{{ $providerRequest->patient?->full_name }}</td>
                 <td>{{ ['clinical_labs'=>'Estudios','npt'=>'NPT','chemo'=>'Oncologa'][$providerRequest->request_type] ?? $providerRequest->request_type }}</td>
                 <td>{{ data_get($providerRequest->payload, 'service') }}</td>
-                <td>Operativa: {{ $statusText(data_get($providerRequest->payload, 'authorizations.operational')) }}<br>Farmacia: {{ $statusText(data_get($providerRequest->payload, 'authorizations.pharmacy')) }}</td>
+                <td>{{ $providerRequest->request_type === 'chemo' ? 'Centro Oncológico' : 'Enfermería' }}: {{ $statusText(\App\Support\MixtureAuthorizationPolicy::status(data_get($providerRequest->payload, 'authorizations', []), $providerRequest->request_type === 'chemo' ? 'oncology' : 'nursing', $providerRequest->request_type)) }}<br>Farmacia intrahospitalaria: {{ $statusText(data_get($providerRequest->payload, 'authorizations.pharmacy')) }}</td>
                 <td>{{ $statusText($providerRequest->status) }}</td>
                 <td><details class="doctor-inline-editor"><summary>Ver solicitud</summary><p><strong>Diagn&oacute;stico:</strong> {{ data_get($providerRequest->payload, 'diagnosis') }}</p><p><strong>Indicaciones:</strong> {{ data_get($providerRequest->payload, 'notes') ?: 'Sin observaciones' }}</p>@if($providerRequest->request_type === 'npt')<p><strong>Volumen total:</strong> {{ data_get($providerRequest->payload, 'clinical_format.total_volume') }} ml</p><p><strong>V&iacute;a:</strong> {{ data_get($providerRequest->payload, 'clinical_format.route') }}</p>@elseif($providerRequest->request_type === 'chemo')<p><strong>Medicamentos:</strong> {{ collect(data_get($providerRequest->payload, 'clinical_format.medications', []))->pluck('medication')->filter()->join(', ') }}</p>@endif @foreach(data_get($providerRequest->payload, 'cbta.documents', []) as $document)<p><a href="{{ route('doctor.service_requests.documents.download', [$providerRequest, data_get($document, 'id')]) }}">Descargar {{ data_get($document, 'name', 'documento') }}</a></p>@endforeach</details></td>
               </tr>

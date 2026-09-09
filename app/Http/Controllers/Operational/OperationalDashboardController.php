@@ -17,6 +17,7 @@ use App\Models\ProviderRequestStatusEvent;
 use App\Services\Platform\PlatformAuditService;
 use App\Services\Platform\DomainStateTransitionService;
 use App\Services\Integrations\Cbta\MixtureIntegrationSyncService;
+use App\Support\MixtureAuthorizationPolicy;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -92,7 +93,7 @@ class OperationalDashboardController extends Controller
             ->values();
 
         $historicalProviderRequests = $providerRequests
-            ->whereIn('status', ['delivered', 'cancelled', 'rejected', 'requested', 'accepted', 'preparing', 'in_route'])
+            ->whereIn('status', ['delivered', 'cancelled', 'rejected', 'requested', 'accepted', 'dispensed', 'preparing', 'ready', 'in_route'])
             ->values();
 
         $providerPatientIds = ProviderRequest::query()
@@ -307,7 +308,7 @@ class OperationalDashboardController extends Controller
         $this->authorizeProviderRequestOwnership($request, $providerRequest);
 
         $data = $request->validate([
-            'status' => ['required', Rule::in(['draft', 'requested', 'accepted', 'preparing', 'in_route', 'delivered', 'rejected', 'cancelled'])],
+            'status' => ['required', Rule::in(['draft', 'requested', 'accepted', 'dispensed', 'preparing', 'ready', 'in_route', 'delivered', 'rejected', 'cancelled'])],
             'notes' => ['nullable', 'string', 'max:500'],
             'provider_name' => ['nullable', 'string', 'max:160'],
             'operating_area' => ['nullable', Rule::in(['nursing', 'oncology', 'inpatient-pharmacy'])],
@@ -315,11 +316,13 @@ class OperationalDashboardController extends Controller
 
         if ($data['status'] === 'cancelled') {
             $payload = $providerRequest->payload ?? [];
-            $required = $payload['authorization_requirements']
-                ?? ($providerRequest->request_type === 'chemo' ? ['oncology', 'pharmacy'] : ['operational', 'pharmacy']);
-            $authorizations = $payload['authorizations'] ?? [];
-            $allAuthorizationsApproved = collect($required)
-                ->every(fn ($key) => ($authorizations[$key] ?? 'pending') === 'approved');
+            $allAuthorizationsApproved = MixtureAuthorizationPolicy::allApproved($payload, $providerRequest->request_type);
+
+            abort_if(
+                MixtureAuthorizationPolicy::cancellationLockedByCbta($providerRequest->mixtureIntegration?->remote_status),
+                422,
+                'La solicitud ya fue aprobada en Mezclas y no puede cancelarse desde Dr. Sam.',
+            );
 
             abort_unless(
                 ($data['operating_area'] ?? null) === 'inpatient-pharmacy' && $allAuthorizationsApproved,
@@ -330,10 +333,14 @@ class OperationalDashboardController extends Controller
 
         if ($data['status'] === 'accepted') {
             $payload = $providerRequest->payload ?? [];
-            $required = $payload['authorization_requirements'] ?? [];
-            $authorizations = $payload['authorizations'] ?? [];
-
-            if ($required !== []) {
+            if (in_array($providerRequest->request_type, ['npt', 'chemo'], true)) {
+                abort_unless(
+                    MixtureAuthorizationPolicy::allApproved($payload, $providerRequest->request_type),
+                    422,
+                    'La solicitud requiere todas las autorizaciones antes de enviarse al proveedor.',
+                );
+            } elseif (($required = $payload['authorization_requirements'] ?? []) !== []) {
+                $authorizations = $payload['authorizations'] ?? [];
                 abort_unless(
                     collect($required)->every(fn ($key) => ($authorizations[$key] ?? 'pending') === 'approved'),
                     422,
@@ -403,15 +410,19 @@ class OperationalDashboardController extends Controller
         $this->authorizeProviderRequestOwnership($request, $providerRequest);
 
         $data = $request->validate([
-            'authorization' => ['required', Rule::in(['operational', 'pharmacy', 'oncology'])],
+            'authorization' => ['required', Rule::in(['nursing', 'operational', 'pharmacy', 'oncology'])],
             'status' => ['required', Rule::in(['pending', 'approved', 'rejected'])],
             'notes' => ['nullable', 'string', 'max:500'],
             'operating_area' => ['nullable', Rule::in(['nursing', 'oncology', 'inpatient-pharmacy'])],
         ]);
 
+        if ($data['authorization'] === 'operational' && $providerRequest->request_type !== 'chemo') {
+            $data['authorization'] = 'nursing';
+        }
+
         $contextOperatorRoles = ['superadmin', 'admin'];
         $operatingAreaAuthorization = [
-            'nursing' => 'operational',
+            'nursing' => 'nursing',
             'oncology' => 'oncology',
             'inpatient-pharmacy' => 'pharmacy',
         ][$data['operating_area'] ?? ''] ?? null;
@@ -432,9 +443,12 @@ class OperationalDashboardController extends Controller
 
         DB::transaction(function () use ($data, $providerRequest, $request): void {
             $payload = $providerRequest->payload ?? [];
-            $authorizations = $payload['authorizations'] ?? [];
-            $previousStatus = $authorizations[$data['authorization']] ?? 'pending';
+            $authorizations = MixtureAuthorizationPolicy::normalize($payload['authorizations'] ?? [], $providerRequest->request_type);
+            $previousStatus = MixtureAuthorizationPolicy::status($authorizations, $data['authorization'], $providerRequest->request_type);
             $authorizations[$data['authorization']] = $data['status'];
+            if ($data['authorization'] === 'nursing' && $providerRequest->request_type !== 'chemo' && array_key_exists('operational', $authorizations)) {
+                $authorizations['operational'] = $data['status'];
+            }
             $payload['authorizations'] = $authorizations;
             $authorizationEvent = [
                 'status' => $data['status'],
@@ -449,12 +463,12 @@ class OperationalDashboardController extends Controller
             $history[] = $authorizationEvent;
             $payload['authorization_history'][$data['authorization']] = $history;
 
-            $required = $payload['authorization_requirements']
-                ?? ($providerRequest->request_type === 'chemo' ? ['oncology', 'pharmacy'] : ['operational', 'pharmacy']);
+            $required = MixtureAuthorizationPolicy::requirements($providerRequest->request_type);
             $payload['authorization_requirements'] = $required;
 
             if ($data['status'] === 'rejected') {
                 $areaLabels = [
+                    'nursing' => 'Enfermería',
                     'operational' => 'Enfermería',
                     'pharmacy' => 'Farmacia intrahospitalaria',
                     'oncology' => 'Centro Oncológico',

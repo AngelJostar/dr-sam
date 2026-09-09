@@ -4,12 +4,18 @@
 
 @php
   $statusLabels = [
-    'requested' => 'Solicitada',
-    'accepted' => 'Aceptada',
-    'preparing' => 'Preparacion',
+    'requested' => 'Pendiente',
+    'received' => 'Pendiente',
+    'materialized' => 'Pendiente',
+    'accepted' => 'Aprobada',
+    'authorized' => 'Aprobada',
+    'dispensed' => 'Dispensada',
+    'preparing' => 'Preparada',
+    'ready' => 'Inspeccionada',
     'in_route' => 'En ruta',
     'delivered' => 'Entregada',
-    'rejected' => 'Rechazada',
+    'rejected' => 'No aprobada',
+    'materialization_failed' => 'Error de integración',
     'cancelled' => 'Cancelada',
   ];
 
@@ -168,7 +174,7 @@
                   @csrf
                   @method('patch')
                   <select name="status">
-                    @foreach (['accepted', 'preparing', 'in_route', 'delivered', 'rejected', 'cancelled'] as $status)
+                    @foreach (['accepted', 'dispensed', 'preparing', 'ready', 'in_route', 'delivered', 'rejected', 'cancelled'] as $status)
                       <option value="{{ $status }}" @selected($request->status === $status)>{{ $statusText($status) }}</option>
                     @endforeach
                   </select>
@@ -306,7 +312,7 @@
                   @csrf
                   @method('patch')
                   <select name="status">
-                    @foreach (['accepted', 'preparing', 'in_route', 'delivered', 'rejected', 'cancelled'] as $status)
+                    @foreach (['accepted', 'dispensed', 'preparing', 'ready', 'in_route', 'delivered', 'rejected', 'cancelled'] as $status)
                       <option value="{{ $status }}" @selected($request->status === $status)>{{ $statusText($status) }}</option>
                     @endforeach
                   </select>
@@ -334,26 +340,26 @@
       }
 
       $providerRows = collect([
-          ['service' => 'Oncologica', 'folio' => 'QT-18', 'hospital' => 'Hospital General Norte', 'patient' => 'Torres Pineda, Mariana', 'doctor' => 'Carter Jimmy', 'auth' => ['Centro Onc.', 'Farm. Intra.'], 'date' => '30/06/2026', 'obs' => 'Sin Observacion', 'obs_state' => 'neutral', 'central' => 'Autorizada', 'central_state' => 'success', 'delivery' => 'Pendiente', 'delivery_state' => 'warning'],
-          ['service' => 'Oncologica', 'folio' => 'QT-19', 'hospital' => 'Hospital General Norte', 'patient' => 'Castillo Vega, Roberto', 'doctor' => 'Carter Jimmy', 'auth' => ['Centro Onc.', 'Farm. Intra.'], 'date' => '30/06/2026', 'obs' => 'Sin Observacion', 'obs_state' => 'neutral', 'central' => 'Autorizada', 'central_state' => 'success', 'delivery' => 'Pendiente', 'delivery_state' => 'warning'],
-          ['service' => 'Oncologica', 'folio' => 'QT-20', 'hospital' => 'Hospital General Norte', 'patient' => 'Flores Mendoza, Renata', 'doctor' => 'Carter Jimmy', 'auth' => ['Centro Onc.', 'Farm. Intra.'], 'date' => '30/06/2026', 'obs' => 'Sin Observacion', 'obs_state' => 'neutral', 'central' => 'Autorizada', 'central_state' => 'success', 'delivery' => 'Pendiente', 'delivery_state' => 'warning'],
-          ['service' => 'Oncologica', 'folio' => 'QT-21', 'hospital' => 'Hospital General Norte', 'patient' => 'Sanchez Ruiz, Diego', 'doctor' => 'Carter Jimmy', 'auth' => ['Centro Onc.', 'Farm. Intra.'], 'date' => '30/06/2026', 'obs' => 'Sin Observacion', 'obs_state' => 'neutral', 'central' => 'Autorizada', 'central_state' => 'success', 'delivery' => 'Pendiente', 'delivery_state' => 'warning'],
-          ['service' => 'Oncologica', 'folio' => 'QT-22', 'hospital' => 'Hospital General Norte', 'patient' => 'Rodriguez Luna, Camila', 'doctor' => 'Carter Jimmy', 'auth' => ['Centro Onc.', 'Farm. Intra.'], 'date' => '30/06/2026', 'obs' => 'Sin Observacion', 'obs_state' => 'neutral', 'central' => 'Autorizada', 'central_state' => 'success', 'delivery' => 'Pendiente', 'delivery_state' => 'warning'],
-          ['service' => 'Oncologica', 'folio' => 'QT-23', 'hospital' => 'Hospital General Norte', 'patient' => 'Garcia Moreno, Valeria', 'doctor' => 'Carter Jimmy', 'auth' => ['Centro Onc.', 'Farm. Intra.'], 'date' => '30/06/2026', 'obs' => 'Sin Observacion', 'obs_state' => 'neutral', 'central' => 'Autorizada', 'central_state' => 'success', 'delivery' => 'Pendiente', 'delivery_state' => 'warning'],
+          ['service' => 'Oncologica', 'folio' => 'QT-18', 'hospital' => 'Hospital General Norte', 'patient' => 'Torres Pineda, Mariana', 'doctor' => 'Carter Jimmy', 'auth' => ['Centro Onc.', 'Farm. Intra.'], 'date' => '30/06/2026', 'obs' => 'Sin Observacion', 'obs_state' => 'neutral', 'central' => 'Aprobada', 'central_state' => 'success', 'delivery' => 'Pendiente', 'delivery_state' => 'warning'],
+          ['service' => 'Oncologica', 'folio' => 'QT-19', 'hospital' => 'Hospital General Norte', 'patient' => 'Castillo Vega, Roberto', 'doctor' => 'Carter Jimmy', 'auth' => ['Centro Onc.', 'Farm. Intra.'], 'date' => '30/06/2026', 'obs' => 'Sin Observacion', 'obs_state' => 'neutral', 'central' => 'Aprobada', 'central_state' => 'success', 'delivery' => 'Pendiente', 'delivery_state' => 'warning'],
+          ['service' => 'Oncologica', 'folio' => 'QT-20', 'hospital' => 'Hospital General Norte', 'patient' => 'Flores Mendoza, Renata', 'doctor' => 'Carter Jimmy', 'auth' => ['Centro Onc.', 'Farm. Intra.'], 'date' => '30/06/2026', 'obs' => 'Sin Observacion', 'obs_state' => 'neutral', 'central' => 'Aprobada', 'central_state' => 'success', 'delivery' => 'Pendiente', 'delivery_state' => 'warning'],
+          ['service' => 'Oncologica', 'folio' => 'QT-21', 'hospital' => 'Hospital General Norte', 'patient' => 'Sanchez Ruiz, Diego', 'doctor' => 'Carter Jimmy', 'auth' => ['Centro Onc.', 'Farm. Intra.'], 'date' => '30/06/2026', 'obs' => 'Sin Observacion', 'obs_state' => 'neutral', 'central' => 'Aprobada', 'central_state' => 'success', 'delivery' => 'Pendiente', 'delivery_state' => 'warning'],
+          ['service' => 'Oncologica', 'folio' => 'QT-22', 'hospital' => 'Hospital General Norte', 'patient' => 'Rodriguez Luna, Camila', 'doctor' => 'Carter Jimmy', 'auth' => ['Centro Onc.', 'Farm. Intra.'], 'date' => '30/06/2026', 'obs' => 'Sin Observacion', 'obs_state' => 'neutral', 'central' => 'Aprobada', 'central_state' => 'success', 'delivery' => 'Pendiente', 'delivery_state' => 'warning'],
+          ['service' => 'Oncologica', 'folio' => 'QT-23', 'hospital' => 'Hospital General Norte', 'patient' => 'Garcia Moreno, Valeria', 'doctor' => 'Carter Jimmy', 'auth' => ['Centro Onc.', 'Farm. Intra.'], 'date' => '30/06/2026', 'obs' => 'Sin Observacion', 'obs_state' => 'neutral', 'central' => 'Aprobada', 'central_state' => 'success', 'delivery' => 'Pendiente', 'delivery_state' => 'warning'],
           ['service' => 'NPT', 'folio' => 'NPT-17', 'hospital' => 'Hospital General Bajio', 'patient' => 'Hernandez, Arturo', 'doctor' => 'Carter Jimmy', 'auth' => ['Enfermeria', 'Farm. Intra.'], 'date' => '27/05/2026', 'obs' => 'Con Observacion', 'obs_state' => 'danger', 'central' => 'En Revision', 'central_state' => 'warning', 'delivery' => 'Pendiente', 'delivery_state' => 'muted'],
-          ['service' => 'NPT', 'folio' => 'NPT-16', 'hospital' => 'Hospital General Norte', 'patient' => 'Hernandez Villanueva, Javier Alejandro', 'doctor' => 'Carter Jimmy', 'auth' => ['Enfermeria', 'Farm. Intra.'], 'date' => '27/05/2026', 'obs' => 'Sin Observacion', 'obs_state' => 'neutral', 'central' => 'Autorizada', 'central_state' => 'success', 'delivery' => 'Entregada', 'delivery_state' => 'success'],
+          ['service' => 'NPT', 'folio' => 'NPT-16', 'hospital' => 'Hospital General Norte', 'patient' => 'Hernandez Villanueva, Javier Alejandro', 'doctor' => 'Carter Jimmy', 'auth' => ['Enfermeria', 'Farm. Intra.'], 'date' => '27/05/2026', 'obs' => 'Sin Observacion', 'obs_state' => 'neutral', 'central' => 'Aprobada', 'central_state' => 'success', 'delivery' => 'Entregada', 'delivery_state' => 'success'],
           ['service' => 'Oncologica', 'folio' => 'QT-17', 'hospital' => 'Centro de Alta Especialidad Regio', 'patient' => 'Hernandez, Arturo', 'doctor' => 'Carter Jimmy', 'auth' => ['Centro Onc.', 'Farm. Intra.'], 'date' => '27/05/2026', 'obs' => 'Con Observacion', 'obs_state' => 'success', 'central' => 'En Revision', 'central_state' => 'warning', 'delivery' => 'Pendiente', 'delivery_state' => 'muted'],
       ]);
 
       $requestRows = $requests->map(function ($request) use ($statusText, $type) {
           $centralStatus = $request->status === 'rejected'
-              ? 'Rechazada'
-              : (in_array($request->status, ['accepted', 'preparing', 'in_route', 'delivered'], true) ? 'Autorizada' : 'En Revision');
+              ? 'No aprobada'
+              : (in_array($request->status, ['accepted', 'dispensed', 'preparing', 'ready', 'in_route', 'delivered'], true) ? 'Aprobada' : 'En revisión');
           $prescriptionItems = collect(data_get($request->payload, 'prescription_items', []));
           $diagnosis = data_get($request->payload, 'diagnosis');
           $prescriptionCode = data_get($request->payload, 'prescription_code');
           $serviceName = data_get($request->payload, 'service') ?: ($type === 'chemotherapy' ? 'Oncologica' : 'NPT');
-          $operationalAuthorization = data_get($request->payload, 'authorizations.operational', 'pending');
+          $operationalAuthorization = \App\Support\MixtureAuthorizationPolicy::status(data_get($request->payload, 'authorizations', []), $request->request_type === 'chemo' ? 'oncology' : 'nursing', $request->request_type);
           $pharmacyAuthorization = data_get($request->payload, 'authorizations.pharmacy', 'pending');
           $observations = $request->status === 'rejected'
               ? 'Con Observacion'
@@ -365,7 +371,9 @@
               'hospital' => $request->medicalUnit?->name ?? 'Hospital sin unidad',
               'patient' => $request->patient?->full_name ?? 'Sin paciente',
               'doctor' => data_get($request->payload, 'doctor') ?: 'Sin medico',
-              'auth' => $prescriptionCode ? ['Consulta Ext.', 'Central'] : ['Enfermeria', 'Farm. Intra.'],
+              'auth' => $prescriptionCode
+                  ? ['Consulta Ext.', 'Central']
+                  : [$request->request_type === 'chemo' ? 'Centro Onc.' : 'Enfermeria', 'Farm. Intra.'],
               'auth_states' => $prescriptionCode
                   ? ['approved', 'approved']
                   : [$operationalAuthorization, $pharmacyAuthorization],
@@ -374,8 +382,8 @@
               'obs_state' => $request->status === 'rejected' ? 'danger' : ($prescriptionCode || $diagnosis ? 'success' : 'neutral'),
               'central' => $centralStatus,
               'central_state' => match ($centralStatus) {
-                  'Autorizada' => 'success',
-                  'Rechazada' => 'danger',
+                  'Aprobada' => 'success',
+                  'No aprobada' => 'danger',
                   default => 'warning',
               },
               'delivery' => in_array($request->status, ['delivered'], true) ? 'Entregada' : 'Pendiente',
@@ -405,14 +413,14 @@
       ], $row));
 
       $allProviderRows = $requestRows->concat($providerRows);
-      $pendingProviderRows = $allProviderRows->filter(fn ($row) => $row['central'] !== 'Autorizada' || $row['delivery'] !== 'Entregada')->values();
+      $pendingProviderRows = $allProviderRows->filter(fn ($row) => $row['central'] !== 'Aprobada' || $row['delivery'] !== 'Entregada')->values();
 
     $scopedProviderRows = match ($activeProviderScope) {
         'npt' => $allProviderRows->where('service', 'NPT')->values(),
         'oncology' => $allProviderRows->where('service', 'Oncologica')->values(),
         default => $allProviderRows,
     };
-    $scopedPendingProviderRows = $scopedProviderRows->filter(fn ($row) => $row['central'] !== 'Autorizada' || $row['delivery'] !== 'Entregada')->values();
+    $scopedPendingProviderRows = $scopedProviderRows->filter(fn ($row) => $row['central'] !== 'Aprobada' || $row['delivery'] !== 'Entregada')->values();
     $displayProviderRows = $activeProviderSection === 'history' ? $scopedProviderRows : $scopedPendingProviderRows;
 @endphp
 
@@ -567,15 +575,15 @@
                                                   @method('PATCH')
                                                   <select class="provider-native-central-select is-{{ $row['central_state'] }}" name="status" aria-label="Estado de Central {{ $row['folio'] }}">
                                                     <option class="is-warning" value="requested" @selected($row['central'] === 'En Revision')>En Revision</option>
-                                                    <option class="is-success" value="accepted" @selected($row['central'] === 'Autorizada')>Autorizada</option>
-                                                    <option class="is-danger" value="rejected" @selected($row['central'] === 'Rechazada')>Rechazada</option>
+                                                    <option class="is-success" value="accepted" @selected($row['central'] === 'Aprobada')>Aprobada</option>
+                                                    <option class="is-danger" value="rejected" @selected($row['central'] === 'No aprobada')>No aprobada</option>
                                                   </select>
                                                 </form>
                                               @else
                                                 <select class="provider-native-central-select is-{{ $row['central_state'] }}" aria-label="Estado de Central {{ $row['folio'] }}" @disabled(! $centralEnabled)>
                                                   <option class="is-warning" @selected($row['central'] === 'En Revision')>En Revision</option>
-                                                  <option class="is-success" @selected($row['central'] === 'Autorizada')>Autorizada</option>
-                                                  <option class="is-danger" @selected($row['central'] === 'Rechazada')>Rechazada</option>
+                                                  <option class="is-success" @selected($row['central'] === 'Aprobada')>Aprobada</option>
+                                                  <option class="is-danger" @selected($row['central'] === 'No aprobada')>No aprobada</option>
                                                 </select>
                                               @endif
                                             </td>
