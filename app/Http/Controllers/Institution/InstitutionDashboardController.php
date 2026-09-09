@@ -28,6 +28,7 @@ class InstitutionDashboardController extends Controller
 
         $institution->load([
             'owner',
+            'medicalUnits.contractedServices.service',
             'medicalUnits.doctors',
             'medicalUnits.operationalProfiles.area',
             'services.service',
@@ -35,11 +36,16 @@ class InstitutionDashboardController extends Controller
 
         $unitIds = $institution->medicalUnits->pluck('id');
 
+        $appointments = Appointment::query()
+            ->with(['patient', 'doctor', 'medicalUnit'])
+            ->whereIn('medical_unit_id', $unitIds)
+            ->latest('starts_at')
+            ->get();
+
         $providerRequests = ProviderRequest::query()
             ->with(['provider', 'patient', 'medicalUnit'])
             ->whereIn('medical_unit_id', $unitIds)
             ->latest('requested_at')
-            ->limit(10)
             ->get();
 
         $inventory = InventoryItem::query()
@@ -54,12 +60,8 @@ class InstitutionDashboardController extends Controller
             'availableInstitutions' => in_array($request->user()?->role, ['superadmin', 'admin'], true)
                 ? Institution::query()->orderBy('name')->get()
                 : collect([$institution]),
-            'servicesCatalog' => Service::query()
-                ->with(['contractedServices' => fn ($query) => $query
-                    ->with('medicalUnit')
-                    ->where('institution_id', $institution->id)])
-                ->orderBy('name')
-                ->get(),
+            'servicesCatalog' => $this->institutionServiceCatalog($institution),
+            'appointments' => $appointments,
             'providerRequests' => $providerRequests,
             'inventory' => $inventory,
             'catalogItems' => MedicationCatalogItem::query()
@@ -103,6 +105,77 @@ class InstitutionDashboardController extends Controller
         $unit->update([...collect($data)->except('unit_password')->all(), 'metadata' => $metadata]);
         $audit->record($request, 'institution.unit.updated', $unit, 'institution', ['institution_id' => $institution->id]);
         return redirect()->route('institution.dashboard', ['institution' => $institution->id])->with('status', 'Unidad actualizada.');
+    }
+
+    public function updateUnitPassword(Request $request, MedicalUnit $unit, PlatformAuditService $audit): RedirectResponse
+    {
+        $institution = $this->resolveInstitution($request);
+        abort_unless($unit->institution_id === $institution->id, 404);
+
+        $data = $request->validate([
+            'unit_password' => ['required', 'string', 'min:6', 'max:255'],
+            'form_context' => ['nullable', 'string'],
+            'unit_id' => ['nullable', 'integer'],
+        ]);
+
+        $unitUser = $this->resolveUnitUser($unit);
+        if (! $unitUser) {
+            return back()
+                ->withInput()
+                ->withErrors(['unit_password' => 'No se encontró el usuario asociado a esta unidad.']);
+        }
+
+        DB::transaction(function () use ($data, $unit, $unitUser): void {
+            $metadata = $unit->metadata ?? [];
+            $metadata['demo_password'] = $data['unit_password'];
+            $metadata['user_id'] = $unitUser->id;
+
+            $unit->update(['metadata' => $metadata]);
+            $unitUser->update(['password' => Hash::make($data['unit_password'])]);
+        });
+
+        $audit->record($request, 'institution.unit.password.updated', $unit, 'institution', [
+            'institution_id' => $institution->id,
+            'user_id' => $unitUser->id,
+        ]);
+
+        return redirect()
+            ->route('institution.dashboard', ['institution' => $institution->id])
+            ->with('status', 'Contraseña de unidad actualizada.');
+    }
+
+    private function institutionServiceCatalog(Institution $institution)
+    {
+        $definitions = [
+            'consulta-externa' => ['category' => 'Atencion medica', 'specialty' => 'Consulta Externa', 'name' => 'Consulta externa'],
+            'hemodinamia' => ['category' => 'Atencion medica', 'specialty' => 'Hemodinamia', 'name' => 'Hemodinamia'],
+            'laboratorio' => ['category' => 'Diagnostico', 'specialty' => 'Laboratorio clinico', 'name' => 'Laboratorio'],
+            'nutricion-parenteral' => ['category' => 'Farmaceuticos', 'specialty' => 'Central de Mezclas de Nutricion Parenteral', 'name' => 'Nutricion Parenteral'],
+            'quimioterapias' => ['category' => 'Farmaceuticos', 'specialty' => 'Central de Mezclas Oncologicas', 'name' => 'Quimioterapia'],
+            'central-de-mezclas' => ['category' => 'Farmaceuticos', 'specialty' => 'Central de mezclas', 'name' => 'Central de mezclas'],
+            'mantenimiento-equipo-medico' => ['category' => 'Soporte clinico', 'specialty' => 'Mantenimiento a equipo medico', 'name' => 'Mantenimiento a equipo medico'],
+            'osteosintesis' => ['category' => 'Traumatologia', 'specialty' => 'Osteosintesis', 'name' => 'Osteosintesis'],
+        ];
+
+        foreach ($definitions as $externalId => $definition) {
+            Service::query()->updateOrCreate(
+                ['external_id' => $externalId],
+                $definition + ['status' => 'active'],
+            );
+        }
+
+        $services = Service::query()
+            ->with(['contractedServices' => fn ($query) => $query
+                ->with('medicalUnit')
+                ->where('institution_id', $institution->id)])
+            ->whereIn('external_id', array_keys($definitions))
+            ->get()
+            ->keyBy('external_id');
+
+        return collect(array_keys($definitions))
+            ->map(fn (string $externalId) => $services->get($externalId))
+            ->filter()
+            ->values();
     }
 
     public function updateUnitStatus(Request $request, MedicalUnit $unit, PlatformAuditService $audit): RedirectResponse
@@ -586,6 +659,23 @@ class InstitutionDashboardController extends Controller
             403,
             'No puedes modificar unidades de otra institucion.',
         );
+    }
+
+    private function resolveUnitUser(MedicalUnit $unit): ?User
+    {
+        $userId = data_get($unit->metadata, 'user_id');
+        $unitUser = $userId
+            ? User::query()->whereKey($userId)->where('role', 'unit')->first()
+            : null;
+
+        if ($unitUser || blank($unit->unit_username)) {
+            return $unitUser;
+        }
+
+        return User::query()
+            ->where('username', $unit->unit_username)
+            ->where('role', 'unit')
+            ->first();
     }
 
     private function authorizeSpecialtyAccess(Institution $institution, Service $service): \Illuminate\Support\Collection

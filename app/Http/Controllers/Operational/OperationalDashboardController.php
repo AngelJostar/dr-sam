@@ -21,22 +21,33 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class OperationalDashboardController extends Controller
 {
+    public function patientCatalog(Request $request): View
+    {
+        $request->merge(['section' => 'patients']);
+
+        return $this->index($request);
+    }
+
     public function index(Request $request): View
     {
         $section = $request->string('section')->toString() ?: 'pending';
         $allowedSections = [
             'pending', 'history', 'patients', 'patient-create',
-            'services-pending', 'services-history', 'service-create', 'service-format',
-            'mixes', 'mix-history', 'calendar', 'infusion-rooms',
+            'services-pending', 'services-history', 'services-preparation', 'services-scheduled', 'service-create', 'service-format',
+            'mixes', 'mix-history', 'calendar', 'infusion-rooms', 'infusion-room-calendar', 'infusion-room-catalog',
+            'support', 'support-ai', 'support-analytics',
         ];
 
         if (! in_array($section, $allowedSections, true)) {
             $section = 'pending';
         }
+
+        $isPatientCatalog = in_array($section, ['patients', 'patient-create'], true);
 
         $areaKey = $request->string('area')->toString() ?: 'nursing';
         $allowedAreas = ['nursing', 'oncology', 'inpatient-pharmacy'];
@@ -65,8 +76,8 @@ class OperationalDashboardController extends Controller
         $unitId = $contextUnit?->id;
         $areaRequestTypes = [
             'nursing' => ['npt', 'nutrition', 'import'],
-            'oncology' => ['chemo'],
-            'inpatient-pharmacy' => ['npt', 'chemo', 'import'],
+            'oncology' => ['chemo', 'chemotherapy'],
+            'inpatient-pharmacy' => ['npt', 'chemo', 'chemotherapy', 'import'],
         ];
 
         $providerRequests = ProviderRequest::query()
@@ -83,12 +94,41 @@ class OperationalDashboardController extends Controller
                 });
             })
             ->latest('requested_at')
-            ->limit(12)
+            ->when($areaKey !== 'oncology', fn ($query) => $query->limit(12))
             ->get();
 
         $pendingProviderRequests = $providerRequests
-            ->whereNotIn('status', ['delivered', 'cancelled', 'rejected'])
+            ->whereNotIn('status', ['draft', 'delivered', 'cancelled', 'rejected'])
+            ->when(
+                $areaKey === 'oncology',
+                fn ($items) => $items->filter(
+                    fn (ProviderRequest $item): bool => blank(data_get($item->payload, 'infusion_assignment'))
+                ),
+            )
             ->values();
+
+        $calendarRequestPool = in_array($areaKey, ['nursing', 'oncology'], true)
+            ? ProviderRequest::query()
+                ->with(['patient'])
+                ->when($unitId, fn ($query) => $query->where('medical_unit_id', $unitId))
+                ->whereIn('request_type', $areaRequestTypes[$areaKey])
+                ->latest('requested_at')
+                ->limit(250)
+                ->get()
+            : collect();
+
+        $preparationProviderRequests = $areaKey === 'oncology'
+            ? $calendarRequestPool->where('status', 'draft')->values()
+            : collect();
+        $scheduledProviderRequests = $areaKey === 'oncology'
+            ? $calendarRequestPool
+                ->filter(fn (ProviderRequest $item): bool => filled(data_get($item->payload, 'infusion_assignment'))
+                    && ! in_array($item->status, ['draft', 'cancelled', 'rejected'], true))
+                ->values()
+            : collect();
+        $calendarProviderRequests = $areaKey === 'oncology'
+            ? $scheduledProviderRequests
+            : $calendarRequestPool;
 
         $historicalProviderRequests = $providerRequests
             ->whereIn('status', ['delivered', 'cancelled', 'rejected', 'requested', 'accepted', 'preparing', 'in_route'])
@@ -96,7 +136,7 @@ class OperationalDashboardController extends Controller
 
         $providerPatientIds = ProviderRequest::query()
             ->when($unitId, fn ($query) => $query->where('medical_unit_id', $unitId))
-            ->when($areaRequestTypes[$areaKey] ?? null, fn ($query, $types) => $query->whereIn('request_type', $types))
+            ->when(! $isPatientCatalog, fn ($query) => $query->whereIn('request_type', $areaRequestTypes[$areaKey] ?? []))
             ->whereNotNull('patient_id')
             ->pluck('patient_id');
 
@@ -117,11 +157,13 @@ class OperationalDashboardController extends Controller
         $outpatientPrescriptionPatientIds = $outpatientPrescriptions->pluck('patient_id')->filter();
 
         $patients = Patient::query()
-            ->where(function ($query) use ($unitId, $providerPatientIds, $outpatientPrescriptionPatientIds): void {
-                $query
-                    ->when($unitId, fn ($subQuery) => $subQuery->whereHas('appointments', fn ($appointmentQuery) => $appointmentQuery->where('medical_unit_id', $unitId)))
-                    ->orWhereIn('id', $providerPatientIds)
-                    ->orWhereIn('id', $outpatientPrescriptionPatientIds);
+            ->when($unitId, function ($query) use ($unitId, $providerPatientIds, $outpatientPrescriptionPatientIds): void {
+                $query->where(function ($subQuery) use ($unitId, $providerPatientIds, $outpatientPrescriptionPatientIds): void {
+                    $subQuery->where('metadata->medical_unit_id', $unitId)
+                        ->orWhereHas('appointments', fn ($appointmentQuery) => $appointmentQuery->where('medical_unit_id', $unitId))
+                        ->orWhereIn('id', $providerPatientIds)
+                        ->orWhereIn('id', $outpatientPrescriptionPatientIds);
+                });
             })
             ->orderBy('full_name')
             ->limit(30)
@@ -154,20 +196,80 @@ class OperationalDashboardController extends Controller
             ->orderBy('unit_number')
             ->get() ?? collect();
 
+        $selectedInfusionRoom = null;
+        if ($request->filled('room') && in_array($section, ['infusion-room-calendar', 'infusion-room-catalog'], true)) {
+            $selectedInfusionRoom = $infusionRooms->firstWhere('id', $request->integer('room'));
+            abort_unless($selectedInfusionRoom, 404);
+        }
+
+        if ($section === 'infusion-room-calendar') {
+            abort_unless($selectedInfusionRoom, 404);
+            $calendarProviderRequests = $calendarProviderRequests
+                ->filter(fn (ProviderRequest $item): bool => (int) data_get($item->payload, 'infusion_assignment.procedure_area_id') === (int) $selectedInfusionRoom->id)
+                ->values();
+        }
+
+        $today = now()->startOfDay();
+        $weekStart = $today->copy()->startOfWeek();
+        $weekEnd = $today->copy()->endOfWeek();
+        $monthStart = $today->copy()->startOfMonth();
+        $monthEnd = $today->copy()->endOfMonth();
+        $infusionRoomStats = $infusionRooms->mapWithKeys(function (ProcedureArea $room) use ($scheduledProviderRequests, $today, $weekStart, $weekEnd, $monthStart, $monthEnd): array {
+            $appointmentDates = $scheduledProviderRequests
+                ->filter(fn (ProviderRequest $item): bool => (int) data_get($item->payload, 'infusion_assignment.procedure_area_id') === (int) $room->id)
+                ->map(fn (ProviderRequest $item): string => (string) data_get($item->payload, 'infusion_assignment.application_date'))
+                ->filter(fn (string $date): bool => preg_match('/^\d{4}-\d{2}-\d{2}$/', $date) === 1)
+                ->values();
+
+            $operatingDays = $room->schedules
+                ->pluck('day_of_week')
+                ->map(fn ($day): int => (int) $day)
+                ->unique();
+            $monthlyOperatingDays = 0;
+            for ($date = $monthStart->copy(); $date->lte($monthEnd); $date->addDay()) {
+                if ($operatingDays->contains($date->dayOfWeek)) {
+                    $monthlyOperatingDays++;
+                }
+            }
+
+            $capacity = max(1, (int) $room->simultaneous_capacity);
+            $monthAppointments = $appointmentDates->filter(
+                fn (string $date): bool => $date >= $monthStart->toDateString() && $date <= $monthEnd->toDateString()
+            )->count();
+            $monthlyCapacity = $monthlyOperatingDays * $capacity;
+
+            return [$room->id => [
+                'today' => $appointmentDates->filter(fn (string $date): bool => $date === $today->toDateString())->count(),
+                'week' => $appointmentDates->filter(
+                    fn (string $date): bool => $date >= $weekStart->toDateString() && $date <= $weekEnd->toDateString()
+                )->count(),
+                'month' => $monthAppointments,
+                'monthly_capacity' => $monthlyCapacity,
+                'monthly_occupancy' => $monthlyCapacity > 0
+                    ? min(100, round(($monthAppointments / $monthlyCapacity) * 100, 1))
+                    : 0,
+            ]];
+        });
+
         return view('operational.dashboard', [
             'section' => $section,
             'areaKey' => $areaKey,
             'profile' => $profile,
             'contextUnit' => $contextUnit,
             'providerRequests' => $providerRequests,
+            'calendarProviderRequests' => $calendarProviderRequests,
             'pendingProviderRequests' => $pendingProviderRequests,
             'historicalProviderRequests' => $historicalProviderRequests,
+            'preparationProviderRequests' => $preparationProviderRequests,
+            'scheduledProviderRequests' => $scheduledProviderRequests,
             'patients' => $patients,
             'inventory' => $inventory,
             'services' => $services,
             'orders' => $orders,
             'outpatientPrescriptions' => $outpatientPrescriptions,
             'infusionRooms' => $infusionRooms,
+            'selectedInfusionRoom' => $selectedInfusionRoom,
+            'infusionRoomStats' => $infusionRoomStats,
             'metrics' => [
                 'Solicitudes proveedor' => ProviderRequest::query()
                     ->when($unitId, fn ($query) => $query->where('medical_unit_id', $unitId))
@@ -191,30 +293,32 @@ class OperationalDashboardController extends Controller
     public function storePatient(Request $request, PlatformAuditService $audit): RedirectResponse
     {
         $data = $this->validatePatientData($request);
-        $patient = Patient::query()->create($this->patientDataPayload($data));
+        $unit = $this->contextUnitFor($request);
+        $patient = Patient::query()->create($this->patientDataPayload($data, medicalUnitId: $unit?->id));
 
         $audit->record($request, 'operational.patient.created', $patient, 'operational');
 
-        return redirect()->route('operational.dashboard', [
-            'area' => $request->string('area')->toString() ?: 'nursing',
-            'section' => 'patients',
-        ])->with('status', 'Paciente registrado correctamente.');
+        return redirect()->route('operational.patients.index', $unit ? ['unit' => $unit->id] : [])
+            ->with('status', 'Paciente registrado correctamente.');
     }
 
     public function updatePatient(Request $request, Patient $patient, PlatformAuditService $audit): RedirectResponse
     {
         $data = $this->validatePatientData($request, $patient);
-        $patient->update($this->patientDataPayload($data, $patient));
+        $unit = $this->contextUnitFor($request);
+        $patient->update($this->patientDataPayload($data, $patient, $unit?->id));
         $audit->record($request, 'operational.patient.updated', $patient, 'operational');
 
-        return redirect()->route('operational.dashboard', [
-            'area' => $request->string('area')->toString() ?: 'nursing',
-            'section' => 'patients',
-        ])->with('status', 'Paciente actualizado correctamente.');
+        return redirect()->route('operational.patients.index', $unit ? ['unit' => $unit->id] : [])
+            ->with('status', 'Paciente actualizado correctamente.');
     }
 
     public function storeServiceRequest(Request $request, PlatformAuditService $audit): RedirectResponse
     {
+        if ($request->string('workflow')->toString() === 'oncology_center') {
+            return $this->storeOncologyCenterRequest($request, $audit);
+        }
+
         $data = $request->validate([
             'patient_id' => ['required', 'exists:patients,id'],
             'prescription_id' => ['nullable', 'exists:prescriptions,id'],
@@ -299,6 +403,248 @@ class OperationalDashboardController extends Controller
 
         return redirect()->route('operational.dashboard', ['area' => 'oncology', 'section' => 'services-pending'])
             ->with('status', 'Servicio oncolÃƒÂ³gico solicitado correctamente.');
+    }
+
+    private function storeOncologyCenterRequest(Request $request, PlatformAuditService $audit): RedirectResponse
+    {
+        $isScheduled = $request->string('save_mode')->toString() === 'scheduled';
+        $data = $request->validate([
+            'workflow' => ['required', Rule::in(['oncology_center'])],
+            'save_mode' => ['required', Rule::in(['preparation', 'scheduled'])],
+            'patient_id' => ['required', 'exists:patients,id'],
+            'service' => ['required', 'string', 'max:255'],
+            'required_at' => ['required', 'date'],
+            'diagnosis' => ['required', 'string', 'max:250'],
+            'notes' => ['nullable', 'string', 'max:500'],
+            'priority' => ['nullable', Rule::in(['routine', 'urgent'])],
+            'authorization_file' => ['nullable', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:5120'],
+            'oncology' => ['required', 'array'],
+            'oncology.request_date' => ['nullable', 'date'],
+            'oncology.facility' => ['required', 'string', 'max:255'],
+            'oncology.floor' => ['nullable', 'string', 'max:80'],
+            'oncology.bed' => ['nullable', 'string', 'max:80'],
+            'oncology.patient_identifier' => ['nullable', 'string', 'max:120'],
+            'oncology.sex' => ['required', Rule::in(['Femenino', 'Masculino', 'Otro'])],
+            'oncology.age' => ['required', 'integer', 'min:0', 'max:130'],
+            'oncology.weight' => ['required', 'numeric', 'min:0', 'max:500'],
+            'oncology.height' => ['required', 'numeric', 'min:0', 'max:300'],
+            'oncology.birth_date' => ['required', 'date', 'before_or_equal:today'],
+            'oncology.body_surface' => ['nullable', 'numeric', 'min:0', 'max:10'],
+            'oncology.delivery_method' => ['nullable', 'string', 'max:120'],
+            'oncology.doctor_name' => ['required', 'string', 'max:180'],
+            'oncology.professional_license' => ['nullable', 'string', 'max:120'],
+            'oncology.medications' => ['required', 'array', 'max:8'],
+            'oncology.medications.*.medication' => ['nullable', 'string', 'max:180'],
+            'oncology.medications.*.dose' => ['nullable', 'string', 'max:120'],
+            'oncology.medications.*.diluents' => ['nullable', 'array'],
+            'oncology.medications.*.diluents.*' => ['string', Rule::in(['CS', 'DX', 'Otro'])],
+            'oncology.medications.*.dilution_volume' => ['nullable', 'numeric', 'min:0'],
+            'oncology.medications.*.boluses_per_day' => ['nullable', 'integer', 'min:0'],
+            'oncology.medications.*.infusion_minutes' => ['nullable', 'integer', 'min:0'],
+            'oncology.medications.*.delivery_dates' => ['nullable', 'array', 'max:3'],
+            'oncology.medications.*.delivery_dates.*' => ['nullable', 'date'],
+            'assignment' => ['nullable', 'array'],
+            'assignment.procedure_area_id' => [Rule::requiredIf($isScheduled), 'nullable', 'integer', 'exists:procedure_areas,id'],
+            'assignment.seat' => [Rule::requiredIf($isScheduled), 'nullable', 'string', 'max:40'],
+            'assignment.application_date' => [Rule::requiredIf($isScheduled), 'nullable', 'date'],
+            'assignment.starts_at' => [Rule::requiredIf($isScheduled), 'nullable', 'date_format:H:i'],
+            'assignment.duration_minutes' => ['nullable', 'integer', 'min:1', 'max:1440'],
+            'assignment.nurse' => ['nullable', 'string', 'max:180'],
+            'assignment.session_type' => ['nullable', 'string', 'max:120'],
+            'assignment.notes' => ['nullable', 'string', 'max:500'],
+        ]);
+
+        $unit = $this->contextUnitFor($request);
+        if (! $unit) {
+            throw ValidationException::withMessages(['unit' => 'Selecciona una unidad medica para crear la solicitud.']);
+        }
+
+        $oncologyMedications = collect(data_get($data, 'oncology.medications', []))
+            ->filter(fn (array $item): bool => filled($item['medication'] ?? null))
+            ->values();
+        if ($oncologyMedications->isEmpty()) {
+            throw ValidationException::withMessages(['oncology.medications' => 'Agrega al menos un medicamento oncologico.']);
+        }
+
+        $patient = Patient::query()->findOrFail($data['patient_id']);
+        $provider = Provider::query()->where('provider_type', 'chemo')->where('status', 'active')->first()
+            ?? Provider::query()->where('status', 'active')->first();
+        $attachment = $request->file('authorization_file');
+        $attachmentPath = $attachment?->store('operational-oncology-requests', 'local');
+        $assignment = $isScheduled
+            ? $this->buildNewInfusionAssignment($request, $unit, $data['assignment'])
+            : null;
+        $firstMedication = $oncologyMedications->first();
+        $mixtureMedications = $oncologyMedications->map(function (array $item) use ($assignment): array {
+            $dose = trim((string) ($item['dose'] ?? ''));
+            $volume = $item['dilution_volume'] ?? null;
+            $minutes = $item['infusion_minutes'] ?? null;
+
+            return [
+                'medication_name' => $item['medication'],
+                'dose' => $dose !== '' && ! str_contains(strtolower($dose), 'mg') ? $dose.' mg' : $dose,
+                'diluent' => implode(', ', $item['diluents'] ?? []),
+                'final_volume' => filled($volume) ? $volume.' ml' : null,
+                'boluses_per_day' => $item['boluses_per_day'] ?? null,
+                'infusion_duration' => filled($minutes) ? $minutes.' min' : null,
+                'hour' => data_get($assignment, 'starts_at'),
+                'delivery_dates' => collect($item['delivery_dates'] ?? [])->filter()->values()->all(),
+            ];
+        })->all();
+        $status = $isScheduled ? 'requested' : 'draft';
+        $requiredAt = $isScheduled
+            ? Carbon::parse($assignment['application_date'].' '.$assignment['starts_at'])
+            : Carbon::parse($data['required_at'])->startOfDay();
+        $clinicalFormat = array_merge($data['oncology'], ['medications' => $oncologyMedications->all()]);
+        $payload = [
+            'source' => 'oncology_center',
+            'service' => $data['service'],
+            'requesting_service' => 'Centro Oncologico',
+            'doctor' => data_get($data, 'oncology.doctor_name'),
+            'diagnosis' => $data['diagnosis'],
+            'notes' => $data['notes'] ?? null,
+            'medication' => $firstMedication['medication'] ?? null,
+            'dose' => $firstMedication['dose'] ?? null,
+            'volume' => $firstMedication['dilution_volume'] ?? null,
+            'priority' => $data['priority'] ?? 'routine',
+            'clinical_format' => $clinicalFormat,
+            'mixture_medications' => $mixtureMedications,
+            'attachment' => $attachmentPath ? [
+                'disk' => 'local',
+                'path' => $attachmentPath,
+                'original_name' => $attachment?->getClientOriginalName(),
+            ] : null,
+            'authorizations' => ['oncology' => 'approved', 'pharmacy' => 'pending'],
+            'infusion_room_status' => $isScheduled ? 'scheduled' : 'pending',
+        ];
+        if ($assignment) {
+            $payload['infusion_assignment'] = $assignment;
+        }
+
+        $providerRequest = DB::transaction(function () use ($provider, $patient, $unit, $status, $requiredAt, $payload, $request): ProviderRequest {
+            $providerRequest = ProviderRequest::query()->create([
+                'provider_id' => $provider?->id,
+                'patient_id' => $patient->id,
+                'medical_unit_id' => $unit->id,
+                'external_id' => 'ONC-'.str_pad((string) (ProviderRequest::query()->max('id') + 1), 4, '0', STR_PAD_LEFT),
+                'request_type' => 'chemo',
+                'status' => $status,
+                'requested_at' => now(),
+                'required_at' => $requiredAt,
+                'payload' => $payload,
+            ]);
+
+            ProviderRequestStatusEvent::query()->create([
+                'provider_request_id' => $providerRequest->id,
+                'status' => $status,
+                'actor' => $request->user()?->name,
+                'occurred_at' => now(),
+                'metadata' => ['source' => 'oncology_center'],
+            ]);
+
+            return $providerRequest;
+        });
+
+        $audit->record($request, 'operational.oncology_request.created', $providerRequest, 'operational', [
+            'save_mode' => $data['save_mode'],
+        ]);
+
+        if ($isScheduled) {
+            return redirect()->route('operational.dashboard', [
+                'area' => 'oncology',
+                'section' => 'calendar',
+                'oncology_track' => 'infusions',
+                'unit' => $unit->id,
+                'calendar_month' => substr($assignment['application_date'], 0, 7),
+            ])->with('status', 'Infusion programada correctamente.');
+        }
+
+        return redirect()->route('operational.dashboard', [
+            'area' => 'oncology',
+            'section' => 'services-preparation',
+            'oncology_track' => 'infusions',
+            'unit' => $unit->id,
+        ])->with('status', 'Solicitud guardada en preparacion.');
+    }
+
+    private function buildNewInfusionAssignment(
+        Request $request,
+        MedicalUnit $unit,
+        array $data,
+        ?int $excludedRequestId = null,
+    ): array
+    {
+        $room = ProcedureArea::query()
+            ->with('schedules')
+            ->whereKey($data['procedure_area_id'])
+            ->where('medical_unit_id', $unit->id)
+            ->where('type', 'infusion')
+            ->where('status', 'active')
+            ->firstOrFail();
+        [$seatRoomId, $seatNumber] = array_pad(explode('-', (string) $data['seat'], 2), 2, null);
+        $seatNumber = (int) $seatNumber;
+
+        if ((int) $seatRoomId !== (int) $room->id || $seatNumber < 1 || $seatNumber > max(1, (int) $room->simultaneous_capacity)) {
+            throw ValidationException::withMessages(['assignment.seat' => 'Selecciona un sillon o cama disponible de la sala indicada.']);
+        }
+
+        $duration = (int) ($data['duration_minutes'] ?? 60);
+        $startsAt = Carbon::parse($data['application_date'].' '.$data['starts_at']);
+        $endsAt = $startsAt->copy()->addMinutes($duration);
+        if (! $startsAt->isSameDay($endsAt)) {
+            throw ValidationException::withMessages(['assignment.duration_minutes' => 'La duracion debe terminar el mismo dia.']);
+        }
+
+        $startTime = $startsAt->format('H:i');
+        $endTime = $endsAt->format('H:i');
+        $schedule = $room->schedules->first(fn ($item) =>
+            $item->active
+            && (int) $item->day_of_week === $startsAt->dayOfWeek
+            && substr((string) $item->starts_at, 0, 5) <= $startTime
+            && substr((string) $item->ends_at, 0, 5) >= $endTime
+        );
+        if (! $schedule) {
+            throw ValidationException::withMessages(['assignment.procedure_area_id' => 'La sala no esta disponible dentro de ese horario.']);
+        }
+
+        $overlappingAssignments = ProviderRequest::query()
+            ->where('medical_unit_id', $unit->id)
+            ->whereIn('request_type', ['chemo', 'chemotherapy'])
+            ->when($excludedRequestId, fn ($query) => $query->where('id', '!=', $excludedRequestId))
+            ->whereNotIn('status', ['draft', 'cancelled', 'rejected'])
+            ->get()
+            ->filter(function (ProviderRequest $item) use ($room, $data, $startTime, $endTime): bool {
+                $assignment = data_get($item->payload, 'infusion_assignment');
+
+                return (int) data_get($assignment, 'procedure_area_id') === (int) $room->id
+                    && data_get($assignment, 'application_date') === $data['application_date']
+                    && data_get($assignment, 'starts_at') < $endTime
+                    && data_get($assignment, 'ends_at') > $startTime;
+            });
+
+        if ($overlappingAssignments->count() >= max(1, (int) $room->simultaneous_capacity)) {
+            throw ValidationException::withMessages(['assignment.procedure_area_id' => 'La sala alcanzo su capacidad simultanea para ese horario.']);
+        }
+        if ($overlappingAssignments->contains(fn (ProviderRequest $item): bool => (int) data_get($item->payload, 'infusion_assignment.seat_number') === $seatNumber)) {
+            throw ValidationException::withMessages(['assignment.seat' => 'El sillon o cama seleccionado ya esta ocupado en ese horario.']);
+        }
+
+        return [
+            'procedure_area_id' => $room->id,
+            'room_number' => $room->unit_number,
+            'room_location' => $room->location,
+            'seat_number' => $seatNumber,
+            'seat_label' => 'Sillon o cama '.$seatNumber,
+            'application_date' => $data['application_date'],
+            'starts_at' => $startTime,
+            'ends_at' => $endTime,
+            'duration_minutes' => $duration,
+            'nurse' => $data['nurse'] ?? $room->responsible_name,
+            'session_type' => $data['session_type'] ?? null,
+            'notes' => $data['notes'] ?? null,
+            'scheduled_by' => $request->user()?->name,
+            'scheduled_at' => now()->toDateTimeString(),
+        ];
     }
 
     public function updateProviderRequestStatus(Request $request, ProviderRequest $providerRequest, PlatformAuditService $audit, DomainStateTransitionService $transitions): RedirectResponse
@@ -516,7 +862,8 @@ class OperationalDashboardController extends Controller
 
         return redirect()->route('operational.dashboard', [
             'area' => 'oncology',
-            'section' => 'infusion-rooms',
+            'section' => 'infusion-room-catalog',
+            'oncology_track' => 'infusions',
             'unit' => $unit->id,
         ])->with('status', 'Sala de infusiÃ³n registrada correctamente.');
     }
@@ -536,7 +883,8 @@ class OperationalDashboardController extends Controller
 
         return redirect()->route('operational.dashboard', [
             'area' => 'oncology',
-            'section' => 'infusion-rooms',
+            'section' => 'infusion-room-catalog',
+            'oncology_track' => 'infusions',
             'unit' => $unit->id,
         ])->with('status', 'Sala de infusiÃ³n actualizada correctamente.');
     }
@@ -544,7 +892,11 @@ class OperationalDashboardController extends Controller
     public function assignInfusionRoom(Request $request, ProviderRequest $providerRequest, PlatformAuditService $audit): RedirectResponse
     {
         $this->authorizeProviderRequestOwnership($request, $providerRequest);
-        abort_unless($providerRequest->request_type === 'chemo', 404);
+        abort_unless(in_array($providerRequest->request_type, ['chemo', 'chemotherapy'], true), 404);
+
+        if ($request->has('assignment')) {
+            return $this->assignIncomingOncologyRequest($request, $providerRequest, $audit);
+        }
 
         $data = $request->validate([
             'procedure_area_id' => ['required', 'integer', 'exists:procedure_areas,id'],
@@ -618,6 +970,146 @@ class OperationalDashboardController extends Controller
         ])->with('status', 'Sala de infusiÃ³n asignada correctamente.');
     }
 
+    private function assignIncomingOncologyRequest(
+        Request $request,
+        ProviderRequest $providerRequest,
+        PlatformAuditService $audit,
+    ): RedirectResponse {
+        $data = $request->validate([
+            'assignment' => ['required', 'array'],
+            'assignment.procedure_area_id' => ['required', 'integer', 'exists:procedure_areas,id'],
+            'assignment.seat' => ['required', 'string', 'max:40'],
+            'assignment.application_date' => ['required', 'date'],
+            'assignment.starts_at' => ['required', 'date_format:H:i'],
+            'assignment.duration_minutes' => ['nullable', 'integer', 'min:1', 'max:1440'],
+            'assignment.nurse' => ['nullable', 'string', 'max:180'],
+            'assignment.session_type' => ['nullable', 'string', 'max:120'],
+            'assignment.notes' => ['nullable', 'string', 'max:500'],
+        ]);
+
+        $unit = $providerRequest->medicalUnit;
+        abort_unless($unit, 404);
+
+        $assignment = $this->buildNewInfusionAssignment(
+            $request,
+            $unit,
+            $data['assignment'],
+            $providerRequest->id,
+        );
+        $payload = $providerRequest->payload ?? [];
+        $payload['infusion_assignment'] = $assignment;
+        $payload['infusion_room_status'] = 'scheduled';
+
+        if (blank(data_get($payload, 'mixture_medications'))) {
+            $payload['mixture_medications'] = $this->normalizeIncomingMixtureMedications($payload, $assignment);
+        }
+
+        DB::transaction(function () use ($providerRequest, $payload, $assignment, $request): void {
+            $providerRequest->update([
+                'required_at' => Carbon::parse($assignment['application_date'].' '.$assignment['starts_at']),
+                'payload' => $payload,
+            ]);
+
+            ProviderRequestStatusEvent::query()->create([
+                'provider_request_id' => $providerRequest->id,
+                'status' => $providerRequest->status,
+                'actor' => $request->user()?->name,
+                'occurred_at' => now(),
+                'metadata' => ['source' => 'oncology_center', 'stage' => 'infusion_assignment'],
+            ]);
+        });
+
+        $audit->record(
+            $request,
+            'operational.infusion_room.assigned',
+            $providerRequest,
+            'operational',
+            $assignment,
+        );
+
+        return redirect()->route('operational.dashboard', [
+            'area' => 'oncology',
+            'section' => 'services-scheduled',
+            'oncology_track' => 'infusions',
+            'unit' => $unit->id,
+        ])->with('status', 'Sala de infusion asignada correctamente.');
+    }
+
+    private function normalizeIncomingMixtureMedications(array $payload, array $assignment): array
+    {
+        return collect(data_get($payload, 'clinical_format.medications', []))
+            ->filter(fn ($item): bool => is_array($item) && filled($item['medication'] ?? null))
+            ->map(function (array $item) use ($assignment): array {
+                $dose = trim((string) ($item['dose'] ?? ''));
+                $volume = $item['dilution_volume'] ?? null;
+                $minutes = $item['infusion_minutes'] ?? null;
+
+                return [
+                    'medication_name' => $item['medication'],
+                    'dose' => $dose !== '' && ! str_contains(strtolower($dose), 'mg') ? $dose.' mg' : $dose,
+                    'diluent' => implode(', ', $item['diluents'] ?? []),
+                    'final_volume' => filled($volume) ? $volume.' ml' : null,
+                    'boluses_per_day' => $item['boluses_per_day'] ?? null,
+                    'infusion_duration' => filled($minutes) ? $minutes.' min' : null,
+                    'hour' => $assignment['starts_at'],
+                    'delivery_dates' => collect($item['delivery_dates'] ?? [])->filter()->values()->all(),
+                ];
+            })
+            ->values()
+            ->all();
+    }
+
+    public function updateMixtureSchedule(Request $request, ProviderRequest $providerRequest, PlatformAuditService $audit): RedirectResponse
+    {
+        $this->authorizeProviderRequestOwnership($request, $providerRequest);
+        abort_unless(in_array($providerRequest->request_type, ['chemo', 'chemotherapy'], true), 404);
+
+        $data = $request->validate([
+            'medication_index' => ['required', 'integer', 'min:0', 'max:49'],
+            'application_date' => ['required', 'date'],
+            'oncology_track' => ['nullable', Rule::in(['infusions', 'mixes'])],
+        ]);
+
+        $payload = $providerRequest->payload ?? [];
+        $medications = data_get($payload, 'mixture_medications') ?: data_get($payload, 'prescription_items') ?: [
+            ['medication_name' => 'Paclitaxel'],
+            ['medication_name' => 'Ondansetron'],
+            ['medication_name' => 'Dexametasona'],
+        ];
+        $medicationIndex = (int) $data['medication_index'];
+
+        abort_unless(array_key_exists($medicationIndex, array_values($medications)), 422, 'El medicamento seleccionado no existe en la solicitud.');
+
+        $mixtureSchedule = data_get($payload, 'mixture_schedule', []);
+        $currentSchedule = $mixtureSchedule[$medicationIndex] ?? [];
+        $mixtureSchedule[$medicationIndex] = array_merge($currentSchedule, [
+            'medication_index' => $medicationIndex,
+            'medication_name' => data_get($medications, $medicationIndex.'.medication_name', 'Medicamento '.($medicationIndex + 1)),
+            'application_date' => $data['application_date'],
+            'scheduled_by' => $request->user()?->name,
+            'scheduled_at' => now()->toDateTimeString(),
+        ]);
+        $payload['mixture_schedule'] = $mixtureSchedule;
+
+        $providerRequest->update(['payload' => $payload]);
+
+        $audit->record(
+            $request,
+            'operational.oncology_mixture.scheduled',
+            $providerRequest,
+            'operational',
+            $mixtureSchedule[$medicationIndex],
+        );
+
+        return redirect()->route('operational.dashboard', [
+            'area' => 'oncology',
+            'section' => 'calendar',
+            'oncology_track' => $data['oncology_track'] ?? 'mixes',
+            'unit' => $providerRequest->medical_unit_id,
+            'calendar_month' => substr($data['application_date'], 0, 7),
+        ])->with('status', 'Fecha de la mezcla actualizada correctamente.');
+    }
+
     private function authorizeProviderRequestOwnership(Request $request, ProviderRequest $providerRequest): void
     {
         $user = $request->user();
@@ -665,13 +1157,24 @@ class OperationalDashboardController extends Controller
 
     private function contextUnitFor(Request $request): ?MedicalUnit
     {
-        if ($request->filled('unit')) {
-            return MedicalUnit::query()->find($request->integer('unit'));
+        $profile = OperationalProfile::query()
+            ->where('user_id', $request->user()?->id)
+            ->first();
+
+        if (! $request->filled('unit')) {
+            return $profile?->medicalUnit;
         }
 
-        return OperationalProfile::query()
-            ->where('user_id', $request->user()?->id)
-            ->first()?->medicalUnit;
+        $unit = MedicalUnit::query()->with('institution')->findOrFail($request->integer('unit'));
+        $user = $request->user();
+        $canUseUnit = in_array($user?->role, ['superadmin', 'admin'], true)
+            || ($user?->role === 'unit' && $unit->unit_username === $user->username)
+            || ($user?->role === 'institution' && (int) $unit->institution_id === (int) $user->institution?->id)
+            || ($user?->role === 'operational' && (int) $profile?->medical_unit_id === (int) $unit->id);
+
+        abort_unless($canUseUnit, 403, 'No puedes operar otra unidad.');
+
+        return $unit;
     }
 
     private function validateInfusionRoom(Request $request, MedicalUnit $unit, ?ProcedureArea $room = null): array
@@ -715,7 +1218,7 @@ class OperationalDashboardController extends Controller
         ]);
     }
 
-    private function patientDataPayload(array $data, ?Patient $patient = null): array
+    private function patientDataPayload(array $data, ?Patient $patient = null, ?int $medicalUnitId = null): array
     {
         return [
             'first_name' => $data['first_name'],
@@ -733,6 +1236,7 @@ class OperationalDashboardController extends Controller
                 'nss_federal' => $data['nss_federal'] ?? null,
                 'nss_estatal' => $data['nss_estatal'] ?? null,
                 'state' => $data['state'] ?? 'Mexico',
+                'medical_unit_id' => $medicalUnitId ?? data_get($patient?->metadata, 'medical_unit_id'),
                 'source' => 'operational_module',
             ],
         ];

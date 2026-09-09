@@ -58,6 +58,10 @@ class DoctorPortalTest extends TestCase
             ->assertSee('Asistente Clinico')
             ->assertSee('doctor-assistant-native-screen')
             ->assertSee('doctor-assistant-native-menu')
+            ->assertSee('data-doctor-account-trigger', false)
+            ->assertSee('data-doctor-account-menu', false)
+            ->assertSee('doctor-assistant-native-account-logout', false)
+            ->assertSee('Cerrar sesi&oacute;n', false)
             ->assertSee('puedo ayudarte hoy?')
             ->assertSee('Dr. Demo')
             ->assertDontSee('Servicios contratados')
@@ -81,6 +85,32 @@ class DoctorPortalTest extends TestCase
             ['Nutrici' . "\u{00F3}" . 'n parenteral', 'An' . "\u{00E1}" . 'lisis Cl' . "\u{00ED}" . 'nicos'],
             collect($doctor->metadata['service_assignments'] ?? [])->pluck('name')->all()
         );
+    }
+
+    public function test_doctor_can_open_the_oncology_mixture_request_format(): void
+    {
+        [$user, $doctor] = $this->createDoctor();
+        Patient::query()->create([
+            'platform_number' => 'PAC-ONC-001',
+            'full_name' => 'Paciente Oncologia',
+            'primary_doctor_id' => $doctor->id,
+            'status' => 'active',
+        ]);
+
+        $this->actingAs($user)
+            ->get(route('doctor.dashboard', ['section' => 'services', 'type' => 'chemo', 'action' => 'request']))
+            ->assertOk()
+            ->assertSee('doctor-oncology-request-modal')
+            ->assertSee('Solicitud de mezcla oncol&oacute;gica', false)
+            ->assertSee('Informaci&oacute;n general', false)
+            ->assertSee('Tabla de medicamentos')
+            ->assertDontSee('V&iacute;a de administraci&oacute;n', false)
+            ->assertDontSee('oncology[medications][0][routes][]', false)
+            ->assertSee('Observaciones adicionales y comentarios sobre v&iacute;as de administraci&oacute;n', false)
+            ->assertSee('data-oncology-add-medication', false)
+            ->assertSee('data-oncology-remove-medication', false)
+            ->assertSee('Agregar medicamento')
+            ->assertSee('Guardar solicitud');
     }
 
     public function test_doctor_agenda_renders_its_calendar_workspace(): void
@@ -502,15 +532,18 @@ class DoctorPortalTest extends TestCase
             if ($type === 'chemo') {
                 $payload['oncology'] = [
                     'request_date' => '2026-07-23',
+                    'facility' => 'Hospital de prueba',
+                    'patient_identifier' => 'PAC-SOL',
                     'weight' => 70,
+                    'height' => 172,
                     'sex' => 'Masculino',
+                    'delivery_method' => 'Entrega en la unidad',
                     'medications' => [[
                         'medication' => 'Cisplatino',
                         'dose' => '50 mg',
                         'diluents' => ['CS'],
                         'dilution_volume' => 500,
                         'infusion_minutes' => 120,
-                        'routes' => ['IV'],
                         'delivery_dates' => ['2026-07-24'],
                     ]],
                     'doctor_name' => $doctor->full_name,
@@ -529,6 +562,7 @@ class DoctorPortalTest extends TestCase
         $this->assertSame(3, ProviderRequest::query()->where('payload->doctor_id', $doctor->id)->count());
         $this->assertSame(1200, (int) ProviderRequest::query()->where('request_type', 'npt')->firstOrFail()->payload['clinical_format']['total_volume']);
         $this->assertSame('Cisplatino', ProviderRequest::query()->where('request_type', 'chemo')->firstOrFail()->payload['clinical_format']['medications'][0]['medication']);
+        $this->assertSame('Hospital de prueba', ProviderRequest::query()->where('request_type', 'chemo')->firstOrFail()->payload['clinical_format']['facility']);
         $this->assertDatabaseCount('provider_request_status_events', 3);
     }
 

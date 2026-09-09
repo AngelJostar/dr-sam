@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Enums\UserRole;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -71,5 +73,22 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasOne(MessengerProfile::class);
     }
-}
 
+    public function accessiblePatientProfileLinks(): HasMany
+    {
+        return $this->hasMany(PatientProfileRelationship::class, 'access_user_id');
+    }
+
+    public function accessiblePatientProfiles(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Patient::class,
+            'patient_profile_relationships',
+            'access_user_id',
+            'managed_patient_id'
+        )
+            ->withPivot(['administrator_patient_id', 'relationship_type_id', 'status', 'starts_at', 'ends_at', 'permissions', 'metadata'])
+            ->withTimestamps()
+            ->wherePivot('status', 'active');
+    }
+}

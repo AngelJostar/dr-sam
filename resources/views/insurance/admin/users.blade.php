@@ -4,6 +4,7 @@
 
 @section('content')
   <div class="insurance-health-native-screen insurance-health-native-screen--sidebar">
+    @include('insurance._topbar')
     @include('insurance._sidebar', ['abilities' => ['admin_users' => true]])
 
     <main class="insurance-health-native-workspace">
