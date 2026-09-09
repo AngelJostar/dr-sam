@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Area operativa'])
+@extends('layouts.app', ['title' => 'Modulo operativo'])
 
 @section('body_class', 'operational-native-body')
 
@@ -23,77 +23,165 @@
 
   $statusText = fn (?string $value) => $statusLabels[$value ?? ''] ?? ($value ? ucfirst(str_replace('_', ' ', $value)) : 'Sin estatus');
   $areaMeta = [
-    'nursing' => ['Enfermeria', 'Enfermeria', 'Responsable de Area'],
-    'oncology' => ['Centro Oncologico', 'Centro Oncologico', 'Operador'],
-    'inpatient-pharmacy' => ['Farmacia intrahospitalaria', 'Farmacia intrahospitalaria', 'Responsable de Area'],
+    'nursing' => 'Hospitalizacion',
+    'oncology' => 'Centro Oncologico',
+    'inpatient-pharmacy' => 'Farmacia intrahospitalaria',
   ];
-  [$areaLabel, $areaMetricLabel, $areaRoleLabel] = $areaMeta[$areaKey] ?? $areaMeta['nursing'];
-  $isOncology = $areaKey === 'oncology';
-  $isInpatientPharmacy = $areaKey === 'inpatient-pharmacy';
+  $areaLabel = $areaMeta[$areaKey] ?? $areaMeta['nursing'];
+  $isPatientCatalog = in_array($section, ['patients', 'patient-create'], true);
+  $isOncology = ! $isPatientCatalog && $areaKey === 'oncology';
+  $isHospitalization = ! $isPatientCatalog && $areaKey === 'nursing';
+  $isInpatientPharmacy = ! $isPatientCatalog && $areaKey === 'inpatient-pharmacy';
   $unitName = $contextUnit?->name ?? $profile?->medicalUnit?->name ?? 'H.G. CHIMALHUACAN';
   $unitCode = $contextUnit?->code ?? $contextUnit?->clues ?? $profile?->medicalUnit?->code ?? $profile?->medicalUnit?->clues ?? 'MCIMB001841';
   $institutionName = $contextUnit?->institution?->name ?? $profile?->medicalUnit?->institution?->name ?? $unitName;
   $visibleRequests = $section === 'history' ? $historicalProviderRequests : $pendingProviderRequests;
   $pendingRequests = $pendingProviderRequests->count();
-  $totalRequests = $providerRequests->count();
-  $metricCards = [
-    'Enfermeria' => $pendingRequests,
-    'Farmacia intrahospitalaria' => max(0, $totalRequests - $pendingRequests + 1),
-    'Centro Oncologico' => $providerRequests->where('request_type', 'chemo')->count() ?: 1,
-    'Total' => $totalRequests,
-  ];
   $moduleGroups = [
-    'nursing' => 'Enfermeria',
-    'oncology' => 'Centro Oncologico',
-    'inpatient-pharmacy' => 'Farmacia Intrahospitalaria',
+    'nursing' => ['label' => 'Hospitalizacion', 'icon' => 'hospital'],
+    'oncology' => ['label' => 'Centro Oncologico', 'icon' => 'oncology'],
+    'inpatient-pharmacy' => ['label' => 'Farmacia intrahospitalaria', 'icon' => 'pharmacy'],
   ];
+  $areaDefaultRoutes = [
+    'nursing' => ['area' => 'nursing', 'section' => 'calendar', 'hospitalization_track' => 'all'],
+    'oncology' => ['area' => 'oncology', 'section' => 'calendar', 'oncology_track' => 'infusions'],
+    'inpatient-pharmacy' => ['area' => 'inpatient-pharmacy', 'section' => 'pending'],
+  ];
+  $hospitalizationTrack = request('hospitalization_track', 'all');
+  if (! in_array($hospitalizationTrack, ['all', 'nutrition', 'imports'], true)) {
+    $hospitalizationTrack = 'all';
+  }
+  $hospitalizationTrackOptions = [
+    'all' => ['label' => 'Calendario de Hospitalización', 'initial' => 'H'],
+  ];
+  $oncologyTrack = request('oncology_track');
+  if (in_array($section, ['mixes', 'mix-history'], true)) {
+    $oncologyTrack = 'mixes';
+  } elseif (in_array($section, ['services-pending', 'services-history', 'services-preparation', 'services-scheduled', 'service-create', 'service-format', 'infusion-rooms', 'infusion-room-calendar', 'infusion-room-catalog', 'support', 'support-ai', 'support-analytics'], true)) {
+    $oncologyTrack = 'infusions';
+  } elseif (! in_array($oncologyTrack, ['infusions', 'mixes'], true)) {
+    $oncologyTrack = 'infusions';
+  }
+  $oncologyTrackOptions = [
+    'infusions' => ['label' => 'Calendario de Infusiones', 'initial' => 'I', 'section' => 'calendar', 'track' => 'infusions'],
+    'rooms' => ['label' => 'Salas de infusion', 'initial' => 'SI', 'section' => 'infusion-rooms', 'track' => 'infusions'],
+    'mixes' => ['label' => 'Central de mezclas', 'initial' => 'M', 'section' => 'calendar', 'track' => 'mixes'],
+    'support' => ['label' => 'Soporte', 'initial' => 'S', 'section' => 'support', 'track' => 'infusions'],
+  ];
+  $activeOncologyCarouselItem = match ($section) {
+    'infusion-rooms', 'infusion-room-calendar', 'infusion-room-catalog' => 'rooms',
+    'support', 'support-ai', 'support-analytics', 'service-create', 'service-format' => 'support',
+    default => $oncologyTrack,
+  };
+  $oncologyTrackNavigation = [
+        'infusions' => [
+            ['section' => 'calendar', 'label' => 'Inicio'],
+            ['section' => 'services-scheduled', 'label' => 'Programadas'],
+            ['section' => 'services-pending', 'label' => 'Pendientes'],
+            ['section' => 'services-history', 'label' => 'Historial'],
+      ['section' => 'services-preparation', 'label' => 'En preparación'],
+    ],
+    'mixes' => [
+            ['section' => 'calendar', 'label' => 'Inicio'],
+      ['section' => 'mixes', 'label' => 'Mezclas programadas'],
+      ['section' => 'mix-history', 'label' => 'Historial de mezclas'],
+    ],
+    'rooms' => [
+      ['section' => 'infusion-rooms', 'label' => 'Inicio', 'active_sections' => ['infusion-rooms', 'infusion-room-calendar']],
+      ['section' => 'infusion-room-catalog', 'label' => 'Catalogo'],
+    ],
+    'support' => [
+      ['section' => 'support', 'label' => 'Formato de solicitud', 'active_sections' => ['support', 'service-create', 'service-format']],
+      ['section' => 'support-ai', 'label' => 'Asistencia con IA'],
+      ['section' => 'support-analytics', 'label' => 'Analiticas'],
+    ],
+  ];
+  $sectionNavigation = [
+    'nursing' => [
+      ['section' => 'calendar', 'label' => 'Programación'],
+      ['section' => 'pending', 'label' => 'Pendientes'],
+      ['section' => 'history', 'label' => 'Historial'],
+    ],
+    'inpatient-pharmacy' => [
+      ['section' => 'pending', 'label' => 'Solicitudes pendientes'],
+      ['section' => 'history', 'label' => 'Historial de solicitudes'],
+    ],
+  ];
+  $currentSectionNavigation = $isPatientCatalog
+    ? []
+    : ($isOncology ? $oncologyTrackNavigation[match ($activeOncologyCarouselItem) {
+      'rooms' => 'rooms',
+      'support' => 'support',
+      default => $oncologyTrack,
+    }] : ($sectionNavigation[$areaKey] ?? $sectionNavigation['nursing']));
   $patientRows = $patients->take(12);
+  $patientCatalogRouteParameters = $contextUnit ? ['unit' => $contextUnit->id] : [];
 @endphp
 
 @section('content')
   <div class="operational-native-screen">
-    <aside class="operational-native-sidebar" aria-label="Navegacion operativa">
-      <div class="operational-native-brand">
-        <span class="operational-native-mark" aria-hidden="true">+</span>
+    <header class="operational-native-topbar" aria-label="Barra superior operativa">
+      <strong>MODULO OPERATIVO</strong>
+      <span>{{ strtoupper($institutionName) }}</span>
+      <div class="operational-native-user">
+        <button type="button" aria-label="Notificaciones">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z"/><path d="M10 21h4"/></svg>
+        </button>
         <div>
-          <strong>Area Operativa</strong>
-          <span>{{ $institutionName }}</span>
+          <strong>Usuario activo</strong>
+          <small>{{ $unitName }}</small>
         </div>
+        <form method="post" action="{{ route('logout') }}" class="operational-native-logout">
+          @csrf
+          <button type="submit">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/><path d="M15 4h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4"/></svg>
+            Cerrar sesion
+          </button>
+        </form>
       </div>
+    </header>
 
-      <nav class="operational-native-menu operational-legacy-menu">
+    <aside class="operational-native-sidebar" aria-label="Navegacion operativa">
+      <nav class="operational-native-menu operational-area-menu">
         @foreach ($moduleGroups as $groupKey => $group)
-          @php $isActiveGroup = $groupKey === $areaKey; @endphp
-          <section @class(['is-active' => $isActiveGroup, 'is-oncology' => $groupKey === 'oncology'])>
-            <h2 class="operational-legacy-group-title">
-              <span class="operational-legacy-group-icon" aria-hidden="true">{{ $groupKey === 'nursing' ? '⊕' : ($groupKey === 'oncology' ? '⊕' : '☩') }}</span>
-              {{ $group }}
-            </h2>
-            @if ($groupKey === 'oncology')
-              <div class="operational-legacy-subgroup is-administrative">
-                <small class="operational-menu-caption">AREA ADMINISTRATIVA</small>
-                <a @class(['is-selected' => $isActiveGroup && $section === 'services-pending']) href="{{ route('operational.dashboard', ['area' => $groupKey, 'section' => 'services-pending']) }}">Servicios pendientes</a>
-                <a @class(['is-selected' => $isActiveGroup && $section === 'services-history']) href="{{ route('operational.dashboard', ['area' => $groupKey, 'section' => 'services-history']) }}">Historial de servicios</a>
-                <a @class(['is-selected' => $isActiveGroup && $section === 'service-create']) href="{{ route('operational.dashboard', ['area' => $groupKey, 'section' => 'service-create']) }}">Nuevo servicio</a>
-                <a @class(['is-selected' => $isActiveGroup && $section === 'service-format']) href="{{ route('operational.dashboard', ['area' => $groupKey, 'section' => 'service-format']) }}">Formato de solicitud</a>
-              </div>
-              <div class="operational-legacy-subgroup is-operational">
-                <small class="operational-menu-caption">AREA OPERATIVA</small>
-                <a @class(['is-selected' => $isActiveGroup && $section === 'mixes']) href="{{ route('operational.dashboard', ['area' => $groupKey, 'section' => 'mixes']) }}">Mezclas programadas</a>
-                <a @class(['is-selected' => $isActiveGroup && $section === 'mix-history']) href="{{ route('operational.dashboard', ['area' => $groupKey, 'section' => 'mix-history']) }}">Historial de mezclas</a>
-              </div>
-              <a @class(['operational-legacy-calendar', 'is-selected' => $isActiveGroup && $section === 'calendar']) href="{{ route('operational.dashboard', ['area' => $groupKey, 'section' => 'calendar']) }}">Calendario de servicios</a>
-              <a @class(['is-selected' => $isActiveGroup && $section === 'patients']) href="{{ route('operational.dashboard', ['area' => $groupKey, 'section' => 'patients']) }}">Pacientes</a>
-              <a @class(['is-selected' => $isActiveGroup && $section === 'patient-create']) href="{{ route('operational.dashboard', ['area' => $groupKey, 'section' => 'patient-create']) }}">Alta de pacientes</a>
-              <a @class(['is-selected' => $isActiveGroup && $section === 'infusion-rooms']) href="{{ route('operational.dashboard', ['area' => $groupKey, 'section' => 'infusion-rooms']) }}">Salas de infusion</a>
-            @else
-              <a @class(['is-selected' => $isActiveGroup && $section === 'pending']) href="{{ route('operational.dashboard', ['area' => $groupKey, 'section' => 'pending']) }}">Solicitudes pendientes</a>
-              <a @class(['is-selected' => $isActiveGroup && $section === 'history']) href="{{ route('operational.dashboard', ['area' => $groupKey, 'section' => 'history']) }}">Historial de solicitudes</a>
-              <a @class(['is-selected' => $isActiveGroup && $section === 'patients']) href="{{ route('operational.dashboard', ['area' => $groupKey, 'section' => 'patients']) }}">Pacientes</a>
-              <a @class(['is-selected' => $isActiveGroup && $section === 'patient-create']) href="{{ route('operational.dashboard', ['area' => $groupKey, 'section' => 'patient-create']) }}">Alta de paciente</a>
-            @endif
-          </section>
+          @php $isActiveGroup = ! $isPatientCatalog && $groupKey === $areaKey; @endphp
+          <a @class(['is-active' => $isActiveGroup]) href="{{ route('operational.dashboard', $areaDefaultRoutes[$groupKey] ?? ['area' => $groupKey, 'section' => 'pending']) }}">
+            <span aria-hidden="true">
+              @if ($group['icon'] === 'hospital')
+                <svg viewBox="0 0 24 24"><path d="M4 21V5a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v16"/><path d="M16 9h3a1 1 0 0 1 1 1v11"/><path d="M8 8h4M10 6v4M8 14h4M8 18h4"/></svg>
+              @elseif ($group['icon'] === 'oncology')
+                <svg viewBox="0 0 24 24"><path d="M4 6h16v15H4z"/><path d="M9 3h6v3H9z"/><path d="M12 10v7M8.5 13.5h7"/></svg>
+              @else
+                <svg viewBox="0 0 24 24"><path d="m7 16 9-9a3 3 0 0 1 4 4l-9 9a3 3 0 0 1-4-4Z"/><path d="m12 11 4 4"/></svg>
+              @endif
+            </span>
+            {{ $group['label'] }}
+            <i aria-hidden="true">›</i>
+          </a>
         @endforeach
+        <a href="{{ route('outpatient.dashboard') }}">
+          <span aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M6 4v5a5 5 0 0 0 10 0V4"/><path d="M9 4H5"/><path d="M17 4h-4"/><path d="M11 14v2a4 4 0 0 0 8 0v-3"/><circle cx="19" cy="10" r="2"/></svg>
+          </span>
+          Consulta Externa
+          <i aria-hidden="true">›</i>
+        </a>
+
+        <a href="{{ route('external-pharmacy.dashboard') }}">
+          <span aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 9v11h16V9"/><path d="M3 9h18l-2-5H5L3 9Z"/><path d="M12 12v5M9.5 14.5h5"/></svg>
+          </span>
+          Farmacia Externa
+          <i aria-hidden="true">›</i>
+        </a>
+
+        <a @class(['is-active' => $isPatientCatalog]) href="{{ route('operational.patients.index', $patientCatalogRouteParameters) }}">
+          <span aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="9.5" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </span>
+          Catalogo de pacientes
+          <i aria-hidden="true">›</i>
+        </a>
       </nav>
     </aside>
 
@@ -113,53 +201,77 @@
         </div>
       @endif
 
-      <header class="operational-native-header">
-        <div>
-          <p class="eyebrow">{{ strtoupper($areaLabel) }}</p>
-          <h1>Modulo Area Operativa - {{ $areaLabel }}</h1>
-          <p>{{ $areaLabel }} - {{ $areaLabel }} - {{ $institutionName }}</p>
-        </div>
+      @if ($isOncology)
+        <section class="operational-oncology-carousel operational-compact-carousel" aria-label="Filtros de Centro Oncologico">
+          <button class="operational-oncology-carousel-arrow" type="button" data-operational-carousel-prev aria-label="Anterior">‹</button>
+          <div class="operational-oncology-carousel-track">
+            @foreach ($oncologyTrackOptions as $trackKey => $trackOption)
+              <a @class(['operational-oncology-filter', 'is-active' => $activeOncologyCarouselItem === $trackKey]) href="{{ route('operational.dashboard', ['area' => 'oncology', 'section' => $trackOption['section'], 'oncology_track' => $trackOption['track']] + ($contextUnit ? ['unit' => $contextUnit->id] : [])) }}">
+                <span class="operational-oncology-filter-initial" aria-hidden="true">{{ $trackOption['initial'] }}</span>
+                <span class="operational-oncology-filter-copy">
+                  <strong>{{ $trackOption['label'] }}</strong>
+                  @if ($activeOncologyCarouselItem === $trackKey)
+                    <small>✓ Seleccionada</small>
+                  @endif
+                </span>
+              </a>
+            @endforeach
+          </div>
+          <button class="operational-oncology-carousel-arrow" type="button" data-operational-carousel-next aria-label="Siguiente">›</button>
+        </section>
+      @elseif ($isHospitalization)
+        <section class="operational-oncology-carousel operational-compact-carousel operational-hospitalization-carousel" aria-label="Filtros de Hospitalizacion">
+          <button class="operational-oncology-carousel-arrow" type="button" data-operational-carousel-prev aria-label="Anterior">‹</button>
+          <div class="operational-oncology-carousel-track">
+            @foreach ($hospitalizationTrackOptions as $trackKey => $trackOption)
+              <a @class(['operational-oncology-filter', 'is-active' => $hospitalizationTrack === $trackKey]) href="{{ route('operational.dashboard', ['area' => 'nursing', 'section' => 'calendar', 'hospitalization_track' => $trackKey] + ($contextUnit ? ['unit' => $contextUnit->id] : [])) }}">
+                <span class="operational-oncology-filter-initial" aria-hidden="true">{{ $trackOption['initial'] }}</span>
+                <span class="operational-oncology-filter-copy">
+                  <strong>{{ $trackOption['label'] }}</strong>
+                  @if ($hospitalizationTrack === $trackKey)
+                    <small>✓ Seleccionada</small>
+                  @endif
+                </span>
+              </a>
+            @endforeach
+          </div>
+          <button class="operational-oncology-carousel-arrow" type="button" data-operational-carousel-next aria-label="Siguiente">›</button>
+        </section>
+      @elseif ($isInpatientPharmacy)
+        <section class="operational-oncology-carousel operational-compact-carousel operational-inpatient-pharmacy-carousel" aria-label="Filtros de Farmacia intrahospitalaria">
+          <button class="operational-oncology-carousel-arrow" type="button" data-operational-carousel-prev aria-label="Anterior">‹</button>
+          <div class="operational-oncology-carousel-track">
+            <a class="operational-oncology-filter is-active" href="{{ route('operational.dashboard', ['area' => 'inpatient-pharmacy', 'section' => 'pending'] + ($contextUnit ? ['unit' => $contextUnit->id] : [])) }}">
+              <span class="operational-oncology-filter-initial" aria-hidden="true">F</span>
+              <span class="operational-oncology-filter-copy">
+                <strong>Farmacia intrahospitalaria</strong>
+                <small>✓ Seleccionada</small>
+              </span>
+            </a>
+          </div>
+          <button class="operational-oncology-carousel-arrow" type="button" data-operational-carousel-next aria-label="Siguiente">›</button>
+        </section>
+      @endif
 
-        <form class="operational-native-controls">
-          <label>
-            Operar como
-            <select>
-              <option>{{ $areaLabel }} - {{ $institutionName }} - {{ $areaRoleLabel }} - {{ $areaLabel }}</option>
-            </select>
-          </label>
-          <label>
-            Rol
-            <select>
-              <option>{{ $areaLabel }}</option>
-            </select>
-          </label>
-          <label class="span-2">
-            Unidad
-            <select>
-              <option>{{ $unitName }} - {{ $unitCode }}</option>
-            </select>
-          </label>
-          <time>{{ strtolower(now()->format('d M Y')) }}</time>
-        </form>
-      </header>
+      @unless ($isPatientCatalog)
+        <nav class="operational-section-tabs" aria-label="Secciones de {{ $areaLabel }}">
+          @foreach ($currentSectionNavigation as $navigationItem)
+            <a @class(['is-active' => in_array($section, $navigationItem['active_sections'] ?? [$navigationItem['section']], true)]) href="{{ route('operational.dashboard', ['area' => $areaKey, 'section' => $navigationItem['section']] + ($isOncology ? ['oncology_track' => $oncologyTrack] : []) + ($isHospitalization ? ['hospitalization_track' => $hospitalizationTrack] : []) + ($contextUnit ? ['unit' => $contextUnit->id] : [])) }}">
+              {{ $navigationItem['label'] }}
+            </a>
+          @endforeach
+        </nav>
+      @endunless
 
       @if (in_array($section, ['pending', 'history'], true))
-        <section class="operational-native-metrics" aria-label="Resumen operativo">
-          @foreach ($metricCards as $label => $value)
-            <article @class(['is-active' => $label === $areaMetricLabel])>
-              <span>{{ $label }}</span>
-              <strong>{{ number_format($value) }}</strong>
-              <small>{{ $loop->last ? 'Solicitudes visibles' : 'Pendientes de validacion' }}</small>
-            </article>
-          @endforeach
-        </section>
-
         <section class="operational-native-table-card">
           <div class="operational-native-table-heading">
             <div>
               <p class="eyebrow">Historial de solicitudes</p>
-              <h2>Solicitudes enviadas por hospitales</h2>
-              <span>Area operativa de {{ $institutionName }} - {{ $section === 'history' ? 'Historial de solicitudes enviadas por hospitales' : 'Solicitudes pendientes de '.$areaLabel }}</span>
+              @unless($isHospitalization)
+                <h2>Solicitudes enviadas por hospitales</h2>
+                <span>Modulo operativo de {{ $institutionName }} - {{ $section === 'history' ? 'Historial de solicitudes enviadas por hospitales' : 'Solicitudes pendientes de '.$areaLabel }}</span>
+              @endunless
             </div>
             <strong>{{ $section === 'history' ? $visibleRequests->count().' solicitudes' : $pendingRequests.' pendiente'.($pendingRequests === 1 ? '' : 's') }}</strong>
           </div>
@@ -331,7 +443,7 @@
                             </form>
                           </div>
                         @else
-                          <button type="button" class="operational-disabled-action" disabled title="Requiere autorización de Enfermería y Farmacia intrahospitalaria">Pendiente</button>
+                          <button type="button" class="operational-disabled-action" disabled title="Requiere autorización de Hospitalizacion y Farmacia intrahospitalaria">Pendiente</button>
                         @endif
                       </td>
                       <td>
@@ -375,7 +487,6 @@
             </table>
           </div>
         </section>
-
         @php
           $detailRequestId = (int) request('detail_request');
           $detailRequest = $visibleRequests->firstWhere('id', $detailRequestId);
@@ -482,20 +593,23 @@
             </article>
           </div>
         @endif
-      @elseif (in_array($section, ['services-pending', 'services-history', 'service-create', 'service-format', 'mixes', 'mix-history', 'calendar', 'infusion-rooms'], true))
+      @elseif ($section === 'calendar' && $isHospitalization)
+        @php $calendarMode = 'hospitalization'; @endphp
+        @include('operational.sections.service-calendar')
+      @elseif (in_array($section, ['services-pending', 'services-history', 'services-preparation', 'services-scheduled', 'service-create', 'service-format', 'mixes', 'mix-history', 'calendar', 'infusion-rooms', 'infusion-room-calendar', 'infusion-room-catalog', 'support', 'support-ai', 'support-analytics'], true))
         @include('operational.sections.oncology')
       @else
-        @php($editingPatient = $patientRows->firstWhere('id', (int) request('edit_patient')))
-        <section class="operational-native-table-card operational-patients-card">
+        @php $editingPatient = $patientRows->firstWhere('id', (int) request('edit_patient')); @endphp
+        <section class="operational-native-table-card operational-patients-card" data-operational-patient-catalog>
           <div class="operational-native-table-heading">
             <div>
-              <p class="eyebrow">Consulta externa</p>
+              <p class="eyebrow">Catalogo compartido</p>
               <h2>Catalogo de pacientes</h2>
-              <span>{{ $institutionName }} - Pacientes registrados</span>
+              <span>{{ $unitName }} - Pacientes vinculados a todas las areas operativas</span>
             </div>
             <div class="operational-heading-actions">
               <strong>{{ $patientRows->count() }} pacientes</strong>
-              <a class="operational-primary-button" href="{{ route('operational.dashboard', ['area' => $areaKey, 'section' => 'patients', 'modal' => 'patient']) }}"><span aria-hidden="true">+</span> Nuevo paciente</a>
+              <a class="operational-primary-button" href="{{ route('operational.patients.index', array_merge($patientCatalogRouteParameters, ['modal' => 'patient'])) }}"><span aria-hidden="true">+</span> Nuevo paciente</a>
             </div>
           </div>
 
@@ -525,11 +639,11 @@
                     <td>{{ data_get($patient->metadata, 'nss_estatal', 'Sin NSS') }}</td>
                     <td>{{ $patient->platform_number ?? 'USR-'.str_pad((string) $patient->id, 6, '0', STR_PAD_LEFT) }}</td>
                     <td>{{ data_get($patient->metadata, 'state', 'Mexico') }}</td>
-                    <td><a class="operational-secondary-button" href="{{ route('operational.dashboard', ['area' => $areaKey, 'section' => 'patients', 'edit_patient' => $patient->id]) }}">Editar</a></td>
+                    <td><a class="operational-secondary-button" href="{{ route('operational.patients.index', array_merge($patientCatalogRouteParameters, ['edit_patient' => $patient->id])) }}">Editar</a></td>
                   </tr>
                 @empty
                   <tr>
-                    <td colspan="9">Sin pacientes registrados para esta area operativa.</td>
+                    <td colspan="9">Sin pacientes registrados para esta unidad.</td>
                   </tr>
                 @endforelse
               </tbody>
@@ -538,17 +652,17 @@
         </section>
 
         <div id="alta-paciente" @class(['operational-modal', 'is-open' => $section === 'patient-create' || request('modal') === 'patient' || (bool) $editingPatient]) role="dialog" aria-modal="true" aria-labelledby="alta-paciente-title">
-          <a class="operational-modal-backdrop" href="{{ route('operational.dashboard', ['area' => $areaKey, 'section' => 'patients']) }}" aria-label="Cerrar"></a>
+          <a class="operational-modal-backdrop" href="{{ route('operational.patients.index', $patientCatalogRouteParameters) }}" aria-label="Cerrar"></a>
           <form class="operational-modal-card" method="post" action="{{ $editingPatient ? route('operational.patients.update', $editingPatient) : route('operational.patients.store') }}">
             @csrf
             @if($editingPatient) @method('patch') @endif
-            <input type="hidden" name="area" value="{{ $areaKey }}">
+            @if ($contextUnit)<input type="hidden" name="unit" value="{{ $contextUnit->id }}">@endif
             <header>
               <div>
                 <h2 id="alta-paciente-title">{{ $editingPatient ? 'Editar paciente' : 'Alta de paciente' }}</h2>
                 <p>{{ $institutionName }} - Catalogo de pacientes</p>
               </div>
-              <a href="{{ route('operational.dashboard', ['area' => $areaKey, 'section' => 'patients']) }}">Cerrar</a>
+              <a href="{{ route('operational.patients.index', $patientCatalogRouteParameters) }}">Cerrar</a>
             </header>
 
             <div class="operational-modal-body">
@@ -566,7 +680,7 @@
             </div>
 
             <footer>
-              <a href="{{ route('operational.dashboard', ['area' => $areaKey, 'section' => 'patients']) }}">Cancelar</a>
+              <a href="{{ route('operational.patients.index', $patientCatalogRouteParameters) }}">Cancelar</a>
               <button type="submit">{{ $editingPatient ? 'Guardar cambios' : 'Guardar paciente' }}</button>
             </footer>
           </form>
@@ -574,7 +688,463 @@
       @endif
     </section>
   </div>
+
+  @php
+    $incomingOncologyRequest = $isOncology
+      ? $pendingProviderRequests->firstWhere('id', (int) request('assign_request'))
+      : null;
+  @endphp
+  @if ($isOncology && (request()->boolean('new_infusion') || $incomingOncologyRequest))
+    @php
+      $operationalOncologyServices = collect(['Quimioterapia'])
+        ->merge(collect($services)->map(fn ($item) => $item->service?->name)->filter())
+        ->push(data_get($incomingOncologyRequest?->payload, 'service'))
+        ->filter()
+        ->unique()
+        ->values();
+      $operationalInfusionNurses = collect($infusionRooms)->pluck('responsible_name')->filter()->unique()->values();
+      $oncologyModalCloseUrl = route('operational.dashboard', [
+        'area' => 'oncology',
+        'section' => $incomingOncologyRequest ? 'services-pending' : 'calendar',
+        'oncology_track' => 'infusions',
+        'unit' => $contextUnit?->id,
+      ]);
+    @endphp
+    @include('doctor.partials.oncology-mixture-request-modal', [
+      'oncologyRequestContext' => 'operational',
+      'oncologyExistingRequest' => $incomingOncologyRequest,
+      'oncologyFormAction' => $incomingOncologyRequest
+        ? route('operational.infusion-assignments.update', $incomingOncologyRequest)
+        : route('operational.service-requests.store'),
+      'oncologyFormMethod' => $incomingOncologyRequest ? 'patch' : 'post',
+      'oncologyCloseUrl' => $oncologyModalCloseUrl,
+      'oncologyUnitName' => $unitName,
+      'oncologyMedicalUnitId' => $contextUnit?->id,
+      'oncologyDoctorName' => data_get($profile?->metadata, 'doctor_name', ''),
+      'oncologyProfessionalLicense' => data_get($profile?->metadata, 'professional_license', ''),
+      'oncologyServiceOptions' => $operationalOncologyServices,
+      'oncologyInfusionRooms' => $infusionRooms,
+      'oncologyInfusionNurses' => $operationalInfusionNurses,
+    ])
+  @endif
   <script>
+    document.querySelectorAll('[data-operational-carousel-prev], [data-operational-carousel-next]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const carousel = button.closest('.operational-oncology-carousel');
+        const track = carousel?.querySelector('.operational-oncology-carousel-track');
+        if (!track) return;
+
+        const itemWidth = track.querySelector('.operational-oncology-filter')?.getBoundingClientRect().width ?? 168;
+        const scrollDistance = itemWidth + 10;
+
+        track.scrollBy({
+          left: button.matches('[data-operational-carousel-prev]') ? -scrollDistance : scrollDistance,
+          behavior: 'smooth',
+        });
+      });
+    });
+
+    const oncologyRequestModal = document.querySelector('[data-oncology-request-modal]');
+    if (oncologyRequestModal) {
+      document.body.classList.add('doctor-oncology-modal-open');
+      const form = oncologyRequestModal.querySelector('[data-oncology-request-form]');
+      const patientSelect = form?.querySelector('[data-oncology-patient-select]');
+      const setValue = (selector, value, overwrite = false) => {
+        const field = form?.querySelector(selector);
+        if (field && (overwrite || !field.value) && value !== undefined && value !== null) field.value = value;
+      };
+      const populatePatient = ({ overwrite = false } = {}) => {
+        const option = patientSelect?.selectedOptions[0];
+        if (!option?.value) return;
+        setValue('[data-oncology-patient-identifier]', option.dataset.patientIdentifier, true);
+        setValue('[data-oncology-patient-birth]', option.dataset.patientBirth, true);
+        setValue('[data-oncology-patient-age]', option.dataset.patientAge, true);
+        setValue('input[name="oncology[weight]"]', option.dataset.patientWeight, overwrite);
+        setValue('input[name="oncology[height]"]', option.dataset.patientHeight, overwrite);
+        setValue('input[name="oncology[body_surface]"]', option.dataset.patientSurface, overwrite);
+        const normalizedSex = String(option.dataset.patientSex || '').toLocaleLowerCase('es-MX');
+        const sexValue = normalizedSex.startsWith('f') ? 'Femenino' : (normalizedSex.startsWith('m') ? 'Masculino' : '');
+        if (sexValue && (overwrite || !form.querySelector('input[name="oncology[sex]"]:checked'))) {
+          form.querySelector(`input[name="oncology[sex]"][value="${sexValue}"]`)?.click();
+        }
+      };
+      if (!form?.hasAttribute('data-oncology-incoming-request')) {
+        patientSelect?.addEventListener('change', () => populatePatient({ overwrite: true }));
+        populatePatient();
+      }
+
+      const programmingDate = form?.querySelector('[data-oncology-programming-date]');
+      programmingDate?.addEventListener('change', () => {
+        const requestDate = form.querySelector('[data-oncology-request-date]');
+        if (requestDate) requestDate.value = programmingDate.value;
+      });
+
+      form?.querySelectorAll('[data-oncology-count-input]').forEach(field => {
+        const output = form.querySelector(`[data-oncology-count="${field.dataset.oncologyCountInput}"]`);
+        const updateCount = () => { if (output) output.textContent = String(field.value.length); };
+        field.addEventListener('input', updateCount);
+        updateCount();
+      });
+      form?.querySelector('[data-oncology-file]')?.addEventListener('change', event => {
+        const label = form.querySelector('[data-oncology-file-label]');
+        if (label) label.textContent = event.currentTarget.files?.[0]?.name || 'Subir firma y c\u00e9dula';
+      });
+
+      const medicationRows = [...form.querySelectorAll('[data-oncology-medication-row]')];
+      const addMedicationButton = form.querySelector('[data-oncology-add-medication]');
+      const visibleMedicationRows = () => medicationRows.filter(row => !row.hidden);
+      const copyMedicationRow = (targetRow, sourceRow) => {
+        const targetFields = [...targetRow.querySelectorAll('input, select, textarea')];
+        const sourceFields = [...sourceRow.querySelectorAll('input, select, textarea')];
+        targetFields.forEach((field, index) => {
+          const sourceField = sourceFields[index];
+          if (!sourceField) return;
+          if (field.matches('[type="checkbox"], [type="radio"]')) field.checked = sourceField.checked;
+          else field.value = sourceField.value;
+        });
+      };
+      const clearMedicationRow = row => {
+        row.querySelectorAll('input, select, textarea').forEach(field => {
+          if (field.matches('[type="checkbox"], [type="radio"]')) field.checked = false;
+          else if (field instanceof HTMLSelectElement) field.selectedIndex = 0;
+          else field.value = '';
+        });
+      };
+      const refreshMedicationButtons = () => {
+        const visibleRows = visibleMedicationRows();
+        if (addMedicationButton) addMedicationButton.hidden = visibleRows.length === medicationRows.length;
+        medicationRows.forEach(row => {
+          const removeButton = row.querySelector('[data-oncology-remove-medication]');
+          if (removeButton) removeButton.hidden = row.hidden || visibleRows.length <= 1;
+        });
+      };
+      addMedicationButton?.addEventListener('click', () => {
+        const nextRow = medicationRows.find(row => row.hidden);
+        if (!nextRow) return;
+        clearMedicationRow(nextRow);
+        nextRow.hidden = false;
+        nextRow.querySelector('input[name$="[medication]"]')?.focus();
+        refreshMedicationButtons();
+      });
+      form?.querySelectorAll('[data-oncology-remove-medication]').forEach(button => {
+        button.addEventListener('click', () => {
+          const row = button.closest('[data-oncology-medication-row]');
+          const visibleRows = visibleMedicationRows();
+          const rowIndex = visibleRows.indexOf(row);
+          if (rowIndex < 0 || visibleRows.length <= 1) return;
+
+          for (let index = rowIndex; index < visibleRows.length - 1; index += 1) {
+            copyMedicationRow(visibleRows[index], visibleRows[index + 1]);
+          }
+          const lastVisibleRow = visibleRows[visibleRows.length - 1];
+          clearMedicationRow(lastVisibleRow);
+          lastVisibleRow.hidden = true;
+          refreshMedicationButtons();
+        });
+      });
+      refreshMedicationButtons();
+
+      const roomSelect = form?.querySelector('[data-oncology-infusion-room]');
+      const seatSelect = form?.querySelector('[data-oncology-infusion-seat]');
+      const refreshSeats = ({ clearInvalid = false } = {}) => {
+        const roomId = roomSelect?.value || '';
+        [...(seatSelect?.options || [])].forEach(option => {
+          if (!option.dataset.infusionRoom) return;
+          const belongsToRoom = option.dataset.infusionRoom === roomId;
+          option.hidden = !belongsToRoom;
+          option.disabled = !belongsToRoom;
+        });
+        if (clearInvalid && seatSelect?.selectedOptions[0]?.disabled) seatSelect.value = '';
+      };
+      roomSelect?.addEventListener('change', () => refreshSeats({ clearInvalid: true }));
+      refreshSeats();
+
+      form?.querySelectorAll('[data-oncology-save-mode]').forEach(button => {
+        button.addEventListener('click', () => {
+          const assignmentRequired = button.dataset.oncologySaveMode === 'scheduled';
+          ['[data-oncology-infusion-room]', '[data-oncology-infusion-seat]', 'input[name="assignment[application_date]"]', 'input[name="assignment[starts_at]"]']
+            .forEach(selector => {
+              const field = form.querySelector(selector);
+              if (field) field.required = assignmentRequired;
+            });
+        });
+      });
+    }
+
+    document.querySelectorAll('[data-oncology-workflow-list]').forEach(list => {
+      const tableBody = list.querySelector('[data-oncology-workflow-table] tbody');
+      const sortButton = list.querySelector('[data-oncology-workflow-sort]');
+      let ascending = false;
+      sortButton?.addEventListener('click', () => {
+        ascending = !ascending;
+        const rows = [...tableBody.querySelectorAll('[data-oncology-workflow-row]')];
+        rows
+          .sort((first, second) => {
+            const comparison = String(first.dataset.sortDate || '').localeCompare(String(second.dataset.sortDate || ''));
+            return ascending ? comparison : -comparison;
+          })
+          .forEach(row => tableBody.append(row));
+        sortButton.textContent = ascending ? 'Fecha ascendente' : 'Fecha descendente';
+      });
+    });
+
+    const serviceCalendar = document.querySelector('[data-operational-service-calendar]');
+    if (serviceCalendar) {
+      const eventSource = serviceCalendar.querySelector('[data-service-calendar-events]');
+      const events = eventSource ? JSON.parse(eventSource.textContent || '[]') : [];
+      const grid = serviceCalendar.querySelector('[data-service-calendar-grid]');
+      const monthSelect = serviceCalendar.querySelector('[data-service-calendar-month]');
+      const yearSelect = serviceCalendar.querySelector('[data-service-calendar-year]');
+      const searchInput = serviceCalendar.querySelector('[data-service-calendar-search]');
+      const dialog = serviceCalendar.querySelector('[data-service-calendar-dialog]');
+      const dialogTitle = serviceCalendar.querySelector('[data-service-calendar-dialog-title]');
+      const dialogBody = serviceCalendar.querySelector('[data-service-calendar-dialog-body]');
+      const mixtureDialog = serviceCalendar.querySelector('[data-mixture-detail-dialog]');
+      const mixtureScheduleForm = serviceCalendar.querySelector('[data-mixture-schedule-form]');
+      const initialDate = serviceCalendar.dataset.initialDate || new Date().toISOString().slice(0, 10);
+      const calendarMode = serviceCalendar.dataset.calendarMode || 'oncology';
+      const isHospitalizationCalendar = calendarMode === 'hospitalization';
+      const isMixtureCalendar = calendarMode === 'oncology' && serviceCalendar.dataset.oncologyTrack === 'mixes';
+      let visibleDate = new Date(`${initialDate}T12:00:00`);
+
+      const escapeHtml = (value) => String(value ?? '').replace(/[&<>'"]/g, (character) => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#039;', '"': '&quot;',
+      })[character]);
+
+      const isoDate = (date) => [
+        date.getFullYear(),
+        String(date.getMonth() + 1).padStart(2, '0'),
+        String(date.getDate()).padStart(2, '0'),
+      ].join('-');
+
+      const normalize = (value) => String(value ?? '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase();
+
+      const ensureYearOption = (year) => {
+        if ([...yearSelect.options].some((option) => Number(option.value) === year)) return;
+        yearSelect.add(new Option(String(year), String(year)));
+        [...yearSelect.options]
+          .sort((first, second) => Number(first.value) - Number(second.value))
+          .forEach((option) => yearSelect.append(option));
+      };
+
+      const filteredEvents = () => {
+        const filters = Object.fromEntries(
+          [...serviceCalendar.querySelectorAll('[data-service-calendar-filter]')]
+            .map((filter) => [filter.dataset.serviceCalendarFilter, filter.value])
+        );
+        const query = normalize(searchInput?.value);
+
+        return events.filter((item) => {
+          const matchesFilters = Object.entries(filters).every(([key, value]) => !value || item[key] === value);
+          const searchable = normalize([item.patient, item.curp, item.folio, item.service, item.doctor, item.room].join(' '));
+          return matchesFilters && (!query || searchable.includes(query));
+        });
+      };
+
+      const openDay = (date, visibleEvents = filteredEvents()) => {
+        const dayEvents = visibleEvents
+          .filter((item) => item.date === date)
+          .sort((first, second) => String(first.time).localeCompare(String(second.time)));
+        if (!dialog) return;
+
+        const dateValue = new Date(`${date}T12:00:00`);
+        const formattedDate = new Intl.DateTimeFormat('es-MX', {
+          weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
+        }).format(dateValue);
+        dialogTitle.textContent = `Servicios del ${formattedDate}`;
+        dialogBody.innerHTML = dayEvents.length ? `
+          <div class="operational-service-calendar-dialog-count">${dayEvents.length} ${dayEvents.length === 1 ? 'servicio' : 'servicios'}</div>
+          ${dayEvents.map((item) => `
+            <article class="operational-service-calendar-dialog-event is-${escapeHtml(item.status)}">
+              <div class="operational-service-calendar-dialog-event-copy">
+                <div class="operational-service-calendar-dialog-event-title">
+                  <time>${escapeHtml(item.time)}</time>
+                  <div>
+                    <h4>${escapeHtml(item.service)}</h4>
+                    ${item.medication ? `<span>${escapeHtml(item.medication)}</span>` : ''}
+                  </div>
+                </div>
+                <p><b>${isHospitalizationCalendar ? 'Ubicaci&oacute;n / cama' : 'Sala'}:</b> ${escapeHtml(item.room)}</p>
+                <p><b>Responsable:</b> ${escapeHtml(item.doctor)}</p>
+                <p><b>Paciente:</b> ${escapeHtml(item.patient)}</p>
+                <p><b>Folio:</b> ${escapeHtml(item.folio)}</p>
+              </div>
+              <div class="operational-service-calendar-dialog-actions">
+                <span class="operational-service-calendar-dialog-status is-${escapeHtml(item.status)}">${escapeHtml(item.statusLabel)}</span>
+                ${item.mixture ? `<button type="button" data-service-calendar-mixture="${escapeHtml(item.key)}">${escapeHtml(item.detailLabel || 'Ver mezcla')}</button>` : ''}
+                ${item.detailUrl ? `<a class="is-primary" href="${escapeHtml(item.detailUrl)}">${escapeHtml(item.detailLabel || 'Ver detalle')}</a>` : ''}
+                ${item.actionUrl ? `<a href="${escapeHtml(item.actionUrl)}">${escapeHtml(item.actionLabel)}</a>` : ''}
+              </div>
+            </article>
+          `).join('')}
+        ` : `
+          <div class="operational-service-calendar-dialog-empty">
+            <span>0 servicios</span>
+            <h4>Sin servicios programados</h4>
+            <p>${isHospitalizationCalendar ? 'No hay solicitudes de Hospitalizaci&oacute;n registradas para este d&iacute;a.' : 'No hay mezclas ni infusiones registradas para este d&iacute;a.'}</p>
+          </div>
+        `;
+        dialog.showModal();
+      };
+
+      const setMixtureText = (selector, value) => {
+        const target = mixtureDialog?.querySelector(selector);
+        if (target) target.textContent = value || 'Sin dato';
+      };
+
+      const openMixture = (key) => {
+        const item = events.find((eventItem) => String(eventItem.key) === String(key));
+        const mixture = item?.mixture;
+        if (!item || !mixture || !mixtureDialog) return;
+
+        setMixtureText('[data-mixture-dialog-title]', mixture.title || 'Solicitud de mezcla');
+        setMixtureText('[data-mixture-folio]', mixture.folio);
+        setMixtureText('[data-mixture-type]', mixture.type);
+        setMixtureText('[data-mixture-selected-medication]', item.medication || mixture.medications?.[mixture.selectedMedicationIndex || 0]?.medication || item.service);
+        setMixtureText('[data-mixture-status]', mixture.status);
+        setMixtureText('[data-mixture-patient]', mixture.patient?.name);
+        setMixtureText('[data-mixture-age]', mixture.patient?.age);
+        setMixtureText('[data-mixture-sex]', mixture.patient?.sex);
+        setMixtureText('[data-mixture-diagnosis]', mixture.patient?.diagnosis);
+        setMixtureText('[data-mixture-weight]', mixture.patient?.weight);
+        setMixtureText('[data-mixture-height]', mixture.patient?.height);
+        setMixtureText('[data-mixture-body-surface]', mixture.patient?.bodySurface);
+        setMixtureText('[data-mixture-doctor]', mixture.clinical?.doctor);
+        setMixtureText('[data-mixture-requesting-service]', mixture.clinical?.requestingService);
+        setMixtureText('[data-mixture-room]', mixture.clinical?.room);
+        setMixtureText('[data-mixture-shift]', mixture.clinical?.shift);
+        setMixtureText('[data-mixture-priority]', mixture.clinical?.priority);
+        setMixtureText('[data-mixture-observations]', mixture.observations);
+
+        const status = mixtureDialog.querySelector('[data-mixture-status]');
+        if (status) status.className = `operational-oncology-mixture-status is-${item.status}`;
+
+        const medicationIndex = mixtureDialog.querySelector('[data-mixture-medication-index]');
+        const dateInput = mixtureDialog.querySelector('[data-mixture-date]');
+        if (medicationIndex) medicationIndex.value = item.medicationIndex;
+        if (dateInput) dateInput.value = item.date;
+        if (mixtureScheduleForm) mixtureScheduleForm.action = item.scheduleUpdateUrl;
+
+        const medicationRows = mixtureDialog.querySelector('[data-mixture-medications]');
+        if (medicationRows) {
+          medicationRows.innerHTML = (mixture.medications || []).map((medication, index) => `
+            <tr class="${index === Number(item.medicationIndex) ? 'is-selected' : ''}">
+              <td><strong>${escapeHtml(medication.medication)}</strong></td>
+              <td>${escapeHtml(medication.dose)}</td>
+              <td>${escapeHtml(medication.diluent)}</td>
+              <td>${escapeHtml(medication.finalVolume)}</td>
+              <td>${escapeHtml(medication.route)}</td>
+              <td>${escapeHtml(medication.duration)}</td>
+              <td>${escapeHtml(medication.time)}</td>
+            </tr>
+          `).join('');
+        }
+
+        if (dialog?.open) dialog.close();
+        mixtureDialog.showModal();
+      };
+
+      const renderCalendar = () => {
+        visibleDate = new Date(visibleDate.getFullYear(), visibleDate.getMonth(), 1, 12);
+        ensureYearOption(visibleDate.getFullYear());
+        monthSelect.value = String(visibleDate.getMonth());
+        yearSelect.value = String(visibleDate.getFullYear());
+
+        const firstDay = new Date(visibleDate.getFullYear(), visibleDate.getMonth(), 1, 12);
+        const startDay = new Date(firstDay);
+        startDay.setDate(firstDay.getDate() - firstDay.getDay());
+        const today = isoDate(new Date());
+        const visibleEvents = filteredEvents();
+
+        grid.innerHTML = Array.from({ length: 42 }, (_, index) => {
+          const day = new Date(startDay);
+          day.setDate(startDay.getDate() + index);
+          const date = isoDate(day);
+          const dayEvents = visibleEvents.filter((item) => item.date === date);
+          const classes = [
+            'operational-service-calendar-day',
+            day.getMonth() !== visibleDate.getMonth() ? 'is-outside' : '',
+            date === today ? 'is-today' : '',
+            dayEvents.length ? 'has-events' : '',
+          ].filter(Boolean).join(' ');
+          const eventButtons = dayEvents.slice(0, 3).map((item) => `
+            <button type="button" class="operational-service-calendar-event is-${escapeHtml(item.status)}" data-service-calendar-date="${date}">
+              <strong>${escapeHtml(isMixtureCalendar && item.medication ? item.medication : item.service)}</strong>
+              <span>${escapeHtml(item.room)} · ${escapeHtml(item.time)}</span>
+            </button>
+          `).join('');
+          const remaining = dayEvents.length > 3
+            ? `<button type="button" class="operational-service-calendar-more" data-service-calendar-date="${date}">+${dayEvents.length - 3} ${isMixtureCalendar ? 'mezclas' : 'servicios'}</button>`
+            : '';
+
+          return `
+            <article class="${classes}" data-service-calendar-day="${date}" data-service-calendar-date="${date}">
+              <button type="button" class="operational-service-calendar-date" data-service-calendar-date="${date}" aria-label="Ver programaci&oacute;n del ${date}">${day.getDate()}</button>
+              <div>${eventButtons}${remaining}</div>
+            </article>
+          `;
+        }).join('');
+      };
+
+      serviceCalendar.querySelectorAll('[data-service-calendar-step]').forEach((button) => {
+        button.addEventListener('click', () => {
+          visibleDate.setMonth(visibleDate.getMonth() + Number(button.dataset.serviceCalendarStep));
+          renderCalendar();
+        });
+      });
+
+      serviceCalendar.querySelector('[data-service-calendar-today]')?.addEventListener('click', () => {
+        const today = new Date();
+        visibleDate = new Date(today.getFullYear(), today.getMonth(), 1, 12);
+        renderCalendar();
+      });
+
+      monthSelect?.addEventListener('change', () => {
+        visibleDate = new Date(Number(yearSelect.value), Number(monthSelect.value), 1, 12);
+        renderCalendar();
+      });
+      yearSelect?.addEventListener('change', () => {
+        visibleDate = new Date(Number(yearSelect.value), Number(monthSelect.value), 1, 12);
+        renderCalendar();
+      });
+
+      serviceCalendar.querySelectorAll('[data-service-calendar-filter]').forEach((filter) => {
+        filter.addEventListener('change', renderCalendar);
+      });
+      searchInput?.addEventListener('input', renderCalendar);
+      serviceCalendar.querySelector('[data-service-calendar-clear]')?.addEventListener('click', () => {
+        serviceCalendar.querySelectorAll('[data-service-calendar-filter]').forEach((filter) => { filter.value = ''; });
+        if (searchInput) searchInput.value = '';
+        renderCalendar();
+      });
+
+      grid?.addEventListener('click', (event) => {
+        const trigger = event.target.closest('[data-service-calendar-date]');
+        if (trigger) openDay(trigger.dataset.serviceCalendarDate);
+      });
+      dialogBody?.addEventListener('click', (event) => {
+        const mixtureButton = event.target.closest('[data-service-calendar-mixture]');
+        if (mixtureButton) openMixture(mixtureButton.dataset.serviceCalendarMixture);
+      });
+      dialog?.querySelectorAll('[data-service-calendar-dialog-close]').forEach((button) => {
+        button.addEventListener('click', () => dialog.close());
+      });
+      dialog?.addEventListener('click', (event) => {
+        if (event.target === dialog) dialog.close();
+      });
+      mixtureDialog?.querySelectorAll('[data-mixture-detail-close]').forEach((button) => {
+        button.addEventListener('click', () => mixtureDialog.close());
+      });
+      mixtureDialog?.addEventListener('click', (event) => {
+        if (event.target === mixtureDialog) mixtureDialog.close();
+      });
+
+      renderCalendar();
+    }
+
     function toggleOperationalAuthorizationMenu(toggle, event) {
       event.preventDefault();
       event.stopPropagation();

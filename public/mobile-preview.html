@@ -3,207 +3,93 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Dr. Sam - Vista movil</title>
+  <title>Vista movil - Portal del Paciente</title>
   <style>
-    :root {
-      --phone-width: 390px;
-      --phone-height: 844px;
-      --ink: #14233f;
-      --muted: #64748b;
-      --teal: #10b7aa;
-      --line: #d8eef0;
-      --page: #eef7f7;
-    }
-
     * {
       box-sizing: border-box;
     }
 
+    html,
     body {
       margin: 0;
+      min-height: 100%;
+    }
+
+    body {
+      display: grid;
+      place-items: start center;
       min-height: 100vh;
-      display: grid;
-      place-items: center;
-      background:
-        radial-gradient(circle at 22% 16%, rgba(16, 183, 170, 0.14), transparent 30%),
-        linear-gradient(135deg, #f7fcfc 0%, var(--page) 100%);
-      color: var(--ink);
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       padding: 24px;
+      overflow: auto;
+      background: #e8eeee;
     }
 
-    .preview-shell {
-      width: min(100%, 520px);
-      display: grid;
-      gap: 16px;
-      justify-items: center;
-    }
-
-    .preview-toolbar {
-      width: min(100%, var(--phone-width));
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    .preview-title {
-      min-width: 0;
-    }
-
-    .preview-title strong {
-      display: block;
-      font-size: 16px;
-      line-height: 1.1;
-    }
-
-    .preview-title span {
-      display: block;
-      color: var(--muted);
-      font-size: 12px;
-      margin-top: 3px;
-    }
-
-    .open-full {
-      border: 1px solid rgba(16, 183, 170, 0.35);
-      border-radius: 999px;
-      background: #fff;
-      color: #008b80;
-      font-weight: 800;
-      font-size: 12px;
-      padding: 10px 14px;
-      text-decoration: none;
-      box-shadow: 0 14px 30px rgba(15, 118, 110, 0.08);
-      white-space: nowrap;
-    }
-
-    .phone {
-      width: var(--phone-width);
-      height: var(--phone-height);
-      max-width: calc(100vw - 32px);
-      max-height: calc(100vh - 108px);
-      aspect-ratio: 390 / 844;
-      overflow: hidden;
-      border: 12px solid #0b1220;
-      border-radius: 44px;
-      background: #fff;
-      box-shadow:
-        0 34px 90px rgba(15, 35, 58, 0.22),
-        0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+    .phone-preview {
       position: relative;
+      width: 414px;
+      height: 868px;
+      padding: 12px;
+      overflow: hidden;
+      border: 1px solid #26364a;
+      border-radius: 34px;
+      background: #132136;
+      box-shadow: 0 18px 45px rgb(15 36 54 / 22%);
     }
 
-    .phone::before {
-      content: "";
+    .phone-preview::before {
       position: absolute;
-      z-index: 3;
-      top: 8px;
+      z-index: 2;
+      top: 7px;
       left: 50%;
-      width: 108px;
-      height: 22px;
-      border-radius: 999px;
-      background: #0b1220;
+      width: 104px;
+      height: 20px;
+      border-radius: 0 0 14px 14px;
+      background: #132136;
+      content: "";
       transform: translateX(-50%);
       pointer-events: none;
     }
 
-    iframe {
-      width: 100%;
-      height: 100%;
+    .phone-preview iframe {
+      display: block;
+      width: 390px;
+      height: 844px;
       border: 0;
-      background: #f7fbfb;
+      border-radius: 23px;
+      background: #ffffff;
     }
 
-    @media (max-width: 520px) {
+    @media (max-width: 440px) {
       body {
+        display: block;
         padding: 0;
-        background: #fff;
+        background: #ffffff;
       }
 
-      .preview-toolbar {
-        display: none;
-      }
-
-      .preview-shell,
-      .phone {
+      .phone-preview {
         width: 100vw;
         height: 100vh;
-        max-width: none;
-        max-height: none;
+        padding: 0;
         border: 0;
         border-radius: 0;
         box-shadow: none;
       }
 
-      .phone::before {
+      .phone-preview::before {
         display: none;
+      }
+
+      .phone-preview iframe {
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
       }
     }
   </style>
-  <link rel="stylesheet" href="/css/mobile-preview-portrait.css">
 </head>
 <body>
-  <main class="preview-shell" aria-label="Vista movil de Dr. Sam">
-    <div class="preview-toolbar">
-      <div class="preview-title">
-        <strong>Vista movil</strong>
-      </div>
-      <a class="open-full" href="/patient">Abrir app</a>
-    </div>
-
-    <section class="phone" aria-label="Telefono">
-      <iframe src="/patient" title="Dr. Sam en telefono"></iframe>
-    </section>
+  <main class="phone-preview" aria-label="Vista movil del portal del paciente">
+    <iframe src="/patient" title="Portal del Paciente"></iframe>
   </main>
-  <script>
-    (() => {
-      const enhancePhoneView = (frame) => {
-        try {
-          const doc = frame.contentDocument;
-          if (!doc) return;
-
-          if (!doc.querySelector('link[data-drsam-subscriptions-pan]')) {
-            const link = doc.createElement('link');
-            link.rel = 'stylesheet';
-            link.href = '/css/subscriptions-mobile-pan.css';
-            link.dataset.drsamSubscriptionsPan = '';
-            doc.head.appendChild(link);
-          }
-
-          if (!doc.querySelector('script[data-drsam-subscriptions-pan]')) {
-            const script = doc.createElement('script');
-            script.src = '/js/subscriptions-mobile-pan.js';
-            script.defer = true;
-            script.dataset.drsamSubscriptionsPan = '';
-            doc.body.appendChild(script);
-          }
-        } catch (_) {
-          // El visor y la aplicación comparten origen; se ignoran cargas intermedias.
-        }
-      };
-
-      document.querySelectorAll('iframe').forEach((frame) => {
-        frame.addEventListener('load', () => enhancePhoneView(frame));
-        enhancePhoneView(frame);
-      });
-    })();
-  </script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const frame = document.querySelector('iframe');
-      if (!frame) return;
-
-      frame.classList.add('drsam-mobile-frame');
-      frame.setAttribute('title', 'Vista movil vertical de Dr. Sam');
-
-      const shell = frame.parentElement?.closest(
-        '[class*="phone"], [class*="device"], [class*="frame"]'
-      ) || frame.parentElement;
-
-      if (!shell) return;
-      shell.classList.add('drsam-phone-shell');
-      shell.parentElement?.classList.add('drsam-preview-stage');
-    });
-  </script>
 </body>
 </html>

@@ -206,6 +206,32 @@ class DoctorPortalTest extends TestCase
         $this->assertSame('remission-pdf', $response->getContent());
     }
 
+    public function test_doctor_can_open_the_oncology_mixture_request_format(): void
+    {
+        [$user, $doctor] = $this->createDoctor();
+        Patient::query()->create([
+            'platform_number' => 'PAC-ONC-001',
+            'full_name' => 'Paciente Oncologia',
+            'primary_doctor_id' => $doctor->id,
+            'status' => 'active',
+        ]);
+
+        $this->actingAs($user)
+            ->get(route('doctor.dashboard', ['section' => 'services', 'type' => 'chemo', 'action' => 'request']))
+            ->assertOk()
+            ->assertSee('doctor-oncology-request-modal')
+            ->assertSee('Solicitud de mezcla oncol&oacute;gica', false)
+            ->assertSee('Informaci&oacute;n general', false)
+            ->assertSee('Tabla de medicamentos')
+            ->assertDontSee('V&iacute;a de administraci&oacute;n', false)
+            ->assertDontSee('oncology[medications][0][routes][]', false)
+            ->assertSee('Observaciones adicionales y comentarios sobre v&iacute;as de administraci&oacute;n', false)
+            ->assertSee('data-oncology-add-medication', false)
+            ->assertSee('data-oncology-remove-medication', false)
+            ->assertSee('Agregar medicamento')
+            ->assertSee('Guardar solicitud');
+    }
+
     public function test_doctor_agenda_renders_its_calendar_workspace(): void
     {
         [$user, $doctor] = $this->createDoctor();

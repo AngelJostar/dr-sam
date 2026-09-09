@@ -4,6 +4,7 @@
 
 @section('content')
   <div class="insurance-health-native-screen insurance-health-native-screen--sidebar">
+    @include('insurance._topbar')
     @include('insurance._sidebar')
 
     <main class="insurance-health-native-workspace">
@@ -14,13 +15,6 @@
           <p class="eyebrow">Modulo aseguradora</p>
           <h1>Control clinico-administrativo</h1>
           <p>Trazabilidad de pacientes asegurados, tratamientos continuos, entregas, hospitalizaciones, autorizaciones y facturacion.</p>
-        </div>
-        <div class="insurance-health-native-session">
-          <span>{{ auth()->user()?->name ?? 'Superadministrador' }}</span>
-          <form method="post" action="{{ route('logout') }}">
-            @csrf
-            <button type="submit">Salir</button>
-          </form>
         </div>
       </div>
 

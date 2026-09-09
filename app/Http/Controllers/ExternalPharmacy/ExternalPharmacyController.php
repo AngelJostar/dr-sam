@@ -33,7 +33,7 @@ class ExternalPharmacyController extends Controller
         }
 
         $profile = OperationalProfile::query()
-            ->with(['medicalUnit', 'area', 'user'])
+            ->with(['medicalUnit.institution', 'area', 'user'])
             ->where('user_id', $request->user()?->id)
             ->first();
 

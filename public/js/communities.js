@@ -483,6 +483,7 @@
       adminTool: "stories",
       pendingDirectoryFocus: false
     };
+    this.initialState = JSON.parse(JSON.stringify(this.state));
     this.storyTimer = null;
     this.storyTimerToken = 0;
     this.load();
@@ -491,8 +492,30 @@
     this.handleHashRoute();
   }
 
+  CommunityApp.prototype.activePatientProfile = function () {
+    var base = this.options.patient || {};
+    var api = window.DrSamPatientProfilePanel;
+    try {
+      if (api && api.getActiveProfile) return merge(base, api.getActiveProfile());
+    } catch (error) {}
+    var storage = this.options.profileStorageKey;
+    if (!storage) {
+      var profilePanel = document.querySelector("[data-patient-profile-panel]");
+      storage = profilePanel && profilePanel.dataset ? profilePanel.dataset.storageKey : "";
+    }
+    try {
+      var saved = storage && window.localStorage ? JSON.parse(window.localStorage.getItem(storage) || "null") : null;
+      var accounts = Array.isArray(saved && saved.alternateAccounts) ? saved.alternateAccounts : [];
+      var activeAccount = accounts.find(function (account) { return account.id === (saved && saved.activeAlternateId); });
+      if (activeAccount) return merge(base, activeAccount);
+      if (saved && saved.profile) return merge(base, saved.profile);
+    } catch (error) {}
+    return base;
+  };
+
   CommunityApp.prototype.patientProfilePhoto = function () {
-    var directPhoto = this.options.patient && this.options.patient.photo;
+    var activeProfile = this.activePatientProfile();
+    var directPhoto = activeProfile && activeProfile.photo;
     if (directPhoto) return directPhoto;
     var storage = this.options.profileStorageKey;
     if (!storage) {
@@ -508,9 +531,9 @@
   };
 
   CommunityApp.prototype.patientSummary = function () {
-    var patient = this.options.patient || {};
+    var patient = this.activePatientProfile();
     return {
-      id: "patient",
+      id: String(patient.userId || patient.id || "patient"),
       name: patient.name || "Tu historia",
       short: "Tu historia",
       avatar: this.patientProfilePhoto() || "/images/communities/category-mine.png"
@@ -539,11 +562,11 @@
   };
 
   CommunityApp.prototype.storyItems = function () {
-    var patient = this.options.patient || {};
+    var patient = this.activePatientProfile();
     var patientPhoto = this.patientProfilePhoto() || "/images/communities/category-mine.png";
     var patientStoryPhoto = this.storyImageFor("patient", patientPhoto);
     var items = [{
-      id: "patient",
+      id: String(patient.userId || patient.id || "patient"),
       name: patient.name || "Tu historia",
       short: "Tu historia",
       avatar: patientStoryPhoto,
@@ -574,6 +597,17 @@
       isMore: true
     });
     return items;
+  };
+
+  CommunityApp.prototype.switchPatientProfile = function (patient, storageKey) {
+    this.options.patient = merge(this.options.patient || {}, patient || {});
+    if (storageKey && storageKey !== this.options.storageKey) {
+      this.options.storageKey = storageKey;
+      this.state = JSON.parse(JSON.stringify(this.initialState));
+      this.load();
+      this.handleHashRoute();
+    }
+    this.render();
   };
 
   CommunityApp.prototype.load = function () {

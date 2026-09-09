@@ -170,20 +170,21 @@ class OperationalModuleTest extends TestCase
         $this->actingAs($user)
             ->get(route('operational.dashboard'))
             ->assertOk()
-            ->assertSee('Area operativa')
+            ->assertSee('MODULO OPERATIVO')
             ->assertSee('operational-native-screen')
             ->assertSee('operational-native-sidebar')
             ->assertSee('operational-native-table')
             ->assertSee('Unidad Operativa Test')
             ->assertSee('REQ-OP-001')
-            ->assertSee('En preparación')
-            ->assertSee('Solicitudes enviadas por hospitales')
+            ->assertSee('Historial de solicitudes')
+            ->assertDontSee('Solicitudes enviadas por hospitales')
             ->assertDontSee('<iframe');
 
         $this->actingAs($user)
             ->get(route('operational.dashboard', ['section' => 'history']))
             ->assertOk()
-            ->assertSee('Historial de solicitudes enviadas por hospitales')
+            ->assertSee('Historial de solicitudes')
+            ->assertDontSee('Historial de solicitudes enviadas por hospitales')
             ->assertSee('REQ-OP-001')
             ->assertSee('detail_request='.$operationalRequest->id, false);
 
@@ -215,7 +216,7 @@ class OperationalModuleTest extends TestCase
         $this->actingAs($user)
             ->get(route('operational.dashboard', ['area' => 'oncology']))
             ->assertOk()
-            ->assertSee('Modulo Area Operativa - Centro Oncologico')
+            ->assertSee('Centro Oncologico')
             ->assertSee('QT-001')
             ->assertSee('Oncologia medica')
             ->assertSee('Protocolo por validar')
@@ -241,14 +242,14 @@ class OperationalModuleTest extends TestCase
             ->assertSee('Guardar paciente');
 
         foreach ([
-            'services-pending' => 'Servicios pendientes',
+            'services-pending' => 'Solicitudes pendientes',
             'services-history' => 'Historial de servicios',
             'service-create' => 'Nuevo servicio',
             'service-format' => 'SOLICITUD DE ONCOLÃ“GICOS',
             'mixes' => 'Mezclas programadas',
             'mix-history' => 'Historial de mezclas',
-            'calendar' => 'Calendario de servicios',
-            'infusion-rooms' => 'Salas de infusiÃ³n',
+            'calendar' => 'data-operational-service-calendar',
+            'infusion-rooms' => 'Inicio de salas de infusi',
         ] as $operationalSection => $expectedText) {
             $this->actingAs($user)
                 ->get(route('operational.dashboard', ['area' => 'oncology', 'section' => $operationalSection]))
@@ -264,7 +265,7 @@ class OperationalModuleTest extends TestCase
                 'curp' => 'NUOP900101MMCXXX03',
                 'state' => 'MÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â©xico',
             ])
-            ->assertRedirect(route('operational.dashboard', ['area' => 'nursing', 'section' => 'patients']));
+            ->assertRedirect(route('operational.patients.index', ['unit' => $unit->id]));
 
         $this->assertDatabaseHas('patients', ['full_name' => 'Paciente Nueva Operativa']);
 
@@ -287,8 +288,11 @@ class OperationalModuleTest extends TestCase
         $this->actingAs($user)
             ->get(route('operational.dashboard', ['area' => 'inpatient-pharmacy']))
             ->assertOk()
-            ->assertSee('Modulo Area Operativa - Farmacia intrahospitalaria')
-            ->assertSee('Farmacia intrahospitalaria - Institucion Test - Responsable de Area - Farmacia intrahospitalaria')
+            ->assertSee('MODULO OPERATIVO')
+            ->assertSee('Farmacia intrahospitalaria')
+            ->assertSee('operational-inpatient-pharmacy-carousel')
+            ->assertSee('Solicitudes pendientes')
+            ->assertSee('Historial de solicitudes')
             ->assertSee('REQ-OP-001')
             ->assertSee('QT-001')
             ->assertSee('Remision de entrega');
@@ -453,7 +457,11 @@ class OperationalModuleTest extends TestCase
             'request_type' => 'chemo',
             'status' => 'requested',
             'requested_at' => now(),
-            'payload' => ['prescription_id' => $prescription->id, 'prescription_code' => 'RX-OP-STATUS'],
+            'payload' => [
+                'prescription_id' => $prescription->id,
+                'prescription_code' => 'RX-OP-STATUS',
+                'authorizations' => ['oncology' => 'approved', 'pharmacy' => 'approved'],
+            ],
         ]);
 
         $this->actingAs($user)
@@ -624,7 +632,7 @@ class OperationalModuleTest extends TestCase
         $this->assertSame('cancelled', $providerRequest->status);
         $this->assertSame('rejected', data_get($providerRequest->payload, 'authorizations.operational'));
         $this->assertSame('Juan Enfermero', data_get($providerRequest->payload, 'cancellation.actor'));
-        $this->assertSame('operational', data_get($providerRequest->payload, 'cancellation.area'));
+        $this->assertSame('nursing', data_get($providerRequest->payload, 'cancellation.area'));
         $this->assertSame('La concentración no es viable.', data_get($providerRequest->payload, 'cancellation.reason'));
 
         $this->actingAs($user)
@@ -776,7 +784,8 @@ class OperationalModuleTest extends TestCase
             ])
             ->assertRedirect(route('operational.dashboard', [
                 'area' => 'oncology',
-                'section' => 'infusion-rooms',
+                'section' => 'infusion-room-catalog',
+                'oncology_track' => 'infusions',
                 'unit' => $unit->id,
             ]));
 
@@ -787,12 +796,13 @@ class OperationalModuleTest extends TestCase
         $this->actingAs($user)
             ->get(route('operational.dashboard', [
                 'area' => 'oncology',
-                'section' => 'infusion-rooms',
+                'section' => 'infusion-room-catalog',
+                'oncology_track' => 'infusions',
                 'unit' => $unit->id,
                 'edit_room' => $room->id,
             ]))
             ->assertOk()
-            ->assertSee('Editar sala de infusiÃ³n')
+            ->assertSee('Editar sala de infusion')
             ->assertSee('SI-01');
 
         $this->actingAs($user)
@@ -870,7 +880,7 @@ class OperationalModuleTest extends TestCase
                 'nss_estatal' => 'MEX-248391',
                 'state' => 'Mexico',
             ])
-            ->assertRedirect(route('operational.dashboard', ['area' => 'oncology', 'section' => 'patients']));
+            ->assertRedirect(route('operational.patients.index'));
 
         $patient->refresh();
         $this->assertSame('Arturo Javier Hernandez', $patient->full_name);
@@ -958,7 +968,7 @@ class OperationalModuleTest extends TestCase
                 'schedule_request' => $first->id,
             ]))
             ->assertOk()
-            ->assertSee('AGENDAR SALA DE INFUSIÃ“N')
+            ->assertSee('AGENDAR SALA DE INFUSI&Oacute;N', false)
             ->assertSee('SI-CAL-01')
             ->assertSee('Reprogramar');
     }

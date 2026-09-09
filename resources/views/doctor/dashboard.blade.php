@@ -34,6 +34,8 @@
     : null;
   $isServiceRequest = $focusedServiceType !== null && $serviceAction === 'request';
   $isNptHistory = $activeSection === 'services' && request('type') === 'npt' && request('action') === 'history';
+  $showOncologyMixtureRequest = ($activeSection === 'services' && request('type') === 'chemo' && request('action', 'request') === 'request')
+    || old('request_type') === 'chemo';
   // Valores seguros cuando otro apartado se renderiza con una confirmación de video en sesión.
   $videoPatientName = 'Paciente';
   $videoPatientNumber = 'Sin registro';
@@ -70,11 +72,28 @@
       </div>
       <div class="doctor-assistant-native-session">
         <a href="{{ route('orders.index') }}">Privada <small>Privada</small></a>
-        <button type="button">
-          <span>{{ $doctorInitials ?: 'MD' }}</span>
-          <strong>{{ str_replace(['Dr. ', 'Dra. '], '', $doctor->full_name) }}</strong>
-          <small>Medico</small>
-        </button>
+        <div class="doctor-assistant-native-account" data-doctor-account>
+          <button class="doctor-assistant-native-account-trigger" type="button" data-doctor-account-trigger aria-expanded="false" aria-haspopup="menu">
+            <span>{{ $doctorInitials ?: 'MD' }}</span>
+            <div>
+              <strong>{{ str_replace(['Dr. ', 'Dra. '], '', $doctor->full_name) }}</strong>
+              <small>Medico</small>
+            </div>
+            <svg class="doctor-assistant-native-account-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg>
+          </button>
+          <div class="doctor-assistant-native-account-menu" data-doctor-account-menu role="menu" hidden>
+            <form method="post" action="{{ route('logout') }}">
+              @csrf
+              <button class="doctor-assistant-native-account-logout" type="submit" role="menuitem">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/><path d="M15 4h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4"/></svg>
+                <span>
+                  <strong>Cerrar sesi&oacute;n</strong>
+                  <small>Salir de la cuenta</small>
+                </span>
+              </button>
+            </form>
+          </div>
+        </div>
       </div>
     </header>
 
@@ -1042,6 +1061,10 @@
     </main>
   </div>
 
+  @if ($showOncologyMixtureRequest)
+    @include('doctor.partials.oncology-mixture-request-modal')
+  @endif
+
   <template id="doctor-prescription-item-template">
     <tr>
       <td data-item-number></td>
@@ -1075,6 +1098,17 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   const menu = document.querySelector('[data-doctor-menu]');
   const menuButton = document.querySelector('[data-doctor-menu-button]');
+  const account = document.querySelector('[data-doctor-account]');
+  const accountTrigger = account?.querySelector('[data-doctor-account-trigger]');
+  const accountMenu = account?.querySelector('[data-doctor-account-menu]');
+  const setAccountMenuOpen = open => {
+    accountMenu?.toggleAttribute('hidden', !open);
+    accountTrigger?.setAttribute('aria-expanded', open ? 'true' : 'false');
+  };
+  accountTrigger?.addEventListener('click', event => {
+    event.stopPropagation();
+    setAccountMenuOpen(accountMenu?.hasAttribute('hidden'));
+  });
   const showDoctorMenuPanel = name => {
     menu?.querySelectorAll('[data-doctor-menu-panel]').forEach(panel => {
       panel.toggleAttribute('hidden', panel.dataset.doctorMenuPanel !== name);
@@ -1101,6 +1135,15 @@ document.addEventListener('DOMContentLoaded', () => {
     menu.setAttribute('hidden', '');
     menuButton?.setAttribute('aria-expanded', 'false');
     showDoctorMenuPanel('main');
+  });
+  document.addEventListener('click', event => {
+    if (account?.contains(event.target)) return;
+    setAccountMenuOpen(false);
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key !== 'Escape' || accountMenu?.hasAttribute('hidden')) return;
+    setAccountMenuOpen(false);
+    accountTrigger?.focus();
   });
 
   const videoWizard = document.querySelector('[data-video-schedule-wizard]');
@@ -1403,6 +1446,113 @@ document.addEventListener('DOMContentLoaded', () => {
       ? document.querySelector('#doctor-requests table')
       : requestCard;
     window.requestAnimationFrame(() => target?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+  }
+
+  const oncologyRequestModal = document.querySelector('[data-oncology-request-modal]');
+  if (oncologyRequestModal) {
+    document.body.classList.add('doctor-oncology-modal-open');
+    const form = oncologyRequestModal.querySelector('[data-oncology-request-form]');
+    const patientSelect = form?.querySelector('[data-oncology-patient-select]');
+    const setValue = (selector, value, overwrite = false) => {
+      const field = form?.querySelector(selector);
+      if (field && (overwrite || !field.value) && value !== undefined && value !== null) field.value = value;
+    };
+    const populatePatient = ({ overwrite = false } = {}) => {
+      const option = patientSelect?.selectedOptions[0];
+      if (!option?.value) {
+        if (overwrite) {
+          ['[data-oncology-patient-identifier]', '[data-oncology-patient-birth]', '[data-oncology-patient-age]', 'input[name="oncology[weight]"]', 'input[name="oncology[height]"]', 'input[name="oncology[body_surface]"]']
+            .forEach(selector => setValue(selector, '', true));
+          form.querySelectorAll('input[name="oncology[sex]"]').forEach(field => { field.checked = false; });
+        }
+        return;
+      }
+      setValue('[data-oncology-patient-identifier]', option.dataset.patientIdentifier, true);
+      setValue('[data-oncology-patient-birth]', option.dataset.patientBirth, true);
+      setValue('[data-oncology-patient-age]', option.dataset.patientAge, true);
+      setValue('input[name="oncology[weight]"]', option.dataset.patientWeight, overwrite);
+      setValue('input[name="oncology[height]"]', option.dataset.patientHeight, overwrite);
+      setValue('input[name="oncology[body_surface]"]', option.dataset.patientSurface, overwrite);
+      const normalizedSex = String(option.dataset.patientSex || '').toLocaleLowerCase('es-MX');
+      const sexValue = normalizedSex.startsWith('f') ? 'Femenino' : (normalizedSex.startsWith('m') ? 'Masculino' : '');
+      if (sexValue && (overwrite || !form.querySelector('input[name="oncology[sex]"]:checked'))) {
+        form.querySelector(`input[name="oncology[sex]"][value="${sexValue}"]`)?.click();
+      }
+    };
+    patientSelect?.addEventListener('change', () => populatePatient({ overwrite: true }));
+    populatePatient();
+
+    const programmingDate = form?.querySelector('[data-oncology-programming-date]');
+    programmingDate?.addEventListener('change', () => {
+      const requestDate = form.querySelector('[data-oncology-request-date]');
+      if (requestDate) requestDate.value = programmingDate.value;
+    });
+
+    form?.querySelectorAll('[data-oncology-count-input]').forEach(field => {
+      const output = form.querySelector(`[data-oncology-count="${field.dataset.oncologyCountInput}"]`);
+      const updateCount = () => { if (output) output.textContent = String(field.value.length); };
+      field.addEventListener('input', updateCount);
+      updateCount();
+    });
+
+    form?.querySelector('[data-oncology-file]')?.addEventListener('change', event => {
+      const label = form.querySelector('[data-oncology-file-label]');
+      if (label) label.textContent = event.currentTarget.files?.[0]?.name || 'Subir firma y c\u00e9dula';
+    });
+
+    const medicationRows = [...form.querySelectorAll('[data-oncology-medication-row]')];
+    const addMedicationButton = form.querySelector('[data-oncology-add-medication]');
+    const visibleMedicationRows = () => medicationRows.filter(row => !row.hidden);
+    const copyMedicationRow = (targetRow, sourceRow) => {
+      const targetFields = [...targetRow.querySelectorAll('input, select, textarea')];
+      const sourceFields = [...sourceRow.querySelectorAll('input, select, textarea')];
+      targetFields.forEach((field, index) => {
+        const sourceField = sourceFields[index];
+        if (!sourceField) return;
+        if (field.matches('[type="checkbox"], [type="radio"]')) field.checked = sourceField.checked;
+        else field.value = sourceField.value;
+      });
+    };
+    const clearMedicationRow = row => {
+      row.querySelectorAll('input, select, textarea').forEach(field => {
+        if (field.matches('[type="checkbox"], [type="radio"]')) field.checked = false;
+        else if (field instanceof HTMLSelectElement) field.selectedIndex = 0;
+        else field.value = '';
+      });
+    };
+    const refreshMedicationButtons = () => {
+      const visibleRows = visibleMedicationRows();
+      if (addMedicationButton) addMedicationButton.hidden = visibleRows.length === medicationRows.length;
+      medicationRows.forEach(row => {
+        const removeButton = row.querySelector('[data-oncology-remove-medication]');
+        if (removeButton) removeButton.hidden = row.hidden || visibleRows.length <= 1;
+      });
+    };
+    addMedicationButton?.addEventListener('click', () => {
+      const nextRow = medicationRows.find(row => row.hidden);
+      if (!nextRow) return;
+      clearMedicationRow(nextRow);
+      nextRow.hidden = false;
+      nextRow.querySelector('input[name$="[medication]"]')?.focus();
+      refreshMedicationButtons();
+    });
+    form?.querySelectorAll('[data-oncology-remove-medication]').forEach(button => {
+      button.addEventListener('click', () => {
+        const row = button.closest('[data-oncology-medication-row]');
+        const visibleRows = visibleMedicationRows();
+        const rowIndex = visibleRows.indexOf(row);
+        if (rowIndex < 0 || visibleRows.length <= 1) return;
+
+        for (let index = rowIndex; index < visibleRows.length - 1; index += 1) {
+          copyMedicationRow(visibleRows[index], visibleRows[index + 1]);
+        }
+        const lastVisibleRow = visibleRows[visibleRows.length - 1];
+        clearMedicationRow(lastVisibleRow);
+        lastVisibleRow.hidden = true;
+        refreshMedicationButtons();
+      });
+    });
+    refreshMedicationButtons();
   }
 
   const patientsTable = document.querySelector('[data-patients-table]');

@@ -75,7 +75,7 @@ class DemoAccessTest extends TestCase
         $this->actingAs($superadmin)
             ->get('/dashboard')
             ->assertOk()
-            ->assertSee('Area operativa')
+            ->assertSee('Modulo operativo')
             ->assertSee('Acceder')
             ->assertSee('Prioridad alta')
             ->assertSee('Prioridad media')

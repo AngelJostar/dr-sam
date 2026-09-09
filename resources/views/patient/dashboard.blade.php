@@ -19,7 +19,6 @@
   $statusText = fn (?string $value) => $statusLabels[$value ?? ''] ?? ($value ? ucfirst(str_replace('_', ' ', $value)) : 'Sin estatus');
   $initials = collect(explode(' ', $patient->full_name))->filter()->take(2)->map(fn ($part) => mb_substr($part, 0, 1))->implode('');
   $supportViews = [
-    'history' => ['Historial clínico', 'book'],
     'insurance' => ['Mi Seguro', 'shield'],
     'analyses' => ['Análisis Clínicos', 'flask'],
     'prescriptions' => ['Recetas', 'file'],
@@ -42,7 +41,7 @@
       </button>
     </form>
     <button class="patient-portal-profile-trigger" type="button" data-profile-panel-open aria-label="Abrir perfil del paciente">
-      <span>{{ $initials ?: 'PX' }}</span>
+      <span class="patient-portal-avatar" data-profile-panel-avatar>{{ $initials ?: 'PX' }}</span>
     </button>
   </header>
 
@@ -163,22 +162,19 @@
         <article class="patient-insurance-shell">
           <header class="patient-insurance-hero">
             <div class="patient-insurance-hero-icon" aria-hidden="true"><span>✓</span></div>
-            <div><h1>Mi Seguro</h1><p>Póliza, programas de apego y medicamentos cubiertos</p></div>
+            <div><h1>Mi Seguro</h1></div>
           </header>
           <div class="patient-insurance-overview">
             <div class="patient-insurance-illustration" aria-hidden="true"><span class="patient-insurance-case">＋</span><span class="patient-insurance-shield">⌁</span></div>
             <section class="patient-insurance-status">
-              <h2>Ten tu información siempre actualizada</h2>
-              <p>Mantener tus datos de seguro al día nos permite brindarte una mejor experiencia y evitar contratiempos en tus servicios de salud.</p>
               <strong>Estado de tu seguro <span title="Información del estado">ⓘ</span></strong>
               <div class="patient-insurance-alert {{ $insuranceComplete ? 'is-complete' : '' }}">
                 <span>{{ $insuranceComplete ? '✓' : '◷' }}</span>
                 <div><b>{{ $insuranceComplete ? 'Información completa' : 'Información pendiente' }}</b><small>{{ $insuranceComplete ? 'Tu póliza se encuentra registrada.' : 'Hay datos por completar para tu seguro.' }}</small></div>
               </div>
-              <button class="patient-insurance-complete-link" type="button" data-insurance-form-open>Completa tu información →</button>
               <div class="patient-insurance-actions">
-                <button class="patient-insurance-upload" type="button" data-insurance-form-open><span>●</span>Subir póliza</button>
                 <button type="button" data-insurance-form-open>⌕&nbsp; Actualizar datos</button>
+                <button class="patient-insurance-upload" type="button" data-insurance-form-open><span>●</span>Subir póliza</button>
               </div>
             </section>
             <aside class="patient-insurance-advisor">
@@ -257,17 +253,15 @@
             <div>
               <small>EXPEDIENTE DIGITAL</small>
               <h1>An&aacute;lisis cl&iacute;nicos</h1>
-              <p>Resultados y documentos m&eacute;dicos cargados a tu cuenta.</p>
             </div>
-            <span class="patient-analyses-count"><b>{{ $clinicalAnalyses->count() }}</b> estudios</span>
           </header>
 
           <div class="patient-analyses-body">
             <nav class="patient-analyses-filter-bar" aria-label="Filtros de an&aacute;lisis cl&iacute;nicos">
-              <button class="is-active" type="button" data-analysis-filter="all"><span>◇</span>Todos</button>
-              <button class="is-lab" type="button" data-analysis-filter="laboratory"><span>♙</span>Laboratorio</button>
-              <button class="is-image" type="button" data-analysis-filter="image"><span>▧</span>Imagen</button>
-              <button class="is-pdf" type="button" data-analysis-filter="pdf"><span>▤</span>PDF</button>
+              <button class="is-all is-active" type="button" data-analysis-filter="all" aria-pressed="true"><span class="patient-register-history-image patient-register-history-all-image" aria-hidden="true"><img src="/images/history-icons/all.png?v=20260828-history-all" alt="" loading="lazy"></span><b>Todos</b></button>
+              <button class="is-lab" type="button" data-analysis-filter="laboratory" aria-pressed="false"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/history-icons/laboratory.png?v=20260827-history-icons" alt="" loading="lazy"></span><b>Laboratorio</b></button>
+              <button class="is-image" type="button" data-analysis-filter="image" aria-pressed="false"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/history-icons/studies.png?v=20260827-history-icons" alt="" loading="lazy"></span><b>Imagen</b></button>
+              <button class="is-pdf" type="button" data-analysis-filter="pdf" aria-pressed="false"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/history-icons/prescriptions.png?v=20260827-history-icons" alt="" loading="lazy"></span><b>PDF</b></button>
             </nav>
 
             <div class="patient-analyses-toolbar">
@@ -276,7 +270,7 @@
                 <span data-analysis-sort-label>Ordenar por fecha</span>
                 <b aria-hidden="true">⌄</b>
               </button>
-              <button class="patient-analyses-filter-action" type="button" data-analysis-reset>
+              <button class="patient-analyses-filter-action" type="button" data-analysis-filter-open aria-haspopup="dialog">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10"></path><path d="M18 7h2"></path><path d="M16 5v4"></path><path d="M4 17h2"></path><path d="M10 17h10"></path><path d="M8 15v4"></path></svg>
                 <span>Filtrar</span>
               </button>
@@ -295,11 +289,18 @@
                     ?? data_get($document->metadata, 'provider')
                     ?? data_get($document->metadata, 'hospital')
                     ?? 'Laboratorio Central';
+                  $analysisSpecialtyRaw = data_get($document->metadata, 'specialty')
+                    ?? data_get($document->metadata, 'especialidad')
+                    ?? data_get($document->metadata, 'department')
+                    ?? 'General';
+                  $analysisSpecialtyKey = \Illuminate\Support\Str::of($analysisSpecialtyRaw)->ascii()->lower()->slug()->toString();
                   $isNewAnalysis = in_array($document->status, ['new', 'pending', 'requested', 'created'], true);
-                  $analysisStatusLabel = $isNewAnalysis ? 'Nuevo' : 'Cargado';
-                  $analysisStatusClass = $isNewAnalysis ? 'is-new' : 'is-loaded';
+                  $isReviewedAnalysis = in_array($document->status, ['reviewed', 'revisado', 'validated', 'validado', 'completed'], true);
+                  $analysisStatusLabel = $isNewAnalysis ? 'Nuevo' : ($isReviewedAnalysis ? 'Revisado' : 'Cargado');
+                  $analysisStatusClass = $isNewAnalysis ? 'is-new' : ($isReviewedAnalysis ? 'is-reviewed' : 'is-loaded');
+                  $analysisStatusValue = $isNewAnalysis ? 'new' : ($isReviewedAnalysis ? 'reviewed' : 'loaded');
                 @endphp
-                <article class="patient-analysis-card" data-analysis-card data-analysis-type="{{ $analysisType }}" data-analysis-date="{{ $analysisDate?->timestamp ?? 0 }}" data-analysis-status="{{ $analysisStatusClass }}">
+                <article class="patient-analysis-card" data-analysis-card data-analysis-type="{{ $analysisType }}" data-analysis-date="{{ $analysisDate?->timestamp ?? 0 }}" data-analysis-date-iso="{{ $analysisDate?->format('Y-m-d') }}" data-analysis-specialty="{{ $analysisSpecialtyKey ?: 'general' }}" data-analysis-status="{{ $analysisStatusValue }}">
                   <span class="patient-analysis-card-icon is-{{ $analysisTypeIcon[$analysisType] ?? 'lab' }}" aria-hidden="true">
                     @if ($analysisType === 'image')
                       <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"></rect><circle cx="8" cy="10" r="1.6"></circle><path d="m7 17 4-5 3 3 2-2 3 4"></path></svg>
@@ -330,6 +331,79 @@
               <div class="patient-analyses-empty" data-analysis-empty hidden>No hay estudios para este filtro.</div>
             @endif
           </div>
+          <dialog class="patient-analysis-filter-dialog" data-analysis-filter-dialog aria-labelledby="patient-analysis-filter-title">
+            <div class="patient-analysis-filter-modal">
+              <header class="patient-analysis-filter-header">
+                <h2 id="patient-analysis-filter-title">Filtrar an&aacute;lisis</h2>
+                <button type="button" data-analysis-filter-close aria-label="Cerrar filtros">×</button>
+              </header>
+              <div class="patient-analysis-filter-content">
+                <section class="patient-analysis-filter-group" aria-labelledby="patient-analysis-date-filter-title" data-analysis-filter-section>
+                  <button class="patient-analysis-filter-toggle" type="button" data-analysis-filter-section-toggle aria-expanded="false" aria-controls="patient-analysis-date-filter-options">
+                    <span class="patient-analysis-filter-row-icon is-date" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect x="3" y="4" width="18" height="18" rx="3"></rect><path d="M3 10h18"></path></svg>
+                    </span>
+                    <span class="patient-analysis-filter-row-copy"><strong id="patient-analysis-date-filter-title">Fecha</strong><small data-analysis-filter-summary="date">Elige un periodo</small></span>
+                    <span class="patient-analysis-filter-chevron" aria-hidden="true">⌄</span>
+                  </button>
+                  <div class="patient-analysis-filter-options" id="patient-analysis-date-filter-options" hidden>
+                    <button type="button" data-analysis-modal-filter="date" data-analysis-modal-value="today" aria-pressed="false">Hoy</button>
+                    <button type="button" data-analysis-modal-filter="date" data-analysis-modal-value="week" aria-pressed="false">Semana</button>
+                    <button type="button" data-analysis-modal-filter="date" data-analysis-modal-value="month" aria-pressed="false">Mes</button>
+                    <button type="button" data-analysis-modal-filter="date" data-analysis-modal-value="custom" aria-pressed="false">Personalizado</button>
+                  </div>
+                </section>
+                <section class="patient-analysis-filter-group" aria-labelledby="patient-analysis-type-filter-title" data-analysis-filter-section>
+                  <button class="patient-analysis-filter-toggle" type="button" data-analysis-filter-section-toggle aria-expanded="false" aria-controls="patient-analysis-type-filter-options">
+                    <span class="patient-analysis-filter-row-icon is-type" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><path d="M9 3v6l-4 7a4 4 0 0 0 3.5 6h7a4 4 0 0 0 3.5-6l-4-7V3"></path><path d="M8 3h8"></path><path d="M7 16h10"></path></svg>
+                    </span>
+                    <span class="patient-analysis-filter-row-copy"><strong id="patient-analysis-type-filter-title">Tipo de estudio</strong><small data-analysis-filter-summary="type">Todos los tipos</small></span>
+                    <span class="patient-analysis-filter-chevron" aria-hidden="true">⌄</span>
+                  </button>
+                  <div class="patient-analysis-filter-options" id="patient-analysis-type-filter-options" hidden>
+                    <button class="is-active" type="button" data-analysis-modal-filter="type" data-analysis-modal-value="all" aria-pressed="true">Todos</button>
+                    <button type="button" data-analysis-modal-filter="type" data-analysis-modal-value="laboratory" aria-pressed="false">Laboratorio</button>
+                    <button type="button" data-analysis-modal-filter="type" data-analysis-modal-value="image" aria-pressed="false">Imagen</button>
+                    <button type="button" data-analysis-modal-filter="type" data-analysis-modal-value="pdf" aria-pressed="false">PDF</button>
+                  </div>
+                </section>
+                <section class="patient-analysis-filter-group" aria-labelledby="patient-analysis-specialty-filter-title" data-analysis-filter-section>
+                  <button class="patient-analysis-filter-toggle" type="button" data-analysis-filter-section-toggle aria-expanded="false" aria-controls="patient-analysis-specialty-filter-options">
+                    <span class="patient-analysis-filter-row-icon is-specialty" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><path d="M6 12h12"></path><path d="M12 6v12"></path><circle cx="12" cy="12" r="9"></circle></svg>
+                    </span>
+                    <span class="patient-analysis-filter-row-copy"><strong id="patient-analysis-specialty-filter-title">Especialidad</strong><small data-analysis-filter-summary="specialty">Todas las especialidades</small></span>
+                    <span class="patient-analysis-filter-chevron" aria-hidden="true">⌄</span>
+                  </button>
+                  <div class="patient-analysis-filter-options" id="patient-analysis-specialty-filter-options" hidden>
+                    <button type="button" data-analysis-modal-filter="specialty" data-analysis-modal-value="general" aria-pressed="false">General</button>
+                    <button type="button" data-analysis-modal-filter="specialty" data-analysis-modal-value="cardiologia" aria-pressed="false">Cardiolog&iacute;a</button>
+                    <button type="button" data-analysis-modal-filter="specialty" data-analysis-modal-value="pediatria" aria-pressed="false">Pediatr&iacute;a</button>
+                    <button type="button" data-analysis-modal-filter="specialty" data-analysis-modal-value="endocrino" aria-pressed="false">Endocrino</button>
+                  </div>
+                </section>
+                <section class="patient-analysis-filter-group" aria-labelledby="patient-analysis-status-filter-title" data-analysis-filter-section>
+                  <button class="patient-analysis-filter-toggle" type="button" data-analysis-filter-section-toggle aria-expanded="false" aria-controls="patient-analysis-status-filter-options">
+                    <span class="patient-analysis-filter-row-icon is-status" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><path d="m7 12 3 3 7-7"></path><circle cx="12" cy="12" r="9"></circle></svg>
+                    </span>
+                    <span class="patient-analysis-filter-row-copy"><strong id="patient-analysis-status-filter-title">Estado</strong><small data-analysis-filter-summary="status">Todos los estados</small></span>
+                    <span class="patient-analysis-filter-chevron" aria-hidden="true">⌄</span>
+                  </button>
+                  <div class="patient-analysis-filter-options" id="patient-analysis-status-filter-options" hidden>
+                    <button type="button" data-analysis-modal-filter="status" data-analysis-modal-value="new" aria-pressed="false">Nuevo</button>
+                    <button type="button" data-analysis-modal-filter="status" data-analysis-modal-value="loaded" aria-pressed="false">Cargado</button>
+                    <button type="button" data-analysis-modal-filter="status" data-analysis-modal-value="reviewed" aria-pressed="false">Revisado</button>
+                  </div>
+                </section>
+              </div>
+              <footer class="patient-analysis-filter-footer">
+                <button class="patient-analysis-filter-clear" type="button" data-analysis-filter-clear>Limpiar</button>
+                <button class="patient-analysis-filter-apply" type="button" data-analysis-filter-apply>Aplicar filtros</button>
+              </footer>
+            </div>
+          </dialog>
         </article>
       </section>
 
@@ -342,6 +416,7 @@
               : (str_contains($type, 'lab') || str_contains($type, 'analysis') ? 'laboratory' : 'consultation'));
           };
           $historyItems = $patient->clinicalRecords->map(fn ($record) => [
+            'key' => 'clinical-record-'.$record->id,
             'date' => $record->recorded_at ?? $record->created_at,
             'category' => $clinicalCategory($record->record_type),
             'origin' => $record->doctor?->full_name ?? ($record->payload['origin'] ?? 'No registrado'),
@@ -349,6 +424,7 @@
             'summary' => $record->summary ?? 'Sin resumen clínico capturado.',
             'indications' => [],
           ])->concat($patient->documents->map(fn ($document) => [
+            'key' => 'document-'.$document->id,
             'date' => $document->loaded_at ?? $document->created_at,
             'category' => in_array($document->document_type, ['clinical_analysis', 'laboratory', 'analysis'], true) ? 'laboratory' : 'study',
             'origin' => $document->metadata['origin'] ?? 'No registrado',
@@ -356,6 +432,7 @@
             'summary' => $document->metadata['summary'] ?? 'Documento clínico disponible en el expediente.',
             'indications' => [],
           ]))->concat($patient->hospitalizations->map(fn ($hospitalization) => [
+            'key' => 'hospitalization-'.$hospitalization->id,
             'date' => $hospitalization->admitted_at ?? $hospitalization->created_at,
             'category' => 'hospitalization',
             'origin' => $hospitalization->hospital?->name ?? $hospitalization->hospital_name ?? 'No registrado',
@@ -363,6 +440,7 @@
             'summary' => $hospitalization->reason ?? $hospitalization->admission_diagnosis ?? 'Sin resumen clínico capturado.',
             'indications' => [],
           ]))->concat($patient->prescriptions->map(fn ($prescription) => [
+            'key' => 'prescription-'.$prescription->id,
             'date' => $prescription->issued_at ?? $prescription->created_at,
             'category' => 'prescription',
             'origin' => $prescription->doctor?->full_name ?? 'No registrado',
@@ -386,52 +464,9 @@
         <article class="patient-history-panel">
           <header class="patient-history-hero">
             <div class="patient-history-hero-icon" aria-hidden="true"><i></i><i></i><i></i></div>
-            <div><h1>Historial clínico</h1><p>Consultas, diagnósticos y estudios recientes</p></div>
+            <div><h1>Historial clínico</h1></div>
           </header>
-          <div class="patient-history-body">
-            <nav class="patient-history-filters" aria-label="Filtros del historial clínico">
-              <button type="button" data-history-step="-1" aria-label="Filtro anterior">‹</button>
-              <button class="is-active" type="button" data-history-filter="all"><span>◇</span>Todos</button>
-              <button class="is-consultation" type="button" data-history-filter="consultation"><span>♧</span>Consulta médica</button>
-              <button class="is-laboratory" type="button" data-history-filter="laboratory"><span>♙</span>Análisis de laboratorio</button>
-              <button class="is-study" type="button" data-history-filter="study"><span>▧</span>Estudios</button>
-              <button class="is-prescription" type="button" data-history-filter="prescription"><span>▤</span>Recetas</button>
-              <button class="is-hospitalization" type="button" data-history-filter="hospitalization"><span>⚑</span>Hospitalización</button>
-              <button class="is-vaccine" type="button" data-history-filter="vaccine"><span>□</span>Vacunas</button>
-              <button class="is-manual" type="button" data-history-filter="manual"><span>+</span>Registro manual</button>
-              <button type="button" data-history-step="1" aria-label="Filtro siguiente">›</button>
-            </nav>
-            <div class="patient-history-table-wrap">
-              <table class="patient-history-table">
-                <thead><tr><th>Fecha</th><th>Categoría</th><th>Origen</th><th>Especialidad o tipo de servicio</th><th>Resumen clínico</th><th>Receta / Indicaciones</th></tr></thead>
-                <tbody data-history-body>
-                  @forelse ($historyItems as $item)
-                    <tr data-history-row="{{ $item['category'] }}">
-                      <td><div class="patient-history-date"><span>□</span><strong>{{ $item['date']?->format('d/m/Y') ?? 'No registrada' }}<small>{{ $item['date']?->translatedFormat('l') ?? '' }}</small></strong></div></td>
-                      <td><span class="patient-history-category is-{{ $item['category'] }}">{{ $historyCategoryLabels[$item['category']] ?? 'Registro clínico' }}</span></td>
-                      <td><div class="patient-history-origin"><span>♙</span><strong>{{ $item['origin'] }}</strong></div></td>
-                      <td><div class="patient-history-service"><span>⌁</span><strong>{{ $item['service'] }}</strong></div></td>
-                      <td>{{ $item['summary'] }}</td>
-                      <td>
-                        @if(count($item['indications']))
-                          <div class="patient-history-indications">
-                            <span>▤</span>
-                            @foreach($item['indications'] as $indication)
-                              <div><strong>{{ $indication['title'] }}</strong><p>{{ $indication['detail'] }}</p></div>
-                            @endforeach
-                          </div>
-                        @else
-                          <span class="patient-history-not-registered">No registrado</span>
-                        @endif
-                      </td>
-                    </tr>
-                  @empty
-                    <tr data-history-empty><td colspan="6" class="patient-portal-empty">No hay registros clínicos.</td></tr>
-                  @endforelse
-                </tbody>
-              </table>
-            </div>
-          </div>
+          @include('patient.partials.clinical-history', compact('historyItems', 'historyCategoryLabels'))
         </article>
       </section>
 
@@ -439,15 +474,17 @@
         <article class="patient-prescriptions-panel">
           <header class="patient-prescriptions-hero">
             <div class="patient-prescriptions-hero-icon" aria-hidden="true"><span></span></div>
-            <div><h1>Recetas</h1><p>Indicaciones activas y recetas emitidas</p></div>
+            <div><h1>Recetas</h1></div>
           </header>
           <span class="patient-register-visually-hidden">Hospital donde se recetó</span>
           <span class="patient-register-visually-hidden">Institución donde se recetó</span>
           <div class="patient-prescriptions-redesign">
             <div class="patient-prescription-filter-bar" aria-label="Filtros de recetas">
-              <button class="patient-prescription-filter is-active" type="button" data-prescription-filter="all"><span>◇</span>Todos</button>
-              <button class="patient-prescription-filter patient-prescription-filter-active" type="button" data-prescription-filter="active"><span>▣</span>Vigentes</button>
-              <button class="patient-prescription-filter patient-prescription-filter-expired" type="button" data-prescription-filter="expired"><span>□</span>Vencidas</button>
+              <button class="patient-prescription-filter is-all is-active" type="button" data-prescription-filter="all" aria-pressed="true"><span class="patient-register-history-image patient-register-history-all-image" aria-hidden="true"><img src="/images/history-icons/all.png?v=20260828-history-all" alt="" loading="lazy"></span><b>Todos</b></button>
+              <button class="patient-prescription-filter patient-prescription-filter-active" type="button" data-prescription-filter="active" aria-pressed="false"><span class="patient-register-history-glyph" aria-hidden="true">✓</span><b>Vigentes</b></button>
+              <button class="patient-prescription-filter patient-prescription-filter-expired" type="button" data-prescription-filter="expired" aria-pressed="false"><span class="patient-register-history-glyph" aria-hidden="true">−</span><b>Vencidas</b></button>
+              <button class="patient-prescription-filter patient-prescription-filter-redeemed" type="button" data-prescription-filter="redeemed" aria-pressed="false"><span class="patient-register-history-glyph" aria-hidden="true">✓</span><b>Canjeadas</b></button>
+              <button class="patient-prescription-filter patient-prescription-filter-partial" type="button" data-prescription-filter="partial" aria-pressed="false"><span class="patient-register-history-glyph" aria-hidden="true">1/2</span><b>Parciales</b></button>
             </div>
             @php
               $prescriptionMonthLabels = [1 => 'ene', 2 => 'feb', 3 => 'mar', 4 => 'abr', 5 => 'may', 6 => 'jun', 7 => 'jul', 8 => 'ago', 9 => 'sep', 10 => 'oct', 11 => 'nov', 12 => 'dic'];
@@ -456,9 +493,15 @@
               @forelse ($patient->prescriptions->sortByDesc('issued_at') as $prescription)
                 @php
                   $prescriptionMeta = $prescription->metadata ?? [];
+                  $prescriptionStatusValue = strtolower((string) $prescription->status);
+                  $pharmacyStatusValue = strtolower((string) data_get($prescriptionMeta, 'pharmacy_status', ''));
                   $expiresAt = $prescriptionMeta['expires_at'] ?? null;
-                  $isExpiredPrescription = in_array($prescription->status, ['expired', 'inactive'], true)
+                  $isExpiredPrescription = in_array($prescriptionStatusValue, ['expired', 'inactive', 'cancelled'], true)
                     || ($expiresAt && \Illuminate\Support\Carbon::parse($expiresAt)->isPast());
+                  $isRedeemedPrescription = in_array($prescriptionStatusValue, ['filled', 'redeemed', 'dispensed', 'delivered', 'completed'], true)
+                    || in_array($pharmacyStatusValue, ['filled', 'redeemed', 'dispensed', 'delivered', 'completed'], true);
+                  $isPartialPrescription = in_array($prescriptionStatusValue, ['partial', 'partially_filled', 'partially_redeemed'], true)
+                    || in_array($pharmacyStatusValue, ['partial', 'partially_filled', 'partially_redeemed'], true);
                   $hasAnalysis = !empty($prescriptionMeta['clinical_analysis']) || !empty($prescriptionMeta['clinical_analyses']);
                   $primaryItem = $prescription->items->first();
                   $doctorName = $prescription->doctor?->full_name ?? 'Sin médico asignado';
@@ -477,10 +520,11 @@
                     ? (collect([$quantityLabel, $primaryItem->frequency])->filter()->implode(' ') ?: ($primaryItem->duration ?: 'Frecuencia no registrada'))
                     : ($hasAnalysis ? 'Análisis clínico solicitado' : 'Sin indicación registrada');
                   $instructions = $primaryItem?->instructions ?: ($prescription->notes ?: 'Indicaciones médicas emitidas.');
-                  $statusLabel = $isExpiredPrescription ? 'Vencida' : 'Vigente';
-                  $statusClass = $isExpiredPrescription ? 'is-expired' : 'is-active';
+                  $prescriptionFilterStatus = $isExpiredPrescription ? 'expired' : ($isRedeemedPrescription ? 'redeemed' : ($isPartialPrescription ? 'partial' : 'active'));
+                  $statusLabel = $isExpiredPrescription ? 'Vencida' : ($isRedeemedPrescription ? 'Canjeada' : ($isPartialPrescription ? 'Parcial' : 'Vigente'));
+                  $statusClass = 'is-'.$prescriptionFilterStatus;
                 @endphp
-                <article class="patient-prescription-card {{ $statusClass }}" data-prescription-row data-status="{{ $isExpiredPrescription ? 'expired' : 'active' }}" data-has-medications="{{ $prescription->items->isNotEmpty() ? '1' : '0' }}" data-has-analysis="{{ $hasAnalysis ? '1' : '0' }}">
+                <article class="patient-prescription-card {{ $statusClass }}" data-prescription-row data-status="{{ $prescriptionFilterStatus }}" data-has-medications="{{ $prescription->items->isNotEmpty() ? '1' : '0' }}" data-has-analysis="{{ $hasAnalysis ? '1' : '0' }}">
                   <div class="patient-prescription-card-top">
                     <div class="patient-prescription-doctor">
                       <span class="patient-prescription-avatar">{{ $doctorInitials }}</span>
@@ -591,25 +635,50 @@
             return ($firstTimestamp ?? PHP_INT_MAX) <=> ($secondTimestamp ?? PHP_INT_MAX);
           })->values();
           $calendarMonths = $calendarAppointments->filter(fn ($item) => $item->starts_at)->map(fn ($item) => ['key' => $item->starts_at->format('Y-m'), 'label' => ucfirst($item->starts_at->translatedFormat('F Y'))])->unique('key')->values();
+          $calendarFirstMonth = $calendarMonths->first();
+          $calendarPickerDate = $calendarFirstMonth ? \Carbon\Carbon::createFromFormat('Y-m', $calendarFirstMonth['key'])->startOfMonth() : now()->startOfMonth();
           $consultationHistory = $patient->clinicalRecords->sortByDesc('recorded_at')->values();
         @endphp
         <div class="patient-calendar-shell">
           <header class="patient-calendar-hero">
-            <span class="patient-calendar-hero-icon" aria-hidden="true"></span>
-            <div><h1>Calendario</h1><p>Citas y estudios programados</p></div>
+            <span class="patient-calendar-hero-icon" aria-hidden="true"><img src="/images/calendar-icons/calendar.png?v=20260828-calendar-icon" alt="" loading="lazy"></span>
+            <div><h1>Calendario</h1></div>
           </header>
           <div class="patient-calendar-toolbar">
             <div class="patient-calendar-filters" data-calendar-filter-carousel aria-label="Filtrar calendario">
-              <button class="is-active" type="button" data-calendar-filter="all"><span>✓</span>Todas</button>
-              <button type="button" data-calendar-filter="upcoming"><span>▣</span>Próximas</button>
-              <button type="button" data-calendar-filter="laboratory"><span>♙</span>Laboratorios</button>
-              <button type="button" data-calendar-filter="consultation"><span>♧</span>Consultas</button>
+              <button class="is-all is-active" type="button" data-calendar-filter="all" aria-pressed="true">
+                <span class="patient-register-history-image patient-register-history-all-image" aria-hidden="true"><img src="/images/history-icons/all.png?v=20260828-history-all" alt="" loading="lazy"></span>
+                <b>Todas</b>
+              </button>
+              <button class="is-upcoming" type="button" data-calendar-filter="upcoming" aria-pressed="false">
+                <span class="patient-register-history-glyph" aria-hidden="true">✓</span>
+                <b>Próximas</b>
+              </button>
+              <button class="is-laboratory" type="button" data-calendar-filter="laboratory" aria-pressed="false">
+                <span class="patient-register-history-image" aria-hidden="true"><img src="/images/history-icons/laboratory.png?v=20260827-history-icons" alt="" loading="lazy"></span>
+                <b>Laboratorio</b>
+              </button>
+              <button class="is-consultation" type="button" data-calendar-filter="consultation" aria-pressed="false">
+                <span class="patient-register-history-image" aria-hidden="true"><img src="/images/history-icons/consultation.png?v=20260827-history-icons" alt="" loading="lazy"></span>
+                <b>Consultas</b>
+              </button>
             </div>
             <div class="patient-calendar-month-nav">
               <button type="button" aria-label="Mes anterior" data-calendar-month-step="-1">‹</button>
-              <span><b>☺</b> {{ $calendarAppointments->filter($isCalendarScheduled)->count() }} próximas citas</span>
-              <strong data-calendar-month-label>{{ $calendarMonths->first()['label'] ?? ucfirst(now()->translatedFormat('F Y')) }}</strong>
+              <div class="patient-calendar-month-picker" aria-label="Selector de mes y año">
+                <div class="patient-calendar-month-column">
+                  <span data-calendar-prev-month>{{ ucfirst($calendarPickerDate->copy()->subMonth()->translatedFormat('F')) }}</span>
+                  <strong data-calendar-month-label>{{ ucfirst($calendarPickerDate->translatedFormat('F')) }}</strong>
+                  <span data-calendar-next-month>{{ ucfirst($calendarPickerDate->copy()->addMonth()->translatedFormat('F')) }}</span>
+                </div>
+                <div class="patient-calendar-month-column">
+                  <span data-calendar-prev-year>{{ $calendarPickerDate->copy()->subYear()->format('Y') }}</span>
+                  <strong data-calendar-year-label>{{ $calendarPickerDate->format('Y') }}</strong>
+                  <span data-calendar-next-year>{{ $calendarPickerDate->copy()->addYear()->format('Y') }}</span>
+                </div>
+              </div>
               <button type="button" aria-label="Mes siguiente" data-calendar-month-step="1">›</button>
+              <span class="patient-calendar-month-count"><i aria-hidden="true"></i>{{ $calendarAppointments->filter($isCalendarScheduled)->count() }} próximas citas</span>
             </div>
           </div>
           <div class="patient-calendar-list">
@@ -725,7 +794,7 @@
             <span class="patient-doctors-hero-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d="M6 3v5a4 4 0 0 0 8 0V3"></path><path d="M4 3h4M12 3h4"></path><path d="M10 12v2a5 5 0 0 0 10 0v-1"></path><circle cx="20" cy="10" r="2"></circle></svg>
             </span>
-            <div><h1>Médicos y terapeutas</h1><p>Encuentra médicos disponibles<br>por unidad y servicio</p></div>
+            <div><h1>Médicos y terapeutas</h1></div>
           </header>
 
           <section class="patient-doctors-locator" aria-labelledby="patient-doctors-location-title" data-doctor-search-form>
@@ -733,7 +802,7 @@
               <span class="patient-doctors-location-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
               </span>
-              <div><small>UBICACIÓN DEL PACIENTE</small><h2 id="patient-doctors-location-title">Selecciona país y ciudad</h2><p>Indícanos tu ubicación para mostrarte opciones disponibles en tu área.</p></div>
+              <div><h2 id="patient-doctors-location-title">Selecciona país y ciudad</h2></div>
             </header>
 
             <div class="patient-doctors-fields">
@@ -1032,6 +1101,79 @@
             </div>
           </header>
 
+          <nav class="patient-health-view-switch" data-health-view-switch data-active-view="parameters" role="tablist" aria-label="Secciones de Mi Salud">
+            <button class="is-active" id="patient-health-tab-parameters" type="button" data-health-view-mode="parameters" role="tab" aria-selected="true" aria-controls="patient-health-panel-parameters">Par&aacute;metros</button>
+            <button id="patient-health-tab-history" type="button" data-health-view-mode="history" role="tab" aria-selected="false" aria-controls="patient-health-panel-history" tabindex="-1">Historial cl&iacute;nico</button>
+          </nav>
+
+          <div class="patient-health-view-stage" data-health-view-stage>
+            <section class="patient-health-dashboard is-active" id="patient-health-panel-parameters" data-health-dashboard data-health-view-panel="parameters" role="tabpanel" aria-labelledby="patient-health-tab-parameters">
+            <div class="patient-health-parameter-head">
+              <div class="patient-health-parameter-switch" data-health-metric-switch role="tablist" aria-label="Tipo de parametros">
+                <button class="is-active" type="button" data-health-metric-view="favorites" role="tab" aria-selected="true"><span>&#9733;</span>Favoritos</button>
+                <button type="button" data-health-metric-view="all" role="tab" aria-selected="false">Todos</button>
+              </div>
+            </div>
+
+            <div class="patient-health-parameter-stage" data-health-metric-stage>
+              <div class="patient-health-parameter-block is-active" data-health-metric-section="favorites">
+                <div class="patient-health-parameter-carousel" data-health-favorites data-health-carousel aria-label="Parametros favoritos"></div>
+              </div>
+              <div class="patient-health-parameter-block" data-health-metric-section="all" aria-hidden="true">
+                <div class="patient-health-parameter-carousel" data-health-options data-health-carousel aria-label="Todos los parametros"></div>
+              </div>
+            </div>
+
+            <article class="patient-health-detail-card" data-health-detail>
+              <header class="patient-health-detail-header">
+                <span class="patient-health-detail-icon" data-health-detail-icon aria-hidden="true"></span>
+                <div>
+                  <small>Detalle del par&aacute;metro</small>
+                  <h2 data-health-detail-title>Agua</h2>
+                </div>
+              </header>
+
+              <div class="patient-health-stat-grid" data-health-stat-grid></div>
+
+              <div class="patient-health-range-tabs" data-health-range-tabs role="tablist" aria-label="Rango historico">
+                <button type="button" data-health-range="day" role="tab" aria-selected="false">D&iacute;a</button>
+                <button type="button" data-health-range="week" role="tab" aria-selected="false">Semana</button>
+                <button class="is-active" type="button" data-health-range="month" role="tab" aria-selected="true">Mes</button>
+                <button type="button" data-health-range="year" role="tab" aria-selected="false">A&ntilde;o</button>
+                <button type="button" data-health-range="custom" role="tab" aria-selected="false">Personalizado</button>
+              </div>
+
+              <div class="patient-health-date-range">
+                <label><span>De:</span><input type="date" data-health-date-from value="2026-08-01"></label>
+                <label><span>A:</span><input type="date" data-health-date-to value="2026-08-31"></label>
+              </div>
+
+              <section class="patient-health-chart-card">
+                <div class="patient-health-chart-meta">
+                  <span data-health-chart-unit>Litros (L)</span>
+                  <strong data-health-chart-goal>Meta 2.5 L</strong>
+                </div>
+                <div class="patient-health-chart" data-health-chart aria-label="Historico del parametro"></div>
+              </section>
+
+              <div class="patient-health-detail-grid">
+                <section class="patient-health-history-card">
+                  <h3>Hist&oacute;rico reciente</h3>
+                  <div data-health-history-list></div>
+                </section>
+                <section class="patient-health-insights-card">
+                  <h3>Insights</h3>
+                  <div data-health-insights></div>
+                </section>
+              </div>
+            </article>
+            </section>
+
+            <section class="patient-health-clinical-history" id="patient-health-panel-history" data-health-view-panel="history" role="tabpanel" aria-labelledby="patient-health-tab-history" aria-hidden="true" inert>
+              @include('patient.partials.clinical-history', compact('historyItems', 'historyCategoryLabels'))
+            </section>
+          </div>
+
           <nav class="patient-health-filters" data-health-filter-carousel aria-label="Filtros de salud">
             <button class="is-active" type="button" data-health-filter="all" aria-pressed="true"><span>☰</span>Todos</button>
             <button class="is-activity" type="button" data-health-filter="activity" aria-pressed="false"><span>⌁</span>Actividad</button>
@@ -1313,27 +1455,52 @@
               <section class="patient-register-history-selector" aria-labelledby="patient-register-history-title">
                 <h3 id="patient-register-history-title">Historial Cl&iacute;nico</h3>
                 <div class="patient-register-history-carousel" data-register-history-carousel aria-label="Categor&iacute;as del historial cl&iacute;nico">
-                  <button class="is-consultation" type="button" data-register-history-category="consultation" aria-pressed="false"><span aria-hidden="true">♧</span><b>Consulta m&eacute;dica</b></button>
-                  <button class="is-laboratory" type="button" data-register-history-category="laboratory" aria-pressed="false"><span aria-hidden="true">♙</span><b>An&aacute;lisis de laboratorio</b></button>
-                  <button class="is-study" type="button" data-register-history-category="study" aria-pressed="false"><span aria-hidden="true">▧</span><b>Estudios</b></button>
-                  <button class="is-prescription" type="button" data-register-history-category="prescription" aria-pressed="false"><span aria-hidden="true">▤</span><b>Recetas</b></button>
-                  <button class="is-hospitalization" type="button" data-register-history-category="hospitalization" aria-pressed="false"><span aria-hidden="true">⚑</span><b>Hospitalizaci&oacute;n</b></button>
-                  <button class="is-vaccine" type="button" data-register-history-category="vaccine" aria-pressed="false"><span aria-hidden="true">□</span><b>Vacunas</b></button>
-                  <button class="is-manual" type="button" data-register-history-category="manual" aria-pressed="false"><span aria-hidden="true">+</span><b>Registro manual</b></button>
+                  <button class="is-consultation" type="button" data-register-history-category="consultation" aria-pressed="false" aria-expanded="false" aria-controls="patient-register-history-composer"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/history-icons/consultation.png?v=20260827-history-icons" alt="" loading="lazy"></span><b>Consulta m&eacute;dica</b></button>
+                  <button class="is-laboratory" type="button" data-register-history-category="laboratory" aria-pressed="false" aria-expanded="false" aria-controls="patient-register-history-composer"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/history-icons/laboratory.png?v=20260827-history-icons" alt="" loading="lazy"></span><b>An&aacute;lisis de laboratorio</b></button>
+                  <button class="is-study" type="button" data-register-history-category="study" aria-pressed="false" aria-expanded="false" aria-controls="patient-register-history-composer"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/history-icons/studies.png?v=20260827-history-icons" alt="" loading="lazy"></span><b>Estudios</b></button>
+                  <button class="is-prescription" type="button" data-register-history-category="prescription" aria-pressed="false" aria-expanded="false" aria-controls="patient-register-history-composer"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/history-icons/prescriptions.png?v=20260827-history-icons" alt="" loading="lazy"></span><b>Recetas</b></button>
+                  <button class="is-hospitalization" type="button" data-register-history-category="hospitalization" aria-pressed="false" aria-expanded="false" aria-controls="patient-register-history-composer"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/history-icons/hospitalization.png?v=20260827-history-icons" alt="" loading="lazy"></span><b>Hospitalizaci&oacute;n</b></button>
+                  <button class="is-vaccine" type="button" data-register-history-category="vaccine" aria-pressed="false" aria-expanded="false" aria-controls="patient-register-history-composer"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/history-icons/vaccines.png?v=20260827-history-icons" alt="" loading="lazy"></span><b>Vacunas</b></button>
+                  <button class="is-manual" type="button" data-register-history-category="manual" aria-pressed="false" aria-expanded="false" aria-controls="patient-register-history-composer"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/history-icons/manual-register.png?v=20260827-history-icons" alt="" loading="lazy"></span><b>Registro manual</b></button>
                 </div>
-                <section class="patient-register-history-composer" data-register-history-composer aria-live="polite" hidden>
+                <section class="patient-register-history-composer" id="patient-register-history-composer" data-register-history-composer aria-live="polite" hidden>
                   <header>
                     <span class="patient-register-history-composer-icon" data-register-history-composer-icon aria-hidden="true">♧</span>
                     <div>
-                      <h4 data-register-history-composer-title>Registrar en Consulta m&eacute;dica</h4>
-                      <p data-register-history-composer-description>La informaci&oacute;n registrada se almacenar&aacute; en Consulta m&eacute;dica.</p>
+                      <h4 data-register-history-composer-title>Consulta m&eacute;dica</h4>
+                      <p class="patient-register-visually-hidden" data-register-history-composer-description>Registra tu consulta m&eacute;dica</p>
                     </div>
+                    <button class="patient-register-history-collapse" type="button" data-register-history-collapse aria-label="Ocultar registro de historial cl&iacute;nico">
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="m6 15 6-6 6 6"></path>
+                      </svg>
+                    </button>
                   </header>
-                  <div class="patient-register-history-textarea">
-                    <textarea maxlength="2000" placeholder="Escribe aqu&iacute; el registro manual..." data-register-history-manual aria-label="Registro manual para historial cl&iacute;nico"></textarea>
-                    <small data-register-history-manual-count>0/2000</small>
-                  </div>
-                  <div class="patient-register-history-divider"><span>o</span></div>
+                  <label class="patient-register-history-field">
+                    <span>Fecha y hora <em>*</em></span>
+                    <div class="patient-register-date-row patient-register-history-date-row">
+                      <i aria-hidden="true">▦</i>
+                      <input type="datetime-local" data-register-history-date required>
+                      <i aria-hidden="true">▦</i>
+                    </div>
+                  </label>
+                  <label class="patient-register-history-field">
+                    <span data-register-history-provider-label>M&eacute;dico</span>
+                    <select data-register-history-provider>
+                      <option value="">Selecciona el m&eacute;dico</option>
+                      <option value="Dr. Carter Jimmy">Dr. Carter Jimmy</option>
+                      <option value="Dra. Ana Sof&iacute;a Ram&iacute;rez">Dra. Ana Sof&iacute;a Ram&iacute;rez</option>
+                      <option value="Hospital General Norte">Hospital General Norte</option>
+                      <option value="Registro personal">Registro personal</option>
+                    </select>
+                  </label>
+                  <label class="patient-register-history-field">
+                    <span>Notas adicionales</span>
+                    <div class="patient-register-history-textarea">
+                      <textarea maxlength="1000" placeholder="Escribe notas adicionales..." data-register-history-notes aria-label="Notas adicionales para historial cl&iacute;nico"></textarea>
+                      <small data-register-history-notes-count>0/1000</small>
+                    </div>
+                  </label>
                   <div class="patient-register-history-actions">
                     <button class="patient-register-history-photo" type="button" data-register-history-photo-pick aria-label="Tomar fotograf&iacute;a">
                       <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -1342,48 +1509,57 @@
                       </svg>
                     </button>
                     <button class="patient-register-history-submit" type="button" data-register-history-submit>
-                      <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M5 3h12l2 2v16H5V3Z"></path>
-                        <path d="M8 3v6h8V3"></path>
-                        <path d="M8 15h8"></path>
-                      </svg>
                       <span>Guardar</span>
                     </button>
                   </div>
                   <input type="file" accept="image/*" capture="environment" data-register-history-photo-input hidden>
                   <small class="patient-register-history-photo-name" data-register-history-photo-name hidden></small>
+                  <section class="patient-register-image-preview patient-register-history-image-preview" data-register-history-photo-preview hidden>
+                    <img src="" alt="Imagen adjunta al historial cl&iacute;nico" data-register-history-photo-preview-image>
+                    <button type="button" data-register-history-photo-clear aria-label="Eliminar imagen adjunta">×</button>
+                    <small data-register-history-photo-preview-name></small>
+                  </section>
                   <p class="patient-register-history-feedback" data-register-history-feedback hidden></p>
+                </section>
+                <section class="patient-register-saved-screen" data-register-saved-screen="history" hidden>
+                  <span class="patient-register-saved-check" aria-hidden="true">✓</span>
+                  <h3>Registro guardado</h3>
+                  <p>La informaci&oacute;n se ha guardado correctamente.</p>
+                  <div class="patient-register-saved-actions">
+                    <button type="button" data-register-saved-history>Ver historial cl&iacute;nico</button>
+                    <button type="button" data-register-saved-new>Nuevo registro</button>
+                  </div>
                 </section>
               </section>
 
               <h2 class="patient-register-main-title" id="patient-register-title">Par&aacute;metros</h2>
 
-              <section class="patient-register-option-block patient-register-option-block-favorites">
-                <div class="patient-register-strip-title">
-                  <span>Favoritos</span>
-                </div>
-                <div class="patient-register-options patient-register-favorite-options" data-register-favorites data-register-carousel aria-label="Parametros favoritos"></div>
-              </section>
+              <div class="patient-register-segmented" data-register-metric-switch role="tablist" aria-label="Vista de par&aacute;metros">
+                <button class="is-active" type="button" data-register-metric-view="favorites" role="tab" aria-selected="true">
+                  <span aria-hidden="true">&#9733;</span>
+                  Favoritos
+                </button>
+                <button type="button" data-register-metric-view="all" role="tab" aria-selected="false">Todos</button>
+              </div>
 
-              <section class="patient-register-option-block patient-register-option-block-all">
-                <div class="patient-register-strip-title">
-                  <span>Todos</span>
-                </div>
-                <div class="patient-register-options" data-register-options data-register-carousel aria-label="Tipo de parametro"></div>
-              </section>
+              <div class="patient-register-metric-stage" data-register-metric-stage>
+                <section class="patient-register-option-block patient-register-option-block-favorites is-active" data-register-metric-section="favorites" aria-hidden="false">
+                  <div class="patient-register-options patient-register-favorite-options" data-register-favorites data-register-carousel aria-label="Parametros favoritos"></div>
+                </section>
 
-              <form class="patient-register-form" data-register-form>
+                <section class="patient-register-option-block patient-register-option-block-all" data-register-metric-section="all" aria-hidden="true">
+                  <div class="patient-register-options" data-register-options data-register-carousel aria-label="Tipo de parametro"></div>
+                </section>
+              </div>
+
+              <form class="patient-register-form" data-register-form aria-live="polite" hidden>
                 <input type="hidden" name="historyCategory" value="" data-register-history-category-input>
                 <input type="hidden" name="metricType" value="water" data-register-metric-input>
                 <div class="patient-register-selected-metric" data-register-selected-panel>
                   <span class="patient-register-selected-icon" data-register-selected-icon aria-hidden="true"></span>
                   <div>
-                    <small>Par&aacute;metro seleccionado</small>
                     <h3 data-register-selected-title>Agua</h3>
-                    <p data-register-selected-description>Registra tu consumo de agua del d&iacute;a.</p>
-                    <span data-register-selected-meta>Registro manual en litros</span>
                   </div>
-                  <button type="button" data-register-selected-favorite>Agregar a favoritos</button>
                 </div>
                 <label data-register-custom-wrap hidden>
                   <span>Nombre del par&aacute;metro</span>
@@ -1420,11 +1596,6 @@
                       </svg>
                     </button>
                     <button class="patient-register-primary patient-register-parameter-submit" type="submit">
-                      <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M5 3h12l2 2v16H5V3Z"></path>
-                        <path d="M8 3v6h8V3"></path>
-                        <path d="M8 15h8"></path>
-                      </svg>
                       <span>Guardar</span>
                     </button>
                   </div>
@@ -1432,6 +1603,9 @@
                   <section class="patient-register-uploaded-card" data-register-uploaded hidden>
                     <div class="patient-register-uploaded-file">
                       <span class="patient-register-file-type" data-register-file-type>PDF</span>
+                      <span class="patient-register-uploaded-preview" data-register-uploaded-preview hidden>
+                        <img src="" alt="Imagen adjunta al registro" data-register-uploaded-preview-image>
+                      </span>
                       <div>
                         <b>Fotograf&iacute;a cargada</b>
                         <strong data-register-file-name>Fotograf&iacute;a cargada</strong>
@@ -1484,6 +1658,56 @@
                   Registro guardado. Se agrego a tus datos manuales.
                 </div>
               </form>
+              <section class="patient-register-saved-screen" data-register-saved-screen="parameter" hidden>
+                <span class="patient-register-saved-check" aria-hidden="true">✓</span>
+                <h3>Registro guardado</h3>
+                <p>La informaci&oacute;n se ha guardado correctamente.</p>
+                <div class="patient-register-saved-actions">
+                  <button type="button" data-register-saved-history>Ver historial cl&iacute;nico</button>
+                  <button type="button" data-register-saved-new>Nuevo registro</button>
+                </div>
+              </section>
+              <dialog class="patient-register-image-dialog" data-register-image-dialog aria-labelledby="patient-register-image-title">
+                <div class="patient-register-image-sheet">
+                  <header>
+                    <h2 id="patient-register-image-title" data-register-image-title>Agregar imagen</h2>
+                    <button type="button" data-register-image-close aria-label="Cerrar">×</button>
+                  </header>
+                  <div class="patient-register-image-stage" data-register-image-stage="source">
+                    <button type="button" data-register-image-source="camera">
+                      <span aria-hidden="true">
+                        <svg viewBox="0 0 24 24"><path d="M14.5 4 16 7h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h3l1.5-3h5Z"></path><circle cx="12" cy="13" r="3.5"></circle></svg>
+                      </span>
+                      <strong>Tomar foto</strong>
+                    </button>
+                    <button type="button" data-register-image-source="gallery">
+                      <span aria-hidden="true">
+                        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"></rect><path d="m8 13 2.5-2.5L15 15l1.5-1.5L21 18"></path><circle cx="9" cy="9" r="1.5"></circle></svg>
+                      </span>
+                      <strong>Seleccionar</strong>
+                    </button>
+                  </div>
+                  <div class="patient-register-image-stage" data-register-image-stage="action" hidden>
+                    <small data-register-image-file-name></small>
+                    <button type="button" data-register-image-action="transcribe">
+                      <span aria-hidden="true">
+                        <svg viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6V3Z"></path><path d="M14 3v4h4"></path><path d="M9 12h6"></path><path d="M9 16h6"></path></svg>
+                      </span>
+                      <div><strong>Transcribir</strong><small>Extrae el texto de la imagen.</small></div>
+                    </button>
+                    <button type="button" data-register-image-action="attach">
+                      <span aria-hidden="true">
+                        <svg viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6V3Z"></path><path d="M14 3v4h4"></path><path d="M9 14h6"></path></svg>
+                      </span>
+                      <div><strong>Agregar</strong><small>Guarda la imagen como archivo adjunto.</small></div>
+                    </button>
+                  </div>
+                  <button class="patient-register-image-cancel" type="button" data-register-image-cancel>
+                    <span aria-hidden="true">×</span>
+                    <strong>Cancelar</strong>
+                  </button>
+                </div>
+              </dialog>
             </section>
           </div>
         </article>
@@ -1519,19 +1743,34 @@
   aria-hidden="true"
   hidden>
   <div class="patient-profile-scroll">
-    <header class="patient-profile-header">
-      <button class="patient-profile-avatar-button" type="button" data-profile-view="photo" aria-label="Ver o cambiar foto de perfil">
-        <span class="patient-profile-avatar" data-profile-panel-avatar>{{ $initials ?: 'PX' }}</span>
-        <span class="patient-profile-avatar-add" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>
-      </button>
-      <div class="patient-profile-identity">
-        <strong data-profile-panel-name>{{ $patient->full_name }}</strong>
-        <span>ID DE USUARIO - <b data-profile-panel-id>{{ $patient->platform_number ?? $patient->id }}</b></span>
-      </div>
-      <button class="patient-profile-icon-button" type="button" data-profile-panel-close aria-label="Cerrar perfil">
-        <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg>
-      </button>
-    </header>
+    <section class="patient-profile-account-flow" aria-label="Cuentas del paciente">
+      <header class="patient-profile-header">
+        <button class="patient-profile-avatar-button" type="button" data-profile-view="photo" aria-label="Ver o cambiar foto de perfil">
+          <span class="patient-profile-avatar" data-profile-panel-avatar>{{ $initials ?: 'PX' }}</span>
+          <span class="patient-profile-avatar-add" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>
+        </button>
+        <div class="patient-profile-identity">
+          <strong data-profile-panel-name>{{ $patient->full_name }}</strong>
+          <span>ID DE USUARIO - <b data-profile-panel-id>{{ $patient->platform_number ?? $patient->id }}</b></span>
+        </div>
+        <button class="patient-profile-icon-button" type="button" data-profile-panel-close aria-label="Cerrar perfil">
+          <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
+      </header>
+
+      <section class="patient-profile-alternates" aria-label="Cuentas alternas">
+        <div class="patient-profile-accounts-shell">
+          <button class="patient-profile-accounts-nav is-prev" type="button" data-profile-account-step="-1" aria-label="Ver cuentas anteriores">
+            <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+          </button>
+          <div class="patient-profile-accounts-track" data-profile-accounts-track aria-label="Carrusel de cuentas alternas"></div>
+          <button class="patient-profile-accounts-nav" type="button" data-profile-account-step="1" aria-label="Ver más cuentas">
+            <svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+          </button>
+        </div>
+        <div class="patient-profile-accounts-dots" data-profile-accounts-dots aria-hidden="true"></div>
+      </section>
+    </section>
 
     <button class="patient-profile-row patient-profile-finance-row" type="button" data-profile-view="finance">
       <span class="patient-profile-finance-art" aria-hidden="true">
@@ -1579,6 +1818,11 @@
       <span class="patient-profile-row-copy"><strong>Información de perfil</strong><small>Datos personales e identificación</small></span>
       <span class="patient-profile-row-action" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></span>
     </button>
+    <button class="patient-profile-row patient-profile-create-row" type="button" data-profile-add-account>
+      <span class="patient-profile-row-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>
+      <span class="patient-profile-row-copy"><strong>Crear perfil para niño o mascota.</strong></span>
+      <span class="patient-profile-row-action" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></span>
+    </button>
     <button class="patient-profile-row patient-profile-logout-row" type="button" data-profile-view="logout">
       <span class="patient-profile-row-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10 17l5-5-5-5M15 12H3M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/></svg></span>
       <span class="patient-profile-row-copy"><strong>Cerrar sesión</strong></span>
@@ -1603,17 +1847,110 @@
 (() => {
   const portal = document.querySelector('[data-patient-portal]');
   if (!portal) return;
+  const primaryPatientProfile = {
+    id: @json($patient->platform_number ?? (string) $patient->id),
+    userId: @json($patient->platform_number ?? (string) $patient->id),
+    name: @json($patient->full_name),
+    photo: '',
+  };
+  const profilePanelStorageKey = @json('drsam_patient_profile_panel_'.$patient->id);
+  const registerStorageBaseKey = @json('drsam_patient_manual_records_'.$patient->id);
+  const registerFavoriteStorageBaseKey = @json('drsam_patient_register_favorites_'.$patient->id);
+  const historyFavoriteStorageBaseKey = @json('drsam_patient_history_favorites_'.$patient->id);
+  const aiChatStorageBaseKey = @json('drsam_patient_ai_chat_'.$patient->id);
+  const communitiesStorageBaseKey = @json('drsam_patient_communities_'.$patient->id);
+  const profileStorageSuffix = value => String(value ?? '').replace(/\D/g, '') || 'primary';
+  const normalizeActivePatientProfile = profile => ({
+    ...primaryPatientProfile,
+    ...(profile || {}),
+    id: String(profile?.userId || profile?.id || primaryPatientProfile.userId),
+    userId: String(profile?.userId || profile?.id || primaryPatientProfile.userId),
+    name: String(profile?.name || primaryPatientProfile.name),
+    photo: String(profile?.photo || ''),
+  });
+  const readActivePatientProfile = () => {
+    const panelApi = window.DrSamPatientProfilePanel;
+    if (panelApi?.getActiveProfile) return normalizeActivePatientProfile(panelApi.getActiveProfile());
+    try {
+      const saved = JSON.parse(localStorage.getItem(profilePanelStorageKey) || 'null');
+      const accounts = Array.isArray(saved?.alternateAccounts) ? saved.alternateAccounts : [];
+      const activeAccount = accounts.find(account => account.id === saved?.activeAlternateId);
+      if (activeAccount) return normalizeActivePatientProfile(activeAccount);
+      if (saved?.profile) return normalizeActivePatientProfile(saved.profile);
+    } catch (error) {}
+    return normalizeActivePatientProfile(primaryPatientProfile);
+  };
+  let activePatientProfile = readActivePatientProfile();
+  const getActivePatientProfile = () => activePatientProfile || normalizeActivePatientProfile(primaryPatientProfile);
+  const getActivePatientProfileId = () => getActivePatientProfile().userId || primaryPatientProfile.userId;
+  const isPrimaryPatientProfileActive = () => profileStorageSuffix(getActivePatientProfileId()) === profileStorageSuffix(primaryPatientProfile.userId);
+  const applyActivePatientProfileShell = () => {
+    const activeProfile = getActivePatientProfile();
+    portal.dataset.activeProfileId = getActivePatientProfileId();
+    portal.dataset.activeProfileName = activeProfile.name;
+    portal.classList.toggle('is-admin-profile-active', isPrimaryPatientProfileActive());
+    portal.classList.toggle('is-subprofile-active', !isPrimaryPatientProfileActive());
+  };
+  const scopedStorageKey = base => `${base}_${profileStorageSuffix(getActivePatientProfileId())}`;
+  const ensurePrimaryScopedStorage = (base, scoped) => {
+    if (profileStorageSuffix(getActivePatientProfileId()) !== profileStorageSuffix(primaryPatientProfile.userId)) return;
+    try {
+      const legacy = localStorage.getItem(base);
+      if (legacy !== null && localStorage.getItem(scoped) === null) localStorage.setItem(scoped, legacy);
+    } catch (error) {}
+  };
+  const activeRegisterStorageKey = () => {
+    const key = scopedStorageKey(registerStorageBaseKey);
+    ensurePrimaryScopedStorage(registerStorageBaseKey, key);
+    return key;
+  };
+  const activeRegisterFavoriteStorageKey = () => {
+    const key = scopedStorageKey(registerFavoriteStorageBaseKey);
+    ensurePrimaryScopedStorage(registerFavoriteStorageBaseKey, key);
+    return key;
+  };
+  const activeHistoryFavoriteStorageKey = () => scopedStorageKey(historyFavoriteStorageBaseKey);
+  const activeAiChatStorageKey = () => {
+    const key = scopedStorageKey(aiChatStorageBaseKey);
+    ensurePrimaryScopedStorage(aiChatStorageBaseKey, key);
+    return key;
+  };
+  const activeCommunitiesStorageKey = () => {
+    const key = scopedStorageKey(communitiesStorageBaseKey);
+    ensurePrimaryScopedStorage(communitiesStorageBaseKey, key);
+    return key;
+  };
+  const clearProfileScopedStorage = profileId => {
+    const profileIdValue = String(profileId ?? '').trim();
+    const suffix = profileIdValue ? profileStorageSuffix(profileIdValue) : '';
+    if (!suffix || suffix === profileStorageSuffix(primaryPatientProfile.userId)) return;
+    [
+      registerStorageBaseKey,
+      registerFavoriteStorageBaseKey,
+      historyFavoriteStorageBaseKey,
+      aiChatStorageBaseKey,
+      communitiesStorageBaseKey,
+    ].forEach(base => {
+      try {
+        localStorage.removeItem(`${base}_${suffix}`);
+      } catch (error) {}
+    });
+  };
+  const registerPatientName = () => getActivePatientProfile().name || primaryPatientProfile.name;
+  applyActivePatientProfileShell();
   let communitiesApp = null;
   const mountCommunities = () => {
     const root = portal.querySelector('[data-communities-root]');
     if (!root || communitiesApp || !window.KliniCommunities) return;
+    const activeProfile = getActivePatientProfile();
     communitiesApp = window.KliniCommunities.mount(root, {
       patient: {
-        id: @json($patient->platform_number ?? (string) $patient->id),
-        name: @json($patient->full_name),
+        id: getActivePatientProfileId(),
+        name: activeProfile.name,
+        photo: activeProfile.photo,
       },
-      storageKey: @json('drsam_patient_communities_'.$patient->id),
-      profileStorageKey: @json('drsam_patient_profile_panel_'.$patient->id),
+      storageKey: activeCommunitiesStorageKey(),
+      profileStorageKey: profilePanelStorageKey,
       onAction: event => window.dispatchEvent(new CustomEvent('drsam:communities-action', { detail: event })),
     });
     window.KliniCommunitiesApp = communitiesApp;
@@ -1623,15 +1960,13 @@
     portal.querySelectorAll('[data-open-view]').forEach(el => el.classList.toggle('is-active', el.dataset.openView === name));
     sessionStorage.setItem('patientPortalView', name);
     if (name === 'communities') mountCommunities();
+    if (name === 'wellness') renderHealthDashboard();
     if (name === 'register') {
       if (registerSuccess) registerSuccess.hidden = true;
+      hideRegisterSavedScreens();
       if (registerDateInput && !registerDateInput.value) registerDateInput.value = registerDateValue();
-      const selectedHistoryCategory = getRegisterHistorySelectedCategoryKey();
-      if (selectedHistoryCategory && isRegisterHistoryComposerVisible()) {
-        selectRegisterHistoryCategory(selectedHistoryCategory);
-      } else {
-        hideRegisterHistoryComposer();
-      }
+      hideRegisterHistoryComposer();
+      hideRegisterMetricPanel({ sync: false });
       selectRegisterMetric(registerMetricInput?.value || 'water');
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1663,6 +1998,29 @@
   const registerForm = document.querySelector('[data-register-form]');
   const registerOptions = document.querySelector('[data-register-options]');
   const registerFavorites = document.querySelector('[data-register-favorites]');
+  const registerMetricSwitch = portal.querySelector('[data-register-metric-switch]');
+  const registerMetricViewButtons = [...portal.querySelectorAll('[data-register-metric-view]')];
+  const registerMetricSections = [...portal.querySelectorAll('[data-register-metric-section]')];
+  const healthViewSwitch = portal.querySelector('[data-health-view-switch]');
+  const healthViewButtons = [...portal.querySelectorAll('[data-health-view-mode]')];
+  const healthViewPanels = [...portal.querySelectorAll('[data-health-view-panel]')];
+  const healthDashboard = portal.querySelector('[data-health-dashboard]');
+  const healthFavorites = portal.querySelector('[data-health-favorites]');
+  const healthOptions = portal.querySelector('[data-health-options]');
+  const healthMetricSwitch = portal.querySelector('[data-health-metric-switch]');
+  const healthMetricViewButtons = [...portal.querySelectorAll('[data-health-metric-view]')];
+  const healthMetricSections = [...portal.querySelectorAll('[data-health-metric-section]')];
+  const healthDetailIcon = portal.querySelector('[data-health-detail-icon]');
+  const healthDetailTitle = portal.querySelector('[data-health-detail-title]');
+  const healthStatGrid = portal.querySelector('[data-health-stat-grid]');
+  const healthRangeTabs = portal.querySelector('[data-health-range-tabs]');
+  const healthDateFrom = portal.querySelector('[data-health-date-from]');
+  const healthDateTo = portal.querySelector('[data-health-date-to]');
+  const healthChart = portal.querySelector('[data-health-chart]');
+  const healthChartUnit = portal.querySelector('[data-health-chart-unit]');
+  const healthChartGoal = portal.querySelector('[data-health-chart-goal]');
+  const healthHistoryList = portal.querySelector('[data-health-history-list]');
+  const healthInsights = portal.querySelector('[data-health-insights]');
   const registerMetricInput = document.querySelector('[data-register-metric-input]');
   const registerHistoryCategoryInput = document.querySelector('[data-register-history-category-input]');
   const registerHistoryCarousel = portal.querySelector('[data-register-history-carousel]');
@@ -1670,11 +2028,22 @@
   const registerHistoryComposerIcon = portal.querySelector('[data-register-history-composer-icon]');
   const registerHistoryComposerTitle = portal.querySelector('[data-register-history-composer-title]');
   const registerHistoryComposerDescription = portal.querySelector('[data-register-history-composer-description]');
+  const registerHistoryPrimaryLabel = portal.querySelector('[data-register-history-primary-label]');
   const registerHistoryManualInput = portal.querySelector('[data-register-history-manual]');
   const registerHistoryManualCount = portal.querySelector('[data-register-history-manual-count]');
+  const registerHistoryDateInput = portal.querySelector('[data-register-history-date]');
+  const registerHistoryProviderLabel = portal.querySelector('[data-register-history-provider-label]');
+  const registerHistoryProviderInput = portal.querySelector('[data-register-history-provider]');
+  const registerHistoryNotesInput = portal.querySelector('[data-register-history-notes]');
+  const registerHistoryNotesCount = portal.querySelector('[data-register-history-notes-count]');
+  const registerHistoryCollapse = portal.querySelector('[data-register-history-collapse]');
   const registerHistoryPhotoPick = portal.querySelector('[data-register-history-photo-pick]');
   const registerHistoryPhotoInput = portal.querySelector('[data-register-history-photo-input]');
   const registerHistoryPhotoName = portal.querySelector('[data-register-history-photo-name]');
+  const registerHistoryPhotoPreview = portal.querySelector('[data-register-history-photo-preview]');
+  const registerHistoryPhotoPreviewImage = portal.querySelector('[data-register-history-photo-preview-image]');
+  const registerHistoryPhotoPreviewName = portal.querySelector('[data-register-history-photo-preview-name]');
+  const registerHistoryPhotoClear = portal.querySelector('[data-register-history-photo-clear]');
   const registerHistorySubmit = portal.querySelector('[data-register-history-submit]');
   const registerHistoryFeedback = portal.querySelector('[data-register-history-feedback]');
   const registerValueInput = document.querySelector('[data-register-value]');
@@ -1691,6 +2060,8 @@
   const registerUploadedFileName = document.querySelector('[data-register-file-name]');
   const registerUploadedFileSize = document.querySelector('[data-register-file-size]');
   const registerUploadedFileType = document.querySelector('[data-register-file-type]');
+  const registerUploadedPreview = document.querySelector('[data-register-uploaded-preview]');
+  const registerUploadedPreviewImage = document.querySelector('[data-register-uploaded-preview-image]');
   const registerAttachmentChange = document.querySelector('[data-register-attachment-change]');
   const registerAttachmentClear = document.querySelector('[data-register-attachment-clear]');
   const registerTranscriptCard = document.querySelector('[data-register-transcript-card]');
@@ -1701,79 +2072,187 @@
   const registerSuccess = document.querySelector('[data-register-success]');
   const registerSelectedTitle = document.querySelector('[data-register-selected-title]');
   const registerSelectedIcon = document.querySelector('[data-register-selected-icon]');
-  const registerSelectedDescription = document.querySelector('[data-register-selected-description]');
-  const registerSelectedMeta = document.querySelector('[data-register-selected-meta]');
-  const registerSelectedFavoriteButton = document.querySelector('[data-register-selected-favorite]');
-  const historyBody = portal.querySelector('[data-history-body]');
-  const historyEmptyRow = portal.querySelector('[data-history-empty]');
+  const registerImageDialog = portal.querySelector('[data-register-image-dialog]');
+  const registerImageTitle = portal.querySelector('[data-register-image-title]');
+  const registerImageStages = [...portal.querySelectorAll('[data-register-image-stage]')];
+  const registerImageFileName = portal.querySelector('[data-register-image-file-name]');
+  const registerSavedScreens = [...portal.querySelectorAll('[data-register-saved-screen]')];
+  const historyScopes = [...portal.querySelectorAll('[data-clinical-history]')];
+  const registerIconVersion = '20260827-iconless';
+  const registerMetricImageSrc = src => src
+    ? `${src}${src.includes('?') ? '&' : '?'}v=${registerIconVersion}`
+    : '';
   const registerMetricConfig = {
     water: { label: 'Agua', image: '/images/register-icons/water.png', icon: '&#9676;', unit: 'L', inputType: 'number', step: '0.1', placeholder: 'Meta sugerida: 2.5 L' },
     steps: { label: 'Pasos', image: '/images/register-icons/steps.png', icon: '&#8961;', unit: 'pasos', inputType: 'number', step: '1', placeholder: 'Ej. 8000' },
-    sleep: { label: 'Sueno', image: '/images/register-icons/sleep.png', icon: '&#9684;', unit: 'h', inputType: 'number', step: '0.1', placeholder: 'Ej. 7.5' },
-    weight: { label: 'Peso', image: '/images/register-icons/weight.png', icon: '&#9635;', unit: 'kg', inputType: 'number', step: '0.1', placeholder: 'Ej. 72.4' },
-    pressure: { label: 'Presion', image: '/images/register-icons/vitals.png', icon: '&#9825;', unit: 'mmHg', inputType: 'text', step: '', placeholder: 'Ej. 120/80' },
+    sleep: { label: 'Sueño', image: '/images/register-icons/sleep.png', icon: '&#9684;', unit: 'h', inputType: 'number', step: '0.1', placeholder: 'Ej. 7.5' },
+    rest: { label: 'Descanso', image: '/images/register-icons/rest.png', icon: '&#9684;', unit: 'h', inputType: 'number', step: '0.1', placeholder: 'Ej. 8' },
+    weight: { label: 'Peso', icon: '&#9635;', unit: 'kg', inputType: 'number', step: '0.1', placeholder: 'Ej. 72.4' },
+    pressure: { label: 'Presión', image: '/images/register-icons/pressure.png', icon: '&#9825;', unit: 'mmHg', inputType: 'text', step: '', placeholder: 'Ej. 120/80' },
     glucose: { label: 'Glucosa', image: '/images/register-icons/glucose.png', icon: '&#9826;', unit: 'mg/dL', inputType: 'number', step: '0.1', placeholder: 'Ej. 92' },
-    mood: { label: 'Animo', image: '/images/register-icons/mood.png', icon: '&#9786;', unit: '/5', inputType: 'number', step: '1', placeholder: 'Ej. 4' },
+    ph: { label: 'PH', image: '/images/register-icons/ph.png', icon: '&#9676;', unit: 'pH', inputType: 'number', step: '0.1', placeholder: 'Ej. 7.4' },
     medication: { label: 'Medicamentos', image: '/images/register-icons/medication.png', icon: '&#9877;', unit: '', inputType: 'text', step: '', placeholder: 'Ej. Metformina 500 mg' },
-    activity: { label: 'Actividad fisica', image: '/images/register-icons/activity.png', icon: '&#10022;', unit: 'min', inputType: 'number', step: '1', placeholder: 'Ej. 45' },
-    calories: { label: 'Calorias', image: '/images/register-icons/activity.png', icon: '&#9672;', unit: 'kcal', inputType: 'number', step: '1', placeholder: 'Ej. 1850' },
+    nutrition: { label: 'Alimentos', image: '/images/register-icons/foods.png', icon: '&#9671;', unit: '', inputType: 'text', step: '', placeholder: 'Ej. Desayuno alto en proteína' },
+    calories: { label: 'Calorías', image: '/images/register-icons/calories.png', icon: '&#9672;', unit: 'kcal', inputType: 'number', step: '1', placeholder: 'Ej. 1850' },
+    activity: { label: 'Ejercicio', image: '/images/register-icons/activity.png', icon: '&#10022;', unit: 'min', inputType: 'number', step: '1', placeholder: 'Ej. 45' },
+    meditation: { label: 'Meditación', image: '/images/register-icons/meditation.png', icon: '&#10003;', unit: 'min', inputType: 'number', step: '1', placeholder: 'Ej. 15' },
+    menstrualCycle: { label: 'Ciclo menstrual', image: '/images/register-icons/menstrual-cycle.png', icon: '&#9792;', unit: '', inputType: 'text', step: '', placeholder: 'Ej. Día 12 / fase folicular' },
+    fertility: { label: 'Fertilidad', image: '/images/register-icons/fertility.png', icon: '&#9825;', unit: '', inputType: 'text', step: '', placeholder: 'Ej. Ventana fértil / prueba negativa' },
+    laboratory: { label: 'Análisis de laboratorio', image: '/images/register-icons/laboratory.png', icon: '&#9879;', unit: '', inputType: 'text', step: '', placeholder: 'Ej. Biometría hemática' },
+    studies: { label: 'Estudios', image: '/images/register-icons/studies.png', icon: '&#9635;', unit: '', inputType: 'text', step: '', placeholder: 'Ej. Ultrasonido abdominal' },
+    prescriptions: { label: 'Recetas', image: '/images/register-icons/prescriptions.png', icon: '&#9877;', unit: '', inputType: 'text', step: '', placeholder: 'Ej. Receta de control' },
+    hospitalization: { label: 'Hospitalización', image: '/images/register-icons/hospitalization.png', icon: '&#9873;', unit: '', inputType: 'text', step: '', placeholder: 'Ej. Ingreso / egreso hospitalario' },
+    vaccines: { label: 'Vacunas', image: '/images/register-icons/vaccines.png', icon: '&#10003;', unit: '', inputType: 'text', step: '', placeholder: 'Ej. Influenza 2026' },
+    manualRegister: { label: 'Registro manual', image: '/images/register-icons/manual-register.png', icon: '+', unit: '', inputType: 'text', step: '', placeholder: 'Ingresa el valor o detalle' },
+    mood: { label: 'Ánimo', image: '/images/register-icons/mood.png', icon: '&#9786;', unit: '/5', inputType: 'number', step: '1', placeholder: 'Ej. 4' },
     temperature: { label: 'Temperatura', image: '/images/register-icons/vitals.png', icon: '&#8451;', unit: 'C', inputType: 'number', step: '0.1', placeholder: 'Ej. 36.7' },
-    oxygen: { label: 'Oxigeno', image: '/images/register-icons/vitals.png', icon: '&#9711;', unit: '%', inputType: 'number', step: '1', placeholder: 'Ej. 98' },
+    oxygen: { label: 'Oxígeno', image: '/images/register-icons/vitals.png', icon: '&#9711;', unit: '%', inputType: 'number', step: '1', placeholder: 'Ej. 98' },
     heartRate: { label: 'Frecuencia', image: '/images/register-icons/vitals.png', icon: '&#9825;', unit: 'lpm', inputType: 'number', step: '1', placeholder: 'Ej. 72' },
     pain: { label: 'Dolor', image: '/images/register-icons/vitals.png', icon: '&#9675;', unit: '/10', inputType: 'number', step: '1', placeholder: 'Ej. 3' },
-    symptoms: { label: 'Sintomas', image: '/images/register-icons/vitals.png', icon: '&#8942;', unit: '', inputType: 'text', step: '', placeholder: 'Ej. Dolor de cabeza leve' },
-    nutrition: { label: 'Nutricion', image: '/images/register-icons/medication.png', icon: '&#9671;', unit: '', inputType: 'text', step: '', placeholder: 'Ej. Desayuno alto en proteina' },
-    meditation: { label: 'Meditacion', image: '/images/register-icons/sleep.png', icon: '&#10003;', unit: 'min', inputType: 'number', step: '1', placeholder: 'Ej. 15' },
-    note: { label: 'Nota personal', icon: '+', unit: '', inputType: 'text', step: '', placeholder: 'Ej. Me senti con mas energia' },
+    symptoms: { label: 'Síntomas', image: '/images/register-icons/vitals.png', icon: '&#8942;', unit: '', inputType: 'text', step: '', placeholder: 'Ej. Dolor de cabeza leve' },
+    note: { label: 'Nota personal', icon: '+', unit: '', inputType: 'text', step: '', placeholder: 'Ej. Me sentí con más energía' },
     custom: { label: 'Personalizado', icon: '+', unit: '', inputType: 'text', step: '', placeholder: 'Ingresa el valor' },
   };
   const registerMetricViewConfig = {
-    water: { description: 'Registra tu consumo de agua del dia.', meta: 'Registro manual en litros', valueLabel: 'Litros de agua' },
+    water: { valueLabel: 'Litros de agua' },
     steps: { description: 'Captura tus pasos o actividad caminada.', meta: 'Registro manual de movimiento', valueLabel: 'Cantidad de pasos' },
-    sleep: { description: 'Anota las horas reales de descanso.', meta: 'Registro manual de sueno', valueLabel: 'Horas de sueno' },
+    sleep: { description: 'Anota las horas reales de sueño.', meta: 'Registro manual de sueño', valueLabel: 'Horas de sueño' },
+    rest: { description: 'Registra la calidad o duración de tu descanso.', meta: 'Registro manual de descanso', valueLabel: 'Descanso registrado' },
     weight: { description: 'Guarda tu peso corporal actualizado.', meta: 'Registro manual de peso', valueLabel: 'Peso registrado' },
-    pressure: { description: 'Registra tu lectura de presion arterial.', meta: 'Formato sugerido: 120/80', valueLabel: 'Presion arterial' },
+    pressure: { description: 'Registra tu lectura de presión arterial.', meta: 'Formato sugerido: 120/80', valueLabel: 'Presión arterial' },
     glucose: { description: 'Captura tu lectura de glucosa capilar.', meta: 'Registro manual en mg/dL', valueLabel: 'Nivel de glucosa' },
+    ph: { description: 'Guarda una lectura de pH relevante para tu seguimiento.', meta: 'Registro manual de pH', valueLabel: 'Lectura de pH' },
     mood: { description: 'Marca como te sientes hoy.', meta: 'Escala sugerida de 1 a 5', valueLabel: 'Estado de animo' },
     medication: { description: 'Anota medicamentos, dosis o tomas del dia.', meta: 'Registro manual de tratamiento', valueLabel: 'Medicamento o dosis' },
-    activity: { description: 'Registra ejercicio, caminata o actividad fisica.', meta: 'Registro manual en minutos', valueLabel: 'Tiempo de actividad' },
-    calories: { description: 'Captura una estimacion de calorias consumidas.', meta: 'Registro manual de nutricion', valueLabel: 'Calorias' },
+    activity: { description: 'Registra ejercicio, caminata o actividad física.', meta: 'Registro manual en minutos', valueLabel: 'Tiempo de actividad' },
+    calories: { description: 'Captura una estimación de calorías consumidas.', meta: 'Registro manual de nutrición', valueLabel: 'Calorías' },
     temperature: { description: 'Guarda una lectura de temperatura corporal.', meta: 'Registro manual en C', valueLabel: 'Temperatura' },
-    oxygen: { description: 'Registra tu saturacion de oxigeno.', meta: 'Registro manual en porcentaje', valueLabel: 'Oxigeno en sangre' },
+    oxygen: { description: 'Registra tu saturación de oxígeno.', meta: 'Registro manual en porcentaje', valueLabel: 'Oxígeno en sangre' },
     heartRate: { description: 'Captura tu frecuencia cardiaca.', meta: 'Registro manual en lpm', valueLabel: 'Frecuencia cardiaca' },
     pain: { description: 'Indica el nivel de dolor percibido.', meta: 'Escala sugerida de 0 a 10', valueLabel: 'Nivel de dolor' },
-    symptoms: { description: 'Describe sintomas relevantes del dia.', meta: 'Registro manual de sintomas', valueLabel: 'Sintomas' },
-    nutrition: { description: 'Anota alimentacion, comidas o adherencia nutricional.', meta: 'Registro manual de nutricion', valueLabel: 'Detalle de nutricion' },
-    meditation: { description: 'Captura minutos de meditacion o respiracion.', meta: 'Registro manual de bienestar', valueLabel: 'Minutos de practica' },
+    symptoms: { description: 'Describe síntomas relevantes del día.', meta: 'Registro manual de síntomas', valueLabel: 'Síntomas' },
+    nutrition: { description: 'Anota alimentación, comidas o adherencia nutricional.', meta: 'Registro manual de alimentos', valueLabel: 'Detalle de alimentos' },
+    meditation: { description: 'Captura minutos de meditación o respiración.', meta: 'Registro manual de bienestar', valueLabel: 'Minutos de práctica' },
+    menstrualCycle: { description: 'Registra fase, día del ciclo o notas menstruales.', meta: 'Registro manual de ciclo menstrual', valueLabel: 'Detalle del ciclo' },
+    fertility: { description: 'Guarda información relacionada con fertilidad.', meta: 'Registro manual de fertilidad', valueLabel: 'Detalle de fertilidad' },
+    laboratory: { description: 'Anota resultados o seguimiento de laboratorio.', meta: 'Registro manual de laboratorio', valueLabel: 'Resultado o estudio' },
+    studies: { description: 'Registra estudios clínicos o de imagen.', meta: 'Registro manual de estudios', valueLabel: 'Detalle del estudio' },
+    prescriptions: { description: 'Captura una receta o indicación médica relevante.', meta: 'Registro manual de recetas', valueLabel: 'Detalle de receta' },
+    hospitalization: { description: 'Anota información de hospitalización.', meta: 'Registro manual hospitalario', valueLabel: 'Detalle hospitalario' },
+    vaccines: { description: 'Registra vacunas aplicadas o pendientes.', meta: 'Registro manual de vacunas', valueLabel: 'Vacuna' },
+    manualRegister: { description: 'Crea un registro libre dentro de tus parámetros.', meta: 'Registro manual libre', valueLabel: 'Valor o detalle' },
     note: { description: 'Guarda una nota personal de salud.', meta: 'Registro manual libre', valueLabel: 'Nota' },
     custom: { description: 'Crea un registro manual con el parametro que necesites.', meta: 'Registro manual personalizado', valueLabel: 'Valor' },
   };
   const registerAttachmentCategoryConfig = {
-    consultation: { label: 'Consulta Médica', historyFilter: 'consultation', service: 'Documento de consulta', parameterService: 'Parámetro de consulta médica' },
-    laboratory: { label: 'Análisis de Laboratorio', historyFilter: 'laboratory', service: 'Resultados de laboratorio', parameterService: 'Parámetro de laboratorio' },
-    study: { label: 'Estudios', historyFilter: 'study', service: 'Estudio clínico', parameterService: 'Parámetro de estudio clínico' },
-    prescription: { label: 'Recetas', historyFilter: 'prescription', service: 'Documento de receta', parameterService: 'Parámetro relacionado a receta' },
-    hospitalization: { label: 'Hospitalización', historyFilter: 'hospitalization', service: 'Documento hospitalario', parameterService: 'Parámetro hospitalario' },
-    manual: { label: 'Registro Manual', historyFilter: 'manual', service: 'Adjunto de registro manual', parameterService: 'Registro manual de parámetro' },
-    vaccine: { label: 'Vacunas', historyFilter: 'vaccine', service: 'Cartilla o comprobante de vacuna', parameterService: 'Parámetro de vacunación' },
+    consultation: {
+      label: 'Consulta médica',
+      historyFilter: 'consultation',
+      service: 'Consulta médica',
+      parameterService: 'Parámetro de consulta médica',
+      description: 'Registro rápido de consulta médica.',
+      primaryLabel: 'Motivo o resumen de consulta',
+      primaryPlaceholder: 'Escribe motivo, diagnóstico o indicación relevante...',
+      providerLabel: 'Médico',
+      providerPlaceholder: 'Selecciona el médico',
+      providerOptions: ['Dr. Carter Jimmy', 'Dra. Ana Sofía Ramírez', 'Registro personal'],
+      defaultSource: 'Registro de consulta',
+    },
+    laboratory: {
+      label: 'Análisis de laboratorio',
+      historyFilter: 'laboratory',
+      service: 'Resultados de laboratorio',
+      parameterService: 'Parámetro de laboratorio',
+      description: 'Registro rápido de laboratorio.',
+      primaryLabel: 'Resultado o estudio',
+      primaryPlaceholder: 'Escribe el resultado o estudio de laboratorio...',
+      providerLabel: 'Laboratorio',
+      providerPlaceholder: 'Selecciona el laboratorio',
+      providerOptions: ['Laboratorio Central', 'Centro Biotecnológico', 'Hospital General Norte', 'Registro personal'],
+      defaultSource: 'Registro de laboratorio',
+    },
+    study: {
+      label: 'Estudios',
+      historyFilter: 'study',
+      service: 'Estudio clínico',
+      parameterService: 'Parámetro de estudio clínico',
+      description: 'Registro rápido de estudios.',
+      primaryLabel: 'Detalle del estudio',
+      primaryPlaceholder: 'Escribe el tipo de estudio o hallazgo...',
+      providerLabel: 'Centro o especialista',
+      providerPlaceholder: 'Selecciona el origen',
+      providerOptions: ['Centro de Imagen Diagnóstica', 'Hospital General Norte', 'Especialista externo', 'Registro personal'],
+      defaultSource: 'Registro de estudio',
+    },
+    prescription: {
+      label: 'Recetas',
+      historyFilter: 'prescription',
+      service: 'Documento de receta',
+      parameterService: 'Parámetro relacionado a receta',
+      description: 'Registro rápido de receta.',
+      primaryLabel: 'Detalle de receta',
+      primaryPlaceholder: 'Escribe medicamento, dosis o indicación...',
+      providerLabel: 'Médico',
+      providerPlaceholder: 'Selecciona el médico',
+      providerOptions: ['Dr. Carter Jimmy', 'Dra. Ana Sofía Ramírez', 'Registro personal'],
+      defaultSource: 'Registro de receta',
+    },
+    hospitalization: {
+      label: 'Hospitalización',
+      historyFilter: 'hospitalization',
+      service: 'Documento hospitalario',
+      parameterService: 'Parámetro hospitalario',
+      description: 'Registro rápido hospitalario.',
+      primaryLabel: 'Motivo de hospitalización',
+      primaryPlaceholder: 'Escribe el motivo o resumen hospitalario...',
+      providerLabel: 'Hospital',
+      providerPlaceholder: 'Selecciona el hospital',
+      providerOptions: ['Hospital General Norte', 'Hospital Integral Sur', 'Clínica externa', 'Registro personal'],
+      defaultSource: 'Registro hospitalario',
+    },
+    manual: {
+      label: 'Registro manual',
+      historyFilter: 'manual',
+      service: 'Adjunto de registro manual',
+      parameterService: 'Registro manual de parámetro',
+      description: 'Registro rápido manual.',
+      primaryLabel: 'Detalle del registro',
+      primaryPlaceholder: 'Escribe aquí el registro manual...',
+      providerLabel: 'Origen',
+      providerPlaceholder: 'Selecciona el origen',
+      providerOptions: ['Paciente', 'Cuidador', 'Registro personal'],
+      defaultSource: 'Registro manual',
+    },
+    vaccine: {
+      label: 'Vacunas',
+      historyFilter: 'vaccine',
+      service: 'Cartilla o comprobante de vacuna',
+      parameterService: 'Parámetro de vacunación',
+      description: 'Registro rápido de vacuna.',
+      primaryLabel: 'Vacuna',
+      primaryPlaceholder: 'Escribe vacuna, lote o aplicación...',
+      providerLabel: 'Centro de vacunación',
+      providerPlaceholder: 'Selecciona el origen',
+      providerOptions: ['Centro de vacunación', 'Hospital General Norte', 'Farmacia', 'Registro personal'],
+      defaultSource: 'Registro de vacuna',
+    },
   };
-  const registerStorageKey = @json('drsam_patient_manual_records_'.$patient->id);
-  const registerFavoriteStorageKey = @json('drsam_patient_register_favorites_'.$patient->id);
-  const registerPatientName = @json($patient->full_name);
   const aiTopForm = portal.querySelector('[data-ai-top-form]');
   const aiTopInput = portal.querySelector('[data-ai-top-input]');
   const aiChatPanel = portal.querySelector('[data-ai-chat-panel]');
   const aiChatMessages = portal.querySelector('[data-ai-chat-messages]');
   const aiChatForm = portal.querySelector('[data-ai-chat-form]');
   const aiChatInput = portal.querySelector('[data-ai-chat-input]');
-  const aiChatStorageKey = @json('drsam_patient_ai_chat_'.$patient->id);
   const aiQuickActions = ['Consultar estudios', 'Mis medicamentos', 'Laboratorios', 'Recetas', 'Ver historial', 'Programar cita'];
-  let aiConversation = [];
-  try {
-    aiConversation = JSON.parse(localStorage.getItem(aiChatStorageKey) || '[]');
-  } catch (error) {
-    aiConversation = [];
-  }
+  const loadAiConversation = () => {
+    try {
+      const saved = JSON.parse(localStorage.getItem(activeAiChatStorageKey()) || '[]');
+      return Array.isArray(saved) ? saved : [];
+    } catch (error) {
+      return [];
+    }
+  };
+  let aiConversation = loadAiConversation();
   const escapeAiText = value => String(value ?? '').replace(/[&<>"']/g, char => ({
     '&': '&amp;',
     '<': '&lt;',
@@ -1783,30 +2262,9 @@
   }[char]));
   const aiTimeLabel = () => new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
   const saveAiConversation = () => {
-    localStorage.setItem(aiChatStorageKey, JSON.stringify(aiConversation.slice(-40)));
+    localStorage.setItem(activeAiChatStorageKey(), JSON.stringify(aiConversation.slice(-40)));
   };
   const normalizeAiPrompt = value => String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
-  const renderAiCard = card => {
-    if (!card || card.type !== 'appointment') return '';
-    return `
-      <article class="patient-ai-smart-card">
-        <small>Consulta próxima</small>
-        <strong>${escapeAiText(card.date)}</strong>
-        <span>${escapeAiText(card.time)}</span>
-        <p>${escapeAiText(card.doctor)}</p>
-        <p>${escapeAiText(card.specialty)}</p>
-        <p>${escapeAiText(card.location)}</p>
-        <div>
-          <button type="button" data-ai-open-view="history">Ver expediente</button>
-          <button type="button" data-ai-open-view="calendar">Agregar al calendario</button>
-        </div>
-      </article>
-    `;
-  };
-  const renderAiChips = chips => {
-    const items = chips?.length ? chips : aiQuickActions;
-    return `<div class="patient-ai-chips">${items.map(item => `<button type="button" data-ai-chip="${escapeAiText(item)}">${escapeAiText(item)}</button>`).join('')}</div>`;
-  };
   const renderAiConversation = () => {
     if (!aiChatMessages) return;
     aiChatMessages.innerHTML = aiConversation.map(message => {
@@ -1816,8 +2274,6 @@
           ${isUser ? '' : '<span class="patient-ai-avatar" aria-hidden="true">✦✦</span>'}
           <div class="patient-ai-bubble">
             <p>${escapeAiText(message.text)}</p>
-            ${renderAiCard(message.card)}
-            ${!isUser ? renderAiChips(message.chips) : ''}
           </div>
           <time>${escapeAiText(message.time || '')}</time>
         </article>
@@ -1849,37 +2305,25 @@
     if (normalized.includes('consulta') || normalized.includes('cita') || normalized.includes('proxima')) {
       return {
         text: 'Tu próxima consulta médica es el viernes 15 de agosto de 2026 a las 10:00 a. m. con la Dra. Laura Martínez, en Centro Biotecnológico.',
-        card: {
-          type: 'appointment',
-          date: 'Viernes 15 de agosto de 2026',
-          time: '10:00 a. m.',
-          doctor: 'Dra. Laura Martínez',
-          specialty: 'Medicina Interna',
-          location: 'Centro Biotecnológico',
-        },
-        chips: ['Ver historial', 'Programar cita', 'Mis medicamentos'],
       };
     }
     if (normalized.includes('receta') || normalized.includes('medicamento')) {
       return {
         text: 'Puedo ayudarte a revisar tus recetas y medicamentos activos. También puedo llevarte al historial para ver indicaciones anteriores.',
-        chips: ['Recetas', 'Mis medicamentos', 'Ver historial'],
       };
     }
     if (normalized.includes('estudio') || normalized.includes('laboratorio')) {
       return {
         text: 'Tus estudios y laboratorios se consultan desde el expediente. Puedo ayudarte a filtrar los registros clínicos o abrir análisis clínicos.',
-        chips: ['Consultar estudios', 'Laboratorios', 'Ver historial'],
       };
     }
     if (normalized.includes('historial') || normalized.includes('expediente')) {
       return {
         text: 'Tu historial clínico reúne consultas, estudios, recetas, hospitalizaciones y registros manuales.',
-        chips: ['Ver historial', 'Recetas', 'Laboratorios'],
       };
     }
     return {
-      text: 'Listo. Te puedo ayudar con consultas, recetas, estudios, dispositivos, pagos o registros manuales.',
+      text: 'Listo. Te puedo ayudar con consultas, recetas, estudios, dispositivos, pagos, comunidades o registros manuales.',
       chips: aiQuickActions,
     };
   };
@@ -1894,7 +2338,7 @@
     if (aiChatInput) aiChatInput.value = '';
     window.setTimeout(() => {
       const response = buildAiResponse(text);
-      aiConversation.push({ role: 'assistant', text: response.text, card: response.card, chips: response.chips, time: aiTimeLabel() });
+      aiConversation.push({ role: 'assistant', text: response.text, time: aiTimeLabel() });
       saveAiConversation();
       renderAiConversation();
     }, 260);
@@ -1916,7 +2360,7 @@
   const normalizeRegisterFavorites = values => [...new Set((Array.isArray(values) ? values : []).filter(type => registerMetricConfig[type]))];
   const loadRegisterFavorites = () => {
     try {
-      const saved = JSON.parse(localStorage.getItem(registerFavoriteStorageKey) || 'null');
+      const saved = JSON.parse(localStorage.getItem(activeRegisterFavoriteStorageKey()) || 'null');
       const normalized = normalizeRegisterFavorites(saved);
       return normalized.length ? normalized : defaultRegisterFavorites;
     } catch (error) {
@@ -1925,7 +2369,522 @@
   };
   let registerFavoriteMetrics = loadRegisterFavorites();
   const saveRegisterFavorites = () => {
-    localStorage.setItem(registerFavoriteStorageKey, JSON.stringify(registerFavoriteMetrics));
+    localStorage.setItem(activeRegisterFavoriteStorageKey(), JSON.stringify(registerFavoriteMetrics));
+  };
+  const healthMetricOrder = [
+    'water',
+    'sleep',
+    'steps',
+    'weight',
+    'medication',
+    'glucose',
+    'pressure',
+    'activity',
+    'nutrition',
+    'calories',
+    'rest',
+    'temperature',
+    'oxygen',
+    'heartRate',
+    'ph',
+    'meditation',
+    'menstrualCycle',
+    'fertility',
+    'laboratory',
+    'studies',
+    'prescriptions',
+    'hospitalization',
+    'vaccines',
+    'manualRegister',
+  ].filter(type => registerMetricConfig[type]);
+  const healthMetricTone = {
+    water: 'is-blue',
+    sleep: 'is-purple',
+    rest: 'is-blue',
+    steps: 'is-green',
+    activity: 'is-green',
+    meditation: 'is-purple',
+    weight: 'is-green',
+    nutrition: 'is-green',
+    calories: 'is-orange',
+    medication: 'is-red',
+    glucose: 'is-orange',
+    ph: 'is-blue',
+    pressure: 'is-rose',
+    temperature: 'is-orange',
+    oxygen: 'is-blue',
+    heartRate: 'is-rose',
+    menstrualCycle: 'is-rose',
+    fertility: 'is-rose',
+    laboratory: 'is-green',
+    studies: 'is-purple',
+    prescriptions: 'is-orange',
+    hospitalization: 'is-red',
+    vaccines: 'is-teal',
+    manualRegister: 'is-teal',
+  };
+  const healthRangeDates = {
+    day: ['2026-08-27', '2026-08-27'],
+    week: ['2026-08-21', '2026-08-27'],
+    month: ['2026-08-01', '2026-08-31'],
+    year: ['2026-01-01', '2026-12-31'],
+  };
+  const healthDefaultBars = {
+    day: [
+      ['7a', 28], ['9a', 46], ['11a', 38], ['1p', 63], ['3p', 52], ['5p', 78], ['7p', 58], ['9p', 68],
+    ],
+    week: [
+      ['Lun', 70], ['Mar', 54], ['Mie', 82], ['Jue', 66], ['Vie', 74], ['Sab', 48], ['Dom', 60],
+    ],
+    month: [
+      ['1', 62], ['4', 78], ['7', 56], ['10', 70], ['13', 84], ['16', 64], ['19', 72], ['22', 80], ['25', 60], ['28', 76], ['31', 68],
+    ],
+    year: [
+      ['Ene', 62], ['Feb', 58], ['Mar', 72], ['Abr', 66], ['May', 78], ['Jun', 69], ['Jul', 74], ['Ago', 82], ['Sep', 0], ['Oct', 0], ['Nov', 0], ['Dic', 0],
+    ],
+    custom: [
+      ['Inicio', 64], ['2', 78], ['3', 70], ['4', 86], ['5', 72], ['Fin', 80],
+    ],
+  };
+  const healthMetricAnalytics = {
+    water: {
+      unitLabel: 'Litros (L)',
+      goalLabel: 'Meta 2.5 L',
+      stats: [
+        ['Hoy', '1.6 L', '&#9676;'],
+        ['Meta', '2.5 L', '&#9673;'],
+        ['Cumplimiento', '64%', '&#9681;'],
+        ['Promedio semanal', '1.8 L', '&#9603;'],
+      ],
+      history: [
+        ['12 ago 2026', '08:30 a. m.', '500 ml'],
+        ['12 ago 2026', '12:45 p. m.', '350 ml'],
+        ['12 ago 2026', '04:20 p. m.', '400 ml'],
+        ['11 ago 2026', '07:50 p. m.', '500 ml'],
+      ],
+      insights: [
+        ['Has mejorado', '12% respecto a la semana anterior'],
+        ['Mejor cumplimiento', 'lun y jue'],
+      ],
+    },
+    steps: {
+      unitLabel: 'Pasos',
+      goalLabel: 'Meta 8,000',
+      stats: [
+        ['Hoy', '6,240', '&#8961;'],
+        ['Meta', '8,000', '&#9673;'],
+        ['Cumplimiento', '78%', '&#9681;'],
+        ['Promedio semanal', '7,180', '&#9603;'],
+      ],
+      history: [
+        ['27 ago 2026', '06:40 p. m.', '6,240 pasos'],
+        ['26 ago 2026', '09:15 p. m.', '8,120 pasos'],
+        ['25 ago 2026', '08:10 p. m.', '7,540 pasos'],
+      ],
+      insights: [
+        ['Racha activa', '4 dias con movimiento registrado'],
+        ['Pico de actividad', 'entre 6 p. m. y 8 p. m.'],
+      ],
+    },
+    sleep: {
+      unitLabel: 'Horas',
+      goalLabel: 'Meta 7.5 h',
+      stats: [
+        ['Ultima noche', '7h 20m', '&#9684;'],
+        ['Meta', '7.5 h', '&#9673;'],
+        ['Cumplimiento', '92%', '&#9681;'],
+        ['Promedio semanal', '7h 05m', '&#9603;'],
+      ],
+      history: [
+        ['27 ago 2026', '07:10 a. m.', '7h 20m'],
+        ['26 ago 2026', '07:00 a. m.', '6h 45m'],
+        ['25 ago 2026', '06:50 a. m.', '7h 35m'],
+      ],
+      insights: [
+        ['Buen descanso', 'la meta se mantiene estable'],
+        ['Dia mas constante', 'martes'],
+      ],
+    },
+    medication: {
+      unitLabel: 'Tomas',
+      goalLabel: 'Adherencia 100%',
+      stats: [
+        ['Hoy', '2/3', '&#9877;'],
+        ['Pendiente', '1 toma', '&#9673;'],
+        ['Adherencia', '82%', '&#9681;'],
+        ['Semana', '14 tomas', '&#9603;'],
+      ],
+      history: [
+        ['27 ago 2026', '08:00 a. m.', 'Metformina 500 mg'],
+        ['27 ago 2026', '02:00 p. m.', 'Vitamina D'],
+        ['26 ago 2026', '08:00 p. m.', 'Losartan 50 mg'],
+      ],
+      insights: [
+        ['Recordatorio util', 'programa alerta para la toma nocturna'],
+        ['Adherencia', 'mejor que la semana pasada'],
+      ],
+    },
+    glucose: {
+      unitLabel: 'mg/dL',
+      goalLabel: 'Rango 70-100',
+      stats: [
+        ['Ultima lectura', '92', '&#9826;'],
+        ['Promedio', '96', '&#9673;'],
+        ['En rango', '86%', '&#9681;'],
+        ['Lecturas', '12', '&#9603;'],
+      ],
+      history: [
+        ['27 ago 2026', '07:40 a. m.', '92 mg/dL'],
+        ['26 ago 2026', '08:05 a. m.', '98 mg/dL'],
+        ['25 ago 2026', '07:55 a. m.', '95 mg/dL'],
+      ],
+      insights: [
+        ['Estable', 'sin picos relevantes esta semana'],
+        ['Mejor horario', 'ayuno matutino'],
+      ],
+    },
+    pressure: {
+      unitLabel: 'mmHg',
+      goalLabel: 'Objetivo 120/80',
+      stats: [
+        ['Ultima lectura', '115/75', '&#9825;'],
+        ['Promedio', '118/77', '&#9673;'],
+        ['En rango', '90%', '&#9681;'],
+        ['Lecturas', '8', '&#9603;'],
+      ],
+      history: [
+        ['27 ago 2026', '08:15 a. m.', '115/75 mmHg'],
+        ['26 ago 2026', '08:20 a. m.', '120/78 mmHg'],
+        ['25 ago 2026', '08:10 a. m.', '118/76 mmHg'],
+      ],
+      insights: [
+        ['Control adecuado', 'lecturas dentro de objetivo'],
+        ['Consistencia', 'mejor por la manana'],
+      ],
+    },
+    activity: {
+      unitLabel: 'Minutos',
+      goalLabel: 'Meta 45 min',
+      stats: [
+        ['Hoy', '38 min', '&#10022;'],
+        ['Meta', '45 min', '&#9673;'],
+        ['Cumplimiento', '84%', '&#9681;'],
+        ['Semana', '220 min', '&#9603;'],
+      ],
+      history: [
+        ['27 ago 2026', '06:30 p. m.', '38 min'],
+        ['26 ago 2026', '07:00 p. m.', '45 min'],
+        ['25 ago 2026', '06:45 p. m.', '30 min'],
+      ],
+      insights: [
+        ['Buen ritmo', 'estas cerca de la meta diaria'],
+        ['Tendencia', 'subio 9% esta semana'],
+      ],
+    },
+    weight: {
+      unitLabel: 'kg',
+      goalLabel: 'Seguimiento',
+      stats: [
+        ['Actual', '72.4 kg', '&#9635;'],
+        ['Cambio mensual', '-0.8 kg', '&#9673;'],
+        ['Registros', '6', '&#9681;'],
+        ['Promedio', '72.9 kg', '&#9603;'],
+      ],
+      history: [
+        ['27 ago 2026', '07:30 a. m.', '72.4 kg'],
+        ['20 ago 2026', '07:35 a. m.', '72.8 kg'],
+        ['13 ago 2026', '07:20 a. m.', '73.1 kg'],
+      ],
+      insights: [
+        ['Tendencia suave', 'cambio gradual y estable'],
+        ['Mejor dia de registro', 'jueves'],
+      ],
+    },
+  };
+  let activeHealthMetric = 'water';
+  let activeHealthRange = 'month';
+  let activeHealthView = 'favorites';
+  let activeHealthSection = 'parameters';
+  let healthDashboardRendered = false;
+  const getHealthFavoriteOrder = () => normalizeRegisterFavorites(registerFavoriteMetrics).filter(type => healthMetricOrder.includes(type));
+  const renderHealthMetricIcon = (type, className = 'patient-health-parameter-image') => {
+    const config = registerMetricConfig[type] || registerMetricConfig.water;
+    if (config.image) {
+      return `<span class="${className}"><img src="${escapeRegisterText(registerMetricImageSrc(config.image))}" alt="" loading="lazy"></span>`;
+    }
+    return `<span class="${className} is-glyph">${config.icon || '+'}</span>`;
+  };
+  const getHealthMetricData = (type) => {
+    const config = registerMetricConfig[type] || registerMetricConfig.water;
+    const view = registerMetricViewConfig[type] || {};
+    const fallbackStats = [
+      ['Ultimo registro', config.placeholder?.replace(/^Ej\.?\s*/i, '') || 'Sin dato', config.icon || '+'],
+      ['Unidad', config.unit || 'Libre', '&#9673;'],
+      ['Registros', '0', '&#9681;'],
+      ['Tendencia', 'Por iniciar', '&#9603;'],
+    ];
+    return {
+      unitLabel: config.unit ? `${config.label} (${config.unit})` : config.label,
+      goalLabel: view.valueLabel || 'Seguimiento',
+      stats: fallbackStats,
+      history: [
+        ['Sin registros', 'Aun no hay datos', 'Agrega un registro rapido'],
+      ],
+      insights: [
+        ['Nuevo parametro', 'cuando registres datos aparecera la tendencia'],
+        ['Seguimiento', 'usa los rangos para revisar cambios'],
+      ],
+      ...healthMetricAnalytics[type],
+    };
+  };
+  const getHealthRecords = (type) => {
+    try {
+      const records = JSON.parse(localStorage.getItem(activeRegisterStorageKey()) || '[]');
+      return (Array.isArray(records) ? records : []).filter(record => record.metricType === type).slice(0, 5);
+    } catch (error) {
+      return [];
+    }
+  };
+  const formatHealthRecordDate = value => {
+    if (!value) return ['Sin fecha', ''];
+    const parsed = new Date(value);
+    if (Number.isNaN(parsed.getTime())) return [value, ''];
+    return [
+      parsed.toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: 'numeric' }).replace('.', ''),
+      parsed.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
+    ];
+  };
+  const renderHealthMetricButton = type => {
+    const config = registerMetricConfig[type] || registerMetricConfig.water;
+    const favorite = registerFavoriteMetrics.includes(type);
+    const active = activeHealthMetric === type;
+    return `
+      <button class="${healthMetricTone[type] || 'is-teal'} ${active ? 'is-active' : ''}" type="button" data-health-metric="${escapeRegisterText(type)}" aria-pressed="${active ? 'true' : 'false'}">
+        <i class="${favorite ? 'is-favorite' : ''}" aria-hidden="true">${favorite ? '&#9733;' : '&#9734;'}</i>
+        ${renderHealthMetricIcon(type)}
+        <b>${escapeRegisterText(config.label)}</b>
+      </button>
+    `;
+  };
+  const syncHealthMetricButtons = () => {
+    portal.querySelectorAll('[data-health-metric]').forEach(button => {
+      const active = button.dataset.healthMetric === activeHealthMetric;
+      button.classList.toggle('is-active', active);
+      button.setAttribute('aria-pressed', active ? 'true' : 'false');
+    });
+  };
+  const renderHealthMetricRows = () => {
+    const favorites = getHealthFavoriteOrder();
+    if (healthFavorites) {
+      healthFavorites.innerHTML = favorites.length
+        ? favorites.map(renderHealthMetricButton).join('')
+        : '<div class="patient-health-empty">Marca parametros favoritos en Registro rapido.</div>';
+    }
+    if (healthOptions) {
+      healthOptions.innerHTML = healthMetricOrder.map(renderHealthMetricButton).join('');
+    }
+    syncHealthMetricButtons();
+  };
+  const setHealthMetricView = (view = 'favorites') => {
+    activeHealthView = view === 'all' ? 'all' : 'favorites';
+    healthMetricViewButtons.forEach(button => {
+      const active = button.dataset.healthMetricView === activeHealthView;
+      button.classList.toggle('is-active', active);
+      button.setAttribute('aria-selected', active ? 'true' : 'false');
+      button.setAttribute('tabindex', active ? '0' : '-1');
+    });
+    healthMetricSections.forEach(section => {
+      const active = section.dataset.healthMetricSection === activeHealthView;
+      section.classList.toggle('is-active', active);
+      section.setAttribute('aria-hidden', active ? 'false' : 'true');
+    });
+  };
+  const setHealthSection = (section = 'parameters') => {
+    const nextSection = section === 'history' ? 'history' : 'parameters';
+    if (nextSection === 'history') syncHistoryRowsVisibility();
+    activeHealthSection = nextSection;
+    if (healthViewSwitch) healthViewSwitch.dataset.activeView = activeHealthSection;
+    healthViewButtons.forEach(button => {
+      const active = button.dataset.healthViewMode === activeHealthSection;
+      button.classList.toggle('is-active', active);
+      button.setAttribute('aria-selected', active ? 'true' : 'false');
+      button.setAttribute('tabindex', active ? '0' : '-1');
+    });
+    healthViewPanels.forEach(panel => {
+      const active = panel.dataset.healthViewPanel === activeHealthSection;
+      panel.hidden = false;
+      panel.classList.toggle('is-active', active);
+      panel.setAttribute('aria-hidden', active ? 'false' : 'true');
+      panel.toggleAttribute('inert', !active);
+    });
+  };
+  const getHealthViewportPosition = () => ({
+    top: window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0,
+    left: window.scrollX || document.documentElement.scrollLeft || document.body.scrollLeft || 0,
+  });
+  const preserveHealthViewport = (callback, position = null) => {
+    const { top, left } = position || getHealthViewportPosition();
+    callback();
+    const restore = () => {
+      window.scrollTo(left, top);
+      try { document.documentElement.scrollTop = top; } catch (error) {}
+      try { document.body.scrollTop = top; } catch (error) {}
+    };
+    restore();
+    requestAnimationFrame(restore);
+    window.setTimeout(restore, 80);
+  };
+  const setHealthRange = (range = 'month', options = {}) => {
+    activeHealthRange = ['day', 'week', 'month', 'year', 'custom'].includes(range) ? range : 'month';
+    healthRangeTabs?.querySelectorAll('[data-health-range]').forEach(button => {
+      const active = button.dataset.healthRange === activeHealthRange;
+      button.classList.toggle('is-active', active);
+      button.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+    if (activeHealthRange !== 'custom' && healthRangeDates[activeHealthRange]) {
+      const [from, to] = healthRangeDates[activeHealthRange];
+      if (healthDateFrom) healthDateFrom.value = from;
+      if (healthDateTo) healthDateTo.value = to;
+    }
+    if (options.render !== false) preserveHealthViewport(() => renderHealthMetricDetail(activeHealthMetric, { keepRange: true, scroll: false }));
+  };
+  const renderHealthChart = data => {
+    if (!healthChart) return;
+    const bars = healthDefaultBars[activeHealthRange] || healthDefaultBars.month;
+    const max = Math.max(100, ...bars.map(item => Number(item[1]) || 0));
+    healthChart.innerHTML = bars.map(([label, value]) => {
+      const height = Math.max(8, Math.round(((Number(value) || 0) / max) * 100));
+      return `<span class="patient-health-chart-bar" style="--bar:${height}%"><i></i><b>${escapeRegisterText(label)}</b></span>`;
+    }).join('');
+    if (healthChartUnit) healthChartUnit.textContent = data.unitLabel;
+    if (healthChartGoal) healthChartGoal.textContent = data.goalLabel;
+  };
+  const renderHealthHistory = (type, data) => {
+    if (!healthHistoryList) return;
+    const manualRecords = getHealthRecords(type);
+    const rows = manualRecords.length
+      ? manualRecords.map(record => {
+        const [date, time] = formatHealthRecordDate(record.recordedAt);
+        const value = `${record.value || 'Sin valor'}${record.unit ? ` ${record.unit}` : ''}`;
+        return [date, time || 'Registro manual', value];
+      })
+      : data.history;
+    healthHistoryList.innerHTML = rows.map(row => `
+      <article class="patient-health-history-row">
+        <span aria-hidden="true">&#9638;</span>
+        <strong>${escapeRegisterText(row[0])}</strong>
+        <small>${escapeRegisterText(row[1])}</small>
+        <b>${escapeRegisterText(row[2])}</b>
+      </article>
+    `).join('');
+  };
+  const renderHealthInsights = data => {
+    if (!healthInsights) return;
+    healthInsights.innerHTML = data.insights.map(item => `
+      <article class="patient-health-insight-row">
+        <span aria-hidden="true">&#8599;</span>
+        <div><strong>${escapeRegisterText(item[0])}</strong><p>${escapeRegisterText(item[1])}</p></div>
+      </article>
+    `).join('');
+  };
+  const renderHealthMetricDetail = (type = 'water', options = {}) => {
+    if (!registerMetricConfig[type]) type = 'water';
+    activeHealthMetric = type;
+    if (!options.keepRange) setHealthRange(activeHealthRange, { render: false });
+    const config = registerMetricConfig[type] || registerMetricConfig.water;
+    const data = getHealthMetricData(type);
+    if (healthDetailTitle) healthDetailTitle.textContent = config.label;
+    if (healthDetailIcon) healthDetailIcon.innerHTML = renderHealthMetricIcon(type, 'patient-health-detail-image');
+    if (healthStatGrid) {
+      healthStatGrid.innerHTML = data.stats.map(stat => `
+        <article class="patient-health-stat">
+          <span aria-hidden="true">${stat[2]}</span>
+          <small>${escapeRegisterText(stat[0])}</small>
+          <strong>${escapeRegisterText(stat[1])}</strong>
+        </article>
+      `).join('');
+    }
+    renderHealthChart(data);
+    renderHealthHistory(type, data);
+    renderHealthInsights(data);
+    syncHealthMetricButtons();
+    if (options.scroll === true) {
+      portal.querySelector('[data-health-detail]')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  };
+  const renderHealthDashboard = () => {
+    if (!healthDashboard) return;
+    const favorites = getHealthFavoriteOrder();
+    if (!registerMetricConfig[activeHealthMetric]) activeHealthMetric = favorites[0] || 'water';
+    if (!healthDashboardRendered && activeHealthView === 'favorites' && favorites.length && !favorites.includes(activeHealthMetric)) {
+      activeHealthMetric = favorites[0];
+    }
+    renderHealthMetricRows();
+    setHealthMetricView(activeHealthView);
+    renderHealthMetricDetail(activeHealthMetric, { scroll: false, keepRange: healthDashboardRendered });
+    healthDashboardRendered = true;
+  };
+  const bindHealthCarousel = track => {
+    if (!track) return;
+    let isPanning = false;
+    let panStart = 0;
+    let panScroll = 0;
+    let panMoved = false;
+    let tapHandled = false;
+    let pointerMetric = '';
+    let pointerViewportPosition = null;
+    track.addEventListener('pointerdown', event => {
+      if (event.pointerType === 'mouse' && event.button !== 0) return;
+      const button = event.target.closest('[data-health-metric]');
+      pointerViewportPosition = getHealthViewportPosition();
+      isPanning = true;
+      panStart = event.clientX;
+      panScroll = track.scrollLeft;
+      panMoved = false;
+      tapHandled = false;
+      pointerMetric = button && track.contains(button) ? button.dataset.healthMetric : '';
+      track.setPointerCapture?.(event.pointerId);
+    });
+    track.addEventListener('pointermove', event => {
+      if (!isPanning) return;
+      const movement = event.clientX - panStart;
+      track.scrollLeft = panScroll - movement;
+      if (Math.abs(movement) > 8) {
+        panMoved = true;
+        track.classList.add('is-panning');
+        event.preventDefault();
+      }
+    });
+    ['pointerup', 'pointercancel', 'pointerleave'].forEach(type => {
+      track.addEventListener(type, event => {
+        if (type === 'pointerup' && !panMoved && pointerMetric) {
+          event.preventDefault();
+          preserveHealthViewport(() => renderHealthMetricDetail(pointerMetric, { scroll: false }), pointerViewportPosition);
+          tapHandled = true;
+        }
+        isPanning = false;
+        track.classList.remove('is-panning');
+        pointerMetric = '';
+        pointerViewportPosition = null;
+        if (track.hasPointerCapture?.(event.pointerId)) track.releasePointerCapture(event.pointerId);
+      });
+    });
+    track.addEventListener('click', event => {
+      const button = event.target.closest('[data-health-metric]');
+      if (!button || !track.contains(button)) return;
+      if (tapHandled) {
+        tapHandled = false;
+        return;
+      }
+      if (panMoved) {
+        event.preventDefault();
+        panMoved = false;
+        return;
+      }
+      event.preventDefault();
+      preserveHealthViewport(() => renderHealthMetricDetail(button.dataset.healthMetric, { scroll: false }), pointerViewportPosition);
+      pointerViewportPosition = null;
+    });
   };
   const getRegisterHistorySelectedCategoryKey = () => {
     const current = registerHistoryCategoryInput?.value || '';
@@ -1938,32 +2897,90 @@
   const getRegisterHistoryCategoryIcon = key => {
     const button = [...(registerHistoryCarousel?.querySelectorAll('[data-register-history-category]') || [])]
       .find(item => item.dataset.registerHistoryCategory === key);
-    return button?.querySelector('span')?.textContent?.trim() || '+';
+    const imageSrc = button?.querySelector('img')?.getAttribute('src');
+    if (imageSrc) return `<img src="${escapeRegisterText(imageSrc)}" alt="">`;
+    return escapeRegisterText(button?.querySelector('span')?.textContent?.trim() || '+');
+  };
+  const syncRegisterHistoryComposerPointer = () => {
+    if (!registerHistoryComposer || !registerHistoryCarousel || registerHistoryComposer.hidden) return;
+    const key = getRegisterHistorySelectedCategoryKey();
+    const button = [...registerHistoryCarousel.querySelectorAll('[data-register-history-category]')]
+      .find(item => item.dataset.registerHistoryCategory === key);
+    if (!button) return;
+    requestAnimationFrame(() => {
+      const composerRect = registerHistoryComposer.getBoundingClientRect();
+      const buttonRect = button.getBoundingClientRect();
+      const rawLeft = buttonRect.left + (buttonRect.width / 2) - composerRect.left - 8;
+      const minLeft = 18;
+      const maxLeft = Math.max(minLeft, composerRect.width - 34);
+      const left = Math.min(Math.max(rawLeft, minLeft), maxLeft);
+      registerHistoryComposer.style.setProperty('--history-pointer-left', `${left}px`);
+    });
   };
   const isRegisterHistoryComposerVisible = () => Boolean(registerHistoryComposer && !registerHistoryComposer.hidden);
   const updateRegisterHistoryComposer = (key, options = {}) => {
     const safeKey = registerAttachmentCategoryConfig[key] ? key : 'consultation';
     const category = registerAttachmentCategoryConfig[safeKey] || registerAttachmentCategoryConfig.consultation;
     const showComposer = options.show !== false;
-    if (registerHistoryComposer) registerHistoryComposer.hidden = !showComposer;
-    if (registerHistoryComposerIcon) registerHistoryComposerIcon.textContent = getRegisterHistoryCategoryIcon(safeKey);
-    if (registerHistoryComposerTitle) registerHistoryComposerTitle.textContent = `Registrar en ${category.label}`;
-    if (registerHistoryComposerDescription) registerHistoryComposerDescription.textContent = `La información registrada se almacenará en ${category.label}.`;
-    if (registerHistoryFeedback) registerHistoryFeedback.hidden = true;
+    if (showComposer) hideRegisterSavedScreens();
+    if (registerHistoryComposer) {
+      registerHistoryComposer.hidden = !showComposer;
+      registerHistoryComposer.classList.toggle('is-popup-open', showComposer);
+      registerHistoryComposer.setAttribute('aria-hidden', showComposer ? 'false' : 'true');
+    }
+    if (registerHistoryComposerIcon) registerHistoryComposerIcon.innerHTML = getRegisterHistoryCategoryIcon(safeKey);
+    if (registerHistoryComposerTitle) registerHistoryComposerTitle.textContent = category.label;
+    if (registerHistoryComposerDescription) registerHistoryComposerDescription.textContent = category.description || `Registra información de ${category.label}.`;
+    if (registerHistoryPrimaryLabel) registerHistoryPrimaryLabel.textContent = category.primaryLabel || 'Detalle del registro';
+    if (registerHistoryManualInput) {
+      registerHistoryManualInput.placeholder = category.primaryPlaceholder || 'Escribe aquí el registro manual...';
+      registerHistoryManualInput.required = showComposer;
+    }
+    if (registerHistoryDateInput && showComposer && !registerHistoryDateInput.value) registerHistoryDateInput.value = registerDateValue();
+    if (registerHistoryProviderLabel) registerHistoryProviderLabel.textContent = category.providerLabel || 'Origen';
+    updateRegisterHistoryProviderOptions(category, !options.resetFields);
+    if (options.resetFields) resetRegisterHistoryComposerFields();
+    else if (registerHistoryFeedback) registerHistoryFeedback.hidden = true;
+    updateRegisterHistoryManualCount();
+    updateRegisterHistoryNotesCount();
+    syncRegisterHistoryComposerPointer();
   };
   const updateRegisterHistoryManualCount = () => {
     if (!registerHistoryManualInput || !registerHistoryManualCount) return;
-    registerHistoryManualCount.textContent = `${registerHistoryManualInput.value.length}/2000`;
+    const max = Number(registerHistoryManualInput.getAttribute('maxlength')) || 500;
+    registerHistoryManualCount.textContent = `${registerHistoryManualInput.value.length}/${max}`;
+  };
+  const updateRegisterHistoryNotesCount = () => {
+    if (!registerHistoryNotesInput || !registerHistoryNotesCount) return;
+    const max = Number(registerHistoryNotesInput.getAttribute('maxlength')) || 1000;
+    registerHistoryNotesCount.textContent = `${registerHistoryNotesInput.value.length}/${max}`;
   };
   const setRegisterHistoryPhoto = file => {
-    if (!registerHistoryPhotoName) return;
+    if (registerHistoryPhotoPreviewUrl) {
+      URL.revokeObjectURL(registerHistoryPhotoPreviewUrl);
+      registerHistoryPhotoPreviewUrl = '';
+    }
     if (!file) {
-      registerHistoryPhotoName.hidden = true;
-      registerHistoryPhotoName.textContent = '';
+      if (registerHistoryPhotoName) {
+        registerHistoryPhotoName.hidden = true;
+        registerHistoryPhotoName.textContent = '';
+      }
+      if (registerHistoryPhotoPreview) registerHistoryPhotoPreview.hidden = true;
+      if (registerHistoryPhotoPreviewImage) registerHistoryPhotoPreviewImage.src = '';
+      if (registerHistoryPhotoPreviewName) registerHistoryPhotoPreviewName.textContent = '';
       return;
     }
-    registerHistoryPhotoName.hidden = false;
-    registerHistoryPhotoName.textContent = file.name;
+    const hasVisualPreview = Boolean(registerHistoryPhotoPreview && registerHistoryPhotoPreviewImage && file.type.startsWith('image/'));
+    if (registerHistoryPhotoName) {
+      registerHistoryPhotoName.hidden = hasVisualPreview;
+      registerHistoryPhotoName.textContent = file.name;
+    }
+    if (registerHistoryPhotoPreview) registerHistoryPhotoPreview.hidden = !hasVisualPreview;
+    if (hasVisualPreview) {
+      registerHistoryPhotoPreviewUrl = URL.createObjectURL(file);
+      registerHistoryPhotoPreviewImage.src = registerHistoryPhotoPreviewUrl;
+      if (registerHistoryPhotoPreviewName) registerHistoryPhotoPreviewName.textContent = file.name;
+    }
   };
   const setRegisterHistoryFeedback = (message, type = 'success') => {
     if (!registerHistoryFeedback) return;
@@ -1971,28 +2988,81 @@
     registerHistoryFeedback.textContent = message;
     registerHistoryFeedback.classList.toggle('is-error', type === 'error');
   };
+  let lastRegisterSavedHistoryCategory = 'consultation';
+  let lastRegisterSavedMetricType = 'water';
+  const hideRegisterSavedScreens = () => {
+    registerSavedScreens.forEach(screen => {
+      screen.hidden = true;
+      screen.classList.remove('is-visible');
+    });
+  };
+  const showRegisterSavedScreen = (type = 'history', options = {}) => {
+    const savedType = type === 'parameter' ? 'parameter' : 'history';
+    if (options.historyCategory) lastRegisterSavedHistoryCategory = options.historyCategory;
+    if (options.metricType) lastRegisterSavedMetricType = options.metricType;
+    hideRegisterSavedScreens();
+    if (registerSuccess) registerSuccess.hidden = true;
+    hideRegisterHistoryComposer();
+    hideRegisterMetricPanel({ sync: true });
+    const screen = registerSavedScreens.find(item => item.dataset.registerSavedScreen === savedType);
+    if (!screen) return;
+    screen.hidden = false;
+    screen.classList.add('is-visible');
+    requestAnimationFrame(() => {
+      screen.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+  };
+  const resetRegisterHistoryComposerFields = () => {
+    if (registerHistoryManualInput) registerHistoryManualInput.value = '';
+    if (registerHistoryNotesInput) registerHistoryNotesInput.value = '';
+    if (registerHistoryProviderInput) registerHistoryProviderInput.value = '';
+    if (registerHistoryDateInput) registerHistoryDateInput.value = registerDateValue();
+    if (registerHistoryPhotoInput) registerHistoryPhotoInput.value = '';
+    setRegisterHistoryPhoto(null);
+    if (registerHistoryFeedback) registerHistoryFeedback.hidden = true;
+    updateRegisterHistoryManualCount();
+    updateRegisterHistoryNotesCount();
+  };
+  const updateRegisterHistoryProviderOptions = (category, keepValue = false) => {
+    if (!registerHistoryProviderInput) return;
+    const currentValue = keepValue ? registerHistoryProviderInput.value : '';
+    registerHistoryProviderInput.replaceChildren();
+    registerHistoryProviderInput.appendChild(new Option(category.providerPlaceholder || 'Selecciona el origen', ''));
+    (category.providerOptions || []).forEach(option => {
+      registerHistoryProviderInput.appendChild(new Option(option, option));
+    });
+    registerHistoryProviderInput.value = (category.providerOptions || []).includes(currentValue) ? currentValue : '';
+  };
   const selectRegisterHistoryCategory = (key, options = {}) => {
     const safeKey = registerAttachmentCategoryConfig[key] ? key : 'consultation';
+    const shouldResetFields = options.resetFields !== false && getRegisterHistorySelectedCategoryKey() !== safeKey;
     if (registerHistoryCategoryInput) registerHistoryCategoryInput.value = safeKey;
     if (registerAttachmentCategoryInput) registerAttachmentCategoryInput.value = safeKey;
     portal.querySelectorAll('[data-register-history-category]').forEach(button => {
       const active = button.dataset.registerHistoryCategory === safeKey;
       button.classList.toggle('is-active', active);
       button.setAttribute('aria-pressed', active ? 'true' : 'false');
+      button.setAttribute('aria-expanded', active && options.showComposer !== false ? 'true' : 'false');
       if (active && options.scroll !== false) {
         button.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
       }
     });
-    updateRegisterHistoryComposer(safeKey, { show: options.showComposer !== false });
+    updateRegisterHistoryComposer(safeKey, { show: options.showComposer !== false, resetFields: shouldResetFields });
   };
   const hideRegisterHistoryComposer = () => {
-    if (registerHistoryComposer) registerHistoryComposer.hidden = true;
+    if (registerHistoryComposer) {
+      registerHistoryComposer.hidden = true;
+      registerHistoryComposer.classList.remove('is-popup-open');
+      registerHistoryComposer.setAttribute('aria-hidden', 'true');
+    }
     if (registerHistoryFeedback) registerHistoryFeedback.hidden = true;
     if (registerHistoryCategoryInput) registerHistoryCategoryInput.value = '';
     if (registerAttachmentCategoryInput) registerAttachmentCategoryInput.value = '';
+    if (registerHistoryManualInput) registerHistoryManualInput.required = false;
     portal.querySelectorAll('[data-register-history-category]').forEach(button => {
       button.classList.remove('is-active');
       button.setAttribute('aria-pressed', 'false');
+      button.setAttribute('aria-expanded', 'false');
     });
   };
   const toggleRegisterHistoryComposer = categoryKey => {
@@ -2000,15 +3070,19 @@
       hideRegisterHistoryComposer();
       return;
     }
+    hideRegisterMetricPanel({ sync: true });
     selectRegisterHistoryCategory(categoryKey, { showComposer: true });
+    requestAnimationFrame(() => {
+      registerHistoryComposer?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
   };
   const renderRegisterMetricButton = (type) => {
     const config = registerMetricConfig[type] || registerMetricConfig.water;
-    const active = (registerMetricInput?.value || 'water') === type;
+    const active = isRegisterMetricPanelVisible() && (registerMetricInput?.value || 'water') === type;
     const favorite = registerFavoriteMetrics.includes(type);
     const favoriteLabel = favorite ? 'Quitar de favoritos' : 'Agregar a favoritos';
     const iconMarkup = config.image
-      ? `<span class="patient-register-metric-image"><img src="${escapeRegisterText(config.image)}" alt="" loading="lazy"></span>`
+      ? `<span class="patient-register-metric-image"><img src="${escapeRegisterText(registerMetricImageSrc(config.image))}" alt="" loading="lazy"></span>`
       : `<span class="patient-register-metric-glyph">${config.icon || '+'}</span>`;
     return `
       <button class="${active ? 'is-active' : ''}" type="button" data-register-metric="${escapeRegisterText(type)}" aria-pressed="${active ? 'true' : 'false'}">
@@ -2020,30 +3094,22 @@
   };
   const renderRegisterSelectedIcon = config => {
     if (config?.image) {
-      return `<img src="${escapeRegisterText(config.image)}" alt="">`;
+      return `<img src="${escapeRegisterText(registerMetricImageSrc(config.image))}" alt="">`;
     }
     return `<span>${config?.icon || '+'}</span>`;
   };
   const syncRegisterActiveButtons = () => {
     const current = registerMetricInput?.value || 'water';
+    const panelVisible = isRegisterMetricPanelVisible();
     portal.querySelectorAll('[data-register-metric]').forEach(button => {
-      const active = button.dataset.registerMetric === current;
+      const active = panelVisible && button.dataset.registerMetric === current;
       button.classList.toggle('is-active', active);
       button.setAttribute('aria-pressed', active ? 'true' : 'false');
     });
     const currentConfig = registerMetricConfig[current] || registerMetricConfig.water;
-    const currentView = registerMetricViewConfig[current] || registerMetricViewConfig.water;
-    const isFavorite = registerFavoriteMetrics.includes(current);
     if (registerSelectedTitle) registerSelectedTitle.textContent = currentConfig.label;
-    if (registerSelectedDescription) registerSelectedDescription.textContent = currentView.description || '';
-    if (registerSelectedMeta) registerSelectedMeta.textContent = currentView.meta || 'Registro manual';
     if (registerSelectedIcon) registerSelectedIcon.innerHTML = renderRegisterSelectedIcon(currentConfig);
     registerSelectedIcon?.classList.toggle('has-image', Boolean(currentConfig.image));
-    if (registerSelectedFavoriteButton) {
-      registerSelectedFavoriteButton.textContent = isFavorite ? 'En favoritos' : 'Agregar a favoritos';
-      registerSelectedFavoriteButton.classList.toggle('is-added', isFavorite);
-      registerSelectedFavoriteButton.setAttribute('aria-pressed', isFavorite ? 'true' : 'false');
-    }
   };
   const renderRegisterMetricRows = () => {
     if (registerFavorites) {
@@ -2063,6 +3129,7 @@
       : [...registerFavoriteMetrics, type];
     saveRegisterFavorites();
     renderRegisterMetricRows();
+    if (healthDashboardRendered) renderHealthDashboard();
   };
   const addRegisterFavorite = (type) => {
     if (!registerMetricConfig[type] || registerFavoriteMetrics.includes(type)) {
@@ -2072,6 +3139,59 @@
     registerFavoriteMetrics = [...registerFavoriteMetrics, type];
     saveRegisterFavorites();
     renderRegisterMetricRows();
+    if (healthDashboardRendered) renderHealthDashboard();
+  };
+  const isRegisterMetricPanelVisible = () => Boolean(registerForm && !registerForm.hidden);
+  const hideRegisterMetricPanel = (options = {}) => {
+    if (registerForm) {
+      registerForm.hidden = true;
+      registerForm.classList.remove('is-popup-open');
+      registerForm.setAttribute('aria-hidden', 'true');
+    }
+    if (options.sync !== false) syncRegisterActiveButtons();
+  };
+  const setRegisterMetricView = (view = 'favorites', options = {}) => {
+    const activeView = view === 'all' ? 'all' : 'favorites';
+    if (options.hideSaved !== false) hideRegisterSavedScreens();
+    registerMetricViewButtons.forEach(button => {
+      const isActive = button.dataset.registerMetricView === activeView;
+      button.classList.toggle('is-active', isActive);
+      button.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      button.setAttribute('tabindex', isActive ? '0' : '-1');
+    });
+    registerMetricSections.forEach(section => {
+      const isActive = section.dataset.registerMetricSection === activeView;
+      section.classList.toggle('is-active', isActive);
+      section.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+    });
+    if (options.hidePanel !== false) hideRegisterMetricPanel({ sync: false });
+    syncRegisterActiveButtons();
+  };
+  const showRegisterMetricPanel = (type, options = {}) => {
+    if (!registerMetricConfig[type]) return;
+    hideRegisterSavedScreens();
+    hideRegisterHistoryComposer();
+    selectRegisterMetric(type);
+    if (registerForm) {
+      registerForm.hidden = false;
+      registerForm.classList.add('is-popup-open');
+      registerForm.setAttribute('aria-hidden', 'false');
+    }
+    syncRegisterActiveButtons();
+    if (options.scroll !== false) {
+      requestAnimationFrame(() => {
+        registerForm?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      });
+    }
+  };
+  const toggleRegisterMetricPanel = (type) => {
+    if (!registerMetricConfig[type]) return;
+    const current = registerMetricInput?.value || 'water';
+    if (isRegisterMetricPanelVisible() && current === type) {
+      hideRegisterMetricPanel();
+      return;
+    }
+    showRegisterMetricPanel(type);
   };
   const selectRegisterMetric = (type) => {
     const config = registerMetricConfig[type] || registerMetricConfig.water;
@@ -2097,12 +3217,16 @@
   const saveRegisterRecord = (record) => {
     let records = [];
     try {
-      records = JSON.parse(localStorage.getItem(registerStorageKey) || '[]');
+      records = JSON.parse(localStorage.getItem(activeRegisterStorageKey()) || '[]');
     } catch (error) {
       records = [];
     }
-    records.unshift(record);
-    localStorage.setItem(registerStorageKey, JSON.stringify(records));
+    records.unshift({
+      ...record,
+      profileId: getActivePatientProfileId(),
+      profileName: registerPatientName(),
+    });
+    localStorage.setItem(activeRegisterStorageKey(), JSON.stringify(records));
   };
   const updateRegisterNotesCount = () => {
     if (!registerNotesInput || !registerNotesCount) return;
@@ -2114,47 +3238,56 @@
     if (size >= 1024) return `${Math.max(1, Math.round(size / 1024))} KB`;
     return `${size} B`;
   };
-  const buildRegisterTranscript = file => {
+  let registerHistoryPhotoPreviewUrl = '';
+  let registerAttachmentPreviewUrl = '';
+  let pendingRegisterImageTarget = '';
+  let pendingRegisterImageFile = null;
+  const buildRegisterTranscript = (file, context = 'parameter') => {
     const fileName = file?.name || 'Documento adjunto';
     const lowerName = fileName.toLowerCase();
-    const loadedAt = new Date().toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' });
-    if (lowerName.includes('lab') || lowerName.includes('analisis') || lowerName.includes('laboratorio')) {
+    const historyCategory = context === 'history' ? getRegisterHistoryCategoryKey() : '';
+    const metricType = registerMetricInput?.value || '';
+    const looksLikeLaboratory = historyCategory === 'laboratory' || metricType === 'laboratory' || lowerName.includes('lab') || lowerName.includes('analisis') || lowerName.includes('laboratorio');
+    const looksLikePrescription = historyCategory === 'prescription' || metricType === 'medication' || metricType === 'prescriptions' || lowerName.includes('receta') || lowerName.includes('prescripcion') || lowerName.includes('medicamento');
+    const looksLikeStudy = historyCategory === 'study' || metricType === 'studies' || lowerName.includes('estudio') || lowerName.includes('imagen') || lowerName.includes('ultrasonido') || lowerName.includes('rx');
+    if (looksLikeLaboratory) {
       return [
-        'Laboratorio: Centro Biotecnologico',
-        `Fecha del estudio: ${loadedAt}`,
-        `Paciente: ${registerPatientName}`,
-        '',
         'Resultados:',
         '- Glucosa en ayunas: 92 mg/dL',
         '- Hemoglobina glicosilada: 5.4%',
         '- Colesterol total: 168 mg/dL',
         '- Trigliceridos: 120 mg/dL',
         '- HDL: 48 mg/dL',
-        '- LDL: 96 mg/dL',
       ].join('\n');
     }
-    if (lowerName.includes('receta') || lowerName.includes('prescripcion')) {
+    if (looksLikePrescription) {
       return [
-        'Documento de receta medica',
-        `Fecha de carga: ${loadedAt}`,
-        `Paciente: ${registerPatientName}`,
-        '',
         'Indicaciones detectadas:',
-        '- Medicamento y dosis pendientes de confirmar.',
-        '- Frecuencia pendiente de revisar.',
-        '- Duracion pendiente de revisar.',
+        'Tomar 1 tableta cada 8 horas durante 5 dias.',
+        'No consumir alcohol.',
+        'Acudir a revision en 7 dias.',
+      ].join('\n');
+    }
+    if (looksLikeStudy) {
+      return [
+        'Estudio detectado:',
+        'Tipo de estudio pendiente de confirmar.',
+        'Hallazgos principales pendientes de revisar.',
+        'Adjuntar interpretacion medica cuando este disponible.',
       ].join('\n');
     }
     return [
-      'Texto transcrito automaticamente',
-      `Archivo: ${fileName}`,
-      `Fecha de carga: ${loadedAt}`,
-      `Paciente: ${registerPatientName}`,
-      '',
-      'Contenido detectado:',
-      '- Documento adjunto al registro manual.',
-      '- Revisa y edita esta transcripcion antes de guardar.',
+      'Texto detectado:',
+      'Informacion extraida de la imagen.',
+      'Revisa el contenido antes de guardar el registro.',
     ].join('\n');
+  };
+  const appendRegisterText = (textarea, text) => {
+    if (!textarea || !text) return;
+    const max = Number(textarea.getAttribute('maxlength')) || 2000;
+    const current = String(textarea.value || '').trim();
+    const next = current ? `${current}\n\n${text}` : text;
+    textarea.value = next.slice(0, max);
   };
   const setRegisterTranscriptEditing = editing => {
     if (!registerTranscriptInput || !registerTranscriptEdit) return;
@@ -2163,11 +3296,16 @@
     registerTranscriptEdit.textContent = editing ? 'Guardar texto' : 'Editar texto';
     if (editing) registerTranscriptInput.focus({ preventScroll: true });
   };
-  const setRegisterAttachmentState = file => {
+  const setRegisterAttachmentState = (file, options = {}) => {
     const hasFile = Boolean(file);
+    const shouldTranscribe = Boolean(options.transcribe);
+    if (registerAttachmentPreviewUrl) {
+      URL.revokeObjectURL(registerAttachmentPreviewUrl);
+      registerAttachmentPreviewUrl = '';
+    }
     if (registerAttachmentPick) registerAttachmentPick.hidden = hasFile;
     if (registerUploadedCard) registerUploadedCard.hidden = !hasFile;
-    if (registerTranscriptCard) registerTranscriptCard.hidden = !hasFile;
+    if (registerTranscriptCard) registerTranscriptCard.hidden = !hasFile || !shouldTranscribe;
     if (registerAttachmentCategoryWrap) registerAttachmentCategoryWrap.hidden = true;
     if (registerAttachmentCategoryInput) {
       registerAttachmentCategoryInput.required = false;
@@ -2177,6 +3315,9 @@
     if (!hasFile) {
       if (registerAttachmentName) registerAttachmentName.textContent = 'Sin archivo seleccionado';
       if (registerTranscriptInput) registerTranscriptInput.value = '';
+      if (registerUploadedPreview) registerUploadedPreview.hidden = true;
+      if (registerUploadedPreviewImage) registerUploadedPreviewImage.src = '';
+      if (registerUploadedFileType) registerUploadedFileType.hidden = false;
       setRegisterTranscriptEditing(false);
       return;
     }
@@ -2187,9 +3328,102 @@
     if (registerUploadedFileType) {
       registerUploadedFileType.textContent = isPdf ? 'PDF' : 'IMG';
       registerUploadedFileType.classList.toggle('is-image', !isPdf);
+      registerUploadedFileType.hidden = !isPdf && Boolean(registerUploadedPreview && registerUploadedPreviewImage);
     }
-    if (registerTranscriptInput) registerTranscriptInput.value = buildRegisterTranscript(file);
+    if (registerUploadedPreview && registerUploadedPreviewImage) {
+      const showPreview = !isPdf && file.type.startsWith('image/');
+      registerUploadedPreview.hidden = !showPreview;
+      if (showPreview) {
+        registerAttachmentPreviewUrl = URL.createObjectURL(file);
+        registerUploadedPreviewImage.src = registerAttachmentPreviewUrl;
+      } else {
+        registerUploadedPreviewImage.src = '';
+      }
+    }
+    const transcript = shouldTranscribe ? buildRegisterTranscript(file, 'parameter') : '';
+    if (registerTranscriptInput) registerTranscriptInput.value = transcript;
+    if (shouldTranscribe) {
+      appendRegisterText(registerNotesInput, transcript);
+      updateRegisterNotesCount();
+    }
     setRegisterTranscriptEditing(false);
+  };
+  const setRegisterImageDialogStage = stage => {
+    registerImageStages.forEach(item => {
+      const active = item.dataset.registerImageStage === stage;
+      item.hidden = !active;
+    });
+    if (registerImageTitle) {
+      registerImageTitle.textContent = stage === 'action' ? '¿Qué deseas hacer con esta imagen?' : 'Agregar imagen';
+    }
+  };
+  const resetPendingRegisterImage = () => {
+    pendingRegisterImageTarget = '';
+    pendingRegisterImageFile = null;
+    if (registerImageFileName) registerImageFileName.textContent = '';
+  };
+  const closeRegisterImageDialog = (options = {}) => {
+    const shouldDiscardSelectedFile = options.clearInput !== false && Boolean(pendingRegisterImageFile);
+    if (shouldDiscardSelectedFile) {
+      const input = registerImageInputForTarget(pendingRegisterImageTarget);
+      if (input) input.value = '';
+      if (pendingRegisterImageTarget === 'history') setRegisterHistoryPhoto(null);
+      if (pendingRegisterImageTarget === 'parameter') setRegisterAttachmentState(null);
+    }
+    if (options.clearPending !== false) resetPendingRegisterImage();
+    registerImageDialog?.close();
+  };
+  const openRegisterImageDialog = target => {
+    pendingRegisterImageTarget = target;
+    pendingRegisterImageFile = null;
+    if (registerImageFileName) registerImageFileName.textContent = '';
+    setRegisterImageDialogStage('source');
+    if (registerImageDialog?.showModal && !registerImageDialog.open) {
+      registerImageDialog.showModal();
+    }
+  };
+  const registerImageInputForTarget = target => target === 'history' ? registerHistoryPhotoInput : registerAttachmentInput;
+  const chooseRegisterImageSource = source => {
+    const input = registerImageInputForTarget(pendingRegisterImageTarget);
+    if (!input) return;
+    input.setAttribute('accept', 'image/*');
+    if (source === 'camera') input.setAttribute('capture', 'environment');
+    else input.removeAttribute('capture');
+    input.click();
+  };
+  const handleRegisterImageSelection = (target, file) => {
+    if (!file) return;
+    pendingRegisterImageTarget = target;
+    pendingRegisterImageFile = file;
+    if (registerImageFileName) registerImageFileName.textContent = file.name;
+    setRegisterImageDialogStage('action');
+    if (registerImageDialog && !registerImageDialog.open && registerImageDialog.showModal) {
+      registerImageDialog.showModal();
+    }
+  };
+  const applyRegisterImageSelection = action => {
+    const file = pendingRegisterImageFile;
+    const target = pendingRegisterImageTarget;
+    if (!file || !target) return;
+    const shouldTranscribe = action === 'transcribe';
+    if (target === 'history') {
+      setRegisterHistoryPhoto(file);
+      if (shouldTranscribe) {
+        const transcript = buildRegisterTranscript(file, 'history');
+        appendRegisterText(registerHistoryNotesInput, transcript);
+        updateRegisterHistoryNotesCount();
+        setRegisterHistoryFeedback('Texto transcrito desde la imagen.');
+      } else {
+        setRegisterHistoryFeedback('Imagen agregada como archivo adjunto.');
+      }
+    } else {
+      setRegisterAttachmentState(file, { transcribe: shouldTranscribe });
+      if (registerSuccess) {
+        registerSuccess.textContent = shouldTranscribe ? 'Texto transcrito desde la imagen.' : 'Imagen agregada como archivo adjunto.';
+        registerSuccess.hidden = false;
+      }
+    }
+    closeRegisterImageDialog({ clearInput: false });
   };
   const escapeManualHistoryText = value => String(value ?? '').replace(/[&<>"']/g, char => ({
     '&': '&amp;',
@@ -2198,6 +3432,18 @@
     '"': '&quot;',
     "'": '&#039;',
   }[char]));
+  const loadHistoryFavoriteKeys = () => {
+    try {
+      const saved = JSON.parse(localStorage.getItem(activeHistoryFavoriteStorageKey()) || '[]');
+      return new Set((Array.isArray(saved) ? saved : []).map(String).filter(Boolean));
+    } catch (error) {
+      return new Set();
+    }
+  };
+  const saveHistoryFavoriteKeys = favorites => {
+    localStorage.setItem(activeHistoryFavoriteStorageKey(), JSON.stringify([...favorites]));
+  };
+  const historyFavoriteButtonMarkup = '<button class="patient-history-favorite" type="button" data-history-favorite aria-pressed="false" aria-label="Agregar registro a favoritos" title="Agregar a favoritos"><span aria-hidden="true">&#9734;</span></button>';
   const formatManualHistoryDate = value => {
     if (!value) return { date: 'No registrada', day: '' };
     const parsed = new Date(value);
@@ -2208,59 +3454,105 @@
     };
   };
   const renderManualHistoryRecords = () => {
-    if (!historyBody) return;
-    historyBody.querySelectorAll('[data-history-manual-row]').forEach(row => row.remove());
     let records = [];
     try {
-      records = JSON.parse(localStorage.getItem(registerStorageKey) || '[]');
+      records = JSON.parse(localStorage.getItem(activeRegisterStorageKey()) || '[]');
     } catch (error) {
       records = [];
     }
-    const fragment = document.createDocumentFragment();
-    records.forEach(record => {
-      const date = formatManualHistoryDate(record.recordedAt);
-      const label = escapeManualHistoryText(record.label || 'Parametro manual');
-      const unit = record.unit ? ` ${escapeManualHistoryText(record.unit)}` : '';
-      const value = escapeManualHistoryText(record.value || 'Sin valor');
-      const notes = String(record.notes || '').trim();
-      const attachment = String(record.attachmentName || '').trim();
-      const categoryKey = record.historyCategory || 'manual';
-      const category = registerAttachmentCategoryConfig[categoryKey] || registerAttachmentCategoryConfig.manual;
-      const row = document.createElement('tr');
-      row.dataset.historyRow = category.historyFilter;
-      row.dataset.historyManualRow = '1';
-      row.innerHTML = `
-        <td><div class="patient-history-date"><span>+</span><strong>${escapeManualHistoryText(date.date)}<small>${escapeManualHistoryText(date.day)}</small></strong></div></td>
-        <td><span class="patient-history-category is-${escapeManualHistoryText(category.historyFilter)}">${escapeManualHistoryText(record.historyCategoryLabel || category.label)}</span></td>
-        <td><div class="patient-history-origin"><span>◇</span><strong>Paciente</strong></div></td>
-        <td><div class="patient-history-service"><span>▣</span><strong>${escapeManualHistoryText(record.historyCategoryService || category.parameterService || category.service)}</strong></div></td>
-        <td><strong>${label}: ${value}${unit}</strong>${notes ? `<p class="patient-history-manual-note">${escapeManualHistoryText(notes)}</p>` : ''}</td>
-        <td><span class="patient-history-not-registered">No registrado</span></td>
-      `;
-      fragment.appendChild(row);
-      if (attachment) {
-        const attachmentCategoryKey = record.attachmentCategory || record.historyCategory || 'manual';
-        const attachmentCategory = registerAttachmentCategoryConfig[attachmentCategoryKey] || category || registerAttachmentCategoryConfig.manual;
-        const transcript = String(record.attachmentTranscript || '').trim();
-        const attachmentRow = document.createElement('tr');
-        attachmentRow.dataset.historyRow = attachmentCategory.historyFilter;
-        attachmentRow.dataset.historyManualRow = '1';
-        attachmentRow.innerHTML = `
-          <td><div class="patient-history-date"><span>+</span><strong>${escapeManualHistoryText(date.date)}<small>${escapeManualHistoryText(date.day)}</small></strong></div></td>
-          <td><span class="patient-history-category is-${escapeManualHistoryText(attachmentCategory.historyFilter)}">${escapeManualHistoryText(record.attachmentCategoryLabel || attachmentCategory.label)}</span></td>
-          <td><div class="patient-history-origin"><span>◇</span><strong>Registro manual</strong></div></td>
-          <td><div class="patient-history-service"><span>▣</span><strong>${escapeManualHistoryText(attachmentCategory.service)}</strong></div></td>
-          <td><strong>${escapeManualHistoryText(attachment)}</strong>${transcript ? `<p class="patient-history-manual-note patient-history-manual-transcript">${escapeManualHistoryText(transcript)}</p>` : ''}</td>
-          <td><div class="patient-history-manual-evidence"><span>▣</span><div><strong>Archivo cargado</strong><p>${escapeManualHistoryText(attachment)}</p><small>Transcripcion automatica revisable.</small></div></div></td>
+    historyScopes.forEach(historyScope => {
+      const historyBody = historyScope.querySelector('[data-history-body]');
+      if (!historyBody) return;
+      historyBody.querySelectorAll('[data-history-manual-row]').forEach(row => row.remove());
+      const fragment = document.createDocumentFragment();
+      records.forEach(record => {
+        const date = formatManualHistoryDate(record.recordedAt);
+        const label = escapeManualHistoryText(record.label || 'Parametro manual');
+        const unit = record.unit ? ` ${escapeManualHistoryText(record.unit)}` : '';
+        const value = escapeManualHistoryText(record.value || 'Sin valor');
+        const notes = String(record.notes || '').trim();
+        const attachment = String(record.attachmentName || '').trim();
+        const categoryKey = record.historyCategory || 'manual';
+        const category = registerAttachmentCategoryConfig[categoryKey] || registerAttachmentCategoryConfig.manual;
+        const recordKey = `manual-${record.id || `${record.recordedAt || 'undated'}-${record.metricType || 'record'}`}`;
+        const row = document.createElement('tr');
+        row.dataset.historyRow = category.historyFilter;
+        row.dataset.historyManualRow = '1';
+        row.dataset.historyFavoriteKey = recordKey;
+        row.innerHTML = `
+          <td><div class="patient-history-date-cell"><div class="patient-history-date"><span>+</span><strong>${escapeManualHistoryText(date.date)}<small>${escapeManualHistoryText(date.day)}</small></strong></div>${historyFavoriteButtonMarkup}</div></td>
+          <td><span class="patient-history-category is-${escapeManualHistoryText(category.historyFilter)}">${escapeManualHistoryText(record.historyCategoryLabel || category.label)}</span></td>
+          <td><div class="patient-history-origin"><span>◇</span><strong>${escapeManualHistoryText(record.source || 'Paciente')}</strong></div></td>
+          <td><div class="patient-history-service"><span>▣</span><strong>${escapeManualHistoryText(record.historyCategoryService || category.parameterService || category.service)}</strong></div></td>
+          <td><strong>${label}: ${value}${unit}</strong>${notes ? `<p class="patient-history-manual-note">${escapeManualHistoryText(notes)}</p>` : ''}</td>
+          <td><span class="patient-history-not-registered">No registrado</span></td>
         `;
-        fragment.appendChild(attachmentRow);
-      }
+        fragment.appendChild(row);
+        if (attachment) {
+          const attachmentCategoryKey = record.attachmentCategory || record.historyCategory || 'manual';
+          const attachmentCategory = registerAttachmentCategoryConfig[attachmentCategoryKey] || category || registerAttachmentCategoryConfig.manual;
+          const transcript = String(record.attachmentTranscript || '').trim();
+          const attachmentRow = document.createElement('tr');
+          attachmentRow.dataset.historyRow = attachmentCategory.historyFilter;
+          attachmentRow.dataset.historyManualRow = '1';
+          attachmentRow.dataset.historyFavoriteKey = `${recordKey}-attachment`;
+          attachmentRow.innerHTML = `
+            <td><div class="patient-history-date-cell"><div class="patient-history-date"><span>+</span><strong>${escapeManualHistoryText(date.date)}<small>${escapeManualHistoryText(date.day)}</small></strong></div>${historyFavoriteButtonMarkup}</div></td>
+            <td><span class="patient-history-category is-${escapeManualHistoryText(attachmentCategory.historyFilter)}">${escapeManualHistoryText(record.attachmentCategoryLabel || attachmentCategory.label)}</span></td>
+            <td><div class="patient-history-origin"><span>◇</span><strong>Registro manual</strong></div></td>
+            <td><div class="patient-history-service"><span>▣</span><strong>${escapeManualHistoryText(attachmentCategory.service)}</strong></div></td>
+            <td><strong>${escapeManualHistoryText(attachment)}</strong>${transcript ? `<p class="patient-history-manual-note patient-history-manual-transcript">${escapeManualHistoryText(transcript)}</p>` : ''}</td>
+            <td><div class="patient-history-manual-evidence"><span>▣</span><div><strong>Archivo cargado</strong><p>${escapeManualHistoryText(attachment)}</p><small>Transcripcion automatica revisable.</small></div></div></td>
+          `;
+          fragment.appendChild(attachmentRow);
+        }
+      });
+      historyBody.prepend(fragment);
     });
-    historyBody.prepend(fragment);
-    if (historyEmptyRow) historyEmptyRow.hidden = historyBody.querySelectorAll('[data-history-row]').length > 0;
-    const activeFilter = portal.querySelector('[data-history-filter].is-active')?.dataset.historyFilter || 'all';
-    historyBody.querySelectorAll('[data-history-manual-row]').forEach(row => {
-      row.hidden = activeFilter !== 'all' && row.dataset.historyRow !== activeFilter;
+    syncHistoryRowsVisibility();
+  };
+  const syncHistoryRowsVisibility = (targetScope = null) => {
+    const favoriteKeys = loadHistoryFavoriteKeys();
+    (targetScope ? [targetScope] : historyScopes).forEach(historyScope => {
+      const historyBody = historyScope.querySelector('[data-history-body]');
+      if (!historyBody) return;
+      const historyEmptyRow = historyScope.querySelector('[data-history-empty]');
+      const historyEmptyFilterRow = historyScope.querySelector('[data-history-filter-empty]');
+      const activeFilterButton = historyScope.querySelector('[data-history-filter].is-active');
+      const activeFilter = activeFilterButton?.dataset.historyFilter || 'all';
+      const activeViewButton = historyScope.querySelector('[data-history-view].is-active');
+      const activeView = activeViewButton?.dataset.historyView || 'all';
+      let visibleRows = 0;
+      historyBody.querySelectorAll('[data-history-row]').forEach(row => {
+        const belongsToPrimaryProfile = row.dataset.historyPrimaryRow === '1';
+        const profileMatches = !belongsToPrimaryProfile || isPrimaryPatientProfileActive();
+        const categoryMatches = activeFilter === 'all' || row.dataset.historyRow === activeFilter;
+        const favoriteKey = String(row.dataset.historyFavoriteKey || '');
+        const isFavorite = Boolean(favoriteKey && favoriteKeys.has(favoriteKey));
+        const favoriteMatches = activeView === 'all' || isFavorite;
+        const favoriteButton = row.querySelector('[data-history-favorite]');
+        if (favoriteButton) {
+          favoriteButton.classList.toggle('is-active', isFavorite);
+          favoriteButton.setAttribute('aria-pressed', isFavorite ? 'true' : 'false');
+          favoriteButton.setAttribute('aria-label', isFavorite ? 'Quitar registro de favoritos' : 'Agregar registro a favoritos');
+          favoriteButton.setAttribute('title', isFavorite ? 'Quitar de favoritos' : 'Agregar a favoritos');
+          const favoriteIcon = favoriteButton.querySelector('span');
+          if (favoriteIcon) favoriteIcon.innerHTML = isFavorite ? '&#9733;' : '&#9734;';
+        }
+        row.hidden = !(profileMatches && categoryMatches && favoriteMatches);
+        if (!row.hidden) visibleRows += 1;
+      });
+      if (historyEmptyRow) historyEmptyRow.hidden = visibleRows > 0 || activeFilter !== 'all' || activeView !== 'all';
+      if (historyEmptyFilterRow) {
+        const emptyCell = historyEmptyFilterRow.querySelector('td');
+        const activeLabel = activeFilterButton?.querySelector('b')?.textContent?.trim() || 'esta categoría';
+        if (emptyCell) {
+          emptyCell.textContent = activeView === 'favorites'
+            ? (activeFilter === 'all' ? 'Aún no tienes registros favoritos. Marca la estrella de un registro para verlo aquí.' : `No hay registros favoritos en ${activeLabel}.`)
+            : (activeFilter === 'all' ? 'No hay registros clínicos.' : `No hay registros en ${activeLabel}.`);
+        }
+        historyEmptyFilterRow.hidden = visibleRows > 0 || (activeView === 'all' && activeFilter === 'all' && Boolean(historyEmptyRow));
+      }
     });
   };
   const closeHealthScreen = () => {
@@ -2565,7 +3857,7 @@
           return;
         }
         if (type === 'pointerup' && !registerPanMoved && registerPointerMetric) {
-          selectRegisterMetric(registerPointerMetric);
+          toggleRegisterMetricPanel(registerPointerMetric);
           registerTapHandled = true;
         }
         isRegisterPanning = false;
@@ -2593,7 +3885,7 @@
         registerPanMoved = false;
         return;
       }
-      selectRegisterMetric(button.dataset.registerMetric);
+      toggleRegisterMetricPanel(button.dataset.registerMetric);
     });
     track.addEventListener('keydown', event => {
       const favoriteToggle = event.target.closest('[data-register-favorite-toggle]');
@@ -2604,9 +3896,66 @@
     });
   };
   renderRegisterMetricRows();
+  setRegisterMetricView('favorites', { hidePanel: false });
   hideRegisterHistoryComposer();
+  registerMetricSwitch?.addEventListener('click', event => {
+    const button = event.target.closest('[data-register-metric-view]');
+    if (!button || !registerMetricSwitch.contains(button)) return;
+    setRegisterMetricView(button.dataset.registerMetricView);
+  });
+  registerMetricSwitch?.addEventListener('keydown', event => {
+    if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+    event.preventDefault();
+    const currentIndex = registerMetricViewButtons.findIndex(button => button.classList.contains('is-active'));
+    const nextIndex = currentIndex <= 0 ? 1 : 0;
+    const nextButton = registerMetricViewButtons[nextIndex];
+    if (!nextButton) return;
+    setRegisterMetricView(nextButton.dataset.registerMetricView);
+    nextButton.focus();
+  });
+  setHealthSection('parameters');
+  healthViewSwitch?.addEventListener('click', event => {
+    const button = event.target.closest('[data-health-view-mode]');
+    if (!button || !healthViewSwitch.contains(button)) return;
+    setHealthSection(button.dataset.healthViewMode);
+  });
+  healthViewSwitch?.addEventListener('keydown', event => {
+    if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+    event.preventDefault();
+    const currentIndex = healthViewButtons.findIndex(button => button.classList.contains('is-active'));
+    const nextButton = healthViewButtons[currentIndex <= 0 ? 1 : 0];
+    if (!nextButton) return;
+    setHealthSection(nextButton.dataset.healthViewMode);
+    nextButton.focus();
+  });
+  renderHealthDashboard();
+  portal.querySelectorAll('[data-health-carousel]').forEach(bindHealthCarousel);
+  healthMetricSwitch?.addEventListener('click', event => {
+    const button = event.target.closest('[data-health-metric-view]');
+    if (!button || !healthMetricSwitch.contains(button)) return;
+    setHealthMetricView(button.dataset.healthMetricView);
+  });
+  healthMetricSwitch?.addEventListener('keydown', event => {
+    if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+    event.preventDefault();
+    const currentIndex = healthMetricViewButtons.findIndex(button => button.classList.contains('is-active'));
+    const nextButton = healthMetricViewButtons[currentIndex <= 0 ? 1 : 0];
+    if (!nextButton) return;
+    setHealthMetricView(nextButton.dataset.healthMetricView);
+    nextButton.focus();
+  });
+  healthRangeTabs?.addEventListener('click', event => {
+    const button = event.target.closest('[data-health-range]');
+    if (!button || !healthRangeTabs.contains(button)) return;
+    setHealthRange(button.dataset.healthRange);
+  });
+  [healthDateFrom, healthDateTo].forEach(input => {
+    input?.addEventListener('change', () => setHealthRange('custom'));
+  });
   let historyPanMoved = false;
   let historyClickBlocked = false;
+  let historyPointerCategory = '';
+  let historyTapHandled = false;
   if (registerHistoryCarousel) {
     let isHistoryPanning = false;
     let historyPanStart = 0;
@@ -2615,12 +3964,15 @@
 
     registerHistoryCarousel.addEventListener('pointerdown', event => {
       if (event.pointerType === 'mouse' && event.button !== 0) return;
+      const button = event.target.closest('[data-register-history-category]');
       if (historyClickBlockTimer) window.clearTimeout(historyClickBlockTimer);
       isHistoryPanning = true;
       historyPanStart = event.clientX;
       historyPanScroll = registerHistoryCarousel.scrollLeft;
       historyPanMoved = false;
       historyClickBlocked = false;
+      historyTapHandled = false;
+      historyPointerCategory = button && registerHistoryCarousel.contains(button) ? button.dataset.registerHistoryCategory : '';
       registerHistoryCarousel.setPointerCapture?.(event.pointerId);
     });
 
@@ -2642,6 +3994,14 @@
       if (registerHistoryCarousel.hasPointerCapture?.(event.pointerId)) {
         registerHistoryCarousel.releasePointerCapture(event.pointerId);
       }
+      if (!historyPanMoved && historyPointerCategory) {
+        event.preventDefault();
+        toggleRegisterHistoryComposer(historyPointerCategory);
+        historyTapHandled = true;
+        historyPointerCategory = '';
+        return;
+      }
+      historyPointerCategory = '';
       if (!historyPanMoved) return;
       historyClickBlocked = true;
       historyClickBlockTimer = window.setTimeout(() => {
@@ -2655,6 +4015,10 @@
     });
   }
   registerHistoryCarousel?.addEventListener('click', event => {
+    if (historyTapHandled) {
+      historyTapHandled = false;
+      return;
+    }
     if (historyClickBlocked || historyPanMoved) {
       event.preventDefault();
       return;
@@ -2663,71 +4027,102 @@
     if (!button || !registerHistoryCarousel.contains(button)) return;
     toggleRegisterHistoryComposer(button.dataset.registerHistoryCategory);
   });
+  registerHistoryCarousel?.addEventListener('scroll', syncRegisterHistoryComposerPointer, { passive: true });
   registerHistoryManualInput?.addEventListener('input', updateRegisterHistoryManualCount);
+  registerHistoryNotesInput?.addEventListener('input', updateRegisterHistoryNotesCount);
+  registerHistoryCollapse?.addEventListener('click', hideRegisterHistoryComposer);
   registerHistoryPhotoPick?.addEventListener('click', () => {
-    registerHistoryPhotoInput?.click();
+    openRegisterImageDialog('history');
   });
   registerHistoryPhotoInput?.addEventListener('change', () => {
     const file = registerHistoryPhotoInput.files && registerHistoryPhotoInput.files[0];
-    setRegisterHistoryPhoto(file || null);
+    handleRegisterImageSelection('history', file || null);
+    if (registerHistoryFeedback) registerHistoryFeedback.hidden = true;
+  });
+  registerHistoryPhotoClear?.addEventListener('click', () => {
+    if (registerHistoryPhotoInput) registerHistoryPhotoInput.value = '';
+    setRegisterHistoryPhoto(null);
     if (registerHistoryFeedback) registerHistoryFeedback.hidden = true;
   });
   registerHistorySubmit?.addEventListener('click', () => {
     const historyCategoryKey = getRegisterHistoryCategoryKey();
     const historyCategory = registerAttachmentCategoryConfig[historyCategoryKey] || registerAttachmentCategoryConfig.consultation;
     const text = String(registerHistoryManualInput?.value || '').trim();
+    const notes = String(registerHistoryNotesInput?.value || '').trim();
+    const provider = String(registerHistoryProviderInput?.value || '').trim();
+    const recordedAt = registerHistoryDateInput?.value || registerDateValue();
     const photo = registerHistoryPhotoInput?.files?.[0] || null;
-    if (!text && !photo) {
-      setRegisterHistoryFeedback('Escribe un registro o toma una fotografía antes de guardar.', 'error');
+    if (!text && !notes && !photo) {
+      setRegisterHistoryFeedback('Agrega texto o una imagen antes de guardar.', 'error');
       registerHistoryManualInput?.focus({ preventScroll: true });
       return;
     }
-    const preview = text
-      ? (text.length > 90 ? `${text.slice(0, 87)}...` : text)
-      : 'Fotografía';
+    if (registerHistoryDateInput && !registerHistoryDateInput.value) {
+      registerHistoryDateInput.value = registerDateValue();
+    }
+    const summaryText = text || notes || 'Imagen adjunta';
+    const preview = summaryText.length > 90 ? `${summaryText.slice(0, 87)}...` : summaryText;
     saveRegisterRecord({
       id: Date.now(),
       metricType: 'clinical-history-note',
-      label: `Registro en ${historyCategory.label}`,
+      label: historyCategory.label,
       value: preview,
       unit: '',
-      recordedAt: registerDateValue(),
-      notes: text.length > 90 ? text : '',
+      recordedAt,
+      notes,
+      historyDetail: text || notes || 'Imagen adjunta',
       historyCategory: historyCategory.historyFilter,
       historyCategoryLabel: historyCategory.label,
       historyCategoryService: historyCategory.service,
       attachmentName: photo ? photo.name : '',
       attachmentSize: photo ? photo.size : 0,
-      attachmentTranscript: text,
+      attachmentTranscript: [text, notes].filter(Boolean).join('\n\n'),
       attachmentCategory: photo ? historyCategory.historyFilter : '',
       attachmentCategoryLabel: photo ? historyCategory.label : '',
-      source: 'Registro manual',
+      source: provider || historyCategory.defaultSource || 'Registro manual',
     });
     renderManualHistoryRecords();
-    setRegisterHistoryFeedback(`Registro guardado en ${historyCategory.label}.`);
-    if (registerHistoryManualInput) registerHistoryManualInput.value = '';
-    if (registerHistoryPhotoInput) registerHistoryPhotoInput.value = '';
-    setRegisterHistoryPhoto(null);
-    updateRegisterHistoryManualCount();
+    resetRegisterHistoryComposerFields();
+    showRegisterSavedScreen('history', { historyCategory: historyCategoryKey });
   });
   portal.querySelectorAll('[data-register-carousel]').forEach(bindRegisterCarousel);
-  registerSelectedFavoriteButton?.addEventListener('click', () => {
-    addRegisterFavorite(registerMetricInput?.value || 'water');
-  });
   registerAttachmentInput?.addEventListener('change', () => {
     const file = registerAttachmentInput.files && registerAttachmentInput.files[0];
-    setRegisterAttachmentState(file || null);
+    handleRegisterImageSelection('parameter', file || null);
   });
   registerNotesInput?.addEventListener('input', updateRegisterNotesCount);
   registerAttachmentPick?.addEventListener('click', () => {
-    registerAttachmentInput?.click();
+    openRegisterImageDialog('parameter');
   });
   registerAttachmentChange?.addEventListener('click', () => {
-    registerAttachmentInput?.click();
+    openRegisterImageDialog('parameter');
   });
   registerAttachmentClear?.addEventListener('click', () => {
     if (registerAttachmentInput) registerAttachmentInput.value = '';
     setRegisterAttachmentState(null);
+  });
+  registerImageDialog?.querySelectorAll('[data-register-image-source]').forEach(button => {
+    button.addEventListener('click', () => chooseRegisterImageSource(button.dataset.registerImageSource));
+  });
+  registerImageDialog?.querySelectorAll('[data-register-image-action]').forEach(button => {
+    button.addEventListener('click', () => applyRegisterImageSelection(button.dataset.registerImageAction));
+  });
+  registerImageDialog?.querySelector('[data-register-image-close]')?.addEventListener('click', () => closeRegisterImageDialog());
+  registerImageDialog?.querySelector('[data-register-image-cancel]')?.addEventListener('click', () => closeRegisterImageDialog());
+  registerImageDialog?.addEventListener('click', event => {
+    const sheet = registerImageDialog.querySelector('.patient-register-image-sheet');
+    if (!sheet) return;
+    const bounds = sheet.getBoundingClientRect();
+    const clickedOutside = event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom;
+    if (clickedOutside) closeRegisterImageDialog();
+  });
+  registerImageDialog?.addEventListener('close', () => {
+    if (!pendingRegisterImageTarget) return;
+    const input = registerImageInputForTarget(pendingRegisterImageTarget);
+    if (input) input.value = '';
+    if (pendingRegisterImageFile && pendingRegisterImageTarget === 'history') setRegisterHistoryPhoto(null);
+    if (pendingRegisterImageFile && pendingRegisterImageTarget === 'parameter') setRegisterAttachmentState(null);
+    resetPendingRegisterImage();
   });
   registerTranscriptEdit?.addEventListener('click', () => {
     setRegisterTranscriptEditing(Boolean(registerTranscriptInput?.readOnly));
@@ -2767,16 +4162,13 @@
       source: 'Registro manual',
     });
     renderManualHistoryRecords();
-    if (registerSuccess) {
-      registerSuccess.textContent = `Registro guardado en ${historyCategory.label}.`;
-      registerSuccess.hidden = false;
-    }
     registerForm.reset();
     if (registerDateInput) registerDateInput.value = registerDateValue();
     updateRegisterNotesCount();
     setRegisterAttachmentState(null);
     hideRegisterHistoryComposer();
     selectRegisterMetric(metricType);
+    showRegisterSavedScreen('parameter', { metricType });
   });
   registerForm?.addEventListener('reset', () => {
     setTimeout(() => {
@@ -2788,8 +4180,28 @@
       selectRegisterMetric(registerMetricInput?.value || 'water');
     });
   });
+  registerSavedScreens.forEach(screen => {
+    screen.querySelector('[data-register-saved-history]')?.addEventListener('click', () => {
+      hideRegisterSavedScreens();
+      renderManualHistoryRecords();
+      openView('history');
+    });
+    screen.querySelector('[data-register-saved-new]')?.addEventListener('click', () => {
+      const savedType = screen.dataset.registerSavedScreen;
+      hideRegisterSavedScreens();
+      if (savedType === 'parameter') {
+        showRegisterMetricPanel(lastRegisterSavedMetricType || registerMetricInput?.value || 'water');
+        return;
+      }
+      selectRegisterHistoryCategory(lastRegisterSavedHistoryCategory || 'consultation', { showComposer: true });
+      requestAnimationFrame(() => {
+        registerHistoryComposer?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      });
+    });
+  });
   updateRegisterNotesCount();
   updateRegisterHistoryManualCount();
+  updateRegisterHistoryNotesCount();
   setRegisterAttachmentState(null);
   aiTopForm?.addEventListener('submit', event => {
     event.preventDefault();
@@ -2804,17 +4216,45 @@
       closeAiChat();
       return;
     }
-    const chip = event.target.closest('[data-ai-chip]');
-    if (chip) {
-      sendAiMessage(chip.dataset.aiChip);
-      return;
-    }
-    const viewAction = event.target.closest('[data-ai-open-view]');
-    if (viewAction) {
-      openView(viewAction.dataset.aiOpenView);
-    }
   });
   renderAiConversation();
+  const syncActivePatientProfileContext = (profile = null) => {
+    activePatientProfile = normalizeActivePatientProfile(profile || readActivePatientProfile());
+    applyActivePatientProfileShell();
+    aiConversation = loadAiConversation();
+    registerFavoriteMetrics = loadRegisterFavorites();
+    const registerFavoriteScroll = registerFavorites?.scrollLeft || 0;
+    const registerOptionsScroll = registerOptions?.scrollLeft || 0;
+    const healthFavoriteScroll = healthFavorites?.scrollLeft || 0;
+    const healthOptionsScroll = healthOptions?.scrollLeft || 0;
+    renderRegisterMetricRows();
+    renderManualHistoryRecords();
+    healthDashboardRendered = false;
+    renderHealthDashboard();
+    renderAiConversation();
+    requestAnimationFrame(() => {
+      if (registerFavorites) registerFavorites.scrollLeft = registerFavoriteScroll;
+      if (registerOptions) registerOptions.scrollLeft = registerOptionsScroll;
+      if (healthFavorites) healthFavorites.scrollLeft = healthFavoriteScroll;
+      if (healthOptions) healthOptions.scrollLeft = healthOptionsScroll;
+    });
+    if (communitiesApp?.switchPatientProfile) {
+      const activeProfile = getActivePatientProfile();
+      communitiesApp.switchPatientProfile({
+        id: getActivePatientProfileId(),
+        name: activeProfile.name,
+        photo: activeProfile.photo,
+      }, activeCommunitiesStorageKey());
+    }
+  };
+  window.addEventListener('drsam:patient-profile', event => {
+    if (event.detail?.action === 'profile:deleted') {
+      clearProfileScopedStorage(event.detail.payload?.profileId || event.detail.payload?.profile?.userId);
+      return;
+    }
+    if (event.detail?.action !== 'profile:active-changed') return;
+    syncActivePatientProfileContext(event.detail.payload?.profile || null);
+  });
   portal.addEventListener('click', event => {
     const healthClose = event.target.closest('[data-health-screen-close]');
     if (healthClose) {
@@ -3315,29 +4755,162 @@
       showDoctorBookingStep('schedule');
     }
   }
-  const historyFilters = [...portal.querySelectorAll('[data-history-filter]')];
-  const selectHistoryFilter = button => {
-    if (!button) return;
-    historyFilters.forEach(item => item.classList.toggle('is-active', item === button));
-    portal.querySelectorAll('[data-history-row]').forEach(row => {
-      row.hidden = button.dataset.historyFilter !== 'all' && row.dataset.historyRow !== button.dataset.historyFilter;
+  const bindClinicalHistory = historyScope => {
+    const historyFilters = [...historyScope.querySelectorAll('[data-history-filter]')];
+    const historyViewButtons = [...historyScope.querySelectorAll('[data-history-view]')];
+    const historyFilterCarousel = historyScope.querySelector('.patient-history-filters');
+    const historyResultsWrap = historyScope.querySelector('.patient-history-table-wrap');
+    if (!historyFilterCarousel || !historyFilters.length) return;
+    let historyFilterClickBlocked = false;
+    let historyFilterTapHandled = false;
+    let isHistoryFilterPanning = false;
+    let historyFilterPanMoved = false;
+    let historyFilterPanStart = 0;
+    let historyFilterPanScroll = 0;
+    let historyFilterClickBlockTimer = null;
+    let historyFilterPointerButton = null;
+
+    const selectHistoryView = button => {
+      if (!button) return;
+      historyViewButtons.forEach(item => {
+        const isActive = item === button;
+        item.classList.toggle('is-active', isActive);
+        item.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        item.setAttribute('tabindex', isActive ? '0' : '-1');
+      });
+      syncHistoryRowsVisibility(historyScope);
+    };
+    const centerHistoryFilterButton = button => {
+      if (!button) return;
+      const targetLeft = button.offsetLeft - ((historyFilterCarousel.clientWidth - button.offsetWidth) / 2);
+      const left = Math.max(0, targetLeft);
+      if (typeof historyFilterCarousel.scrollTo === 'function') {
+        historyFilterCarousel.scrollTo({ left, behavior: 'smooth' });
+      } else {
+        historyFilterCarousel.scrollLeft = left;
+      }
+    };
+    const selectHistoryFilter = (button, options = {}) => {
+      if (!button) return;
+      historyFilters.forEach(item => {
+        const isActive = item === button;
+        item.classList.toggle('is-active', isActive);
+        item.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+      });
+      syncHistoryRowsVisibility(historyScope);
+      if (options.scroll !== false) centerHistoryFilterButton(button);
+      if (historyResultsWrap && options.resetResults !== false) {
+        if (typeof historyResultsWrap.scrollTo === 'function') {
+          historyResultsWrap.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          historyResultsWrap.scrollLeft = 0;
+        }
+      }
+    };
+
+    historyViewButtons.forEach((button, index) => {
+      button.addEventListener('click', () => selectHistoryView(button));
+      button.addEventListener('keydown', event => {
+        if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+        event.preventDefault();
+        const direction = event.key === 'ArrowRight' ? 1 : -1;
+        const next = historyViewButtons[(index + direction + historyViewButtons.length) % historyViewButtons.length];
+        selectHistoryView(next);
+        next?.focus();
+      });
     });
+    historyScope.addEventListener('click', event => {
+      const favoriteButton = event.target.closest('[data-history-favorite]');
+      if (!favoriteButton || !historyScope.contains(favoriteButton)) return;
+      const row = favoriteButton.closest('[data-history-favorite-key]');
+      const favoriteKey = String(row?.dataset.historyFavoriteKey || '');
+      if (!favoriteKey) return;
+      const favorites = loadHistoryFavoriteKeys();
+      if (favorites.has(favoriteKey)) favorites.delete(favoriteKey);
+      else favorites.add(favoriteKey);
+      saveHistoryFavoriteKeys(favorites);
+      syncHistoryRowsVisibility();
+    });
+
+    historyFilterCarousel.addEventListener('pointerdown', event => {
+      if (event.pointerType === 'mouse' && event.button !== 0) return;
+      if (historyFilterClickBlockTimer) window.clearTimeout(historyFilterClickBlockTimer);
+      isHistoryFilterPanning = true;
+      historyFilterPanMoved = false;
+      historyFilterClickBlocked = false;
+      historyFilterPanStart = event.clientX;
+      historyFilterPanScroll = historyFilterCarousel.scrollLeft;
+      historyFilterPointerButton = event.target.closest('[data-history-filter]');
+      historyFilterCarousel.setPointerCapture?.(event.pointerId);
+    });
+
+    historyFilterCarousel.addEventListener('pointermove', event => {
+      if (!isHistoryFilterPanning) return;
+      const movement = event.clientX - historyFilterPanStart;
+      historyFilterCarousel.scrollLeft = historyFilterPanScroll - movement;
+      if (Math.abs(movement) > 8) {
+        historyFilterPanMoved = true;
+        historyFilterCarousel.classList.add('is-panning');
+      }
+      if (historyFilterPanMoved) event.preventDefault();
+    });
+
+    const finishHistoryFilterPan = event => {
+      if (!isHistoryFilterPanning) return;
+      isHistoryFilterPanning = false;
+      historyFilterCarousel.classList.remove('is-panning');
+      if (historyFilterCarousel.hasPointerCapture?.(event.pointerId)) {
+        historyFilterCarousel.releasePointerCapture(event.pointerId);
+      }
+      if (!historyFilterPanMoved && historyFilterPointerButton) {
+        selectHistoryFilter(historyFilterPointerButton, { scroll: false });
+        historyFilterTapHandled = true;
+        window.setTimeout(() => {
+          historyFilterTapHandled = false;
+        }, 0);
+        historyFilterPointerButton = null;
+        return;
+      }
+      historyFilterPointerButton = null;
+      if (!historyFilterPanMoved) return;
+      historyFilterClickBlocked = true;
+      historyFilterClickBlockTimer = window.setTimeout(() => {
+        historyFilterClickBlocked = false;
+        historyFilterPanMoved = false;
+      }, 180);
+    };
+
+    ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(type => {
+      historyFilterCarousel.addEventListener(type, finishHistoryFilterPan);
+    });
+    historyFilterCarousel.addEventListener('click', event => {
+      const button = event.target.closest('[data-history-filter]');
+      if (!button || !historyFilterCarousel.contains(button)) return;
+      event.preventDefault();
+      if (historyFilterClickBlocked || historyFilterTapHandled) return;
+      selectHistoryFilter(button);
+    });
+    historyScope.querySelectorAll('[data-history-step]').forEach(button => button.addEventListener('click', () => {
+      const current = Math.max(0, historyFilters.findIndex(item => item.classList.contains('is-active')));
+      const next = (current + Number(button.dataset.historyStep) + historyFilters.length) % historyFilters.length;
+      selectHistoryFilter(historyFilters[next]);
+    }));
   };
-  historyFilters.forEach(button => button.addEventListener('click', () => selectHistoryFilter(button)));
-  portal.querySelectorAll('[data-history-step]').forEach(button => button.addEventListener('click', () => {
-    const current = Math.max(0, historyFilters.findIndex(item => item.classList.contains('is-active')));
-    const next = (current + Number(button.dataset.historyStep) + historyFilters.length) % historyFilters.length;
-    selectHistoryFilter(historyFilters[next]);
-    historyFilters[next]?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-  }));
+  historyScopes.forEach(bindClinicalHistory);
   renderManualHistoryRecords();
   portal.querySelectorAll('[data-prescription-filter]').forEach(button => button.addEventListener('click', () => {
     const filter = button.dataset.prescriptionFilter;
-    portal.querySelectorAll('[data-prescription-filter]').forEach(item => item.classList.toggle('is-active', item === button));
+    portal.querySelectorAll('[data-prescription-filter]').forEach(item => {
+      const isCurrent = item === button;
+      item.classList.toggle('is-active', isCurrent);
+      item.setAttribute('aria-pressed', isCurrent ? 'true' : 'false');
+    });
     const prescriptionRows = [...portal.querySelectorAll('[data-prescription-row]')];
     prescriptionRows.forEach(row => {
       row.hidden = filter === 'active' ? row.dataset.status !== 'active'
         : filter === 'expired' ? row.dataset.status !== 'expired'
+        : filter === 'redeemed' ? row.dataset.status !== 'redeemed'
+        : filter === 'partial' ? row.dataset.status !== 'partial'
         : filter === 'medications' ? row.dataset.hasMedications !== '1'
         : filter === 'analysis' ? row.dataset.hasAnalysis !== '1'
         : false;
@@ -3352,14 +4925,127 @@
   const analysisList = portal.querySelector('[data-analysis-list]');
   const analysisFilterBar = portal.querySelector('.patient-analyses-filter-bar');
   const analysisFilteredEmpty = portal.querySelector('.patient-analyses-body > [data-analysis-empty]');
+  const analysisFilterDialog = portal.querySelector('[data-analysis-filter-dialog]');
+  const analysisFilterChips = [...portal.querySelectorAll('[data-analysis-modal-filter]')];
+  const analysisFilterSections = [...portal.querySelectorAll('[data-analysis-filter-section]')];
+  const analysisFilterSectionToggles = [...portal.querySelectorAll('[data-analysis-filter-section-toggle]')];
+  const analysisFilterSummaries = [...portal.querySelectorAll('[data-analysis-filter-summary]')];
+  const analysisFilterOptionRows = [...portal.querySelectorAll('.patient-analysis-filter-options')];
   let analysisFilter = 'all';
+  let analysisDateFilter = 'all';
+  let analysisSpecialtyFilter = 'all';
+  let analysisStatusFilter = 'all';
   let analysisFilterPanMoved = false;
+  const analysisFilterSummaryLabels = {
+    type: {
+      all: 'Todos los tipos',
+      laboratory: 'Laboratorio',
+      image: 'Imagen',
+      pdf: 'PDF',
+    },
+    date: {
+      all: 'Elige un periodo',
+      today: 'Hoy',
+      week: 'Semana',
+      month: 'Mes',
+      custom: 'Personalizado',
+    },
+    specialty: {
+      all: 'Todas las especialidades',
+      general: 'General',
+      cardiologia: 'Cardiología',
+      pediatria: 'Pediatría',
+      endocrino: 'Endocrino',
+    },
+    status: {
+      all: 'Todos los estados',
+      new: 'Nuevo',
+      loaded: 'Cargado',
+      reviewed: 'Revisado',
+    },
+  };
+  const currentAnalysisFilterValues = () => ({
+    type: analysisFilter,
+    date: analysisDateFilter,
+    specialty: analysisSpecialtyFilter,
+    status: analysisStatusFilter,
+  });
+  const selectedAnalysisChipValue = group => analysisFilterChips
+    .find(button => button.dataset.analysisModalFilter === group && button.classList.contains('is-active'))
+    ?.dataset.analysisModalValue || 'all';
+  const updateAnalysisFilterSummaries = values => {
+    const nextValues = values || currentAnalysisFilterValues();
+    analysisFilterSummaries.forEach(summary => {
+      const group = summary.dataset.analysisFilterSummary;
+      const value = nextValues[group] || 'all';
+      summary.textContent = analysisFilterSummaryLabels[group]?.[value] || analysisFilterSummaryLabels[group]?.all || '';
+    });
+  };
+  const setAnalysisFilterSectionOpen = (section, isOpen) => {
+    const toggle = section.querySelector('[data-analysis-filter-section-toggle]');
+    const options = section.querySelector('.patient-analysis-filter-options');
+    section.classList.toggle('is-open', isOpen);
+    toggle?.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    if (options) options.hidden = !isOpen;
+    if (isOpen) {
+      options?.querySelector('.is-active')?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    }
+  };
+  const closeAnalysisFilterSections = () => {
+    analysisFilterSections.forEach(section => setAnalysisFilterSectionOpen(section, false));
+  };
+  const updateAnalysisFilterButtons = () => {
+    analysisFilters.forEach(button => {
+      const isCurrent = button.dataset.analysisFilter === analysisFilter;
+      button.classList.toggle('is-active', isCurrent);
+      button.setAttribute('aria-pressed', isCurrent ? 'true' : 'false');
+    });
+  };
+  const updateAnalysisDialogChips = () => {
+    const selectedValues = currentAnalysisFilterValues();
+    analysisFilterChips.forEach(button => {
+      const group = button.dataset.analysisModalFilter;
+      const isCurrent = button.dataset.analysisModalValue === selectedValues[group];
+      button.classList.toggle('is-active', isCurrent);
+      button.setAttribute('aria-pressed', isCurrent ? 'true' : 'false');
+      if (isCurrent && !button.closest('.patient-analysis-filter-options')?.hidden) {
+        button.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+    });
+    updateAnalysisFilterSummaries(selectedValues);
+  };
+  const matchesAnalysisDateFilter = card => {
+    if (analysisDateFilter === 'all' || analysisDateFilter === 'custom') return true;
+    const timestamp = Number(card.dataset.analysisDate || 0);
+    if (!timestamp) return false;
+    const cardDate = new Date(timestamp * 1000);
+    const cardDay = new Date(cardDate);
+    const today = new Date();
+    cardDay.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
+    if (analysisDateFilter === 'today') {
+      return cardDay.getTime() === today.getTime();
+    }
+    if (analysisDateFilter === 'week') {
+      const weekStart = new Date(today);
+      weekStart.setDate(today.getDate() - 6);
+      return cardDay >= weekStart && cardDay <= today;
+    }
+    if (analysisDateFilter === 'month') {
+      return cardDate.getMonth() === today.getMonth() && cardDate.getFullYear() === today.getFullYear();
+    }
+    return true;
+  };
   const renderAnalyses = () => {
     let visible = 0;
     analysisCards.forEach(card => {
-      const matchesFilter = analysisFilter === 'all' || card.dataset.analysisType === analysisFilter;
-      card.hidden = !matchesFilter;
-      if (matchesFilter) visible++;
+      const matchesType = analysisFilter === 'all' || card.dataset.analysisType === analysisFilter;
+      const matchesDate = matchesAnalysisDateFilter(card);
+      const matchesSpecialty = analysisSpecialtyFilter === 'all' || card.dataset.analysisSpecialty === analysisSpecialtyFilter;
+      const matchesStatus = analysisStatusFilter === 'all' || card.dataset.analysisStatus === analysisStatusFilter;
+      const isVisible = matchesType && matchesDate && matchesSpecialty && matchesStatus;
+      card.hidden = !isVisible;
+      if (isVisible) visible++;
     });
     if (analysisFilteredEmpty) {
       analysisFilteredEmpty.hidden = visible > 0 || analysisCards.length === 0;
@@ -3415,9 +5101,59 @@
       return;
     }
     analysisFilter = button.dataset.analysisFilter || 'all';
-    analysisFilters.forEach(item => item.classList.toggle('is-active', item === button));
+    updateAnalysisFilterButtons();
+    updateAnalysisDialogChips();
     button.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
     renderAnalyses();
+  }));
+  analysisFilterOptionRows.forEach(row => {
+    let isPanning = false;
+    let panStart = 0;
+    let panScroll = 0;
+    row.dataset.panMoved = '0';
+
+    row.addEventListener('pointerdown', event => {
+      isPanning = true;
+      panStart = event.clientX;
+      panScroll = row.scrollLeft;
+      row.dataset.panMoved = '0';
+      row.setPointerCapture?.(event.pointerId);
+    });
+
+    row.addEventListener('pointermove', event => {
+      if (!isPanning) return;
+      const movement = event.clientX - panStart;
+      row.scrollLeft = panScroll - movement;
+      if (Math.abs(movement) > 8) {
+        row.dataset.panMoved = '1';
+        row.classList.add('is-panning');
+        event.preventDefault();
+      }
+    });
+
+    ['pointerup', 'pointercancel', 'pointerleave'].forEach(type => {
+      row.addEventListener(type, event => {
+        isPanning = false;
+        row.classList.remove('is-panning');
+        if (row.hasPointerCapture?.(event.pointerId)) {
+          row.releasePointerCapture(event.pointerId);
+        }
+        if (type === 'pointerup' && row.dataset.panMoved === '1') {
+          window.setTimeout(() => {
+            row.dataset.panMoved = '0';
+          }, 180);
+        } else if (type !== 'pointerup') {
+          row.dataset.panMoved = '0';
+        }
+      });
+    });
+  });
+  analysisFilterSectionToggles.forEach(toggle => toggle.addEventListener('click', () => {
+    const section = toggle.closest('[data-analysis-filter-section]');
+    if (!section) return;
+    const shouldOpen = !section.classList.contains('is-open');
+    closeAnalysisFilterSections();
+    setAnalysisFilterSectionOpen(section, shouldOpen);
   }));
   portal.querySelector('[data-analysis-sort]')?.addEventListener('click', event => {
     if (!analysisList || !analysisCards.length) return;
@@ -3435,12 +5171,71 @@
     if (label) label.textContent = nextDirection === 'asc' ? 'Fecha antigua' : 'Fecha reciente';
     renderAnalyses();
   });
-  portal.querySelector('[data-analysis-reset]')?.addEventListener('click', () => {
+  analysisFilterChips.forEach(button => button.addEventListener('click', event => {
+    const row = button.closest('.patient-analysis-filter-options');
+    if (row?.dataset.panMoved === '1') {
+      event.preventDefault();
+      return;
+    }
+    const group = button.dataset.analysisModalFilter;
+    const shouldActivate = group === 'type' || !button.classList.contains('is-active');
+    analysisFilterChips
+      .filter(item => item.dataset.analysisModalFilter === group)
+      .forEach(item => {
+        const isCurrent = shouldActivate && item === button;
+        item.classList.toggle('is-active', isCurrent);
+        item.setAttribute('aria-pressed', isCurrent ? 'true' : 'false');
+      });
+    if (shouldActivate) button.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    updateAnalysisFilterSummaries({
+      type: selectedAnalysisChipValue('type'),
+      date: selectedAnalysisChipValue('date'),
+      specialty: selectedAnalysisChipValue('specialty'),
+      status: selectedAnalysisChipValue('status'),
+    });
+  }));
+  portal.querySelector('[data-analysis-filter-open]')?.addEventListener('click', () => {
+    updateAnalysisDialogChips();
+    closeAnalysisFilterSections();
+    if (analysisFilterDialog?.showModal) {
+      analysisFilterDialog.showModal();
+    }
+  });
+  portal.querySelector('[data-analysis-filter-close]')?.addEventListener('click', () => {
+    analysisFilterDialog?.close();
+  });
+  analysisFilterDialog?.addEventListener('click', event => {
+    const modal = analysisFilterDialog.querySelector('.patient-analysis-filter-modal');
+    if (!modal) return;
+    const bounds = modal.getBoundingClientRect();
+    const clickedOutside = event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom;
+    if (clickedOutside) analysisFilterDialog.close();
+  });
+  portal.querySelector('[data-analysis-filter-clear]')?.addEventListener('click', () => {
     analysisFilter = 'all';
-    analysisFilters.forEach(button => button.classList.toggle('is-active', button.dataset.analysisFilter === 'all'));
+    analysisDateFilter = 'all';
+    analysisSpecialtyFilter = 'all';
+    analysisStatusFilter = 'all';
+    updateAnalysisFilterButtons();
+    updateAnalysisDialogChips();
+    closeAnalysisFilterSections();
     analysisFilters.find(button => button.dataset.analysisFilter === 'all')?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
     renderAnalyses();
+    analysisFilterDialog?.close();
   });
+  portal.querySelector('[data-analysis-filter-apply]')?.addEventListener('click', () => {
+    analysisFilter = selectedAnalysisChipValue('type');
+    analysisDateFilter = selectedAnalysisChipValue('date');
+    analysisSpecialtyFilter = selectedAnalysisChipValue('specialty');
+    analysisStatusFilter = selectedAnalysisChipValue('status');
+    updateAnalysisFilterButtons();
+    updateAnalysisFilterSummaries();
+    analysisFilters.find(button => button.dataset.analysisFilter === analysisFilter)?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    renderAnalyses();
+    analysisFilterDialog?.close();
+  });
+  updateAnalysisFilterButtons();
+  updateAnalysisDialogChips();
   renderAnalyses();
   const insuranceForm = portal.querySelector('[data-insurance-form]');
   portal.querySelectorAll('[data-insurance-form-open]').forEach(button => button.addEventListener('click', () => {
@@ -3538,6 +5333,35 @@
   let calendarMonthIndex = 0;
   let calendarMonthEnabled = false;
   let calendarFilterPanMoved = false;
+  const calendarMonthFormatter = new Intl.DateTimeFormat('es-MX', { month: 'long' });
+  const titleCaseCalendarText = value => {
+    const text = String(value || '');
+    return text ? text.charAt(0).toUpperCase() + text.slice(1) : '';
+  };
+  const calendarMonthDate = () => {
+    const key = calendarMonths[calendarMonthIndex]?.key;
+    if (/^\d{4}-\d{2}$/.test(key || '')) {
+      const [year, month] = key.split('-').map(Number);
+      return new Date(year, month - 1, 1);
+    }
+    return new Date();
+  };
+  const shiftCalendarMonth = (date, amount) => new Date(date.getFullYear(), date.getMonth() + amount, 1);
+  const updateCalendarPicker = () => {
+    const date = calendarMonthDate();
+    const previousMonth = portal.querySelector('[data-calendar-prev-month]');
+    const currentMonth = portal.querySelector('[data-calendar-month-label]');
+    const nextMonth = portal.querySelector('[data-calendar-next-month]');
+    const previousYear = portal.querySelector('[data-calendar-prev-year]');
+    const currentYear = portal.querySelector('[data-calendar-year-label]');
+    const nextYear = portal.querySelector('[data-calendar-next-year]');
+    if (previousMonth) previousMonth.textContent = titleCaseCalendarText(calendarMonthFormatter.format(shiftCalendarMonth(date, -1)));
+    if (currentMonth) currentMonth.textContent = titleCaseCalendarText(calendarMonthFormatter.format(date));
+    if (nextMonth) nextMonth.textContent = titleCaseCalendarText(calendarMonthFormatter.format(shiftCalendarMonth(date, 1)));
+    if (previousYear) previousYear.textContent = String(date.getFullYear() - 1);
+    if (currentYear) currentYear.textContent = String(date.getFullYear());
+    if (nextYear) nextYear.textContent = String(date.getFullYear() + 1);
+  };
   const renderCalendar = () => {
     let visible = 0;
     calendarItems.forEach(item => {
@@ -3548,8 +5372,7 @@
       item.hidden = !(matchesType && matchesMonth);
       if (!item.hidden) visible++;
     });
-    const label = portal.querySelector('[data-calendar-month-label]');
-    if (label && calendarMonths.length) label.textContent = calendarMonths[calendarMonthIndex]?.label;
+    updateCalendarPicker();
     const empty = portal.querySelector('[data-calendar-filter-empty]');
     if (empty) empty.hidden = visible > 0 || calendarItems.length === 0;
   };
@@ -3601,7 +5424,11 @@
       return;
     }
     calendarFilter = button.dataset.calendarFilter;
-    calendarFilters.forEach(item => item.classList.toggle('is-active', item === button));
+    calendarFilters.forEach(item => {
+      const isSelected = item === button;
+      item.classList.toggle('is-active', isSelected);
+      item.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
+    });
     renderCalendar();
   }));
   portal.querySelectorAll('[data-calendar-month-step]').forEach(button => button.addEventListener('click', () => {

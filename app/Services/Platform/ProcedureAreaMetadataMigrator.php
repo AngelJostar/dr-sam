@@ -52,6 +52,8 @@ class ProcedureAreaMetadataMigrator
             'consultation', 'consultorio' => 'consulting',
             'sala de infusion', 'infusion_room' => 'infusion',
             'quirofano', 'operating_room' => 'operating',
+            'unidad de cuidados intensivos', 'cuidados intensivos', 'icu' => 'uci',
+            'unidad de terapia intermedia', 'terapia intermedia' => 'uti',
             'recuperacion', 'recovery_room' => 'recovery',
             default => $type,
         };
