@@ -420,11 +420,13 @@
                       <td>
                         @php
                           $assignedProviderName = data_get($providerRequest->payload, 'provider_assignment.name');
-                          $providerWasSent = $providerRequest->status === 'accepted' && filled($assignedProviderName);
+                          $providerWasSent = filled($assignedProviderName);
+                          $inspectionAlreadyCompleted = in_array($remoteMixtureStatus, ['ready', 'in_route', 'delivered'], true)
+                            || in_array($providerRequest->status, ['ready', 'in_route', 'delivered'], true);
                         @endphp
                         @if ($providerWasSent)
                           <span class="authorization-pill auth-approved">{{ $assignedProviderName }}</span>
-                        @elseif ($allAuthorizationsApproved && ! $authorizationIsLocked && $providerRequest->request_type !== 'chemo')
+                        @elseif ($allAuthorizationsApproved && ! $authorizationIsLocked && ! $inspectionAlreadyCompleted && $providerRequest->request_type !== 'chemo')
                           <div class="operational-provider-control">
                             <button
                               class="authorization-pill authorization-button auth-pending"
@@ -443,7 +445,7 @@
                             </form>
                           </div>
                         @else
-                          <button type="button" class="operational-disabled-action" disabled title="Requiere autorización de Hospitalizacion y Farmacia intrahospitalaria">Pendiente</button>
+                          <button type="button" class="operational-disabled-action" disabled title="{{ $inspectionAlreadyCompleted ? 'La mezcla ya fue inspeccionada y no puede reenviarse al proveedor' : 'Requiere autorización de Enfermería y Farmacia intrahospitalaria' }}">Pendiente</button>
                         @endif
                       </td>
                       <td>

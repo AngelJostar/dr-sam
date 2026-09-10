@@ -1670,6 +1670,42 @@ textarea {
   font-size: 15px;
 }
 
+.native-shell .dashboard-logout-form {
+  position: relative;
+  z-index: 1;
+  align-self: flex-start;
+}
+
+.native-shell .dashboard-logout-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 10px 15px;
+  border: 1px solid #d7e4e7;
+  border-radius: 10px;
+  background: #fff;
+  color: #344156;
+  font-size: 13px;
+  font-weight: 800;
+  box-shadow: 0 8px 20px rgba(31, 45, 52, 0.07);
+}
+
+.native-shell .dashboard-logout-button:hover {
+  border-color: #0c9e91;
+  color: #087f76;
+}
+
+.native-shell .dashboard-logout-button svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
 .native-shell .metric-card,
 .native-shell .module-card,
 .native-shell .insurance-panel,
@@ -8212,6 +8248,46 @@ body.is-register-modal-open {
   background:
     linear-gradient(180deg, rgba(234, 252, 250, 0.72) 0%, rgba(255, 255, 255, 0) 34%),
     #fff;
+}
+
+/* Las solicitudes especializadas se muestran como una tarea enfocada. En esta
+   ruta no deben competir con el resto de paneles del escritorio médico. */
+.native-shell .doctor-service-request-page .doctor-assistant-native-main {
+  min-height: calc(100vh - 84px);
+  padding: 32px clamp(18px, 4vw, 64px) 56px;
+}
+
+.native-shell .doctor-service-request-page .doctor-assistant-native-main > * {
+  display: none !important;
+}
+
+.native-shell .doctor-service-request-page .doctor-assistant-native-main > #doctor-requests {
+  display: block !important;
+  width: min(1180px, 100%);
+  margin: 0 auto;
+}
+
+.native-shell .doctor-service-request-page .doctor-assistant-native-main > .doctor-assistant-native-composer {
+  display: grid !important;
+}
+
+.native-shell .doctor-service-request-page .doctor-service-request-focus .doctor-request-types {
+  display: block;
+  padding: 0;
+  border-bottom: 0;
+}
+
+.native-shell .doctor-service-request-page .doctor-service-request-focus .doctor-request-card {
+  border: 0;
+  border-radius: 0 0 12px 12px;
+}
+
+.native-shell .doctor-service-request-page .doctor-service-request-focus .doctor-request-card > summary {
+  display: none;
+}
+
+.native-shell .doctor-service-request-page .doctor-service-request-focus .doctor-workspace-form {
+  padding: 20px;
 }
 
 /* Inicio del m&oacute;dulo m&eacute;dico: se mantiene deliberadamente despejado, como el

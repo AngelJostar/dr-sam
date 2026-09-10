@@ -79,6 +79,8 @@ class DemoAccessTest extends TestCase
             ->assertSee('Acceder')
             ->assertSee('Prioridad alta')
             ->assertSee('Prioridad media')
+            ->assertSee('Cerrar sesión')
+            ->assertSee('action="'.route('logout').'"', false)
             ->assertSee('module-card-priority-high', false)
             ->assertSee('module-card-priority-medium', false)
             ->assertDontSee('Proveedor quimioterapias')

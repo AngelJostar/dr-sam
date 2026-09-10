@@ -718,21 +718,10 @@
             @continue($isServiceRequest && $requestType !== $focusedServiceType)
             <details class="doctor-request-card" data-request-type="{{ $requestType }}" @if((request('section') === 'requests' && old('request_type') === $requestType) || ($focusedServiceType === $requestType && in_array($serviceAction, ['request', 'create'], true))) open @endif>
               <summary><strong>{{ $requestTitle }}</strong><span>{{ $requestDescription }}</span></summary>
-              <form method="post" action="{{ route('doctor.service_requests.store') }}" class="doctor-workspace-form doctor-specialized-request-form" enctype="multipart/form-data">
+              <form method="post" action="{{ route('doctor.service_requests.store') }}" class="doctor-workspace-form doctor-specialized-request-form" enctype="multipart/form-data" @if($requestType === 'npt') data-npt-request-form @endif>
                 @csrf
                 <input type="hidden" name="request_type" value="{{ $requestType }}">
-                @if($requestType === 'npt')
-                  <fieldset class="doctor-specialized-section doctor-npt-form-section wide">
-                    <legend>Datos generales de la solicitud</legend>
-                    <div class="doctor-specialized-grid">
-                      <label>Paciente*<select name="patient_id" required><option value="">Seleccionar paciente</option>@foreach($patients as $patient)<option value="{{ $patient->id }}" @selected((string) old('patient_id') === (string) $patient->id)>{{ $patient->full_name }} - {{ $patient->platform_number }}</option>@endforeach</select></label>
-                      <label>Servicio*<input name="service" value="{{ old('service', $requestTitle) }}" required></label>
-                      <label>Fecha requerida<input type="datetime-local" name="required_at" value="{{ old('required_at') }}"></label>
-                      <label>Prioridad<select name="priority"><option value="routine" @selected(old('priority', 'routine') === 'routine')>Rutina</option><option value="urgent" @selected(old('priority') === 'urgent')>Urgente</option></select></label>
-                      <label class="wide">Diagn&oacute;stico*<textarea name="diagnosis" rows="3" required>{{ old('diagnosis') }}</textarea></label>
-                    </div>
-                  </fieldset>
-                @else
+                @if($requestType !== 'npt')
                   <label>Paciente<select name="patient_id" required><option value="">Seleccionar paciente</option>@foreach($patients as $patient)<option value="{{ $patient->id }}">{{ $patient->full_name }} - {{ $patient->platform_number }}</option>@endforeach</select></label>
                   <label>Servicio<input name="service" value="{{ $requestTitle }}" required></label>
                   <label>Fecha requerida<input type="datetime-local" name="required_at"></label>
@@ -740,7 +729,7 @@
                   <label class="wide">Diagn&oacute;stico<textarea name="diagnosis" rows="3" required></textarea></label>
                 @endif
                 @include('doctor.partials.specialized-request-fields', compact('requestType', 'doctor'))
-                <label class="wide">Indicaciones y observaciones<textarea name="notes" rows="3"></textarea></label>
+                <label class="wide">Indicaciones y observaciones<textarea name="notes" rows="3" @if($requestType === 'npt') maxlength="500" @endif></textarea></label>
                 <button type="submit">Enviar solicitud</button>
               </form>
             </details>
@@ -1446,6 +1435,56 @@ document.addEventListener('DOMContentLoaded', () => {
       ? document.querySelector('#doctor-requests table')
       : requestCard;
     window.requestAnimationFrame(() => target?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+  }
+
+  const nptInfusionTime = document.querySelector('[data-npt-infusion-time]');
+  const nptInfusionRate = document.querySelector('[data-npt-infusion-rate]');
+  const syncNptInfusionFields = () => {
+    if (!nptInfusionTime || !nptInfusionRate) return;
+    const hasInfusionTime = String(nptInfusionTime?.value || '').trim() !== '';
+    const hasInfusionRate = String(nptInfusionRate.value || '').trim() !== '';
+    nptInfusionRate.disabled = hasInfusionTime;
+    nptInfusionTime.disabled = !hasInfusionTime && hasInfusionRate;
+  };
+  nptInfusionTime?.addEventListener('input', syncNptInfusionFields);
+  nptInfusionRate?.addEventListener('input', syncNptInfusionFields);
+  syncNptInfusionFields();
+
+  const nptRequestForm = document.querySelector('[data-npt-request-form]');
+  if (nptRequestForm) {
+    const nptValidationMessages = [
+      ['[name="patient_id"]', 'Selecciona un paciente.'],
+      ['[name="service"]', 'El servicio es obligatorio.'],
+      ['[name="npt[weight]"]', 'Captura el peso del paciente.'],
+      ['[name="npt[birth_date]"]', 'Captura la fecha de nacimiento.'],
+      ['[name="npt[route]"]', 'Selecciona la vía de administración.'],
+      ['[name="npt[npt_type]"]', 'Selecciona el tipo de NPT.'],
+      ['[name="npt[delivery_at]"]', 'Captura la fecha y hora de entrega.'],
+      ['[name="npt[doctor_name]"]', 'Captura el nombre del médico.'],
+      ['[name="npt[professional_license]"]', 'Captura la cédula profesional.'],
+    ];
+    nptValidationMessages.forEach(([selector, message]) => {
+      const field = nptRequestForm.querySelector(selector);
+      field?.addEventListener('invalid', () => {
+        field.setCustomValidity(field.validity.valueMissing ? message : 'Revisa el valor capturado.');
+      });
+      field?.addEventListener('input', () => field.setCustomValidity(''));
+      field?.addEventListener('change', () => field.setCustomValidity(''));
+    });
+    nptRequestForm.addEventListener('submit', event => {
+      const deliveryField = nptRequestForm.querySelector('[name="npt[delivery_at]"]');
+      deliveryField?.setCustomValidity('');
+      if (deliveryField?.value) {
+        const minimumDelivery = new Date(Date.now() + (210 * 60 * 1000));
+        if (new Date(deliveryField.value) < minimumDelivery) {
+          deliveryField.setCustomValidity('La fecha y hora de entrega debe ser al menos 3 horas y 30 minutos después de la hora actual.');
+        }
+      }
+      if (!nptRequestForm.checkValidity()) {
+        event.preventDefault();
+        nptRequestForm.querySelector(':invalid')?.reportValidity();
+      }
+    });
   }
 
   const oncologyRequestModal = document.querySelector('[data-oncology-request-modal]');

@@ -826,7 +826,7 @@ class DoctorPortalController extends Controller
             'patient_id' => ['required', 'exists:patients,id'],
             'service' => ['required', 'string', 'max:255'],
             'required_at' => ['nullable', 'date'],
-            'diagnosis' => ['required', 'string', 'max:2000'],
+            'diagnosis' => [Rule::requiredIf($request->input('request_type') !== 'npt'), 'nullable', 'string', 'max:2000'],
             'notes' => ['nullable', 'string', 'max:4000'],
             'medication' => ['nullable', 'string', 'max:255'],
             'dose' => ['nullable', 'string', 'max:120'],
@@ -890,6 +890,14 @@ class DoctorPortalController extends Controller
         ]);
         abort_unless($this->patientBelongsToDoctor($doctor, (int) $data['patient_id']), 404);
 
+        if ($data['request_type'] === 'npt'
+            && filled(data_get($data, 'npt.infusion_hours'))
+            && filled(data_get($data, 'npt.infusion_rate'))) {
+            throw ValidationException::withMessages([
+                'npt.infusion_rate' => 'Captura el tiempo o la velocidad de infusión, no ambos.',
+            ]);
+        }
+
         $oncologyMedications = collect(data_get($data, 'oncology.medications', []))
             ->filter(fn (array $item): bool => filled($item['medication'] ?? null))
             ->values()
@@ -898,7 +906,7 @@ class DoctorPortalController extends Controller
             throw ValidationException::withMessages(['oncology.medications' => 'Agrega al menos un medicamento oncológico.']);
         }
         if ($data['request_type'] === 'npt') {
-            foreach (['registration', 'weight', 'birth_date', 'route', 'infusion_hours', 'total_volume', 'npt_type', 'delivery_at', 'destination_hospital', 'doctor_name', 'professional_license'] as $field) {
+            foreach (['weight', 'birth_date', 'route', 'npt_type', 'delivery_at', 'destination_hospital', 'doctor_name', 'professional_license'] as $field) {
                 if (blank(data_get($data, "npt.$field"))) {
                     throw ValidationException::withMessages(["npt.$field" => 'Este campo es obligatorio para la solicitud de nutrición parenteral.']);
                 }

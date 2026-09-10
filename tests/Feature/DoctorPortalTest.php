@@ -638,7 +638,6 @@ class DoctorPortalTest extends TestCase
                     'birth_date' => '1980-01-01',
                     'route' => 'Central',
                     'infusion_hours' => 24,
-                    'infusion_rate' => 50,
                     'total_volume' => 1200,
                     'npt_type' => 'Individualizada',
                     'products' => ['glucose_50' => 100, 'amino_acids_standard_10' => 80],
@@ -693,17 +692,50 @@ class DoctorPortalTest extends TestCase
 
         $response->assertOk()
             ->assertSee('doctor-service-request-page', false)
+            ->assertSee('doctor-service-request-focus', false)
             ->assertSee('Solicitud de nutrición parenteral')
             ->assertSee('name="request_type" value="npt"', false)
+            ->assertSee('name="service"', false)
+            ->assertSee('name="diagnosis"', false)
+            ->assertSee('name="npt[bed]"', false)
+            ->assertSee('name="npt[floor]"', false)
+            ->assertSee('data-npt-infusion-time', false)
+            ->assertSee('data-npt-infusion-rate', false)
+            ->assertSee('data-npt-request-form', false)
+            ->assertSee('3 horas y 30 minutos después de la hora actual')
             ->assertSee('name="npt[total_volume]"', false)
-            ->assertSee('Datos generales de la solicitud')
-            ->assertSee('Datos clínicos y ubicación')
+            ->assertSee('Datos del paciente y servicio')
             ->assertSee('Administración de la mezcla')
             ->assertSee('Componentes de la nutrición parenteral')
             ->assertSee('Entrega y responsable médico')
+            ->assertSee('ADULTO')
+            ->assertSee('PEDIÁTRICO')
+            ->assertDontSee('Adulto / tricámara')
+            ->assertDontSee('name="priority"', false)
+            ->assertDontSee('name="required_at"', false)
             ->assertDontSee('name="npt[infusion_set]"', false)
             ->assertDontSee('name="request_type" value="chemo"', false)
             ->assertDontSee('name="request_type" value="clinical_labs"', false);
+    }
+
+    public function test_npt_rejects_time_and_infusion_rate_when_both_are_filled(): void
+    {
+        [$user, $doctor] = $this->createDoctor();
+        $patient = Patient::query()->create([
+            'platform_number' => 'PAC-INFUSION',
+            'full_name' => 'Paciente Infusion',
+            'primary_doctor_id' => $doctor->id,
+            'status' => 'active',
+        ]);
+        $payload = $this->validNptRequestPayload($patient, $doctor);
+        $payload['npt']['infusion_rate'] = 50;
+
+        $this->actingAs($user)
+            ->from(route('doctor.dashboard', ['section' => 'services', 'type' => 'npt', 'action' => 'create']))
+            ->post(route('doctor.service_requests.store'), $payload)
+            ->assertSessionHasErrors(['npt.infusion_rate']);
+
+        $this->assertDatabaseCount('provider_requests', 0);
     }
 
     public function test_npt_form_shows_medicine_additives_and_excludes_auxiliary_materials(): void

@@ -679,6 +679,12 @@ class OperationalDashboardController extends Controller
 
         if ($data['status'] === 'accepted') {
             $payload = $providerRequest->payload ?? [];
+            abort_if(
+                in_array($providerRequest->mixtureIntegration?->remote_status, ['ready', 'in_route', 'delivered'], true)
+                    || in_array($providerRequest->status, ['ready', 'in_route', 'delivered'], true),
+                422,
+                'La mezcla ya fue inspeccionada y no puede reenviarse al proveedor.',
+            );
             if (in_array($providerRequest->request_type, ['npt', 'chemo'], true)) {
                 abort_unless(
                     MixtureAuthorizationPolicy::allApproved($payload, $providerRequest->request_type),

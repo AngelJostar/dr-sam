@@ -96,15 +96,17 @@
     // Los materiales auxiliares se determinan durante la materialización.
     $nptGroupLabels = ['amino_acids' => 'Aminoácidos', 'carbohydrates' => 'Carbohidratos', 'lipids' => 'Lípidos', 'electrolytes' => 'Electrolitos', 'additives' => 'Aditivos'];
   @endphp
-  <fieldset class="doctor-specialized-section doctor-npt-form-section wide"><legend>Datos clínicos y ubicación</legend><div class="doctor-specialized-grid">
-    <label>Servicio clínico*<input name="npt[clinical_service]" value="{{ old('npt.clinical_service', 'Nutrición clínica') }}"></label><label>Cama<input name="npt[bed]" value="{{ old('npt.bed') }}"></label><label>Piso<input name="npt[floor]" value="{{ old('npt.floor') }}"></label>
-    <label>Registro*<input name="npt[registration]" value="{{ old('npt.registration') }}" required></label><label>Peso (kg)*<input type="number" min="0" step="0.001" name="npt[weight]" value="{{ old('npt.weight') }}" required></label>
-    <label>Sexo<select name="npt[sex]"><option value="">Seleccionar sexo</option>@foreach(['Femenino','Masculino','Otro'] as $sex)<option @selected(old('npt.sex') === $sex)>{{ $sex }}</option>@endforeach</select></label><label>Fecha de nacimiento*<input type="date" name="npt[birth_date]" value="{{ old('npt.birth_date') }}" max="{{ now()->toDateString() }}" required></label>
+  <fieldset class="doctor-specialized-section doctor-npt-form-section wide"><legend>Datos del paciente y servicio</legend><div class="doctor-specialized-grid">
+    <label class="doctor-npt-patient-field">Paciente*<select name="patient_id" required><option value="">Seleccionar paciente</option>@foreach($patients as $patient)<option value="{{ $patient->id }}" @selected((string) old('patient_id') === (string) $patient->id)>{{ $patient->full_name }} - {{ $patient->platform_number }}</option>@endforeach</select></label>
+    <label>Servicio*<input name="service" value="{{ old('service', 'Nutrición parenteral') }}" maxlength="100" required></label><label>Cama<input name="npt[bed]" value="{{ old('npt.bed') }}" maxlength="50"></label><label>Piso<input name="npt[floor]" value="{{ old('npt.floor') }}" maxlength="50"></label>
+    <label>Registro<input name="npt[registration]" value="{{ old('npt.registration') }}" maxlength="50"></label><label class="doctor-npt-diagnosis-field">Diagnóstico<textarea name="diagnosis" rows="2" maxlength="255">{{ old('diagnosis') }}</textarea></label>
+    <label>Peso (kg)*<input type="number" min="0" step="0.001" name="npt[weight]" value="{{ old('npt.weight') }}" required></label>
+    <label>Sexo<select name="npt[sex]"><option value="">Seleccionar sexo</option>@foreach(['Femenino','Masculino'] as $sex)<option @selected(old('npt.sex') === $sex)>{{ $sex }}</option>@endforeach</select></label><label>Fecha de nacimiento*<input type="date" name="npt[birth_date]" value="{{ old('npt.birth_date') }}" max="{{ now()->toDateString() }}" required></label>
   </div></fieldset>
   <fieldset class="doctor-specialized-section doctor-npt-form-section wide"><legend>Administración de la mezcla</legend><div class="doctor-specialized-grid">
-    <label>Vía de administración*<select name="npt[route]" required><option value="Central" @selected(old('npt.route', 'Central') === 'Central')>Central</option><option value="Periferica" @selected(old('npt.route') === 'Periferica')>Periférica</option></select></label><label>Tiempo de infusión (h)*<input type="number" min="0" step="0.01" name="npt[infusion_hours]" value="{{ old('npt.infusion_hours', 24) }}" required></label>
-    <label>Velocidad de infusión (ml/h)<input type="number" min="0" step="0.001" name="npt[infusion_rate]" value="{{ old('npt.infusion_rate') }}"></label><label>Sobrellenado (ml)<input type="number" min="0" step="0.0001" name="npt[overfill]" value="{{ old('npt.overfill') }}"></label>
-    <label>Volumen total (ml)*<input type="number" min="0" step="0.0001" name="npt[total_volume]" value="{{ old('npt.total_volume') }}" required></label><label>Tipo de NPT*<select name="npt[npt_type]" required>@foreach(['Individualizada'=>'Adulto / individualizada','Tricamara'=>'Adulto / tricámara','Pediatrica'=>'Pediátrica'] as $value=>$label)<option value="{{ $value }}" @selected(old('npt.npt_type', 'Individualizada') === $value)>{{ $label }}</option>@endforeach</select></label>
+    <label>Vía de administración*<select name="npt[route]" required><option value="Central" @selected(old('npt.route', 'Central') === 'Central')>Central</option><option value="Periferica" @selected(old('npt.route') === 'Periferica')>Periférica</option></select></label><label>Tiempo de infusión (h)<input type="number" min="0" step="0.01" name="npt[infusion_hours]" value="{{ old('npt.infusion_hours', 24) }}" data-npt-infusion-time></label>
+    <label>Velocidad de infusión (ml/h)<input type="number" min="0" step="0.001" name="npt[infusion_rate]" value="{{ old('npt.infusion_rate') }}" data-npt-infusion-rate></label><label>Sobrellenado (ml)<input type="number" min="0" step="0.0001" name="npt[overfill]" value="{{ old('npt.overfill') }}"></label>
+    <label>Volumen total (ml)<input type="number" min="0" step="0.0001" name="npt[total_volume]" value="{{ old('npt.total_volume') }}"></label><label>NPT*<select name="npt[npt_type]" required>@foreach(['Individualizada'=>'ADULTO','Pediatrica'=>'PEDIÁTRICO'] as $value=>$label)<option value="{{ $value }}" @selected(old('npt.npt_type', 'Individualizada') === $value)>{{ $label }}</option>@endforeach</select></label>
   </div></fieldset>
   <fieldset class="doctor-specialized-section doctor-npt-catalog-section wide"><legend>Componentes de la nutrición parenteral</legend>
     @if($doctor->medicalUnit?->cbta_external_code)
@@ -137,8 +139,9 @@
     @endif
   </fieldset>
   <fieldset class="doctor-specialized-section doctor-npt-form-section wide"><legend>Entrega y responsable médico</legend><div class="doctor-specialized-grid">
-    <label>Fecha y hora de entrega*<input type="datetime-local" name="npt[delivery_at]" value="{{ old('npt.delivery_at') }}" required></label><label>Hospital destino*<input name="npt[destination_hospital]" value="{{ old('npt.destination_hospital', $doctor->medicalUnit?->name) }}" required></label>
-    <label>Nombre del médico*<input name="npt[doctor_name]" value="{{ old('npt.doctor_name', $doctor->full_name) }}" required></label><label>Cédula profesional*<input name="npt[professional_license]" value="{{ old('npt.professional_license', $doctor->professional_license) }}" required></label>
+    <input type="hidden" name="npt[destination_hospital]" value="{{ old('npt.destination_hospital', $doctor->medicalUnit?->name) }}">
+    <label>Fecha y hora de entrega*<input type="datetime-local" name="npt[delivery_at]" value="{{ old('npt.delivery_at') }}" min="{{ now()->format('Y-m-d\TH:i') }}" required></label>
+    <label>Nombre del médico*<input name="npt[doctor_name]" value="{{ old('npt.doctor_name', $doctor->full_name) }}" maxlength="255" required></label><label>Cédula profesional*<input name="npt[professional_license]" value="{{ old('npt.professional_license', $doctor->professional_license) }}" maxlength="50" required></label>
   </div></fieldset>
 @else
   <label>Estudio o procedimiento<input name="medication" placeholder="Ej. Biometría hemática"></label>

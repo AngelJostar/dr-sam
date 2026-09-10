@@ -491,6 +491,43 @@ class OperationalModuleTest extends TestCase
         $this->assertNotEmpty(data_get($prescription->metadata, 'operational_provider_request_status_event_id'));
     }
 
+    public function test_inspected_mixture_cannot_be_sent_to_provider_again(): void
+    {
+        $user = User::query()->create([
+            'name' => 'Super Admin Inspeccion',
+            'username' => 'super.inspeccion',
+            'email' => 'super.inspeccion@test.local',
+            'role' => 'superadmin',
+            'module' => 'superadmin',
+            'status' => 'active',
+        ]);
+        $unit = MedicalUnit::query()->create(['name' => 'Unidad Inspeccion', 'status' => 'active']);
+        $providerRequest = ProviderRequest::query()->create([
+            'medical_unit_id' => $unit->id,
+            'request_type' => 'npt',
+            'status' => 'ready',
+            'requested_at' => now(),
+            'payload' => ['authorizations' => ['nursing' => 'approved', 'pharmacy' => 'approved']],
+        ]);
+        MixtureIntegration::query()->create([
+            'provider_request_id' => $providerRequest->id,
+            'local_external_id' => '20000000-0000-4000-8000-000000000001',
+            'sync_status' => 'synced',
+            'remote_status' => 'ready',
+            'metadata' => ['catalog_type' => 'npt'],
+        ]);
+
+        $this->actingAs($user)
+            ->patch(route('operational.provider-requests.status', $providerRequest), [
+                'status' => 'accepted',
+                'provider_name' => 'Prodifem',
+            ])
+            ->assertStatus(422);
+
+        $this->assertSame('ready', $providerRequest->fresh()->status);
+        $this->assertNull(data_get($providerRequest->fresh()->payload, 'provider_assignment'));
+    }
+
     public function test_authorizations_are_independent_and_restricted_to_the_operational_area(): void
     {
         config(['cbta.base_url' => 'http://cbta.test', 'cbta.token' => 'test-token']);
