@@ -13,6 +13,7 @@
       'central-de-mezclas' => 'mixtures',
       'mantenimiento-equipo-medico' => 'maintenance',
       'osteosintesis' => 'osteosynthesis',
+      'farmacia-externa' => 'pharmacy',
       default => 'service',
     };
   };
@@ -141,6 +142,9 @@
                         @break
                       @case('osteosynthesis')
                         <svg viewBox="0 0 24 24"><path d="M8.5 8.5 15.5 15.5"/><path d="M6.5 11.5a3 3 0 1 1 3-5l8 8a3 3 0 1 1-5 3Z"/></svg>
+                        @break
+                      @case('pharmacy')
+                        <svg viewBox="0 0 24 24"><path d="M5 4h6a4 4 0 0 1 0 8H5V4Z"/><path d="M5 20V4M10 12l7 8M18 14l-6 6"/></svg>
                         @break
                       @default
                         <svg viewBox="0 0 24 24"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg>

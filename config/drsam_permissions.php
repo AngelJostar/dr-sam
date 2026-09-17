@@ -19,6 +19,7 @@ return [
     'unit.operational_users.manage' => ['superadmin', 'admin', 'institution', 'unit'],
     'unit.doctors.manage' => ['superadmin', 'admin', 'institution', 'unit'],
     'unit.external_pharmacy.update' => ['superadmin', 'admin', 'institution', 'unit'],
+    'unit.medications.update' => ['superadmin', 'admin', 'institution', 'unit'],
     'unit.procedure_areas.manage' => ['superadmin', 'admin', 'institution', 'unit'],
     'institution.units.update' => ['superadmin', 'admin', 'institution'],
     'institution.units.create' => ['superadmin', 'admin', 'institution'],

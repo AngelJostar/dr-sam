@@ -222,6 +222,7 @@ Route::middleware('auth')->group(function (): void {
     Route::put('/unit/doctors/{doctor}/authorizations', [UnitDashboardController::class, 'updateDoctorAuthorizations'])->middleware(['role:superadmin,admin,institution,unit', 'permission:unit.doctors.manage'])->name('unit.doctors.authorizations.update');
     Route::delete('/unit/doctors/{doctor}', [UnitDashboardController::class, 'destroyDoctor'])->middleware(['role:superadmin,admin,institution,unit', 'permission:unit.doctors.manage'])->name('unit.doctors.destroy');
     Route::patch('/unit/external-pharmacy/{medication}/status', [UnitDashboardController::class, 'updateExternalPharmacyStatus'])->middleware(['role:superadmin,admin,institution,unit', 'permission:unit.external_pharmacy.update'])->name('unit.external-pharmacy.status');
+    Route::patch('/unit/medications/{medication}/status', [UnitDashboardController::class, 'updateMedicationStatus'])->middleware(['role:superadmin,admin,institution,unit', 'permission:unit.medications.update'])->name('unit.medications.status');
     Route::post('/unit/procedure-areas', [UnitDashboardController::class, 'storeProcedureArea'])->middleware(['role:superadmin,admin,institution,unit', 'permission:unit.procedure_areas.manage'])->name('unit.procedure-areas.store');
     Route::put('/unit/procedure-areas/{areaId}', [UnitDashboardController::class, 'updateProcedureArea'])->middleware(['role:superadmin,admin,institution,unit', 'permission:unit.procedure_areas.manage'])->name('unit.procedure-areas.update');
     Route::get('/institution', [InstitutionDashboardController::class, 'index'])
@@ -245,6 +246,9 @@ Route::middleware('auth')->group(function (): void {
     Route::patch('/institution/medications/{medication}', [InstitutionDashboardController::class, 'updateMedication'])
         ->middleware(['role:superadmin,admin,institution', 'permission:institution.medications.manage'])
         ->name('institution.medications.update');
+    Route::patch('/institution/medications/{medication}/status', [InstitutionDashboardController::class, 'updateMedicationStatus'])
+        ->middleware(['role:superadmin,admin,institution', 'permission:institution.medications.manage'])
+        ->name('institution.medications.status');
     Route::post('/institution/specialties', [InstitutionDashboardController::class, 'storeSpecialty'])
         ->middleware(['role:superadmin,admin,institution', 'permission:institution.specialties.manage'])
         ->name('institution.specialties.store');

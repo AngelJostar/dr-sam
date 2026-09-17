@@ -37,6 +37,7 @@
       'laboratorio',
       'nutricion-parenteral',
       'quimioterapias',
+      'farmacia-externa',
       'central-de-mezclas',
       'mantenimiento-equipo-medico',
       'osteosintesis',
@@ -58,17 +59,171 @@
 
           return [$unit->id => $contracts];
       });
-  $activeSection = in_array(request('section'), ['subunits', 'pharmacies', 'services', 'medications', 'specialties', 'create-unit', 'create-service', 'edit-unit'], true) ? request('section') : 'units';
+  $activeSection = in_array(request('section'), ['subunits', 'pharmacies', 'services', 'medications', 'doctors', 'specialties', 'create-unit', 'create-service', 'edit-unit'], true) ? request('section') : 'units';
   $activeSectionTitle = match ($activeSection) {
     'pharmacies' => 'Catalogo de farmacias institucionales',
     'subunits' => 'Catalogo de subunidades',
     'services' => 'Catalogo de servicios',
     'medications' => 'Catalogo de medicamentos',
+    'doctors' => 'Catalogo institucional de medicos',
     'specialties' => 'Catalogo institucional de especialidades',
     'create-unit' => 'Alta de unidad',
     'create-service' => 'Alta de servicios',
     default => 'Catalogo de unidades',
   };
+  $institutionSpecialtyItems = $servicesCatalog
+      ->map(fn ($service) => (object) [
+          'id' => $service->id,
+          'name' => $service->specialty ?? $service->name,
+          'status' => $service->status,
+      ])
+      ->unique(fn ($specialty) => strtolower($specialty->name))
+      ->sortBy('name')
+      ->values();
+  $institutionDoctorRows = $institution->medicalUnits
+      ->flatMap(fn ($unit) => $unit->doctors->map(fn ($doctor) => [
+          'doctor' => $doctor,
+          'unit' => $unit,
+      ]))
+      ->sortBy(fn ($row) => $row['doctor']->full_name)
+      ->values();
+  $institutionSubunitCount = max(
+      count(config('drsam_subunits', [])),
+      $institution->medicalUnits->sum(fn ($unit) => max(
+          $unit->procedureAreas->count(),
+          collect(data_get($unit->metadata, 'procedure_areas', []))->count(),
+      )),
+  );
+  $institutionCatalogUiBySection = [
+    'units' => [
+      'key' => 'units',
+      'title' => 'Catalogo de unidades',
+      'description' => 'Unidades medicas adscritas a '.$institutionLabel,
+      'count' => $institution->medicalUnits->count(),
+      'singular' => 'unidad registrada',
+      'plural' => 'unidades registradas',
+      'carousel_mode' => 'groups',
+      'carousel' => [
+        'all' => ['Catalogo', 'catalog'],
+        'third-level' => ['Hospitales de Tercer Nivel', 'active'],
+        'second-level' => ['Hospitales de Segundo Nivel', 'active'],
+        'first-level' => ['Hospitales de Primer Nivel', 'active'],
+        'clinics' => ['Clínicas y centros médicos', 'active'],
+        'pharmacies' => ['Farmacias', 'active'],
+      ],
+      'filters' => ['all' => 'Todas', 'active' => 'Activas', 'maintenance' => 'Mantenimiento', 'inactive' => 'Inactivas'],
+      'counts' => [
+        'active' => $institution->medicalUnits->where('status', 'active')->count(),
+        'maintenance' => $institution->medicalUnits->where('status', 'maintenance')->count(),
+        'inactive' => $institution->medicalUnits->where('status', 'inactive')->count(),
+      ],
+      'search' => 'Buscar unidad, CLUES o ubicacion',
+      'action' => 'create-unit',
+    ],
+    'subunits' => [
+      'key' => 'subunits',
+      'title' => 'Catalogo de subunidades',
+      'description' => 'Consultorios, salas y areas asistenciales de las unidades adscritas',
+      'count' => $institutionSubunitCount,
+      'singular' => 'subunidad en catalogo',
+      'plural' => 'subunidades en catalogo',
+      'carousel' => [
+        'all' => ['Catalogo', 'catalog'],
+        'active' => ['Activas', 'active'],
+        'maintenance' => ['Mantenimiento', 'maintenance'],
+        'inactive' => ['Inactivas', 'inactive'],
+      ],
+      'filters' => ['all' => 'Todas', 'active' => 'Activas', 'maintenance' => 'Mantenimiento', 'inactive' => 'Inactivas'],
+      'counts' => [],
+      'search' => 'Buscar subunidad, clave o tipo',
+      'action' => null,
+    ],
+    'pharmacies' => [
+      'key' => 'pharmacies',
+      'title' => 'Farmacias institucionales',
+      'description' => 'Catalogo de farmacias institucionales vinculadas con las unidades de '.$institutionLabel,
+      'count' => $institution->medicalUnits->count(),
+      'singular' => 'farmacia registrada',
+      'plural' => 'farmacias registradas',
+      'carousel' => [
+        'all' => ['Catalogo', 'catalog'],
+        'active' => ['Activas', 'active'],
+        'maintenance' => ['Mantenimiento', 'maintenance'],
+        'inactive' => ['Inactivas', 'inactive'],
+      ],
+      'filters' => ['all' => 'Todas', 'active' => 'Activas', 'maintenance' => 'Mantenimiento', 'inactive' => 'Inactivas'],
+      'counts' => [
+        'active' => $institution->medicalUnits->filter(fn ($unit) => data_get($unit->metadata, 'pharmacy_status', 'active') === 'active')->count(),
+        'maintenance' => $institution->medicalUnits->filter(fn ($unit) => data_get($unit->metadata, 'pharmacy_status') === 'maintenance')->count(),
+        'inactive' => $institution->medicalUnits->filter(fn ($unit) => data_get($unit->metadata, 'pharmacy_status') === 'inactive')->count(),
+      ],
+      'search' => 'Buscar farmacia, unidad o responsable',
+      'action' => null,
+    ],
+    'medications' => [
+      'key' => 'medications',
+      'title' => 'Catalogo institucional de medicamentos',
+      'description' => 'Medicamentos institucionales disponibles para las unidades adscritas. Fuente oficial: listado esencial de primer nivel 2026',
+      'count' => $catalogItems->count(),
+      'singular' => 'medicamento registrado',
+      'plural' => 'medicamentos registrados',
+      'carousel' => [
+        'all' => ['Catalogo', 'catalog'],
+        'active' => ['Activos', 'active'],
+        'inactive' => ['Inactivos', 'inactive'],
+      ],
+      'filters' => ['all' => 'Todos', 'active' => 'Activos', 'inactive' => 'Inactivos'],
+      'counts' => [
+        'active' => $catalogItems->where('status', 'active')->count(),
+        'inactive' => $catalogItems->where('status', 'inactive')->count(),
+      ],
+      'search' => 'Buscar clave, medicamento o categoria',
+      'action' => 'create-medication',
+    ],
+    'doctors' => [
+      'key' => 'doctors',
+      'title' => 'Medicos',
+      'description' => 'Personal medico adscrito a las unidades de '.$institutionLabel,
+      'count' => $institutionDoctorRows->count(),
+      'singular' => 'medico adscrito',
+      'plural' => 'medicos adscritos',
+      'carousel' => [
+        'all' => ['Catalogo', 'catalog'],
+        'active' => ['Activos', 'active'],
+        'pending' => ['Pendientes', 'active'],
+        'inactive' => ['Inactivos', 'inactive'],
+      ],
+      'filters' => ['all' => 'Todos', 'active' => 'Activos', 'pending' => 'Pendientes', 'inactive' => 'Inactivos'],
+      'counts' => [
+        'active' => $institutionDoctorRows->filter(fn ($row) => $row['doctor']->status === 'active')->count(),
+        'pending' => $institutionDoctorRows->filter(fn ($row) => $row['doctor']->status === 'pending')->count(),
+        'inactive' => $institutionDoctorRows->filter(fn ($row) => $row['doctor']->status === 'inactive')->count(),
+      ],
+      'search' => 'Buscar medico, cedula o unidad',
+      'action' => null,
+    ],
+    'specialties' => [
+      'key' => 'specialties',
+      'title' => 'Catalogo institucional de especialidades',
+      'description' => 'Especialidades institucionales disponibles para las unidades de '.$institutionLabel,
+      'count' => $institutionSpecialtyItems->count(),
+      'singular' => 'especialidad registrada',
+      'plural' => 'especialidades registradas',
+      'carousel' => [
+        'all' => ['Catalogo', 'catalog'],
+        'active' => ['Activas', 'active'],
+        'inactive' => ['Inactivas', 'inactive'],
+      ],
+      'filters' => ['all' => 'Todas', 'active' => 'Activas', 'inactive' => 'Inactivas'],
+      'counts' => [
+        'active' => $institutionSpecialtyItems->where('status', 'active')->count(),
+        'inactive' => $institutionSpecialtyItems->where('status', 'inactive')->count(),
+      ],
+      'search' => 'Buscar especialidad',
+      'action' => 'create-specialty',
+    ],
+  ];
+  $institutionCatalogUi = $institutionCatalogUiBySection[$activeSection] ?? null;
 @endphp
 
 @section('content')
@@ -98,32 +253,32 @@
       <nav class="institution-native-menu">
         <a @class(['is-active' => in_array($activeSection, ['units', 'create-unit', 'edit-unit'], true)]) href="{{ route('institution.dashboard', ['institution' => $institution->id]) }}">
           <span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 21V4a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v17"/><path d="M16 8h3v13"/><path d="M8 7h4M8 11h4M8 15h4M9 21v-3h3v3"/></svg></span>
-          Catalogo de Unidades
+          Unidades
           <i aria-hidden="true">›</i>
         </a>
         <a @class(['is-active' => $activeSection === 'subunits']) href="{{ route('institution.dashboard', ['institution' => $institution->id, 'section' => 'subunits']) }}">
           <span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 21V8h6v13M14 21V3h6v18"/><path d="M7 11h1M7 15h1M17 7h1M17 11h1M17 15h1"/></svg></span>
-          Catalogo de Subunidades
-          <i aria-hidden="true">›</i>
-        </a>
-        <a @class(['is-active' => $activeSection === 'pharmacies']) href="{{ route('institution.dashboard', ['institution' => $institution->id, 'section' => 'pharmacies']) }}">
-          <span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 6h16v15H4z"/><path d="M9 3h6v3H9z"/><path d="M12 10v7M8.5 13.5h7"/></svg></span>
-          Catalogo de Farmacias Institucionales
+          Subunidades
           <i aria-hidden="true">›</i>
         </a>
         <a @class(['is-active' => $activeSection === 'services']) href="{{ route('institution.dashboard', ['institution' => $institution->id, 'section' => 'services']) }}">
           <span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/><path d="M7 7v10M17 7v10"/></svg></span>
-          Catalogo de Servicios
+          Servicios
           <i aria-hidden="true">›</i>
         </a>
         <a @class(['is-active' => $activeSection === 'medications']) href="{{ route('institution.dashboard', ['institution' => $institution->id, 'section' => 'medications']) }}">
           <span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m7 16 9-9a3 3 0 0 1 4 4l-9 9a3 3 0 0 1-4-4Z"/><path d="m12 11 4 4"/></svg></span>
-          Catalogo de Medicamentos
+          Medicamentos
+          <i aria-hidden="true">›</i>
+        </a>
+        <a @class(['is-active' => $activeSection === 'doctors']) href="{{ route('institution.dashboard', ['institution' => $institution->id, 'section' => 'doctors']) }}">
+          <span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 4v5a4 4 0 0 0 8 0V4"/><path d="M10 13v2a5 5 0 0 0 10 0v-2"/><circle cx="20" cy="10" r="2"/><path d="M4 4h4M12 4h4"/></svg></span>
+          Medicos
           <i aria-hidden="true">›</i>
         </a>
         <a @class(['is-active' => $activeSection === 'specialties']) href="{{ route('institution.dashboard', ['institution' => $institution->id, 'section' => 'specialties']) }}">
           <span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 18.2l-5.6 3 1.1-6.2L3 10.6l6.2-.9Z"/></svg></span>
-          Catalogo de Especialidades
+          Especialidades
           <i aria-hidden="true">›</i>
         </a>
         <span class="institution-native-menu-divider" aria-hidden="true"></span>
@@ -151,33 +306,24 @@
         </div>
       @endif
 
-      <header class="institution-native-header">
-        <div class="institution-native-title">
-          <span aria-hidden="true">
-            @if ($activeSection === 'medications')
-              <svg viewBox="0 0 24 24"><path d="m7 16 9-9a3 3 0 0 1 4 4l-9 9a3 3 0 0 1-4-4Z"/><path d="m12 11 4 4"/></svg>
-            @else
+      @if ($institutionCatalogUi)
+        @include('institution._catalog_workspace_header', ['institutionCatalogUi' => $institutionCatalogUi])
+      @elseif ($activeSection !== 'services')
+        <header class="institution-native-header">
+          <div class="institution-native-title">
+            <span aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d="M5 21V4a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v17"/><path d="M16 8h3v13"/><path d="M8 7h4M8 11h4M8 15h4M9 21v-3h3v3"/></svg>
-            @endif
-          </span>
-          <div>
-            <h1>{{ $activeSectionTitle }}</h1>
+            </span>
+            <div><h1>{{ $activeSectionTitle }}</h1></div>
           </div>
-        </div>
-      </header>
+        </header>
 
-      @if (in_array($activeSection, ['units', 'create-unit', 'edit-unit'], true))
-        <nav class="institution-native-tabs" aria-label="Acciones de unidades">
-          <a @class(['is-active' => in_array($activeSection, ['units', 'edit-unit'], true)]) href="{{ route('institution.dashboard', ['institution' => $institution->id]) }}">Ver unidades</a>
-          <a @class(['is-active' => $activeSection === 'create-unit']) href="{{ route('institution.dashboard', ['institution' => $institution->id, 'section' => 'create-unit']) }}">Alta de unidad</a>
-        </nav>
-      @endif
-
-      @if ($activeSection === 'medications')
-        <nav class="institution-native-tabs institution-medication-tabs" aria-label="Acciones de medicamentos">
-          <button type="button" class="is-active" data-show-medication-list>Ver medicamentos</button>
-          <button type="button" data-show-medication-form>Alta de medicamento</button>
-        </nav>
+        @if (in_array($activeSection, ['create-unit', 'edit-unit'], true))
+          <nav class="institution-native-tabs" aria-label="Acciones de unidades">
+            <a @class(['is-active' => $activeSection === 'edit-unit']) href="{{ route('institution.dashboard', ['institution' => $institution->id]) }}">Ver unidades</a>
+            <a @class(['is-active' => $activeSection === 'create-unit']) href="{{ route('institution.dashboard', ['institution' => $institution->id, 'section' => 'create-unit']) }}">Alta de unidad</a>
+          </nav>
+        @endif
       @endif
 
       @if ($activeSection === 'edit-unit' && ($editingUnit = $institution->medicalUnits->firstWhere('id', (int) request('unit'))))
@@ -198,16 +344,6 @@
         </section>
       @elseif ($activeSection === 'units')
       <section id="units" class="institution-native-table-card">
-        <div class="institution-native-table-heading">
-          <span aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M5 21V4a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v17"/><path d="M16 8h3v13"/><path d="M8 7h4M8 11h4M8 15h4M9 21v-3h3v3"/></svg>
-          </span>
-          <div>
-            <h2>Unidades</h2>
-            <p><span data-visible-unit-count>{{ $visibleUnits }}</span> unidades visibles</p>
-          </div>
-        </div>
-
         <div class="institution-native-table-scroll">
           <table class="institution-native-table institution-units-table">
             <thead>
@@ -220,7 +356,8 @@
                 <th>Nivel / Tipo</th>
                 <th>Servicios activos</th>
                 <th>Estatus</th>
-                <th>Acciones</th>
+                <th>Editar</th>
+                <th>Eliminar</th>
               </tr>
             </thead>
             <tbody>
@@ -229,8 +366,20 @@
                   $unitActiveServiceContracts = $institutionUnitServiceContracts->get($unit->id, collect());
                   $unitActiveServiceCount = $unitActiveServiceContracts->count();
                   $unitPassword = $unitPasswordText($unit);
+                  $unitLevelText = str($unit->care_level ?? '')->lower()->ascii()->toString();
+                  $unitTypeText = str(($unit->type ?? '').' '.($unit->typology ?? ''))->lower()->ascii()->toString();
+                  $unitCarouselGroups = collect();
+                  if (str_contains($unitLevelText, 'tercer')) $unitCarouselGroups->push('third-level');
+                  if (str_contains($unitLevelText, 'segundo')) $unitCarouselGroups->push('second-level');
+                  if (str_contains($unitLevelText, 'primer')) $unitCarouselGroups->push('first-level');
+                  if (str_contains($unitTypeText, 'clinica') || str_contains($unitTypeText, 'centro') || str_contains($unitTypeText, 'medicina familiar')) $unitCarouselGroups->push('clinics');
+                  if (data_get($unit->metadata, 'pharmacy_status', 'active') !== 'inactive') $unitCarouselGroups->push('pharmacies');
                 @endphp
                 <tr data-unit-row
+                    data-institution-catalog-row="units"
+                    data-institution-catalog-status="{{ $unit->status }}"
+                    data-institution-catalog-groups="{{ $unitCarouselGroups->implode(' ') }}"
+                    data-institution-catalog-search="{{ str($unit->name.' '.$unit->clues.' '.$unit->code.' '.$unit->city.' '.$unit->municipality.' '.$unit->state.' '.$unit->type.' '.$unit->care_level)->lower() }}"
                     data-unit-search-value="{{ str($unit->name.' '.$unit->city.' '.$unit->municipality.' '.$unit->state.' '.$unit->type.' '.$unit->care_level)->lower() }}"
                     data-unit-type="{{ $unit->type }}"
                     data-unit-level="{{ $unit->care_level }}"
@@ -276,6 +425,10 @@
                         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="m16.5 3.5 4 4L8 20H4v-4Z"/></svg>
                         Editar
                       </a>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="institution-native-actions">
                       <form method="post" action="{{ route('institution.units.status', $unit) }}" onsubmit="return confirm('&iquest;{{ $unit->status === 'inactive' ? 'Reactivar' : 'Desactivar' }} esta unidad?')">
                         @csrf
                         @method('PATCH')
@@ -290,25 +443,12 @@
                 </tr>
               @empty
                 <tr>
-                  <td colspan="9">No hay unidades registradas.</td>
+                  <td colspan="10">No hay unidades registradas.</td>
                 </tr>
               @endforelse
             </tbody>
           </table>
         </div>
-        <footer class="institution-native-table-footer">
-          <span>Mostrando 1 a <b data-visible-unit-count>{{ $visibleUnits }}</b> de <b data-visible-unit-count>{{ $visibleUnits }}</b> unidades</span>
-          <nav aria-label="Paginacion de unidades">
-            <button type="button" aria-label="Pagina anterior">‹</button>
-            <strong>1</strong>
-            <button type="button" aria-label="Pagina siguiente">›</button>
-          </nav>
-          <label>
-            <select aria-label="Unidades por pagina">
-              <option>10 por pagina</option>
-            </select>
-          </label>
-        </footer>
       </section>
 
       @foreach ($institution->medicalUnits as $unit)
@@ -455,15 +595,6 @@
           ][$value ?? ''] ?? $statusText($value);
         @endphp
         <section class="institution-native-table-card institution-native-table-card-wide institution-native-pharmacy-card">
-          <div class="institution-native-table-heading">
-            <span aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M5 21V4a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v17"/><path d="M16 8h3v13"/><path d="M8 7h4M8 11h4M8 15h4M9 21v-3h3v3"/></svg>
-            </span>
-            <div>
-              <h2>Farmacias</h2>
-              <p>{{ $pharmacyCount }} {{ $pharmacyCount === 1 ? 'farmacia registrada' : 'farmacias registradas' }}</p>
-            </div>
-          </div>
           <div class="institution-native-table-scroll">
             <table class="institution-native-table institution-native-pharmacy-table">
               <thead>
@@ -519,6 +650,9 @@
                     ])->filter()->implode(', ');
                   @endphp
                   <tr data-pharmacy-row
+                      data-institution-catalog-row="pharmacies"
+                      data-institution-catalog-status="{{ $pharmacyStatus }}"
+                      data-institution-catalog-search="{{ str($pharmacyName.' '.$pharmacyKey.' '.$unit->name.' '.$pharmacyResponsible.' '.$pharmacyLocation.' '.$pharmacySchedule)->lower() }}"
                       data-pharmacy="{{ str($pharmacyName.' '.$institutionLabel)->lower() }}"
                       data-key="{{ str($pharmacyKey)->lower() }}"
                       data-unit="{{ str($unit->name)->lower() }}"
@@ -590,8 +724,9 @@
                   const value = control.value.trim();
                   return value === '' || normalize(row.dataset[control.dataset.pharmacyFilter]).includes(normalize(value));
                 });
-                row.hidden = ! matches;
+                row.dataset.institutionLocalMatch = matches ? 'true' : 'false';
               });
+              document.dispatchEvent(new CustomEvent('institution:catalog-local-filter'));
               updateFooter();
             };
             const sortRows = (key) => {
@@ -625,19 +760,25 @@
               filterControls.forEach((control) => control.value = '');
               applyFilters();
             });
+            document.addEventListener('institution:catalog-applied', (event) => {
+              if (event.detail?.section === 'pharmacies') updateFooter();
+            });
             updateFooter();
           })();
         </script>
       @elseif ($activeSection === 'services')
         <div class="institution-service-catalog" data-service-catalog>
           @if ($servicesCatalog->isNotEmpty())
-            <section class="institution-service-carousel-card">
+            <section class="institution-service-carousel-card institution-catalog-carousel-card">
               <button type="button" class="institution-service-carousel-arrow" data-service-carousel-prev aria-label="Servicio anterior">&lsaquo;</button>
-              <div class="institution-service-carousel" data-service-carousel aria-label="Servicios institucionales">
-                <button type="button" class="institution-service-carousel-new" data-service-create-open>
-                  <span class="institution-service-carousel-icon is-new" aria-hidden="true">+</span>
-                  <strong>Nuevo servicio</strong>
-                  <small>Registrar servicio</small>
+              <div class="institution-service-carousel institution-catalog-carousel" data-service-carousel aria-label="Servicios institucionales">
+                <button type="button" class="institution-service-carousel-button"
+                        data-service-carousel-button="all" aria-pressed="false">
+                  <span class="institution-service-carousel-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                  </span>
+                  <strong>Todos</strong>
+                  <small>{{ $servicesCatalog->count() }} {{ $servicesCatalog->count() === 1 ? 'servicio' : 'servicios' }}</small>
                 </button>
                 @foreach ($servicesCatalog as $service)
                   @php
@@ -652,12 +793,13 @@
                       'central-de-mezclas' => 'mixtures',
                       'mantenimiento-equipo-medico' => 'maintenance',
                       'osteosintesis' => 'osteosynthesis',
+                      'farmacia-externa' => 'pharmacy',
                       default => 'service',
                     };
                   @endphp
                   <button type="button"
                           @class(['institution-service-carousel-button', 'is-active' => $loop->first])
-                          data-service-carousel-button="{{ $service->id }}">
+                          data-service-carousel-button="{{ $service->id }}" aria-pressed="{{ $loop->first ? 'true' : 'false' }}">
                     <span class="institution-service-carousel-icon is-{{ $serviceIcon }}" aria-hidden="true">
                       @switch($serviceIcon)
                         @case('consultation')
@@ -684,6 +826,9 @@
                         @case('osteosynthesis')
                           <svg viewBox="0 0 24 24"><path d="M8.5 8.5 15.5 15.5"/><path d="M6.5 11.5a3 3 0 1 1 3-5l8 8a3 3 0 1 1-5 3Z"/></svg>
                           @break
+                        @case('pharmacy')
+                          <svg viewBox="0 0 24 24"><path d="M5 4h6a4 4 0 0 1 0 8H5V4Z"/><path d="M5 20V4M10 12l7 8M18 14l-6 6"/></svg>
+                          @break
                         @default
                           <svg viewBox="0 0 24 24"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg>
                       @endswitch
@@ -708,13 +853,48 @@
             </dialog>
 
             <div class="institution-service-panels">
+              <article class="institution-service-panel institution-catalog-section-panel" data-service-panel="all" hidden>
+                <header class="institution-service-panel-header">
+                  <div class="institution-service-copy">
+                    <h2>Todos los servicios</h2>
+                    <p>Catalogo institucional de {{ $institution->name }}</p>
+                    <div><span class="institution-native-status">{{ $servicesCatalog->count() }} {{ $servicesCatalog->count() === 1 ? 'servicio' : 'servicios' }}</span></div>
+                  </div>
+                </header>
+                @include('institution._service_filter_toolbar', [
+                  'filterScope' => 'all',
+                  'totalCount' => $servicesCatalog->count(),
+                  'activeCount' => $servicesCatalog->where('status', 'active')->count(),
+                  'inactiveCount' => $servicesCatalog->where('status', 'inactive')->count(),
+                  'searchPlaceholder' => 'Buscar servicio o categoria',
+                ])
+                <div class="institution-native-table-scroll">
+                  <table class="institution-native-table institution-service-all-table">
+                    <thead><tr><th>Servicio</th><th>Categoria</th><th>Hospitales habilitados</th><th>Estatus</th><th>Acciones</th></tr></thead>
+                    <tbody>
+                      @foreach ($servicesCatalog as $service)
+                        @php $enabledUnits = $service->contractedServices->where('status', 'active')->count(); @endphp
+                        <tr data-institution-service-row
+                            data-service-row-status="{{ $service->status }}"
+                            data-service-row-search="{{ str($service->name.' '.$service->specialty.' '.$service->category)->lower() }}">
+                          <td><strong>{{ $service->name }}</strong><small>{{ $service->specialty ?? 'Servicio general' }}</small></td>
+                          <td>{{ $service->category ?? 'Sin categoria' }}</td>
+                          <td>{{ $enabledUnits }} {{ $enabledUnits === 1 ? 'hospital' : 'hospitales' }}</td>
+                          <td><span class="institution-native-status">{{ $statusText($service->status) }}</span></td>
+                          <td><button type="button" data-service-select="{{ $service->id }}">Ver detalle</button></td>
+                        </tr>
+                      @endforeach
+                    </tbody>
+                  </table>
+                </div>
+              </article>
               @foreach ($servicesCatalog as $service)
                 @php
                   $contracts = $service->contractedServices;
                   $activeContracts = $contracts->where('status', 'active');
                   $latestEnd = $contracts->pluck('ends_at')->filter()->sortDesc()->first();
                 @endphp
-                <article class="institution-service-panel" data-service-panel="{{ $service->id }}" @if (! $loop->first) hidden @endif>
+                <article class="institution-service-panel institution-catalog-section-panel" data-service-panel="{{ $service->id }}" @if (! $loop->first) hidden @endif>
                   <header class="institution-service-panel-header">
                     <div class="institution-service-copy">
                       <h2>{{ $service->name }}</h2>
@@ -735,6 +915,14 @@
                     </div>
                   </header>
 
+                  @include('institution._service_filter_toolbar', [
+                    'filterScope' => (string) $service->id,
+                    'totalCount' => $contracts->count(),
+                    'activeCount' => $activeContracts->count(),
+                    'inactiveCount' => $contracts->where('status', 'inactive')->count(),
+                    'searchPlaceholder' => 'Buscar hospital, CLUES o ubicacion',
+                  ])
+
                   <div class="institution-native-table-scroll">
                     <table class="institution-native-table institution-service-hospitals-table">
                       <thead>
@@ -748,7 +936,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                        @forelse ($activeContracts as $contract)
+                        @forelse ($contracts as $contract)
                           @php
                             $unit = $contract->medicalUnit;
                             $unitLocation = collect([
@@ -756,7 +944,9 @@
                               $unit?->state ?? $unit?->entity,
                             ])->filter()->implode(', ');
                           @endphp
-                          <tr>
+                          <tr data-institution-service-row
+                              data-service-row-status="{{ $contract->status }}"
+                              data-service-row-search="{{ str(($unit?->name ?? '').' '.($unit?->clues ?? $unit?->code ?? '').' '.$unitLocation.' '.$contract->contract_number)->lower() }}">
                             <td>
                               <strong>{{ $unit?->name ?? 'Sin unidad' }}</strong>
                               <small>{{ $unit?->type ?? $unit?->typology ?? 'Unidad medica' }}</small>
@@ -830,7 +1020,11 @@
             const serviceCarouselButtons = [...document.querySelectorAll('[data-service-carousel-button]')];
             const servicePanels = [...document.querySelectorAll('[data-service-panel]')];
             const showServicePanel = (id) => {
-              serviceCarouselButtons.forEach((button) => button.classList.toggle('is-active', button.dataset.serviceCarouselButton === id));
+              serviceCarouselButtons.forEach((button) => {
+                const active = button.dataset.serviceCarouselButton === id;
+                button.classList.toggle('is-active', active);
+                button.setAttribute('aria-pressed', String(active));
+              });
               servicePanels.forEach((panel) => panel.hidden = panel.dataset.servicePanel !== id);
             };
             const showDetail = (id, mode) => {
@@ -840,7 +1034,10 @@
               window.scrollTo({ top: 0, behavior: 'smooth' });
             };
             serviceCarouselButtons.forEach((button) => button.addEventListener('click', () => showServicePanel(button.dataset.serviceCarouselButton)));
-            document.querySelector('[data-service-create-open]')?.addEventListener('click', () => serviceCreateDialog?.showModal());
+            document.querySelectorAll('[data-service-select]').forEach((button) => button.addEventListener('click', () => showServicePanel(button.dataset.serviceSelect)));
+            document.querySelectorAll('[data-service-create-open]').forEach((button) => {
+              button.addEventListener('click', () => serviceCreateDialog?.showModal());
+            });
             document.querySelector('[data-service-create-close]')?.addEventListener('click', () => serviceCreateDialog?.close());
             serviceCreateDialog?.addEventListener('click', (event) => {
               if (event.target === serviceCreateDialog) serviceCreateDialog.close();
@@ -848,6 +1045,32 @@
             if (serviceCreateDialog?.dataset.openOnLoad === 'true') serviceCreateDialog.showModal();
             document.querySelector('[data-service-carousel-prev]')?.addEventListener('click', () => serviceCarousel?.scrollBy({ left: -280, behavior: 'smooth' }));
             document.querySelector('[data-service-carousel-next]')?.addEventListener('click', () => serviceCarousel?.scrollBy({ left: 280, behavior: 'smooth' }));
+            document.querySelectorAll('[data-service-filter-scope]').forEach((toolbar) => {
+              const panel = toolbar.closest('[data-service-panel]');
+              const rows = [...panel.querySelectorAll('[data-institution-service-row]')];
+              const buttons = [...toolbar.querySelectorAll('[data-service-row-filter]')];
+              const search = toolbar.querySelector('[data-service-row-search]');
+              let status = 'all';
+              const normalize = (value) => (value ?? '').toLocaleLowerCase('es').normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+              const apply = () => {
+                const term = normalize(search.value);
+                rows.forEach((row) => {
+                  const statusMatches = status === 'all' || row.dataset.serviceRowStatus === status;
+                  const searchMatches = !term || normalize(row.dataset.serviceRowSearch || row.textContent).includes(term);
+                  row.hidden = ! statusMatches || ! searchMatches;
+                });
+              };
+              buttons.forEach((button) => button.addEventListener('click', () => {
+                status = button.dataset.serviceRowFilter;
+                buttons.forEach((candidate) => {
+                  const active = candidate === button;
+                  candidate.classList.toggle('is-active', active);
+                  candidate.setAttribute('aria-pressed', active ? 'true' : 'false');
+                });
+                apply();
+              }));
+              search.addEventListener('input', apply);
+            });
             document.querySelectorAll('[data-service-edit]').forEach((button) => button.addEventListener('click', () => showDetail(button.dataset.serviceEdit, 'edit')));
             document.querySelectorAll('[data-service-contract]').forEach((button) => button.addEventListener('click', () => showDetail(button.dataset.serviceContract, 'contract')));
             document.querySelectorAll('[data-service-detail-back]').forEach((button) => button.addEventListener('click', () => {
@@ -951,19 +1174,11 @@
           $medicationCount = $catalogItems->count();
         @endphp
         <section class="institution-native-table-card institution-native-table-card-wide institution-medication-card" data-medication-list-panel>
-          <div class="institution-native-table-heading">
-            <span aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="m7 16 9-9a3 3 0 0 1 4 4l-9 9a3 3 0 0 1-4-4Z"/><path d="m12 11 4 4"/></svg>
-            </span>
-            <div>
-              <h2>Medicamentos</h2>
-              <p>{{ number_format($medicationCount) }} {{ $medicationCount === 1 ? 'medicamento' : 'medicamentos' }}</p>
-            </div>
-          </div>
           <div class="institution-native-table-scroll">
             <table class="institution-native-table institution-medication-table">
               <thead>
                 <tr>
+                  <th>Activo</th>
                   <th>Medicamento</th>
                   <th>Clave</th>
                   <th>Categoria</th>
@@ -1008,14 +1223,37 @@
                       default => 'undefined',
                     };
                   @endphp
-                  <tr data-medication-row>
+                  <tr data-medication-row
+                      data-institution-catalog-row="medications"
+                      data-institution-catalog-status="{{ $item->status }}"
+                      data-institution-catalog-search="{{ str($item->name.' '.$item->cnis.' '.$itemGroup.' '.$itemPresentation.' '.$itemConcentration.' '.$itemRoute)->lower() }}">
+                    <td>
+                      <form method="post"
+                            action="{{ route('institution.medications.status', $item) }}"
+                            class="institution-medication-status-toggle"
+                            data-institution-medication-toggle>
+                        @csrf
+                        @method('patch')
+                        <input type="hidden" name="institution" value="{{ $institution->id }}">
+                        <input type="hidden" name="status" value="{{ $item->status === 'active' ? 'inactive' : 'active' }}">
+                        <button type="submit"
+                                @class(['institution-medication-status-switch', 'is-on' => $item->status === 'active'])
+                                role="switch"
+                                aria-checked="{{ $item->status === 'active' ? 'true' : 'false' }}"
+                                aria-label="{{ $item->status === 'active' ? 'Desactivar' : 'Activar' }} {{ $item->name }}"
+                                title="{{ $item->status === 'active' ? 'Desactivar' : 'Activar' }}">
+                          <span aria-hidden="true"></span>
+                        </button>
+                      </form>
+                    </td>
                     <td><strong>{{ $item->name }}</strong></td>
                     <td>{{ $item->cnis ?? 'Sin clave' }}</td>
                     <td>{{ $itemGroup }}</td>
                     <td>{{ $itemPresentation ?? 'Sin presentacion' }}</td>
                     <td>{{ $itemConcentration ?? 'No especificada' }}</td>
                     <td>{{ $itemRoute }}</td>
-                    <td><span class="institution-native-status">{{ $statusText($item->status) }}</span></td>
+                    <td><span @class(['institution-native-status', 'is-inactive' => $item->status === 'inactive'])
+                              data-institution-medication-status-label>{{ $statusText($item->status) }}</span></td>
                     <td>
                       <div class="institution-native-actions institution-medication-actions">
                         <button type="button" class="institution-medication-edit"
@@ -1040,7 +1278,7 @@
                     </td>
                   </tr>
                 @empty
-                  <tr><td colspan="8">No hay medicamentos institucionales registrados.</td></tr>
+                  <tr><td colspan="9">No hay medicamentos institucionales registrados.</td></tr>
                 @endforelse
               </tbody>
             </table>
@@ -1153,6 +1391,73 @@
                 showForm();
               });
             });
+            const updateMedicationCounts = () => {
+              const rows = [...document.querySelectorAll('[data-institution-catalog-row="medications"]')];
+              const counts = rows.reduce((totals, row) => {
+                const status = row.dataset.institutionCatalogStatus;
+                if (status === 'active' || status === 'inactive') totals[status] += 1;
+                return totals;
+              }, { active: 0, inactive: 0 });
+
+              Object.entries(counts).forEach(([status, count]) => {
+                const badge = document.querySelector(`[data-institution-toolbar-filter="${status}"] b`);
+                if (badge) badge.textContent = count;
+              });
+            };
+            document.querySelectorAll('[data-institution-medication-toggle]').forEach((toggleForm) => {
+              toggleForm.addEventListener('submit', async (event) => {
+                event.preventDefault();
+
+                const button = toggleForm.querySelector('[role="switch"]');
+                if (! button || button.disabled) return;
+
+                const row = toggleForm.closest('[data-medication-row]');
+                const scrollPosition = { x: window.scrollX, y: window.scrollY };
+                button.disabled = true;
+
+                try {
+                  const response = await fetch(toggleForm.action, {
+                    method: 'POST',
+                    body: new FormData(toggleForm),
+                    credentials: 'same-origin',
+                    headers: {
+                      Accept: 'application/json',
+                      'X-Requested-With': 'XMLHttpRequest',
+                    },
+                  });
+
+                  if (! response.ok) throw new Error(`HTTP ${response.status}`);
+
+                  const { status } = await response.json();
+                  const isActive = status === 'active';
+                  const actionLabel = isActive ? 'Desactivar' : 'Activar';
+                  const medicationName = row?.querySelector('td:nth-child(2) strong')?.textContent?.trim() ?? 'medicamento';
+
+                  toggleForm.elements.namedItem('status').value = isActive ? 'inactive' : 'active';
+                  button.classList.toggle('is-on', isActive);
+                  button.setAttribute('aria-checked', isActive ? 'true' : 'false');
+                  button.setAttribute('aria-label', `${actionLabel} ${medicationName}`);
+                  button.title = actionLabel;
+
+                  if (row) {
+                    row.dataset.institutionCatalogStatus = status;
+                    row.querySelector('[data-institution-medication-status-label]')?.classList.toggle('is-inactive', ! isActive);
+                    const statusLabel = row.querySelector('[data-institution-medication-status-label]');
+                    if (statusLabel) statusLabel.textContent = isActive ? 'Activo' : 'Inactivo';
+                    const editButton = row.querySelector('[data-edit-medication]');
+                    if (editButton) editButton.dataset.status = status;
+                  }
+
+                  updateMedicationCounts();
+                  document.dispatchEvent(new CustomEvent('institution:catalog-local-filter'));
+                } catch (error) {
+                  console.error('No se pudo actualizar el estado del medicamento.', error);
+                } finally {
+                  button.disabled = false;
+                  window.scrollTo(scrollPosition.x, scrollPosition.y);
+                }
+              });
+            });
             document.querySelector('[data-hide-medication-form]').addEventListener('click', () => {
               showList();
             });
@@ -1162,32 +1467,59 @@
             @endif
           })();
         </script>
+      @elseif ($activeSection === 'doctors')
+        <section class="institution-native-table-card institution-native-table-card-wide">
+          <div class="institution-native-table-scroll">
+            <table class="institution-native-table">
+              <thead>
+                <tr>
+                  <th>Medico</th>
+                  <th>Cedula</th>
+                  <th>Especialidad</th>
+                  <th>Unidad</th>
+                  <th>Servicio</th>
+                  <th>Estatus</th>
+                </tr>
+              </thead>
+              <tbody>
+                @forelse ($institutionDoctorRows as $doctorRow)
+                  @php
+                    $doctor = $doctorRow['doctor'];
+                    $doctorUnit = $doctorRow['unit'];
+                  @endphp
+                  <tr data-institution-catalog-row="doctors"
+                      data-institution-catalog-status="{{ $doctor->status }}"
+                      data-institution-catalog-search="{{ str($doctor->full_name.' '.$doctor->professional_license.' '.$doctor->specialty.' '.$doctor->subspecialty.' '.$doctor->service_name.' '.$doctorUnit->name.' '.$doctorUnit->clues.' '.$doctorUnit->code)->lower() }}">
+                    <td><strong>{{ $doctor->full_name }}</strong><small>{{ $doctor->subspecialty ?? 'Atencion clinica' }}</small></td>
+                    <td>{{ $doctor->professional_license ?? 'Sin cedula' }}</td>
+                    <td>{{ $doctor->specialty ?? 'Sin especialidad' }}</td>
+                    <td><strong>{{ $doctorUnit->name }}</strong><small>{{ $doctorUnit->clues ?? $doctorUnit->code ?? 'Sin clave' }}</small></td>
+                    <td>{{ $doctor->service_name ?? 'Sin servicio' }}</td>
+                    <td><span class="institution-native-status">{{ $statusText($doctor->status) }}</span></td>
+                  </tr>
+                @empty
+                  <tr><td colspan="6" class="institution-native-empty">Sin medicos adscritos registrados.</td></tr>
+                @endforelse
+              </tbody>
+            </table>
+          </div>
+        </section>
       @elseif ($activeSection === 'specialties')
         @php
-          $specialtyItems = $servicesCatalog
-              ->map(fn ($service) => (object) [
-                'id' => $service->id,
-                'name' => $service->specialty ?? $service->name,
-                'status' => $service->status,
-              ])
-              ->unique(fn ($specialty) => strtolower($specialty->name))
-              ->sortBy('name')
-              ->values();
+          $specialtyItems = $institutionSpecialtyItems;
         @endphp
         <section class="institution-native-table-card institution-native-table-card-wide institution-specialty-card" data-specialty-list-panel>
-          <div class="institution-native-table-heading">
-            <div>
-              <h2>Especialidades institucionales</h2>
-              <p>Las unidades debajo de esta institucion consultan este catalogo.</p>
-            </div>
-            <button type="button" class="institution-medication-new" data-show-specialty-form>Nueva Especialidad</button>
-          </div>
           <div class="institution-native-table-scroll">
             <table class="institution-native-table institution-specialty-table">
               <thead><tr><th>No.</th><th>Especialidad</th><th>Estatus</th><th>Acciones</th></tr></thead>
               <tbody>
                 @forelse ($specialtyItems as $specialty)
-                  <tr data-specialty-row data-name="{{ str($specialty->name)->lower() }}" data-status="{{ $specialty->status }}">
+                  <tr data-specialty-row
+                      data-institution-catalog-row="specialties"
+                      data-institution-catalog-status="{{ $specialty->status }}"
+                      data-institution-catalog-search="{{ str($specialty->name)->lower() }}"
+                      data-name="{{ str($specialty->name)->lower() }}"
+                      data-status="{{ $specialty->status }}">
                     <td>{{ $loop->iteration }}</td>
                     <td><strong>{{ $specialty->name }}</strong><span>Catalogo institucional</span></td>
                     <td><span class="institution-native-status">{{ $statusText($specialty->status) }}</span></td>

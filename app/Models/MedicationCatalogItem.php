@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class MedicationCatalogItem extends BaseModel
 {
@@ -20,6 +21,11 @@ class MedicationCatalogItem extends BaseModel
     public function institution(): BelongsTo
     {
         return $this->belongsTo(Institution::class);
+    }
+
+    public function unitSettings(): HasMany
+    {
+        return $this->hasMany(UnitMedicationSetting::class);
     }
 }
 

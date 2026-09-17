@@ -1,21 +1,25 @@
 @php
+  $pendingValue = '—';
   $baseUnits = $institution->medicalUnits->values();
-  $subunitTypeLabels = [
-    'consulting' => 'Consulta Externa',
-    'infusion' => 'Sala de Infusion',
-    'operating' => 'Quirofano',
-    'recovery' => 'Sala de Recuperacion',
-    'laboratory' => 'Laboratorio Clinico',
-    'imaging' => 'Imagenologia',
-    'therapy' => 'Terapia Fisica',
-    'vaccination' => 'Unidad de Vacunacion',
+  $catalogDefinitions = collect(config('drsam_subunits', []))->values();
+  $subunitCatalogNames = [
+    'consulting' => 'Consulta externa',
+    'infusion' => 'Unidad de infusión y quimioterapia',
+    'operating' => 'Quirófanos',
+    'uci' => 'Cuidados intensivos de adultos',
+    'uti' => 'Cuidados intermedios',
+    'recovery' => 'Recuperación posanestésica',
+    'laboratory' => 'Laboratorio clínico',
+    'imaging' => 'Imagenología',
+    'therapy' => 'Rehabilitación y terapia física',
+    'vaccination' => 'Unidad de vacunación',
   ];
-  $fallbackSubunits = [
-    ['name' => 'Consulta Externa', 'code' => 'SUB-EXTR-001', 'type' => 'Consulta Externa', 'services' => 8, 'status' => 'active'],
-    ['name' => 'Laboratorio Clinico', 'code' => 'SUB-LAB-002', 'type' => 'Laboratorio', 'services' => 6, 'status' => 'active'],
-    ['name' => 'Imagenologia', 'code' => 'SUB-IMG-003', 'type' => 'Imagenologia', 'services' => 5, 'status' => 'maintenance'],
-    ['name' => 'Terapia Fisica', 'code' => 'SUB-TFIS-004', 'type' => 'Rehabilitacion', 'services' => 4, 'status' => 'active'],
-    ['name' => 'Unidad de Vacunacion', 'code' => 'SUB-VAC-005', 'type' => 'Prevencion', 'services' => 3, 'status' => 'active'],
+  $fallbackRegistrations = [
+    ['catalog_name' => 'Consulta externa', 'code' => 'C-01', 'services' => 6, 'status' => 'maintenance'],
+    ['catalog_name' => 'Laboratorio clínico', 'code' => 'SUB-LAB-002', 'services' => 6, 'status' => 'active'],
+    ['catalog_name' => 'Imagenología', 'code' => 'SUB-IMG-003', 'services' => 5, 'status' => 'maintenance'],
+    ['catalog_name' => 'Rehabilitación y terapia física', 'code' => 'SUB-TFIS-004', 'services' => 4, 'status' => 'active'],
+    ['catalog_name' => 'Unidad de vacunación', 'code' => 'SUB-VAC-005', 'services' => 3, 'status' => 'active'],
   ];
   $subunitStatusText = fn (?string $value) => [
     'active' => 'Activa',
@@ -26,7 +30,7 @@
   $unitLocation = fn ($unit) => collect([
     $unit->city ?? $unit->municipality,
     $unit->state ?? $unit->entity,
-  ])->filter()->implode(', ') ?: 'Sin ubicacion';
+  ])->filter()->implode(', ') ?: null;
   $demoUnit = (object) [
     'id' => null,
     'name' => 'Hospital General Demo Dr. Sam',
@@ -40,77 +44,142 @@
     'status' => 'active',
   ];
   $subunitUnitKey = fn ($unit) => $unit?->id ? 'unit-'.$unit->id : 'demo-unit';
-  $subunitRows = collect();
+  $normalizeSubunitName = fn ($value) => str((string) $value)
+      ->ascii()
+      ->lower()
+      ->replaceMatches('/[^a-z0-9]+/', ' ')
+      ->trim()
+      ->toString();
+  $registeredSubunits = collect();
 
   foreach ($baseUnits as $unit) {
-    $areas = collect(data_get($unit->metadata, 'procedure_areas', []))->values();
+    $persistedSignatures = collect();
 
-    foreach ($areas as $index => $area) {
-      $type = (string) data_get($area, 'type', 'consulting');
-      $typeLabel = $subunitTypeLabels[$type] ?? str($type)->replace(['_', '-'], ' ')->title()->toString();
-      $subunitRows->push([
-        'name' => data_get($area, 'name', $typeLabel),
-        'code' => data_get($area, 'code') ?: data_get($area, 'clave') ?: data_get($area, 'unit_number', 'SUB-'.strtoupper(substr($type, 0, 4)).'-'.str_pad((string) ($index + 1), 3, '0', STR_PAD_LEFT)),
+    foreach ($unit->procedureAreas as $area) {
+      $type = (string) $area->type;
+      $catalogName = data_get($area->metadata, 'catalog_name')
+          ?: data_get($area->metadata, 'source_payload.name')
+          ?: ($subunitCatalogNames[$type] ?? str($type)->replace(['_', '-'], ' ')->title()->toString());
+      $equipment = data_get($area->metadata, 'equipment', data_get($area->metadata, 'equipment_ids'));
+      $equipmentCount = is_countable($equipment)
+          ? count($equipment)
+          : data_get($area->metadata, 'equipment_count');
+
+      $registeredSubunits->push([
+        'catalog_name' => $catalogName,
         'parent_key' => $subunitUnitKey($unit),
         'parent' => $unit->name,
         'parent_code' => $unit->clues ?? $unit->code ?? $unit->external_id,
-        'location' => $unitLocation($unit),
-        'type' => $typeLabel,
+        'code' => $area->unit_number,
+        'location' => $area->location ?: $unitLocation($unit),
+        'responsible' => $area->responsible_name,
+        'equipment_count' => is_numeric($equipmentCount) ? (int) $equipmentCount : null,
+        'services' => $institution->services->where('medical_unit_id', $unit->id)->where('status', 'active')->count(),
+        'status' => $area->status ?: $unit->status,
+      ]);
+
+      $persistedSignatures->push(strtolower($type.'|'.($area->unit_number ?? '')));
+    }
+
+    foreach (collect(data_get($unit->metadata, 'procedure_areas', []))->values() as $index => $area) {
+      $type = (string) data_get($area, 'type', 'consulting');
+      $code = data_get($area, 'code')
+          ?: data_get($area, 'clave')
+          ?: data_get($area, 'unit_number', 'SUB-'.strtoupper(substr($type, 0, 4)).'-'.str_pad((string) ($index + 1), 3, '0', STR_PAD_LEFT));
+      $signature = strtolower($type.'|'.$code);
+      if ($persistedSignatures->contains($signature)) {
+        continue;
+      }
+
+      $equipment = data_get($area, 'equipment', data_get($area, 'equipment_ids'));
+      $equipmentCount = is_countable($equipment) ? count($equipment) : data_get($area, 'equipment_count');
+      $registeredSubunits->push([
+        'catalog_name' => data_get($area, 'catalog_name')
+            ?: data_get($area, 'name')
+            ?: ($subunitCatalogNames[$type] ?? str($type)->replace(['_', '-'], ' ')->title()->toString()),
+        'parent_key' => $subunitUnitKey($unit),
+        'parent' => $unit->name,
+        'parent_code' => $unit->clues ?? $unit->code ?? $unit->external_id,
+        'code' => $code,
+        'location' => data_get($area, 'location') ?: $unitLocation($unit),
+        'responsible' => data_get($area, 'responsible'),
+        'equipment_count' => is_numeric($equipmentCount) ? (int) $equipmentCount : null,
         'services' => $institution->services->where('medical_unit_id', $unit->id)->where('status', 'active')->count(),
         'status' => data_get($area, 'status', $unit->status),
       ]);
     }
   }
 
-  if ($subunitRows->count() < 5) {
+  if ($registeredSubunits->count() < count($fallbackRegistrations)) {
     $unit = $baseUnits->first() ?? $demoUnit;
-    $existingSubunits = $subunitRows
-        ->pluck('name')
-        ->map(fn ($name) => strtolower((string) $name))
+    $existingCatalogNames = $registeredSubunits
+        ->pluck('catalog_name')
+        ->map($normalizeSubunitName)
         ->all();
 
-    foreach ($fallbackSubunits as $fallback) {
-      if ($subunitRows->count() >= 5) {
+    foreach ($fallbackRegistrations as $fallback) {
+      if ($registeredSubunits->count() >= count($fallbackRegistrations)) {
         break;
       }
 
-      if (! in_array(strtolower($fallback['name']), $existingSubunits, true)) {
-        $subunitRows->push([
-          'name' => $fallback['name'],
-          'code' => $fallback['code'],
+      if (! in_array($normalizeSubunitName($fallback['catalog_name']), $existingCatalogNames, true)) {
+        $registeredSubunits->push([
+          ...$fallback,
           'parent_key' => $subunitUnitKey($unit),
           'parent' => $unit->name,
           'parent_code' => $unit->clues ?? $unit->code ?? $unit->external_id,
           'location' => $unitLocation($unit),
-          'type' => $fallback['type'],
-          'services' => $fallback['services'],
-          'status' => $fallback['status'],
+          'responsible' => null,
+          'equipment_count' => null,
         ]);
-        $existingSubunits[] = strtolower($fallback['name']);
+        $existingCatalogNames[] = $normalizeSubunitName($fallback['catalog_name']);
       }
     }
   }
 
+  $registeredByCatalog = $registeredSubunits->groupBy(
+      fn ($row) => $normalizeSubunitName($row['catalog_name'])
+  );
+  $subunitRows = $catalogDefinitions->map(function ($definition, $index) use ($registeredByCatalog, $normalizeSubunitName) {
+    $registrations = $registeredByCatalog->get($normalizeSubunitName($definition['name']), collect());
+    $firstRegistration = $registrations->first();
+    $collectValues = fn (string $key) => $registrations
+        ->pluck($key)
+        ->filter(fn ($value) => $value !== null && $value !== '')
+        ->unique()
+        ->values();
+    $statuses = $collectValues('status');
+    $status = match (true) {
+      $statuses->contains('active') => 'active',
+      $statuses->contains('maintenance') => 'maintenance',
+      $statuses->contains('inactive') => 'inactive',
+      $statuses->contains('suspended') => 'suspended',
+      default => 'pending',
+    };
+    $equipmentCounts = $collectValues('equipment_count');
+    $serviceCounts = $collectValues('services');
+
+    return [
+      ...$definition,
+      'number' => $index + 1,
+      'parent_key' => $firstRegistration['parent_key'] ?? 'unassigned',
+      'parent' => $collectValues('parent')->implode(' / ') ?: null,
+      'parent_code' => $collectValues('parent_code')->implode(', ') ?: null,
+      'code' => $collectValues('code')->implode(', ') ?: null,
+      'location' => $collectValues('location')->implode(' / ') ?: null,
+      'responsible' => $collectValues('responsible')->implode(', ') ?: null,
+      'spaces_registered' => $registrations->isNotEmpty() ? $registrations->count() : null,
+      'equipment_assigned' => $equipmentCounts->isNotEmpty() ? $equipmentCounts->sum() : null,
+      'services' => $serviceCounts->isNotEmpty() ? $serviceCounts->max() : null,
+      'status' => $status,
+    ];
+  });
+
   $subunitCount = $subunitRows->count();
   $subunitUnitOptions = $baseUnits->isNotEmpty() ? $baseUnits : collect([$demoUnit]);
-  $subunitShowingFrom = $subunitCount > 0 ? 1 : 0;
-  $subunitShowingTo = min(10, $subunitCount);
-  $subunitTotalPages = max(1, (int) ceil(max(1, $subunitCount) / 10));
-  $subunitVisiblePages = range(1, min(5, $subunitTotalPages));
 @endphp
 
-<nav class="institution-native-tabs institution-subunit-tabs" aria-label="Acciones de subunidades">
-  <button type="button" class="is-active">Ver subunidades</button>
-  <button type="button">Alta de subunidad</button>
-</nav>
-
 <section class="institution-native-table-card institution-native-table-card-wide institution-subunit-catalog-card">
-  <div class="institution-native-table-heading institution-subunit-catalog-heading">
-    <div>
-      <h2>Subunidades</h2>
-      <p>{{ number_format($subunitCount) }} {{ $subunitCount === 1 ? 'subunidad' : 'subunidades' }}</p>
-    </div>
-  </div>
   <div class="institution-subunit-unit-filter">
     <label>Unidad
       <select data-subunit-unit-filter>
@@ -123,83 +192,115 @@
       </select>
     </label>
   </div>
-  <div class="institution-native-table-scroll">
+
+  <div class="institution-native-table-scroll institution-subunit-catalog-scroll">
     <table class="institution-native-table institution-subunit-catalog-table">
       <thead>
         <tr>
+          <th>N.º</th>
+          <th>Categoría</th>
           <th>Subunidad</th>
+          <th>Espacios que puede incluir</th>
+          <th>Equipamiento asociado</th>
+          <th>Hospital / Unidad padre</th>
           <th>Clave</th>
-          <th>Unidad padre</th>
-          <th>Ubicacion</th>
-          <th>Tipo</th>
+          <th>Ubicación</th>
+          <th>Responsable</th>
+          <th>Espacios registrados</th>
+          <th>Equipos asignados</th>
           <th>Servicios activos</th>
-          <th>Estatus</th>
-          <th>Acciones</th>
+          <th>Estado</th>
+          <th>Ver</th>
+          <th data-drsam-table-filter-skip-column>Editar</th>
+          <th data-drsam-table-filter-skip-column>Espacios</th>
+          <th data-drsam-table-filter-skip-column>Equipos</th>
         </tr>
       </thead>
       <tbody>
         @forelse ($subunitRows as $row)
-          <tr data-subunit-row data-subunit-unit="{{ $row['parent_key'] }}">
+          @php
+            $searchText = collect([
+              $row['category'], $row['name'], $row['spaces'], $row['equipment'], $row['parent'],
+              $row['parent_code'], $row['code'], $row['location'], $row['responsible'], $row['status'],
+            ])->filter()->implode(' ');
+          @endphp
+          <tr data-subunit-row
+              data-subunit-catalog-index="{{ $row['number'] }}"
+              data-institution-catalog-row="subunits"
+              data-institution-catalog-status="{{ $row['status'] }}"
+              data-institution-catalog-search="{{ str($searchText)->lower() }}"
+              data-subunit-unit="{{ $row['parent_key'] }}">
+            <td class="institution-subunit-number">{{ $row['number'] }}</td>
+            <td>{{ $row['category'] }}</td>
             <td><strong>{{ $row['name'] }}</strong></td>
-            <td>{{ $row['code'] }}</td>
+            <td>{{ $row['spaces'] }}</td>
+            <td>{{ $row['equipment'] }}</td>
             <td>
-              {{ $row['parent'] }}
+              {{ $row['parent'] ?? $pendingValue }}
               @if ($row['parent_code'])
                 <span>{{ $row['parent_code'] }}</span>
               @endif
             </td>
-            <td>{{ $row['location'] }}</td>
-            <td>{{ $row['type'] }}</td>
-            <td>{{ $row['services'] }}</td>
+            <td>{{ $row['code'] ?? $pendingValue }}</td>
+            <td>{{ $row['location'] ?? $pendingValue }}</td>
+            <td>{{ $row['responsible'] ?? $pendingValue }}</td>
+            <td>{{ $row['spaces_registered'] ?? $pendingValue }}</td>
+            <td>{{ $row['equipment_assigned'] ?? $pendingValue }}</td>
+            <td>{{ $row['services'] ?? $pendingValue }}</td>
             <td>
-              <span @class([
-                'institution-native-status',
-                'is-inactive' => $row['status'] !== 'active',
-                'is-maintenance' => $row['status'] === 'maintenance',
-              ])>{{ $subunitStatusText($row['status']) }}</span>
+              @if ($row['status'] === 'pending')
+                <span class="institution-subunit-pending" aria-label="Pendiente de captura">{{ $pendingValue }}</span>
+              @else
+                <span @class([
+                  'institution-native-status',
+                  'is-inactive' => in_array($row['status'], ['inactive', 'suspended'], true),
+                  'is-maintenance' => $row['status'] === 'maintenance',
+                ])>{{ $subunitStatusText($row['status']) }}</span>
+              @endif
             </td>
-            <td>
-              <div class="institution-native-actions institution-subunit-actions">
-                <button type="button">
+            <td class="institution-subunit-action-cell">
+              <div class="institution-native-actions institution-subunit-control-actions">
+                <button type="button" data-subunit-action="view" title="Ver detalle de {{ $row['name'] }}">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"/><circle cx="12" cy="12" r="2.5"/></svg>
+                  Ver
+                </button>
+              </div>
+            </td>
+            <td class="institution-subunit-action-cell">
+              <div class="institution-native-actions institution-subunit-control-actions">
+                <button type="button" data-subunit-action="edit" title="Editar {{ $row['name'] }}">
                   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="m16.5 3.5 4 4L8 20H4v-4Z"/></svg>
                   Editar
                 </button>
-                <button type="button" class="danger" aria-label="Eliminar subunidad {{ $row['name'] }}">
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v5M14 11v5"/></svg>
-                  Eliminar
+              </div>
+            </td>
+            <td class="institution-subunit-action-cell">
+              <div class="institution-native-actions institution-subunit-control-actions">
+                <button type="button" data-subunit-action="spaces" title="Administrar espacios de {{ $row['name'] }}">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V5h16v16"/><path d="M8 9h3v4H8zM15 9h2v4h-2zM8 17h9"/></svg>
+                  Espacios
+                </button>
+              </div>
+            </td>
+            <td class="institution-subunit-action-cell">
+              <div class="institution-native-actions institution-subunit-control-actions">
+                <button type="button" data-subunit-action="equipment" title="Asignar equipamiento a {{ $row['name'] }}">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h10v10H7z"/><path d="M9 3v4M15 3v4M9 17v4M15 17v4M3 9h4M17 9h4M3 15h4M17 15h4"/></svg>
+                  Equipos
                 </button>
               </div>
             </td>
           </tr>
         @empty
-          <tr><td colspan="8">No hay subunidades registradas.</td></tr>
+          <tr><td colspan="17">No hay subunidades en el catálogo.</td></tr>
         @endforelse
-        <tr data-subunit-empty hidden><td colspan="8">No hay subunidades para la unidad seleccionada.</td></tr>
+        <tr data-subunit-empty hidden><td colspan="17">No hay subunidades para los filtros seleccionados.</td></tr>
       </tbody>
     </table>
   </div>
-  <footer class="institution-native-table-footer">
-    <span data-subunit-footer-summary>Mostrando {{ $subunitShowingFrom }} a <b>{{ $subunitShowingTo }}</b> de <b>{{ number_format($subunitCount) }}</b> subunidades</span>
-    <nav aria-label="Paginacion de subunidades">
-      <button type="button" aria-label="Pagina anterior">&lsaquo;</button>
-      @foreach ($subunitVisiblePages as $page)
-        @if ($page === 1)
-          <strong>{{ $page }}</strong>
-        @else
-          <button type="button" aria-label="Pagina {{ $page }}">{{ $page }}</button>
-        @endif
-      @endforeach
-      @if ($subunitTotalPages > 5)
-        <span aria-hidden="true">&hellip;</span>
-        <button type="button" aria-label="Pagina {{ $subunitTotalPages }}">{{ $subunitTotalPages }}</button>
-      @endif
-      <button type="button" aria-label="Pagina siguiente">&rsaquo;</button>
-    </nav>
-    <label>
-      <select aria-label="Subunidades por pagina">
-        <option>10 por pagina</option>
-      </select>
-    </label>
+
+  <footer class="institution-native-table-footer institution-native-table-footer-all-results">
+    <span data-subunit-footer-summary>Mostrando {{ number_format($subunitCount) }} de {{ number_format($subunitCount) }} subunidades</span>
   </footer>
 </section>
 
@@ -211,23 +312,25 @@
     const footerSummary = document.querySelector('[data-subunit-footer-summary]');
     if (! filter || rows.length === 0) return;
 
-    const labelForCount = (count) => count === 1 ? 'subunidad' : 'subunidades';
+    const updateResultSummary = (visible) => {
+      if (emptyRow) emptyRow.hidden = visible > 0;
+      if (footerSummary) footerSummary.textContent = `Mostrando ${visible} de ${rows.length} subunidades`;
+    };
     const applyUnitFilter = () => {
       const selectedUnit = filter.value;
-      let visible = 0;
 
       rows.forEach((row) => {
         const matches = selectedUnit === 'all' || row.dataset.subunitUnit === selectedUnit;
-        row.hidden = !matches;
-        if (matches) visible += 1;
+        row.dataset.institutionLocalMatch = matches ? 'true' : 'false';
       });
 
-      if (emptyRow) emptyRow.hidden = visible > 0;
-      if (footerSummary) {
-        footerSummary.textContent = `Mostrando ${visible} de ${rows.length} ${labelForCount(rows.length)}`;
-      }
+      document.dispatchEvent(new CustomEvent('institution:catalog-local-filter'));
     };
 
     filter.addEventListener('change', applyUnitFilter);
+    document.addEventListener('institution:catalog-applied', (event) => {
+      if (event.detail?.section === 'subunits') updateResultSummary(event.detail.visible);
+    });
+    updateResultSummary(rows.filter((row) => ! row.hidden).length);
   })();
 </script>

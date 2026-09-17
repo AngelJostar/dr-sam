@@ -1,0 +1,2032 @@
+[
+  {
+    "cnis": "010.000.0104.00",
+    "name": "PARACETAMOL",
+    "therapeutic_group": "ANALGESIA",
+    "presentation": "TABLETA",
+    "description": "TABLETA CADA TABLETA CONTIENE: PARACETAMOL 500 MG. ENVASE CON 10 TABLETAS.",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.0106.00",
+    "name": "PARACETAMOL",
+    "therapeutic_group": "ANALGESIA",
+    "presentation": "SOLUCIÓN ORAL",
+    "description": "SOLUCIÓN ORAL CADA ML CONTIENE: PARACETAMOL 100 MG. ENVASE CON 15 ML, GOTERO CALIBRADO A 0.5 Y 1 ML, INTEGRADO O ADJUNTO AL ENVASE QUE SIRVE DE TAPA.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.0109.00",
+    "name": "METAMIZOL SÓDICO",
+    "therapeutic_group": "ANALGESIA",
+    "presentation": "SOLUCIÓN INYECTABLE",
+    "description": "SOLUCIÓN INYECTABLE CADA AMPOLLETA CONTIENE: METAMIZOL SÓDICO 1 G. ENVASE CON 3 AMPOLLETAS CON 2 ML",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.0233.00",
+    "name": "SEVOFLURANO",
+    "therapeutic_group": "ANESTESIA",
+    "presentation": "LÍQUIDO O SOLUCIÓN",
+    "description": "LÍQUIDO O SOLUCIÓN CADA ENVASE CONTIENE: SEVOFLURANO 250 ML. ENVASE CON 250 ML DE LÍQUIDO O SOLUCIÓN.",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.0246.00",
+    "name": "PROPOFOL",
+    "therapeutic_group": "ANESTESIA",
+    "presentation": "EMULSIÓN INYECTABLE",
+    "description": "EMULSIÓN INYECTABLE CADA AMPOLLETA O FRASCO ÁMPULA CONTIENE: PROPOFOL 200 MG. EN EMULSIÓN CON EDETATO DISÓDICO (DIHIDRATADO). ENVASE CON 5 AMPOLLETAS O FRASCOS ÁMPULA DE 20 ML.",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.0261.00",
+    "name": "LIDOCAÍNA",
+    "therapeutic_group": "ANESTESIA",
+    "presentation": "SOLUCIÓN INYECTABLE AL 1%",
+    "description": "SOLUCIÓN INYECTABLE AL 1% CADA FRASCO ÁMPULA CONTIENE: CLORHIDRATO DE LIDOCAÍNA 500 MG. ENVASE CON 5 FRASCOS ÁMPULA DE 50 ML.",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.0270.00",
+    "name": "ROPIVACAINA",
+    "therapeutic_group": "ANESTESIA",
+    "presentation": "SOLUCION INYECTABLE",
+    "description": "SOLUCION INYECTABLE CADA AMPOLLETA CONTIENE: CLORHIDRATO DE ROPIVACAÍNA MONOHIDRATADA EQUIVALENTE A 150 MG DE CLORHIDRATO DE ROPIVACAINA. ENVASE CON 5 AMPOLLETAS CON 20 ML.",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.0291.00",
+    "name": "NEOSTIGMINA",
+    "therapeutic_group": "ANESTESIA",
+    "presentation": "SOLUCIÓN INYECTABLE",
+    "description": "SOLUCIÓN INYECTABLE CADA AMPOLLETA CONTIENE: METILSULFATO DE NEOSTIGMINA 0.5 MG. ENVASE CON 6 AMPOLLETAS CON 1 ML",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.0402.00",
+    "name": "CLORFENAMINA",
+    "therapeutic_group": "ENFERMEDADES INMUNOALÉRGICAS",
+    "presentation": "TABLETA",
+    "description": "TABLETA CADA TABLETA CONTIENE: MALEATO DE CLORFENAMINA 4.0 MG. ENVASE CON 20 TABLETAS.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.0406.00",
+    "name": "DIFENHIDRAMINA",
+    "therapeutic_group": "ENFERMEDADES INMUNOALÉRGICAS",
+    "presentation": "SOLUCIÓN INYECTABLE",
+    "description": "SOLUCIÓN INYECTABLE CADA FRASCO ÁMPULA CONTIENE: CLORHIDRATO DE DIFENHIDRAMINA 100 MG. ENVASE CON FRASCO ÁMPULA DE 10 ML.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.0429.00",
+    "name": "SALBUTAMOL",
+    "therapeutic_group": "NEUMOLOGÍA",
+    "presentation": "SUSPENSIÓN EN AEROSOL",
+    "description": "SUSPENSIÓN EN AEROSOL CADA INHALADOR CONTIENE: SALBUTAMOL 20 MG O SULFATO DE SALBUTAMOL EQUIVALENTE A 20 MG DE SALBUTAMOL ENVASE CON INHALADOR CON 200 DOSIS DE 100 ΜG.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.0431.00",
+    "name": "SALBUTAMOL",
+    "therapeutic_group": "NEUMOLOGÍA",
+    "presentation": "JARABE",
+    "description": "JARABE CADA 5 ML CONTIENEN: SULFATO DE SALBUTAMOL EQUIVALENTE A 2 MG DE SALBUTAMOL. ENVASE CON 60 ML.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.0439.00",
+    "name": "SALBUTAMOL",
+    "therapeutic_group": "NEUMOLOGÍA",
+    "presentation": "SOLUCIÓN PARA NEBULIZADOR",
+    "description": "SOLUCIÓN PARA NEBULIZADOR CADA 100 ML CONTIENEN: SULFATO DE SALBUTAMOL 0.5 G. ENVASE CON 10 ML.",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.0446.00",
+    "name": "BUDESONIDA/FORMOTEROL",
+    "therapeutic_group": "NEUMOLOGÍA",
+    "presentation": "POLVO",
+    "description": "POLVO CADA GRAMO CONTIENE: BUDESONIDA 180 MG / FUMARATO DE FORMOTEROL DIHIDRATADO 5 MG. ENVASE CON FRASCO INHALADOR DOSIFICADOR CON 60 DOSIS CON 160ΜG /4.5ΜG CADA UNA.",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.0472.00",
+    "name": "PREDNISONA",
+    "therapeutic_group": "ENDOCRINOLOGÍA Y METABOLISMO",
+    "presentation": "TABLETA",
+    "description": "TABLETA CADA TABLETA CONTIENE: PREDNISONA 5 MG. ENVASE CON 20 TABLETAS.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.0474.00",
+    "name": "HIDROCORTISONA",
+    "therapeutic_group": "ENFERMEDADES INMUNOALÉRGICAS",
+    "presentation": "SOLUCIÓN INYECTABLE",
+    "description": "SOLUCIÓN INYECTABLE CADA FRASCO ÁMPULA CONTIENE: SUCCINATO SÓDICO DE HIDROCORTISONA EQUIVALENTE A 100 MG DE HIDROCORTISONA. ENVASE CON 50 FRASCOS ÁMPULA Y 50 AMPOLLETAS CON 2 ML DE DILUYENTE.",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.0477.00",
+    "name": "BECLOMETASONA, DIPROPIONATO DE",
+    "therapeutic_group": "NEUMOLOGÍA",
+    "presentation": "SUSPENSIÓN EN AEROSOL",
+    "description": "SUSPENSIÓN EN AEROSOL CADA INHALACIÓN CONTIENE: DIPROPIONATO DE BECLOMETASONA 50 ΜG. ENVASE CON DISPOSITIVO INHALADOR PARA 200 DOSIS.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.0514.00",
+    "name": "PARACETAMOL",
+    "therapeutic_group": "ANALGESIA",
+    "presentation": "SUPOSITORIO",
+    "description": "SUPOSITORIO CADA SUPOSITORIO CONTIENE: PARACETAMOL 100 MG. ENVASE CON 3 SUPOSITORIOS",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.0525.00",
+    "name": "FENITOÍNA",
+    "therapeutic_group": "NEUROLOGÍA",
+    "presentation": "TABLETA O CÁPSULA",
+    "description": "TABLETA O CÁPSULA CADA TABLETA O CÁPSULA CONTIENE: FENITOÍNA SÓDICA 100 MG. ENVASE CON 50 TABLETAS O CÁPSULAS.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.0530.00",
+    "name": "PROPRANOLOL",
+    "therapeutic_group": "CARDIOLOGÍA",
+    "presentation": "TABLETA",
+    "description": "TABLETA CADA TABLETA CONTIENE: CLORHIDRATO DE PROPRANOLOL 40 MG. ENVASE CON 30 TABLETAS.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.0566.00",
+    "name": "METILDOPA",
+    "therapeutic_group": "CARDIOLOGÍA",
+    "presentation": "TABLETA",
+    "description": "TABLETA CADA TABLETA CONTIENE: METILDOPA 250 MG. ENVASE CON 30 TABLETAS.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.0570.00",
+    "name": "HIDRALAZINA",
+    "therapeutic_group": "CARDIOLOGÍA",
+    "presentation": "TABLETA",
+    "description": "TABLETA CADA TABLETA CONTIENE: CLORHIDRATO DE HIDRALAZINA 10 MG. ENVASE CON 20 TABLETAS",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.0573.00",
+    "name": "PRAZOSINA",
+    "therapeutic_group": "CARDIOLOGÍA",
+    "presentation": "CÁPSULA O COMPRIMIDO",
+    "description": "CÁPSULA O COMPRIMIDO CADA CÁPSULA O COMPRIMIDO CONTIENE: CLORHIDRATO DE PRAZOSINA EQUIVALENTE A 1 MG DE PRAZOSINA. ENVASE CON 30 CÁPSULAS O COMPRIMIDOS.",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.0598.00",
+    "name": "VERAPAMILO",
+    "therapeutic_group": "CARDIOLOGÍA",
+    "presentation": "SOLUCIÓN INYECTABLE",
+    "description": "SOLUCIÓN INYECTABLE CADA AMPOLLETA CONTIENE: CLORHIDRATO DE VERAPAMILO 5 MG. ENVASE CON 2 ML (2.5 MG/ ML).",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.0599.00",
+    "name": "NIFEDIPINO",
+    "therapeutic_group": "CARDIOLOGÍA",
+    "presentation": "COMPRIMIDO DE LIBERACION PROLONGADA",
+    "description": "COMPRIMIDO DE LIBERACION PROLONGADA CADA COMPRIMIDO CONTIENE: NIFEDIPINO 30 MG. ENVASE CON 30 COMPRIMIDOS.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.0612.00",
+    "name": "NOREPINEFRINA",
+    "therapeutic_group": "CARDIOLOGÍA",
+    "presentation": "SOLUCIÓN INYECTABLE",
+    "description": "SOLUCIÓN INYECTABLE CADA AMPOLLETA CONTIENE: BITARTRATO DE NOREPINEFRINA EQUIVALENTE A 4 MG DE NOREPINEFRINA. ENVASE CON 10 AMPOLLETAS DE 4 ML",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.0614.00",
+    "name": "DOPAMINA",
+    "therapeutic_group": "CARDIOLOGÍA",
+    "presentation": "SOLUCIÓN INYECTABLE",
+    "description": "SOLUCIÓN INYECTABLE CADA AMPOLLETA CONTIENE: CLORHIDRATO DE DOPAMINA 200 MG. ENVASE CON 5 AMPOLLETAS CON 5 ML.",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.0615.00",
+    "name": "DOBUTAMINA",
+    "therapeutic_group": "CARDIOLOGÍA",
+    "presentation": "SOLUCIÓN INYECTABLE",
+    "description": "SOLUCIÓN INYECTABLE CADA FRASCO ÁMPULA O AMPOLLETA CONTIENE: CLORHIDRATO DE DOBUTAMINA EQUIVALENTE A 250 MG DE DOBUTAMINA. ENVASE CON 5 AMPOLLETAS CON 5 ML CADA UNA",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.0626.01",
+    "name": "FITOMENADIONA",
+    "therapeutic_group": "HEMATOLOGÍA",
+    "presentation": "SOLUCIÓN O EMULSION INYECTABLE",
+    "description": "SOLUCIÓN O EMULSION INYECTABLE CADA AMPOLLETA CONTIENE: FITOMENADIONA 10 MG. ENVASE CON 5 AMPOLLETAS DE 1 ML",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.0655.00",
+    "name": "BEZAFIBRATO",
+    "therapeutic_group": "ENDOCRINOLOGÍA Y METABOLISMO",
+    "presentation": "TABLETA",
+    "description": "TABLETA CADA TABLETA CONTIENE: BEZAFIBRATO 200 MG. ENVASE CON 30 TABLETAS.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.0801.01",
+    "name": "BAÑO COLOIDE",
+    "therapeutic_group": "DERMATOLOGÍA",
+    "presentation": "POLVO",
+    "description": "POLVO CADA GRAMO CONTIENE: HARINA DE SOYA 965 MG. (CONTENIDO PROTEICO 45%). POLIVIDONA 20 MG. ENVASE CON DOS SOBRES INDIVIDUALES DE 90 G.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.0804.00",
+    "name": "ÓXIDO DE ZINC",
+    "therapeutic_group": "DERMATOLOGÍA",
+    "presentation": "PASTA",
+    "description": "PASTA CADA 100 G CONTIENEN: ÓXIDO DE ZINC 25. 0 G. ENVASE CON 30 G.",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.0811.00",
+    "name": "FLUOCINOLONA",
+    "therapeutic_group": "DERMATOLOGÍA",
+    "presentation": "CREMA",
+    "description": "CREMA CADA G CONTIENE: ACETÓNIDO DE FLUOCINOLONA 0.1 MG. ENVASE CON 20 G.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.0813.00",
+    "name": "HIDROCORTISONA",
+    "therapeutic_group": "DERMATOLOGÍA",
+    "presentation": "CREMA",
+    "description": "CREMA CADA G CONTIENE: 17 BUTIRATO DE HIDROCORTISONA 1 MG. ENVASE CON 15 G",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.0865.00",
+    "name": "PERMETRINA",
+    "therapeutic_group": "DERMATOLOGÍA",
+    "presentation": "SOLUCION",
+    "description": "SOLUCION CADA 100 ML CONTIENEN: PERMETRINA 1 G. ENVASE CON 110 ML",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.0871.00",
+    "name": "ALIBOUR",
+    "therapeutic_group": "DERMATOLOGÍA",
+    "presentation": "POLVO",
+    "description": "POLVO CADA GRAMO CONTIENE: SULFATO DE COBRE 177.0 MG. SULFATO DE ZINC 619.5 MG. ALCANFOR 26.5 MG. ENVASE CON 12 SOBRES CON 2.2 G",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.0872.00",
+    "name": "CLIOQUINOL",
+    "therapeutic_group": "DERMATOLOGÍA",
+    "presentation": "CREMA",
+    "description": "CREMA CADA G CONTIENE: CLIOQUINOL 30 MG. ENVASE CON 20 G.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.0891.00",
+    "name": "MICONAZOL",
+    "therapeutic_group": "DERMATOLOGÍA",
+    "presentation": "CREMA",
+    "description": "CREMA CADA GRAMO CONTIENE: NITRATO DE MICONAZOL 20 MG. ENVASE CON 20 G.",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.1007.00",
+    "name": "LEVOTIROXINA",
+    "therapeutic_group": "ENDOCRINOLOGÍA Y METABOLISMO",
+    "presentation": "TABLETA",
+    "description": "TABLETA CADA TABLETA CONTIENE: LEVOTIROXINA SÓDICA EQUIVALENTE A 100 ΜG DE LEVOTIROXINA SÓDICA ANHIDRA. ENVASE CON 100 TABLETAS",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.1051.01",
+    "name": "INSULINA HUMANA",
+    "therapeutic_group": "ENDOCRINOLOGÍA Y METABOLISMO",
+    "presentation": "SOLUCIÓN INYECTABLE ACCIÓN RÁPIDA REGULAR",
+    "description": "SOLUCIÓN INYECTABLE ACCIÓN RÁPIDA REGULAR CADA ML CONTIENE: INSULINA HUMANA (ORIGEN ADN RECOMBINANTE) 100 UI. Ó INSULINA ZINC ISÓFANA HUMANA (ORIGEN ADN RECOMBINANTE) 100 UI. ENVASE CON UN FRASCO ÁMPULA CON 10 ML.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.1098.00",
+    "name": "VITAMINAS A, C, D",
+    "therapeutic_group": "VITAMINAS Y MINERALES",
+    "presentation": "SOLUCION",
+    "description": "SOLUCION CADA ML CONTIENE: PALMITATO DE RETINOL 7000 A 9000 UI;ACIDO ASCORBICO 80 A 125 MG; COLECALCIFEROL 1400 A 1800 UI; ENVASE CON 15 ML.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.1206.00",
+    "name": "BUTILHIOSCINA O HIOSCINA",
+    "therapeutic_group": "GASTROENTEROLOGÍA",
+    "presentation": "GRAGEA O TABLETA",
+    "description": "GRAGEA O TABLETA CADA GRAGEA O TABLETA CONTIENE: BROMURO DE BUTILHIOSCINA O BUTILBROMURO DE HIOSCINA 10 MG. ENVASE CON 10 GRAGEAS O TABLETAS.",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.1207.00",
+    "name": "BUTILHIOSCINA O HIOSCINA",
+    "therapeutic_group": "GASTROENTEROLOGÍA",
+    "presentation": "SOLUCIÓN INYECTABLE",
+    "description": "SOLUCIÓN INYECTABLE CADA AMPOLLETA CONTIENE: BROMURO DE BUTILHIOSCINA O BUTILBROMURO DE HIOSCINA 20 MG. ENVASE CON 3 AMPOLLETAS DE 1 ML.",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.1210.01",
+    "name": "PINAVERIO",
+    "therapeutic_group": "GASTROENTEROLOGÍA",
+    "presentation": "TABLETA",
+    "description": "TABLETA CADA TABLETA CONTIENE: BROMURO DE PINAVERIO 100 MG. ENVASE CON 28 TABLETAS.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.1224.00",
+    "name": "ALUMINIO Y MAGNESIO",
+    "therapeutic_group": "GASTROENTEROLOGÍA",
+    "presentation": "SUSPENSIÓN ORAL",
+    "description": "SUSPENSIÓN ORAL CADA 100 ML CONTIENEN: HIDRÓXIDO DE ALUMINIO 3.7 G. HIDRÓXIDO DE MAGNESIO 4.0 G. O TRISILICATO DE MAGNESIO: 8.9 G. ENVASE CON 240 ML Y DOSIFICADOR.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.1241.00",
+    "name": "METOCLOPRAMIDA",
+    "therapeutic_group": "GASTROENTEROLOGÍA",
+    "presentation": "SOLUCIÓN INYECTABLE",
+    "description": "SOLUCIÓN INYECTABLE CADA AMPOLLETA CONTIENE: CLORHIDRATO DE METOCLOPRAMIDA 10 MG. ENVASE CON 6 AMPOLLETAS DE 2 ML.",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.1242.00",
+    "name": "METOCLOPRAMIDA",
+    "therapeutic_group": "GASTROENTEROLOGÍA",
+    "presentation": "TABLETA",
+    "description": "TABLETA CADA TABLETA CONTIENE: CLORHIDRATO DE METOCLOPRAMIDA 10 MG. ENVASE CON 20 TABLETAS.",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.1243.00",
+    "name": "METOCLOPRAMIDA",
+    "therapeutic_group": "GASTROENTEROLOGÍA",
+    "presentation": "SOLUCIÓN",
+    "description": "SOLUCIÓN CADA ML CONTIENE: CLORHIDRATO DE METOCLOPRAMIDA 4 MG. ENVASE FRASCO GOTERO CON 20 ML.",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.1263.00",
+    "name": "BISMUTO",
+    "therapeutic_group": "GASTROENTEROLOGÍA",
+    "presentation": "SUSPENSIÓN ORAL",
+    "description": "SUSPENSIÓN ORAL CADA 100 ML CONTIENEN: SUBSALICILATO DE BISMUTO 1.750 G. ENVASE CON 240 ML",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.1271.00",
+    "name": "PLÁNTAGO PSYLLIUM",
+    "therapeutic_group": "GASTROENTEROLOGÍA",
+    "presentation": "POLVO",
+    "description": "POLVO CADA 100 G CONTIENEN: POLVO DE CÁSCARA DE SEMILLA DE PLÁNTAGO PSYLLIUM 49.7 G. ENVASE CON 400 G.",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.1272.00",
+    "name": "SENÓSIDOS A-B",
+    "therapeutic_group": "GASTROENTEROLOGÍA",
+    "presentation": "TABLETA",
+    "description": "TABLETA CADA TABLETA CONTIENE: CONCENTRADOS DE SEN DESECADOS 187 MG (NORMALIZADO A 8.6 MG DE SENÓSIDOS A B). ENVASE CON 20 TABLETAS.",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.1308.01",
+    "name": "METRONIDAZOL",
+    "therapeutic_group": "ENFERMEDADES INFECCIOSAS Y PARASITARIAS",
+    "presentation": "TABLETA",
+    "description": "TABLETA CADA TABLETA CONTIENE: METRONIDAZOL 500 MG. ENVASE CON 30 TABLETAS.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.1310.00",
+    "name": "METRONIDAZOL",
+    "therapeutic_group": "ENFERMEDADES INFECCIOSAS Y PARASITARIAS",
+    "presentation": "SUSPENSIÓN ORAL",
+    "description": "SUSPENSIÓN ORAL CADA 5 ML CONTIENEN: BENZOILO DE METRONIDAZOL EQUIVALENTE A 250 MG DE METRONIDAZOL. ENVASE CON 120 ML Y DOSIFICADOR.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.1344.00",
+    "name": "ALBENDAZOL",
+    "therapeutic_group": "ENFERMEDADES INFECCIOSAS Y PARASITARIAS",
+    "presentation": "TABLETA",
+    "description": "TABLETA CADA TABLETA CONTIENE: ALBENDAZOL 200 MG. ENVASE CON 2 TABLETAS",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.1345.00",
+    "name": "ALBENDAZOL",
+    "therapeutic_group": "ENFERMEDADES INFECCIOSAS Y PARASITARIAS",
+    "presentation": "SUSPENSIÓN ORAL",
+    "description": "SUSPENSIÓN ORAL CADA FRASCO CONTIENE: ALBENDAZOL 400 MG. ENVASE CON 20 ML",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.1364.00",
+    "name": "LIDOCAÍNA - HIDROCORTISONA",
+    "therapeutic_group": "GASTROENTEROLOGÍA",
+    "presentation": "SUPOSITORIO",
+    "description": "SUPOSITORIO CADA SUPOSITORIO CONTIENE: LIDOCAÍNA 60 MG. ACETATO DE HIDROCORTISONA 5 MG. ÓXIDO DE ZINC 400 MG. SUBACETATO DE ALUMINIO 50 MG. ENVASE CON 6 SUPOSITORIOS.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.1506.00",
+    "name": "ESTRÓGENOS CONJUGADOS",
+    "therapeutic_group": "GINECO-OBSTETRICIA",
+    "presentation": "CREMA VAGINAL",
+    "description": "CREMA VAGINAL CADA 100 G CONTIENE: ESTRÓGENOS CONJUGADOS DE ORIGEN EQUINO 62.5 MG. ENVASE CON 43 G Y APLICADOR.",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.1508.00",
+    "name": "ESTRÓGENOS CONJUGADOS Y MEDROXIPROGESTERONA",
+    "therapeutic_group": "GINECO-OBSTETRICIA",
+    "presentation": "GRAGEA",
+    "description": "GRAGEA CADA GRAGEA CONTIENE: ESTRÓGENOS CONJUGADOS DE ORIGEN EQUINO 0.625 MG ACETATO DE MEDROXIPROGESTERONA 2.5 MG. ENVASE CON 28 GRAGEAS.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.1561.00",
+    "name": "METRONIDAZOL",
+    "therapeutic_group": "GINECO-OBSTETRICIA",
+    "presentation": "ÓVULO O TABLETA VAGINAL",
+    "description": "TABLETA VAGINAL CADA ÓVULO O TABLETA CONTIENE: METRONIDAZOL 500 MG. ENVASE CON 10 ÓVULOS O TABLETAS.",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.1566.00",
+    "name": "NISTATINA",
+    "therapeutic_group": "GINECO-OBSTETRICIA",
+    "presentation": "ÓVULO O TABLETA VAGINAL",
+    "description": "TABLETA VAGINAL CADA ÓVULO O TABLETA CONTIENE: NISTATINA 100 000 UI. ENVASE CON 12 ÓVULOS O TABLETAS",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.1703.00",
+    "name": "SULFATO FERROSO",
+    "therapeutic_group": "HEMATOLOGÍA",
+    "presentation": "TABLETA",
+    "description": "TABLETA CADA TABLETA CONTIENE: SULFATO FERROSO DESECADO APROXIMADAMENTE 200 MG EQUIVALENTE A 60.27 MG. DE HIERRO ELEMENTAL. ENVASE CON 30 TABLETAS.",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.1704.00",
+    "name": "SULFATO FERROSO",
+    "therapeutic_group": "HEMATOLOGÍA",
+    "presentation": "SOLUCIÓN",
+    "description": "SOLUCIÓN CADA ML CONTIENE: SULFATO FERROSO HEPTAHIDRATADO 125 MG EQUIVALENTE A 25 MG. DE HIERRO ELEMENTAL. ENVASE GOTERO CON 15 ML.",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.1706.01",
+    "name": "ÁCIDO FÓLICO",
+    "therapeutic_group": "VITAMINAS Y MINERALES",
+    "presentation": "TABLETA.",
+    "description": "TABLETA. CADA TABLETA CONTIENE: ACIDO FOLICO 5 MG ENVASE CON 92 TABLETAS.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.1711.00",
+    "name": "ÁCIDO FÓLICO",
+    "therapeutic_group": "VITAMINAS Y MINERALES",
+    "presentation": "TABLETA",
+    "description": "TABLETA CADA TABLETA CONTIENE: ACIDO FOLICO 0.4 MG ENVASE CON 90TABLETAS.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.1732.01",
+    "name": "FITOMENADIONA",
+    "therapeutic_group": "HEMATOLOGÍA",
+    "presentation": "SOLUCIÓN O EMULSION INYECTABLE",
+    "description": "SOLUCIÓN O EMULSION INYECTABLE CADA AMPOLLETA CONTIENE: FITOMENADIONA 2 MG. ENVASE CON 5 AMPOLLETAS DE 0.2 ML",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.1903.00",
+    "name": "TRIMETOPRIMA/SULFAMETOXAZOL",
+    "therapeutic_group": "ENFERMEDADES INFECCIOSAS Y PARASITARIAS",
+    "presentation": "COMPRIMIDO O TABLETA",
+    "description": "COMPRIMIDO O TABLETA CADA COMPRIMIDO O TABLETA CONTIENE: TRIMETOPRIMA 80 MG. SULFAMETOXAZOL 400 MG. ENVASE CON 20 COMPRIMIDOS O TABLETAS.",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.1904.00",
+    "name": "TRIMETOPRIMA/SULFAMETOXAZOL",
+    "therapeutic_group": "ENFERMEDADES INFECCIOSAS Y PARASITARIAS",
+    "presentation": "SUSPENSIÓN ORAL",
+    "description": "SUSPENSIÓN ORAL CADA 5 ML CONTIENEN: TRIMETOPRIMA 40 MG. SULFAMETOXAZOL 200 MG. ENVASE CON 120 ML Y DOSIFICADOR.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.1911.00",
+    "name": "NITROFURANTOÍNA",
+    "therapeutic_group": "ENFERMEDADES INFECCIOSAS Y PARASITARIAS",
+    "presentation": "CÁPSULA",
+    "description": "CÁPSULA CADA CÁPSULA CONTIENE: NITROFURANTOÍNA 100 MG. ENVASE CON 40 CÁPSULAS.",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.1925.00",
+    "name": "BENZATINA BENCILPENICILINA",
+    "therapeutic_group": "ENFERMEDADES INFECCIOSAS Y PARASITARIAS",
+    "presentation": "SUSPENSIÓN INYECTABLE",
+    "description": "SUSPENSIÓN INYECTABLE CADA FRASCO ÁMPULA CON POLVO CONTIENE: BENZATINA BENCILPENICILINA EQUIVALENTE A 1 200 000 UI DE BENCILPENICILINA. ENVASE CON UN FRASCO ÁMPULA Y 5 ML DE DILUYENTE.",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.1926.00",
+    "name": "DICLOXACILINA",
+    "therapeutic_group": "ENFERMEDADES INFECCIOSAS Y PARASITARIAS",
+    "presentation": "CÁPSULA O COMPRIMIDO",
+    "description": "CÁPSULA O COMPRIMIDO CADA CÁPSULA O COMPRIMIDO CONTIENE: DICLOXACILINA SÓDICA 500 MG. ENVASE CON 20 CÁPSULAS O COMPRIMIDOS.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.1927.00",
+    "name": "DICLOXACILINA",
+    "therapeutic_group": "ENFERMEDADES INFECCIOSAS Y PARASITARIAS",
+    "presentation": "SUSPENSIÓN ORAL",
+    "description": "SUSPENSIÓN ORAL CADA 5 ML CONTIENEN: DICLOXACILINA SÓDICA 250 MG. ENVASE CON POLVO PARA 60 ML Y DOSIFICADOR.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.1928.00",
+    "name": "DICLOXACILINA",
+    "therapeutic_group": "ENFERMEDADES INFECCIOSAS Y PARASITARIAS",
+    "presentation": "SOLUCIÓN INYECTABLE",
+    "description": "SOLUCIÓN INYECTABLE CADA FRASCO ÁMPULA CON POLVO CONTIENE: DICLOXACILINA SÓDICA EQUIVALENTE A 250 MG. DE DICLOXACILINA. ENVASE FRASCO ÁMPULA Y 5 ML DE DILUYENTE.",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.1937.00",
+    "name": "CEFTRIAXONA",
+    "therapeutic_group": "ENFERMEDADES INFECCIOSAS Y PARASITARIAS",
+    "presentation": "SOLUCIÓN INYECTABLE",
+    "description": "SOLUCIÓN INYECTABLE CADA FRASCO ÁMPULA CON POLVO CONTIENE: CEFTRIAXONA SÓDICA EQUIVALENTE A 1 G DE CEFTRIAXONA. ENVASE CON UN FRASCO ÁMPULA Y 10 ML DE DILUYENTE.",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.1939.00",
+    "name": "CEFALEXINA",
+    "therapeutic_group": "ENFERMEDADES INFECCIOSAS Y PARASITARIAS",
+    "presentation": "TABLETA O CÁPSULA",
+    "description": "TABLETA O CÁPSULA CADA TABLETA O CÁPSULA CONTIENE: CEFALEXINA MONOHIDRATADA EQUIVALENTE A 500 MG DE CEFALEXINA. ENVASE CON 20 TABLETAS O CÁPSULAS",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.1940.00",
+    "name": "DOXICICLINA",
+    "therapeutic_group": "ENFERMEDADES INFECCIOSAS Y PARASITARIAS",
+    "presentation": "CÁPSULA O TABLETA",
+    "description": "CÁPSULA O TABLETA CADA CÁPSULA O TABLETA CONTIENE: HICLATO DE DOXICICLINA EQUIVALENTE A 100 MG DE DOXICILINA. ENVASE CON 10 CÁPSULAS O TABLETAS.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.1969.00",
+    "name": "AZITROMICINA",
+    "therapeutic_group": "ENFERMEDADES INFECCIOSAS Y PARASITARIAS",
+    "presentation": "TABLETA",
+    "description": "TABLETA CADA TABLETA CONTIENE: AZITROMICINA DIHIDRATADA EQUIVALENTE A 500 MG DE AZITROMICINA ENVASE CON 3 TABLETAS.",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.2111.01",
+    "name": "AMLODIPINO",
+    "therapeutic_group": "CARDIOLOGÍA",
+    "presentation": "TABLETA O CAPSULA",
+    "description": "TABLETA O CAPSULA CADA TABLETA O CAPSULA CONTIENE: BESILATO O MALEATO DE AMLODIPINO EQUIVALENTE A 5 MG DE AMLODIPINO. ENVASE CON 30 TABLETAS O CÁPSULAS.",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.2118.00",
+    "name": "ACEITE DE ALMENDRAS DULCES",
+    "therapeutic_group": "DERMATOLOGÍA",
+    "presentation": "CREMA ACEITE DE ALMENDRAS DULCES E HIDRÓXIDO DE CALCIO.",
+    "description": "CREMA ACEITE DE ALMENDRAS DULCES E HIDRÓXIDO DE CALCIO. ENVASE CON 240 ML.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.2123.00",
+    "name": "MUPIROCINA",
+    "therapeutic_group": "DERMATOLOGÍA",
+    "presentation": "UNGÜENTO",
+    "description": "UNGÜENTO CADA 100 GRAMOS CONTIENE: MUPIROCINA 2 G. ENVASE CON 15 G.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.2126.00",
+    "name": "ACICLOVIR",
+    "therapeutic_group": "ENFERMEDADES INFECCIOSAS Y PARASITARIAS",
+    "presentation": "COMPRIMIDO O TABLETA",
+    "description": "COMPRIMIDO O TABLETA CADA COMPRIMIDO O TABLETA CONTIENE: ACICLOVIR 400 MG. ENVASE CON 35 COMPRIMIDOS O TABLETAS.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.2129.00",
+    "name": "AMOXICILINA / ÁCIDO CLAVULÁNICO",
+    "therapeutic_group": "ENFERMEDADES INFECCIOSAS Y PARASITARIAS",
+    "presentation": "SUSPENSIÓN ORAL",
+    "description": "SUSPENSIÓN ORAL CADA FRASCO CON POLVO CONTIENE: AMOXICILINA TRIHIDRATADA EQUIVALENTE A 1.5 G DE AMOXICILINA. CLAVULANATO DE POTASIO EQUIVALENTE A 375 MG DE ÁCIDO CLAVULÁNICO. ENVASE CON 60 ML, CADA 5 ML CON 125 MG DE AMOXICILINA Y 31.25 MG ÁCIDO CLAVULÁNICO",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.2133.00",
+    "name": "CLINDAMICINA",
+    "therapeutic_group": "ENFERMEDADES INFECCIOSAS Y PARASITARIAS",
+    "presentation": "CÁPSULA",
+    "description": "CÁPSULA CADA CÁPSULA CONTIENE: CLORHIDRATO DE CLINDAMICINA EQUIVALENTE A 300 MG DE CLINDAMICINA. ENVASE CON 16 CÁPSULAS.",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.2145.00",
+    "name": "LORATADINA",
+    "therapeutic_group": "ENFERMEDADES INMUNOALÉRGICAS",
+    "presentation": "JARABE",
+    "description": "JARABE CADA 100 ML CONTIENEN: LORATADINA 100 MG. ENVASE CON 60 ML Y DOSIFICADOR.",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.2154.01",
+    "name": "ENOXAPARINA",
+    "therapeutic_group": "HEMATOLOGÍA",
+    "presentation": "SOLUCIÓN INYECTABLE",
+    "description": "SOLUCIÓN INYECTABLE CADA JERINGA CONTIENE: ENOXAPARINA SÓDICA 40 MG. ENVASE CON 2 JERINGAS CON DISPOSITIVO DE SEGURIDAD DE 0.4 ML.",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.2187.00",
+    "name": "IPRATROPIO",
+    "therapeutic_group": "NEUMOLOGÍA",
+    "presentation": "SOLUCIÓN",
+    "description": "SOLUCIÓN CADA 100 ML CONTIENEN: BROMURO DE IPRATROPIO MONOHIDRATADO EQUIVALENTE A 25 MG. DE BROMURO DE IPRATROPIO. ENVASE CON FRASCO ÁMPULA CON 20 ML.",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.2189.01",
+    "name": "TOBRAMICINA",
+    "therapeutic_group": "OFTALMOLOGÍA",
+    "presentation": "SOLUCIÓN OFTÁLMICA",
+    "description": "SOLUCIÓN OFTÁLMICA CADA ML CONTIENE: SULFATO DE TOBRAMICINA EQUIVALENTE A 3.0 MG DE TOBRAMICINA Ó TOBRAMICINA 3.0 MG ENVASE CON GOTERO INTEGRAL CON 15 ML.",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.2242.00",
+    "name": "CARBÓN ACTIVADO",
+    "therapeutic_group": "HEMATOLOGÍA",
+    "presentation": "POLVO",
+    "description": "POLVO CADA ENVASE CONTIENE: CARBÓN ACTIVADO 1 KG. ENVASE CON UN KG (PARA USO EN SERES HUMANOS).",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.2301.00",
+    "name": "HIDROCLOROTIAZIDA",
+    "therapeutic_group": "NEFROLOGÍA Y UROLOGÍA",
+    "presentation": "TABLETA",
+    "description": "TABLETA CADA TABLETA CONTIENE: HIDROCLOROTIAZIDA 25 MG. ENVASE CON 20 TABLETAS",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.2304.01",
+    "name": "ESPIRONOLACTONA",
+    "therapeutic_group": "NEFROLOGÍA Y UROLOGÍA",
+    "presentation": "TABLETA",
+    "description": "TABLETA CADA TABLETA CONTIENE: ESPIRONOLACTONA 25 MG. ENVASE CON 30 TABLETAS.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.2307.00",
+    "name": "FUROSEMIDA",
+    "therapeutic_group": "NEFROLOGÍA Y UROLOGÍA",
+    "presentation": "TABLETA",
+    "description": "TABLETA CADA TABLETA CONTIENE: FUROSEMIDA 40 MG. ENVASE CON 20 TABLETAS",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.2308.00",
+    "name": "FUROSEMIDA",
+    "therapeutic_group": "NEFROLOGÍA Y UROLOGÍA",
+    "presentation": "SOLUCIÓN INYECTABLE",
+    "description": "SOLUCIÓN INYECTABLE CADA AMPOLLETA CONTIENE: FUROSEMIDA 20 MG. ENVASE CON 5 AMPOLLETAS DE 2 ML.",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.2331.00",
+    "name": "FENAZOPIRIDINA",
+    "therapeutic_group": "NEFROLOGÍA Y UROLOGÍA",
+    "presentation": "TABLETA",
+    "description": "TABLETA CADA TABLETA CONTIENE: CLORHIDRATO DE FENAZOPIRIDINA 100 MG. ENVASE CON 20 TABLETAS.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.2433.00",
+    "name": "BENZONATATO",
+    "therapeutic_group": "NEUMOLOGÍA",
+    "presentation": "PERLA O CÁPSULA",
+    "description": "CÁPSULA CADA PERLA O CÁPSULA CONTIENE: BENZONATATO 100 MG. ENVASE CON 20 PERLAS O CÁPSULAS.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.2463.00",
+    "name": "AMBROXOL",
+    "therapeutic_group": "NEUMOLOGÍA",
+    "presentation": "SOLUCIÓN",
+    "description": "SOLUCIÓN CADA 100 ML CONTIENEN: CLORHIDRATO DE AMBROXOL 300 MG. ENVASE CON 120 ML Y DOSIFICADOR.",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.2471.00",
+    "name": "CLORFENAMINA COMPUESTA",
+    "therapeutic_group": "OTORRINOLARINGOLOGÍA",
+    "presentation": "TABLETA",
+    "description": "TABLETA CADA TABLETA CONTIENE: PARACETAMOL 500 MG CAFEÍNA 25 MG CLORHIDRATO DE FENILEFRINA 5 MG MALEATO DE CLORFENAMINA 4 MG ENVASE CON 10 TABLETAS.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.2501.00",
+    "name": "ENALAPRIL",
+    "therapeutic_group": "CARDIOLOGÍA",
+    "presentation": "CÁPSULA O TABLETA",
+    "description": "CÁPSULA O TABLETA CADA CÁPSULA O TABLETA CONTIENE: MALEATO DE ENALAPRIL 10 MG. ENVASE CON 30 CÁPSULAS O TABLETAS.",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.2540.00",
+    "name": "TELMISARTÁN",
+    "therapeutic_group": "CARDIOLOGÍA",
+    "presentation": "TABLETA",
+    "description": "TABLETA CADA TABLETA CONTIENE: TELMISARTÁN 40 MG. ENVASE CON 30 TABLETAS.",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.2542.00",
+    "name": "TELMISARTÁN / HIDROCLOROTIAZIDA",
+    "therapeutic_group": "CARDIOLOGÍA",
+    "presentation": "TABLETA O CÁPSULA",
+    "description": "TABLETA O CÁPSULA CADA TABLETA O CÁPSULA CONTIENE: TELMISARTÁN 80.0 MG. HIDROCLOROTIAZIDA 12.5 MG. ENVASE CON 14 TABLETAS O CÁPSULAS.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.2616.00",
+    "name": "LEVETIRACETAM",
+    "therapeutic_group": "NEUROLOGÍA",
+    "presentation": "SOLUCIÓN ORAL",
+    "description": "SOLUCIÓN ORAL CADA 100 ML CONTIENEN: LEVETIRACETAM 10 G. ENVASE CON 300 ML (100 MG / ML).",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.2617.00",
+    "name": "LEVETIRACETAM",
+    "therapeutic_group": "NEUROLOGÍA",
+    "presentation": "TABLETA",
+    "description": "TABLETA CADA TABLETA CONTIENE: LEVETIRACETAM 500 MG. ENVASE CON 60 TABLETAS.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.2622.00",
+    "name": "VALPROATO DE MAGNESIO",
+    "therapeutic_group": "NEUROLOGÍA",
+    "presentation": "TABLETA CON CUBIERTA O CAPA ENTÉRICA O TABLETA DE LIBERACIÓN RETARDADA",
+    "description": "TABLETA CON CUBIERTA O CAPA ENTÉRICA O TABLETA DE LIBERACIÓN RETARDADA CADA TABLETA CONTIENE: VALPROATO DE MAGNESIO 200 MG EQUIVALENTE A 185.6 MG. DE ÁCIDO VALPROICO Ó VALPROATO DE MAGNESIO 200 MG ENVASE CON 40 TABLETAS",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.2623.00",
+    "name": "VALPROATO DE MAGNESIO",
+    "therapeutic_group": "NEUROLOGÍA",
+    "presentation": "SOLUCIÓN",
+    "description": "SOLUCIÓN CADA ML CONTIENE: VALPROATO DE MAGNESIO EQUIVALENTE A 186 MG DE ÁCIDO VALPROICO. ENVASE CON 40 ML.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.2624.00",
+    "name": "FENITOÍNA",
+    "therapeutic_group": "NEUROLOGÍA",
+    "presentation": "SOLUCIÓN INYECTABLE",
+    "description": "SOLUCIÓN INYECTABLE CADA AMPOLLETA CONTIENE: FENITOÍNA SÓDICA 250 MG. ENVASE CON UNA AMPOLLETA (250 MG/5 ML).",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.2707.00",
+    "name": "ÁCIDO ASCÓRBICO",
+    "therapeutic_group": "VITAMINAS Y MINERALES",
+    "presentation": "TABLETA",
+    "description": "TABLETA CADA TABLETA CONTIENE: ACIDO ASCORBICO 100 MG ENVASECON 20 TABLETAS.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.2714.00",
+    "name": "COMPLEJO B",
+    "therapeutic_group": "VITAMINAS Y MINERALES",
+    "presentation": "TABLETA, COMPRIMIDO O CAPSULA.",
+    "description": "TABLETA, COMPRIMIDO O CAPSULA. CADA TABLETA, COMPRIMIDO O CAPSULACONTIENE: MONONITRATO O CLORHIDRATO DE TIAMINA 100 MG CLORHIDRATO DE PIRIDOXINA5 MG CIANOCOBALAMINA 50 MICROGRAMOS ENVASE CON 30 TABLETAS, COMPRIMIDOS OCAPSULAS.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.2804.00",
+    "name": "NAFAZOLINA",
+    "therapeutic_group": "OFTALMOLOGÍA",
+    "presentation": "SOLUCIÓN OFTÁLMICA",
+    "description": "SOLUCIÓN OFTÁLMICA CADA ML CONTIENE: CLORHIDRATO DE NAFAZOLINA 1 MG ENVASE CON GOTERO INTEGRAL CON 15 ML.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.2814.00",
+    "name": "HIPROMELOSA",
+    "therapeutic_group": "OFTALMOLOGÍA",
+    "presentation": "SOLUCIÓN OFTÁLMICA AL 0.5%",
+    "description": "SOLUCIÓN OFTÁLMICA AL 0.5% CADA ML CONTIENE: HIPROMELOSA 5 MG ENVASE CON GOTERO INTEGRAL CON 15 ML.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.2821.00",
+    "name": "CLORANFENICOL",
+    "therapeutic_group": "OFTALMOLOGÍA",
+    "presentation": "SOLUCIÓN OFTÁLMICA",
+    "description": "SOLUCIÓN OFTÁLMICA CADA ML CONTIENE: CLORANFENICOL LEVÓGIRO 5 MG ENVASE CON GOTERO INTEGRAL CON 15 ML.",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.2841.00",
+    "name": "PREDNISOLONA",
+    "therapeutic_group": "OFTALMOLOGÍA",
+    "presentation": "SOLUCIÓN OFTÁLMICA",
+    "description": "SOLUCIÓN OFTÁLMICA CADA ML CONTIENE: FOSFATO SÓDICO DE PREDNISOLONA EQUIVALENTE A 5 MG DE FOSFATO DE PREDNISOLONA. ENVASE CON GOTERO INTEGRAL CON 5 ML.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.3111.00",
+    "name": "DIFENIDOL",
+    "therapeutic_group": "OTORRINOLARINGOLOGÍA",
+    "presentation": "TABLETA",
+    "description": "TABLETA CADA TABLETA CONTIENE: CLORHIDRATO DE DIFENIDOL EQUIVALENTE A 25 MG DE DIFENIDOL. ENVASE CON 30 TABLETAS.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.3112.00",
+    "name": "DIFENIDOL",
+    "therapeutic_group": "OTORRINOLARINGOLOGÍA",
+    "presentation": "SOLUCIÓN INYECTABLE",
+    "description": "SOLUCIÓN INYECTABLE CADA AMPOLLETA CONTIENE: CLORHIDRATO DE DIFENIDOL EQUIVALENTE A 40 MG DE DIFENIDOL. ENVASE CON 2 AMPOLLETAS DE 2 ML.",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.3132.00",
+    "name": "NEOMICINA, POLIMIXINA B, FLUOCINOLONA Y LIDOCAÍNA",
+    "therapeutic_group": "OTORRINOLARINGOLOGÍA",
+    "presentation": "SOLUCIÓN ÓTICA",
+    "description": "SOLUCIÓN ÓTICA CADA 100 ML CONTIENEN: ACETÓNIDO DE FLUOCINOLONA 0.025 G SULFATO DE POLIMIXINA B EQUIVALENTE A 1 000 000 U DE POLIMIXINA B. SULFATO DE NEOMICINA EQUIVALENTE A 0.350 G DE NEOMICINA. CLORHIDRATO DE LIDOCAÍNA 2.0 G ENVASE CON GOTERO INTEGRAL CON 5 ML.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.3150.00",
+    "name": "LEVOCETIRIZINA",
+    "therapeutic_group": "ENFERMEDADES INMUNOALÉRGICAS",
+    "presentation": "TABLETA",
+    "description": "TABLETA CADA TABLETA CONTIENE: DICLORHIDRATO DE LEVOCETIRIZINA 5 MG. ENVASE CON 20 TABLETAS.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.3407.00",
+    "name": "NAPROXENO",
+    "therapeutic_group": "REUMATOLOGÍA Y TRAUMATOLOGÍA",
+    "presentation": "TABLETA",
+    "description": "TABLETA CADA TABLETA CONTIENE: NAPROXENO 250 MG ENVASE CON 30 TABLETAS.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "No"
+  },
+  {
+    "cnis": "010.000.3409.00",
+    "name": "COLCHICINA",
+    "therapeutic_group": "REUMATOLOGÍA Y TRAUMATOLOGÍA",
+    "presentation": "TABLETA",
+    "description": "TABLETA CADA TABLETA CONTIENE: COLCHICINA 1 MG ENVASE CON 30 TABLETAS.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.3412.00",
+    "name": "INDOMETACINA",
+    "therapeutic_group": "GINECO-OBSTETRICIA",
+    "presentation": "SUPOSITORIO",
+    "description": "SUPOSITORIO CADA SUPOSITORIO CONTIENE: INDOMETACINA 100 MG. ENVASE CON 6 SUPOSITORIOS.",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.3413.00",
+    "name": "INDOMETACINA",
+    "therapeutic_group": "REUMATOLOGÍA Y TRAUMATOLOGÍA",
+    "presentation": "CÁPSULA",
+    "description": "CÁPSULA CADA CÁPSULA CONTIENE: INDOMETACINA 25 MG ENVASE CON 30 CÁPSULAS.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.3417.00",
+    "name": "DICLOFENACO",
+    "therapeutic_group": "REUMATOLOGÍA Y TRAUMATOLOGÍA",
+    "presentation": "CÁPSULA O GRAGEA DE LIBERACIÓN PROLONGADA",
+    "description": "CÁPSULA O GRAGEA DE LIBERACIÓN PROLONGADA CADA GRAGEA CONTIENE: DICLOFENACO SÓDICO 100 MG ENVASE CON 20 CÁPSULAS O GRAGEAS.",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.3422.00",
+    "name": "KETOROLACO",
+    "therapeutic_group": "ANALGESIA",
+    "presentation": "SOLUCION INYECTABLE",
+    "description": "SOLUCION INYECTABLE CADA FRASCO ÁMPULA O AMPOLLETA CONTIENE: KETOROLACO-TROMETAMINA 30 MG. ENVASE CON 3 FRASCOS ÁMPULA O 3 AMPOLLETAS DE 1 ML.",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.3451.00",
+    "name": "ALOPURINOL",
+    "therapeutic_group": "REUMATOLOGÍA Y TRAUMATOLOGÍA",
+    "presentation": "TABLETA",
+    "description": "TABLETA CADA TABLETA CONTIENE: ALOPURINOL 300 MG ENVASE CON 20 TABLETAS.",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.3601.00",
+    "name": "GLUCOSA",
+    "therapeutic_group": "SOLUCIONES ELECTROLÍTICAS Y SUSTITUTOS DEL PLASMA",
+    "presentation": "SOLUCIÓN INYECTABLE AL 5 %",
+    "description": "SOLUCIÓN INYECTABLE AL 5 % CADA 100 ML CONTIENE: GLUCOSA ANHIDRA O GLUCOSA 5 G Ó GLUCOSA MONOHIDRATADA EQUIVALENTE A 5.0 G DE GLUCOSA. ENVASE CON 250 ML. CONTIENE: GLUCOSA 12.5 G",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.3603.00",
+    "name": "GLUCOSA",
+    "therapeutic_group": "SOLUCIONES ELECTROLÍTICAS Y SUSTITUTOS DEL PLASMA",
+    "presentation": "SOLUCIÓN INYECTABLE AL 5%",
+    "description": "SOLUCIÓN INYECTABLE AL 5% CADA 100 ML CONTIENEN: GLUCOSA ANHIDRA O GLUCOSA 5 G Ó GLUCOSA MONOHIDRATADA EQUIVALENTE A 5.0 G DE GLUCOSA. ENVASE CON 1 000 ML. CONTIENE: GLUCOSA 50.0 G",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.3607.00",
+    "name": "GLUCOSA",
+    "therapeutic_group": "SOLUCIONES ELECTROLÍTICAS Y SUSTITUTOS DEL PLASMA",
+    "presentation": "SOLUCIÓN INYECTABLE AL 50 %",
+    "description": "SOLUCIÓN INYECTABLE AL 50 % CADA 100 ML CONTIENEN: GLUCOSA ANHIDRA O GLUCOSA 50 G Ó GLUCOSA MONOHIDRATADA EQUIVALENTE A 50.0 G DE GLUCOSA. ENVASE CON 50 ML. CONTIENE: GLUCOSA 25.0 G",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.3609.00",
+    "name": "CLORURO DE SODIO",
+    "therapeutic_group": "SOLUCIONES ELECTROLÍTICAS Y SUSTITUTOS DEL PLASMA",
+    "presentation": "SOLUCIÓN INYECTABLE AL 0.9%",
+    "description": "SOLUCIÓN INYECTABLE AL 0.9% CADA 100 ML CONTIENEN: CLORURO DE SODIO 0.9 G AGUA INYECTABLE 100 ML ENVASE CON 500 ML. CONTIENE: SODIO 77 MEQ CLORURO 77 MEQ",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.3610.00",
+    "name": "CLORURO DE SODIO",
+    "therapeutic_group": "SOLUCIONES ELECTROLÍTICAS Y SUSTITUTOS DEL PLASMA",
+    "presentation": "SOLUCIÓN INYECTABLE AL 0.9%",
+    "description": "SOLUCIÓN INYECTABLE AL 0.9% CADA 100 ML CONTIENEN: CLORURO DE SODIO 0.9 G / AGUA INYECTABLE 100 ML ENVASE CON 1 000 ML. CONTIENE: SODIO 154 MEQ / CLORURO 154 MEQ",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.3612.00",
+    "name": "CLORURO DE SODIO Y GLUCOSA",
+    "therapeutic_group": "SOLUCIONES ELECTROLÍTICAS Y SUSTITUTOS DEL PLASMA",
+    "presentation": "SOLUCIÓN INYECTABLE",
+    "description": "SOLUCIÓN INYECTABLE CADA 100 ML CONTIENEN: CLORURO DE SODIO 0.9 G GLUCOSA ANHIDRA O GLUCOSA 5.0 G Ó GLUCOSA MONOHIDRATADA EQUIVALENTE A 5.0 G DE GLUCOSA. ENVASE CON 500 ML. CONTIENE: SODIO 77 MEQ CLORURO 77 MEQ GLUCOSA 25 G",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.3613.00",
+    "name": "CLORURO DE SODIO Y GLUCOSA",
+    "therapeutic_group": "SOLUCIONES ELECTROLÍTICAS Y SUSTITUTOS DEL PLASMA",
+    "presentation": "SOLUCIÓN INYECTABLE",
+    "description": "SOLUCIÓN INYECTABLE CADA 100 ML CONTIENEN: CLORURO DE SODIO 0.9 G / GLUCOSA ANHIDRA O GLUCOSA 5.0 G Ó GLUCOSA MONOHIDRATADA EQUIVALENTE A 5.0 G DE GLUCOSA. ENVASE CON 1 000 ML. CONTIENE: SODIO 154.0 MEQ / CLORURO 154.0 MEQ / GLUCOSA 50.0 G",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.3615.00",
+    "name": "SOLUCIÓN HARTMANN",
+    "therapeutic_group": "SOLUCIONES ELECTROLÍTICAS Y SUSTITUTOS DEL PLASMA",
+    "presentation": "SOLUCIÓN INYECTABLE",
+    "description": "SOLUCIÓN HARTMANN SOLUCIÓN INYECTABLE CADA 100 ML CONTIENEN: CLORURO DE SODIO 0.600 G CLORURO DE POTASIO 0.030 G CLORURO DE CALCIO DIHIDRATADO 0.020 G LACTATO DE SODIO 0.310 G ENVASE CON 500 ML. MILIEQUIVALENTES POR LITRO: SODIO 130 POTASIO 4 CALCIO 2.72.-3 CLORURO 109 LACTATO 28",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.3616.00",
+    "name": "SOLUCIÓN HARTMANN",
+    "therapeutic_group": "SOLUCIONES ELECTROLÍTICAS Y SUSTITUTOS DEL PLASMA",
+    "presentation": "SOLUCIÓN INYECTABLE",
+    "description": "SOLUCIÓN HARTMANN SOLUCION INYECTABLE CADA 100 ML CONTIENEN: CLORURO DE SODIO 0.600 G CLORURO DE POTASIO 0.030 G CLORURO DE CALCIO DIHIDRATADO 0.020 G LACTATO DE SODIO 0.310 G ENVASE CON 1000 ML. MILIEQUIVALENTES POR LITRO: SODIO 130 POTASIO 4 CALCIO 2.72-3 CLORURO 109 LACTATO 28",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.3622.00",
+    "name": "ELECTROLITOS ORALES",
+    "therapeutic_group": "SOLUCIONES ELECTROLÍTICAS Y SUSTITUTOS DEL PLASMA",
+    "presentation": "POLVO (FÓRMULA DE OSMOLARIDAD BAJA)",
+    "description": "POLVO (FÓRMULA DE OSMOLARIDAD BAJA) CADA SOBRE CON POLVO CONTIENE: GLUCOSA ANHIDRA O GLUCOSA 13.5 G CLORURO DE POTASIO 1.5 G CLORURO DE SODIO 2.6 G CITRATO TRISÓDICO DIHIDRATADO 2.9 G ENVASE CON 20.5 G.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.3623.00",
+    "name": "ELECTROLITOS ORALES",
+    "therapeutic_group": "SOLUCIONES ELECTROLÍTICAS Y SUSTITUTOS DEL PLASMA",
+    "presentation": "SOLUCIÓN",
+    "description": "SOLUCIÓN CADA SOBRE CON POLVO CONTIENE: GLUCOSA 20.0 G CLORURO DE POTASIO 1.5 G CLORURO DE SODIO 3.5 G CITRATO TRISÓDICO DIHIDRATADO 2.9 G ENVASE CON 27.9 G",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.3627.00",
+    "name": "CLORURO DE SODIO",
+    "therapeutic_group": "SOLUCIONES ELECTROLÍTICAS Y SUSTITUTOS DEL PLASMA",
+    "presentation": "SOLUCIÓN INYECTABLE AL 0.9%",
+    "description": "SOLUCIÓN INYECTABLE AL 0.9% CADA 100 ML CONTIENEN: CLORURO DE SODIO 0.9 G / AGUA INYECTABLE 100 ML ENVASE CON 100 ML.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.3662.00",
+    "name": "SEROALBÚMINA HUMANA O ALBÚMINA HUMANA",
+    "therapeutic_group": "SOLUCIONES ELECTROLÍTICAS Y SUSTITUTOS DEL PLASMA",
+    "presentation": "SOLUCIÓN INYECTABLE",
+    "description": "SOLUCIÓN INYECTABLE CADA ENVASE CONTIENE: SEROALBÚMINA HUMANA O ALBÚMINA HUMANA 12.5 G ENVASE CON 50 ML.",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.3675.00",
+    "name": "AGUA INYECTABLE",
+    "therapeutic_group": "SOLUCIONES ELECTROLÍTICAS Y SUSTITUTOS DEL PLASMA",
+    "presentation": "SOLUCIÓN INYECTABLE",
+    "description": "SOLUCIÓN INYECTABLE CADA ENVASE CONTIENE: AGUA INYECTABLE 500 ML ENVASE CON 500 ML.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.4024.04",
+    "name": "EZETIMIBA",
+    "therapeutic_group": "ENDOCRINOLOGÍA Y METABOLISMO",
+    "presentation": "TABLETA",
+    "description": "TABLETA CADA TABLETA CONTIENE: EZETIMIBA 10 MG. ENVASE CON 28 TABLETAS.",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.4028.00",
+    "name": "CLONIXINATO DE LISINA",
+    "therapeutic_group": "ANALGESIA",
+    "presentation": "SOLUCIÓN INYECTABLE",
+    "description": "SOLUCIÓN INYECTABLE CADA AMPOLLETA CONTIENE: CLONIXINATO DE LISINA 100 MG. ENVASE CON 5 AMPOLLETAS DE 2 ML.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.4107.00",
+    "name": "AMIODARONA",
+    "therapeutic_group": "CARDIOLOGÍA",
+    "presentation": "SOLUCIÓN INYECTABLE",
+    "description": "SOLUCIÓN INYECTABLE CADA AMPOLLETA CONTIENE: CLORHIDRATO DE AMIODARONA 150 MG. ENVASE CON 6 AMPOLLETAS DE 3 ML.",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.4114.00",
+    "name": "TRINITRATO DE GLICERILO",
+    "therapeutic_group": "CARDIOLOGÍA",
+    "presentation": "SOLUCIÓN INYECTABLE",
+    "description": "SOLUCIÓN INYECTABLE CADA FRASCO ÁMPULA CONTIENE: TRINITRATO DE GLICERILO 50 MG. ENVASE CON UN FRASCO ÁMPULA DE 10 ML.",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.4118.00",
+    "name": "ISOSORBIDA, DINITRATO DE",
+    "therapeutic_group": "CARDIOLOGÍA",
+    "presentation": "SOLUCIÓN INYECTABLE",
+    "description": "SOLUCIÓN INYECTABLE CADA ML CONTIENE: DINITRATO DE ISOSORBIDA 1 MG. ENVASE CON 10 APOLLETAS CON 10 ML (10 MG/10 ML).",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.4126.00",
+    "name": "SULFADIAZINA DE PLATA",
+    "therapeutic_group": "DERMATOLOGÍA",
+    "presentation": "CREMA",
+    "description": "CREMA CADA 100 GRAMOS CONTIENE: SULFADIAZINA DE PLATA MICRONIZADA 1 G. ENVASE CON 375 G.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.4152.01",
+    "name": "SITAGLIPTINA",
+    "therapeutic_group": "ENDOCRINOLOGÍA Y METABOLISMO",
+    "presentation": "COMPRIMIDO",
+    "description": "COMPRIMIDO CADA COMPRIMIDO CONTIENE: FOSFATO DE SITAGLIPTINA MONOHIDRATADA EQUIVALENTE A 100 MG DE SITAGLIPTINA. ENVASE CON 28 COMPRIMIDOS",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.4158.00",
+    "name": "INSULINA GLARGINA",
+    "therapeutic_group": "ENDOCRINOLOGÍA Y METABOLISMO",
+    "presentation": "SOLUCIÓN INYECTABLE",
+    "description": "SOLUCIÓN INYECTABLE CADA ML DE SOLUCIÓN CONTIENE: INSULINA GLARGINA 3.64 MG EQUIVALENTE A 100.0 UI DE INSULINA HUMANA. ENVASE CON UN FRASCO ÁMPULA CON 10 ML.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.4162.00",
+    "name": "INSULINA LISPRO",
+    "therapeutic_group": "ENDOCRINOLOGÍA Y METABOLISMO",
+    "presentation": "SOLUCIÓN INYECTABLE.",
+    "description": "SOLUCIÓN INYECTABLE. CADA ML CONTIENE: INSULINA LISPRO (ORIGEN ADN RECOMBINANTE) 100 UI. ENVASE CON UN FRASCO ÁMPULA CON 10 ML.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.4184.00",
+    "name": "LOPERAMIDA",
+    "therapeutic_group": "GASTROENTEROLOGÍA",
+    "presentation": "COMPRIMIDO, TABLETA O GRAGEA",
+    "description": "COMPRIMIDO, TABLETA O GRAGEA CADA COMPRIMIDO, TABLETAS O GRAGEA CONTIENE: CLORHIDRATO DE LOPERAMIDA 2 MG. ENVASE CON 12 COMPRIMIDOS, TABLETAS O GRAGEAS.",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.4201.00",
+    "name": "HIDRALAZINA",
+    "therapeutic_group": "CARDIOLOGÍA",
+    "presentation": "SOLUCIÓN INYECTABLE",
+    "description": "SOLUCIÓN INYECTABLE CADA AMPOLLETA O FRASCO ÁMPULA CONTIENE: CLORHIDRATO DE HIDRALAZINA 20 MG. ENVASE CON 5 AMPOLLETAS O 5 FRASCOS ÁMPULA CON 1.0 ML.",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.4224.00",
+    "name": "ENOXAPARINA",
+    "therapeutic_group": "HEMATOLOGÍA",
+    "presentation": "SOLUCIÓN INYECTABLE",
+    "description": "SOLUCIÓN INYECTABLE CADA JERINGA CONTIENE ENOXAPARINA SÓDICA 60 MG. ENVASE CON 2 JERINGAS DE 0.6 ML.",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.4241.00",
+    "name": "DEXAMETASONA",
+    "therapeutic_group": "HEMATOLOGÍA",
+    "presentation": "SOLUCIÓN INYECTABLE",
+    "description": "SOLUCIÓN INYECTABLE CADA FRASCO ÁMPULA O AMPOLLETA CONTIENE: FOSFATO SÓDICO DE DEXAMETASONA EQUIVALENTE A 8 MG. DE FOSFATO DE DEXAMETASONA. ENVASE CON UN FRASCO ÁMPULA O AMPOLLETA CON 2 ML.",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.4246.01",
+    "name": "CLOPIDOGREL",
+    "therapeutic_group": "CARDIOLOGÍA",
+    "presentation": "GRAGEA O TABLETA",
+    "description": "GRAGEA O TABLETA CADA GRAGEA O TABLETA CONTIENE: BISULFATO DE CLOPIDOGREL O BISULFATO DE CLOPIDOGREL (POLIMORFO FORMA 2) EQUIVALENTE A 75 MG DE CLOPIDOGREL. ENVASE CON 28 GRAGEAS O TABLETAS.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.4249.00",
+    "name": "LEVOFLOXACINO",
+    "therapeutic_group": "ENFERMEDADES INFECCIOSAS Y PARASITARIAS",
+    "presentation": "SOLUCION INYECTABLE",
+    "description": "SOLUCION INYECTABLE CADA ENVASE CONTIENE: LEVOFLOXACINO HEMIHIDRATADO EQUIVALENTE A 500 MG DE LEVOFLOXACINO. ENVASE CON 100 ML.",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.4260.00",
+    "name": "NISTATINA",
+    "therapeutic_group": "ENFERMEDADES INFECCIOSAS Y PARASITARIAS",
+    "presentation": "SUSPENSIÓN ORAL",
+    "description": "SUSPENSIÓN ORAL CADA FRASCO CON POLVO CONTIENE: NISTATINA 2 400 000 UI. ENVASE PARA 24 ML.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.4300.00",
+    "name": "LEVOFLOXACINO",
+    "therapeutic_group": "ENFERMEDADES INFECCIOSAS Y PARASITARIAS",
+    "presentation": "TABLETA",
+    "description": "TABLETA CADA TABLETA CONTIENE: LEVOFLOXACINO HEMIHIDRATADO EQUIVALENTE A 750 MG DE LEVOFLOXACINO. ENVASE CON 7 TABLETAS.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.4307.00",
+    "name": "CILOSTAZOL",
+    "therapeutic_group": "CARDIOLOGÍA",
+    "presentation": "TABLETA",
+    "description": "TABLETA CADA TABLETA CONTIENE: CILOSTAZOL 100 MG. ENVASE CON 30 TABLETAS.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.4332.01",
+    "name": "BUDESONIDA",
+    "therapeutic_group": "NEUMOLOGÍA",
+    "presentation": "SUSPENSION PARA NEBULIZAR",
+    "description": "SUSPENSION PARA NEBULIZAR CADA ENVASE CONTIENE: BUDESONIDA (MICRONIZADA) 0.250 MG. ENVASE CON 20 ENVASES CON 2 ML.",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.4337.00",
+    "name": "BUDESONIDA",
+    "therapeutic_group": "OTORRINOLARINGOLOGÍA",
+    "presentation": "SUSPENSIÓN PARA INHALACIÓN",
+    "description": "SUSPENSIÓN PARA INHALACIÓN CADA ML CONTIENE BUDESONIDA 1.280 MG ENVASE CON FRASCO PULVERIZADOR CON 6 ML (120 DOSIS DE 64 ΜG CADA UNA).",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.4356.01",
+    "name": "PREGABALINA",
+    "therapeutic_group": "NEUROLOGÍA",
+    "presentation": "CÁPSULA",
+    "description": "CÁPSULA CADA CÁPSULA CONTIENE: PREGABALINA 75 MG ENVASE CON 28 CÁPSULAS",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.4376.00",
+    "name": "VITAMINAS (POLIVITAMINAS) Y MINERALES",
+    "therapeutic_group": "VITAMINAS Y MINERALES",
+    "presentation": "TABLETA, CAPSULA O GRAGEA",
+    "description": "TABLETA, CAPSULA O GRAGEA CADA TABLETA,CAPSULA O GRAGEA CONTIENE: CLORHIDRATO DE TIAMINA (VITAMINA B1) 5.0 A 10.0 MGRIBOFLAVINA (VITAMINA B2) 2.5 A 10.0 MG CLORHIDRATO DE PIRIDOXINA (VITAMINAB6) 2.0 A 5.0 MG NICOTINAMIDA (NIACINAMIDA) 10.0 A 100.0 MG CIANOCOBALAMINA(VITAMINA B12) 3.0 A 5.0 MICROGRAMOS ACETATO DE ALFATOCOFEROL (VITAMINA E) 3.0A 20.0 MG RETINOL (VITAMINA A) 2000.0 A 10000.0 UI COLECALCIFEROL (VITAMINAD3) 200.0 A 1000.0 UI ACIDO PANTOTENICO 2.0 A 7.0 MG SULFATO FERROSO 15.0 A60.0 MG SULFATO DE COBRE 1.0 A 4.0 MG YODURO O FOSFATO DE POTASIO 0.15 A 4.0MG GLICEROFOSFATO, SULFATO O HIPOSULFITO DE MAGNESIO 1.0 A 8.00 MG FOSFATO DEMAGNESIO 5.0 A 133.0 MG CLORURO, FOSFATO O SULFATO DE ZINC 3.0 A 25.0 MGENVASE CON 30 TABLETAS, CAPSULAS O GRAGEAS.",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.4480.01",
+    "name": "ESCITALOPRAM",
+    "therapeutic_group": "PSIQUIATRÍA",
+    "presentation": "TABLETA",
+    "description": "TABLETA CADA TABLETA CONTIENE: OXALATO DE ESCITALOPRAM EQUIVALENTE A 10 MG DE ESCITALOPRAM. ENVASE CON 28 TABLETAS.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.4483.01",
+    "name": "FLUOXETINA",
+    "therapeutic_group": "PSIQUIATRÍA",
+    "presentation": "CÁPSULA O TABLETA",
+    "description": "CÁPSULA O TABLETA CADA CÁPSULA O TABLETA CONTIENE: CLORHIDRATO DE FLUOXETINA EQUIVALENTE A 20 MG DE FLUOXETINA. ENVASE CON 28 CÁPSULAS O TABLETAS.",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.4582.00",
+    "name": "OSELTAMIVIR",
+    "therapeutic_group": "ENFERMEDADES INFECCIOSAS Y PARASITARIAS",
+    "presentation": "CÁPSULA",
+    "description": "CÁPSULA CADA CÁPSULA CONTIENE: OSELTAMIVIR 75.0 MG. ENVASE CON 10 CÁPSULAS.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.5099.00",
+    "name": "ADENOSINA",
+    "therapeutic_group": "CARDIOLOGÍA",
+    "presentation": "SOLUCIÓN INYECTABLE",
+    "description": "SOLUCIÓN INYECTABLE CADA FRASCO ÁMPULA CONTIENE: ADENOSINA 6 MG. ENVASE CON 6 FRASCOS ÁMPULA CON 2 ML",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.5106.01",
+    "name": "ATORVASTATINA",
+    "therapeutic_group": "ENDOCRINOLOGÍA Y METABOLISMO",
+    "presentation": "TABLETA",
+    "description": "TABLETA CADA TABLETA CONTIENE: ATORVASTATINA CÁLCICA TRIHIDRATADA EQUIVALENTE A 20 MG DE ATORVASTATINA. ENVASE CON 30 TABLETAS.",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.5117.00",
+    "name": "TENECTEPLASA",
+    "therapeutic_group": "CARDIOLOGÍA",
+    "presentation": "SOLUCION INYECTABLE",
+    "description": "SOLUCION INYECTABLE CADA FRASCO ÁMPULA CONTIENE: TENECTEPLASA 50 MG (10,000 U). ENVASE CON FRASCO ÁMPULA Y JERINGA PRELLENADA CON 10 ML DE AGUA INYECTABLE.",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.5165.00",
+    "name": "METFORMINA",
+    "therapeutic_group": "ENDOCRINOLOGÍA Y METABOLISMO",
+    "presentation": "TABLETA",
+    "description": "TABLETA CADA TABLETA CONTIENE: CLORHIDRATO DE METFORMINA 850 MG. ENVASE CON 30 TABLETAS.",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.5176.00",
+    "name": "SUCRALFATO",
+    "therapeutic_group": "GASTROENTEROLOGÍA",
+    "presentation": "TABLETA",
+    "description": "TABLETA CADA TABLETA CONTIENE: SUCRALFATO 1 G. ENVASE CON 40 TABLETAS.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.5186.02",
+    "name": "PANTOPRAZOL O RABEPRAZOL U OMEPRAZOL",
+    "therapeutic_group": "GASTROENTEROLOGÍA",
+    "presentation": "TABLETA O GRAGEA O CÁPSULA",
+    "description": "TABLETA O GRAGEA O CÁPSULA CADA TABLETA O GRAGEA O CÁPSULA CONTIENE: PANTOPRAZOL 40 MG. O RABEPRAZOL SÓDICO 20 MG. U OMEPRAZOL 20 MG. ENVASE CON 28 TABLETAS O GRAGEAS O CÁPSULAS.",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.5187.00",
+    "name": "OMEPRAZOL O PANTOPRAZOL",
+    "therapeutic_group": "GASTROENTEROLOGÍA",
+    "presentation": "SOLUCIÓN INYECTABLE",
+    "description": "SOLUCIÓN INYECTABLE CADA FRASCO ÁMPULA CON LIOFILIZADO CONTIENE: OMEPRAZOL SÓDICO EQUIVALENTE A 40 MG DE OMEPRAZOL. O PANTOPRAZOL SÓDICO EQUIVALENTE A 40 MG DE PANTOPRAZOL. ENVASE CON UN FRASCO ÁMPULA CON LIOFILIZADO Y AMPOLLETA CON 10 ML DE DILUYENTE.",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.5255.00",
+    "name": "TRIMETOPRIMA Y SULFAMETOXAZOL",
+    "therapeutic_group": "ENFERMEDADES INFECCIOSAS Y PARASITARIAS",
+    "presentation": "SOLUCIÓN INYECTABLE",
+    "description": "SOLUCIÓN INYECTABLE CADA AMPOLLETA CONTIENE: TRIMETOPRIMA 160 MG. SULFAMETOXAZOL 800 MG. ENVASE CON 6 AMPOLLETAS CON 3 ML.",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.5256.00",
+    "name": "CEFALOTINA",
+    "therapeutic_group": "ENFERMEDADES INFECCIOSAS Y PARASITARIAS",
+    "presentation": "SOLUCIÓN INYECTABLE",
+    "description": "SOLUCIÓN INYECTABLE CADA FRASCO ÁMPULA CON POLVO CONTIENE: CEFALOTINA SÓDICA EQUIVALENTE A 1 G DE CEFALOTINA. ENVASE CON UN FRASCO ÁMPULA Y 5 ML DE DILUYENTE.",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.5267.00",
+    "name": "FLUCONAZOL",
+    "therapeutic_group": "ENFERMEDADES INFECCIOSAS Y PARASITARIAS",
+    "presentation": "CÁPSULA O TABLETA",
+    "description": "CÁPSULA O TABLETA CADA CÁPSULA O TABLETA CONTIENE: FLUCONAZOL 100 MG. ENVASE CON 10 CÁPSULAS O TABLETAS.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.5295.01",
+    "name": "CEFEPIMA",
+    "therapeutic_group": "ENFERMEDADES INFECCIOSAS Y PARASITARIAS",
+    "presentation": "SOLUCIÓN INYECTABLE",
+    "description": "SOLUCIÓN INYECTABLE CADA FRASCO ÁMPULA CONTIENE: CLORHIDRATO MONOHIDRATADO DE CEFEPIMA EQUIVALENTE A 1 G DE CEFEPIMA. ENVASE CON UN FRASCO ÁMPULA Y AMPOLLETA CON 10 ML DE DILUYENTE.",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.5302.00",
+    "name": "NITROFURANTOÍNA",
+    "therapeutic_group": "ENFERMEDADES INFECCIOSAS Y PARASITARIAS",
+    "presentation": "SUSPENSIÓN ORAL",
+    "description": "SUSPENSIÓN ORAL CADA 100 ML CONTIENEN: NITROFURANTOINA 500 MG. ENVASE CON 120 ML (25 MG/5 ML).",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.5309.02",
+    "name": "TAMSULOSINA",
+    "therapeutic_group": "NEFROLOGÍA Y UROLOGÍA",
+    "presentation": "CÁPSULA O TABLETA DE LIBERACIÓN PROLONGADA",
+    "description": "CÁPSULA O TABLETA DE LIBERACIÓN PROLONGADA CADA CÁPSULA O TABLETA DE LIBERACIÓN PROLONGADA CONTIENE: CLORHIDRATO DE TAMSULOSINA 0.4 MG ENVASE CON 30 CÁPSULAS O TABLETAS DE LIBERACIÓN PROLONGADA",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.5428.00",
+    "name": "ONDANSETRÓN",
+    "therapeutic_group": "ONCOLOGÍA",
+    "presentation": "SOLUCION INYECTABLE",
+    "description": "SOLUCION INYECTABLE CADA AMPOLLETA O FRASCO ÁMPULA CONTIENE: CLORHIDRATO DIHIDRATADO DE ONDANSETRÓN EQUIVALENTE A 8 MG DE ONDANSETRÓN. ENVASE CON 3 AMPOLLETAS O FRASCOS ÁMPULA CON 4 ML.",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.5501.00",
+    "name": "DICLOFENACO",
+    "therapeutic_group": "REUMATOLOGÍA Y TRAUMATOLOGÍA",
+    "presentation": "SOLUCIÓN INYECTABLE",
+    "description": "SOLUCIÓN INYECTABLE CADA AMPOLLETA CONTIENE: DICLOFENACO SÓDICO 75 MG ENVASE CON 2 AMPOLLETAS CON 3 ML.",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.5621.00",
+    "name": "LINAGLIPTINA",
+    "therapeutic_group": "ENDOCRINOLOGÍA Y METABOLISMO",
+    "presentation": "TABLETA",
+    "description": "TABLETA CADA TABLETA CONTIENE: LINAGLIPTINA 5 MG. ENVASE CON 30 TABLETAS",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.5646.00",
+    "name": "FLUTICASONA",
+    "therapeutic_group": "ENFERMEDADES INMUNOALÉRGICAS",
+    "presentation": "SUSPENSION EN AEROSOL NASAL",
+    "description": "SUSPENSION EN AEROSOL NASAL CADA DISPARO PROPORCIONA: FUROATO DE FLUTICASONA 27.5 ΜG. ENVASE CON 120 DISPAROS",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.5671.02",
+    "name": "RIFAXIMINA",
+    "therapeutic_group": "ENFERMEDADES INFECCIOSAS Y PARASITARIAS",
+    "presentation": "TABLETA RIFAXIMINA 550 MG.",
+    "description": "TABLETA RIFAXIMINA 550 MG. ENVASE CON 14 TABLETAS.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.5721.02",
+    "name": "PARACETAMOL",
+    "therapeutic_group": "ANALGESIA",
+    "presentation": "SOLUCIÓN INYECTABLE",
+    "description": "SOLUCIÓN INYECTABLE CADA FRASCO CONTIENE: PARACETAMOL 1 G. ENVASE CON DIEZ FRASCOS CON 100 ML.",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.5941.00",
+    "name": "IBUPROFENO",
+    "therapeutic_group": "ANALGESIA",
+    "presentation": "TABLETA O CÁPSULA",
+    "description": "TABLETA O CÁPSULA CADA TABLETA O CÁPSULA CONTIENE: IBUPROFENO 400 MG: ENVASE CON 10 TABLETAS O CÁPSULAS.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.5943.00",
+    "name": "IBUPROFENO",
+    "therapeutic_group": "ANALGESIA",
+    "presentation": "SUSPENSIÓN ORAL",
+    "description": "SUSPENSIÓN ORAL CADA 100 ML CONTIENEN: IBUPROFENO 2 G. ENVASE CON 120 ML Y MEDIDA DOSIFICADORA.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.6000.00",
+    "name": "CARBONATO DE CALCIO / VITAMINA D3",
+    "therapeutic_group": "ENDOCRINOLOGÍA Y METABOLISMO",
+    "presentation": "TABLETA",
+    "description": "TABLETA CADA TABLETA CONTIENE: CARBONATO DE CALCIO 1666.670 MG EQUIVALENTE A 600 MG DE CALCIO COLECALCIFEROL 6.2 MG EQUIVALENTE A 400 UI DE VITAMINA D3 ENVASE CON 30 TABLETAS",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.6007.01",
+    "name": "DAPAGLIFLOZINA",
+    "therapeutic_group": "ENDOCRINOLOGÍA Y METABOLISMO",
+    "presentation": "TABLETA",
+    "description": "TABLETA CADA TABLETA CONTIENE: DAPAGLIFLOZINA PROPANODIOL EQUIVALENTE A 10 MG DE DAPAGLIFLOZINA ENVASE CON 28 TABLETAS.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.6012.04",
+    "name": "MISOPROSTOL",
+    "therapeutic_group": "GASTROENTEROLOGÍA",
+    "presentation": "TABLETA",
+    "description": "TABLETA CADA TABLETA CONTIENE: MISOPROSTOL 200 ΜG ENVASE CON 12 TABLETAS",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.6021.00",
+    "name": "INDACATEROL / GLICOPIRRONIO",
+    "therapeutic_group": "NEUMOLOGÍA",
+    "presentation": "CÁPSULA",
+    "description": "CÁPSULA CADA CÁPSULA CONTIENE: MALEATO DE INDACATEROL EQUIVALENTE A 110 ΜG DE INDACATEROL / BROMURO DE GLICOPIRRONIO EQUIVALENTE A 50 ΜG DE GLICOPIRRONIO ENVASE CON 30 CÁPSULAS CON POLVO PARA INHALACIÓN (NO INGERIBLES), Y UN DISPOSITIVO PARA INHALACIÓN.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.6099.01",
+    "name": "LACTULOSA",
+    "therapeutic_group": "GASTROENTEROLOGÍA",
+    "presentation": "JARABE",
+    "description": "JARABE CADA 100 ML CONTIENEN: LACTULOSA 66.70 G ENVASE CON 240 ML Y MEDIDA DOSIFICADORA (0.667 G/ML).",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.6222.00",
+    "name": "ÁCIDO ACETILSALICÍLICO",
+    "therapeutic_group": "CARDIOLOGÍA",
+    "presentation": "TABLETAS",
+    "description": "TABLETAS CADA TABLETA CONTIENE: ÁCIDO ACETILSALICÍLICO 100 MG CON O SIN RECUBRIMIENTO. ENVASE CON 28 TABLETAS",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.6259.00",
+    "name": "LABETALOL",
+    "therapeutic_group": "CARDIOLOGÍA",
+    "presentation": "SOLUCIÓN INYECTABLE.",
+    "description": "SOLUCIÓN INYECTABLE. CADA AMPOLLETA O FRASCO ÁMPULA CONTIENE: LABETALOL 100 MG/20 ML ENVASE CON 5 FRASCOS ÁMPULA O AMPOLLETAS.",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.6279.00",
+    "name": "AZITROMICINA",
+    "therapeutic_group": "ENFERMEDADES INFECCIOSAS Y PARASITARIAS",
+    "presentation": "SUSPENSIÓN",
+    "description": "SUSPENSIÓN CADA 5 ML DE SUSPENSIÓN CONTIENEN: AZITROMICINA 200 MG FRASCO CON POLVO PARA RECONSTITUIR 10 ML.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.6280.00",
+    "name": "CLARITROMICINA",
+    "therapeutic_group": "ENFERMEDADES INFECCIOSAS Y PARASITARIAS",
+    "presentation": "TABLETA",
+    "description": "TABLETA CADA TABLETA CONTIENE: CLARITROMICINA 500 MG. ENVASE CON 10 TABLETAS.",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.6281.00",
+    "name": "AMOXICILINA / ÁCIDO CLAVULÁNICO",
+    "therapeutic_group": "ENFERMEDADES INFECCIOSAS Y PARASITARIAS",
+    "presentation": "TABLETA",
+    "description": "TABLETA CADA TABLETA CONTIENE: AMOXICILINA TRIHIDRATADA EQUIVALENTE A 875 MG DE AMOXICILINA. CLAVULANATO DE POTASIO EQUIVALENTE A 125 MG DE ÁCIDO CLAVULÁNICO. ENVASE CON 10 TABLETAS",
+    "mobile_units": "Si",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.6329.01",
+    "name": "IVERMECTINA",
+    "therapeutic_group": "ENFERMEDADES INFECCIOSAS Y PARASITARIAS",
+    "presentation": "TABLETA",
+    "description": "TABLETA CADA TABLETA CONTIENE 6 MG DE IVERMECTINA CAJA DE CARTÓN CON 4 TABLETAS",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.6330.00",
+    "name": "BROMURO DE IPRATROPIO / FENOTEROL",
+    "therapeutic_group": "NEUMOLOGÍA",
+    "presentation": "AEROSOL",
+    "description": "AEROSOL CADA ML CONTIENE: BROMURO DE IPRATROPIO EQUIVALENTE A: 0.394 MG. FENOTEROL EQUIVALENTE A: 0.938 MG ENVASE CON UN FRASCO PRESURIZADO CON DISPOSITIVO PARA INHALACIÓN 10 ML = 200 DOSIS.",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "010.000.6343.01",
+    "name": "CEFIXIMA",
+    "therapeutic_group": "ENFERMEDADES INFECCIOSAS Y PARASITARIAS",
+    "presentation": "CÁPSULA",
+    "description": "CÁPSULA CADA CÁPSULA CONTIENE: CEFIXIMA TRIHIDRATADA EQUIVALENTE A CEFIXIMA 400 MG. CAJA DE CARTÓN CON 5 CÁPSULAS",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "040.000.0242.00",
+    "name": "FENTANILO",
+    "therapeutic_group": "ANESTESIA",
+    "presentation": "SOLUCIÓN INYECTABLE",
+    "description": "SOLUCIÓN INYECTABLE CADA AMPOLLETA O FRASCO ÁMPULA CONTIENE: CITRATO DE FENTANILO EQUIVALENTE A 0.5 MG DE FENTANILO. ENVASE CON 6 AMPOLLETAS O FRASCOS ÁMPULA CON 10 ML.",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "040.000.0302.00",
+    "name": "NALOXONA",
+    "therapeutic_group": "ANESTESIA",
+    "presentation": "SOLUCIÓN INYECTABLE",
+    "description": "SOLUCIÓN INYECTABLE CADA AMPOLLETA CONTIENE: CLORHIDRATO DE NALOXONA 0.4 MG. ENVASE CON 10 AMPOLLETAS CON 1 ML.",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "040.000.2106.00",
+    "name": "TRAMADOL",
+    "therapeutic_group": "ANALGESIA",
+    "presentation": "SOLUCIÓN INYECTABLE",
+    "description": "SOLUCIÓN INYECTABLE CADA AMPOLLETA CONTIENE: CLORHIDRATO DE TRAMADOL 100 MG. ENVASE CON 5 AMPOLLETAS DE 2 ML",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "040.000.2108.00",
+    "name": "MIDAZOLAM",
+    "therapeutic_group": "ANESTESIA",
+    "presentation": "SOLUCIÓN INYECTABLE",
+    "description": "SOLUCIÓN INYECTABLE CADA AMPOLLETA CONTIENE: CLORHIDRATO DE MIDAZOLAM EQUIVALENTE A 5 MG DE MIDAZOLAM. O MIDAZOLAM 5 MG. ENVASE CON 5 AMPOLLETAS CON 5 ML",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "040.000.2613.00",
+    "name": "CLONAZEPAM",
+    "therapeutic_group": "NEUROLOGÍA",
+    "presentation": "SOLUCIÓN",
+    "description": "SOLUCIÓN CADA ML CONTIENE: CLONAZEPAM 2.5 MG. ENVASE CON 10 ML Y GOTERO INTEGRAL.",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "040.000.3253.00",
+    "name": "HALOPERIDOL",
+    "therapeutic_group": "PSIQUIATRÍA",
+    "presentation": "SOLUCIÓN INYECTABLE",
+    "description": "SOLUCIÓN INYECTABLE CADA AMPOLLETA CONTIENE: HALOPERIDOL 5 MG. ENVASE CON 6 AMPOLLETAS (5 MG/ ML).",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "040.000.4054.00",
+    "name": "FLUMAZENIL",
+    "therapeutic_group": "ANESTESIA",
+    "presentation": "SOLUCIÓN INYECTABLE",
+    "description": "SOLUCIÓN INYECTABLE CADA AMPOLLETA CONTIENE: FLUMAZENIL 0.5 MG. ENVASE CON UNA AMPOLLETA CON 5 ML (0.1 MG/ML).",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "040.000.4057.00",
+    "name": "MIDAZOLAM",
+    "therapeutic_group": "ANESTESIA",
+    "presentation": "SOLUCIÓN INYECTABLE",
+    "description": "SOLUCIÓN INYECTABLE CADA AMPOLLETA CONTIENE: CLORHIDRATO DE MIDAZOLAM EQUIVALENTE A 15 MG DE MIDAZOLAM. O MIDAZOLAM 15 MG. ENVASE CON 5 AMPOLLETAS CON 3 ML.",
+    "mobile_units": "No",
+    "basic_units": "No",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "040.000.4484.00",
+    "name": "SERTRALINA",
+    "therapeutic_group": "PSIQUIATRÍA",
+    "presentation": "CÁPSULA O TABLETA",
+    "description": "CÁPSULA O TABLETA CADA CÁPSULA O TABLETA CONTIENE: CLORHIDRATO DE SERTRALINA EQUIVALENTE A 50 MG DE SERTRALINA. ENVASE CON 14 CÁPSULAS O TABLETAS.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  },
+  {
+    "cnis": "040.000.6140.01",
+    "name": "TRAMADOL",
+    "therapeutic_group": "ANALGESIA",
+    "presentation": "TABLETA DE LIBERACIÓN PROLONGADA",
+    "description": "TABLETA DE LIBERACIÓN PROLONGADA CADA TABLETA DE LIBERACIÓN PROLONGADA CONTIENE: CLORHIDRATO DE TRAMADOL 150 MG ENVASE CON 30 TABLETAS DE LIBERACIÓN PROLONGADA.",
+    "mobile_units": "No",
+    "basic_units": "Si",
+    "cessa": "Si"
+  }
+]

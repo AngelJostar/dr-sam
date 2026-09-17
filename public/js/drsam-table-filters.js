@@ -28,7 +28,11 @@
   }
 
   function isHeaderCellFilterable(cell) {
-    return cell.tagName === "TH" && cell.colSpan === 1 && cell.rowSpan === 1 && getHeaderLabel(cell) !== "";
+    return cell.tagName === "TH"
+      && cell.colSpan === 1
+      && cell.rowSpan === 1
+      && !cell.hasAttribute("data-drsam-table-filter-skip-column")
+      && getHeaderLabel(cell) !== "";
   }
 
   function rowHasFieldControls(row) {

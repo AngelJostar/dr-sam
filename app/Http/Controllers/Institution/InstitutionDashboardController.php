@@ -13,6 +13,7 @@ use App\Models\ProviderRequest;
 use App\Models\Service;
 use App\Models\User;
 use App\Services\Platform\PlatformAuditService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -31,6 +32,7 @@ class InstitutionDashboardController extends Controller
             'medicalUnits.contractedServices.service',
             'medicalUnits.doctors',
             'medicalUnits.operationalProfiles.area',
+            'medicalUnits.procedureAreas',
             'services.service',
         ]);
 
@@ -157,6 +159,10 @@ class InstitutionDashboardController extends Controller
             'osteosintesis' => ['category' => 'Traumatologia', 'specialty' => 'Osteosintesis', 'name' => 'Osteosintesis'],
         ];
 
+        if (in_array($institution->external_id, ['inst-portal', 'inst-t2'], true)) {
+            $definitions['farmacia-externa'] = ['category' => 'Farmacia', 'specialty' => 'Farmacia externa', 'name' => 'Farmacia externa'];
+        }
+
         foreach ($definitions as $externalId => $definition) {
             Service::query()->updateOrCreate(
                 ['external_id' => $externalId],
@@ -168,13 +174,25 @@ class InstitutionDashboardController extends Controller
             ->with(['contractedServices' => fn ($query) => $query
                 ->with('medicalUnit')
                 ->where('institution_id', $institution->id)])
-            ->whereIn('external_id', array_keys($definitions))
-            ->get()
+            ->where(function ($query) use ($definitions, $institution) {
+                $query->whereIn('external_id', array_keys($definitions))
+                    ->orWhereHas('contractedServices', fn ($contractQuery) => $contractQuery
+                        ->where('institution_id', $institution->id))
+                    ->orWhereJsonContains('metadata->institution_ids', $institution->id);
+            })
+            ->get();
+
+        $servicesByExternalId = $services
+            ->filter(fn (Service $service) => filled($service->external_id))
             ->keyBy('external_id');
+        $customServices = $services
+            ->reject(fn (Service $service) => array_key_exists((string) $service->external_id, $definitions))
+            ->sortBy('name');
 
         return collect(array_keys($definitions))
-            ->map(fn (string $externalId) => $services->get($externalId))
+            ->map(fn (string $externalId) => $servicesByExternalId->get($externalId))
             ->filter()
+            ->concat($customServices)
             ->values();
     }
 
@@ -478,6 +496,35 @@ class InstitutionDashboardController extends Controller
         return redirect()
             ->route('institution.dashboard', ['institution' => $institution->id, 'section' => 'medications'])
             ->with('status', 'Medicamento institucional actualizado.');
+    }
+
+    public function updateMedicationStatus(
+        Request $request,
+        MedicationCatalogItem $medication,
+        PlatformAuditService $audit,
+    ): RedirectResponse|JsonResponse {
+        $institution = $this->resolveInstitution($request);
+        abort_unless((int) $medication->institution_id === (int) $institution->id, 403, 'No puedes editar medicamentos de otra institucion.');
+
+        $data = $request->validate([
+            'status' => ['required', Rule::in(['active', 'inactive'])],
+        ]);
+
+        $medication->update(['status' => $data['status']]);
+
+        $audit->record($request, 'institution.medication.status.updated', $medication, 'institution', [
+            'institution_id' => $institution->id,
+            'status' => $medication->status,
+        ]);
+
+        if ($request->expectsJson()) {
+            return response()->json(['status' => $medication->status]);
+        }
+
+        return redirect()->route('institution.dashboard', [
+            'institution' => $institution->id,
+            'section' => 'medications',
+        ]);
     }
 
     public function storeSpecialty(Request $request, PlatformAuditService $audit): RedirectResponse

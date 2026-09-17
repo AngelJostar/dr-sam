@@ -41,6 +41,7 @@ class DrSamDemoSeeder extends Seeder
         $patient = $this->seedPatient($users['paciente']);
         $provider = $this->seedProviders($users);
         $product = $this->seedPharmacy($institutions['inst-portal'], $unit);
+        $this->call(ImssBienestarMedicationSeeder::class);
         $this->seedCareFlow($doctor, $patient, $product);
         $this->seedProviderFlow($provider, $patient, $unit, $services['nutricion-parenteral']);
         $this->seedMessenger($users['mensajero']);
@@ -137,6 +138,7 @@ class DrSamDemoSeeder extends Seeder
             'medicamentos-importacion' => ['category' => 'Farmaceuticos', 'specialty' => 'Medicamentos de importacion', 'name' => 'Importacion de medicamentos'],
             'consulta-externa' => ['category' => 'Atencion medica', 'specialty' => 'Consulta Externa', 'name' => 'Consulta externa'],
             'farmacia-digital' => ['category' => 'Farmacia', 'specialty' => 'Farmacia Digital', 'name' => 'Pedido y entrega de medicamentos'],
+            'farmacia-externa' => ['category' => 'Farmacia', 'specialty' => 'Farmacia externa', 'name' => 'Farmacia externa'],
         ];
 
         $services = [];

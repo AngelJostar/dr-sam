@@ -139,25 +139,56 @@ class InstitutionModuleTest extends TestCase
             ->assertSee('Institucion Nativa Test')
             ->assertSee('Unidad Institucional')
             ->assertSee('Catalogo de unidades')
+            ->assertSee('data-institution-catalog-shell="units"', false)
+            ->assertSee('institution-catalog-summary-card', false)
+            ->assertSee('data-institution-toolbar-filter="active"', false)
+            ->assertSee('data-institution-carousel-filter="all"', false)
+            ->assertSee('<strong>Catalogo</strong>', false)
+            ->assertSee('Hospitales de Tercer Nivel')
+            ->assertSee('Hospitales de Segundo Nivel')
+            ->assertSee('Hospitales de Primer Nivel')
+            ->assertSee('Clínicas y centros médicos')
+            ->assertSee('Farmacias')
+            ->assertSee('section=doctors', false)
+            ->assertDontSee('Farmacias Institucionales')
+            ->assertSee('<th>Editar</th>', false)
+            ->assertSee('<th>Eliminar</th>', false)
+            ->assertDontSee('Paginacion de unidades')
+            ->assertDontSee('Unidades por pagina')
             ->assertDontSee('<iframe');
 
-        $this->actingAs($user)
+        $subunitResponse = $this->actingAs($user)
             ->get(route('institution.dashboard', ['section' => 'subunits']))
             ->assertOk()
             ->assertSee('Catalogo de subunidades')
-            ->assertSee('Catalogo de consultorios')
-            ->assertSee('Catalogo de salas de infusion')
-            ->assertSee('Catalogo de quirofanos')
-            ->assertSee('Catalogo de salas de recuperacion')
+            ->assertSee('data-institution-catalog-shell="subunits"', false)
+            ->assertSee('data-institution-carousel-filter="maintenance"', false)
+            ->assertSee('data-institution-toolbar-filter="inactive"', false)
             ->assertSee('Unidad Institucional')
-            ->assertSee('Descargar Excel')
-            ->assertSee('data-toggle-subunits', false);
+            ->assertSee('data-subunit-unit-filter', false)
+            ->assertSee('Espacios que puede incluir')
+            ->assertSee('Equipamiento asociado')
+            ->assertSee('Espacios registrados')
+            ->assertSee('Equipos asignados')
+            ->assertSeeInOrder(['>Ver</th>', '>Editar</th>', '>Espacios</th>', '>Equipos</th>'], false)
+            ->assertSee('Hospitalización general')
+            ->assertSee('Mortuorio')
+            ->assertSee('data-subunit-action="view"', false)
+            ->assertSee('data-subunit-action="spaces"', false)
+            ->assertSee('Mostrando 36 de 36 subunidades')
+            ->assertDontSee('Paginacion de subunidades')
+            ->assertDontSee('Subunidades por pagina');
+
+        $this->assertSame(36, substr_count($subunitResponse->getContent(), 'data-subunit-catalog-index='));
+        $this->assertSame(3, substr_count($subunitResponse->getContent(), 'data-drsam-table-filter-skip-column'));
 
         $this->actingAs($user)
             ->get(route('institution.dashboard', ['section' => 'pharmacies']))
             ->assertOk()
             ->assertSee('Catalogo de farmacias institucionales')
             ->assertSee('Farmacias institucionales')
+            ->assertSee('data-institution-catalog-shell="pharmacies"', false)
+            ->assertSee('data-institution-catalog-row="pharmacies"', false)
             ->assertSee('Farmacia institucional Unidad Institucional')
             ->assertSee('Unidad Institucional');
 
@@ -166,6 +197,12 @@ class InstitutionModuleTest extends TestCase
             ->assertOk()
             ->assertSee('Catalogo de servicios')
             ->assertSee('Servicio Institucional')
+            ->assertSee('institution-service-carousel-card institution-catalog-carousel-card', false)
+            ->assertSee('institution-service-carousel institution-catalog-carousel', false)
+            ->assertSee('institution-service-panel institution-catalog-section-panel', false)
+            ->assertSee('data-service-carousel-button="all"', false)
+            ->assertSee('data-service-filter-scope="'.$service->id.'"', false)
+            ->assertSee('data-service-row-filter="active"', false)
             ->assertSee('Habilitar Servicio a Unidades')
             ->assertSee('Informacion del contrato')
             ->assertSee('data-service-edit', false)
@@ -187,18 +224,33 @@ class InstitutionModuleTest extends TestCase
             ->assertOk()
             ->assertSee('Catalogo institucional de medicamentos')
             ->assertSee('Medicamentos institucionales')
-            ->assertSee('CATALOGO INSTITUCIONAL')
+            ->assertSee('data-institution-catalog-shell="medications"', false)
+            ->assertSee('data-institution-catalog-row="medications"', false)
+            ->assertSee('<th>Activo</th>', false)
+            ->assertSee('data-institution-medication-toggle', false)
+            ->assertSee('role="switch"', false)
             ->assertSee('Nuevo medicamento')
             ->assertSee('Buscar clave')
-            ->assertSee('CSV');
+            ->assertSee('data-institution-toolbar-filter="inactive"', false);
+
+        $this->actingAs($user)
+            ->get(route('institution.dashboard', ['section' => 'doctors']))
+            ->assertOk()
+            ->assertSee('data-institution-catalog-shell="doctors"', false)
+            ->assertSee('data-institution-catalog-row="doctors"', false)
+            ->assertSee('Dr Institucional')
+            ->assertSee('Unidad Institucional')
+            ->assertSee('Buscar medico, cedula o unidad');
 
         $this->actingAs($user)
             ->get(route('institution.dashboard', ['section' => 'specialties']))
             ->assertOk()
             ->assertSee('Catalogo institucional de especialidades')
             ->assertSee('Especialidades institucionales')
+            ->assertSee('data-institution-catalog-shell="specialties"', false)
+            ->assertSee('data-institution-catalog-row="specialties"', false)
             ->assertSee('Servicio Institucional')
-            ->assertSee('Nueva Especialidad')
+            ->assertSee('Nueva especialidad')
             ->assertSee('Buscar especialidad')
             ->assertSee('Editar')
             ->assertSee('Eliminar');
@@ -372,6 +424,21 @@ class InstitutionModuleTest extends TestCase
         ]);
 
         $this->actingAs($user)
+            ->patchJson(route('institution.medications.status', $createdMedication), [
+                'institution' => $institution->id,
+                'status' => 'active',
+            ])
+            ->assertOk()
+            ->assertJsonPath('status', 'active')
+            ->assertJsonMissingPath('message');
+
+        $this->assertDatabaseHas('medication_catalog_items', [
+            'id' => $createdMedication->id,
+            'institution_id' => $institution->id,
+            'status' => 'active',
+        ]);
+
+        $this->actingAs($user)
             ->post(route('institution.services.units.sync', $service), [])
             ->assertRedirect(route('institution.dashboard', ['institution' => $institution->id, 'section' => 'services']));
 
@@ -527,6 +594,63 @@ class InstitutionModuleTest extends TestCase
         $this->assertSame(
             'Revision programada',
             $unit->fresh()->metadata['last_status_note'] ?? null,
+        );
+    }
+
+    public function test_services_carousel_includes_all_services_overview(): void
+    {
+        $user = User::query()->create([
+            'name' => 'Institucion Servicios',
+            'username' => 'institucion.servicios',
+            'email' => 'institucion.servicios@test.local',
+            'role' => 'institution',
+            'module' => 'institution',
+            'status' => 'active',
+        ]);
+
+        $institution = Institution::query()->create([
+            'owner_user_id' => $user->id,
+            'name' => 'Institucion Servicios',
+            'status' => 'active',
+        ]);
+
+        $unit = MedicalUnit::query()->create([
+            'institution_id' => $institution->id,
+            'name' => 'Hospital Servicios',
+            'status' => 'active',
+        ]);
+
+        $service = Service::query()->create([
+            'external_id' => 'consulta-externa',
+            'name' => 'Consulta externa',
+            'status' => 'active',
+        ]);
+
+        ContractedService::query()->create([
+            'institution_id' => $institution->id,
+            'medical_unit_id' => $unit->id,
+            'service_id' => $service->id,
+            'status' => 'active',
+        ]);
+
+        $response = $this->actingAs($user)
+            ->get(route('institution.dashboard', ['section' => 'services']))
+            ->assertOk()
+            ->assertSee('data-service-carousel-button="all"', false)
+            ->assertSee('<strong>Todos</strong>', false)
+            ->assertSee('Todos los servicios')
+            ->assertSee('data-service-panel="all" hidden', false)
+            ->assertSee('data-service-select="'.$service->id.'"', false)
+            ->assertSee('1 hospital');
+
+        $html = $response->getContent();
+        $this->assertLessThan(
+            strpos($html, 'data-service-carousel-button="'.$service->id.'"'),
+            strpos($html, 'data-service-carousel-button="all"'),
+        );
+        $this->assertLessThan(
+            strpos($html, 'data-service-create-open'),
+            strpos($html, 'data-service-carousel-button="'.$service->id.'"'),
         );
     }
 }
