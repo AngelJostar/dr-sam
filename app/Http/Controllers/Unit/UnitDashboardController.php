@@ -9,6 +9,7 @@ use App\Models\ContractedService;
 use App\Models\Doctor;
 use App\Models\InventoryItem;
 use App\Models\MedicationCatalogItem;
+use App\Models\UnitMedicationSetting;
 use App\Models\MedicalUnit;
 use App\Models\OperationalArea;
 use App\Models\OperationalProfile;
@@ -24,11 +25,13 @@ use App\Services\AppointmentSchedulingService;
 use App\Services\Platform\PlatformAuditService;
 use App\Services\Platform\DomainStateTransitionService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -119,6 +122,7 @@ class UnitDashboardController extends Controller
             'central-de-mezclas',
             'mantenimiento-equipo-medico',
             'osteosintesis',
+            'farmacia-externa',
         ];
 
         if (in_array($externalId, $knownExternalIds, true)) {
@@ -149,7 +153,7 @@ class UnitDashboardController extends Controller
     {
         $unit = $this->resolveUnit($request);
         $section = $request->string('section')->toString() ?: 'services';
-        if (! in_array($section, ['profile', 'services', 'users', 'patients', 'doctors', 'specialties', 'external-pharmacy', 'procedure-areas', 'medications'], true)) {
+        if (! in_array($section, ['profile', 'services', 'catalog', 'users', 'patients', 'doctors', 'specialties', 'external-pharmacy', 'procedure-areas', 'medications'], true)) {
             $section = 'services';
         }
 
@@ -163,7 +167,13 @@ class UnitDashboardController extends Controller
         ]);
 
         $appointments = Appointment::query()
-            ->with(['patient', 'doctor', 'medicalUnit', 'procedureArea'])
+            ->with([
+                'patient',
+                'doctor',
+                'medicalUnit',
+                'procedureArea',
+                'statusEvents' => fn ($query) => $query->latest('created_at'),
+            ])
             ->where('medical_unit_id', $unit->id)
             ->latest('starts_at')
             ->get();
@@ -216,12 +226,23 @@ class UnitDashboardController extends Controller
             ->get();
 
         $medicationCatalog = MedicationCatalogItem::query()
-            ->when($unit->institution_id, fn ($query) => $query->where(function ($subQuery) use ($unit): void {
-                $subQuery->where('institution_id', $unit->institution_id)
-                    ->orWhereNull('institution_id');
-            }))
+            ->with(['unitSettings' => fn ($query) => $query->where('medical_unit_id', $unit->id)])
+            ->where(function ($query) use ($unit): void {
+                $query->whereNull('institution_id');
+                if ($unit->institution_id) {
+                    $query->orWhere('institution_id', $unit->institution_id);
+                }
+            })
             ->orderBy('name')
             ->get();
+
+        $medicationStock = InventoryItem::query()
+            ->join('pharmacy_products', 'pharmacy_products.id', '=', 'inventory_items.pharmacy_product_id')
+            ->where('inventory_items.medical_unit_id', $unit->id)
+            ->select('pharmacy_products.cnis')
+            ->selectRaw('SUM(inventory_items.quantity) as quantity')
+            ->groupBy('pharmacy_products.cnis')
+            ->pluck('quantity', 'cnis');
 
         return view('unit.dashboard', [
             'unit' => $unit,
@@ -236,6 +257,7 @@ class UnitDashboardController extends Controller
             'consultationPrescriptions' => $consultationPrescriptions,
             'externalPharmacyCatalog' => $medicationCatalog,
             'medicationCatalog' => $medicationCatalog,
+            'medicationStock' => $medicationStock,
             'operationalAreas' => OperationalArea::query()->orderBy('label')->get(),
             'metrics' => [
                 'Camas' => $unit->beds,
@@ -281,6 +303,12 @@ class UnitDashboardController extends Controller
                 'metadata' => [
                     'source' => 'unit_consultation_calendar',
                     'notes' => $data['notes'] ?? null,
+                    'patient_platform_number' => $data['platform_number'],
+                    'priority' => $data['priority'],
+                    'notifications' => [
+                        'email' => (bool) ($data['notify_email'] ?? false),
+                        'sms' => (bool) ($data['notify_sms'] ?? false),
+                    ],
                 ],
             ]);
 
@@ -431,6 +459,15 @@ class UnitDashboardController extends Controller
         $metadata['notes'] = $data['notes'] ?? null;
         $metadata['last_updated_from'] = 'unit_consultation_calendar';
         $metadata['last_updated_by'] = $request->user()?->id;
+        if (array_key_exists('priority', $data)) {
+            $metadata['priority'] = $data['priority'];
+        }
+        if (array_key_exists('notify_email', $data) || array_key_exists('notify_sms', $data)) {
+            $metadata['notifications'] = [
+                'email' => (bool) ($data['notify_email'] ?? false),
+                'sms' => (bool) ($data['notify_sms'] ?? false),
+            ];
+        }
 
         DB::transaction(function () use ($appointment, $data, $doctor, $room, $startsAt, $endsAt, $metadata, $previousStatus, $request): void {
             $appointment->update([
@@ -605,7 +642,7 @@ class UnitDashboardController extends Controller
             'metadata' => ['platform_user' => $data['platform_user'] ?? null, 'services' => $data['services']],
         ]);
         $audit->record($request, 'unit.doctor.created', $doctor, 'unit', ['unit_id' => $unit->id]);
-        return redirect()->route('unit.dashboard', ['section' => 'doctors'])->with('status', 'Medico adscrito registrado.');
+        return redirect()->route('unit.dashboard', ['section' => 'doctors'])->with('doctor_created', true);
     }
 
     public function updateDoctorAuthorizations(Request $request, Doctor $doctor, PlatformAuditService $audit): RedirectResponse
@@ -753,8 +790,9 @@ class UnitDashboardController extends Controller
 
     private function validateConsultationAppointment(Request $request, MedicalUnit $unit, bool $updating = false): array
     {
-        return $request->validate([
+        $data = $request->validate([
             'patient_id' => ['required', 'integer', Rule::exists('patients', 'id')->where('status', 'active')],
+            'platform_number' => [$updating ? 'nullable' : 'required', 'nullable', 'string', 'max:80', Rule::exists('patients', 'platform_number')->where('status', 'active')],
             'doctor_id' => ['required', 'integer', Rule::exists('doctors', 'id')->where(fn ($query) => $query
                 ->where('medical_unit_id', $unit->id)
                 ->where('status', 'active'))],
@@ -771,10 +809,50 @@ class UnitDashboardController extends Controller
             'appointment_date' => ['required', 'date_format:Y-m-d', ...($updating ? [] : ['after_or_equal:today'])],
             'appointment_time' => ['required', 'date_format:H:i'],
             'duration' => ['required', 'integer', Rule::in([20, 30, 45, 60])],
+            'priority' => [$updating ? 'nullable' : 'required', 'nullable', Rule::in(['routine', 'urgent'])],
             'reason' => ['required', 'string', 'max:500'],
             'notes' => ['nullable', 'string', 'max:500'],
+            'notify_email' => ['nullable', 'boolean'],
+            'notify_sms' => ['nullable', 'boolean'],
             'status' => [$updating ? 'required' : 'nullable', Rule::in(['scheduled', 'confirmed', 'in_progress', 'completed'])],
         ]);
+
+        if (! empty($data['platform_number']) && ! Patient::query()
+            ->whereKey($data['patient_id'])
+            ->where('platform_number', $data['platform_number'])
+            ->where('status', 'active')
+            ->exists()) {
+            throw ValidationException::withMessages([
+                'platform_number' => 'El numero de ID de la plataforma no corresponde al paciente seleccionado.',
+            ]);
+        }
+
+        return $data;
+    }
+
+    public function updateMedicationStatus(Request $request, MedicationCatalogItem $medication, PlatformAuditService $audit): RedirectResponse|JsonResponse
+    {
+        $unit = $this->resolveUnit($request);
+        abort_unless($medication->institution_id === null || (int) $medication->institution_id === (int) $unit->institution_id, 403);
+        $data = $request->validate(['is_active' => ['required', 'boolean']]);
+        abort_if($medication->status !== 'active' && $data['is_active'], 422, 'El medicamento está inactivo en la institución.');
+
+        $setting = UnitMedicationSetting::query()->updateOrCreate(
+            ['medical_unit_id' => $unit->id, 'medication_catalog_item_id' => $medication->id],
+            ['is_active' => (bool) $data['is_active']],
+        );
+        $audit->record($request, 'unit.medication.status.updated', $setting, 'unit', [
+            'unit_id' => $unit->id,
+            'medication_id' => $medication->id,
+            'is_active' => $setting->is_active,
+        ]);
+
+        if ($request->expectsJson()) {
+            return response()->json(['is_active' => $setting->is_active]);
+        }
+
+        return redirect()
+            ->route('unit.dashboard', ['unit' => $unit->id, 'section' => 'medications']);
     }
 
     private function resolveConsultationSchedule(array $data, MedicalUnit $unit): array

@@ -111,6 +111,30 @@ class UnitModuleTest extends TestCase
             'status' => 'active',
         ]);
 
+        $importService = Service::query()->create([
+            'external_id' => 'medicamentos-importacion',
+            'name' => 'Importacion de medicamentos',
+            'category' => 'Farmaceuticos',
+            'specialty' => 'Medicamentos de importacion',
+            'status' => 'active',
+        ]);
+
+        $digitalPharmacyService = Service::query()->create([
+            'external_id' => 'farmacia-digital',
+            'name' => 'Pedido y entrega de medicamentos',
+            'category' => 'Farmacia',
+            'specialty' => 'Farmacia Digital',
+            'status' => 'active',
+        ]);
+
+        $futureService = Service::query()->create([
+            'external_id' => 'telemedicina-avanzada',
+            'name' => 'Telemedicina avanzada',
+            'category' => 'Atencion medica',
+            'specialty' => 'Telemedicina',
+            'status' => 'active',
+        ]);
+
         $contract = ContractedService::query()->create([
             'institution_id' => $institution->id,
             'medical_unit_id' => $unit->id,
@@ -134,6 +158,16 @@ class UnitModuleTest extends TestCase
             'contract_number' => 'UNIT-NPT-001',
             'status' => 'active',
         ]);
+
+        foreach ([$importService, $digitalPharmacyService, $futureService] as $genericService) {
+            ContractedService::query()->create([
+                'institution_id' => $institution->id,
+                'medical_unit_id' => $unit->id,
+                'service_id' => $genericService->id,
+                'contract_number' => 'UNIT-'.$genericService->id,
+                'status' => 'active',
+            ]);
+        }
 
         $prescription = Prescription::query()->create([
             'patient_id' => $patient->id,
@@ -204,18 +238,47 @@ class UnitModuleTest extends TestCase
             ],
         ]);
 
-        $this->actingAs($user)
-            ->get(route('unit.dashboard'))
+        ProviderRequest::query()->create([
+            'provider_id' => $provider->id,
+            'patient_id' => $patient->id,
+            'medical_unit_id' => $unit->id,
+            'external_id' => 'IMP-UNIT-001',
+            'request_type' => 'import',
+            'status' => 'requested',
+            'requested_at' => now(),
+        ]);
+
+        ProviderRequest::query()->create([
+            'provider_id' => $provider->id,
+            'patient_id' => $patient->id,
+            'medical_unit_id' => $unit->id,
+            'external_id' => 'PED-UNIT-001',
+            'request_type' => 'order',
+            'status' => 'delivered',
+            'requested_at' => now(),
+        ]);
+
+        $response = $this->actingAs($user)
+            ->get(route('unit.dashboard'));
+
+        $response
             ->assertOk()
             ->assertSee('unit-native-screen')
             ->assertSee('unit-native-sidebar')
+            ->assertSeeInOrder(['Servicios integrales', 'Usuarios', 'Pacientes', 'Medicos', 'Especialidades', 'Farmacia Externa', 'Areas de Procedimiento', 'Medicamentos'])
             ->assertSee('unit-native-table')
+            ->assertSee('data-unit-service-catalog-link', false)
+            ->assertSee('Catalogo')
             ->assertSee('Hospital Unidad Test')
             ->assertSee('Quimioterapia')
             ->assertSee('Ver Operacion')
             ->assertSee(route('operational.dashboard', ['area' => 'oncology', 'section' => 'history', 'unit' => $unit->id, 'service' => $service->id]))
             ->assertSee('Operacion en tiempo real')
             ->assertSee('data-unit-consultation-submenu', false)
+            ->assertSee('data-unit-consultation-toolbar', false)
+            ->assertSee('unit-consultation-submenu-action', false)
+            ->assertDontSee('data-unit-consultation-prev', false)
+            ->assertDontSee('data-unit-consultation-next', false)
             ->assertSee('data-unit-consultation-tab="home"', false)
             ->assertSee('data-unit-consultation-tab="agenda"', false)
             ->assertSee('data-unit-consultation-tab="rooms"', false)
@@ -224,6 +287,9 @@ class UnitModuleTest extends TestCase
             ->assertSee('data-unit-consultation-tab="patients"', false)
             ->assertSee('data-unit-consultation-tab="prescriptions"', false)
             ->assertSee('data-unit-consultation-calendar', false)
+            ->assertSee('room_number', false)
+            ->assertSee('"room_number":"C-09"', false)
+            ->assertSee('unit-consultation-calendar-room-number', false)
             ->assertSee('data-unit-calendar-mode="day"', false)
             ->assertSee('data-unit-calendar-mode="week"', false)
             ->assertSee('data-unit-calendar-mode="month"', false)
@@ -232,10 +298,35 @@ class UnitModuleTest extends TestCase
             ->assertSee('data-unit-calendar-new-dialog', false)
             ->assertSee('data-unit-calendar-edit-dialog', false)
             ->assertSee('data-unit-calendar-cancel-dialog', false)
+            ->assertSee('Gestionar cita existente')
+            ->assertSee('data-unit-calendar-dialog-tab="information"', false)
+            ->assertSee('data-unit-calendar-dialog-tab="history"', false)
+            ->assertSee('data-unit-calendar-dialog-history', false)
             ->assertSee('data-unit-calendar-edit', false)
             ->assertSee('data-unit-calendar-reschedule', false)
+            ->assertSee('data-unit-calendar-reminder', false)
             ->assertSee('data-unit-calendar-cancel', false)
-            ->assertSee('Confirmar nueva cita')
+            ->assertSee('N&uacute;mero de ID de la plataforma', false)
+            ->assertSee('data-unit-new-platform-number', false)
+            ->assertSee('data-unit-patient-autocomplete="search"', false)
+            ->assertSee('aria-controls="unit-new-patient-results"', false)
+            ->assertSee('data-unit-patient-autocomplete="platform"', false)
+            ->assertSee('data-unit-new-platform-results', false)
+            ->assertSee('aria-controls="unit-new-platform-results"', false)
+            ->assertSee('data-unit-new-reference-layout', false)
+            ->assertSee('Datos de la consulta')
+            ->assertSee('Fecha y horario')
+            ->assertSee('data-unit-new-week', false)
+            ->assertSee('data-unit-new-slot-count', false)
+            ->assertSee('data-unit-new-time', false)
+            ->assertSee('Selecciona un horario disponible')
+            ->assertSee('data-unit-new-slots', false)
+            ->assertSee('Confirmaci&oacute;n al paciente', false)
+            ->assertSee('data-unit-new-contact-email', false)
+            ->assertSee('data-unit-new-summary="primary"', false)
+            ->assertSee('data-unit-new-reset', false)
+            ->assertSee('Limpiar')
+            ->assertSee('Agendar cita')
             ->assertSee('data-unit-consultation-rooms', false)
             ->assertSee('Consultorios activos')
             ->assertSee('Nuevo consultorio')
@@ -284,11 +375,24 @@ class UnitModuleTest extends TestCase
             ->assertSee('data-unit-operation-filter="status"', false)
             ->assertSee('data-unit-operation-row', false)
             ->assertSee('data-unit-status-filter="Pendiente"', false)
+            ->assertSee('data-unit-service-layout="medicamentos-importacion"', false)
+            ->assertSee('data-unit-service-layout="farmacia-digital"', false)
+            ->assertSee('data-unit-service-layout="telemedicina-avanzada"', false)
+            ->assertSee('data-unit-request-board', false)
+            ->assertSee('data-unit-request-filter="preparing,route"', false)
+            ->assertSee('Gestionar importaciones')
+            ->assertSee('Gestionar pedidos')
+            ->assertSee('Abrir modulo operativo')
+            ->assertSee('IMP-UNIT-001')
+            ->assertSee('PED-UNIT-001')
             ->assertSee('Catalogo de productos/Servicios')
-            ->assertSee('Catalogo de medicamentos')
             ->assertSee('Elementos habilitados')
             ->assertSee('data-open-service-catalog', false)
             ->assertDontSee('<iframe');
+
+        $this->assertSame(6, substr_count($response->getContent(), 'data-unit-service-info'));
+        $this->assertSame(6, substr_count($response->getContent(), 'data-unit-service-controls'));
+        $this->assertSame(6, substr_count($response->getContent(), 'data-unit-service-content'));
 
         $reportResponse = $this->actingAs($user)
             ->get(route('unit.services.report', $contract))
@@ -364,14 +468,32 @@ class UnitModuleTest extends TestCase
         $this->assertSame('ClÃ­nica Unidad Test', $unit->fresh()->metadata['profile']['public_name']);
 
         $this->actingAs($user)
+            ->get(route('unit.dashboard', ['section' => 'catalog']))
+            ->assertOk()
+            ->assertSee('data-unit-catalog-navigation', false)
+            ->assertSee('data-unit-carousel-menu="catalog"', false)
+            ->assertSee('data-unit-catalog-info', false)
+            ->assertSee('data-unit-catalog-controls', false)
+            ->assertSee('data-unit-catalog-content', false)
+            ->assertSee('Catalogo de la unidad')
+            ->assertSee('>Usuarios</strong>', false)
+            ->assertSee('Areas de Procedimiento');
+
+        $this->actingAs($user)
             ->get(route('unit.dashboard', ['section' => 'users']))
             ->assertOk()
+            ->assertSee('data-unit-catalog-navigation', false)
+            ->assertSee('data-unit-carousel-menu="users"', false)
+            ->assertSee('data-unit-catalog-info', false)
+            ->assertSee('data-unit-catalog-controls', false)
+            ->assertSee('data-unit-catalog-content', false)
+            ->assertSee('<h2>Usuarios</h2>', false)
             ->assertSee('Alta de usuario operativo')
             ->assertSee('Editar usuario operativo')
             ->assertSee('Usuarios de la unidad')
             ->assertSee('Guardar cambios')
             ->assertSee('data-edit-operational-user', false)
-            ->assertSee('Excel')
+            ->assertSee('Descargar catalogo')
             ->assertSee('Farmacia');
 
         $this->actingAs($user)
@@ -388,19 +510,52 @@ class UnitModuleTest extends TestCase
         $this->actingAs($user)
             ->get(route('unit.dashboard', ['section' => 'patients']))
             ->assertOk()
-            ->assertSee('Catalogo de pacientes')
+            ->assertSee('data-unit-catalog-navigation', false)
+            ->assertSee('data-unit-carousel-menu="patients"', false)
+            ->assertSee('data-unit-catalog-info', false)
+            ->assertSee('data-unit-catalog-controls', false)
+            ->assertSee('data-unit-catalog-content', false)
+            ->assertSee('<h2>Pacientes</h2>', false)
             ->assertSee('Paciente Unidad');
 
         $this->actingAs($user)
             ->get(route('unit.dashboard', ['section' => 'doctors']))
             ->assertOk()
-            ->assertSee('Catalogo de medicos adscritos')
+            ->assertSee('data-unit-catalog-navigation', false)
+            ->assertSee('data-unit-carousel-menu="doctors"', false)
+            ->assertSee('data-unit-catalog-info', false)
+            ->assertSee('data-unit-catalog-controls', false)
+            ->assertSee('data-unit-catalog-content', false)
+            ->assertSee('<h2>Medicos</h2>', false)
             ->assertSee('Dra Unidad')
-            ->assertSee('Alta de medico adscrito')
+            ->assertSee('Nuevo medico adscrito')
+            ->assertSee('data-open-doctor-dialog', false)
+            ->assertSee('data-doctor-dialog', false)
+            ->assertSee('data-close-doctor-dialog', false)
+            ->assertSee('data-doctor-success-dialog', false)
+            ->assertSee('data-close-doctor-success', false)
+            ->assertDontSee('id="unit-doctor-form"', false)
+            ->assertDontSee('Alta de medico adscrito')
             ->assertSee('Editar autorizaciones')
             ->assertSee('Usuario de la plataforma')
-            ->assertSee('Guardar medico')
-            ->assertSee('Excel');
+            ->assertSee('>Guardar</button>', false)
+            ->assertSee('>Cancelar</button>', false)
+            ->assertSee('Descargar catalogo');
+
+        $this->actingAs($user)
+            ->post(route('unit.doctors.store'), [
+                '_doctor_form' => '1',
+                'first_name' => 'Mario', 'last_name' => 'Adscripto',
+                'specialty' => 'Oncologia', 'services' => ['Quimioterapia'],
+            ])
+            ->assertSessionHasErrors('professional_license');
+        $this->actingAs($user)
+            ->get(route('unit.dashboard', ['section' => 'doctors']))
+            ->assertOk()
+            ->assertSee('No se pudo guardar el medico.')
+            ->assertSee('value="Mario"', false)
+            ->assertSee('doctorDialog?.showModal();', false)
+            ->assertDontSee('No se pudo actualizar.');
 
         $this->actingAs($user)
             ->post(route('unit.doctors.store'), [
@@ -408,8 +563,15 @@ class UnitModuleTest extends TestCase
                 'professional_license' => 'CED-900', 'specialty' => 'Oncologia',
                 'subspecialty' => 'Atencion clinica', 'services' => ['Quimioterapia'],
             ])
-            ->assertRedirect(route('unit.dashboard', ['section' => 'doctors']));
+            ->assertRedirect(route('unit.dashboard', ['section' => 'doctors']))
+            ->assertSessionHas('doctor_created', true)
+            ->assertSessionMissing('status');
         $this->assertDatabaseHas('doctors', ['medical_unit_id' => $unit->id, 'full_name' => 'Mario Adscripto', 'professional_license' => 'CED-900', 'status' => 'pending']);
+        $this->actingAs($user)
+            ->get(route('unit.dashboard', ['section' => 'doctors']))
+            ->assertOk()
+            ->assertSee('Guardado con éxito')
+            ->assertSee('doctorSuccessDialog?.showModal();', false);
         $createdDoctor = Doctor::query()->where('professional_license', 'CED-900')->firstOrFail();
         $this->actingAs($user)
             ->put(route('unit.doctors.authorizations.update', $createdDoctor), ['status' => 'active', 'services' => ['Quimioterapia']])
@@ -420,27 +582,53 @@ class UnitModuleTest extends TestCase
         $this->actingAs($user)
             ->get(route('unit.dashboard', ['section' => 'specialties']))
             ->assertOk()
-            ->assertSee('Catalogo de especialidades')
+            ->assertSee('data-unit-catalog-navigation', false)
+            ->assertSee('data-unit-carousel-menu="specialties"', false)
+            ->assertSee('data-unit-catalog-info', false)
+            ->assertSee('data-unit-catalog-controls', false)
+            ->assertSee('data-unit-catalog-content', false)
+            ->assertSee('<h2>Especialidades</h2>', false)
             ->assertSee('Oncologia');
 
         $this->actingAs($user)
             ->get(route('unit.dashboard', ['section' => 'external-pharmacy']))
             ->assertOk()
-            ->assertSee('Catalogo de farmacia externa')
+            ->assertSee('data-unit-catalog-navigation', false)
+            ->assertSee('data-unit-carousel-menu="external-pharmacy"', false)
+            ->assertSee('data-unit-catalog-info', false)
+            ->assertSee('data-unit-catalog-controls', false)
+            ->assertSee('data-unit-catalog-content', false)
+            ->assertSee('<h2>Farmacia Externa</h2>', false)
             ->assertSee('Sin medicamentos institucionales para esta unidad.');
 
         $this->actingAs($user)
             ->get(route('unit.dashboard', ['section' => 'procedure-areas']))
             ->assertOk()
-            ->assertSee('Catalogo de areas de procedimiento')
+            ->assertSee('data-unit-catalog-navigation', false)
+            ->assertSee('data-unit-carousel-menu="procedure-areas"', false)
+            ->assertSee('data-unit-catalog-info', false)
+            ->assertSee('data-unit-catalog-controls', false)
+            ->assertSee('data-unit-catalog-content', false)
+            ->assertSee('<h2>Areas de Procedimiento</h2>', false)
+            ->assertSee('data-procedure-category="all"', false)
+            ->assertSee('data-procedure-catalog="all"', false)
+            ->assertSee('Catalogo de subunidades')
+            ->assertSee('Todos')
             ->assertSee('Catalogo de consultorios')
             ->assertSee('Catalogo de salas de infusion')
             ->assertSee('Catalogo de quirofanos')
             ->assertSee('Catalogo de salas de recuperacion')
-            ->assertSee('Nuevo consultorio');
+            ->assertSee('Nuevo consultorio')
+            ->assertSee('data-procedure-create', false)
+            ->assertSee('data-procedure-create-dialog', false)
+            ->assertSee('data-procedure-edit-dialog', false);
         $this->actingAs($user)
             ->get(route('unit.dashboard', ['section' => 'procedure-areas', 'create' => 'consulting']))
-            ->assertOk()->assertSee('Nueva subunidad')->assertSee('Guardar subunidad')->assertSee('Horario de atencion de la unidad');
+            ->assertOk()
+            ->assertSee('Nueva subunidad')
+            ->assertSee('Guardar subunidad')
+            ->assertSee('Horario de atencion de la unidad')
+            ->assertSee('data-open-on-load', false);
         $this->actingAs($user)
             ->post(route('unit.procedure-areas.store'), [
                 'type' => 'consulting', 'location' => 'Consulta externa', 'floor' => 'PB',
@@ -451,7 +639,15 @@ class UnitModuleTest extends TestCase
         $procedureAreaId = data_get($unit->fresh()->metadata, 'procedure_areas.0.id');
         $this->actingAs($user)
             ->get(route('unit.dashboard', ['section' => 'procedure-areas', 'edit' => $procedureAreaId]))
-            ->assertOk()->assertSee('Editar consultorio')->assertSee('Guardar cambios')->assertSee('C-01');
+            ->assertOk()
+            ->assertSee('Editar consultorio')
+            ->assertSee('Guardar cambios')
+            ->assertSee('Cancelar')
+            ->assertSee('data-procedure-edit', false)
+            ->assertSee('data-procedure-edit-form', false)
+            ->assertSee('data-procedure-edit-dialog-close', false)
+            ->assertSee('data-open-on-load', false)
+            ->assertSee('C-01');
         $this->actingAs($user)
             ->put(route('unit.procedure-areas.update', $procedureAreaId), [
                 'type' => 'consulting', 'location' => 'Centro oncologico', 'floor' => '1',
@@ -486,10 +682,46 @@ class UnitModuleTest extends TestCase
         $this->actingAs($user)
             ->get(route('unit.dashboard', ['section' => 'medications']))
             ->assertOk()
-            ->assertSee('Catalogo de medicamentos')
+            ->assertSee('data-unit-catalog-navigation', false)
+            ->assertSee('data-unit-carousel-menu="medications"', false)
+            ->assertSee('data-unit-catalog-info', false)
+            ->assertSee('data-unit-catalog-controls', false)
+            ->assertSee('data-unit-catalog-content', false)
+            ->assertSee('<h2>Medicamentos</h2>', false)
             ->assertSee('Paracetamol')
             ->assertSee('010.000.0104.00')
             ->assertSee('data-medication-table', false);
+
+        foreach ([
+            'catalog' => ['all', 'operation', 'clinical', 'pharmacy'],
+            'users' => ['all', 'active', 'inactive'],
+            'patients' => ['all', 'active', 'inactive'],
+            'doctors' => ['all', 'active', 'pending', 'inactive'],
+            'specialties' => ['all', 'active', 'inactive'],
+            'external-pharmacy' => ['all', 'active', 'inactive'],
+            'procedure-areas' => ['all', 'consulting', 'infusion', 'operating', 'uci', 'uti', 'recovery'],
+            'medications' => ['all', 'active', 'inactive'],
+        ] as $section => $filters) {
+            $html = $this->actingAs($user)
+                ->get(route('unit.dashboard', ['section' => $section]))
+                ->assertOk()
+                ->getContent();
+
+            $this->assertSame(1, preg_match('/<section[^>]*data-unit-carousel-menu="'.preg_quote($section, '/').'"[^>]*>.*?<\/section>/s', $html, $carousel));
+            preg_match_all('/data-unit-carousel-filter="([^"]+)"/', $carousel[0], $matches);
+            $this->assertSame($filters, $matches[1], $section);
+            $this->assertStringContainsString('<strong>Catálogo</strong>', $carousel[0], $section);
+            $this->assertStringNotContainsString('href=', $carousel[0], $section);
+        }
+
+        $serviceHtml = $this->actingAs($user)
+            ->get(route('unit.dashboard', ['section' => 'services', 'service' => 'catalog']))
+            ->assertOk()
+            ->getContent();
+        $this->assertStringContainsString('data-unit-service-tab="catalog"', $serviceHtml);
+        $this->assertStringContainsString('data-unit-service-panel="catalog"', $serviceHtml);
+        $this->assertStringContainsString('data-unit-open-service="'.$contract->id.'"', $serviceHtml);
+        $this->assertStringNotContainsString('data-unit-service-catalog-link href=', $serviceHtml);
     }
 
     public function test_unit_user_can_update_appointment_status(): void
@@ -579,20 +811,31 @@ class UnitModuleTest extends TestCase
             'status' => 'active',
         ]);
 
+        $appointmentPayload = [
+            'unit' => $unit->id,
+            'patient_id' => $patient->id,
+            'platform_number' => 'PAC-AGENDA-01',
+            'doctor_id' => $doctor->id,
+            'procedure_area_id' => $room->id,
+            'specialty' => 'Medicina interna',
+            'modality' => 'Presencial',
+            'appointment_date' => '2030-01-15',
+            'appointment_time' => '09:00',
+            'duration' => 30,
+            'priority' => 'routine',
+            'reason' => 'Consulta de seguimiento',
+            'notes' => 'Primera nota de agenda',
+            'notify_email' => true,
+            'notify_sms' => false,
+        ];
+
         $this->actingAs($user)
-            ->post(route('unit.appointments.store'), [
-                'unit' => $unit->id,
-                'patient_id' => $patient->id,
-                'doctor_id' => $doctor->id,
-                'procedure_area_id' => $room->id,
-                'specialty' => 'Medicina interna',
-                'modality' => 'Presencial',
-                'appointment_date' => '2030-01-15',
-                'appointment_time' => '09:00',
-                'duration' => 30,
-                'reason' => 'Consulta de seguimiento',
-                'notes' => 'Primera nota de agenda',
-            ])
+            ->post(route('unit.appointments.store'), array_diff_key($appointmentPayload, ['platform_number' => true]))
+            ->assertSessionHasErrors('platform_number');
+        $this->assertDatabaseCount('appointments', 0);
+
+        $this->actingAs($user)
+            ->post(route('unit.appointments.store'), $appointmentPayload)
             ->assertRedirect(route('unit.dashboard', [
                 'unit' => $unit->id,
                 'calendar_date' => '2030-01-15',
@@ -600,6 +843,10 @@ class UnitModuleTest extends TestCase
 
         $appointment = Appointment::query()->where('patient_id', $patient->id)->firstOrFail();
         $this->assertSame('CE-2030-'.str_pad((string) $appointment->id, 6, '0', STR_PAD_LEFT), data_get($appointment->metadata, 'folio'));
+        $this->assertSame('PAC-AGENDA-01', data_get($appointment->metadata, 'patient_platform_number'));
+        $this->assertSame('routine', data_get($appointment->metadata, 'priority'));
+        $this->assertTrue(data_get($appointment->metadata, 'notifications.email'));
+        $this->assertFalse(data_get($appointment->metadata, 'notifications.sms'));
 
         $this->actingAs($user)
             ->patch(route('unit.appointments.update', $appointment), [

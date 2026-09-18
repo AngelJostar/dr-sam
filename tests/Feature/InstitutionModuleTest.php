@@ -141,16 +141,30 @@ class InstitutionModuleTest extends TestCase
             ->assertSee('Catalogo de unidades')
             ->assertDontSee('<iframe');
 
-        $this->actingAs($user)
+        $subunitResponse = $this->actingAs($user)
             ->get(route('institution.dashboard', ['section' => 'subunits']))
             ->assertOk()
             ->assertSee('Catalogo de subunidades')
-            ->assertSee('Subunidades')
-            ->assertSee('Consulta Externa')
-            ->assertSee('Laboratorio Clinico')
-            ->assertSee('Unidad de Vacunacion')
+            ->assertSee('data-institution-catalog-shell="subunits"', false)
+            ->assertSee('data-institution-carousel-filter="maintenance"', false)
+            ->assertSee('data-institution-toolbar-filter="inactive"', false)
             ->assertSee('Unidad Institucional')
-            ->assertSee('data-subunit-unit-filter', false);
+            ->assertSee('data-subunit-unit-filter', false)
+            ->assertSee('Espacios que puede incluir')
+            ->assertSee('Equipamiento asociado')
+            ->assertSee('Espacios registrados')
+            ->assertSee('Equipos asignados')
+            ->assertSeeInOrder(['>Ver</th>', '>Editar</th>', '>Espacios</th>', '>Equipos</th>'], false)
+            ->assertSee('Hospitalización general')
+            ->assertSee('Mortuorio')
+            ->assertSee('data-subunit-action="view"', false)
+            ->assertSee('data-subunit-action="spaces"', false)
+            ->assertSee('Mostrando 36 de 36 subunidades')
+            ->assertDontSee('Paginacion de subunidades')
+            ->assertDontSee('Subunidades por pagina');
+
+        $this->assertSame(36, substr_count($subunitResponse->getContent(), 'data-subunit-catalog-index='));
+        $this->assertSame(3, substr_count($subunitResponse->getContent(), 'data-drsam-table-filter-skip-column'));
 
         $this->actingAs($user)
             ->get(route('institution.dashboard', ['section' => 'pharmacies']))
@@ -184,18 +198,23 @@ class InstitutionModuleTest extends TestCase
         $this->actingAs($user)
             ->get(route('institution.dashboard', ['section' => 'medications']))
             ->assertOk()
-            ->assertSee('Catalogo de medicamentos')
-            ->assertSee('Medicamentos')
-            ->assertSee('Ver medicamentos')
-            ->assertSee('Alta de medicamento')
-            ->assertSee('Clave (CNIS)');
+            ->assertSee('Catalogo institucional de medicamentos')
+            ->assertSee('Medicamentos institucionales')
+            ->assertSee('data-institution-catalog-shell="medications"', false)
+            ->assertSee('data-institution-catalog-row="medications"', false)
+            ->assertSee('<th>Activo</th>', false)
+            ->assertSee('data-institution-medication-toggle', false)
+            ->assertSee('role="switch"', false)
+            ->assertSee('Nuevo medicamento')
+            ->assertSee('Buscar clave')
+            ->assertSee('data-institution-toolbar-filter="inactive"', false);
 
         $this->actingAs($user)
             ->get(route('institution.dashboard', ['section' => 'specialties']))
             ->assertOk()
             ->assertSee('Catalogo institucional de especialidades')
             ->assertSee('Especialidades institucionales')
-            ->assertSee('Nueva Especialidad')
+            ->assertSee('Nueva especialidad')
             ->assertSee('Editar')
             ->assertSee('Eliminar');
 

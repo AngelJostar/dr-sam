@@ -16259,7 +16259,7 @@ body.is-register-modal-open {
   cursor: pointer;
 }
 
-.native-shell .unit-service-carousel button.unit-service-carousel-button {
+.native-shell .unit-service-carousel .unit-service-carousel-button {
   display: grid;
   width: 142px;
   min-height: 126px;
@@ -16280,7 +16280,7 @@ body.is-register-modal-open {
   cursor: pointer;
 }
 
-.native-shell .unit-service-carousel button.unit-service-carousel-button.is-active {
+.native-shell .unit-service-carousel .unit-service-carousel-button.is-active {
   border-color: #0f9487;
   background: #fff;
   color: #007f73;
@@ -16307,8 +16307,8 @@ body.is-register-modal-open {
   stroke-width: 1.9;
 }
 
-.native-shell .unit-service-carousel button.unit-service-carousel-button strong,
-.native-shell .unit-service-carousel button.unit-service-carousel-button small {
+.native-shell .unit-service-carousel .unit-service-carousel-button strong,
+.native-shell .unit-service-carousel .unit-service-carousel-button small {
   display: -webkit-box;
   max-width: 100%;
   overflow: hidden;
@@ -16317,7 +16317,7 @@ body.is-register-modal-open {
   -webkit-box-orient: vertical;
 }
 
-.native-shell .unit-service-carousel button.unit-service-carousel-button strong {
+.native-shell .unit-service-carousel .unit-service-carousel-button strong {
   min-height: 27px;
   color: #14233c;
   font-size: 11.5px;
@@ -16325,7 +16325,7 @@ body.is-register-modal-open {
   -webkit-line-clamp: 2;
 }
 
-.native-shell .unit-service-carousel button.unit-service-carousel-button small {
+.native-shell .unit-service-carousel .unit-service-carousel-button small {
   color: #007f73;
   font-size: 11px;
   font-weight: 750;
@@ -16333,24 +16333,307 @@ body.is-register-modal-open {
   -webkit-line-clamp: 1;
 }
 
-.native-shell .unit-service-carousel button.unit-service-carousel-button.is-active strong,
-.native-shell .unit-service-carousel button.unit-service-carousel-button.is-active small,
-.native-shell .unit-service-carousel button.unit-service-carousel-button.is-active .unit-service-carousel-icon {
+.native-shell .unit-service-carousel .unit-service-carousel-button.is-active strong,
+.native-shell .unit-service-carousel .unit-service-carousel-button.is-active small,
+.native-shell .unit-service-carousel .unit-service-carousel-button.is-active .unit-service-carousel-icon {
   color: #007f73;
 }
 
 .native-shell .unit-consultation-submenu-card {
-  display: grid;
-  grid-template-columns: 34px minmax(0, 1fr) 34px;
-  align-items: center;
-  gap: 10px;
+  display: flex;
   min-width: 0;
-  overflow: hidden;
-  padding: 10px 12px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  overflow: visible;
+  padding: 0 1px 2px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+/* Institution catalog workspace aligned with the unit dashboard */
+.native-shell .institution-catalog-workspace-header {
+  display: grid;
+  min-width: 0;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.native-shell .institution-catalog-carousel-card {
+  min-width: 0;
+  padding: 12px;
+  background: #fbfdfc;
+}
+
+.native-shell .institution-catalog-carousel-card .institution-service-carousel {
+  min-width: 0;
+}
+
+.native-shell .institution-catalog-carousel-card .institution-service-carousel button.institution-service-carousel-button {
+  width: 126px;
+  height: 112px;
+  min-height: 112px;
+  gap: 6px;
+  padding: 10px 8px;
+}
+
+.native-shell .institution-catalog-carousel-card .institution-service-carousel-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.native-shell .institution-catalog-carousel-card .institution-service-carousel-icon svg {
+  width: 38px;
+  height: 38px;
+}
+
+.native-shell .institution-catalog-carousel-card .institution-service-carousel-button strong {
+  min-height: 0;
+  font-size: 11px;
+}
+
+.native-shell .institution-catalog-summary-card {
+  display: flex;
+  min-height: 98px;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 17px 18px;
   border: 1px solid #d5dddb;
   border-radius: 8px;
   background: #fff;
-  box-shadow: 0 10px 24px rgba(19, 36, 58, 0.04);
+  box-shadow: 0 12px 28px rgba(19, 36, 58, 0.05);
+}
+
+.native-shell .institution-catalog-summary-copy {
+  display: grid;
+  min-width: 0;
+  gap: 5px;
+}
+
+.native-shell .institution-catalog-summary-card h1,
+.native-shell .institution-catalog-summary-card p {
+  margin: 0;
+  letter-spacing: 0;
+}
+
+.native-shell .institution-catalog-summary-card h1 {
+  color: #101f35;
+  font-size: 15px;
+  font-weight: 950;
+  line-height: 1.2;
+}
+
+.native-shell .institution-catalog-summary-card p {
+  color: #53615f;
+  font-size: 11px;
+  font-weight: 720;
+  line-height: 1.35;
+}
+
+.native-shell .institution-catalog-summary-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 11px;
+  margin-top: 3px;
+  color: #3d4c49;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.native-shell .institution-catalog-toolbar {
+  display: flex;
+  min-width: 0;
+  min-height: 46px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.native-shell .institution-catalog-filter-buttons,
+.native-shell .institution-catalog-toolbar-actions {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+}
+
+.native-shell .institution-catalog-filter-buttons {
+  flex-wrap: wrap;
+}
+
+.native-shell .institution-catalog-filter-buttons button {
+  display: inline-flex;
+  min-width: 78px;
+  min-height: 38px;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 7px 14px;
+  border: 1px solid #cdd9d7;
+  border-radius: 7px;
+  background: #fff;
+  color: #14233c;
+  box-shadow: none;
+  font: inherit;
+  font-size: 10px;
+  font-weight: 900;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.native-shell .institution-catalog-filter-buttons button.is-active {
+  border-color: #0f9487;
+  background: #0f9487;
+  color: #fff;
+}
+
+.native-shell .institution-catalog-filter-buttons button b {
+  display: grid;
+  min-width: 22px;
+  height: 22px;
+  box-sizing: border-box;
+  place-items: center;
+  padding: 0 5px;
+  border-radius: 50%;
+  background: #ffc928;
+  color: #15243a;
+  font-size: 10px;
+  font-weight: 950;
+}
+
+.native-shell .institution-catalog-filter-buttons button.is-active b {
+  background: #fff;
+  color: #08786e;
+}
+
+.native-shell .institution-catalog-toolbar-actions {
+  flex: 1 1 auto;
+  justify-content: flex-end;
+}
+
+.native-shell .institution-catalog-search {
+  position: relative;
+  width: min(300px, 100%);
+  min-width: 210px;
+}
+
+.native-shell .institution-catalog-search svg {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  width: 16px;
+  height: 16px;
+  transform: translateY(-50%);
+  fill: none;
+  stroke: #647370;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+  pointer-events: none;
+}
+
+.native-shell .institution-catalog-search input {
+  width: 100%;
+  min-height: 38px;
+  box-sizing: border-box;
+  padding: 8px 12px 8px 38px;
+  border: 1px solid #cdd9d7;
+  border-radius: 7px;
+  background: #fff;
+  color: #14233c;
+  font: inherit;
+  font-size: 10px;
+  font-weight: 750;
+}
+
+.native-shell .institution-catalog-primary-action,
+.native-shell button.institution-catalog-primary-action {
+  display: inline-flex;
+  min-height: 38px;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 8px 15px;
+  border: 1px solid #0f9487;
+  border-radius: 7px;
+  background: #0f9487;
+  color: #fff;
+  box-shadow: 0 9px 20px rgba(15, 148, 135, 0.13);
+  font: inherit;
+  font-size: 10px;
+  font-weight: 900;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.native-shell .institution-catalog-primary-action > span {
+  color: inherit;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.native-shell .institution-service-filter-toolbar {
+  padding: 11px 16px;
+  border-bottom: 1px solid #d5dddb;
+  background: #f6faf9;
+}
+
+.native-shell .institution-service-filter-toolbar .institution-catalog-search {
+  width: min(270px, 100%);
+}
+
+.native-shell .institution-catalog-workspace-header + .institution-native-pharmacy-card {
+  min-height: 420px;
+  margin-top: 0;
+}
+
+@media (max-width: 960px) {
+  .native-shell .institution-catalog-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .native-shell .institution-catalog-toolbar-actions {
+    justify-content: flex-start;
+  }
+
+  .native-shell .institution-catalog-search {
+    width: min(100%, 420px);
+  }
+}
+
+@media (max-width: 620px) {
+  .native-shell .institution-catalog-carousel-card {
+    grid-template-columns: 34px minmax(0, 1fr) 34px;
+    gap: 7px;
+    padding: 9px;
+  }
+
+  .native-shell .institution-catalog-summary-card {
+    min-height: 0;
+    padding: 15px;
+  }
+
+  .native-shell .institution-catalog-toolbar-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .native-shell .institution-catalog-search,
+  .native-shell .institution-catalog-primary-action,
+  .native-shell button.institution-catalog-primary-action {
+    width: 100%;
+    min-width: 0;
+  }
 }
 
 .native-shell .unit-consultation-submenu-card[hidden],
@@ -16360,13 +16643,15 @@ body.is-register-modal-open {
 
 .native-shell .unit-consultation-submenu {
   display: flex;
+  flex: 1 1 auto;
   min-width: 0;
-  gap: 8px;
+  align-items: center;
+  gap: 12px;
   overflow-x: auto;
-  padding: 1px;
+  padding: 0 1px 2px;
   scroll-padding-inline: 1px;
   scroll-snap-type: x proximity;
-  scrollbar-width: none;
+  scrollbar-width: thin;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -16392,36 +16677,38 @@ body.is-register-modal-open {
 
 .native-shell button.unit-consultation-submenu-button {
   display: inline-flex;
-  width: 150px;
-  min-height: 52px;
-  flex: 0 0 150px;
+  width: auto;
+  min-width: max-content;
+  min-height: 42px;
+  flex: 0 0 auto;
   align-items: center;
   justify-content: center;
-  gap: 9px;
-  padding: 8px 12px;
-  border: 1px solid #d3dfdc;
+  gap: 8px;
+  padding: 0 18px;
+  border: 1px solid #ced9d7;
   border-radius: 7px;
   background: #fff;
-  color: #0b756c;
+  color: #263657;
   font: inherit;
-  font-size: 11px;
-  font-weight: 900;
+  font-size: 12px;
+  font-weight: 850;
   text-align: center;
   scroll-snap-align: start;
   cursor: pointer;
+  transition: border-color 140ms ease, background-color 140ms ease, color 140ms ease, box-shadow 140ms ease;
 }
 
 .native-shell button.unit-consultation-submenu-button span {
   display: grid;
-  width: 22px;
-  height: 22px;
-  flex: 0 0 22px;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
   place-items: center;
 }
 
 .native-shell button.unit-consultation-submenu-button svg {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   fill: none;
   stroke: currentColor;
   stroke-linecap: round;
@@ -16430,19 +16717,24 @@ body.is-register-modal-open {
 }
 
 .native-shell button.unit-consultation-submenu-button strong {
-  overflow: hidden;
   color: inherit;
   font-size: inherit;
-  line-height: 1.15;
-  text-overflow: ellipsis;
+  line-height: 1;
   white-space: nowrap;
 }
 
+.native-shell button.unit-consultation-submenu-button:hover,
+.native-shell button.unit-consultation-submenu-button:focus-visible {
+  border-color: #0f9487;
+  outline: 0;
+  box-shadow: 0 0 0 3px rgba(15, 148, 135, 0.1);
+}
+
 .native-shell button.unit-consultation-submenu-button.is-active {
-  border-color: #8fd8cf;
-  background: #bfece6;
-  color: #007d71;
-  box-shadow: inset 0 -2px 0 #13a99a;
+  border-color: #0f9487;
+  background: #0f9487;
+  color: #fff;
+  box-shadow: 0 8px 18px rgba(15, 148, 135, 0.16);
 }
 
 .native-shell .unit-consultation-calendar-title {
@@ -16732,6 +17024,7 @@ body.is-register-modal-open {
 }
 
 .native-shell button.unit-consultation-calendar-event {
+  position: relative;
   display: grid;
   width: 100%;
   min-width: 0;
@@ -16778,6 +17071,29 @@ body.is-register-modal-open {
   white-space: nowrap;
 }
 
+.native-shell button.unit-consultation-calendar-event .unit-consultation-calendar-room-number {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  display: block;
+  max-width: 56px;
+  overflow: hidden;
+  padding: 2px 5px;
+  border: 1px solid rgba(43, 77, 89, 0.2);
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.86);
+  color: #244552;
+  font-size: 9px;
+  font-weight: 850;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.native-shell button.unit-consultation-calendar-event.has-room-number {
+  padding-right: 76px;
+}
+
 .native-shell button.unit-consultation-calendar-event.is-confirmed {
   border-left-color: #13ad70;
   background: #daf6e9;
@@ -16802,6 +17118,10 @@ body.is-register-modal-open {
   grid-template-columns: 1fr;
   gap: 2px;
   padding: 5px 6px;
+}
+
+.native-shell button.unit-consultation-calendar-event.is-compact.has-room-number {
+  padding-right: 76px;
 }
 
 .native-shell button.unit-consultation-calendar-event.is-compact time {
@@ -17388,6 +17708,1410 @@ body.is-register-modal-open {
   color: #b5223e;
 }
 
+/* Consulta externa: alta integral de citas */
+.native-shell .unit-consultation-new-dialog {
+  width: min(1080px, calc(100vw - 32px));
+  max-height: min(94vh, 900px);
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-flow-shell {
+  max-height: min(94vh, 900px);
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  overflow: hidden;
+}
+
+.native-shell .unit-consultation-booking-layout {
+  display: grid;
+  min-height: 0;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  padding: 12px;
+  overflow-y: auto;
+  background: #f8fbfa;
+}
+
+.native-shell .unit-consultation-booking-section {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid #d5e1df;
+  border-radius: 7px;
+  background: #fff;
+}
+
+.native-shell .unit-consultation-booking-section.is-patient { grid-column: 1; grid-row: 1; }
+.native-shell .unit-consultation-booking-section.is-modality { grid-column: 2; grid-row: 1; }
+.native-shell .unit-consultation-booking-section.is-programming { grid-column: 3; grid-row: 1; }
+.native-shell .unit-consultation-booking-section.is-clinical { grid-column: 1; grid-row: 2; }
+.native-shell .unit-consultation-booking-section.is-availability { grid-column: 2 / 4; grid-row: 2; }
+
+.native-shell .unit-consultation-booking-section-head {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: 28px minmax(0, 1fr);
+  align-items: start;
+  gap: 9px;
+  margin-bottom: 11px;
+}
+
+.native-shell .unit-consultation-booking-section-head > b {
+  display: grid;
+  width: 26px;
+  height: 26px;
+  place-items: center;
+  border-radius: 50%;
+  background: #087f75;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.native-shell .unit-consultation-booking-section-head h4,
+.native-shell .unit-consultation-booking-section-head p {
+  margin: 0;
+}
+
+.native-shell .unit-consultation-booking-section-head h4 {
+  color: #142d50;
+  font-size: 12px;
+  font-weight: 950;
+}
+
+.native-shell .unit-consultation-booking-section-head p {
+  margin-top: 2px;
+  color: #65778b;
+  font-size: 8.5px;
+  line-height: 1.35;
+}
+
+.native-shell .unit-consultation-platform-field,
+.native-shell .unit-consultation-program-grid label,
+.native-shell .unit-consultation-clinical-grid label {
+  display: grid;
+  min-width: 0;
+  gap: 5px;
+  color: #203955;
+  font-size: 9px;
+  font-weight: 850;
+}
+
+.native-shell .unit-consultation-platform-field {
+  margin-top: 10px;
+}
+
+.native-shell .unit-consultation-platform-field > span b,
+.native-shell .unit-consultation-program-grid label > span b,
+.native-shell .unit-consultation-clinical-grid label > span b {
+  color: #e42839;
+}
+
+.native-shell .unit-consultation-platform-field input,
+.native-shell .unit-consultation-program-grid input,
+.native-shell .unit-consultation-program-grid select,
+.native-shell .unit-consultation-clinical-grid select,
+.native-shell .unit-consultation-clinical-grid textarea {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  border: 1px solid #cbd9d7;
+  border-radius: 6px;
+  background: #fff;
+  color: #14233c;
+  font: inherit;
+  font-size: 10px;
+}
+
+.native-shell .unit-consultation-platform-field input,
+.native-shell .unit-consultation-program-grid input,
+.native-shell .unit-consultation-program-grid select,
+.native-shell .unit-consultation-clinical-grid select {
+  height: 36px;
+  padding: 0 9px;
+}
+
+.native-shell .unit-consultation-clinical-grid textarea {
+  min-height: 66px;
+  padding: 8px 9px;
+  resize: vertical;
+}
+
+.native-shell .unit-consultation-platform-field input:focus,
+.native-shell .unit-consultation-program-grid input:focus,
+.native-shell .unit-consultation-program-grid select:focus,
+.native-shell .unit-consultation-clinical-grid select:focus,
+.native-shell .unit-consultation-clinical-grid textarea:focus {
+  border-color: #0f9487;
+  outline: 2px solid rgba(15, 148, 135, 0.12);
+}
+
+.native-shell .unit-consultation-booking-section .unit-consultation-selected-patient {
+  margin-top: 10px;
+  padding: 9px;
+}
+
+.native-shell .unit-consultation-patient-details-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 8px;
+  padding: 3px 0;
+  border: 0;
+  background: transparent;
+  color: #087f75;
+  font: inherit;
+  font-size: 8.5px;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.native-shell .unit-consultation-patient-details-toggle[hidden],
+.native-shell .unit-consultation-patient-details[hidden],
+.native-shell .unit-consultation-selection-preview[hidden] {
+  display: none !important;
+}
+
+.native-shell .unit-consultation-patient-details {
+  display: grid;
+  gap: 5px;
+  margin: 8px 0 0;
+  padding: 8px;
+  border: 1px solid #d8e5e2;
+  border-radius: 6px;
+  background: #f6fbfa;
+}
+
+.native-shell .unit-consultation-patient-details > div {
+  display: grid;
+  grid-template-columns: 78px minmax(0, 1fr);
+  gap: 7px;
+}
+
+.native-shell .unit-consultation-patient-details dt,
+.native-shell .unit-consultation-patient-details dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-size: 8px;
+}
+
+.native-shell .unit-consultation-patient-details dt { color: #60748a; font-weight: 750; }
+.native-shell .unit-consultation-patient-details dd { color: #17304f; font-weight: 850; }
+
+.native-shell .unit-consultation-modality-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.native-shell .unit-consultation-modality-options label {
+  position: relative;
+  display: grid;
+  min-height: 126px;
+  box-sizing: border-box;
+  grid-template-rows: 43px auto 1fr;
+  align-items: start;
+  justify-items: center;
+  gap: 5px;
+  padding: 12px 8px 10px;
+  border: 1px solid #d4dfdd;
+  border-radius: 7px;
+  color: #27415f;
+  text-align: center;
+  cursor: pointer;
+}
+
+.native-shell .unit-consultation-modality-options label:has(input:checked) {
+  border-color: #0b8f83;
+  background: #eef9f7;
+  box-shadow: inset 0 -2px #0b8f83;
+}
+
+.native-shell .unit-consultation-modality-options input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.native-shell .unit-consultation-modality-options label > span {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border-radius: 50%;
+  background: #e1f5f1;
+  color: #087f75;
+}
+
+.native-shell .unit-consultation-modality-options svg,
+.native-shell .unit-consultation-selection-preview svg {
+  width: 23px;
+  height: 23px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.native-shell .unit-consultation-modality-options strong {
+  font-size: 9px;
+  font-weight: 900;
+}
+
+.native-shell .unit-consultation-modality-options small {
+  color: #67798e;
+  font-size: 7.5px;
+  line-height: 1.35;
+}
+
+.native-shell .unit-consultation-modality-options i {
+  position: absolute;
+  top: 9px;
+  right: 9px;
+  width: 11px;
+  height: 11px;
+  box-sizing: border-box;
+  border: 1px solid #95aaa5;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.native-shell .unit-consultation-modality-options label:has(input:checked) i {
+  border: 3px solid #fff;
+  background: #0b8f83;
+  box-shadow: 0 0 0 1px #0b8f83;
+}
+
+.native-shell .unit-consultation-program-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.native-shell .unit-consultation-program-grid .is-wide { grid-column: 1 / -1; }
+
+.native-shell .unit-consultation-clinical-grid {
+  display: grid;
+  gap: 9px;
+}
+
+.native-shell .unit-consultation-clinical-grid label > small {
+  justify-self: end;
+  margin-top: -3px;
+  color: #718197;
+  font-size: 7.5px;
+  font-weight: 650;
+}
+
+.native-shell .unit-consultation-availability-header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.native-shell .unit-consultation-availability-header .unit-consultation-booking-section-head {
+  margin-bottom: 9px;
+}
+
+.native-shell .unit-consultation-date-nav {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.native-shell .unit-consultation-date-nav strong {
+  max-width: 190px;
+  color: #263d5b;
+  font-size: 8.5px;
+  text-align: right;
+}
+
+.native-shell .unit-consultation-date-nav button {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  padding: 0;
+  border: 1px solid #cbd9d7;
+  border-radius: 6px;
+  background: #fff;
+  color: #173d72;
+  font: inherit;
+  font-size: 17px;
+  cursor: pointer;
+}
+
+.native-shell .unit-consultation-availability-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(210px, .8fr);
+  gap: 12px;
+}
+
+.native-shell .unit-consultation-booking-layout .unit-consultation-available-slots > div {
+  display: grid;
+  max-height: 218px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+  margin: 0;
+  overflow-y: auto;
+}
+
+.native-shell .unit-consultation-booking-layout .unit-consultation-available-slots button {
+  display: grid;
+  min-height: 37px;
+  grid-template-columns: 12px minmax(0, 1fr) auto;
+  align-items: center;
+  justify-content: stretch;
+  gap: 7px;
+  padding: 6px 8px;
+  text-align: left;
+}
+
+.native-shell .unit-consultation-booking-layout .unit-consultation-available-slots button > span {
+  display: block;
+  width: 10px;
+  height: 10px;
+  box-sizing: border-box;
+  border: 1px solid #8da49f;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.native-shell .unit-consultation-booking-layout .unit-consultation-available-slots button time,
+.native-shell .unit-consultation-booking-layout .unit-consultation-available-slots button small {
+  font-size: 8px;
+  font-weight: 800;
+}
+
+.native-shell .unit-consultation-booking-layout .unit-consultation-available-slots button small {
+  color: #087f75;
+}
+
+.native-shell .unit-consultation-booking-layout .unit-consultation-available-slots button.is-selected > span {
+  border: 3px solid #fff;
+  background: #0b8f83;
+  box-shadow: 0 0 0 1px #fff;
+}
+
+.native-shell .unit-consultation-booking-layout .unit-consultation-available-slots button.is-selected small {
+  color: #fff;
+}
+
+.native-shell .unit-consultation-selection-side {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+}
+
+.native-shell .unit-consultation-selection-preview {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr);
+  gap: 9px;
+  padding: 10px;
+  border: 1px solid #cde7e2;
+  border-radius: 7px;
+  background: #edf9f7;
+}
+
+.native-shell .unit-consultation-selection-preview > span {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border-radius: 50%;
+  background: #d8f2ed;
+  color: #087f75;
+}
+
+.native-shell .unit-consultation-selection-preview div,
+.native-shell .unit-consultation-selection-preview p {
+  min-width: 0;
+  margin: 0;
+}
+
+.native-shell .unit-consultation-selection-preview small,
+.native-shell .unit-consultation-selection-preview strong,
+.native-shell .unit-consultation-selection-preview b {
+  display: block;
+  margin-bottom: 3px;
+}
+
+.native-shell .unit-consultation-selection-preview small { color: #61758b; font-size: 7.5px; }
+.native-shell .unit-consultation-selection-preview strong { color: #087f75; font-size: 11px; font-weight: 950; }
+.native-shell .unit-consultation-selection-preview b { color: #18304e; font-size: 8.5px; }
+.native-shell .unit-consultation-selection-preview p { display: flex; flex-wrap: wrap; gap: 5px; color: #536a80; font-size: 7.5px; }
+.native-shell .unit-consultation-selection-preview i { font-style: normal; }
+
+.native-shell .unit-consultation-notifications {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.native-shell .unit-consultation-notifications legend {
+  color: #18304e;
+  font-size: 9px;
+  font-weight: 900;
+}
+
+.native-shell .unit-consultation-notifications p {
+  margin: -4px 0 1px;
+  color: #63778c;
+  font-size: 7.5px;
+  line-height: 1.35;
+}
+
+.native-shell .unit-consultation-notifications label {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 32px;
+  align-items: center;
+  gap: 8px;
+  color: #29415f;
+  font-size: 8px;
+  cursor: pointer;
+}
+
+.native-shell .unit-consultation-notifications input[type='hidden'] { display: none; }
+
+.native-shell .unit-consultation-notifications input[type='checkbox'] {
+  position: relative;
+  width: 32px;
+  height: 18px;
+  min-height: 18px;
+  margin: 0;
+  appearance: none;
+  border: 0;
+  border-radius: 10px;
+  background: #b9c7c4;
+  cursor: pointer;
+}
+
+.native-shell .unit-consultation-notifications input[type='checkbox']::before {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #fff;
+  content: '';
+  transition: transform 160ms ease;
+}
+
+.native-shell .unit-consultation-notifications input[type='checkbox']:checked { background: #087f75; }
+.native-shell .unit-consultation-notifications input[type='checkbox']:checked::before { transform: translateX(14px); }
+
+.native-shell .unit-consultation-booking-actions {
+  position: static;
+  display: flex;
+  justify-content: space-between;
+  padding: 11px 14px;
+}
+
+.native-shell .unit-consultation-booking-actions button {
+  width: auto;
+  min-width: 150px;
+}
+
+@media (max-width: 900px) {
+  .native-shell .unit-consultation-new-dialog {
+    width: calc(100vw - 20px);
+    max-height: calc(100dvh - 20px);
+  }
+
+  .native-shell .unit-consultation-new-dialog .unit-consultation-flow-shell {
+    max-height: calc(100dvh - 20px);
+  }
+
+  .native-shell .unit-consultation-booking-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .native-shell .unit-consultation-booking-section.is-patient,
+  .native-shell .unit-consultation-booking-section.is-modality,
+  .native-shell .unit-consultation-booking-section.is-programming,
+  .native-shell .unit-consultation-booking-section.is-clinical,
+  .native-shell .unit-consultation-booking-section.is-availability {
+    grid-column: 1;
+    grid-row: auto;
+  }
+}
+
+@media (max-width: 560px) {
+  .native-shell .unit-consultation-new-dialog {
+    width: calc(100vw - 12px);
+    max-height: calc(100dvh - 12px);
+  }
+
+  .native-shell .unit-consultation-new-dialog .unit-consultation-flow-shell {
+    max-height: calc(100dvh - 12px);
+  }
+
+  .native-shell .unit-consultation-new-dialog .unit-consultation-flow-header {
+    grid-template-columns: 36px minmax(0, 1fr) 30px;
+    gap: 9px;
+    padding: 12px;
+  }
+
+  .native-shell .unit-consultation-new-dialog .unit-consultation-flow-header h3 { font-size: 15px; }
+  .native-shell .unit-consultation-booking-layout { padding: 8px; }
+  .native-shell .unit-consultation-booking-section { padding: 10px; }
+  .native-shell .unit-consultation-modality-options,
+  .native-shell .unit-consultation-program-grid,
+  .native-shell .unit-consultation-availability-body,
+  .native-shell .unit-consultation-booking-layout .unit-consultation-available-slots > div {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .native-shell .unit-consultation-program-grid .is-wide { grid-column: 1; }
+  .native-shell .unit-consultation-availability-header { display: grid; }
+  .native-shell .unit-consultation-date-nav { justify-content: space-between; }
+  .native-shell .unit-consultation-date-nav strong { max-width: none; text-align: left; }
+  .native-shell .unit-consultation-booking-actions { gap: 8px; }
+  .native-shell .unit-consultation-booking-actions button { min-width: 0; flex: 1; }
+}
+
+/* Consulta externa: agenda inspirada en la referencia de dos columnas */
+.native-shell .unit-consultation-new-dialog {
+  width: min(930px, calc(100vw - 28px));
+  max-height: min(94dvh, 840px);
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-flow-shell {
+  max-height: min(94dvh, 840px);
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  overflow: hidden;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-flow-header {
+  grid-template-columns: 36px minmax(0, 1fr) 32px;
+  gap: 10px;
+  padding: 12px 16px;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-flow-icon {
+  width: 36px;
+  height: 36px;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-flow-header h3 {
+  font-size: 15px;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-flow-header p {
+  font-size: 8.5px;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-flow-error {
+  margin: 10px 16px 0;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-booking-layout {
+  display: grid;
+  min-height: 0;
+  grid-template-columns: minmax(0, 1.15fr) minmax(340px, .85fr);
+  gap: 0;
+  padding: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: #fff;
+}
+
+.native-shell .unit-consultation-booking-column {
+  display: grid;
+  min-width: 0;
+  align-content: start;
+  gap: 16px;
+  padding: 18px 20px;
+}
+
+.native-shell .unit-consultation-booking-column.is-schedule {
+  border-left: 1px solid #dce6e4;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-booking-section {
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-booking-section-head {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 12px;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-booking-section-head > span {
+  display: grid;
+  width: 20px;
+  height: 20px;
+  place-items: center;
+  color: #17324d;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-booking-section-head svg,
+.native-shell .unit-consultation-new-dialog .unit-consultation-modality-info svg,
+.native-shell .unit-consultation-new-dialog .unit-consultation-booking-summary svg,
+.native-shell .unit-consultation-new-dialog .unit-consultation-booking-action-buttons svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-booking-section-head h4 {
+  margin: 0;
+  color: #14233c;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.native-shell .unit-consultation-booking-separator {
+  width: 100%;
+  height: 1px;
+  margin: 0;
+  border: 0;
+  background: #dce6e4;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-patient-search,
+.native-shell .unit-consultation-new-dialog .unit-consultation-platform-field,
+.native-shell .unit-consultation-new-dialog .unit-consultation-details-grid label,
+.native-shell .unit-consultation-new-dialog .unit-consultation-date-field,
+.native-shell .unit-consultation-new-dialog .unit-consultation-contact-field {
+  display: grid;
+  min-width: 0;
+  gap: 5px;
+  color: #263b55;
+  font-size: 8.5px;
+  font-weight: 850;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-platform-field {
+  margin-top: 9px;
+}
+
+.native-shell .unit-consultation-new-dialog label span b,
+.native-shell .unit-consultation-new-dialog .unit-consultation-field-label + b {
+  color: #e42839;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-search-control,
+.native-shell .unit-consultation-new-dialog .unit-consultation-platform-field input,
+.native-shell .unit-consultation-new-dialog .unit-consultation-details-grid input,
+.native-shell .unit-consultation-new-dialog .unit-consultation-details-grid select,
+.native-shell .unit-consultation-new-dialog .unit-consultation-details-grid textarea,
+.native-shell .unit-consultation-new-dialog .unit-consultation-date-field input,
+.native-shell .unit-consultation-new-dialog .unit-consultation-contact-field input {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  border: 1px solid #cad9d7;
+  border-radius: 7px;
+  background: #fff;
+  color: #14233c;
+  font: inherit;
+  font-size: 10px;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-search-control,
+.native-shell .unit-consultation-new-dialog .unit-consultation-platform-field input,
+.native-shell .unit-consultation-new-dialog .unit-consultation-details-grid input,
+.native-shell .unit-consultation-new-dialog .unit-consultation-details-grid select,
+.native-shell .unit-consultation-new-dialog .unit-consultation-date-field input,
+.native-shell .unit-consultation-new-dialog .unit-consultation-contact-field input {
+  height: 38px;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-platform-field input,
+.native-shell .unit-consultation-new-dialog .unit-consultation-details-grid input,
+.native-shell .unit-consultation-new-dialog .unit-consultation-details-grid select,
+.native-shell .unit-consultation-new-dialog .unit-consultation-date-field input,
+.native-shell .unit-consultation-new-dialog .unit-consultation-contact-field input {
+  padding: 0 10px;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-details-grid textarea {
+  min-height: 58px;
+  padding: 8px 10px 16px;
+  resize: vertical;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-search-control:focus-within,
+.native-shell .unit-consultation-new-dialog input:focus,
+.native-shell .unit-consultation-new-dialog select:focus,
+.native-shell .unit-consultation-new-dialog textarea:focus {
+  border-color: #0f9487;
+  outline: 2px solid rgba(15, 148, 135, 0.12);
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-search-control input {
+  height: auto;
+  padding: 0;
+  border: 0;
+  outline: 0;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-selected-patient {
+  margin-top: 10px;
+  padding: 10px 11px;
+  border-color: #d9e7f7;
+  background: #edf4ff;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-patient-avatar {
+  color: #2167db;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-patient-details {
+  background: #f8fbff;
+}
+
+.native-shell .unit-consultation-new-dialog button.unit-consultation-patient-details-toggle,
+.native-shell .unit-consultation-new-dialog button.unit-consultation-patient-details-toggle:hover {
+  display: inline-flex;
+  width: fit-content;
+  min-height: 0;
+  align-items: center;
+  gap: 5px;
+  margin-top: 7px;
+  padding: 3px 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  color: #087f75;
+  font-size: 8.5px;
+}
+
+.native-shell .unit-consultation-new-dialog button.unit-consultation-patient-details-toggle:focus-visible {
+  outline: 2px solid rgba(15, 148, 135, 0.22);
+  outline-offset: 2px;
+}
+
+.native-shell .unit-consultation-field-label {
+  margin-bottom: 6px;
+  color: #263b55;
+  font-size: 8.5px;
+  font-weight: 850;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-modality-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-modality-options label {
+  position: relative;
+  display: grid;
+  min-height: 48px;
+  box-sizing: border-box;
+  grid-template-columns: 28px minmax(0, 1fr) 12px;
+  grid-template-rows: 1fr;
+  align-items: center;
+  justify-items: stretch;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid #cddbd8;
+  border-radius: 7px;
+  background: #fff;
+  color: #28415f;
+  text-align: left;
+  cursor: pointer;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-modality-options label:has(input:checked) {
+  border-color: #0f9487;
+  background: #eef9f7;
+  box-shadow: none;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-modality-options input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-modality-options label > span {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border-radius: 50%;
+  background: #e1f5f1;
+  color: #087f75;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-modality-options label > span svg {
+  width: 16px;
+  height: 16px;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-modality-options strong {
+  font-size: 9px;
+  font-weight: 900;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-modality-options i {
+  position: static;
+  width: 11px;
+  height: 11px;
+  box-sizing: border-box;
+  border: 1px solid #91a7a2;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-modality-options label:has(input:checked) i {
+  border: 3px solid #fff;
+  background: #0f9487;
+  box-shadow: 0 0 0 1px #0f9487;
+}
+
+.native-shell .unit-consultation-details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.native-shell .unit-consultation-details-grid .is-wide {
+  grid-column: 1 / -1;
+}
+
+.native-shell .unit-consultation-details-grid label > small {
+  justify-self: end;
+  margin-top: -15px;
+  padding-right: 6px;
+  color: #718197;
+  font-size: 7px;
+  font-weight: 650;
+  pointer-events: none;
+}
+
+.native-shell .unit-consultation-modality-info {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr);
+  align-items: center;
+  gap: 7px;
+  margin-top: 10px;
+  padding: 8px 10px;
+  border-radius: 7px;
+  background: #edf4ff;
+  color: #285eb8;
+  font-size: 8px;
+  line-height: 1.4;
+}
+
+.native-shell .unit-consultation-timezone,
+.native-shell .unit-consultation-slot-legend,
+.native-shell .unit-consultation-contact-note {
+  margin: 5px 0 10px;
+  color: #697b90;
+  font-size: 8px;
+  line-height: 1.4;
+}
+
+.native-shell .unit-consultation-booking-week {
+  display: grid;
+  grid-template-columns: repeat(var(--unit-booking-days, 5), minmax(0, 1fr));
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.native-shell .unit-consultation-booking-week button {
+  display: grid;
+  min-width: 0;
+  min-height: 54px;
+  place-items: center;
+  align-content: center;
+  gap: 4px;
+  padding: 5px 2px;
+  border: 1px solid #d2dded;
+  border-radius: 7px;
+  background: #fff;
+  color: #24415f;
+  font: inherit;
+  cursor: pointer;
+}
+
+.native-shell .unit-consultation-booking-week button span {
+  overflow: hidden;
+  font-size: 7.5px;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+}
+
+.native-shell .unit-consultation-booking-week button strong {
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.native-shell .unit-consultation-booking-week button[aria-pressed='true'] {
+  border-color: #0f9487;
+  background: #0f9487;
+  color: #fff;
+}
+
+.native-shell .unit-consultation-booking-week button:disabled {
+  cursor: not-allowed;
+  opacity: .42;
+}
+
+.native-shell .unit-consultation-slots-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+  color: #233a56;
+  font-size: 9px;
+  font-weight: 850;
+}
+
+.native-shell .unit-consultation-slots-head strong {
+  color: #087f75;
+  font-size: 8px;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-available-slots > div {
+  display: grid;
+  max-height: none;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7px;
+  margin: 0;
+  overflow: visible;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-available-slots button {
+  display: inline-flex;
+  min-height: 36px;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 6px;
+  border: 1px solid #d2dded;
+  border-radius: 7px;
+  background: #fff;
+  color: #213b57;
+  font: inherit;
+  font-size: 9px;
+  font-weight: 850;
+  text-align: center;
+  cursor: pointer;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-available-slots button time {
+  font-size: 9px;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-available-slots button > span,
+.native-shell .unit-consultation-new-dialog .unit-consultation-available-slots button small {
+  display: none;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-available-slots button.is-selected {
+  border-color: #0f9487;
+  background: #0f9487;
+  color: #fff;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-available-slots button:disabled {
+  border-color: #e1e7ee;
+  background: #f6f8fb;
+  color: #96a0ad;
+  cursor: not-allowed;
+  opacity: 1;
+  text-decoration: line-through;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-no-slots {
+  padding: 10px;
+  font-size: 8px;
+}
+
+.native-shell .unit-consultation-time-select {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.native-shell .unit-consultation-slot-legend {
+  margin-bottom: 0;
+}
+
+.native-shell .unit-consultation-notifications {
+  display: grid;
+  gap: 9px;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-notifications label {
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1fr);
+  align-items: start;
+  gap: 8px;
+  color: #223a55;
+  font-size: 8.5px;
+  cursor: pointer;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-notifications input[type='hidden'] {
+  display: none;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-notifications input[type='checkbox'] {
+  position: static;
+  width: 14px;
+  height: 14px;
+  min-height: 14px;
+  margin: 1px 0 0;
+  appearance: auto;
+  accent-color: #0f9487;
+  border: initial;
+  border-radius: 2px;
+  background: initial;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-notifications input[type='checkbox']::before {
+  display: none;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-notifications label > span,
+.native-shell .unit-consultation-new-dialog .unit-consultation-notifications label small {
+  display: block;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-notifications label small {
+  margin-top: 2px;
+  color: #6a7c90;
+  font-size: 7.5px;
+  font-weight: 650;
+}
+
+.native-shell .unit-consultation-contact-field {
+  margin-top: 12px;
+}
+
+.native-shell .unit-consultation-contact-field input[readonly] {
+  background: #f8fafc;
+}
+
+.native-shell .unit-visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  clip-path: inset(50%) !important;
+  white-space: nowrap !important;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-booking-actions {
+  position: static;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 11px 16px;
+  border-top: 1px solid #dce6e4;
+  background: #fff;
+}
+
+.native-shell .unit-consultation-booking-summary {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: 20px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  color: #2167db;
+}
+
+.native-shell .unit-consultation-booking-summary strong,
+.native-shell .unit-consultation-booking-summary small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.native-shell .unit-consultation-booking-summary strong {
+  color: #14233c;
+  font-size: 9px;
+  font-weight: 900;
+}
+
+.native-shell .unit-consultation-booking-summary small {
+  margin-top: 2px;
+  color: #687a91;
+  font-size: 7.5px;
+}
+
+.native-shell .unit-consultation-booking-action-buttons {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 8px;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-booking-action-buttons button {
+  display: inline-flex;
+  width: auto;
+  min-width: 88px;
+  min-height: 36px;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 7px 13px;
+  border: 1px solid #c8d7e4;
+  border-radius: 7px;
+  background: #fff;
+  color: #34506f;
+  font: inherit;
+  font-size: 9px;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-booking-action-buttons button.is-primary {
+  border-color: #0f9487;
+  background: #0f9487;
+  color: #fff;
+}
+
+.native-shell .unit-consultation-new-dialog .unit-consultation-booking-action-buttons button:disabled {
+  cursor: not-allowed;
+  opacity: .5;
+}
+
+@media (max-width: 780px) {
+  .native-shell .unit-consultation-new-dialog,
+  .native-shell .unit-consultation-new-dialog .unit-consultation-flow-shell {
+    max-height: calc(100dvh - 16px);
+  }
+
+  .native-shell .unit-consultation-new-dialog {
+    width: calc(100vw - 16px);
+  }
+
+  .native-shell .unit-consultation-new-dialog .unit-consultation-booking-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .native-shell .unit-consultation-booking-column.is-schedule {
+    border-top: 1px solid #dce6e4;
+    border-left: 0;
+  }
+}
+
+@media (max-width: 540px) {
+  .native-shell .unit-consultation-new-dialog,
+  .native-shell .unit-consultation-new-dialog .unit-consultation-flow-shell {
+    width: 100vw;
+    max-height: 100dvh;
+    border-radius: 0;
+  }
+
+  .native-shell .unit-consultation-booking-column {
+    padding: 15px 13px;
+  }
+
+  .native-shell .unit-consultation-details-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .native-shell .unit-consultation-details-grid .is-wide {
+    grid-column: 1;
+  }
+
+  .native-shell .unit-consultation-new-dialog .unit-consultation-booking-actions {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 9px;
+  }
+
+  .native-shell .unit-consultation-booking-action-buttons {
+    display: grid;
+    grid-template-columns: minmax(0, .7fr) minmax(0, 1.3fr);
+  }
+
+  .native-shell .unit-consultation-new-dialog .unit-consultation-booking-action-buttons button {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .native-shell .unit-consultation-new-dialog input,
+  .native-shell .unit-consultation-new-dialog select,
+  .native-shell .unit-consultation-new-dialog textarea {
+    font-size: 16px;
+  }
+}
+
+.native-shell .unit-consultation-appointment-dialog {
+  width: min(560px, calc(100vw - 32px));
+}
+
+.native-shell .unit-consultation-appointment-dialog .unit-consultation-flow-shell {
+  max-height: min(92vh, 860px);
+}
+
+.native-shell .unit-consultation-appointment-patient {
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  margin: 14px 18px 8px;
+  padding: 11px 12px;
+  border: 1px solid #d9e4e1;
+  border-radius: 7px;
+  background: #fff;
+}
+
+.native-shell .unit-consultation-appointment-patient > span {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border-radius: 50%;
+  color: #087d72;
+  background: #dff5f1;
+}
+
+.native-shell .unit-consultation-appointment-patient svg,
+.native-shell .unit-consultation-detail-list dt svg,
+.native-shell .unit-consultation-appointment-tabs svg,
+.native-shell .unit-consultation-appointment-warning svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.native-shell .unit-consultation-appointment-patient > div { display: grid; min-width: 0; gap: 3px; }
+.native-shell .unit-consultation-appointment-patient strong { overflow-wrap: anywhere; color: #142b4b; font-size: 12px; font-weight: 950; }
+.native-shell .unit-consultation-appointment-patient p { display: flex; flex-wrap: wrap; gap: 4px; margin: 0; color: #61748b; font-size: 8.5px; font-weight: 650; }
+.native-shell .unit-consultation-appointment-patient p i { color: #a0aeae; font-style: normal; }
+.native-shell .unit-consultation-appointment-patient p b { color: inherit; font-weight: 800; }
+
+.native-shell .unit-consultation-appointment-tabs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+  margin: 0 18px 8px;
+  padding: 3px;
+  border: 1px solid #d9e4e1;
+  border-radius: 7px;
+  background: #f3f6f7;
+}
+
+.native-shell .unit-consultation-appointment-tabs button {
+  display: inline-flex;
+  min-width: 0;
+  min-height: 34px;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 6px 10px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: #40536b;
+  background: transparent;
+  font: inherit;
+  font-size: 10px;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.native-shell .unit-consultation-appointment-tabs button.is-active {
+  border-color: #0b8f83;
+  color: #087d72;
+  background: #e9faf7;
+  box-shadow: 0 2px 7px rgba(13, 121, 111, .08);
+}
+
+.native-shell .unit-consultation-appointment-tabs button:focus-visible { outline: 2px solid rgba(11, 143, 131, .25); outline-offset: 1px; }
+.native-shell .unit-consultation-appointment-tabs svg { width: 16px; height: 16px; }
+.native-shell .unit-consultation-appointment-dialog [data-unit-calendar-dialog-panel][hidden] { display: none; }
+
+.native-shell .unit-consultation-appointment-dialog .unit-consultation-detail-list {
+  margin: 0 18px 14px;
+  padding: 4px 12px;
+  border: 1px solid #d9e4e1;
+  border-radius: 7px;
+  background: #fff;
+}
+
+.native-shell .unit-consultation-appointment-dialog .unit-consultation-detail-list > div {
+  min-height: 43px;
+  grid-template-columns: 145px minmax(0, 1fr);
+}
+
+.native-shell .unit-consultation-appointment-dialog .unit-consultation-detail-list dt {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+}
+
+.native-shell .unit-consultation-appointment-dialog .unit-consultation-detail-list dt svg { color: #173d72; }
+
+.native-shell .unit-consultation-appointment-history {
+  min-height: 354px;
+  box-sizing: border-box;
+  margin: 0 18px 14px;
+  padding: 12px 14px;
+  border: 1px solid #d9e4e1;
+  border-radius: 7px;
+  background: #fff;
+}
+
+.native-shell .unit-consultation-appointment-history ol { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; }
+.native-shell .unit-consultation-appointment-history li { position: relative; display: grid; grid-template-columns: 14px minmax(0, 1fr) auto; gap: 9px; padding: 10px 0; border-bottom: 1px solid #e3eae9; }
+.native-shell .unit-consultation-appointment-history li:last-child { border-bottom: 0; }
+.native-shell .unit-consultation-appointment-history li > span { width: 10px; height: 10px; margin-top: 2px; border: 2px solid #0b8f83; border-radius: 50%; background: #e4f7f3; }
+.native-shell .unit-consultation-appointment-history li > div { display: grid; min-width: 0; gap: 3px; }
+.native-shell .unit-consultation-appointment-history strong { color: #17304f; font-size: 10px; font-weight: 900; }
+.native-shell .unit-consultation-appointment-history p { margin: 0; overflow-wrap: anywhere; color: #62758a; font-size: 9px; }
+.native-shell .unit-consultation-appointment-history time { color: #718197; font-size: 8.5px; font-weight: 750; white-space: nowrap; }
+
+.native-shell .unit-consultation-appointment-footer {
+  position: sticky;
+  z-index: 5;
+  bottom: 0;
+  display: grid;
+  gap: 10px;
+  padding: 13px 18px 14px;
+  border-top: 1px solid #d9e4e1;
+  background: #fff;
+}
+
+.native-shell .unit-consultation-appointment-footer .unit-consultation-flow-actions { position: static; padding: 0; border: 0; }
+.native-shell .unit-consultation-reminder-feedback { margin: 0; padding: 8px 10px; border: 1px solid #ecd195; border-radius: 6px; color: #795a16; background: #fff9e8; font-size: 9px; font-weight: 750; }
+.native-shell .unit-consultation-reminder-feedback[hidden] { display: none; }
+.native-shell .unit-consultation-appointment-warning { display: grid; grid-template-columns: 20px minmax(0, 1fr); align-items: start; gap: 8px; margin: 0; padding: 8px 10px; border: 1px solid #ffcbd1; border-radius: 6px; color: #cf3143; background: #fff1f3; font-size: 8.5px; font-weight: 750; }
+.native-shell .unit-consultation-appointment-warning svg { width: 17px; height: 17px; }
+.native-shell .unit-consultation-appointment-warning span { display: grid; gap: 2px; }
+.native-shell .unit-consultation-appointment-warning small { color: #9b5d66; font-size: 8px; font-weight: 650; }
+
 .native-shell .unit-consultation-flow-actions {
   position: sticky;
   z-index: 5;
@@ -17667,7 +19391,8 @@ body.is-register-modal-open {
   margin: 0 -18px;
 }
 
-.native-shell .unit-consultation-patient-search {
+.native-shell .unit-consultation-patient-search,
+.native-shell .unit-consultation-platform-field {
   position: relative;
 }
 
@@ -17699,12 +19424,13 @@ body.is-register-modal-open {
 
 .native-shell .unit-consultation-patient-results {
   position: absolute;
-  z-index: 8;
+  z-index: 12;
   top: calc(100% + 4px);
   right: 0;
   left: 0;
   max-height: 214px;
   overflow: auto;
+  overscroll-behavior: contain;
   padding: 5px;
   border: 1px solid #cbdad7;
   border-radius: 7px;
@@ -17727,8 +19453,15 @@ body.is-register-modal-open {
   cursor: pointer;
 }
 
-.native-shell .unit-consultation-patient-results button:hover {
+.native-shell .unit-consultation-patient-results button:hover,
+.native-shell .unit-consultation-patient-results button:focus-visible,
+.native-shell .unit-consultation-patient-results button.is-active {
   background: #edf9f7;
+}
+
+.native-shell .unit-consultation-patient-results button:focus-visible {
+  outline: 2px solid rgba(15, 148, 135, 0.22);
+  outline-offset: -2px;
 }
 
 .native-shell .unit-consultation-patient-results button strong {
@@ -19900,7 +21633,54 @@ body.is-register-modal-open {
 .native-shell .unit-doctors-table td:nth-child(6) > button { margin-right: 8px; }
 .native-shell .unit-doctors-table td:nth-child(6) form { display: inline-flex; margin: 0; vertical-align: middle; }
 .native-shell .unit-doctors-table td:nth-child(6) button { white-space: nowrap; color: #111; background: #fff; }
-.native-shell .unit-doctor-create-form > button { width: 100% !important; grid-column: 1 / -1; }
+.native-shell .unit-doctor-create-dialog,
+.native-shell .unit-doctor-success-dialog {
+  max-width: none;
+  max-height: calc(100dvh - 32px);
+  margin: auto;
+  padding: 0;
+  box-sizing: border-box;
+  border: 1px solid #d5dddb;
+  border-radius: 8px;
+  background: #fff;
+  color: #14233c;
+  box-shadow: 0 24px 68px rgba(15, 33, 55, .25);
+}
+.native-shell .unit-doctor-create-dialog { width: min(800px, calc(100vw - 32px)); }
+.native-shell .unit-doctor-create-dialog::backdrop,
+.native-shell .unit-doctor-success-dialog::backdrop { background: rgba(15, 33, 55, .56); }
+.native-shell .unit-doctor-dialog-form { display: flex; flex-direction: column; max-height: calc(100dvh - 32px); }
+.native-shell .unit-doctor-dialog-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; padding: 22px 24px 18px; border-bottom: 1px solid #dbe4e2; }
+.native-shell .unit-doctor-dialog-header h2 { margin: 0 0 4px; font-size: 20px; line-height: 1.2; }
+.native-shell .unit-doctor-dialog-header p { margin: 0; color: #60716e; font-size: 12px; }
+.native-shell button.unit-doctor-dialog-close { display: grid; flex: none; width: 34px; height: 34px; min-height: 34px; place-items: center; padding: 0; border: 1px solid #d4dfdd; border-radius: 6px; background: #fff; color: #40536b; box-shadow: none; font-size: 23px; line-height: 1; cursor: pointer; }
+.native-shell button.unit-doctor-dialog-close:hover, .native-shell button.unit-doctor-dialog-close:focus-visible { background: #eaf8f5; color: #087e73; }
+.native-shell .unit-doctor-dialog-body { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 22px; min-height: 0; padding: 22px 24px; overflow-y: auto; }
+.native-shell .unit-doctor-dialog-body > label { display: grid; min-width: 0; gap: 7px; color: #24354b; font-size: 11px; font-weight: 850; }
+.native-shell .unit-doctor-dialog-body em { color: #cf3333; font-style: normal; }
+.native-shell .unit-doctor-dialog-body input:not([type="checkbox"]), .native-shell .unit-doctor-dialog-body select { width: 100%; min-width: 0; min-height: 40px; box-sizing: border-box; padding: 8px 11px; border: 1px solid #cbd8d5; border-radius: 6px; background: #fff; color: #14233c; font-size: 12px; }
+.native-shell .unit-doctor-dialog-body input:focus-visible, .native-shell .unit-doctor-dialog-body select:focus-visible { outline: 2px solid #0b9689; outline-offset: 1px; }
+.native-shell .unit-doctor-dialog-body .wide, .native-shell .unit-doctor-dialog-errors { grid-column: 1 / -1; }
+.native-shell .unit-doctor-dialog-body fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
+.native-shell .unit-doctor-dialog-body legend { margin-bottom: 10px; color: #24354b; font-size: 11px; font-weight: 850; }
+.native-shell .unit-doctor-dialog-body .unit-native-choice-grid label { min-height: 64px; }
+.native-shell .unit-doctor-dialog-errors { padding: 10px 13px; border: 1px solid #efb7b7; border-radius: 6px; background: #fff5f5; color: #8f2020; font-size: 11px; }
+.native-shell .unit-doctor-dialog-errors ul { margin: 5px 0 0; padding-left: 18px; }
+.native-shell .unit-doctor-dialog-actions { display: flex; justify-content: flex-end; gap: 10px; padding: 16px 24px; border-top: 1px solid #dbe4e2; background: #fff; }
+.native-shell .unit-doctor-dialog-actions button, .native-shell button.unit-doctor-success-action { min-width: 108px; min-height: 38px; padding: 8px 16px; border: 1px solid #cbd8d5; border-radius: 6px; background: #fff; color: #14233c; box-shadow: none; font-size: 12px; font-weight: 850; cursor: pointer; }
+.native-shell .unit-doctor-dialog-actions button.is-primary, .native-shell button.unit-doctor-success-action { border-color: #078a7b; background: #078a7b; color: #fff; }
+.native-shell .unit-doctor-success-dialog { width: min(380px, calc(100vw - 32px)); padding: 30px 24px 24px; text-align: center; }
+.native-shell .unit-doctor-success-dialog > .unit-doctor-dialog-close { position: absolute; top: 12px; right: 12px; border: 0; }
+.native-shell .unit-doctor-success-icon { display: grid; width: 52px; height: 52px; place-items: center; margin: 0 auto 14px; border-radius: 50%; background: #e6f6f3; color: #078a7b; }
+.native-shell .unit-doctor-success-icon svg { width: 27px; height: 27px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.native-shell .unit-doctor-success-dialog h2 { margin: 0 0 6px; color: #087e73; font-size: 17px; }
+.native-shell .unit-doctor-success-dialog p { margin: 0 0 20px; color: #60716e; font-size: 12px; }
+@media (max-width: 620px) {
+  .native-shell .unit-doctor-dialog-header, .native-shell .unit-doctor-dialog-body, .native-shell .unit-doctor-dialog-actions { padding-inline: 16px; }
+  .native-shell .unit-doctor-dialog-body { grid-template-columns: 1fr; }
+  .native-shell .unit-doctor-dialog-body .wide, .native-shell .unit-doctor-dialog-errors { grid-column: auto; }
+  .native-shell .unit-doctor-dialog-body .unit-native-choice-grid { grid-template-columns: 1fr; }
+}
 
 .native-shell .unit-native-empty {
   height: 220px;
@@ -20123,6 +21903,340 @@ body.is-register-modal-open {
   background: #fbfdfc;
 }
 
+/* Shared service composition: carousel, service facts, controls, and content. */
+.native-shell .unit-service-panel.is-unified-service:not(.is-rooms-view) {
+  display: grid;
+  overflow: visible;
+  min-height: 540px;
+  gap: 14px;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.native-shell .unit-service-panel.is-unified-service:not(.is-rooms-view) > .unit-service-panel-header,
+.native-shell .unit-service-panel.is-unified-service:not(.is-rooms-view) > .unit-service-operation-view {
+  overflow: hidden;
+  border: 1px solid #d5dddb;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 10px 24px rgba(19, 36, 58, 0.05);
+}
+
+.native-shell .unit-service-panel.is-unified-service:not(.is-rooms-view) > .unit-service-panel-header {
+  min-height: 126px;
+  align-items: center;
+}
+
+.native-shell .unit-service-panel.is-unified-service > [data-unit-service-overview],
+.native-shell .unit-service-panel-copy {
+  min-width: 0;
+}
+
+.native-shell .unit-service-panel-copy > h2,
+.native-shell .unit-service-panel-copy > p {
+  overflow-wrap: anywhere;
+}
+
+.native-shell .unit-consultation-calendar,
+.native-shell .unit-service-generic-board {
+  display: grid;
+  min-width: 0;
+  gap: 14px;
+}
+
+.native-shell .unit-consultation-calendar-toolbar {
+  grid-template-columns: auto minmax(240px, 1fr) minmax(170px, 210px) minmax(170px, 210px);
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.native-shell .unit-consultation-calendar-modes {
+  display: flex;
+  gap: 8px;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.native-shell .unit-consultation-calendar-modes button {
+  min-width: 66px;
+  min-height: 42px;
+  padding: 0 14px;
+  border: 1px solid #ced9d7;
+  border-radius: 7px;
+  background: #fff;
+}
+
+.native-shell .unit-consultation-calendar-modes button:last-child {
+  border-right: 1px solid #ced9d7;
+}
+
+.native-shell .unit-consultation-calendar-content {
+  overflow: hidden;
+  min-width: 0;
+  border: 1px solid #d5dddb;
+  border-radius: 7px;
+  background: #fff;
+  box-shadow: 0 12px 26px rgba(19, 36, 58, 0.05);
+}
+
+.native-shell .unit-service-generic-request-table {
+  width: 100%;
+  min-width: 1080px;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.native-shell .unit-service-generic-request-table th,
+.native-shell .unit-service-generic-request-table td {
+  padding: 13px 12px;
+  border-bottom: 1px solid #e1e8e6;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.native-shell .unit-service-generic-request-table th {
+  height: 64px;
+  color: #263657;
+  background: #fafcfb;
+  font-size: 10px;
+  font-weight: 900;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.native-shell .unit-service-generic-request-table td {
+  height: 66px;
+  color: #5b6876;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.native-shell .unit-service-generic-request-table th:nth-child(1) { width: 120px; }
+.native-shell .unit-service-generic-request-table th:nth-child(2) { width: 110px; }
+.native-shell .unit-service-generic-request-table th:nth-child(3) { width: 155px; }
+.native-shell .unit-service-generic-request-table th:nth-child(4) { width: 150px; }
+.native-shell .unit-service-generic-request-table th:nth-child(5) { width: 130px; }
+.native-shell .unit-service-generic-request-table th:nth-child(6) { width: 95px; }
+.native-shell .unit-service-generic-request-table th:nth-child(7) { width: 135px; }
+.native-shell .unit-service-generic-request-table th:nth-child(8) { width: 110px; }
+.native-shell .unit-service-generic-request-table th:nth-child(9) { width: 75px; }
+
+.native-shell .unit-service-generic-request-table td:nth-child(1),
+.native-shell .unit-service-generic-request-table td:nth-child(3),
+.native-shell .unit-service-generic-request-table td:nth-child(4) {
+  text-align: left;
+}
+
+.native-shell .unit-service-generic-request-table td strong,
+.native-shell .unit-service-generic-request-table td small {
+  display: block;
+}
+
+.native-shell .unit-service-generic-request-table td strong {
+  color: #14233c;
+  font-weight: 850;
+}
+
+.native-shell .unit-service-generic-request-table td small {
+  margin-top: 3px;
+  color: #73807d;
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.native-shell .unit-service-generic-request-table tr[hidden] {
+  display: none !important;
+}
+
+.native-shell .unit-service-generic-request-table [data-unit-request-empty] td,
+.native-shell .unit-service-generic-request-table [data-unit-request-no-results] td {
+  height: 230px;
+  padding: 32px;
+  border-bottom: 0;
+  color: #35456a;
+  font-size: 13px;
+  font-weight: 750;
+  text-align: center;
+}
+
+/* Shared catalog composition: carousel, information, controls, and content. */
+.native-shell .unit-catalog-carousel-card {
+  margin-bottom: 14px;
+}
+
+.native-shell .sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.native-shell .unit-catalog-screen {
+  display: grid;
+  min-width: 0;
+  gap: 14px;
+}
+
+.native-shell .unit-service-panels > .unit-catalog-screen[hidden],
+.native-shell .unit-service-panels [data-unit-service-catalog-row][hidden] {
+  display: none !important;
+}
+
+.native-shell .unit-catalog-info-card {
+  min-height: 126px;
+  box-sizing: border-box;
+  align-items: center;
+  overflow: hidden;
+  border: 1px solid #d5dddb;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 10px 24px rgba(19, 36, 58, 0.05);
+}
+
+.native-shell .unit-catalog-toolbar {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.native-shell .unit-catalog-toolbar > .unit-nutrition-request-tabs {
+  flex: 1 1 auto;
+}
+
+.native-shell .unit-catalog-toolbar-actions {
+  display: flex;
+  min-width: 0;
+  flex: 0 1 auto;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.native-shell .unit-catalog-search {
+  position: relative;
+  display: block;
+  width: clamp(190px, 18vw, 280px);
+  flex: 0 1 280px;
+}
+
+.native-shell .unit-catalog-search svg {
+  position: absolute;
+  top: 50%;
+  left: 13px;
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: #60716e;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.native-shell .unit-catalog-search input {
+  width: 100%;
+  min-height: 42px;
+  box-sizing: border-box;
+  padding: 0 12px 0 40px;
+  border: 1px solid #ced9d7;
+  border-radius: 7px;
+  color: #14233c;
+  background: #fff;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.native-shell .unit-catalog-search input:focus {
+  border-color: #0f9487;
+  outline: 0;
+  box-shadow: 0 0 0 3px rgba(15, 148, 135, 0.1);
+}
+
+.native-shell .unit-medication-screen button.unit-catalog-secondary-action {
+  display: inline-flex;
+  min-width: max-content;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  border: 1px solid #ced9d7;
+  border-radius: 7px;
+  color: #14233c;
+  background: #fff;
+  box-shadow: none;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.native-shell .unit-medication-screen button.unit-catalog-secondary-action:hover,
+.native-shell .unit-medication-screen button.unit-catalog-secondary-action:focus-visible {
+  border-color: #0f9487;
+  outline: 0;
+  color: #007f73;
+}
+
+.native-shell .unit-catalog-content-card {
+  min-width: 0;
+  min-height: 325px;
+  margin: 0;
+  box-shadow: 0 12px 26px rgba(19, 36, 58, 0.05);
+}
+
+.native-shell .unit-catalog-content-card [data-unit-catalog-row][hidden],
+.native-shell .unit-catalog-content-card [data-unit-catalog-empty][hidden] {
+  display: none !important;
+}
+
+.native-shell .unit-catalog-overview-table {
+  min-width: 880px;
+}
+
+.native-shell .unit-catalog-overview-table td:first-child strong,
+.native-shell .unit-catalog-overview-table td:first-child small {
+  display: block;
+}
+
+.native-shell .unit-catalog-overview-table td:first-child small {
+  max-width: 420px;
+  margin-top: 4px;
+  color: #66716f;
+  font-size: 10px;
+  line-height: 1.35;
+}
+
+.native-shell .unit-catalog-info-card .unit-service-panel-badges strong {
+  color: inherit;
+  font: inherit;
+}
+
+.native-shell .unit-procedure-screen .unit-procedure-card {
+  min-height: 325px;
+  margin: 0;
+}
+
+.native-shell .unit-procedure-toolbar .unit-nutrition-request-tabs button {
+  padding-inline: 16px;
+}
+
+.native-shell .unit-procedure-toolbar [data-procedure-create-toolbar][hidden],
+.native-shell .unit-procedure-card [data-procedure-row][hidden] {
+  display: none !important;
+}
+
 @media (max-width: 1100px) {
   .native-shell .unit-native-screen {
     grid-template-columns: 220px minmax(0, 1fr);
@@ -20137,12 +22251,22 @@ body.is-register-modal-open {
     grid-template-columns: 1fr;
   }
 
+  .native-shell .unit-catalog-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .native-shell .unit-catalog-toolbar-actions {
+    justify-content: flex-start;
+  }
+
   .native-shell .unit-service-panel-header {
     align-items: stretch;
     flex-direction: column;
   }
 
-  .native-shell .unit-service-panel.is-mixture-request-service > .unit-service-panel-header {
+  .native-shell .unit-service-panel.is-unified-service > .unit-service-panel-header {
     min-height: 0;
     align-items: stretch;
   }
@@ -20229,8 +22353,10 @@ body.is-register-modal-open {
   }
 
   .native-shell .unit-consultation-submenu-card {
-    grid-template-columns: minmax(0, 1fr);
-    padding: 9px;
+    align-items: stretch;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0;
   }
 
   .native-shell button.unit-service-carousel-arrow,
@@ -20309,7 +22435,12 @@ body.is-register-modal-open {
     gap: 8px;
   }
 
-  .native-shell .unit-nutrition-request-tabs button {
+  .native-shell .unit-consultation-submenu {
+    gap: 8px;
+  }
+
+  .native-shell .unit-nutrition-request-tabs button,
+  .native-shell button.unit-consultation-submenu-button {
     min-height: 40px;
     padding: 0 14px;
   }
@@ -20318,6 +22449,19 @@ body.is-register-modal-open {
     align-items: stretch;
     flex-direction: column;
     gap: 10px;
+  }
+
+  .native-shell .unit-catalog-toolbar-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .native-shell .unit-catalog-search {
+    width: 100%;
+  }
+
+  .native-shell .unit-catalog-secondary-action {
+    width: 100%;
   }
 
   .native-shell .unit-nutrition-new-request {
@@ -21025,10 +23169,99 @@ body.is-register-modal-open {
   font-size: 10px;
 }
 
+.native-shell .institution-service-all-table { min-width: 850px; }
+.native-shell .institution-service-all-table td { vertical-align: middle; }
+.native-shell .institution-service-all-table td strong,
+.native-shell .institution-service-all-table td small { display: block; }
+.native-shell .institution-service-all-table td small { margin-top: 4px; color: #53615f; font-size: 10px; }
+.native-shell .institution-service-all-table th:last-child,
+.native-shell .institution-service-all-table td:last-child { width: 120px; }
+.native-shell .institution-service-all-table button { min-height: 32px; padding: 5px 10px; border: 1px solid #cbd8d5; border-radius: 6px; background: #fff; color: #007f73; box-shadow: none; font: inherit; font-weight: 850; white-space: nowrap; cursor: pointer; }
+.native-shell .institution-service-all-table button:hover,
+.native-shell .institution-service-all-table button:focus-visible { border-color: #0f9487; background: #e6f8f5; }
+
 .native-shell .institution-service-panel .institution-service-unit-panel {
   width: calc(100% - 36px);
   max-width: 760px;
   margin: 0 18px 18px;
+}
+
+/* Keep the services workspace aligned with the other institution catalogs. */
+.native-shell .institution-service-catalog {
+  gap: 12px;
+}
+
+.native-shell .institution-service-panels {
+  gap: 12px;
+}
+
+.native-shell .institution-service-panel.institution-catalog-section-panel {
+  grid-template-rows: auto auto minmax(230px, 1fr);
+  gap: 12px;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.native-shell .institution-service-panel.institution-catalog-section-panel .institution-service-panel-header {
+  min-height: 98px;
+  box-sizing: border-box;
+  align-items: center;
+  padding: 17px 18px;
+  border: 1px solid #d5dddb;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 12px 28px rgba(19, 36, 58, 0.05);
+}
+
+.native-shell .institution-service-panel.institution-catalog-section-panel .institution-service-copy {
+  display: grid;
+  min-width: 0;
+  gap: 5px;
+}
+
+.native-shell .institution-service-panel.institution-catalog-section-panel .institution-service-copy h2,
+.native-shell .institution-service-panel.institution-catalog-section-panel .institution-service-copy p {
+  margin: 0;
+  letter-spacing: 0;
+}
+
+.native-shell .institution-service-panel.institution-catalog-section-panel .institution-service-copy h2 {
+  color: #101f35;
+  font-size: 15px;
+  font-weight: 950;
+  line-height: 1.2;
+}
+
+.native-shell .institution-service-panel.institution-catalog-section-panel .institution-service-copy p {
+  color: #53615f;
+  font-size: 11px;
+  font-weight: 720;
+  line-height: 1.35;
+}
+
+.native-shell .institution-service-panel.institution-catalog-section-panel .institution-service-copy > div {
+  gap: 11px;
+  margin-top: 3px;
+  color: #3d4c49;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.native-shell .institution-service-panel.institution-catalog-section-panel .institution-service-filter-toolbar {
+  min-height: 46px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.native-shell .institution-service-panel.institution-catalog-section-panel > .institution-native-table-scroll {
+  min-height: 230px;
+  border: 1px solid #d5dddb;
+  border-radius: 8px;
+  background: #fff;
 }
 
 .native-shell .institution-service-card {
@@ -21900,6 +24133,185 @@ body.is-register-modal-open {
 .native-shell .unit-medication-catalog-table td small { display: block; margin-top: 4px; color: #677370; font-size: 10px; line-height: 1.35; }
 .native-shell .unit-medication-catalog-table td:nth-child(2) small { max-width: 270px; }
 .native-shell .unit-medication-catalog-table .unit-native-filter-row input { width: 100%; min-height: 34px; box-sizing: border-box; }
+.native-shell .unit-medication-catalog-table { min-width: 1240px; }
+.native-shell .unit-medication-catalog-table th:nth-child(1) { width: 108px; }
+.native-shell .unit-medication-catalog-table th:nth-child(2) { width: 235px; }
+.native-shell .unit-medication-catalog-table th:nth-child(3) { width: 215px; }
+.native-shell .unit-medication-catalog-table th:nth-child(4) { width: 210px; }
+.native-shell .unit-medication-catalog-table th:nth-child(5) { width: 225px; }
+.native-shell .unit-medication-catalog-table th:nth-child(6) { width: 130px; }
+.native-shell .unit-medication-catalog-table th:nth-child(7) { width: 117px; }
+.native-shell .unit-medication-catalog-table th { padding: 10px; }
+.native-shell .unit-medication-catalog-table td { padding-top: 10px; padding-bottom: 10px; }
+.native-shell .unit-medication-catalog-table td:nth-child(3) small { max-width: 210px; }
+.native-shell .unit-medication-catalog-table [data-medication-row][hidden],
+.native-shell .unit-medication-catalog-table [data-medication-empty][hidden],
+.native-shell .unit-medication-filter-popover[hidden] { display: none !important; }
+.native-shell .unit-medication-column-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 28px;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+}
+.native-shell .unit-medication-column-heading > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  white-space: normal;
+  line-height: 1.2;
+}
+.native-shell button.unit-medication-filter-trigger,
+.native-shell .unit-medication-catalog-table td button.unit-medication-view {
+  display: inline-grid;
+  width: 28px;
+  height: 28px;
+  min-height: 28px;
+  flex: 0 0 auto;
+  place-items: center;
+  padding: 0;
+  border: 1px solid #cbd9d7;
+  border-radius: 5px;
+  background: #fff;
+  box-shadow: none;
+  color: #007f73;
+  cursor: pointer;
+}
+.native-shell button.unit-medication-filter-trigger:hover,
+.native-shell button.unit-medication-filter-trigger.has-filter,
+.native-shell .unit-medication-catalog-table td button.unit-medication-view:hover {
+  border-color: #0f9487;
+  background: #e6f8f5;
+}
+.native-shell .unit-medication-filter-trigger svg,
+.native-shell .unit-medication-view svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+.native-shell .unit-medication-catalog-table td button.unit-medication-switch {
+  display: inline-flex;
+  width: 36px;
+  height: 21px;
+  min-height: 21px;
+  align-items: center;
+  padding: 2px;
+  border: 0;
+  border-radius: 12px;
+  background: #8b98a3;
+  box-shadow: none;
+  cursor: pointer;
+}
+.native-shell .unit-medication-catalog-table td button.unit-medication-switch.is-on { background: #0b9287; }
+.native-shell .unit-medication-catalog-table td button.unit-medication-switch:disabled { opacity: 0.55; cursor: wait; }
+.native-shell .unit-medication-switch.is-disabled { opacity: 0.5; cursor: not-allowed; }
+.native-shell .unit-medication-switch span {
+  display: block;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18);
+  transition: transform 0.15s ease;
+}
+.native-shell .unit-medication-switch.is-on span { transform: translateX(15px); }
+.native-shell .unit-medication-filter-popover {
+  position: fixed;
+  z-index: 1200;
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  gap: 9px;
+  box-sizing: border-box;
+  max-width: calc(100vw - 24px);
+  max-height: min(420px, calc(100vh - 24px));
+  overflow: hidden;
+  padding: 12px;
+  border: 1px solid #bdcecf;
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: 0 16px 38px rgba(20, 38, 58, 0.24);
+  color: #14233c;
+  font-size: 12px;
+}
+.native-shell .unit-medication-filter-popover > input {
+  width: 100%;
+  min-height: 38px;
+  box-sizing: border-box;
+  padding: 0 10px;
+  border: 1px solid #cbd9df;
+  border-radius: 5px;
+  font: inherit;
+}
+.native-shell .unit-medication-filter-all,
+.native-shell .unit-medication-filter-options label { display: flex; align-items: center; min-width: 0; gap: 8px; color: #344156; font-size: 12px; line-height: 1.35; cursor: pointer; }
+.native-shell .unit-medication-filter-all { padding: 4px 0 8px; border-bottom: 1px solid #e2e9ef; font-weight: 700; }
+.native-shell .unit-medication-filter-options { display: grid; align-content: start; gap: 9px; min-height: 0; max-height: 260px; overflow-y: auto; }
+.native-shell .unit-medication-filter-options label span { min-width: 0; overflow-wrap: anywhere; }
+.native-shell .unit-medication-filter-options input[type="checkbox"],
+.native-shell .unit-medication-filter-all input[type="checkbox"] {
+  flex: 0 0 16px;
+  width: 16px;
+  min-width: 16px;
+  height: 16px;
+  min-height: 16px;
+  margin: 0;
+  padding: 0;
+  border-radius: 3px;
+  accent-color: #2461c8;
+}
+.native-shell .unit-medication-filter-actions { display: flex; justify-content: flex-end; gap: 8px; padding-top: 8px; border-top: 1px solid #e2e9ef; }
+.native-shell .unit-medication-filter-actions button {
+  min-height: 32px;
+  padding: 0 10px;
+  border: 1px solid #bfcdd4;
+  border-radius: 5px;
+  background: #fff;
+  color: #14233c;
+  font: inherit;
+  cursor: pointer;
+}
+.native-shell .unit-medication-filter-actions button:first-child { border-color: #0b9187; background: #0b9187; color: #fff; }
+.native-shell .unit-medication-detail-dialog {
+  width: min(520px, calc(100vw - 24px));
+  max-height: calc(100vh - 24px);
+  overflow: auto;
+  padding: 0;
+  border: 1px solid #cbd9d7;
+  border-radius: 8px;
+  color: #14233c;
+  background: #fff;
+  box-shadow: 0 20px 50px rgba(10, 28, 48, 0.25);
+}
+.native-shell .unit-medication-detail-dialog::backdrop { background: rgba(17, 34, 53, 0.5); }
+.native-shell .unit-medication-detail-dialog header,
+.native-shell .unit-medication-detail-dialog footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 15px 18px; }
+.native-shell .unit-medication-detail-dialog header { border-bottom: 1px solid #dce5e4; }
+.native-shell .unit-medication-detail-dialog footer { border-top: 1px solid #dce5e4; }
+.native-shell .unit-medication-detail-dialog h2 { margin: 0 0 3px; font-size: 16px; }
+.native-shell .unit-medication-detail-dialog small { color: #60716e; }
+.native-shell .unit-medication-detail-dialog dl { display: grid; gap: 14px; margin: 0; padding: 18px; }
+.native-shell .unit-medication-detail-dialog dt { margin-bottom: 4px; color: #526763; font-size: 11px; font-weight: 750; }
+.native-shell .unit-medication-detail-dialog dd { margin: 0; overflow-wrap: anywhere; font-size: 13px; line-height: 1.45; }
+.native-shell .unit-medication-detail-dialog button { min-height: 32px; padding: 4px 10px; border: 1px solid #cbd9d7; border-radius: 5px; background: #fff; color: #14233c; cursor: pointer; }
+.native-shell .unit-medication-feedback {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 1200;
+  max-width: min(360px, calc(100vw - 40px));
+  padding: 11px 15px;
+  border: 1px solid #f0b2b2;
+  border-radius: 6px;
+  background: #fff2f2;
+  box-shadow: 0 10px 30px rgba(17, 45, 54, 0.16);
+  color: #963535;
+  font-size: 12px;
+  font-weight: 750;
+}
+.native-shell .unit-medication-feedback[hidden] { display: none; }
 .native-shell .unit-procedure-carousel-card { margin-bottom: 14px; }
 .native-shell .unit-procedure-carousel button.unit-procedure-carousel-button {
   width: 150px;
@@ -21920,6 +24332,7 @@ body.is-register-modal-open {
 .unit-procedure-heading-actions { display: flex; gap: 8px; }
 .native-shell .unit-procedure-heading-actions button, .native-shell .unit-procedure-heading-actions a { display: inline-flex; min-height: 36px; align-items: center; padding: 8px 13px; border: 1px solid #ccd8d5; border-radius: 7px; color: #111; background: #fff; font-weight: 800; text-decoration: none; }
 .native-shell .unit-procedure-heading-actions .is-primary { border-color: #0b887b; color: #fff; background: #0b887b; }
+.native-shell .unit-procedure-heading-actions .is-primary span { margin-right: 6px; font-size: 17px; line-height: 1; }
 .native-shell .unit-procedure-table { min-width: 1100px; table-layout: fixed; }
 .native-shell .unit-procedure-table th:nth-child(1) { width: 170px; }
 .native-shell .unit-procedure-table th:nth-child(2) { width: 90px; }
@@ -21944,7 +24357,84 @@ body.is-register-modal-open {
 .unit-procedure-form-actions { display: flex; gap: 8px; }
 .unit-procedure-form-actions button, .unit-procedure-form-actions a { display: inline-flex; min-height: 38px; align-items: center; padding: 8px 14px; border: 1px solid #ccd8d5; border-radius: 7px; color: #111; background: #fff; font-weight: 800; text-decoration: none; }
 .unit-procedure-form-actions button { border-color: #0b887b; color: #fff; background: #0b887b; }
-@media (max-width: 800px) { .unit-procedure-form { grid-template-columns: 1fr; } .unit-procedure-form .wide, .unit-procedure-form header { grid-column: auto; } .unit-procedure-schedule > div { grid-template-columns: 1fr; } }
+
+.native-shell .unit-procedure-dialog {
+  width: min(980px, calc(100vw - 32px));
+  max-width: none;
+  max-height: calc(100vh - 32px);
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  border-radius: 8px;
+  color: #14233c;
+  background: transparent;
+}
+.native-shell .unit-procedure-dialog::backdrop { background: rgba(15, 33, 55, .58); backdrop-filter: blur(2px); }
+.native-shell .unit-procedure-dialog-form {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  max-height: min(92vh, 860px);
+  overflow: hidden;
+  border: 1px solid #cbdad7;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 28px 80px rgba(15, 33, 55, .28);
+}
+.native-shell .unit-procedure-dialog[open] .unit-procedure-dialog-form { animation: unit-procedure-dialog-in 160ms ease-out; }
+.native-shell .unit-procedure-dialog-header {
+  position: sticky;
+  z-index: 4;
+  top: 0;
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr) 34px;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 18px;
+  border-bottom: 1px solid #d9e4e1;
+  background: #fff;
+}
+.native-shell .unit-procedure-dialog-header > div { display: grid; min-width: 0; gap: 3px; }
+.native-shell .unit-procedure-dialog-header strong { font-size: 17px; font-weight: 950; }
+.native-shell .unit-procedure-dialog-header span:not(.unit-procedure-dialog-icon) { color: #647572; font-size: 10px; font-weight: 700; }
+.native-shell .unit-procedure-dialog-icon { display: grid; width: 42px; height: 42px; place-items: center; border-radius: 50%; color: #078f82; background: #e4f7f3; }
+.native-shell .unit-procedure-dialog-icon svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.8; }
+.native-shell button.unit-procedure-dialog-close { display: grid; width: 34px; height: 34px; min-height: 34px; place-items: center; padding: 0; border: 0; border-radius: 6px; color: #40536b; background: transparent; font-size: 24px; line-height: 1; cursor: pointer; }
+.native-shell button.unit-procedure-dialog-close:hover, .native-shell button.unit-procedure-dialog-close:focus-visible { outline: 0; color: #073f3a; background: #e8f5f3; }
+.native-shell .unit-procedure-dialog-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; padding: 18px; overflow: auto; }
+.native-shell .unit-procedure-dialog-body .wide { grid-column: 1 / -1; }
+.native-shell .unit-procedure-dialog-body > label { display: grid; min-width: 0; gap: 6px; color: #24354b; font-size: 10px; font-weight: 850; }
+.native-shell .unit-procedure-dialog-body input:not([type="checkbox"]):not([type="hidden"]), .native-shell .unit-procedure-dialog-body select { width: 100%; min-width: 0; min-height: 40px; box-sizing: border-box; padding: 8px 10px; border: 1px solid #cbd8d5; border-radius: 7px; color: #14233c; background: #fff; }
+.native-shell .unit-procedure-dialog-body input:focus, .native-shell .unit-procedure-dialog-body select:focus { border-color: #0b9689; outline: 2px solid rgba(11, 150, 137, .15); outline-offset: 1px; }
+.native-shell .unit-procedure-dialog-body fieldset { min-width: 0; margin: 0; padding: 12px; border: 1px solid #cbd8d5; border-radius: 8px; }
+.native-shell .unit-procedure-dialog-body fieldset legend { padding: 0 7px; color: #14233c; font-size: 12px; font-weight: 850; }
+.native-shell .unit-procedure-dialog .unit-procedure-schedule > div { grid-template-columns: minmax(145px, 1fr) 28px 160px 160px; }
+.native-shell .unit-procedure-dialog .unit-procedure-schedule > div > label:first-child { grid-template-columns: 20px minmax(0, 1fr); align-items: center; align-self: center; font-size: 10px; }
+.native-shell .unit-procedure-dialog .unit-procedure-schedule input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: #0b9689; }
+.native-shell .unit-procedure-dialog-error { display: grid; gap: 3px; padding: 10px 12px; border: 1px solid #efb7b7; border-radius: 7px; color: #8f2020; background: #fff5f5; font-size: 10px; }
+.native-shell .unit-procedure-dialog-actions { position: sticky; z-index: 4; bottom: 0; display: flex; justify-content: flex-end; gap: 10px; padding: 13px 18px; border-top: 1px solid #d9e4e1; background: #fff; }
+.native-shell .unit-procedure-dialog-actions button { display: inline-flex; min-width: 130px; min-height: 40px; align-items: center; justify-content: center; padding: 8px 15px; border: 1px solid #bdcfcb; border-radius: 7px; color: #20344d; background: #fff; font-weight: 850; cursor: pointer; }
+.native-shell .unit-procedure-dialog-actions button.is-primary { border-color: #0b887b; color: #fff; background: #0b887b; }
+.native-shell .unit-procedure-dialog-actions button:hover, .native-shell .unit-procedure-dialog-actions button:focus-visible { outline: 0; box-shadow: 0 8px 18px rgba(15, 128, 117, .14); }
+
+@keyframes unit-procedure-dialog-in { from { opacity: 0; transform: translateY(8px) scale(.99); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@media (prefers-reduced-motion: reduce) { .native-shell .unit-procedure-dialog[open] .unit-procedure-dialog-form { animation: none; } }
+@media (max-width: 800px) {
+  .unit-procedure-form { grid-template-columns: 1fr; }
+  .unit-procedure-form .wide, .unit-procedure-form header { grid-column: auto; }
+  .unit-procedure-form .unit-procedure-schedule > div { grid-template-columns: 1fr; }
+  .native-shell .unit-procedure-dialog-body { grid-template-columns: 1fr; padding: 14px; }
+  .native-shell .unit-procedure-dialog-body .wide { grid-column: auto; }
+  .native-shell .unit-procedure-dialog .unit-procedure-schedule > div { grid-template-columns: minmax(120px, 1fr) minmax(0, 1fr) minmax(0, 1fr); align-items: end; }
+  .native-shell .unit-procedure-dialog .unit-procedure-schedule > div > label:first-child { grid-column: 1 / -1; }
+  .native-shell .unit-procedure-dialog .unit-procedure-schedule > div > span { display: none; }
+}
+@media (max-width: 520px) {
+  .native-shell .unit-procedure-dialog { width: calc(100vw - 16px); }
+  .native-shell .unit-procedure-dialog .unit-procedure-schedule > div { grid-template-columns: 1fr; }
+  .native-shell .unit-procedure-dialog-actions button { min-width: 0; padding-inline: 8px; font-size: 11px; white-space: nowrap; }
+  .native-shell .unit-procedure-dialog-actions button:first-child { flex: .8; }
+  .native-shell .unit-procedure-dialog-actions button.is-primary { flex: 1.2; }
+}
 
 .native-shell .institution-unit-create-card {
   width: min(100%, 760px);
@@ -29310,7 +31800,8 @@ body.is-register-modal-open {
 .native-shell .institution-units-table th:nth-child(6) { width: 9%; }
 .native-shell .institution-units-table th:nth-child(7) { width: 8%; }
 .native-shell .institution-units-table th:nth-child(8) { width: 8%; }
-.native-shell .institution-units-table th:nth-child(9) { width: 16%; }
+.native-shell .institution-units-table th:nth-child(9),
+.native-shell .institution-units-table th:nth-child(10) { width: 8%; }
 
 .native-shell .institution-units-table th,
 .native-shell .institution-units-table td {
@@ -29345,18 +31836,27 @@ body.is-register-modal-open {
 .native-shell .institution-native-pharmacy-table th:nth-child(8) { width: 12%; }
 
 .native-shell .institution-subunit-catalog-table {
-  min-width: 1180px;
+  min-width: 1800px;
   table-layout: fixed;
 }
 
-.native-shell .institution-subunit-catalog-table th:nth-child(1) { width: 15%; }
-.native-shell .institution-subunit-catalog-table th:nth-child(2) { width: 9%; }
-.native-shell .institution-subunit-catalog-table th:nth-child(3) { width: 14%; }
-.native-shell .institution-subunit-catalog-table th:nth-child(4) { width: 14%; }
-.native-shell .institution-subunit-catalog-table th:nth-child(5) { width: 11%; }
-.native-shell .institution-subunit-catalog-table th:nth-child(6) { width: 9%; }
-.native-shell .institution-subunit-catalog-table th:nth-child(7) { width: 8%; }
-.native-shell .institution-subunit-catalog-table th:nth-child(8) { width: 20%; }
+.native-shell .institution-subunit-catalog-table th:nth-child(1) { width: 3.25%; }
+.native-shell .institution-subunit-catalog-table th:nth-child(2) { width: 6.5%; }
+.native-shell .institution-subunit-catalog-table th:nth-child(3) { width: 8.65%; }
+.native-shell .institution-subunit-catalog-table th:nth-child(4) { width: 9.75%; }
+.native-shell .institution-subunit-catalog-table th:nth-child(5) { width: 11.9%; }
+.native-shell .institution-subunit-catalog-table th:nth-child(6) { width: 8.65%; }
+.native-shell .institution-subunit-catalog-table th:nth-child(7) { width: 4.35%; }
+.native-shell .institution-subunit-catalog-table th:nth-child(8) { width: 6.5%; }
+.native-shell .institution-subunit-catalog-table th:nth-child(9) { width: 6.5%; }
+.native-shell .institution-subunit-catalog-table th:nth-child(10) { width: 4.35%; }
+.native-shell .institution-subunit-catalog-table th:nth-child(11) { width: 4.35%; }
+.native-shell .institution-subunit-catalog-table th:nth-child(12) { width: 4.35%; }
+.native-shell .institution-subunit-catalog-table th:nth-child(13) { width: 5.34%; }
+.native-shell .institution-subunit-catalog-table th:nth-child(14) { width: 72px; }
+.native-shell .institution-subunit-catalog-table th:nth-child(15) { width: 64px; }
+.native-shell .institution-subunit-catalog-table th:nth-child(16) { width: 76px; }
+.native-shell .institution-subunit-catalog-table th:nth-child(17) { width: 68px; }
 
 .native-shell .institution-medication-card {
   display: flex;
@@ -29382,14 +31882,15 @@ body.is-register-modal-open {
   table-layout: fixed;
 }
 
-.native-shell .institution-medication-table th:nth-child(1) { width: 16%; }
-.native-shell .institution-medication-table th:nth-child(2) { width: 10%; }
-.native-shell .institution-medication-table th:nth-child(3) { width: 12%; }
+.native-shell .institution-medication-table th:nth-child(1) { width: 6%; }
+.native-shell .institution-medication-table th:nth-child(2) { width: 14%; }
+.native-shell .institution-medication-table th:nth-child(3) { width: 9%; }
 .native-shell .institution-medication-table th:nth-child(4) { width: 12%; }
-.native-shell .institution-medication-table th:nth-child(5) { width: 11%; }
-.native-shell .institution-medication-table th:nth-child(6) { width: 14%; }
-.native-shell .institution-medication-table th:nth-child(7) { width: 8%; }
-.native-shell .institution-medication-table th:nth-child(8) { width: 17%; }
+.native-shell .institution-medication-table th:nth-child(5) { width: 12%; }
+.native-shell .institution-medication-table th:nth-child(6) { width: 10%; }
+.native-shell .institution-medication-table th:nth-child(7) { width: 13%; }
+.native-shell .institution-medication-table th:nth-child(8) { width: 8%; }
+.native-shell .institution-medication-table th:nth-child(9) { width: 16%; }
 
 .native-shell .institution-native-table th,
 .native-shell .institution-native-table td {
@@ -29503,7 +32004,22 @@ body.is-register-modal-open {
 }
 
 .native-shell .institution-subunit-catalog-table td {
-  height: 72px;
+  height: 92px;
+  overflow-wrap: anywhere;
+}
+
+.native-shell .institution-subunit-number {
+  color: #0a6e66;
+  font-weight: 900;
+  text-align: center !important;
+}
+
+.native-shell .institution-subunit-pending {
+  display: inline-block;
+  margin: 0 !important;
+  color: #6b7775 !important;
+  font-size: 14px !important;
+  font-weight: 800 !important;
 }
 
 .native-shell .institution-native-pharmacy-table th,
@@ -29526,6 +32042,51 @@ body.is-register-modal-open {
 
 .native-shell .institution-medication-table td {
   height: 66px;
+}
+
+.native-shell .institution-medication-status-toggle {
+  display: flex;
+  justify-content: center;
+  margin: 0;
+}
+
+.native-shell .institution-medication-table td button.institution-medication-status-switch {
+  display: inline-flex;
+  width: 36px;
+  min-width: 36px;
+  height: 21px;
+  min-height: 21px;
+  align-items: center;
+  padding: 2px;
+  border: 0;
+  border-radius: 12px;
+  background: #8b98a3;
+  box-shadow: none;
+  cursor: pointer;
+}
+
+.native-shell .institution-medication-table td button.institution-medication-status-switch.is-on {
+  background: #0b9287;
+}
+
+.native-shell .institution-medication-table td button.institution-medication-status-switch:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+
+.native-shell .institution-medication-status-switch span {
+  display: block;
+  width: 17px;
+  height: 17px;
+  margin: 0;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18);
+  transition: transform 0.15s ease;
+}
+
+.native-shell .institution-medication-status-switch.is-on span {
+  transform: translateX(15px);
 }
 
 .native-shell .institution-native-pharmacy-table td,
@@ -29642,6 +32203,38 @@ body.is-register-modal-open {
   white-space: nowrap;
 }
 
+.native-shell .institution-subunit-catalog-table .institution-subunit-control-actions {
+  display: flex;
+  justify-content: center;
+  white-space: normal;
+}
+
+.native-shell .institution-subunit-catalog-table .institution-subunit-control-actions button {
+  width: 100%;
+  min-width: 74px;
+  min-height: 30px;
+  gap: 4px;
+  padding: 4px 5px;
+  font-size: 9px;
+}
+
+.native-shell .institution-subunit-catalog-table .institution-subunit-action-cell {
+  padding-right: 8px;
+  padding-left: 8px;
+  text-align: center;
+}
+
+.native-shell .institution-subunit-catalog-table td:nth-child(n + 15):nth-child(-n + 17) {
+  padding-right: 4px;
+  padding-left: 4px;
+}
+
+.native-shell .institution-subunit-catalog-table .institution-subunit-control-actions button svg {
+  width: 13px;
+  height: 13px;
+  flex: 0 0 13px;
+}
+
 .native-shell .institution-medication-table .institution-native-actions {
   gap: 8px;
   white-space: nowrap;
@@ -29655,6 +32248,22 @@ body.is-register-modal-open {
   padding-right: 8px;
   padding-left: 8px;
   font-size: 11px;
+}
+
+.native-shell .institution-subunit-catalog-table .institution-subunit-control-actions button {
+  width: 100%;
+  min-width: 74px;
+  min-height: 30px;
+  gap: 4px;
+  padding: 4px 5px;
+  font-size: 9px;
+}
+
+.native-shell .institution-subunit-catalog-table td:nth-child(n + 14):nth-child(-n + 17) .institution-subunit-control-actions button {
+  min-width: 0;
+  padding-right: 4px;
+  padding-left: 4px;
+  white-space: nowrap;
 }
 
 .native-shell .institution-medication-table .institution-native-status {
