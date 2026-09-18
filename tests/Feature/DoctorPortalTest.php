@@ -17,6 +17,7 @@ use App\Models\ProviderRequestStatusEvent;
 use App\Models\User;
 use App\Services\Integrations\Cbta\MixtureIntegrationSyncService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
@@ -650,20 +651,27 @@ class DoctorPortalTest extends TestCase
             if ($type === 'chemo') {
                 $payload['oncology'] = [
                     'request_date' => '2026-07-23',
+                    'facility' => 'Hospital de prueba',
+                    'floor' => '2',
+                    'bed' => '201',
+                    'patient_identifier' => 'REG-ONC-1',
                     'weight' => 70,
                     'sex' => 'Masculino',
+                    'birth_date' => '1980-01-01',
                     'medications' => [[
+                        'catalog_item' => 'CISPLATINO|CISPLATINO-50',
                         'medication' => 'Cisplatino',
-                        'dose' => '50 mg',
-                        'diluents' => ['CS'],
+                        'dose' => 50,
+                        'diluent_id' => 1,
+                        'route_id' => 1,
                         'dilution_volume' => 500,
                         'infusion_minutes' => 120,
-                        'routes' => ['IV'],
                         'delivery_dates' => ['2026-07-24'],
                     ]],
                     'doctor_name' => $doctor->full_name,
                     'professional_license' => $doctor->professional_license,
                 ];
+                $payload['authorization_file'] = UploadedFile::fake()->create('autorizacion.pdf', 20, 'application/pdf');
             }
 
             $this->actingAs($user)->post(route('doctor.service_requests.store'), $payload)
@@ -716,6 +724,44 @@ class DoctorPortalTest extends TestCase
             ->assertDontSee('name="npt[infusion_set]"', false)
             ->assertDontSee('name="request_type" value="chemo"', false)
             ->assertDontSee('name="request_type" value="clinical_labs"', false);
+    }
+
+    public function test_doctor_can_submit_multiple_oncology_mixtures_with_multiple_medications(): void
+    {
+        [$user, $doctor] = $this->createDoctor();
+        $patient = Patient::query()->create([
+            'platform_number' => 'PAC-ONC-MULTI', 'full_name' => 'Paciente Mezclas',
+            'primary_doctor_id' => $doctor->id, 'status' => 'active',
+        ]);
+        $medication = fn (string $code, string $name, int $dose): array => [
+            'catalog_item' => $code.'|'.$code.'-P', 'medication' => $name, 'dose' => $dose,
+            'diluent_id' => 1, 'route_id' => 1,
+        ];
+
+        $this->actingAs($user)->post(route('doctor.service_requests.store'), [
+            'request_type' => 'chemo', 'patient_id' => $patient->id, 'service' => 'Oncología',
+            'diagnosis' => 'Diagnóstico de prueba', 'priority' => 'routine',
+            'authorization_file' => UploadedFile::fake()->create('autorizacion.pdf', 20, 'application/pdf'),
+            'oncology' => [
+                'facility' => 'Hospital', 'floor' => '2', 'bed' => '201',
+                'patient_identifier' => 'REG-MULTI', 'sex' => 'Femenino', 'weight' => 60,
+                'birth_date' => '1986-04-12', 'doctor_name' => $doctor->full_name,
+                'professional_license' => $doctor->professional_license, 'mixture_count' => 2,
+                'mixtures' => [
+                    ['medications' => [$medication('MED-A', 'Medicamento A', 50), $medication('MED-B', 'Medicamento B', 25)],
+                        'dilution_volume' => 250, 'infusion_minutes' => 90,
+                        'delivery_dates' => ['2026-10-20 10:00'], 'set_infusion' => true],
+                    ['medications' => [$medication('MED-C', 'Medicamento C', 75)],
+                        'dilution_volume' => 500, 'infusion_minutes' => 120,
+                        'delivery_dates' => ['2026-10-21 11:00'], 'set_infusion' => false],
+                ],
+            ],
+        ])->assertSessionHasNoErrors();
+
+        $format = ProviderRequest::query()->sole()->payload['clinical_format'];
+        $this->assertCount(2, $format['mixtures']);
+        $this->assertCount(3, $format['medications']);
+        $this->assertSame([0, 0, 1], array_column($format['medications'], 'mixture_index'));
     }
 
     public function test_npt_rejects_time_and_infusion_rate_when_both_are_filled(): void

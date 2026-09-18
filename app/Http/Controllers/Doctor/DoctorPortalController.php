@@ -145,6 +145,7 @@ class DoctorPortalController extends Controller
 
         $cbtaCatalogs = ['npt' => collect(), 'oncology' => collect()];
         $cbtaCatalogVersions = ['npt' => null, 'oncology' => null];
+        $cbtaCatalogOptions = ['oncology_infusors' => collect()];
         $cbtaCatalogError = null;
         if ($doctor->medicalUnit?->cbta_external_code) {
             try {
@@ -164,6 +165,7 @@ class DoctorPortalController extends Controller
                 $cbtaCatalogs['oncology'] = collect($oncologyCatalog['items'] ?? []);
                 $cbtaCatalogVersions['npt'] = $nptCatalog['catalog_version'] ?? null;
                 $cbtaCatalogVersions['oncology'] = $oncologyCatalog['catalog_version'] ?? null;
+                $cbtaCatalogOptions['oncology_infusors'] = collect($oncologyCatalog['infusors'] ?? []);
             } catch (Throwable) {
                 $cbtaCatalogError = 'No fue posible consultar el catalogo operativo de Mezclas. Intenta nuevamente.';
             }
@@ -225,6 +227,7 @@ class DoctorPortalController extends Controller
             'videoScheduleComplete' => $videoScheduleComplete,
             'cbtaCatalogs' => $cbtaCatalogs,
             'cbtaCatalogVersions' => $cbtaCatalogVersions,
+            'cbtaCatalogOptions' => $cbtaCatalogOptions,
             'cbtaCatalogError' => $cbtaCatalogError,
         ]);
     }
@@ -832,31 +835,49 @@ class DoctorPortalController extends Controller
             'dose' => ['nullable', 'string', 'max:120'],
             'volume' => ['nullable', 'string', 'max:120'],
             'priority' => ['nullable', Rule::in(['routine', 'urgent'])],
-            'authorization_file' => ['nullable', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:5120'],
+            'authorization_file' => [Rule::requiredIf($request->input('request_type') === 'chemo'), 'nullable', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:5120'],
             'oncology' => ['nullable', 'array'],
             'oncology.request_date' => ['nullable', 'date'],
             'oncology.facility' => ['nullable', 'string', 'max:255'],
-            'oncology.floor' => ['nullable', 'string', 'max:80'],
-            'oncology.bed' => ['nullable', 'string', 'max:80'],
-            'oncology.patient_identifier' => ['nullable', 'string', 'max:120'],
-            'oncology.sex' => ['nullable', Rule::in(['Femenino', 'Masculino', 'Otro'])],
+            'oncology.floor' => [Rule::requiredIf($request->input('request_type') === 'chemo'), 'nullable', 'string', 'max:50'],
+            'oncology.bed' => [Rule::requiredIf($request->input('request_type') === 'chemo'), 'nullable', 'string', 'max:50'],
+            'oncology.patient_identifier' => [Rule::requiredIf($request->input('request_type') === 'chemo'), 'nullable', 'string', 'max:255'],
+            'oncology.sex' => [Rule::requiredIf($request->input('request_type') === 'chemo'), 'nullable', Rule::in(['Femenino', 'Masculino'])],
             'oncology.age' => ['nullable', 'integer', 'min:0', 'max:130'],
-            'oncology.weight' => ['nullable', 'numeric', 'min:0', 'max:500'],
+            'oncology.weight' => [Rule::requiredIf($request->input('request_type') === 'chemo'), 'nullable', 'numeric', 'min:1', 'max:500'],
             'oncology.height' => ['nullable', 'numeric', 'min:0', 'max:300'],
-            'oncology.birth_date' => ['nullable', 'date', 'before_or_equal:today'],
+            'oncology.birth_date' => [Rule::requiredIf($request->input('request_type') === 'chemo'), 'nullable', 'date', 'after:'.now()->subYears(100)->toDateString(), 'before:today'],
+            'oncology.allergies' => ['nullable', 'string', 'max:255'],
             'oncology.body_surface' => ['nullable', 'numeric', 'min:0', 'max:10'],
             'oncology.preferred_infusion_time' => ['nullable', 'date_format:H:i'],
             'oncology.delivery_method' => ['nullable', 'string', 'max:120'],
-            'oncology.doctor_name' => ['nullable', 'string', 'max:180'],
-            'oncology.professional_license' => ['nullable', 'string', 'max:120'],
+            'oncology.doctor_name' => [Rule::requiredIf($request->input('request_type') === 'chemo'), 'nullable', 'string', 'max:255'],
+            'oncology.professional_license' => [Rule::requiredIf($request->input('request_type') === 'chemo'), 'nullable', 'string', 'max:255'],
+            'oncology.mixture_count' => ['nullable', 'integer', 'min:1', 'max:99'],
+            'oncology.mixtures' => ['nullable', 'array', 'min:1', 'max:99'],
+            'oncology.mixtures.*.medications' => ['required_with:oncology.mixtures', 'array', 'min:1', 'max:100'],
+            'oncology.mixtures.*.medications.*.catalog_item' => ['required_with:oncology.mixtures', 'string', 'max:220'],
+            'oncology.mixtures.*.medications.*.medication' => ['required_with:oncology.mixtures', 'string', 'max:180'],
+            'oncology.mixtures.*.medications.*.dose' => ['required_with:oncology.mixtures', 'numeric', 'gt:0'],
+            'oncology.mixtures.*.medications.*.diluent_id' => ['required_with:oncology.mixtures', 'integer', 'gt:0'],
+            'oncology.mixtures.*.medications.*.route_id' => ['required_with:oncology.mixtures', 'integer', 'gt:0'],
+            'oncology.mixtures.*.dilution_volume' => ['required_with:oncology.mixtures', 'numeric', 'gt:0'],
+            'oncology.mixtures.*.infusion_minutes' => ['required_with:oncology.mixtures', 'integer', 'min:1'],
+            'oncology.mixtures.*.delivery_dates' => ['required_with:oncology.mixtures', 'array', 'min:1', 'max:99'],
+            'oncology.mixtures.*.delivery_dates.*' => ['required', 'date'],
+            'oncology.mixtures.*.set_infusion' => ['nullable', 'boolean'],
+            'oncology.mixtures.*.infusor_id' => ['nullable', 'integer', 'gt:0'],
             'oncology.medications' => ['nullable', 'array', 'max:8'],
+            'oncology.medications.*.catalog_item' => ['nullable', 'string', 'max:220'],
             'oncology.medications.*.medication' => ['nullable', 'string', 'max:180'],
-            'oncology.medications.*.dose' => ['nullable', 'string', 'max:120'],
-            'oncology.medications.*.diluents' => ['nullable', 'array'],
-            'oncology.medications.*.diluents.*' => ['string', Rule::in(['CS', 'DX', 'Otro'])],
-            'oncology.medications.*.dilution_volume' => ['nullable', 'numeric', 'min:0'],
-            'oncology.medications.*.boluses_per_day' => ['nullable', 'integer', 'min:0'],
-            'oncology.medications.*.infusion_minutes' => ['nullable', 'integer', 'min:0'],
+            'oncology.medications.*.dose' => ['nullable', 'numeric', 'gt:0'],
+            'oncology.medications.*.diluent_id' => ['nullable', 'integer', 'gt:0'],
+            'oncology.medications.*.route_id' => ['nullable', 'integer', 'gt:0'],
+            'oncology.medications.*.set_infusion' => ['nullable', 'boolean'],
+            'oncology.medications.*.infusor_id' => ['nullable', 'integer', 'gt:0'],
+            'oncology.medications.*.dilution_volume' => ['nullable', 'numeric', 'gt:0'],
+            'oncology.medications.*.boluses_per_day' => ['nullable', 'integer', 'min:1'],
+            'oncology.medications.*.infusion_minutes' => ['nullable', 'integer', 'min:1'],
             'oncology.medications.*.delivery_dates' => ['nullable', 'array', 'max:6'],
             'oncology.medications.*.delivery_dates.*' => ['nullable', 'date'],
             'npt' => ['nullable', 'array'],
@@ -898,12 +919,65 @@ class DoctorPortalController extends Controller
             ]);
         }
 
-        $oncologyMedications = collect(data_get($data, 'oncology.medications', []))
+        $oncologyMixtures = collect(data_get($data, 'oncology.mixtures', []));
+        if ($data['request_type'] === 'chemo' && $oncologyMixtures->isNotEmpty()) {
+            if ($oncologyMixtures->count() !== (int) data_get($data, 'oncology.mixture_count', 0)) {
+                throw ValidationException::withMessages([
+                    'oncology.mixture_count' => 'El número de mezclas no coincide con las mezclas capturadas.',
+                ]);
+            }
+
+            $oncologyMedications = $oncologyMixtures->flatMap(function (array $mixture, int $mixtureIndex): array {
+                $dates = collect($mixture['delivery_dates'] ?? [])->filter()->values()->all();
+                if (count($dates) !== count(array_unique($dates))) {
+                    throw ValidationException::withMessages([
+                        "oncology.mixtures.$mixtureIndex.delivery_dates" => 'Las fechas de entrega no pueden repetirse dentro de una mezcla.',
+                    ]);
+                }
+
+                return collect($mixture['medications'] ?? [])->map(function (array $medication) use ($mixture, $mixtureIndex, $dates): array {
+                    return array_merge($medication, [
+                        'mixture_index' => $mixtureIndex,
+                        'dilution_volume' => $mixture['dilution_volume'] ?? null,
+                        'infusion_minutes' => $mixture['infusion_minutes'] ?? null,
+                        'delivery_dates' => $dates,
+                        'set_infusion' => (bool) ($mixture['set_infusion'] ?? false),
+                        'infusor_id' => $mixture['infusor_id'] ?? null,
+                    ]);
+                })->all();
+            })->values()->all();
+            $data['oncology']['medications'] = $oncologyMedications;
+        } else {
+            $oncologyMedications = collect(data_get($data, 'oncology.medications', []))
             ->filter(fn (array $item): bool => filled($item['medication'] ?? null))
             ->values()
             ->all();
+        }
         if ($data['request_type'] === 'chemo' && $oncologyMedications === []) {
             throw ValidationException::withMessages(['oncology.medications' => 'Agrega al menos un medicamento oncológico.']);
+        }
+        if ($data['request_type'] === 'chemo') {
+            foreach ($oncologyMedications as $index => $medication) {
+                foreach (['catalog_item', 'dose', 'diluent_id', 'route_id', 'dilution_volume', 'infusion_minutes'] as $field) {
+                    if (blank($medication[$field] ?? null)) {
+                        throw ValidationException::withMessages([
+                            "oncology.medications.$index.$field" => 'Completa todos los datos obligatorios del medicamento.',
+                        ]);
+                    }
+                }
+
+                $deliveryDates = collect($medication['delivery_dates'] ?? [])->filter()->values();
+                if ($deliveryDates->isEmpty()) {
+                    throw ValidationException::withMessages([
+                        "oncology.medications.$index.delivery_dates" => 'Captura al menos una fecha de entrega.',
+                    ]);
+                }
+                if ($deliveryDates->duplicates()->isNotEmpty()) {
+                    throw ValidationException::withMessages([
+                        "oncology.medications.$index.delivery_dates" => 'Las fechas de entrega no pueden repetirse.',
+                    ]);
+                }
+            }
         }
         if ($data['request_type'] === 'npt') {
             foreach (['weight', 'birth_date', 'route', 'npt_type', 'delivery_at', 'destination_hospital', 'doctor_name', 'professional_license'] as $field) {
@@ -931,6 +1005,18 @@ class DoctorPortalController extends Controller
                 && filled($item['unit'] ?? null))
             ->values()
             ->all();
+        if ($data['request_type'] === 'chemo' && $oncologyMedications !== []) {
+            $integrationItems = collect($oncologyMedications)->map(function (array $item): array {
+                [$productCode, $presentationCode] = array_pad(explode('|', (string) $item['catalog_item'], 2), 2, null);
+
+                return [
+                    'product_code' => $productCode,
+                    'presentation_code' => $presentationCode,
+                    'quantity' => (float) $item['dose'],
+                    'unit' => 'mg',
+                ];
+            })->all();
+        }
         $mixtureType = $data['request_type'] === 'chemo' ? 'oncology' : ($data['request_type'] === 'npt' ? 'npt' : null);
         $unitCode = $doctor->medicalUnit?->cbta_external_code;
         $prevalidationPayload = null;
@@ -941,6 +1027,60 @@ class DoctorPortalController extends Controller
                 throw ValidationException::withMessages([
                     'integration_items' => 'Selecciona al menos un producto del catalogo operativo de Mezclas.',
                 ]);
+            }
+
+            if ($mixtureType === 'oncology') {
+                try {
+                    $oncologyCatalog = $cbta->oncologyCatalog($unitCode);
+                } catch (Throwable) {
+                    throw ValidationException::withMessages([
+                        'oncology.medications' => 'No fue posible verificar las reglas del catálogo oncológico de Mezclas.',
+                    ]);
+                }
+
+                $catalogItems = collect($oncologyCatalog['items'] ?? [])->keyBy(
+                    fn (array $item): string => ($item['product_code'] ?? '').'|'.($item['presentation_code'] ?? '')
+                );
+                $activeInfusors = collect($oncologyCatalog['infusors'] ?? [])->pluck('id')->map(fn ($id) => (int) $id);
+
+                foreach ($oncologyMedications as $index => $medication) {
+                    $catalogItem = $catalogItems->get((string) ($medication['catalog_item'] ?? ''));
+                    if (! is_array($catalogItem)) {
+                        throw ValidationException::withMessages([
+                            "oncology.medications.$index.catalog_item" => 'El medicamento no pertenece al catálogo vigente del hospital.',
+                        ]);
+                    }
+
+                    $diluentIds = collect($catalogItem['diluents'] ?? [])->pluck('id')->map(fn ($id) => (int) $id);
+                    $routeIds = collect($catalogItem['administration_routes'] ?? [])->pluck('id')->map(fn ($id) => (int) $id);
+                    if (! $diluentIds->contains((int) $medication['diluent_id']) || ! $routeIds->contains((int) $medication['route_id'])) {
+                        throw ValidationException::withMessages([
+                            "oncology.medications.$index.diluent_id" => 'Selecciona un diluyente y una vía compatibles con el medicamento.',
+                        ]);
+                    }
+
+                    $concentration = (float) $medication['dose'] / (float) $medication['dilution_volume'];
+                    $minimum = data_get($catalogItem, 'concentration.min');
+                    $maximum = data_get($catalogItem, 'concentration.max');
+                    if (($minimum !== null && $concentration < (float) $minimum)
+                        || ($maximum !== null && (float) $maximum > 0 && $concentration > (float) $maximum)) {
+                        throw ValidationException::withMessages([
+                            "oncology.medications.$index.dose" => 'La concentración está fuera del rango permitido por CBTA.',
+                        ]);
+                    }
+
+                    $infusorId = (int) ($medication['infusor_id'] ?? 0);
+                    if (! empty($medication['set_infusion']) && $infusorId > 0) {
+                        throw ValidationException::withMessages([
+                            "oncology.medications.$index.infusor_id" => 'Selecciona set de infusión o infusor, no ambos.',
+                        ]);
+                    }
+                    if ($infusorId > 0 && (! $activeInfusors->contains($infusorId) || empty($catalogItem['requires_infusor']))) {
+                        throw ValidationException::withMessages([
+                            "oncology.medications.$index.infusor_id" => 'El infusor no está activo o no aplica al medicamento.',
+                        ]);
+                    }
+                }
             }
 
             $prevalidationPayload = [

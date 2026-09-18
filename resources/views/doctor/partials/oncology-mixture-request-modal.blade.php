@@ -6,13 +6,9 @@
   $existingClinicalFormat = data_get($existingRequestPayload, 'clinical_format', []);
   $clinicalValue = fn (string $key, $default = null) => old("oncology.$key", data_get($existingClinicalFormat, $key, $default));
   $oncologyDoctor = $doctor ?? null;
-  $oncologyMedicines = [
-    'Ciclofosfamida', 'Ifosfamida', 'Cisplatino', 'Carboplatino', 'Oxaliplatino',
-    'Paclitaxel', 'Docetaxel', 'Doxorrubicina', 'Epirrubicina', 'Fluorouracilo 5-FU',
-    'Metotrexato', 'Gemcitabina', 'Citarabina', 'Vincristina', 'Vinblastina',
-    'Etoposido', 'Irinotecan', 'Rituximab', 'Trastuzumab', 'Pembrolizumab',
-    'Nivolumab', 'Ondansetron', 'Dexametasona',
-  ];
+  $oncologyCatalogItems = collect(data_get($cbtaCatalogs ?? [], 'oncology', []));
+  $oncologyCatalogVersion = data_get($cbtaCatalogVersions ?? [], 'oncology');
+  $oncologyInfusors = collect(data_get($cbtaCatalogOptions ?? [], 'oncology_infusors', []));
   $oncologyServices = isset($oncologyServiceOptions)
     ? collect($oncologyServiceOptions)->filter()->unique()->values()
     : collect($services)
@@ -68,6 +64,7 @@
       <input type="hidden" name="priority" value="routine">
       <input type="hidden" name="oncology[request_date]" value="{{ $programmingDate }}" data-oncology-request-date>
       <input type="hidden" name="oncology[professional_license]" value="{{ old('oncology.professional_license', $oncologyProfessionalLicense) }}">
+      <input type="hidden" name="integration_catalog_version" value="{{ $oncologyCatalogVersion }}">
       @if ($isOperationalOncologyRequest)
         <input type="hidden" name="workflow" value="oncology_center">
         @if (filled($oncologyMedicalUnitId))<input type="hidden" name="unit" value="{{ $oncologyMedicalUnitId }}">@endif
@@ -108,9 +105,9 @@
                 @endforeach
               </select>
             </label>
-            <label>Piso<input name="oncology[floor]" value="{{ $clinicalValue('floor') }}" placeholder="Piso" @readonly($isIncomingOncologyRequest)></label>
-            <label>Cama<input name="oncology[bed]" value="{{ $clinicalValue('bed') }}" placeholder="Cama" @readonly($isIncomingOncologyRequest)></label>
-            <label>C&eacute;dula<input name="oncology[patient_identifier]" value="{{ $clinicalValue('patient_identifier') }}" placeholder="C&eacute;dula del paciente" data-oncology-patient-identifier @readonly($isIncomingOncologyRequest)></label>
+            <label>Piso*<input name="oncology[floor]" value="{{ $clinicalValue('floor') }}" maxlength="50" required placeholder="Piso" @readonly($isIncomingOncologyRequest)></label>
+            <label>Cama*<input name="oncology[bed]" value="{{ $clinicalValue('bed') }}" maxlength="50" required placeholder="Cama" @readonly($isIncomingOncologyRequest)></label>
+            <label>Registro del paciente*<input name="oncology[patient_identifier]" value="{{ $clinicalValue('patient_identifier') }}" maxlength="255" required placeholder="Registro" data-oncology-patient-identifier @readonly($isIncomingOncologyRequest)></label>
           </div>
         </section>
 
@@ -147,7 +144,7 @@
 
             <label class="is-age">Edad*<input type="number" min="0" max="130" name="oncology[age]" value="{{ $clinicalValue('age') }}" placeholder="A&ntilde;os" required data-oncology-patient-age @readonly($isIncomingOncologyRequest)></label>
             <label class="is-birth-date">Fecha de nacimiento*<input type="date" name="oncology[birth_date]" value="{{ $clinicalValue('birth_date') }}" required data-oncology-patient-birth @readonly($isIncomingOncologyRequest)></label>
-            <label class="is-weight">Peso*<span class="doctor-oncology-input-unit"><input type="number" min="0" max="500" step="0.01" name="oncology[weight]" value="{{ $clinicalValue('weight') }}" required @readonly($isIncomingOncologyRequest)><em>kg</em></span></label>
+            <label class="is-weight">Peso*<span class="doctor-oncology-input-unit"><input type="number" min="1" max="500" step="0.01" name="oncology[weight]" value="{{ $clinicalValue('weight') }}" required @readonly($isIncomingOncologyRequest)><em>kg</em></span></label>
             <label class="is-height">Talla*<span class="doctor-oncology-input-unit"><input type="number" min="0" max="300" step="0.01" name="oncology[height]" value="{{ $clinicalValue('height') }}" required @readonly($isIncomingOncologyRequest)><em>cm</em></span></label>
             <label class="is-surface">Superficie corporal<span class="doctor-oncology-input-unit"><input type="number" min="0" max="10" step="0.01" name="oncology[body_surface]" value="{{ $clinicalValue('body_surface') }}" @readonly($isIncomingOncologyRequest)><em>m&sup2;</em></span></label>
             <label class="is-diagnosis">Diagn&oacute;stico*
@@ -162,9 +159,10 @@
             <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="1.5"/><path d="M3 10h18M8 5v14M14 10v9"/></svg>
             Tabla de medicamentos
           </h2>
-          <datalist id="doctor-oncology-medicines">
-            @foreach ($oncologyMedicines as $medicine)<option value="{{ $medicine }}"></option>@endforeach
-          </datalist>
+          @if ($oncologyCatalogItems->isEmpty() && ! $isIncomingOncologyRequest)
+            <div class="doctor-oncology-request-errors" role="alert">El hospital no tiene medicamentos oncol&oacute;gicos disponibles en su cat&aacute;logo de CBTA.</div>
+          @endif
+          @if (false)
           <div class="doctor-oncology-medication-scroll">
             <table class="doctor-oncology-medication-table">
               <colgroup>
@@ -177,12 +175,12 @@
               <thead>
                 <tr>
                   <th rowspan="2">#</th><th rowspan="2">Medicamento*</th><th rowspan="2">Dosis*</th>
-                  <th colspan="3">Diluyente*</th><th rowspan="2">Volumen de diluci&oacute;n total (ml)*</th>
+                  <th colspan="2">Diluyente*</th><th rowspan="2">V&iacute;a*</th><th rowspan="2">Volumen de diluci&oacute;n total (ml)*</th>
                   <th rowspan="2">No. de bolos por d&iacute;a*</th><th rowspan="2">Tiempo de infusi&oacute;n (min)*</th>
                   <th colspan="3">Fecha de entrega*</th>
                   @unless ($isIncomingOncologyRequest)<th rowspan="2">Acci&oacute;n</th>@endunless
                 </tr>
-                <tr><th>CS</th><th>DX</th><th>Otro</th><th>1</th><th>2</th><th>3</th></tr>
+                <tr><th colspan="2">Compatible con el medicamento</th><th>1</th><th>2</th><th>3</th></tr>
               </thead>
               <tbody>
                 @for ($row = 0; $row < 8; $row++)
@@ -193,14 +191,27 @@
                   @endphp
                   <tr data-oncology-medication-row @if($row >= $visibleMedicationRows) hidden @endif>
                     <th scope="row">{{ $row + 1 }}</th>
-                    <td><input list="doctor-oncology-medicines" name="oncology[medications][{{ $row }}][medication]" value="{{ old("oncology.medications.$row.medication", data_get($medicationRow, 'medication')) }}" placeholder="Buscar medicamento" @readonly($isIncomingOncologyRequest)></td>
-                    <td><span class="doctor-oncology-input-unit"><input name="oncology[medications][{{ $row }}][dose]" value="{{ old("oncology.medications.$row.dose", data_get($medicationRow, 'dose')) }}" @readonly($isIncomingOncologyRequest)><em>mg</em></span></td>
-                    @foreach (['CS', 'DX', 'Otro'] as $diluent)
-                      <td><input type="checkbox" name="oncology[medications][{{ $row }}][diluents][]" value="{{ $diluent }}" aria-label="Diluyente {{ $diluent }}, medicamento {{ $row + 1 }}" @checked(in_array($diluent, $selectedDiluents, true)) @disabled($isIncomingOncologyRequest)></td>
-                    @endforeach
-                    <td><span class="doctor-oncology-input-unit"><input type="number" min="0" step="0.01" name="oncology[medications][{{ $row }}][dilution_volume]" value="{{ old("oncology.medications.$row.dilution_volume", data_get($medicationRow, 'dilution_volume')) }}" @readonly($isIncomingOncologyRequest)><em>ml</em></span></td>
-                    <td><input type="number" min="0" name="oncology[medications][{{ $row }}][boluses_per_day]" value="{{ old("oncology.medications.$row.boluses_per_day", data_get($medicationRow, 'boluses_per_day')) }}" @readonly($isIncomingOncologyRequest)></td>
-                    <td><span class="doctor-oncology-input-unit"><input type="number" min="0" name="oncology[medications][{{ $row }}][infusion_minutes]" value="{{ old("oncology.medications.$row.infusion_minutes", data_get($medicationRow, 'infusion_minutes')) }}" @readonly($isIncomingOncologyRequest)><em>min</em></span></td>
+                    <td>
+                      <select name="oncology[medications][{{ $row }}][catalog_item]" data-oncology-catalog-item @disabled($isIncomingOncologyRequest)>
+                        <option value="">Seleccionar medicamento</option>
+                        @foreach ($oncologyCatalogItems as $item)
+                          @php
+                            $catalogValue = data_get($item, 'product_code').'|'.data_get($item, 'presentation_code');
+                          @endphp
+                          <option value="{{ $catalogValue }}" data-catalog='@json($item)' @selected(old("oncology.medications.$row.catalog_item", data_get($medicationRow, 'catalog_item')) === $catalogValue)>{{ data_get($item, 'generic_name') }} — {{ data_get($item, 'presentation') }}</option>
+                        @endforeach
+                      </select>
+                      <input type="hidden" name="oncology[medications][{{ $row }}][medication]" value="{{ old("oncology.medications.$row.medication", data_get($medicationRow, 'medication')) }}" data-oncology-medication-name>
+                      <input type="hidden" name="integration_items[{{ $row }}][catalog_item]" data-oncology-integration-catalog>
+                      <input type="hidden" name="integration_items[{{ $row }}][quantity]" data-oncology-integration-quantity>
+                      <input type="hidden" name="integration_items[{{ $row }}][unit]" value="mg">
+                    </td>
+                    <td><span class="doctor-oncology-input-unit"><input type="number" min="0.01" step="0.01" name="oncology[medications][{{ $row }}][dose]" value="{{ old("oncology.medications.$row.dose", data_get($medicationRow, 'dose')) }}" data-oncology-dose @readonly($isIncomingOncologyRequest)><em>mg</em></span></td>
+                    <td colspan="2"><select name="oncology[medications][{{ $row }}][diluent_id]" data-oncology-diluent data-old-value="{{ old("oncology.medications.$row.diluent_id", data_get($medicationRow, 'diluent_id')) }}" @disabled($isIncomingOncologyRequest)><option value="">Diluyente</option></select></td>
+                    <td><select name="oncology[medications][{{ $row }}][route_id]" data-oncology-route data-old-value="{{ old("oncology.medications.$row.route_id", data_get($medicationRow, 'route_id')) }}" @disabled($isIncomingOncologyRequest)><option value="">V&iacute;a</option></select></td>
+                    <td><span class="doctor-oncology-input-unit"><input type="number" min="0.01" step="0.01" name="oncology[medications][{{ $row }}][dilution_volume]" value="{{ old("oncology.medications.$row.dilution_volume", data_get($medicationRow, 'dilution_volume')) }}" @readonly($isIncomingOncologyRequest)><em>ml</em></span></td>
+                    <td><input type="number" min="1" name="oncology[medications][{{ $row }}][boluses_per_day]" value="{{ old("oncology.medications.$row.boluses_per_day", data_get($medicationRow, 'boluses_per_day', 1)) }}" @readonly($isIncomingOncologyRequest)></td>
+                    <td><span class="doctor-oncology-input-unit"><input type="number" min="1" name="oncology[medications][{{ $row }}][infusion_minutes]" value="{{ old("oncology.medications.$row.infusion_minutes", data_get($medicationRow, 'infusion_minutes')) }}" @readonly($isIncomingOncologyRequest)><em>min</em></span></td>
                     @for ($date = 0; $date < 3; $date++)
                       <td><input class="doctor-oncology-delivery-date" type="date" name="oncology[medications][{{ $row }}][delivery_dates][]" value="{{ $deliveryDates[$date] ?? '' }}" aria-label="Fecha de entrega {{ $date + 1 }}, medicamento {{ $row + 1 }}" @readonly($isIncomingOncologyRequest)></td>
                     @endfor
@@ -225,9 +236,36 @@
             </div>
           @endunless
 
+          <div class="doctor-oncology-general-grid">
+            <label>Set de infusi&oacute;n
+              <select name="oncology[medications][0][set_infusion]" data-oncology-set-infusion>
+                <option value="0">No</option><option value="1">S&iacute;</option>
+              </select>
+            </label>
+            <label>Infusor
+              <select name="oncology[medications][0][infusor_id]" data-oncology-infusor>
+                <option value="">Sin infusor</option>
+                @foreach ($oncologyInfusors as $infusor)
+                  <option value="{{ data_get($infusor, 'id') }}">{{ data_get($infusor, 'generic_name') ?: data_get($infusor, 'commercial_name') }}</option>
+                @endforeach
+              </select>
+              <small>Solo aplica a medicamentos configurados para infusor.</small>
+            </label>
+          </div>
+          @endif
+
+          @include('doctor.partials.oncology-mixtures-fields', [
+            'catalogItems' => $oncologyCatalogItems,
+            'infusors' => $oncologyInfusors,
+            'incoming' => $isIncomingOncologyRequest,
+          ])
+
           <label class="doctor-oncology-observations">Observaciones adicionales y comentarios sobre v&iacute;as de administraci&oacute;n
             <textarea name="notes" rows="3" maxlength="500" placeholder="Escriba observaciones adicionales y comentarios sobre v&iacute;as de administraci&oacute;n (opcional)" data-oncology-count-input="notes" @readonly($isIncomingOncologyRequest)>{{ $notesValue }}</textarea>
             <small><span data-oncology-count="notes">{{ mb_strlen((string) $notesValue) }}</span> / 500</small>
+          </label>
+          <label class="doctor-oncology-observations">Alergias
+            <input name="oncology[allergies]" maxlength="255" value="{{ $clinicalValue('allergies') }}" placeholder="Alergias conocidas (opcional)" @readonly($isIncomingOncologyRequest)>
           </label>
         </section>
 

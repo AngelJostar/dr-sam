@@ -1542,6 +1542,46 @@ document.addEventListener('DOMContentLoaded', () => {
     const medicationRows = [...form.querySelectorAll('[data-oncology-medication-row]')];
     const addMedicationButton = form.querySelector('[data-oncology-add-medication]');
     const visibleMedicationRows = () => medicationRows.filter(row => !row.hidden);
+    const refreshCatalogRow = row => {
+      const catalogSelect = row.querySelector('[data-oncology-catalog-item]');
+      const selected = catalogSelect?.selectedOptions?.[0];
+      let item = null;
+      try { item = selected?.dataset.catalog ? JSON.parse(selected.dataset.catalog) : null; } catch (_) {}
+      const fillOptions = (select, options, selectedValue) => {
+        if (!select) return;
+        select.innerHTML = '<option value="">Seleccionar</option>' + (options || []).map(option =>
+          `<option value="${option.id}" ${String(option.id) === String(selectedValue || '') ? 'selected' : ''}>${option.name}</option>`
+        ).join('');
+      };
+      const diluent = row.querySelector('[data-oncology-diluent]');
+      const route = row.querySelector('[data-oncology-route]');
+      fillOptions(diluent, item?.diluents, diluent?.dataset.oldValue);
+      fillOptions(route, item?.administration_routes, route?.dataset.oldValue);
+      const medicationName = row.querySelector('[data-oncology-medication-name]');
+      const integrationCatalog = row.querySelector('[data-oncology-integration-catalog]');
+      if (medicationName) medicationName.value = item?.generic_name || '';
+      if (integrationCatalog) integrationCatalog.value = catalogSelect?.value || '';
+      [catalogSelect, row.querySelector('[data-oncology-dose]'), diluent, route,
+       row.querySelector('[name$="[dilution_volume]"]'), row.querySelector('[name$="[infusion_minutes]"]'),
+       row.querySelector('.doctor-oncology-delivery-date')].forEach(field => { if (field) field.required = !row.hidden; });
+    };
+    medicationRows.forEach(row => {
+      const catalogSelect = row.querySelector('[data-oncology-catalog-item]');
+      const dose = row.querySelector('[data-oncology-dose]');
+      const integrationQuantity = row.querySelector('[data-oncology-integration-quantity]');
+      catalogSelect?.addEventListener('change', () => refreshCatalogRow(row));
+      dose?.addEventListener('input', () => { if (integrationQuantity) integrationQuantity.value = dose.value; });
+      if (integrationQuantity && dose) integrationQuantity.value = dose.value;
+      refreshCatalogRow(row);
+    });
+    const infusionSet = form.querySelector('[data-oncology-set-infusion]');
+    const infusor = form.querySelector('[data-oncology-infusor]');
+    infusionSet?.addEventListener('change', () => {
+      if (infusionSet.value === '1' && infusor) infusor.value = '';
+    });
+    infusor?.addEventListener('change', () => {
+      if (infusor.value && infusionSet) infusionSet.value = '0';
+    });
     const copyMedicationRow = (targetRow, sourceRow) => {
       const targetFields = [...targetRow.querySelectorAll('input, select, textarea')];
       const sourceFields = [...sourceRow.querySelectorAll('input, select, textarea')];
@@ -1572,7 +1612,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!nextRow) return;
       clearMedicationRow(nextRow);
       nextRow.hidden = false;
-      nextRow.querySelector('input[name$="[medication]"]')?.focus();
+      refreshCatalogRow(nextRow);
+      nextRow.querySelector('[data-oncology-catalog-item]')?.focus();
       refreshMedicationButtons();
     });
     form?.querySelectorAll('[data-oncology-remove-medication]').forEach(button => {
@@ -1588,6 +1629,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const lastVisibleRow = visibleRows[visibleRows.length - 1];
         clearMedicationRow(lastVisibleRow);
         lastVisibleRow.hidden = true;
+        refreshCatalogRow(lastVisibleRow);
         refreshMedicationButtons();
       });
     });
