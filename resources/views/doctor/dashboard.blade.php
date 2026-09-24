@@ -271,21 +271,60 @@
           $agendaDayNames = ['Lun', 'Mar', 'Mi', 'Jue', 'Vie', 'Sb', 'Dom'];
           $agendaMonthNames = [1=>'Enero',2=>'Febrero',3=>'Marzo',4=>'Abril',5=>'Mayo',6=>'Junio',7=>'Julio',8=>'Agosto',9=>'Septiembre',10=>'Octubre',11=>'Noviembre',12=>'Diciembre'];
           $agendaAppointments = $appointments->filter(fn ($appointment) => $appointment->starts_at && $appointment->starts_at->betweenIncluded($agendaWeekStart, $agendaWeekEnd));
-          // La agenda de demostración conserva una cuadrícula útil incluso cuando
-          // la cuenta todavía no tiene citas reales en la semana actual.
-          if ($agendaAppointments->isEmpty()) {
-            $agendaAppointments = collect([
-              (object) ['starts_at' => $agendaWeekStart->copy()->addDay()->setTime(9, 0), 'ends_at' => $agendaWeekStart->copy()->addDay()->setTime(9, 30), 'patient' => (object) ['full_name' => 'María González'], 'reason' => 'Consulta de seguimiento', 'modality' => 'Presencial', 'status' => 'scheduled', 'metadata' => []],
-              (object) ['starts_at' => $agendaWeekStart->copy()->addDays(2)->setTime(11, 0), 'ends_at' => $agendaWeekStart->copy()->addDays(2)->setTime(11, 30), 'patient' => (object) ['full_name' => 'Carlos Ramírez'], 'reason' => 'Valoración inicial', 'modality' => 'Video llamada', 'status' => 'scheduled', 'metadata' => []],
-              (object) ['starts_at' => $agendaWeekStart->copy()->addDays(4)->setTime(16, 0), 'ends_at' => $agendaWeekStart->copy()->addDays(4)->setTime(17, 0), 'patient' => (object) ['full_name' => 'Lucía Hernández'], 'reason' => 'Revisión de resultados', 'modality' => 'Presencial', 'status' => 'pending', 'metadata' => []],
-            ]);
-          }
         @endphp
         <section class="doctor-agenda-native" data-agenda-root>
           <div class="doctor-agenda-title">
             <div><strong>Calendario</strong><span>Visualiza y gestiona tus citas y actividades</span><small>{{ $agendaAppointments->count() }} citas visibles</small></div>
             <div><button type="button" class="is-primary" data-agenda-new-toggle>+ Nueva cita</button><a href="{{ route('doctor.dashboard') }}" aria-label="Inicio"></a></div>
           </div>
+          @if (session('status')) <p class="doctor-workspace-notice">{{ session('status') }}</p> @endif
+          @if ($errors->any()) <p class="doctor-workspace-error">{{ $errors->first() }}</p> @endif
+          @if ($doctor->medical_unit_id)
+            <div class="doctor-agenda-unit-requests">
+              <header><h2>Citas de la unidad por tomar</h2><span>{{ $institutionalAppointments->count() }} pendientes</span></header>
+              <div class="doctor-agenda-unit-table-wrap">
+                <table>
+                  <thead><tr><th>Fecha y hora</th><th>Paciente</th><th>Especialidad</th><th>Consultorio</th><th>Modalidad</th><th>Acci&oacute;n</th></tr></thead>
+                  <tbody>
+                    @forelse ($institutionalAppointments as $unitAppointment)
+                      <tr>
+                        <td><strong>{{ $unitAppointment->starts_at->format('d/m/Y H:i') }}</strong></td>
+                        <td>{{ $unitAppointment->patient?->full_name ?? 'Paciente pendiente' }}</td>
+                        <td>{{ $unitAppointment->specialty }}</td>
+                        <td>{{ $unitAppointment->procedureArea?->unit_number ?: ($unitAppointment->location ?: 'Consulta externa') }}</td>
+                        <td>{{ $unitAppointment->modality ?: 'Presencial' }}</td>
+                        <td><form method="post" action="{{ route('doctor.appointments.claim', $unitAppointment) }}">@csrf<button type="submit">Tomar cita</button></form></td>
+                      </tr>
+                    @empty
+                      <tr><td colspan="6" class="is-empty">No hay citas pendientes para tu especialidad.</td></tr>
+                    @endforelse
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="doctor-agenda-unit-requests">
+              <header><h2>Mis citas de la unidad</h2><span>{{ $assignedInstitutionalAppointments->count() }} asignadas</span></header>
+              <div class="doctor-agenda-unit-table-wrap">
+                <table>
+                  <thead><tr><th>Fecha y hora</th><th>Paciente</th><th>Especialidad</th><th>Consultorio</th><th>Modalidad</th><th>Estado</th></tr></thead>
+                  <tbody>
+                    @forelse ($assignedInstitutionalAppointments as $unitAppointment)
+                      <tr>
+                        <td><strong>{{ $unitAppointment->starts_at->format('d/m/Y H:i') }}</strong></td>
+                        <td>{{ $unitAppointment->patient?->full_name ?? 'Paciente pendiente' }}</td>
+                        <td>{{ $unitAppointment->specialty }}</td>
+                        <td>{{ $unitAppointment->procedureArea?->unit_number ?: ($unitAppointment->location ?: 'Consulta externa') }}</td>
+                        <td>{{ $unitAppointment->modality ?: 'Presencial' }}</td>
+                        <td>{{ $statusText($unitAppointment->status) }}</td>
+                      </tr>
+                    @empty
+                      <tr><td colspan="6" class="is-empty">No tienes citas de la unidad asignadas.</td></tr>
+                    @endforelse
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          @endif
           <div class="doctor-agenda-toolbar">
             <button type="button" class="is-active" data-agenda-kind=""><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="5"/></svg>Todas</button>
             <button type="button" data-agenda-kind="Presencial"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13V5l5-3 5 3v8M6 13V9h4v4"/></svg>Presenciales</button>

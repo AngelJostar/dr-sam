@@ -4,11 +4,14 @@ namespace Tests\Feature;
 
 use App\Models\Appointment;
 use App\Models\Doctor;
+use App\Models\Document;
 use App\Models\MedicalUnit;
 use App\Models\Patient;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class PatientPortalTest extends TestCase
@@ -68,6 +71,94 @@ class PatientPortalTest extends TestCase
 
         $this->assertSame(2, substr_count($response->getContent(), 'class="patient-history-body" data-clinical-history'));
         $this->assertSame(2, substr_count($response->getContent(), 'data-history-view-switch'));
+    }
+
+    public function test_quick_register_has_parameter_and_clinical_history_tabs(): void
+    {
+        [$user] = $this->makePatient();
+
+        $response = $this->actingAs($user)
+            ->get(route('patient.dashboard'))
+            ->assertOk()
+            ->assertSee('data-register-view-switch', false)
+            ->assertSee('data-register-view-mode="parameters"', false)
+            ->assertSee('data-register-view-mode="history"', false)
+            ->assertSee('data-register-view-panel="parameters"', false)
+            ->assertSee('data-register-view-panel="history"', false)
+            ->assertSee('data-register-filter-switch', false)
+            ->assertSee('data-register-filter-view="favorites"', false)
+            ->assertSee('data-register-filter-view="all"', false)
+            ->assertSee('data-register-history-carousel', false)
+            ->assertSee('data-register-history-card="consultation"', false)
+            ->assertSee('data-register-history-favorite="consultation"', false)
+            ->assertSee('<header class="patient-register-selected-metric">', false)
+            ->assertSee('class="patient-register-selected-icon patient-register-history-composer-icon"', false)
+            ->assertSee('data-register-history-empty', false)
+            ->assertSee('data-register-history-file-pick', false)
+            ->assertSee('data-register-history-file-input', false)
+            ->assertSee('data-register-file-pick', false)
+            ->assertSee('data-register-file-input', false);
+
+        $this->assertSame(2, substr_count($response->getContent(), '<span>Adjuntar archivo</span>'));
+    }
+
+    public function test_patient_can_upload_and_download_a_quick_register_attachment(): void
+    {
+        Storage::fake('local');
+        [$user, $patient] = $this->makePatient();
+
+        $response = $this->actingAs($user)->postJson(route('patient.register_attachments.store'), [
+            'file' => UploadedFile::fake()->create('informe.pdf', 100, 'application/pdf'),
+            'record_id' => 'quick-123',
+            'profile_id' => 'primary',
+            'category' => 'laboratory',
+        ])->assertCreated()->assertJsonStructure(['document_id']);
+
+        $document = Document::query()->findOrFail($response->json('document_id'));
+        $this->assertSame($patient->id, $document->patient_id);
+        $this->assertSame('patient_quick_register', $document->document_type);
+        $this->assertSame('informe.pdf', $document->name);
+        $this->assertSame('quick-123', $document->metadata['record_id']);
+        Storage::disk('local')->assertExists($document->file_path);
+
+        $download = $this->get(route('patient.register_attachments.download', $document))->assertOk();
+        $this->assertStringContainsString('informe.pdf', $download->headers->get('content-disposition'));
+    }
+
+    public function test_quick_register_attachment_rejects_invalid_files_and_other_patients(): void
+    {
+        Storage::fake('local');
+        [$user] = $this->makePatient();
+
+        $this->actingAs($user)->postJson(route('patient.register_attachments.store'), [
+            'file' => UploadedFile::fake()->create('notas.txt', 10, 'text/plain'),
+            'record_id' => 'quick-124',
+        ])->assertUnprocessable()->assertJsonValidationErrors('file');
+        $this->assertDatabaseCount('documents', 0);
+
+        $documentId = $this->postJson(route('patient.register_attachments.store'), [
+            'file' => UploadedFile::fake()->image('resultado.png'),
+            'record_id' => 'quick-125',
+        ])->assertCreated()->json('document_id');
+
+        $otherUser = User::query()->create([
+            'name' => 'Otro Paciente',
+            'username' => 'otro.paciente',
+            'email' => 'otro.paciente@test.local',
+            'role' => 'patient',
+            'module' => 'patient',
+            'status' => 'active',
+        ]);
+        Patient::query()->create([
+            'user_id' => $otherUser->id,
+            'platform_number' => 'PAC-ACTIONS-002',
+            'full_name' => 'Otro Paciente',
+            'status' => 'active',
+        ]);
+
+        $this->actingAs($otherUser)
+            ->get(route('patient.register_attachments.download', $documentId))
+            ->assertForbidden();
     }
 
     public function test_patient_can_update_own_profile(): void

@@ -163,7 +163,6 @@ class UnitDashboardController extends Controller
             'operationalProfiles.user',
             'operationalProfiles.area',
             'doctors.user',
-            'doctors.availabilityRules',
         ]);
 
         $appointments = Appointment::query()
@@ -283,14 +282,23 @@ class UnitDashboardController extends Controller
     ): RedirectResponse {
         $unit = $this->resolveUnit($request);
         $data = $this->validateConsultationAppointment($request, $unit);
-        [$doctor, $room, $startsAt, $endsAt] = $this->resolveConsultationSchedule($data, $unit);
+        [$selectedDoctor, $room, $startsAt, $endsAt] = $this->resolveConsultationSchedule($data, $unit);
 
-        $scheduling->assertAvailable($doctor, $startsAt, $endsAt, $room);
+        $appointment = DB::transaction(function () use ($data, $selectedDoctor, $unit, $room, $startsAt, $endsAt, $scheduling): Appointment {
+            $room = ProcedureArea::query()->whereKey($room->id)->lockForUpdate()->firstOrFail();
+            $doctor = $selectedDoctor
+                ? Doctor::query()
+                    ->whereKey($selectedDoctor->id)
+                    ->where('medical_unit_id', $unit->id)
+                    ->where('status', 'active')
+                    ->lockForUpdate()
+                    ->firstOrFail()
+                : null;
+            $scheduling->assertInstitutionalConsultationAvailable($doctor, $startsAt, $endsAt, $room);
 
-        $appointment = DB::transaction(function () use ($data, $doctor, $unit, $room, $startsAt, $endsAt): Appointment {
             $appointment = Appointment::query()->create([
                 'patient_id' => $data['patient_id'],
-                'doctor_id' => $doctor->id,
+                'doctor_id' => $doctor?->id,
                 'medical_unit_id' => $unit->id,
                 'procedure_area_id' => $room->id,
                 'specialty' => $data['specialty'],
@@ -448,7 +456,7 @@ class UnitDashboardController extends Controller
         $data = $this->validateConsultationAppointment($request, $unit, true);
         [$doctor, $room, $startsAt, $endsAt] = $this->resolveConsultationSchedule($data, $unit);
 
-        $scheduling->assertAvailable($doctor, $startsAt, $endsAt, $room, $appointment->id);
+        $scheduling->assertInstitutionalConsultationAvailable($doctor, $startsAt, $endsAt, $room, $appointment->id);
 
         $previousStatus = $appointment->status;
         if ($previousStatus !== $data['status']) {
@@ -471,7 +479,7 @@ class UnitDashboardController extends Controller
 
         DB::transaction(function () use ($appointment, $data, $doctor, $room, $startsAt, $endsAt, $metadata, $previousStatus, $request): void {
             $appointment->update([
-                'doctor_id' => $doctor->id,
+                'doctor_id' => $doctor?->id,
                 'procedure_area_id' => $room->id,
                 'specialty' => $data['specialty'],
                 'modality' => $data['modality'],
@@ -793,7 +801,7 @@ class UnitDashboardController extends Controller
         $data = $request->validate([
             'patient_id' => ['required', 'integer', Rule::exists('patients', 'id')->where('status', 'active')],
             'platform_number' => [$updating ? 'nullable' : 'required', 'nullable', 'string', 'max:80', Rule::exists('patients', 'platform_number')->where('status', 'active')],
-            'doctor_id' => ['required', 'integer', Rule::exists('doctors', 'id')->where(fn ($query) => $query
+            'doctor_id' => ['nullable', 'integer', Rule::exists('doctors', 'id')->where(fn ($query) => $query
                 ->where('medical_unit_id', $unit->id)
                 ->where('status', 'active'))],
             'procedure_area_id' => [
@@ -857,7 +865,7 @@ class UnitDashboardController extends Controller
 
     private function resolveConsultationSchedule(array $data, MedicalUnit $unit): array
     {
-        $doctor = Doctor::query()
+        $doctor = empty($data['doctor_id']) ? null : Doctor::query()
             ->where('medical_unit_id', $unit->id)
             ->findOrFail($data['doctor_id']);
         $room = ProcedureArea::query()

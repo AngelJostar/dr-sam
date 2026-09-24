@@ -3,7 +3,7 @@
         'name' => 'drsam/platform',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '065e15c1473b747eb185c602ca0c695a4594dacc',
+        'reference' => '54d2bf0808325a6f5a5ef37bcfa986f2c3de51f7',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -79,7 +79,7 @@
         'drsam/platform' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '065e15c1473b747eb185c602ca0c695a4594dacc',
+            'reference' => '54d2bf0808325a6f5a5ef37bcfa986f2c3de51f7',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

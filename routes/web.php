@@ -44,6 +44,7 @@ Route::middleware('auth')->group(function (): void {
     Route::post('/doctor/availability', [DoctorPortalController::class, 'storeAvailability'])->middleware('role:superadmin,admin,doctor')->name('doctor.availability.store');
     Route::delete('/doctor/availability/{availability}', [DoctorPortalController::class, 'destroyAvailability'])->middleware('role:superadmin,admin,doctor')->name('doctor.availability.destroy');
     Route::post('/doctor/appointments', [DoctorPortalController::class, 'storeAppointment'])->middleware('role:superadmin,admin,doctor')->name('doctor.appointments.store');
+    Route::post('/doctor/appointments/{appointment}/claim', [DoctorPortalController::class, 'claimInstitutionalAppointment'])->middleware('role:doctor')->name('doctor.appointments.claim');
     Route::patch('/doctor/appointments/{appointment}/status', [DoctorPortalController::class, 'updateAppointmentStatus'])->middleware('role:superadmin,admin,doctor')->name('doctor.appointments.status');
     Route::post('/doctor/patients', [DoctorPortalController::class, 'storePatient'])->middleware('role:superadmin,admin,doctor')->name('doctor.patients.store');
     Route::patch('/doctor/patients/{patient}', [DoctorPortalController::class, 'updatePatient'])->middleware('role:superadmin,admin,doctor')->name('doctor.patients.update');
@@ -59,6 +60,12 @@ Route::middleware('auth')->group(function (): void {
     Route::get('/patient', PatientPortalController::class)
         ->middleware('role:superadmin,admin,patient')
         ->name('patient.dashboard');
+    Route::post('/patient/register-attachments', [PatientPortalController::class, 'storeRegisterAttachment'])
+        ->middleware('role:superadmin,admin,patient')
+        ->name('patient.register_attachments.store');
+    Route::get('/patient/register-attachments/{document}', [PatientPortalController::class, 'downloadRegisterAttachment'])
+        ->middleware('role:superadmin,admin,patient')
+        ->name('patient.register_attachments.download');
     Route::patch('/patient/profile', [PatientPortalController::class, 'updateProfile'])
         ->middleware('role:superadmin,admin,patient')
         ->name('patient.profile.update');

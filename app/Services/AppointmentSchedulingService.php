@@ -117,6 +117,18 @@ class AppointmentSchedulingService
         }
     }
 
+    public function assertInstitutionalConsultationAvailable(?Doctor $doctor, Carbon $startsAt, Carbon $endsAt, ?ProcedureArea $room = null, ?int $ignoreAppointmentId = null): void
+    {
+        if ($doctor) {
+            $this->assertNoDoctorOverlap($doctor, $startsAt, $endsAt, $ignoreAppointmentId);
+        }
+
+        if ($room) {
+            $this->assertRoomSchedule($room, $startsAt, $endsAt);
+            $this->assertRoomCapacity($room, $startsAt, $endsAt, $ignoreAppointmentId);
+        }
+    }
+
     private function assertDoctorSchedule(Doctor $doctor, Carbon $startsAt, Carbon $endsAt): void
     {
         $published = $doctor->availabilityRules()->where('status', 'published');

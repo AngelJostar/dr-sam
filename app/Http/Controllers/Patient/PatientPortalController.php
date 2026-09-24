@@ -5,18 +5,23 @@ namespace App\Http\Controllers\Patient;
 use App\Http\Controllers\Controller;
 use App\Models\Appointment;
 use App\Models\AppointmentStatusEvent;
+use App\Models\Document;
 use App\Models\Doctor;
 use App\Models\InsurancePolicy;
 use App\Models\Patient;
 use App\Services\AppointmentSchedulingService;
 use App\Services\Platform\PlatformAuditService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+use Throwable;
 
 class PatientPortalController extends Controller
 {
@@ -125,6 +130,54 @@ class PatientPortalController extends Controller
                 ->filter(fn ($document) => in_array($document->document_type, ['clinical_analysis', 'laboratory', 'analysis', 'imaging', 'image', 'pdf', 'clinical_summary'], true))
                 ->sortByDesc('loaded_at'),
         ]);
+    }
+
+    public function storeRegisterAttachment(Request $request): JsonResponse
+    {
+        $patient = $this->resolvePatient($request);
+        $validated = $request->validate([
+            'file' => ['required', 'file', 'mimes:pdf,jpg,jpeg,png,webp,heic,heif,doc,docx', 'max:10240'],
+            'record_id' => ['required', 'string', 'max:32'],
+            'profile_id' => ['nullable', 'string', 'max:80'],
+            'category' => ['nullable', 'string', 'max:60'],
+        ]);
+        $file = $request->file('file');
+        $path = $file->store("patient-register-attachments/{$patient->id}", 'local');
+        abort_if($path === false, 500, 'No se pudo guardar el archivo.');
+
+        try {
+            $document = Document::query()->create([
+                'patient_id' => $patient->id,
+                'name' => $file->getClientOriginalName(),
+                'document_type' => 'patient_quick_register',
+                'file_path' => $path,
+                'file_mime' => $file->getMimeType(),
+                'file_size' => $file->getSize(),
+                'uploaded_by' => $request->user()->id,
+                'loaded_at' => now(),
+                'metadata' => [
+                    'record_id' => $validated['record_id'],
+                    'profile_id' => $validated['profile_id'] ?? null,
+                    'category' => $validated['category'] ?? null,
+                ],
+                'created_by' => $request->user()->id,
+                'updated_by' => $request->user()->id,
+            ]);
+        } catch (Throwable $error) {
+            Storage::disk('local')->delete($path);
+            throw $error;
+        }
+
+        return response()->json(['document_id' => $document->id], 201);
+    }
+
+    public function downloadRegisterAttachment(Request $request, Document $document): StreamedResponse
+    {
+        $patient = $this->resolvePatient($request);
+        abort_unless($document->patient_id === $patient->id && $document->document_type === 'patient_quick_register', 403);
+        abort_unless($document->file_path && Storage::disk('local')->exists($document->file_path), 404);
+
+        return Storage::disk('local')->download($document->file_path, $document->name);
     }
 
     public function storeAppointment(

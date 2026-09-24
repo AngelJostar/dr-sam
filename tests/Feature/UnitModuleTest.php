@@ -5,6 +5,8 @@ namespace Tests\Feature;
 use App\Models\Appointment;
 use App\Models\ContractedService;
 use App\Models\Doctor;
+use App\Models\DoctorAvailabilityRule;
+use App\Models\DoctorClinic;
 use App\Models\Institution;
 use App\Models\InventoryItem;
 use App\Models\MedicationCatalogItem;
@@ -20,11 +22,55 @@ use App\Models\ProcedureArea;
 use App\Models\Service;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\MessageBag;
+use Illuminate\Support\ViewErrorBag;
 use Tests\TestCase;
 
 class UnitModuleTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function test_unit_status_message_uses_a_dismissible_dialog(): void
+    {
+        $user = User::query()->create([
+            'name' => 'Unidad Demo',
+            'username' => 'unidad.feedback',
+            'email' => 'unidad.feedback@test.local',
+            'role' => 'unit',
+            'module' => 'unit',
+            'status' => 'active',
+        ]);
+
+        MedicalUnit::query()->create([
+            'name' => 'Hospital Unidad Test',
+            'code' => 'HUT',
+            'unit_username' => $user->username,
+            'type' => 'Hospital General',
+            'care_level' => 'Segundo Nivel',
+            'status' => 'active',
+        ]);
+
+        $this->actingAs($user)
+            ->withSession(['status' => 'Subunidad actualizada.'])
+            ->get(route('unit.dashboard', ['section' => 'procedure-areas', 'catalog' => 'consulting']))
+            ->assertOk()
+            ->assertSee('data-unit-feedback-dialog', false)
+            ->assertSee('data-unit-feedback-close', false)
+            ->assertSee('Subunidad actualizada.')
+            ->assertDontSee('<div class="notice success">', false);
+
+        $errors = new ViewErrorBag;
+        $errors->put('default', new MessageBag(['name' => 'El nombre es obligatorio.']));
+
+        $this->actingAs($user)
+            ->withSession(['status' => null, 'errors' => $errors])
+            ->get(route('unit.dashboard', ['section' => 'profile']))
+            ->assertOk()
+            ->assertSee('data-unit-feedback-dialog', false)
+            ->assertSee('No se pudo actualizar')
+            ->assertSee('El nombre es obligatorio.')
+            ->assertDontSee('<div class="notice danger">', false);
+    }
 
     public function test_unit_user_can_open_native_dashboard(): void
     {
@@ -296,6 +342,8 @@ class UnitModuleTest extends TestCase
             ->assertSee('data-unit-calendar-mode="list"', false)
             ->assertSee('Agendar nueva cita')
             ->assertSee('data-unit-calendar-new-dialog', false)
+            ->assertSee('<span>Profesional de salud</span><select name="doctor_id" data-unit-new-field="doctor_id"', false)
+            ->assertSee('Pendiente de asignacion')
             ->assertSee('data-unit-calendar-edit-dialog', false)
             ->assertSee('data-unit-calendar-cancel-dialog', false)
             ->assertSee('Gestionar cita existente')
@@ -328,10 +376,11 @@ class UnitModuleTest extends TestCase
             ->assertSee('Limpiar')
             ->assertSee('Agendar cita')
             ->assertSee('data-unit-consultation-rooms', false)
-            ->assertSee('Consultorios activos')
+            ->assertDontSee('Consultorios activos')
             ->assertSee('Nuevo consultorio')
             ->assertSee(route('unit.dashboard', ['unit' => $unit->id, 'section' => 'procedure-areas', 'create' => 'consulting']))
-            ->assertSee('data-unit-room-search', false)
+            ->assertDontSee('data-unit-room-list', false)
+            ->assertSee('data-unit-room-select', false)
             ->assertSee('data-unit-room-detail', false)
             ->assertSee('Editar consultorio')
             ->assertSee('data-unit-room-more', false)
@@ -904,5 +953,113 @@ class UnitModuleTest extends TestCase
             'to_status' => 'cancelled',
             'notes' => 'Paciente solicito la cancelacion',
         ]);
+    }
+
+    public function test_unit_books_public_consultation_without_private_doctor_availability(): void
+    {
+        $user = User::query()->create([
+            'name' => 'Unidad Consulta Publica',
+            'username' => 'unidad.consulta.publica',
+            'role' => 'unit',
+            'module' => 'unit',
+            'status' => 'active',
+        ]);
+        $unit = MedicalUnit::query()->create([
+            'name' => 'Unidad Consulta Publica',
+            'unit_username' => $user->username,
+            'status' => 'active',
+        ]);
+        $patient = Patient::query()->create([
+            'full_name' => 'Paciente Consulta Publica',
+            'platform_number' => 'PAC-PUB-01',
+            'status' => 'active',
+        ]);
+        $room = ProcedureArea::query()->create([
+            'medical_unit_id' => $unit->id,
+            'type' => 'consulting',
+            'unit_number' => 'C-01',
+            'simultaneous_capacity' => 1,
+            'status' => 'active',
+        ]);
+        $room->schedules()->create(['day_of_week' => 4, 'starts_at' => '08:00', 'ends_at' => '16:00', 'active' => true]);
+        $doctor = Doctor::query()->create([
+            'medical_unit_id' => $unit->id,
+            'full_name' => 'Dr. Carter Jimmy',
+            'specialty' => 'Medicina interna',
+            'status' => 'active',
+        ]);
+        $clinic = DoctorClinic::query()->create([
+            'doctor_id' => $doctor->id,
+            'medical_unit_id' => $unit->id,
+            'name' => 'Consulta privada',
+            'status' => 'active',
+        ]);
+        DoctorAvailabilityRule::query()->create([
+            'doctor_id' => $doctor->id,
+            'doctor_clinic_id' => $clinic->id,
+            'weekday' => 1,
+            'start_time' => '09:00',
+            'end_time' => '13:00',
+            'recurrence_start' => '2029-01-01',
+            'status' => 'published',
+        ]);
+
+        $payload = [
+            'unit' => $unit->id,
+            'patient_id' => $patient->id,
+            'platform_number' => $patient->platform_number,
+            'procedure_area_id' => $room->id,
+            'specialty' => 'Medicina interna',
+            'modality' => 'Presencial',
+            'appointment_date' => '2030-01-24',
+            'appointment_time' => '09:00',
+            'duration' => 30,
+            'priority' => 'routine',
+            'reason' => 'Consulta externa',
+        ];
+
+        $this->actingAs($user)
+            ->post(route('unit.appointments.store'), $payload)
+            ->assertSessionHasNoErrors();
+
+        $appointment = Appointment::query()->where('patient_id', $patient->id)->firstOrFail();
+        $this->assertDatabaseHas('appointments', [
+            'id' => $appointment->id,
+            'doctor_id' => null,
+            'patient_id' => $patient->id,
+            'starts_at' => '2030-01-24 09:00:00',
+        ]);
+
+        $this->actingAs($user)
+            ->post(route('unit.appointments.store'), $payload)
+            ->assertSessionHasErrors('procedure_area_id');
+        $this->assertDatabaseCount('appointments', 1);
+
+        $this->actingAs($user)
+            ->post(route('unit.appointments.store'), [...$payload, 'appointment_date' => '2030-01-25'])
+            ->assertSessionHasErrors('procedure_area_id');
+        $this->assertDatabaseCount('appointments', 1);
+
+        $this->actingAs($user)
+            ->patch(route('unit.appointments.update', $appointment), [
+                'unit' => $unit->id,
+                'patient_id' => $patient->id,
+                'procedure_area_id' => $room->id,
+                'specialty' => 'Medicina interna',
+                'modality' => 'Presencial',
+                'appointment_date' => '2030-01-24',
+                'appointment_time' => '09:30',
+                'duration' => 30,
+                'reason' => 'Consulta reprogramada',
+                'status' => 'scheduled',
+            ])
+            ->assertSessionHasNoErrors();
+        $this->assertNull($appointment->fresh()->doctor_id);
+
+        $this->actingAs($user)
+            ->post(route('unit.appointments.store'), [...$payload, 'doctor_id' => $doctor->id, 'appointment_time' => '10:00'])
+            ->assertSessionHasNoErrors();
+        $this->assertDatabaseCount('appointments', 2);
+        $this->assertDatabaseHas('appointments', ['doctor_id' => $doctor->id, 'starts_at' => '2030-01-24 10:00:00']);
     }
 }

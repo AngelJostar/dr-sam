@@ -1445,27 +1445,43 @@
       <section class="patient-portal-view" data-patient-view="register">
         <article class="patient-register-panel">
           <div class="patient-register-workspace">
-            <section class="patient-register-sheet patient-register-view-sheet" aria-labelledby="patient-register-title">
+            <section class="patient-register-sheet patient-register-view-sheet" aria-label="Registro r&aacute;pido">
               <header class="patient-register-heading">
                 <div>
                   <small>REGISTRO R&Aacute;PIDO</small>
                 </div>
               </header>
 
+              <nav class="patient-health-view-switch patient-register-view-switch" data-register-view-switch data-active-view="parameters" role="tablist" aria-label="Secciones de Registro r&aacute;pido">
+                <button class="is-active" id="patient-register-tab-parameters" type="button" data-register-view-mode="parameters" role="tab" aria-selected="true" aria-controls="patient-register-panel-parameters">Par&aacute;metros</button>
+                <button id="patient-register-tab-history" type="button" data-register-view-mode="history" role="tab" aria-selected="false" aria-controls="patient-register-panel-history" tabindex="-1">Historial cl&iacute;nico</button>
+              </nav>
+
+              <div class="patient-register-segmented patient-health-parameter-switch" data-register-filter-switch role="tablist" aria-label="Vista de Registro r&aacute;pido">
+                <button class="is-active" type="button" data-register-filter-view="favorites" role="tab" aria-selected="true">
+                  <span aria-hidden="true">&#9733;</span>
+                  Favoritos
+                </button>
+                <button type="button" data-register-filter-view="all" role="tab" aria-selected="false">Todos</button>
+              </div>
+
+              <div class="patient-register-view-stage" data-register-view-stage>
+              <section class="patient-register-view-panel" id="patient-register-panel-history" data-register-view-panel="history" role="tabpanel" aria-labelledby="patient-register-tab-history" aria-hidden="true" inert>
               <section class="patient-register-history-selector" aria-labelledby="patient-register-history-title">
-                <h3 id="patient-register-history-title">Historial Cl&iacute;nico</h3>
+                <h3 class="patient-register-visually-hidden" id="patient-register-history-title">Historial Cl&iacute;nico</h3>
                 <div class="patient-register-history-carousel" data-register-history-carousel aria-label="Categor&iacute;as del historial cl&iacute;nico">
-                  <button class="is-consultation" type="button" data-register-history-category="consultation" aria-pressed="false" aria-expanded="false" aria-controls="patient-register-history-composer"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/history-icons/consultation.png?v=20260827-history-icons" alt="" loading="lazy"></span><b>Consulta m&eacute;dica</b></button>
-                  <button class="is-laboratory" type="button" data-register-history-category="laboratory" aria-pressed="false" aria-expanded="false" aria-controls="patient-register-history-composer"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/history-icons/laboratory.png?v=20260827-history-icons" alt="" loading="lazy"></span><b>An&aacute;lisis de laboratorio</b></button>
-                  <button class="is-study" type="button" data-register-history-category="study" aria-pressed="false" aria-expanded="false" aria-controls="patient-register-history-composer"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/history-icons/studies.png?v=20260827-history-icons" alt="" loading="lazy"></span><b>Estudios</b></button>
-                  <button class="is-prescription" type="button" data-register-history-category="prescription" aria-pressed="false" aria-expanded="false" aria-controls="patient-register-history-composer"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/history-icons/prescriptions.png?v=20260827-history-icons" alt="" loading="lazy"></span><b>Recetas</b></button>
-                  <button class="is-hospitalization" type="button" data-register-history-category="hospitalization" aria-pressed="false" aria-expanded="false" aria-controls="patient-register-history-composer"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/history-icons/hospitalization.png?v=20260827-history-icons" alt="" loading="lazy"></span><b>Hospitalizaci&oacute;n</b></button>
-                  <button class="is-vaccine" type="button" data-register-history-category="vaccine" aria-pressed="false" aria-expanded="false" aria-controls="patient-register-history-composer"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/history-icons/vaccines.png?v=20260827-history-icons" alt="" loading="lazy"></span><b>Vacunas</b></button>
-                  <button class="is-manual" type="button" data-register-history-category="manual" aria-pressed="false" aria-expanded="false" aria-controls="patient-register-history-composer"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/history-icons/manual-register.png?v=20260827-history-icons" alt="" loading="lazy"></span><b>Registro manual</b></button>
+                  <div class="patient-register-history-card" data-register-history-card="consultation"><button class="is-consultation" type="button" data-register-history-category="consultation" aria-pressed="false" aria-expanded="false" aria-controls="patient-register-history-composer"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/history-icons/consultation.png?v=20260827-history-icons" alt="" loading="lazy"></span><b>Consulta m&eacute;dica</b></button><button class="patient-register-history-favorite" type="button" data-register-history-favorite="consultation" aria-label="Agregar Consulta m&eacute;dica a favoritos" aria-pressed="false" title="Agregar a favoritos">&#9734;</button></div>
+                  <div class="patient-register-history-card" data-register-history-card="laboratory"><button class="is-laboratory" type="button" data-register-history-category="laboratory" aria-pressed="false" aria-expanded="false" aria-controls="patient-register-history-composer"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/history-icons/laboratory.png?v=20260827-history-icons" alt="" loading="lazy"></span><b>An&aacute;lisis de laboratorio</b></button><button class="patient-register-history-favorite" type="button" data-register-history-favorite="laboratory" aria-label="Agregar An&aacute;lisis de laboratorio a favoritos" aria-pressed="false" title="Agregar a favoritos">&#9734;</button></div>
+                  <div class="patient-register-history-card" data-register-history-card="study"><button class="is-study" type="button" data-register-history-category="study" aria-pressed="false" aria-expanded="false" aria-controls="patient-register-history-composer"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/history-icons/studies.png?v=20260827-history-icons" alt="" loading="lazy"></span><b>Estudios</b></button><button class="patient-register-history-favorite" type="button" data-register-history-favorite="study" aria-label="Agregar Estudios a favoritos" aria-pressed="false" title="Agregar a favoritos">&#9734;</button></div>
+                  <div class="patient-register-history-card" data-register-history-card="prescription"><button class="is-prescription" type="button" data-register-history-category="prescription" aria-pressed="false" aria-expanded="false" aria-controls="patient-register-history-composer"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/history-icons/prescriptions.png?v=20260827-history-icons" alt="" loading="lazy"></span><b>Recetas</b></button><button class="patient-register-history-favorite" type="button" data-register-history-favorite="prescription" aria-label="Agregar Recetas a favoritos" aria-pressed="false" title="Agregar a favoritos">&#9734;</button></div>
+                  <div class="patient-register-history-card" data-register-history-card="hospitalization"><button class="is-hospitalization" type="button" data-register-history-category="hospitalization" aria-pressed="false" aria-expanded="false" aria-controls="patient-register-history-composer"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/history-icons/hospitalization.png?v=20260827-history-icons" alt="" loading="lazy"></span><b>Hospitalizaci&oacute;n</b></button><button class="patient-register-history-favorite" type="button" data-register-history-favorite="hospitalization" aria-label="Agregar Hospitalizaci&oacute;n a favoritos" aria-pressed="false" title="Agregar a favoritos">&#9734;</button></div>
+                  <div class="patient-register-history-card" data-register-history-card="vaccine"><button class="is-vaccine" type="button" data-register-history-category="vaccine" aria-pressed="false" aria-expanded="false" aria-controls="patient-register-history-composer"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/history-icons/vaccines.png?v=20260827-history-icons" alt="" loading="lazy"></span><b>Vacunas</b></button><button class="patient-register-history-favorite" type="button" data-register-history-favorite="vaccine" aria-label="Agregar Vacunas a favoritos" aria-pressed="false" title="Agregar a favoritos">&#9734;</button></div>
+                  <div class="patient-register-history-card" data-register-history-card="manual"><button class="is-manual" type="button" data-register-history-category="manual" aria-pressed="false" aria-expanded="false" aria-controls="patient-register-history-composer"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/history-icons/manual-register.png?v=20260827-history-icons" alt="" loading="lazy"></span><b>Registro manual</b></button><button class="patient-register-history-favorite" type="button" data-register-history-favorite="manual" aria-label="Agregar Registro manual a favoritos" aria-pressed="false" title="Agregar a favoritos">&#9734;</button></div>
                 </div>
+                <p class="patient-register-history-empty" data-register-history-empty hidden>No hay categor&iacute;as favoritas.</p>
                 <section class="patient-register-history-composer" id="patient-register-history-composer" data-register-history-composer aria-live="polite" hidden>
-                  <header>
-                    <span class="patient-register-history-composer-icon" data-register-history-composer-icon aria-hidden="true">♧</span>
+                  <header class="patient-register-selected-metric">
+                    <span class="patient-register-selected-icon patient-register-history-composer-icon" data-register-history-composer-icon aria-hidden="true">♧</span>
                     <div>
                       <h4 data-register-history-composer-title>Consulta m&eacute;dica</h4>
                       <p class="patient-register-visually-hidden" data-register-history-composer-description>Registra tu consulta m&eacute;dica</p>
@@ -1508,15 +1524,20 @@
                         <circle cx="12" cy="13" r="3.5"></circle>
                       </svg>
                     </button>
+                    <button class="patient-register-history-photo patient-register-file-button" type="button" data-register-history-file-pick aria-label="Adjuntar archivo" title="Adjuntar archivo">
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21.4 11.1-9.2 9.2a6 6 0 0 1-8.5-8.5l9.2-9.2a4 4 0 0 1 5.7 5.7l-9.2 9.2a2 2 0 0 1-2.8-2.8l8.5-8.5"></path></svg>
+                      <span>Adjuntar archivo</span>
+                    </button>
                     <button class="patient-register-history-submit" type="button" data-register-history-submit>
                       <span>Guardar</span>
                     </button>
                   </div>
                   <input type="file" accept="image/*" capture="environment" data-register-history-photo-input hidden>
-                  <small class="patient-register-history-photo-name" data-register-history-photo-name hidden></small>
+                  <input type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.pdf,.doc,.docx" data-register-history-file-input hidden>
                   <section class="patient-register-image-preview patient-register-history-image-preview" data-register-history-photo-preview hidden>
-                    <img src="" alt="Imagen adjunta al historial cl&iacute;nico" data-register-history-photo-preview-image>
-                    <button type="button" data-register-history-photo-clear aria-label="Eliminar imagen adjunta">×</button>
+                    <img src="" alt="Imagen adjunta al historial cl&iacute;nico" data-register-history-photo-preview-image hidden>
+                    <span class="patient-register-history-file-type" data-register-history-file-type hidden>PDF</span>
+                    <button type="button" data-register-history-photo-clear aria-label="Quitar archivo adjunto">×</button>
                     <small data-register-history-photo-preview-name></small>
                   </section>
                   <p class="patient-register-history-feedback" data-register-history-feedback hidden></p>
@@ -1531,16 +1552,10 @@
                   </div>
                 </section>
               </section>
+              </section>
 
-              <h2 class="patient-register-main-title" id="patient-register-title">Par&aacute;metros</h2>
-
-              <div class="patient-register-segmented" data-register-metric-switch role="tablist" aria-label="Vista de par&aacute;metros">
-                <button class="is-active" type="button" data-register-metric-view="favorites" role="tab" aria-selected="true">
-                  <span aria-hidden="true">&#9733;</span>
-                  Favoritos
-                </button>
-                <button type="button" data-register-metric-view="all" role="tab" aria-selected="false">Todos</button>
-              </div>
+              <section class="patient-register-view-panel is-active" id="patient-register-panel-parameters" data-register-view-panel="parameters" role="tabpanel" aria-labelledby="patient-register-tab-parameters">
+              <h2 class="patient-register-main-title patient-register-visually-hidden" id="patient-register-title">Par&aacute;metros</h2>
 
               <div class="patient-register-metric-stage" data-register-metric-stage>
                 <section class="patient-register-option-block patient-register-option-block-favorites is-active" data-register-metric-section="favorites" aria-hidden="false">
@@ -1595,11 +1610,16 @@
                         <circle cx="12" cy="13" r="3.5"></circle>
                       </svg>
                     </button>
+                    <button class="patient-register-history-photo patient-register-file-button" type="button" data-register-file-pick aria-label="Adjuntar archivo" title="Adjuntar archivo">
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21.4 11.1-9.2 9.2a6 6 0 0 1-8.5-8.5l9.2-9.2a4 4 0 0 1 5.7 5.7l-9.2 9.2a2 2 0 0 1-2.8-2.8l8.5-8.5"></path></svg>
+                      <span>Adjuntar archivo</span>
+                    </button>
                     <button class="patient-register-primary patient-register-parameter-submit" type="submit">
                       <span>Guardar</span>
                     </button>
                   </div>
                   <input type="file" accept="image/*" capture="environment" name="attachment" data-register-attachment-input hidden>
+                  <input type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.pdf,.doc,.docx" data-register-file-input hidden>
                   <section class="patient-register-uploaded-card" data-register-uploaded hidden>
                     <div class="patient-register-uploaded-file">
                       <span class="patient-register-file-type" data-register-file-type>PDF</span>
@@ -1607,8 +1627,8 @@
                         <img src="" alt="Imagen adjunta al registro" data-register-uploaded-preview-image>
                       </span>
                       <div>
-                        <b>Fotograf&iacute;a cargada</b>
-                        <strong data-register-file-name>Fotograf&iacute;a cargada</strong>
+                        <b>Archivo seleccionado</b>
+                        <strong data-register-file-name>Archivo seleccionado</strong>
                         <small data-register-file-size></small>
                       </div>
                       <button type="button" data-register-attachment-clear aria-label="Eliminar archivo">
@@ -1623,8 +1643,8 @@
                     </div>
                     <div class="patient-register-uploaded-status">
                       <span aria-hidden="true">✓</span>
-                      <strong>Fotograf&iacute;a cargada correctamente</strong>
-                      <button type="button" data-register-attachment-change>Cambiar fotograf&iacute;a</button>
+                      <strong>Listo para guardar</strong>
+                      <button type="button" data-register-attachment-change>Cambiar archivo</button>
                     </div>
                   </section>
                   <section class="patient-register-transcript-card" data-register-transcript-card hidden>
@@ -1667,6 +1687,8 @@
                   <button type="button" data-register-saved-new>Nuevo registro</button>
                 </div>
               </section>
+              </section>
+              </div>
               <dialog class="patient-register-image-dialog" data-register-image-dialog aria-labelledby="patient-register-image-title">
                 <div class="patient-register-image-sheet">
                   <header>
@@ -1855,7 +1877,11 @@
   };
   const profilePanelStorageKey = @json('drsam_patient_profile_panel_'.$patient->id);
   const registerStorageBaseKey = @json('drsam_patient_manual_records_'.$patient->id);
+  const registerAttachmentUploadUrl = @json(route('patient.register_attachments.store'));
+  const registerAttachmentDownloadTemplate = @json(route('patient.register_attachments.download', ['document' => '__DOCUMENT__']));
+  const registerAttachmentCsrfToken = @json(csrf_token());
   const registerFavoriteStorageBaseKey = @json('drsam_patient_register_favorites_'.$patient->id);
+  const registerHistoryFavoriteStorageBaseKey = @json('drsam_patient_register_history_favorites_'.$patient->id);
   const historyFavoriteStorageBaseKey = @json('drsam_patient_history_favorites_'.$patient->id);
   const aiChatStorageBaseKey = @json('drsam_patient_ai_chat_'.$patient->id);
   const communitiesStorageBaseKey = @json('drsam_patient_communities_'.$patient->id);
@@ -1909,6 +1935,7 @@
     ensurePrimaryScopedStorage(registerFavoriteStorageBaseKey, key);
     return key;
   };
+  const activeRegisterHistoryFavoriteStorageKey = () => scopedStorageKey(registerHistoryFavoriteStorageBaseKey);
   const activeHistoryFavoriteStorageKey = () => scopedStorageKey(historyFavoriteStorageBaseKey);
   const activeAiChatStorageKey = () => {
     const key = scopedStorageKey(aiChatStorageBaseKey);
@@ -1927,6 +1954,7 @@
     [
       registerStorageBaseKey,
       registerFavoriteStorageBaseKey,
+      registerHistoryFavoriteStorageBaseKey,
       historyFavoriteStorageBaseKey,
       aiChatStorageBaseKey,
       communitiesStorageBaseKey,
@@ -1998,8 +2026,11 @@
   const registerForm = document.querySelector('[data-register-form]');
   const registerOptions = document.querySelector('[data-register-options]');
   const registerFavorites = document.querySelector('[data-register-favorites]');
-  const registerMetricSwitch = portal.querySelector('[data-register-metric-switch]');
-  const registerMetricViewButtons = [...portal.querySelectorAll('[data-register-metric-view]')];
+  const registerViewSwitch = portal.querySelector('[data-register-view-switch]');
+  const registerViewButtons = [...portal.querySelectorAll('[data-register-view-mode]')];
+  const registerViewPanels = [...portal.querySelectorAll('[data-register-view-panel]')];
+  const registerFilterSwitch = portal.querySelector('[data-register-filter-switch]');
+  const registerFilterViewButtons = [...portal.querySelectorAll('[data-register-filter-view]')];
   const registerMetricSections = [...portal.querySelectorAll('[data-register-metric-section]')];
   const healthViewSwitch = portal.querySelector('[data-health-view-switch]');
   const healthViewButtons = [...portal.querySelectorAll('[data-health-view-mode]')];
@@ -2024,6 +2055,7 @@
   const registerMetricInput = document.querySelector('[data-register-metric-input]');
   const registerHistoryCategoryInput = document.querySelector('[data-register-history-category-input]');
   const registerHistoryCarousel = portal.querySelector('[data-register-history-carousel]');
+  const registerHistoryEmpty = portal.querySelector('[data-register-history-empty]');
   const registerHistoryComposer = portal.querySelector('[data-register-history-composer]');
   const registerHistoryComposerIcon = portal.querySelector('[data-register-history-composer-icon]');
   const registerHistoryComposerTitle = portal.querySelector('[data-register-history-composer-title]');
@@ -2039,10 +2071,12 @@
   const registerHistoryCollapse = portal.querySelector('[data-register-history-collapse]');
   const registerHistoryPhotoPick = portal.querySelector('[data-register-history-photo-pick]');
   const registerHistoryPhotoInput = portal.querySelector('[data-register-history-photo-input]');
-  const registerHistoryPhotoName = portal.querySelector('[data-register-history-photo-name]');
+  const registerHistoryFilePick = portal.querySelector('[data-register-history-file-pick]');
+  const registerHistoryFileInput = portal.querySelector('[data-register-history-file-input]');
   const registerHistoryPhotoPreview = portal.querySelector('[data-register-history-photo-preview]');
   const registerHistoryPhotoPreviewImage = portal.querySelector('[data-register-history-photo-preview-image]');
   const registerHistoryPhotoPreviewName = portal.querySelector('[data-register-history-photo-preview-name]');
+  const registerHistoryFileType = portal.querySelector('[data-register-history-file-type]');
   const registerHistoryPhotoClear = portal.querySelector('[data-register-history-photo-clear]');
   const registerHistorySubmit = portal.querySelector('[data-register-history-submit]');
   const registerHistoryFeedback = portal.querySelector('[data-register-history-feedback]');
@@ -2055,6 +2089,8 @@
   const registerNotesCount = document.querySelector('[data-register-notes-count]');
   const registerAttachmentPick = document.querySelector('[data-register-attachment-pick]');
   const registerAttachmentInput = document.querySelector('[data-register-attachment-input]');
+  const registerFilePick = document.querySelector('[data-register-file-pick]');
+  const registerFileInput = document.querySelector('[data-register-file-input]');
   const registerAttachmentName = document.querySelector('[data-register-attachment-name]');
   const registerUploadedCard = document.querySelector('[data-register-uploaded]');
   const registerUploadedFileName = document.querySelector('[data-register-file-name]');
@@ -2370,6 +2406,18 @@
   let registerFavoriteMetrics = loadRegisterFavorites();
   const saveRegisterFavorites = () => {
     localStorage.setItem(activeRegisterFavoriteStorageKey(), JSON.stringify(registerFavoriteMetrics));
+  };
+  const normalizeRegisterHistoryFavorites = values => [...new Set((Array.isArray(values) ? values : []).filter(key => registerAttachmentCategoryConfig[key]))];
+  const loadRegisterHistoryFavorites = () => {
+    try {
+      return normalizeRegisterHistoryFavorites(JSON.parse(localStorage.getItem(activeRegisterHistoryFavoriteStorageKey()) || '[]'));
+    } catch (error) {
+      return [];
+    }
+  };
+  let registerFavoriteHistoryCategories = loadRegisterHistoryFavorites();
+  const saveRegisterHistoryFavorites = () => {
+    localStorage.setItem(activeRegisterHistoryFavoriteStorageKey(), JSON.stringify(registerFavoriteHistoryCategories));
   };
   const healthMetricOrder = [
     'water',
@@ -2955,31 +3003,27 @@
     const max = Number(registerHistoryNotesInput.getAttribute('maxlength')) || 1000;
     registerHistoryNotesCount.textContent = `${registerHistoryNotesInput.value.length}/${max}`;
   };
-  const setRegisterHistoryPhoto = file => {
+  let registerHistoryAttachmentFile = null;
+  const setRegisterHistoryAttachment = file => {
+    registerHistoryAttachmentFile = file || null;
     if (registerHistoryPhotoPreviewUrl) {
       URL.revokeObjectURL(registerHistoryPhotoPreviewUrl);
       registerHistoryPhotoPreviewUrl = '';
     }
-    if (!file) {
-      if (registerHistoryPhotoName) {
-        registerHistoryPhotoName.hidden = true;
-        registerHistoryPhotoName.textContent = '';
-      }
-      if (registerHistoryPhotoPreview) registerHistoryPhotoPreview.hidden = true;
-      if (registerHistoryPhotoPreviewImage) registerHistoryPhotoPreviewImage.src = '';
-      if (registerHistoryPhotoPreviewName) registerHistoryPhotoPreviewName.textContent = '';
-      return;
+    const isImage = Boolean(file?.type.startsWith('image/'));
+    if (registerHistoryPhotoPreview) registerHistoryPhotoPreview.hidden = !file;
+    if (registerHistoryPhotoPreviewImage) {
+      registerHistoryPhotoPreviewImage.hidden = !isImage;
+      registerHistoryPhotoPreviewImage.src = '';
     }
-    const hasVisualPreview = Boolean(registerHistoryPhotoPreview && registerHistoryPhotoPreviewImage && file.type.startsWith('image/'));
-    if (registerHistoryPhotoName) {
-      registerHistoryPhotoName.hidden = hasVisualPreview;
-      registerHistoryPhotoName.textContent = file.name;
+    if (registerHistoryFileType) {
+      registerHistoryFileType.hidden = !file || isImage;
+      registerHistoryFileType.textContent = file ? registerAttachmentType(file) : '';
     }
-    if (registerHistoryPhotoPreview) registerHistoryPhotoPreview.hidden = !hasVisualPreview;
-    if (hasVisualPreview) {
+    if (registerHistoryPhotoPreviewName) registerHistoryPhotoPreviewName.textContent = file?.name || '';
+    if (isImage && registerHistoryPhotoPreviewImage) {
       registerHistoryPhotoPreviewUrl = URL.createObjectURL(file);
       registerHistoryPhotoPreviewImage.src = registerHistoryPhotoPreviewUrl;
-      if (registerHistoryPhotoPreviewName) registerHistoryPhotoPreviewName.textContent = file.name;
     }
   };
   const setRegisterHistoryFeedback = (message, type = 'success') => {
@@ -3018,7 +3062,8 @@
     if (registerHistoryProviderInput) registerHistoryProviderInput.value = '';
     if (registerHistoryDateInput) registerHistoryDateInput.value = registerDateValue();
     if (registerHistoryPhotoInput) registerHistoryPhotoInput.value = '';
-    setRegisterHistoryPhoto(null);
+    if (registerHistoryFileInput) registerHistoryFileInput.value = '';
+    setRegisterHistoryAttachment(null);
     if (registerHistoryFeedback) registerHistoryFeedback.hidden = true;
     updateRegisterHistoryManualCount();
     updateRegisterHistoryNotesCount();
@@ -3064,6 +3109,57 @@
       button.setAttribute('aria-pressed', 'false');
       button.setAttribute('aria-expanded', 'false');
     });
+  };
+  const registerFilterViews = { parameters: 'favorites', history: 'all' };
+  let activeRegisterSection = 'parameters';
+  const syncRegisterFilterSwitch = () => {
+    const activeView = registerFilterViews[activeRegisterSection];
+    registerFilterSwitch?.setAttribute('aria-label', activeRegisterSection === 'history' ? 'Vista de historial clínico' : 'Vista de parámetros');
+    registerFilterViewButtons.forEach(button => {
+      const active = button.dataset.registerFilterView === activeView;
+      button.classList.toggle('is-active', active);
+      button.setAttribute('aria-selected', active ? 'true' : 'false');
+      button.setAttribute('tabindex', active ? '0' : '-1');
+    });
+  };
+  const syncRegisterHistoryCategories = () => {
+    const favorites = new Set(registerFavoriteHistoryCategories);
+    let visibleCount = 0;
+    registerHistoryCarousel?.querySelectorAll('[data-register-history-card]').forEach(card => {
+      const key = card.dataset.registerHistoryCard;
+      const favorite = favorites.has(key);
+      card.hidden = registerFilterViews.history === 'favorites' && !favorite;
+      if (!card.hidden) visibleCount += 1;
+      const button = card.querySelector('[data-register-history-favorite]');
+      if (!button) return;
+      const label = registerAttachmentCategoryConfig[key]?.label || 'Categoría';
+      button.classList.toggle('is-favorite', favorite);
+      button.setAttribute('aria-pressed', favorite ? 'true' : 'false');
+      button.setAttribute('aria-label', `${favorite ? 'Quitar' : 'Agregar'} ${label} ${favorite ? 'de' : 'a'} favoritos`);
+      button.setAttribute('title', favorite ? 'Quitar de favoritos' : 'Agregar a favoritos');
+      button.innerHTML = favorite ? '&#9733;' : '&#9734;';
+    });
+    if (registerHistoryEmpty) registerHistoryEmpty.hidden = visibleCount > 0;
+  };
+  const setRegisterHistoryView = (view = 'all', options = {}) => {
+    registerFilterViews.history = view === 'favorites' ? 'favorites' : 'all';
+    if (options.hideSaved !== false) hideRegisterSavedScreens();
+    if (registerFilterViews.history === 'favorites' && isRegisterHistoryComposerVisible() && !registerFavoriteHistoryCategories.includes(getRegisterHistoryCategoryKey())) {
+      hideRegisterHistoryComposer();
+    }
+    syncRegisterHistoryCategories();
+    if (activeRegisterSection === 'history') syncRegisterFilterSwitch();
+  };
+  const toggleRegisterHistoryFavorite = key => {
+    if (!registerAttachmentCategoryConfig[key]) return;
+    registerFavoriteHistoryCategories = registerFavoriteHistoryCategories.includes(key)
+      ? registerFavoriteHistoryCategories.filter(item => item !== key)
+      : [...registerFavoriteHistoryCategories, key];
+    saveRegisterHistoryFavorites();
+    if (registerFilterViews.history === 'favorites' && !registerFavoriteHistoryCategories.includes(key) && isRegisterHistoryComposerVisible() && getRegisterHistoryCategoryKey() === key) {
+      hideRegisterHistoryComposer();
+    }
+    syncRegisterHistoryCategories();
   };
   const toggleRegisterHistoryComposer = categoryKey => {
     if (categoryKey === getRegisterHistoryCategoryKey() && isRegisterHistoryComposerVisible()) {
@@ -3152,13 +3248,8 @@
   };
   const setRegisterMetricView = (view = 'favorites', options = {}) => {
     const activeView = view === 'all' ? 'all' : 'favorites';
+    registerFilterViews.parameters = activeView;
     if (options.hideSaved !== false) hideRegisterSavedScreens();
-    registerMetricViewButtons.forEach(button => {
-      const isActive = button.dataset.registerMetricView === activeView;
-      button.classList.toggle('is-active', isActive);
-      button.setAttribute('aria-selected', isActive ? 'true' : 'false');
-      button.setAttribute('tabindex', isActive ? '0' : '-1');
-    });
     registerMetricSections.forEach(section => {
       const isActive = section.dataset.registerMetricSection === activeView;
       section.classList.toggle('is-active', isActive);
@@ -3166,6 +3257,25 @@
     });
     if (options.hidePanel !== false) hideRegisterMetricPanel({ sync: false });
     syncRegisterActiveButtons();
+    if (activeRegisterSection === 'parameters') syncRegisterFilterSwitch();
+  };
+  const setRegisterSection = (section = 'parameters') => {
+    const activeSection = section === 'history' ? 'history' : 'parameters';
+    activeRegisterSection = activeSection;
+    if (registerViewSwitch) registerViewSwitch.dataset.activeView = activeSection;
+    registerViewButtons.forEach(button => {
+      const active = button.dataset.registerViewMode === activeSection;
+      button.classList.toggle('is-active', active);
+      button.setAttribute('aria-selected', active ? 'true' : 'false');
+      button.setAttribute('tabindex', active ? '0' : '-1');
+    });
+    registerViewPanels.forEach(panel => {
+      const active = panel.dataset.registerViewPanel === activeSection;
+      panel.classList.toggle('is-active', active);
+      panel.setAttribute('aria-hidden', active ? 'false' : 'true');
+      panel.toggleAttribute('inert', !active);
+    });
+    syncRegisterFilterSwitch();
   };
   const showRegisterMetricPanel = (type, options = {}) => {
     if (!registerMetricConfig[type]) return;
@@ -3228,6 +3338,25 @@
     });
     localStorage.setItem(activeRegisterStorageKey(), JSON.stringify(records));
   };
+  const uploadRegisterAttachment = async (file, recordId, category) => {
+    if (!file) return null;
+    const body = new FormData();
+    body.append('file', file);
+    body.append('record_id', String(recordId));
+    body.append('profile_id', getActivePatientProfileId());
+    body.append('category', category);
+    const response = await fetch(registerAttachmentUploadUrl, {
+      method: 'POST',
+      headers: { 'X-CSRF-TOKEN': registerAttachmentCsrfToken, Accept: 'application/json' },
+      credentials: 'same-origin',
+      body,
+    });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok || !Number.isSafeInteger(Number(result.document_id)) || Number(result.document_id) < 1) {
+      throw new Error('No se pudo guardar el archivo. Usa PDF, imagen o Word de hasta 10 MB.');
+    }
+    return Number(result.document_id);
+  };
   const updateRegisterNotesCount = () => {
     if (!registerNotesInput || !registerNotesCount) return;
     registerNotesCount.textContent = `${registerNotesInput.value.length}/2000`;
@@ -3238,8 +3367,14 @@
     if (size >= 1024) return `${Math.max(1, Math.round(size / 1024))} KB`;
     return `${size} B`;
   };
+  const registerAttachmentType = file => {
+    if (file?.type.startsWith('image/')) return 'IMG';
+    const extension = String(file?.name || '').split('.').pop().toUpperCase();
+    return /^[A-Z0-9]{2,4}$/.test(extension) ? extension : 'FILE';
+  };
   let registerHistoryPhotoPreviewUrl = '';
   let registerAttachmentPreviewUrl = '';
+  let registerParameterAttachmentFile = null;
   let pendingRegisterImageTarget = '';
   let pendingRegisterImageFile = null;
   const buildRegisterTranscript = (file, context = 'parameter') => {
@@ -3297,13 +3432,13 @@
     if (editing) registerTranscriptInput.focus({ preventScroll: true });
   };
   const setRegisterAttachmentState = (file, options = {}) => {
+    registerParameterAttachmentFile = file || null;
     const hasFile = Boolean(file);
     const shouldTranscribe = Boolean(options.transcribe);
     if (registerAttachmentPreviewUrl) {
       URL.revokeObjectURL(registerAttachmentPreviewUrl);
       registerAttachmentPreviewUrl = '';
     }
-    if (registerAttachmentPick) registerAttachmentPick.hidden = hasFile;
     if (registerUploadedCard) registerUploadedCard.hidden = !hasFile;
     if (registerTranscriptCard) registerTranscriptCard.hidden = !hasFile || !shouldTranscribe;
     if (registerAttachmentCategoryWrap) registerAttachmentCategoryWrap.hidden = true;
@@ -3321,17 +3456,17 @@
       setRegisterTranscriptEditing(false);
       return;
     }
-    const isPdf = file.type === 'application/pdf' || /\.pdf$/i.test(file.name);
+    const isImage = file.type.startsWith('image/');
     if (registerAttachmentName) registerAttachmentName.textContent = file.name;
     if (registerUploadedFileName) registerUploadedFileName.textContent = file.name;
     if (registerUploadedFileSize) registerUploadedFileSize.textContent = formatRegisterFileSize(file.size);
     if (registerUploadedFileType) {
-      registerUploadedFileType.textContent = isPdf ? 'PDF' : 'IMG';
-      registerUploadedFileType.classList.toggle('is-image', !isPdf);
-      registerUploadedFileType.hidden = !isPdf && Boolean(registerUploadedPreview && registerUploadedPreviewImage);
+      registerUploadedFileType.textContent = registerAttachmentType(file);
+      registerUploadedFileType.classList.toggle('is-image', isImage);
+      registerUploadedFileType.hidden = isImage && Boolean(registerUploadedPreview && registerUploadedPreviewImage);
     }
     if (registerUploadedPreview && registerUploadedPreviewImage) {
-      const showPreview = !isPdf && file.type.startsWith('image/');
+      const showPreview = isImage;
       registerUploadedPreview.hidden = !showPreview;
       if (showPreview) {
         registerAttachmentPreviewUrl = URL.createObjectURL(file);
@@ -3367,8 +3502,6 @@
     if (shouldDiscardSelectedFile) {
       const input = registerImageInputForTarget(pendingRegisterImageTarget);
       if (input) input.value = '';
-      if (pendingRegisterImageTarget === 'history') setRegisterHistoryPhoto(null);
-      if (pendingRegisterImageTarget === 'parameter') setRegisterAttachmentState(null);
     }
     if (options.clearPending !== false) resetPendingRegisterImage();
     registerImageDialog?.close();
@@ -3407,7 +3540,8 @@
     if (!file || !target) return;
     const shouldTranscribe = action === 'transcribe';
     if (target === 'history') {
-      setRegisterHistoryPhoto(file);
+      if (registerHistoryFileInput) registerHistoryFileInput.value = '';
+      setRegisterHistoryAttachment(file);
       if (shouldTranscribe) {
         const transcript = buildRegisterTranscript(file, 'history');
         appendRegisterText(registerHistoryNotesInput, transcript);
@@ -3417,8 +3551,10 @@
         setRegisterHistoryFeedback('Imagen agregada como archivo adjunto.');
       }
     } else {
+      if (registerFileInput) registerFileInput.value = '';
       setRegisterAttachmentState(file, { transcribe: shouldTranscribe });
       if (registerSuccess) {
+        registerSuccess.classList.remove('is-error');
         registerSuccess.textContent = shouldTranscribe ? 'Texto transcrito desde la imagen.' : 'Imagen agregada como archivo adjunto.';
         registerSuccess.hidden = false;
       }
@@ -3492,6 +3628,10 @@
           const attachmentCategoryKey = record.attachmentCategory || record.historyCategory || 'manual';
           const attachmentCategory = registerAttachmentCategoryConfig[attachmentCategoryKey] || category || registerAttachmentCategoryConfig.manual;
           const transcript = String(record.attachmentTranscript || '').trim();
+          const documentId = Number(record.attachmentDocumentId);
+          const downloadLink = Number.isSafeInteger(documentId) && documentId > 0
+            ? `<a class="patient-history-attachment-download" href="${escapeManualHistoryText(registerAttachmentDownloadTemplate.replace('__DOCUMENT__', String(documentId)))}">Descargar archivo</a>`
+            : '';
           const attachmentRow = document.createElement('tr');
           attachmentRow.dataset.historyRow = attachmentCategory.historyFilter;
           attachmentRow.dataset.historyManualRow = '1';
@@ -3502,7 +3642,7 @@
             <td><div class="patient-history-origin"><span>◇</span><strong>Registro manual</strong></div></td>
             <td><div class="patient-history-service"><span>▣</span><strong>${escapeManualHistoryText(attachmentCategory.service)}</strong></div></td>
             <td><strong>${escapeManualHistoryText(attachment)}</strong>${transcript ? `<p class="patient-history-manual-note patient-history-manual-transcript">${escapeManualHistoryText(transcript)}</p>` : ''}</td>
-            <td><div class="patient-history-manual-evidence"><span>▣</span><div><strong>Archivo cargado</strong><p>${escapeManualHistoryText(attachment)}</p><small>Transcripcion automatica revisable.</small></div></div></td>
+            <td><div class="patient-history-manual-evidence"><span>▣</span><div><strong>${downloadLink ? 'Archivo adjunto' : 'Archivo registrado'}</strong><p>${escapeManualHistoryText(attachment)}</p><small>${transcript ? 'Texto asociado al registro.' : 'Sin transcripción.'}</small>${downloadLink}</div></div></td>
           `;
           fragment.appendChild(attachmentRow);
         }
@@ -3897,20 +4037,40 @@
   };
   renderRegisterMetricRows();
   setRegisterMetricView('favorites', { hidePanel: false });
+  setRegisterHistoryView('all', { hideSaved: false });
+  setRegisterSection('parameters');
   hideRegisterHistoryComposer();
-  registerMetricSwitch?.addEventListener('click', event => {
-    const button = event.target.closest('[data-register-metric-view]');
-    if (!button || !registerMetricSwitch.contains(button)) return;
-    setRegisterMetricView(button.dataset.registerMetricView);
+  registerViewSwitch?.addEventListener('click', event => {
+    const button = event.target.closest('[data-register-view-mode]');
+    if (!button || !registerViewSwitch.contains(button)) return;
+    setRegisterSection(button.dataset.registerViewMode);
   });
-  registerMetricSwitch?.addEventListener('keydown', event => {
+  registerViewSwitch?.addEventListener('keydown', event => {
     if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
     event.preventDefault();
-    const currentIndex = registerMetricViewButtons.findIndex(button => button.classList.contains('is-active'));
-    const nextIndex = currentIndex <= 0 ? 1 : 0;
-    const nextButton = registerMetricViewButtons[nextIndex];
+    const currentIndex = registerViewButtons.findIndex(button => button.classList.contains('is-active'));
+    const nextButton = registerViewButtons[currentIndex <= 0 ? 1 : 0];
     if (!nextButton) return;
-    setRegisterMetricView(nextButton.dataset.registerMetricView);
+    setRegisterSection(nextButton.dataset.registerViewMode);
+    nextButton.focus();
+  });
+  const setActiveRegisterFilterView = view => {
+    if (activeRegisterSection === 'history') setRegisterHistoryView(view);
+    else setRegisterMetricView(view);
+  };
+  registerFilterSwitch?.addEventListener('click', event => {
+    const button = event.target.closest('[data-register-filter-view]');
+    if (!button || !registerFilterSwitch.contains(button)) return;
+    setActiveRegisterFilterView(button.dataset.registerFilterView);
+  });
+  registerFilterSwitch?.addEventListener('keydown', event => {
+    if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+    event.preventDefault();
+    const currentIndex = registerFilterViewButtons.findIndex(button => button.classList.contains('is-active'));
+    const nextIndex = currentIndex <= 0 ? 1 : 0;
+    const nextButton = registerFilterViewButtons[nextIndex];
+    if (!nextButton) return;
+    setActiveRegisterFilterView(nextButton.dataset.registerFilterView);
     nextButton.focus();
   });
   setHealthSection('parameters');
@@ -3964,6 +4124,7 @@
 
     registerHistoryCarousel.addEventListener('pointerdown', event => {
       if (event.pointerType === 'mouse' && event.button !== 0) return;
+      if (event.target.closest('[data-register-history-favorite]')) return;
       const button = event.target.closest('[data-register-history-category]');
       if (historyClickBlockTimer) window.clearTimeout(historyClickBlockTimer);
       isHistoryPanning = true;
@@ -4015,6 +4176,13 @@
     });
   }
   registerHistoryCarousel?.addEventListener('click', event => {
+    const favorite = event.target.closest('[data-register-history-favorite]');
+    if (favorite && registerHistoryCarousel.contains(favorite)) {
+      event.preventDefault();
+      historyTapHandled = false;
+      if (!historyClickBlocked && !historyPanMoved) toggleRegisterHistoryFavorite(favorite.dataset.registerHistoryFavorite);
+      return;
+    }
     if (historyTapHandled) {
       historyTapHandled = false;
       return;
@@ -4034,6 +4202,14 @@
   registerHistoryPhotoPick?.addEventListener('click', () => {
     openRegisterImageDialog('history');
   });
+  registerHistoryFilePick?.addEventListener('click', () => registerHistoryFileInput?.click());
+  registerHistoryFileInput?.addEventListener('change', () => {
+    const file = registerHistoryFileInput.files?.[0];
+    if (!file) return;
+    if (registerHistoryPhotoInput) registerHistoryPhotoInput.value = '';
+    setRegisterHistoryAttachment(file);
+    if (registerHistoryFeedback) registerHistoryFeedback.hidden = true;
+  });
   registerHistoryPhotoInput?.addEventListener('change', () => {
     const file = registerHistoryPhotoInput.files && registerHistoryPhotoInput.files[0];
     handleRegisterImageSelection('history', file || null);
@@ -4041,64 +4217,84 @@
   });
   registerHistoryPhotoClear?.addEventListener('click', () => {
     if (registerHistoryPhotoInput) registerHistoryPhotoInput.value = '';
-    setRegisterHistoryPhoto(null);
+    if (registerHistoryFileInput) registerHistoryFileInput.value = '';
+    setRegisterHistoryAttachment(null);
     if (registerHistoryFeedback) registerHistoryFeedback.hidden = true;
   });
-  registerHistorySubmit?.addEventListener('click', () => {
+  registerHistorySubmit?.addEventListener('click', async () => {
     const historyCategoryKey = getRegisterHistoryCategoryKey();
     const historyCategory = registerAttachmentCategoryConfig[historyCategoryKey] || registerAttachmentCategoryConfig.consultation;
     const text = String(registerHistoryManualInput?.value || '').trim();
     const notes = String(registerHistoryNotesInput?.value || '').trim();
     const provider = String(registerHistoryProviderInput?.value || '').trim();
     const recordedAt = registerHistoryDateInput?.value || registerDateValue();
-    const photo = registerHistoryPhotoInput?.files?.[0] || null;
-    if (!text && !notes && !photo) {
-      setRegisterHistoryFeedback('Agrega texto o una imagen antes de guardar.', 'error');
+    const attachment = registerHistoryAttachmentFile;
+    if (!text && !notes && !attachment) {
+      setRegisterHistoryFeedback('Agrega texto o un archivo antes de guardar.', 'error');
       registerHistoryManualInput?.focus({ preventScroll: true });
       return;
     }
     if (registerHistoryDateInput && !registerHistoryDateInput.value) {
       registerHistoryDateInput.value = registerDateValue();
     }
-    const summaryText = text || notes || 'Imagen adjunta';
+    const summaryText = text || notes || 'Archivo adjunto';
     const preview = summaryText.length > 90 ? `${summaryText.slice(0, 87)}...` : summaryText;
-    saveRegisterRecord({
-      id: Date.now(),
-      metricType: 'clinical-history-note',
-      label: historyCategory.label,
-      value: preview,
-      unit: '',
-      recordedAt,
-      notes,
-      historyDetail: text || notes || 'Imagen adjunta',
-      historyCategory: historyCategory.historyFilter,
-      historyCategoryLabel: historyCategory.label,
-      historyCategoryService: historyCategory.service,
-      attachmentName: photo ? photo.name : '',
-      attachmentSize: photo ? photo.size : 0,
-      attachmentTranscript: [text, notes].filter(Boolean).join('\n\n'),
-      attachmentCategory: photo ? historyCategory.historyFilter : '',
-      attachmentCategoryLabel: photo ? historyCategory.label : '',
-      source: provider || historyCategory.defaultSource || 'Registro manual',
-    });
-    renderManualHistoryRecords();
-    resetRegisterHistoryComposerFields();
-    showRegisterSavedScreen('history', { historyCategory: historyCategoryKey });
+    registerHistorySubmit.disabled = true;
+    try {
+      const recordId = Date.now();
+      const documentId = await uploadRegisterAttachment(attachment, recordId, historyCategory.historyFilter);
+      saveRegisterRecord({
+        id: recordId,
+        metricType: 'clinical-history-note',
+        label: historyCategory.label,
+        value: preview,
+        unit: '',
+        recordedAt,
+        notes,
+        historyDetail: text || notes || 'Archivo adjunto',
+        historyCategory: historyCategory.historyFilter,
+        historyCategoryLabel: historyCategory.label,
+        historyCategoryService: historyCategory.service,
+        attachmentName: attachment ? attachment.name : '',
+        attachmentSize: attachment ? attachment.size : 0,
+        attachmentDocumentId: documentId,
+        attachmentTranscript: [text, notes].filter(Boolean).join('\n\n'),
+        attachmentCategory: attachment ? historyCategory.historyFilter : '',
+        attachmentCategoryLabel: attachment ? historyCategory.label : '',
+        source: provider || historyCategory.defaultSource || 'Registro manual',
+      });
+      renderManualHistoryRecords();
+      resetRegisterHistoryComposerFields();
+      showRegisterSavedScreen('history', { historyCategory: historyCategoryKey });
+    } catch (error) {
+      setRegisterHistoryFeedback(error.message || 'No se pudo guardar el registro.', 'error');
+    } finally {
+      registerHistorySubmit.disabled = false;
+    }
   });
   portal.querySelectorAll('[data-register-carousel]').forEach(bindRegisterCarousel);
   registerAttachmentInput?.addEventListener('change', () => {
     const file = registerAttachmentInput.files && registerAttachmentInput.files[0];
     handleRegisterImageSelection('parameter', file || null);
   });
+  registerFilePick?.addEventListener('click', () => registerFileInput?.click());
+  registerFileInput?.addEventListener('change', () => {
+    const file = registerFileInput.files?.[0];
+    if (!file) return;
+    if (registerAttachmentInput) registerAttachmentInput.value = '';
+    setRegisterAttachmentState(file);
+    if (registerSuccess) registerSuccess.hidden = true;
+  });
   registerNotesInput?.addEventListener('input', updateRegisterNotesCount);
   registerAttachmentPick?.addEventListener('click', () => {
     openRegisterImageDialog('parameter');
   });
   registerAttachmentChange?.addEventListener('click', () => {
-    openRegisterImageDialog('parameter');
+    registerFileInput?.click();
   });
   registerAttachmentClear?.addEventListener('click', () => {
     if (registerAttachmentInput) registerAttachmentInput.value = '';
+    if (registerFileInput) registerFileInput.value = '';
     setRegisterAttachmentState(null);
   });
   registerImageDialog?.querySelectorAll('[data-register-image-source]').forEach(button => {
@@ -4120,8 +4316,6 @@
     if (!pendingRegisterImageTarget) return;
     const input = registerImageInputForTarget(pendingRegisterImageTarget);
     if (input) input.value = '';
-    if (pendingRegisterImageFile && pendingRegisterImageTarget === 'history') setRegisterHistoryPhoto(null);
-    if (pendingRegisterImageFile && pendingRegisterImageTarget === 'parameter') setRegisterAttachmentState(null);
     resetPendingRegisterImage();
   });
   registerTranscriptEdit?.addEventListener('click', () => {
@@ -4130,45 +4324,60 @@
   registerAttachmentCategoryInput?.addEventListener('change', () => {
     registerAttachmentCategoryInput.setCustomValidity('');
   });
-  registerForm?.addEventListener('submit', event => {
+  registerForm?.addEventListener('submit', async event => {
     event.preventDefault();
     if (!registerForm.reportValidity()) return;
     const data = new FormData(registerForm);
     const metricType = String(data.get('metricType') || 'water');
     const config = registerMetricConfig[metricType] || registerMetricConfig.water;
     const customMetric = String(data.get('customMetric') || '').trim();
-    const attachment = registerAttachmentInput?.files?.[0];
+    const attachment = registerParameterAttachmentFile;
     const historyCategoryKey = registerAttachmentCategoryConfig[String(data.get('historyCategory') || '')] ? String(data.get('historyCategory')) : 'manual';
     const historyCategory = registerAttachmentCategoryConfig[historyCategoryKey] || registerAttachmentCategoryConfig.manual;
     const attachmentCategoryKey = attachment ? String(data.get('attachmentCategory') || historyCategoryKey) : '';
     registerAttachmentCategoryInput?.setCustomValidity('');
     const attachmentCategory = attachment ? (registerAttachmentCategoryConfig[attachmentCategoryKey] || historyCategory) : null;
-    saveRegisterRecord({
-      id: Date.now(),
-      metricType,
-      label: metricType === 'custom' && customMetric ? customMetric : config.label,
-      value: String(data.get('value') || '').trim(),
-      unit: config.unit,
-      recordedAt: String(data.get('recordedAt') || ''),
-      notes: String(data.get('notes') || '').trim(),
-      historyCategory: historyCategory.historyFilter,
-      historyCategoryLabel: historyCategory.label,
-      historyCategoryService: historyCategory.parameterService || historyCategory.service,
-      attachmentName: attachment ? attachment.name : '',
-      attachmentSize: attachment ? attachment.size : 0,
-      attachmentTranscript: attachment ? String(data.get('attachmentTranscript') || '').trim() : '',
-      attachmentCategory: attachmentCategory ? attachmentCategory.historyFilter : '',
-      attachmentCategoryLabel: attachmentCategory ? attachmentCategory.label : '',
-      source: 'Registro manual',
-    });
-    renderManualHistoryRecords();
-    registerForm.reset();
-    if (registerDateInput) registerDateInput.value = registerDateValue();
-    updateRegisterNotesCount();
-    setRegisterAttachmentState(null);
-    hideRegisterHistoryComposer();
-    selectRegisterMetric(metricType);
-    showRegisterSavedScreen('parameter', { metricType });
+    const submitButton = registerForm.querySelector('.patient-register-parameter-submit');
+    if (submitButton) submitButton.disabled = true;
+    try {
+      const recordId = Date.now();
+      const documentId = await uploadRegisterAttachment(attachment, recordId, attachmentCategory?.historyFilter || historyCategory.historyFilter);
+      saveRegisterRecord({
+        id: recordId,
+        metricType,
+        label: metricType === 'custom' && customMetric ? customMetric : config.label,
+        value: String(data.get('value') || '').trim(),
+        unit: config.unit,
+        recordedAt: String(data.get('recordedAt') || ''),
+        notes: String(data.get('notes') || '').trim(),
+        historyCategory: historyCategory.historyFilter,
+        historyCategoryLabel: historyCategory.label,
+        historyCategoryService: historyCategory.parameterService || historyCategory.service,
+        attachmentName: attachment ? attachment.name : '',
+        attachmentSize: attachment ? attachment.size : 0,
+        attachmentDocumentId: documentId,
+        attachmentTranscript: attachment ? String(data.get('attachmentTranscript') || '').trim() : '',
+        attachmentCategory: attachmentCategory ? attachmentCategory.historyFilter : '',
+        attachmentCategoryLabel: attachmentCategory ? attachmentCategory.label : '',
+        source: 'Registro manual',
+      });
+      renderManualHistoryRecords();
+      registerForm.reset();
+      if (registerDateInput) registerDateInput.value = registerDateValue();
+      updateRegisterNotesCount();
+      setRegisterAttachmentState(null);
+      hideRegisterHistoryComposer();
+      selectRegisterMetric(metricType);
+      showRegisterSavedScreen('parameter', { metricType });
+    } catch (error) {
+      if (registerSuccess) {
+        registerSuccess.textContent = error.message || 'No se pudo guardar el registro.';
+        registerSuccess.classList.add('is-error');
+        registerSuccess.hidden = false;
+      }
+    } finally {
+      if (submitButton) submitButton.disabled = false;
+    }
   });
   registerForm?.addEventListener('reset', () => {
     setTimeout(() => {
@@ -4223,11 +4432,13 @@
     applyActivePatientProfileShell();
     aiConversation = loadAiConversation();
     registerFavoriteMetrics = loadRegisterFavorites();
+    registerFavoriteHistoryCategories = loadRegisterHistoryFavorites();
     const registerFavoriteScroll = registerFavorites?.scrollLeft || 0;
     const registerOptionsScroll = registerOptions?.scrollLeft || 0;
     const healthFavoriteScroll = healthFavorites?.scrollLeft || 0;
     const healthOptionsScroll = healthOptions?.scrollLeft || 0;
     renderRegisterMetricRows();
+    syncRegisterHistoryCategories();
     renderManualHistoryRecords();
     healthDashboardRendered = false;
     renderHealthDashboard();

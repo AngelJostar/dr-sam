@@ -44,6 +44,8 @@
     'medications' => ['pill', 'Medicamentos'],
   ];
   $catalogSections = ['catalog', 'users', 'patients', 'doctors', 'specialties', 'external-pharmacy', 'procedure-areas', 'medications'];
+  $unitFeedbackStatus = $section !== 'medications' ? session('status') : null;
+  $unitFeedbackErrors = $section !== 'medications' && !($section === 'doctors' && old('_doctor_form')) && $errors->any();
   $serviceChoices = ['Nutricion enteral', 'Nutricion parenteral', 'Quimioterapias', 'Hemodinamia', 'Analisis Clinicos', 'Histopatologia', 'Tomografia y resonancia', 'Hemodialisis', 'Mantenimiento', 'RPBI', 'Limpieza', 'Lavanderia', 'Dietas', 'Traslado terrestre y aereo'];
   $areaChoices = [
     'Enfermeria' => 'Seguimiento clinico y operativo del servicio.',
@@ -118,21 +120,6 @@
     </header>
 
     <section class="unit-native-workspace">
-      @if ($section !== 'medications' && session('status'))
-        <div class="notice success">{{ session('status') }}</div>
-      @endif
-
-      @if ($section !== 'medications' && !($section === 'doctors' && old('_doctor_form')) && $errors->any())
-        <div class="notice danger">
-          <strong>No se pudo actualizar.</strong>
-          <ul>
-            @foreach ($errors->all() as $error)
-              <li>{{ $error }}</li>
-            @endforeach
-          </ul>
-        </div>
-      @endif
-
       @if ($section === 'profile')
         <header class="unit-native-header">
           <div>
@@ -414,18 +401,6 @@
                   'name' => $doctor->full_name,
                   'specialty' => $doctor->specialty ?: 'Consulta externa',
                   'license' => $doctor->professional_license ?: 'Sin cedula registrada',
-                  'availability' => $doctor->availabilityRules
-                      ->where('status', 'published')
-                      ->map(fn ($rule) => [
-                          'weekday' => (int) $rule->weekday,
-                          'start' => substr((string) $rule->start_time, 0, 5),
-                          'end' => substr((string) $rule->end_time, 0, 5),
-                          'start_date' => $rule->recurrence_start?->toDateString(),
-                          'end_date' => $rule->recurrence_end?->toDateString(),
-                          'months' => $rule->selected_months ?: range(1, 12),
-                      ])
-                      ->values()
-                      ->all(),
               ])
               ->values();
           $consultationCalendarRoomIds = $consultationCalendarRooms->pluck('id');
@@ -1081,8 +1056,9 @@
                               <label><span>Fecha <b>*</b></span><input type="date" name="appointment_date" required></label>
                               <label><span>Hora <b>*</b></span><input type="time" name="appointment_time" step="1800" required></label>
                               <label>
-                                <span>M&eacute;dico <b>*</b></span>
-                                <select name="doctor_id" required>
+                                <span>M&eacute;dico</span>
+                                <select name="doctor_id">
+                                  <option value="">Pendiente de asignaci&oacute;n</option>
                                   @foreach ($consultationCalendarDoctors as $calendarDoctor)
                                     <option value="{{ $calendarDoctor['id'] }}">{{ $calendarDoctor['name'] }}</option>
                                   @endforeach
@@ -1278,7 +1254,7 @@
                                   </div>
                                   <div class="unit-consultation-details-grid">
                                     <label><span>Especialidad <b>*</b></span><select name="specialty" data-unit-new-field="specialty" required><option value="">Selecciona una especialidad</option>@foreach ($consultationSpecialties as $consultationSpecialty)<option value="{{ $consultationSpecialty }}" @selected(old('specialty') === $consultationSpecialty)>{{ $consultationSpecialty }}</option>@endforeach</select></label>
-                                    <label><span>Profesional de salud <b>*</b></span><select name="doctor_id" data-unit-new-field="doctor_id" data-old-value="{{ old('doctor_id') }}" required disabled><option value="">Selecciona un profesional</option></select></label>
+                                    <label><span>Profesional de salud</span><select name="doctor_id" data-unit-new-field="doctor_id" data-old-value="{{ old('doctor_id') }}" disabled><option value="">Pendiente de asignaci&oacute;n</option></select></label>
                                     <label class="is-wide"><span>Consultorio <b>*</b></span><select name="procedure_area_id" data-unit-new-field="procedure_area_id" required><option value="">Selecciona un consultorio</option>@foreach ($consultationCalendarRooms->where('schedulable', true) as $calendarRoom)<option value="{{ $calendarRoom['id'] }}" @selected((string) old('procedure_area_id') === (string) $calendarRoom['id'])>{{ $calendarRoom['name'] }}</option>@endforeach</select></label>
                                     <label><span>Prioridad <b>*</b></span><select name="priority" data-unit-new-field="priority" required><option value="routine" @selected(old('priority', 'routine') === 'routine')>Rutina</option><option value="urgent" @selected(old('priority') === 'urgent')>Urgente</option></select></label>
                                     <label><span>Duraci&oacute;n <b>*</b></span><select name="duration" data-unit-new-field="duration" required>@foreach ([20, 30, 45, 60] as $duration)<option value="{{ $duration }}" @selected((int) old('duration', 30) === $duration)>{{ $duration }} minutos</option>@endforeach</select></label>
@@ -1302,7 +1278,7 @@
                                   <p class="unit-consultation-timezone">Hora de Ciudad de M&eacute;xico &middot; UTC-6</p>
                                   <div class="unit-consultation-booking-week" data-unit-new-week aria-label="D&iacute;as de la semana"></div>
                                   <div class="unit-consultation-slots-head"><span>Horarios disponibles</span><strong data-unit-new-slot-count>0 opciones</strong></div>
-                                  <div class="unit-consultation-available-slots"><div data-unit-new-slots><p class="unit-consultation-no-slots">Selecciona especialidad, profesional, consultorio y fecha para consultar horarios.</p></div></div>
+                                  <div class="unit-consultation-available-slots"><div data-unit-new-slots><p class="unit-consultation-no-slots">Selecciona especialidad, consultorio y fecha para consultar horarios.</p></div></div>
                                   <label class="unit-consultation-time-select"><span>Hora seleccionada</span><select name="appointment_time" data-unit-new-field="appointment_time" data-unit-new-time data-old-value="{{ old('appointment_time') }}" aria-required="true" tabindex="-1" disabled><option value="">Selecciona un horario disponible</option></select></label>
                                   <p class="unit-consultation-slot-legend">Los horarios tachados no est&aacute;n disponibles.</p>
                                 </section>
@@ -1640,45 +1616,6 @@
                          data-unit-consultation-rooms
                          data-default-date="{{ $consultationCalendarDefaultDate }}"
                          hidden>
-                      <aside class="unit-consultation-room-directory">
-                        <header>
-                          <h3>Consultorios activos</h3>
-                          <a href="{{ route('unit.dashboard', ['unit' => $unit->id, 'section' => 'procedure-areas', 'create' => 'consulting']) }}">
-                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
-                            Nuevo consultorio
-                          </a>
-                        </header>
-                        <label class="unit-consultation-room-search">
-                          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
-                          <input type="search" data-unit-room-search aria-label="Buscar consultorio" placeholder="Buscar por numero o especialidad..." autocomplete="off">
-                        </label>
-                        <div class="unit-consultation-room-list" data-unit-room-list role="listbox" aria-label="Consultorios registrados">
-                          @forelse ($registeredConsultationRooms as $room)
-                            <button type="button"
-                                    @class(['unit-consultation-room-list-item', 'is-active' => $loop->first])
-                                    data-unit-room-id="{{ $room['id'] }}"
-                                    data-search="{{ $room['number'].' '.$room['name'].' '.$room['specialty'].' '.$room['floor'] }}"
-                                    role="option"
-                                    aria-selected="{{ $loop->first ? 'true' : 'false' }}">
-                              <span class="unit-consultation-room-list-icon" aria-hidden="true">
-                                <svg viewBox="0 0 24 24"><path d="M6 21V3h12v18M3 21h18"/><path d="M10 7h4v10h-4z"/><path d="M13 12h.01"/></svg>
-                              </span>
-                              <span class="unit-consultation-room-list-copy">
-                                <strong>{{ $room['name'] }}</strong>
-                                <small>{{ $room['specialty'] }} - Piso {{ $room['floor'] }}</small>
-                              </span>
-                              <span @class(['unit-consultation-room-state', 'is-inactive' => $room['status'] !== 'active'])>
-                                <i aria-hidden="true"></i>{{ $room['status_label'] }}
-                              </span>
-                              <span class="unit-consultation-room-list-arrow" aria-hidden="true">&rsaquo;</span>
-                            </button>
-                          @empty
-                            <p class="unit-consultation-room-list-empty">No hay consultorios registrados.</p>
-                          @endforelse
-                          <p class="unit-consultation-room-list-empty" data-unit-room-search-empty hidden>No hay coincidencias.</p>
-                        </div>
-                      </aside>
-
                       <section class="unit-consultation-room-detail" data-unit-room-detail @if ($registeredConsultationRooms->isEmpty()) hidden @endif>
                         <header class="unit-consultation-room-detail-header">
                           <div class="unit-consultation-room-heading">
@@ -1688,6 +1625,10 @@
                             <div><h3 data-unit-room-field="name">Consultorio</h3><p>{{ $unit->name }}</p></div>
                           </div>
                           <div class="unit-consultation-room-actions">
+                            <a href="{{ route('unit.dashboard', ['unit' => $unit->id, 'section' => 'procedure-areas', 'create' => 'consulting']) }}">
+                              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+                              Nuevo consultorio
+                            </a>
                             <a href="{{ route('unit.dashboard', ['unit' => $unit->id, 'section' => 'procedure-areas', 'catalog' => 'consulting']) }}" data-unit-room-edit>
                               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 20 4.5-1 10-10a2.1 2.1 0 0 0-3-3l-10 10z"/><path d="m14 7 3 3"/></svg>
                               Editar consultorio
@@ -2813,9 +2754,9 @@
                   const doctors = consultationCalendarDoctors.filter((doctor) => (
                     specialty && normalize(doctor.specialty) === normalize(specialty)
                   ));
-                  select.innerHTML = `<option value="">${doctors.length ? 'Selecciona un medico' : 'Sin medicos disponibles'}</option>${doctors
+                  select.innerHTML = `<option value="">Pendiente de asignacion</option>${doctors
                     .map((doctor) => `<option value="${escapeHtml(doctor.id)}">${escapeHtml(doctor.name)}</option>`).join('')}`;
-                  select.disabled = doctors.length === 0;
+                  select.disabled = !specialty;
                   if (doctors.some((doctor) => doctor.id === previous)) select.value = previous;
                   select.dataset.oldValue = '';
                   if (!preserveTime) {
@@ -2868,10 +2809,10 @@
                   const summaryPrimary = newDialog?.querySelector('[data-unit-new-summary="primary"]');
                   const summaryDetail = newDialog?.querySelector('[data-unit-new-summary="detail"]');
                   if (dateLabel) dateLabel.textContent = date ? formatLongDate(date) : 'Selecciona una fecha';
-                  if (preview) preview.hidden = !doctor || !room || !date || !time;
+                  if (preview) preview.hidden = !room || !date || !time;
                   setWizardText('data-unit-new-selection', 'date', date ? formatLongDate(date) : '');
                   setWizardText('data-unit-new-selection', 'time', time ? `${time} - ${formatTime(timeToMinutes(time) + duration)}` : '');
-                  setWizardText('data-unit-new-selection', 'doctor', doctor?.name);
+                  setWizardText('data-unit-new-selection', 'doctor', doctor?.name || 'Pendiente de asignacion');
                   setWizardText('data-unit-new-selection', 'room', room?.name);
                   setWizardText('data-unit-new-selection', 'specialty', newField('specialty')?.value);
                   if (summaryPrimary) {
@@ -2903,33 +2844,26 @@
                   const container = newDialog?.querySelector('[data-unit-new-slots]');
                   const slotCount = newDialog?.querySelector('[data-unit-new-slot-count]');
                   const doctor = doctorById(newField('doctor_id')?.value);
+                  const specialty = newField('specialty')?.value || '';
                   const room = roomById(newField('procedure_area_id')?.value);
                   const dateValue = newField('appointment_date')?.value;
                   renderBookingSummary();
                   if (!container) return;
-                  if (!doctor || !room || !dateValue) {
+                  if (!specialty || !room || !dateValue) {
                     populateAppointmentTimes([], { preserveOld: true });
                     if (slotCount) slotCount.textContent = '0 opciones';
-                    container.innerHTML = '<p class="unit-consultation-no-slots">Selecciona especialidad, medico, consultorio y fecha para consultar horarios.</p>';
+                    container.innerHTML = '<p class="unit-consultation-no-slots">Selecciona especialidad, consultorio y fecha para consultar horarios.</p>';
                     renderBookingSummary();
                     return;
                   }
                   const selectedDate = parseDate(dateValue);
                   const weekday = selectedDate.getDay();
                   const isoWeekday = weekday === 0 ? 7 : weekday;
-                  const month = selectedDate.getMonth() + 1;
                   const duration = Number(newForm?.elements.namedItem('duration')?.value || 30);
                   const roomSchedules = Array.isArray(room.schedules) ? room.schedules : [];
                   const roomWindows = roomSchedules.length
                     ? roomSchedules.filter((schedule) => Number(schedule.day) === isoWeekday)
                     : [{ start: '08:00', end: '16:00' }];
-                  const doctorAvailability = Array.isArray(doctor.availability) ? doctor.availability : [];
-                  const doctorWindows = doctorAvailability.length ? doctorAvailability.filter((rule) => (
-                    Number(rule.weekday) === isoWeekday
-                    && (!rule.start_date || rule.start_date <= dateValue)
-                    && (!rule.end_date || rule.end_date >= dateValue)
-                    && (!Array.isArray(rule.months) || rule.months.map(Number).includes(month))
-                  )) : [{ start: '00:00', end: '23:59' }];
                   const appointments = consultationCalendarAppointments.filter((appointment) => (
                     appointment.date === dateValue
                     && !['cancelled', 'no_show'].includes(appointment.status_value)
@@ -2940,18 +2874,14 @@
                     const roomEnd = timeToMinutes(roomWindow.end);
                     for (let cursor = Math.ceil(roomStart / 30) * 30; cursor + duration <= roomEnd; cursor += 30) {
                       const candidate = new Date(`${dateValue}T${formatTime(cursor)}:00`);
-                      const doctorAvailable = doctorWindows.some((doctorWindow) => (
-                        cursor >= timeToMinutes(doctorWindow.start)
-                        && cursor + duration <= timeToMinutes(doctorWindow.end)
-                      ));
                       const overlapping = appointments.filter((appointment) => (
                         timeToMinutes(appointment.time) < cursor + duration
                         && timeToMinutes(appointment.ends_at || appointment.time) > cursor
                       ));
-                      const doctorBusy = overlapping.some((appointment) => appointment.doctor_id === doctor.id);
+                      const doctorBusy = doctor && overlapping.some((appointment) => appointment.doctor_id === doctor.id);
                       const roomBusy = overlapping.filter((appointment) => appointment.room_id === room.id).length >= Number(room.capacity || 1);
                       const time = formatTime(cursor);
-                      const available = candidate > new Date() && doctorAvailable && !doctorBusy && !roomBusy;
+                      const available = candidate > new Date() && !doctorBusy && !roomBusy;
                       const previous = candidatesByTime.get(time);
                       candidatesByTime.set(time, { time, available: available || Boolean(previous?.available) });
                     }
@@ -2964,7 +2894,7 @@
                   if (slotCount) slotCount.textContent = `${availableSlots.length} ${availableSlots.length === 1 ? 'opcion' : 'opciones'}`;
                   container.innerHTML = candidates.length
                     ? candidates.map((slot) => `<button type="button" class="${slot.time === selectedTime ? 'is-selected' : ''}" data-unit-new-slot="${slot.time}" aria-pressed="${slot.time === selectedTime ? 'true' : 'false'}" aria-label="${slot.time}, ${slot.available ? 'disponible' : 'no disponible'}"${slot.available ? '' : ' disabled'}><span aria-hidden="true"></span><time>${slot.time}</time><small>${slot.available ? 'Disponible' : 'No disponible'}</small></button>`).join('')
-                    : '<p class="unit-consultation-no-slots">No hay horarios disponibles para esta fecha. Selecciona otra fecha, medico o consultorio.</p>';
+                    : '<p class="unit-consultation-no-slots">No hay horarios disponibles para esta fecha. Selecciona otra fecha o consultorio.</p>';
                   renderBookingSummary();
                 };
                 const validateNewAppointment = () => {
@@ -2978,7 +2908,7 @@
                     newField('platform_number')?.focus();
                     return false;
                   }
-                  const required = ['platform_number', 'specialty', 'doctor_id', 'procedure_area_id', 'appointment_date', 'duration', 'priority', 'reason'];
+                  const required = ['platform_number', 'specialty', 'procedure_area_id', 'appointment_date', 'duration', 'priority', 'reason'];
                   const invalid = required.map((name) => newField(name)).find((field) => !field?.value || !field.checkValidity());
                   if (invalid) {
                     showWizardError('Completa todos los campos obligatorios de la cita.');
@@ -3220,8 +3150,6 @@
                 if (!consultationRoomsWorkspace) return;
 
                 const rooms = consultationCalendarRooms.filter((room) => room.registered !== false);
-                const searchInput = consultationRoomsWorkspace.querySelector('[data-unit-room-search]');
-                const searchEmpty = consultationRoomsWorkspace.querySelector('[data-unit-room-search-empty]');
                 const roomSelect = consultationRoomsWorkspace.querySelector('[data-unit-room-select]');
                 const specialtySelect = consultationRoomsWorkspace.querySelector('[data-unit-room-specialty]');
                 const agendaBody = consultationRoomsWorkspace.querySelector('[data-unit-room-agenda-body]');
@@ -3229,7 +3157,6 @@
                 const editLink = consultationRoomsWorkspace.querySelector('[data-unit-room-edit]');
                 const moreButton = consultationRoomsWorkspace.querySelector('[data-unit-room-more]');
                 const moreMenu = consultationRoomsWorkspace.querySelector('[data-unit-room-more-menu]');
-                const roomButtons = [...consultationRoomsWorkspace.querySelectorAll('[data-unit-room-id]')];
                 if (!rooms.length) return;
 
                 const parseDate = (value) => {
@@ -3348,22 +3275,7 @@
                   }
                   if (editLink) editLink.href = room.edit_url;
                   if (roomSelect) roomSelect.value = room.id;
-                  roomButtons.forEach((button) => {
-                    const active = button.dataset.unitRoomId === room.id;
-                    button.classList.toggle('is-active', active);
-                    button.setAttribute('aria-selected', active ? 'true' : 'false');
-                  });
                   renderAgenda(room);
-                };
-                const filterRoomList = () => {
-                  const needle = normalize(searchInput?.value);
-                  let visible = 0;
-                  roomButtons.forEach((button) => {
-                    const matches = !needle || normalize(button.dataset.search).includes(needle);
-                    button.hidden = !matches;
-                    if (matches) visible += 1;
-                  });
-                  if (searchEmpty) searchEmpty.hidden = visible !== 0;
                 };
                 const moveDate = (days) => {
                   const date = parseDate(state.date);
@@ -3372,7 +3284,6 @@
                   render();
                 };
 
-                searchInput?.addEventListener('input', filterRoomList);
                 roomSelect?.addEventListener('change', () => {
                   state.roomId = roomSelect.value;
                   render();
@@ -3385,12 +3296,6 @@
                 consultationRoomsWorkspace.querySelector('[data-unit-room-date-next]')?.addEventListener('click', () => moveDate(1));
                 consultationRoomsWorkspace.querySelector('[data-unit-room-date-today]')?.addEventListener('click', () => {
                   state.date = dateKey(new Date());
-                  render();
-                });
-                consultationRoomsWorkspace.querySelector('[data-unit-room-list]')?.addEventListener('click', (event) => {
-                  const button = event.target.closest('[data-unit-room-id]');
-                  if (!button) return;
-                  state.roomId = button.dataset.unitRoomId;
                   render();
                 });
                 moreButton?.addEventListener('click', () => {
@@ -3452,7 +3357,6 @@
                 });
 
                 const consultationPanel = root.querySelector('[data-unit-consultation-panel]');
-                consultationPanel?.classList.toggle('is-rooms-view', key === 'rooms');
                 const toggle = consultationPanel?.querySelector('[data-unit-service-operation-toggle]');
                 if (toggle) {
                   const agendaOpen = key === 'agenda';
@@ -4549,6 +4453,36 @@
 
               applyFilters();
             });
+          })();
+        </script>
+      @endif
+      @if ($unitFeedbackStatus || $unitFeedbackErrors)
+        <dialog class="unit-feedback-dialog" data-unit-feedback-dialog aria-labelledby="unit-feedback-dialog-title">
+          <header class="unit-feedback-dialog-header">
+            <h2 id="unit-feedback-dialog-title">{{ $unitFeedbackErrors ? 'No se pudo actualizar' : 'Confirmación' }}</h2>
+            <button type="button" data-unit-feedback-close aria-label="Cerrar mensaje" title="Cerrar">&times;</button>
+          </header>
+          <div class="unit-feedback-dialog-body" @if ($unitFeedbackErrors) role="alert" @endif>
+            @if ($unitFeedbackStatus)
+              <p>{{ $unitFeedbackStatus }}</p>
+            @endif
+            @if ($unitFeedbackErrors)
+              <ul>
+                @foreach ($errors->all() as $error)
+                  <li>{{ $error }}</li>
+                @endforeach
+              </ul>
+            @endif
+          </div>
+        </dialog>
+        <script>
+          (() => {
+            const dialog = document.querySelector('[data-unit-feedback-dialog]');
+            dialog?.querySelector('[data-unit-feedback-close]')?.addEventListener('click', () => dialog.close());
+            dialog?.addEventListener('click', (event) => {
+              if (event.target === dialog) dialog.close();
+            });
+            if (dialog && !document.querySelector('dialog[open]')) dialog.showModal();
           })();
         </script>
       @endif

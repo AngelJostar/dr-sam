@@ -62,6 +62,30 @@ class DoctorPortalController extends Controller
             'clinicalEncounters.appointment',
         ]);
 
+        $institutionalAppointments = $doctor->status === 'active' && $doctor->medical_unit_id && filled($doctor->specialty)
+            ? Appointment::query()
+                ->with(['patient', 'procedureArea'])
+                ->where('medical_unit_id', $doctor->medical_unit_id)
+                ->whereNull('doctor_id')
+                ->where('specialty', $doctor->specialty)
+                ->where('metadata->source', 'unit_consultation_calendar')
+                ->whereIn('status', ['scheduled', 'confirmed'])
+                ->where('starts_at', '>', now())
+                ->orderBy('starts_at')
+                ->get()
+            : collect();
+        $assignedInstitutionalAppointments = $doctor->medical_unit_id
+            ? Appointment::query()
+                ->with(['patient', 'procedureArea'])
+                ->where('medical_unit_id', $doctor->medical_unit_id)
+                ->where('doctor_id', $doctor->id)
+                ->where('metadata->source', 'unit_consultation_calendar')
+                ->whereIn('status', ['scheduled', 'confirmed', 'in_progress'])
+                ->where('starts_at', '>', now())
+                ->orderBy('starts_at')
+                ->get()
+            : collect();
+
         $patients = Patient::query()
             ->with([
                 'user',
@@ -206,6 +230,8 @@ class DoctorPortalController extends Controller
             'appointments' => $doctor->appointments
                 ->sortBy('starts_at')
                 ->take(8),
+            'institutionalAppointments' => $institutionalAppointments,
+            'assignedInstitutionalAppointments' => $assignedInstitutionalAppointments,
             'patients' => $patients,
             'selectedPatient' => $selectedPatient,
             'prescriptions' => $doctor->prescriptions
@@ -508,6 +534,53 @@ class DoctorPortalController extends Controller
         }
 
         return redirect()->route('doctor.dashboard', ['section' => 'agenda'])->with('status', 'Cita agregada a la agenda.');
+    }
+
+    public function claimInstitutionalAppointment(
+        Request $request,
+        Appointment $appointment,
+        AppointmentSchedulingService $scheduling,
+        PlatformAuditService $audit,
+    ): RedirectResponse {
+        $doctor = $this->resolveDoctor($request);
+        abort_unless($doctor->status === 'active' && $doctor->medical_unit_id && filled($doctor->specialty), 403);
+
+        $claimedAppointment = DB::transaction(function () use ($appointment, $doctor, $scheduling): Appointment {
+            $doctor = Doctor::query()->whereKey($doctor->id)->lockForUpdate()->firstOrFail();
+            $appointment = Appointment::query()->whereKey($appointment->id)->lockForUpdate()->firstOrFail();
+            abort_unless(
+                $doctor->status === 'active'
+                && (int) $appointment->medical_unit_id === (int) $doctor->medical_unit_id
+                && mb_strtolower(trim((string) $appointment->specialty)) === mb_strtolower(trim((string) $doctor->specialty))
+                && data_get($appointment->metadata, 'source') === 'unit_consultation_calendar',
+                404,
+            );
+
+            if ($appointment->doctor_id || ! in_array($appointment->status, ['scheduled', 'confirmed'], true) || ! $appointment->starts_at?->isFuture()) {
+                throw ValidationException::withMessages(['appointment' => 'Esta cita ya no esta disponible para tomar.']);
+            }
+
+            $scheduling->assertInstitutionalConsultationAvailable(
+                $doctor,
+                $appointment->starts_at,
+                $appointment->ends_at ?: $appointment->starts_at->copy()->addMinutes(30),
+                null,
+                $appointment->id,
+            );
+
+            $metadata = $appointment->metadata ?? [];
+            $metadata['claimed_at'] = now()->toIso8601String();
+            $appointment->update(['doctor_id' => $doctor->id, 'metadata' => $metadata]);
+
+            return $appointment;
+        });
+
+        $audit->record($request, 'doctor.institutional_appointment.claimed', $claimedAppointment, 'doctor', [
+            'unit_id' => $doctor->medical_unit_id,
+        ]);
+
+        return redirect()->route('doctor.dashboard', ['section' => 'agenda'])
+            ->with('status', 'Cita de la unidad agregada a tu agenda.');
     }
 
     public function updateAppointmentStatus(

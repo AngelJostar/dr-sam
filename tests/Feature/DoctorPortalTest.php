@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Appointment;
+use App\Models\AuditLog;
 use App\Models\Doctor;
 use App\Models\DoctorAvailabilityRule;
 use App\Models\DoctorClinic;
@@ -14,6 +15,7 @@ use App\Models\PatientOrder;
 use App\Models\Prescription;
 use App\Models\ProviderRequest;
 use App\Models\ProviderRequestStatusEvent;
+use App\Models\ProcedureArea;
 use App\Models\User;
 use App\Services\Integrations\Cbta\MixtureIntegrationSyncService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -69,6 +71,110 @@ class DoctorPortalTest extends TestCase
             ->assertDontSee('Servicios contratados')
             ->assertDontSee('Paciente Medico')
             ->assertDontSee('<iframe');
+    }
+
+    public function test_unit_doctors_can_claim_a_pending_consultation_only_once(): void
+    {
+        [$user, $doctor] = $this->createDoctor();
+        $unit = MedicalUnit::query()->create(['name' => 'Hospital Demo Dr Sam', 'status' => 'active']);
+        $doctor->update(['medical_unit_id' => $unit->id, 'specialty' => 'Medicina interna']);
+        $secondUser = User::query()->create([
+            'name' => 'Dra. Segunda', 'username' => 'doctor.segunda', 'role' => 'doctor', 'module' => 'doctor', 'status' => 'active',
+        ]);
+        $secondDoctor = Doctor::query()->create([
+            'user_id' => $secondUser->id, 'medical_unit_id' => $unit->id,
+            'full_name' => 'Dra. Segunda', 'specialty' => 'Medicina interna', 'status' => 'active',
+        ]);
+        $patient = Patient::query()->create(['full_name' => 'Paciente Hospital Demo', 'status' => 'active']);
+        $room = ProcedureArea::query()->create([
+            'medical_unit_id' => $unit->id, 'type' => 'consulting', 'unit_number' => 'C-01', 'status' => 'active',
+        ]);
+        $startsAt = now()->addWeek()->startOfDay()->addHours(10);
+        $appointment = Appointment::query()->create([
+            'patient_id' => $patient->id,
+            'medical_unit_id' => $unit->id,
+            'procedure_area_id' => $room->id,
+            'specialty' => 'Medicina interna',
+            'modality' => 'Presencial',
+            'status' => 'scheduled',
+            'starts_at' => $startsAt,
+            'ends_at' => $startsAt->copy()->addMinutes(30),
+            'metadata' => ['source' => 'unit_consultation_calendar'],
+        ]);
+        $otherPatient = Patient::query()->create(['full_name' => 'Paciente Pediatria', 'status' => 'active']);
+        $otherSpecialty = Appointment::query()->create([
+            'patient_id' => $otherPatient->id, 'medical_unit_id' => $unit->id,
+            'specialty' => 'Pediatria', 'status' => 'scheduled',
+            'starts_at' => $startsAt->copy()->addHour(), 'ends_at' => $startsAt->copy()->addMinutes(90),
+            'metadata' => ['source' => 'unit_consultation_calendar'],
+        ]);
+
+        $this->actingAs($user)->get(route('doctor.dashboard', ['section' => 'agenda']))
+            ->assertOk()->assertSee('Citas de la unidad por tomar')->assertSee('Paciente Hospital Demo')
+            ->assertDontSee('Paciente Pediatria')
+            ->assertSee(route('doctor.appointments.claim', $appointment));
+        $this->actingAs($user)->post(route('doctor.appointments.claim', $otherSpecialty))->assertNotFound();
+        $this->actingAs($secondUser)->get(route('doctor.dashboard', ['section' => 'agenda']))
+            ->assertOk()->assertSee('Paciente Hospital Demo');
+
+        $this->actingAs($user)->post(route('doctor.appointments.claim', $appointment))
+            ->assertRedirect(route('doctor.dashboard', ['section' => 'agenda']));
+        $this->assertSame($doctor->id, $appointment->fresh()->doctor_id);
+        $claimAudit = AuditLog::query()->where('event', 'doctor.institutional_appointment.claimed')
+            ->where('auditable_id', $appointment->id)->firstOrFail();
+        $this->assertContains('doctor_id', data_get($claimAudit->payload, 'changed_fields'));
+        $this->actingAs($user)->get(route('doctor.dashboard', ['section' => 'agenda']))
+            ->assertOk()->assertSee('Mis citas de la unidad')->assertSee('Paciente Hospital Demo');
+
+        $this->actingAs($secondUser)->post(route('doctor.appointments.claim', $appointment))
+            ->assertSessionHasErrors('appointment');
+        $this->assertSame($doctor->id, $appointment->fresh()->doctor_id);
+
+        $otherUnit = MedicalUnit::query()->create(['name' => 'Otra unidad', 'status' => 'active']);
+        $secondDoctor->update(['medical_unit_id' => $otherUnit->id]);
+        $this->actingAs($secondUser)->post(route('doctor.appointments.claim', $appointment))->assertNotFound();
+    }
+
+    public function test_claim_ignores_private_hours_but_not_existing_doctor_appointments(): void
+    {
+        [$user, $doctor] = $this->createDoctor();
+        $unit = MedicalUnit::query()->create(['name' => 'Hospital Publico', 'status' => 'active']);
+        $doctor->update(['medical_unit_id' => $unit->id, 'specialty' => 'Medicina interna']);
+        $patient = Patient::query()->create(['full_name' => 'Paciente por tomar', 'status' => 'active']);
+        $clinic = DoctorClinic::query()->create([
+            'doctor_id' => $doctor->id, 'name' => 'Consulta privada', 'status' => 'active',
+        ]);
+        DoctorAvailabilityRule::query()->create([
+            'doctor_id' => $doctor->id,
+            'doctor_clinic_id' => $clinic->id,
+            'weekday' => 1,
+            'start_time' => '09:00',
+            'end_time' => '13:00',
+            'recurrence_start' => '2029-01-01',
+            'status' => 'published',
+        ]);
+        $startsAt = \Illuminate\Support\Carbon::parse('2030-01-24 10:00:00');
+        $busy = Appointment::query()->create([
+            'patient_id' => $patient->id, 'doctor_id' => $doctor->id,
+            'specialty' => 'Medicina interna', 'status' => 'scheduled',
+            'starts_at' => $startsAt, 'ends_at' => $startsAt->copy()->addMinutes(30),
+            'metadata' => ['source' => 'doctor_module'],
+        ]);
+        $pending = Appointment::query()->create([
+            'patient_id' => $patient->id, 'medical_unit_id' => $unit->id,
+            'specialty' => 'Medicina interna', 'status' => 'scheduled',
+            'starts_at' => $startsAt, 'ends_at' => $startsAt->copy()->addMinutes(30),
+            'metadata' => ['source' => 'unit_consultation_calendar'],
+        ]);
+
+        $this->actingAs($user)->post(route('doctor.appointments.claim', $pending))
+            ->assertSessionHasErrors('starts_at');
+        $this->assertNull($pending->fresh()->doctor_id);
+
+        $busy->update(['status' => 'cancelled']);
+        $this->actingAs($user)->post(route('doctor.appointments.claim', $pending))
+            ->assertRedirect(route('doctor.dashboard', ['section' => 'agenda']));
+        $this->assertSame($doctor->id, $pending->fresh()->doctor_id);
     }
 
     public function test_private_doctor_receives_native_operational_services(): void
