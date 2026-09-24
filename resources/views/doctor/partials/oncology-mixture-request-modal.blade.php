@@ -300,7 +300,7 @@
             <label>Nombre del m&eacute;dico*<input name="oncology[doctor_name]" value="{{ old('oncology.doctor_name', $oncologyDoctorName) }}" required @readonly($isIncomingOncologyRequest)></label>
             @if ($isIncomingOncologyRequest)
               <div class="doctor-oncology-upload is-received">
-                <span>Firma y c&eacute;dula*</span>
+                <span>Firma y c&eacute;dula</span>
                 <b>
                   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4m0 0L8 8m4-4 4 4M5 14v5h14v-5"/></svg>
                   <strong>{{ $attachmentName }}</strong>
@@ -309,8 +309,8 @@
               </div>
             @else
               <label class="doctor-oncology-upload">
-                <span>Firma y c&eacute;dula*</span>
-                <input type="file" name="authorization_file" accept=".jpg,.jpeg,.png,.pdf" required data-oncology-file>
+                <span>Firma y c&eacute;dula <small>(opcional)</small></span>
+                <input type="file" name="authorization_file" accept=".jpg,.jpeg,.png,.pdf" data-oncology-file>
                 <b>
                   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4m0 0L8 8m4-4 4 4M5 14v5h14v-5"/></svg>
                   <strong data-oncology-file-label>Subir firma y c&eacute;dula</strong>

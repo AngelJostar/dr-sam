@@ -324,7 +324,7 @@
                   @php
                     $requestAuthorizations = data_get($providerRequest->payload, 'authorizations', []);
                     $authorizationRequirements = \App\Support\MixtureAuthorizationPolicy::requirements($providerRequest->request_type);
-                    $authorizationLabels = $isOncology
+                    $authorizationLabels = $providerRequest->request_type === 'chemo'
                       ? ['oncology' => 'Centro Onc.', 'pharmacy' => 'Farm. Intra.']
                       : ['nursing' => 'Enfermeria', 'pharmacy' => 'Farm. Intra.'];
                     $authorizationAreaKeys = [
@@ -336,7 +336,8 @@
                     $profileAuthorization = $authorizationAreaKeys[$profile?->area?->key] ?? null;
                     $operationalRoles = ['superadmin', 'admin', 'institution', 'unit', 'operational'];
                     $canOperateCurrentArea = in_array(auth()->user()?->role, $operationalRoles, true)
-                      && $currentAuthorization !== null;
+                      && $currentAuthorization !== null
+                      && (auth()->user()?->role !== 'operational' || $profileAuthorization === $currentAuthorization);
                     $authorizationIsLocked = in_array($providerRequest->status, ['delivered', 'cancelled', 'rejected'], true);
                     $canEditAuthorization = $canOperateCurrentArea;
                     $allAuthorizationsApproved = \App\Support\MixtureAuthorizationPolicy::allApproved($providerRequest->payload ?? [], $providerRequest->request_type);
@@ -408,7 +409,7 @@
                               </form>
                             </div>
                           @else
-                            <span class="authorization-pill auth-{{ $authorizationStatus }} authorization-locked" title="Autorización de {{ $authorizationLabel }}: {{ $authorizationStatusLabel }}">
+                            <span class="authorization-pill auth-{{ $authorizationStatus }} authorization-locked" data-authorization-area="{{ $authorizationKey }}" title="Autorización de {{ $authorizationLabel }}: {{ $authorizationStatusLabel }}">
                               {{ $authorizationLabel }}
                             </span>
                           @endif

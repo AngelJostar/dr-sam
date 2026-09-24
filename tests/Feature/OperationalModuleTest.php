@@ -223,6 +223,12 @@ class OperationalModuleTest extends TestCase
             ->assertDontSee('REQ-OP-001');
 
         $this->actingAs($user)
+            ->get(route('operational.dashboard', ['area' => 'oncology', 'section' => 'services-pending']))
+            ->assertOk()
+            ->assertSee('data-authorization-area="oncology"', false)
+            ->assertSee('Centro Onc. Pendiente');
+
+        $this->actingAs($user)
             ->get(route('operational.dashboard', ['area' => 'oncology', 'section' => 'history']))
             ->assertOk()
             ->assertSee('Historial de solicitudes enviadas por hospitales')
@@ -295,6 +301,7 @@ class OperationalModuleTest extends TestCase
             ->assertSee('Historial de solicitudes')
             ->assertSee('REQ-OP-001')
             ->assertSee('QT-001')
+            ->assertSee('data-authorization-area="oncology"', false)
             ->assertSee('Remision de entrega');
 
         $this->actingAs($user)
@@ -625,6 +632,63 @@ class OperationalModuleTest extends TestCase
         $this->assertSame('accepted', $providerRequest->status);
         $this->assertSame('Prodifem', data_get($providerRequest->payload, 'provider_assignment.name'));
         $this->assertSame('sent-to-provider', data_get($providerRequest->payload, 'provider_dispatch_status'));
+    }
+
+    public function test_spanish_oncology_operator_can_approve_oncology_authorization(): void
+    {
+        $unit = MedicalUnit::query()->create(['name' => 'Unidad Oncologia', 'status' => 'active']);
+        $area = OperationalArea::query()->create(['key' => 'oncologia', 'label' => 'Centro Oncologico']);
+        $user = User::query()->create([
+            'name' => 'Operador Centro Oncologico',
+            'username' => 'op.oncologia.test',
+            'email' => 'op.oncologia.test@example.test',
+            'role' => 'operational',
+            'module' => 'operational',
+            'status' => 'active',
+        ]);
+        OperationalProfile::query()->create([
+            'user_id' => $user->id,
+            'medical_unit_id' => $unit->id,
+            'operational_area_id' => $area->id,
+            'status' => 'active',
+        ]);
+        $providerRequest = ProviderRequest::query()->create([
+            'medical_unit_id' => $unit->id,
+            'external_id' => 'ONC-AUTH-001',
+            'request_type' => 'chemo',
+            'status' => 'requested',
+            'requested_at' => now(),
+            'payload' => ['authorizations' => ['oncology' => 'pending', 'pharmacy' => 'pending']],
+        ]);
+
+        $this->actingAs($user)
+            ->get(route('operational.dashboard', ['area' => 'oncology', 'section' => 'services-pending']))
+            ->assertOk()
+            ->assertSee('data-authorization-toggle="true"', false)
+            ->assertSee('name="authorization" value="oncology"', false);
+
+        $this->actingAs($user)
+            ->patch(route('operational.provider-requests.authorizations.update', $providerRequest), [
+                'authorization' => 'oncology',
+                'operating_area' => 'oncology',
+                'status' => 'approved',
+            ])
+            ->assertRedirect();
+
+        $this->assertSame('approved', data_get($providerRequest->fresh()->payload, 'authorizations.oncology'));
+
+        $this->actingAs($user)
+            ->get(route('operational.dashboard', ['area' => 'inpatient-pharmacy', 'section' => 'pending']))
+            ->assertOk()
+            ->assertDontSee('data-authorization-toggle="true"', false);
+
+        $this->actingAs($user)
+            ->patch(route('operational.provider-requests.authorizations.update', $providerRequest), [
+                'authorization' => 'pharmacy',
+                'operating_area' => 'inpatient-pharmacy',
+                'status' => 'approved',
+            ])
+            ->assertForbidden();
     }
 
     public function test_rejected_authorization_cancels_and_locks_the_request_with_traceability(): void

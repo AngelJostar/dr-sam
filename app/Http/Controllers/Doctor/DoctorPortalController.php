@@ -908,7 +908,7 @@ class DoctorPortalController extends Controller
             'dose' => ['nullable', 'string', 'max:120'],
             'volume' => ['nullable', 'string', 'max:120'],
             'priority' => ['nullable', Rule::in(['routine', 'urgent'])],
-            'authorization_file' => [Rule::requiredIf($request->input('request_type') === 'chemo'), 'nullable', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:5120'],
+            'authorization_file' => ['nullable', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:5120'],
             'oncology' => ['nullable', 'array'],
             'oncology.request_date' => ['nullable', 'date'],
             'oncology.facility' => ['nullable', 'string', 'max:255'],
@@ -918,7 +918,7 @@ class DoctorPortalController extends Controller
             'oncology.sex' => [Rule::requiredIf($request->input('request_type') === 'chemo'), 'nullable', Rule::in(['Femenino', 'Masculino'])],
             'oncology.age' => ['nullable', 'integer', 'min:0', 'max:130'],
             'oncology.weight' => [Rule::requiredIf($request->input('request_type') === 'chemo'), 'nullable', 'numeric', 'min:1', 'max:500'],
-            'oncology.height' => ['nullable', 'numeric', 'min:0', 'max:300'],
+            'oncology.height' => [Rule::requiredIf($request->input('request_type') === 'chemo'), 'nullable', 'numeric', 'min:1', 'max:300'],
             'oncology.birth_date' => [Rule::requiredIf($request->input('request_type') === 'chemo'), 'nullable', 'date', 'after:'.now()->subYears(100)->toDateString(), 'before:today'],
             'oncology.allergies' => ['nullable', 'string', 'max:255'],
             'oncology.body_surface' => ['nullable', 'numeric', 'min:0', 'max:10'],
@@ -937,7 +937,7 @@ class DoctorPortalController extends Controller
             'oncology.mixtures.*.dilution_volume' => ['required_with:oncology.mixtures', 'numeric', 'gt:0'],
             'oncology.mixtures.*.infusion_minutes' => ['required_with:oncology.mixtures', 'integer', 'min:1'],
             'oncology.mixtures.*.delivery_dates' => ['required_with:oncology.mixtures', 'array', 'min:1', 'max:99'],
-            'oncology.mixtures.*.delivery_dates.*' => ['required', 'date'],
+            'oncology.mixtures.*.delivery_dates.*' => ['required', 'date', 'after_or_equal:today'],
             'oncology.mixtures.*.set_infusion' => ['nullable', 'boolean'],
             'oncology.mixtures.*.infusor_id' => ['nullable', 'integer', 'gt:0'],
             'oncology.medications' => ['nullable', 'array', 'max:8'],
@@ -952,25 +952,25 @@ class DoctorPortalController extends Controller
             'oncology.medications.*.boluses_per_day' => ['nullable', 'integer', 'min:1'],
             'oncology.medications.*.infusion_minutes' => ['nullable', 'integer', 'min:1'],
             'oncology.medications.*.delivery_dates' => ['nullable', 'array', 'max:6'],
-            'oncology.medications.*.delivery_dates.*' => ['nullable', 'date'],
+            'oncology.medications.*.delivery_dates.*' => ['nullable', 'date', 'after_or_equal:today'],
             'npt' => ['nullable', 'array'],
             'npt.clinical_service' => ['nullable', 'string', 'max:180'],
             'npt.bed' => ['nullable', 'string', 'max:80'],
             'npt.floor' => ['nullable', 'string', 'max:80'],
             'npt.registration' => ['nullable', 'string', 'max:120'],
-            'npt.weight' => ['nullable', 'numeric', 'min:0', 'max:500'],
+            'npt.weight' => ['nullable', 'numeric', 'min:1', 'max:500'],
             'npt.sex' => ['nullable', Rule::in(['Femenino', 'Masculino', 'Otro'])],
             'npt.birth_date' => ['nullable', 'date', 'before_or_equal:today'],
             'npt.route' => ['nullable', Rule::in(['Central', 'Periferica'])],
-            'npt.infusion_hours' => ['nullable', 'numeric', 'min:0'],
-            'npt.infusion_rate' => ['nullable', 'numeric', 'min:0'],
+            'npt.infusion_hours' => ['nullable', 'numeric', 'gt:0'],
+            'npt.infusion_rate' => ['nullable', 'numeric', 'gt:0'],
             'npt.overfill' => ['nullable', 'numeric', 'min:0'],
             'npt.total_volume' => ['nullable', 'numeric', 'min:0'],
             'npt.npt_type' => ['nullable', Rule::in(['Individualizada', 'Tricamara', 'Pediatrica'])],
             'npt.infusion_set' => ['nullable', Rule::in(['Si', 'No'])],
             'npt.products' => ['nullable', 'array'],
             'npt.products.*' => ['nullable', 'numeric', 'min:0'],
-            'npt.delivery_at' => ['nullable', 'date'],
+            'npt.delivery_at' => ['nullable', 'date', 'after_or_equal:'.now()->addMinutes(210)->toDateTimeString()],
             'npt.destination_hospital' => ['nullable', 'string', 'max:255'],
             'npt.doctor_name' => ['nullable', 'string', 'max:180'],
             'npt.professional_license' => ['nullable', 'string', 'max:120'],
@@ -989,6 +989,13 @@ class DoctorPortalController extends Controller
             && filled(data_get($data, 'npt.infusion_rate'))) {
             throw ValidationException::withMessages([
                 'npt.infusion_rate' => 'Captura el tiempo o la velocidad de infusión, no ambos.',
+            ]);
+        }
+        if ($data['request_type'] === 'npt'
+            && blank(data_get($data, 'npt.infusion_hours'))
+            && blank(data_get($data, 'npt.infusion_rate'))) {
+            throw ValidationException::withMessages([
+                'npt.infusion_hours' => 'Captura el tiempo o la velocidad de infusiÃ³n.',
             ]);
         }
 

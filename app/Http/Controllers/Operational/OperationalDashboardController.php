@@ -779,9 +779,23 @@ class OperationalDashboardController extends Controller
             'inpatient-pharmacy' => 'pharmacy',
         ][$data['operating_area'] ?? ''] ?? null;
 
+        $operatorProfile = OperationalProfile::query()
+            ->with('area')
+            ->where('user_id', $request->user()?->id)
+            ->first();
+        $profileAreaAuthorization = [
+            'nursing' => 'nursing',
+            'enfermeria' => 'nursing',
+            'oncology' => 'oncology',
+            'oncologia' => 'oncology',
+            'inpatient-pharmacy' => 'pharmacy',
+            'farmacia' => 'pharmacy',
+        ][$operatorProfile?->area?->key ?? ''] ?? null;
+
         if (! in_array($request->user()?->role, $contextOperatorRoles, true)) {
             abort_unless(
-                $operatingAreaAuthorization === $data['authorization'],
+                $operatingAreaAuthorization === $data['authorization']
+                    && ($request->user()?->role !== 'operational' || $profileAreaAuthorization === $data['authorization']),
                 403,
                 'Solo puedes modificar la autorización del área activa en Operar como.',
             );

@@ -748,7 +748,7 @@ class DoctorPortalTest extends TestCase
                     'total_volume' => 1200,
                     'npt_type' => 'Individualizada',
                     'products' => ['glucose_50' => 100, 'amino_acids_standard_10' => 80],
-                    'delivery_at' => '2026-07-24 10:00:00',
+                    'delivery_at' => now()->addHours(4)->format('Y-m-d H:i:s'),
                     'destination_hospital' => 'Hospital de prueba',
                     'doctor_name' => $doctor->full_name,
                     'professional_license' => $doctor->professional_license,
@@ -762,6 +762,7 @@ class DoctorPortalTest extends TestCase
                     'bed' => '201',
                     'patient_identifier' => 'REG-ONC-1',
                     'weight' => 70,
+                    'height' => 170,
                     'sex' => 'Masculino',
                     'birth_date' => '1980-01-01',
                     'medications' => [[
@@ -772,7 +773,7 @@ class DoctorPortalTest extends TestCase
                         'route_id' => 1,
                         'dilution_volume' => 500,
                         'infusion_minutes' => 120,
-                        'delivery_dates' => ['2026-07-24'],
+                        'delivery_dates' => [now()->addDay()->format('Y-m-d H:i')],
                     ]],
                     'doctor_name' => $doctor->full_name,
                     'professional_license' => $doctor->professional_license,
@@ -847,10 +848,10 @@ class DoctorPortalTest extends TestCase
         $this->actingAs($user)->post(route('doctor.service_requests.store'), [
             'request_type' => 'chemo', 'patient_id' => $patient->id, 'service' => 'Oncología',
             'diagnosis' => 'Diagnóstico de prueba', 'priority' => 'routine',
-            'authorization_file' => UploadedFile::fake()->create('autorizacion.pdf', 20, 'application/pdf'),
             'oncology' => [
                 'facility' => 'Hospital', 'floor' => '2', 'bed' => '201',
                 'patient_identifier' => 'REG-MULTI', 'sex' => 'Femenino', 'weight' => 60,
+                'height' => 165,
                 'birth_date' => '1986-04-12', 'doctor_name' => $doctor->full_name,
                 'professional_license' => $doctor->professional_license, 'mixture_count' => 2,
                 'mixtures' => [
@@ -1159,7 +1160,7 @@ class DoctorPortalTest extends TestCase
                 'infusion_hours' => 24,
                 'total_volume' => 1200,
                 'npt_type' => 'Individualizada',
-                'delivery_at' => '2026-08-06 10:00:00',
+                'delivery_at' => now()->addHours(4)->format('Y-m-d H:i:s'),
                 'destination_hospital' => 'Hospital Integrado',
                 'doctor_name' => $doctor->full_name,
                 'professional_license' => $doctor->professional_license,

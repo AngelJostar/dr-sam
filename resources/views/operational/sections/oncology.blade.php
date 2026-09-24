@@ -100,7 +100,7 @@
       <table class="operational-native-table">
         <thead>
           <tr>
-            <th>Folio</th><th>Paciente</th><th>Servicio</th><th>M&eacute;dico</th><th>Fecha requerida</th><th>Volumen</th><th>Estatus</th>
+            <th>Folio</th><th>Paciente</th><th>Servicio</th><th>M&eacute;dico</th><th>Fecha requerida</th><th>Volumen</th><th>Autorizaci&oacute;n</th><th>Estatus</th>
             @if ($isPendingServices)<th>Ver solicitud</th><th>Asignar sala</th>@else<th>Acciones</th>@endif
           </tr>
         </thead>
@@ -113,6 +113,47 @@
               <td>{{ data_get($item->payload, 'doctor', 'Sin medico') }}</td>
               <td>{{ $item->required_at?->format('d/m/Y H:i') ?? 'Sin fecha' }}</td>
               <td>{{ data_get($item->payload, 'volume', 'N/A') }}</td>
+              <td>
+                @php
+                  $oncologyAuthorizationStatus = \App\Support\MixtureAuthorizationPolicy::status(
+                    data_get($item->payload, 'authorizations', []),
+                    'oncology',
+                    $item->request_type,
+                  );
+                  $oncologyAuthorizationLabel = [
+                    'approved' => 'Autorizado',
+                    'rejected' => 'Rechazado',
+                    'pending' => 'Pendiente',
+                  ][$oncologyAuthorizationStatus] ?? 'Pendiente';
+                  $canAuthorizeOncology = in_array(auth()->user()?->role, ['superadmin', 'admin'], true)
+                    || in_array($profile?->area?->key, ['oncology', 'oncologia'], true);
+                @endphp
+                @if ($isPendingServices && $canAuthorizeOncology && ! in_array($item->status, ['delivered', 'cancelled', 'rejected'], true))
+                  <div class="operational-authorization-control">
+                    <button
+                      class="authorization-pill authorization-button auth-{{ $oncologyAuthorizationStatus }}"
+                      type="button"
+                      data-authorization-toggle="true"
+                      data-authorization-area="oncology"
+                      aria-expanded="false"
+                      onclick="toggleOperationalAuthorizationMenu(this, event)"
+                    >Centro Onc. {{ $oncologyAuthorizationLabel }}</button>
+                    <form class="operational-authorization-menu" method="post" action="{{ route('operational.provider-requests.authorizations.update', $item) }}">
+                      @csrf
+                      @method('patch')
+                      <input type="hidden" name="authorization" value="oncology">
+                      <input type="hidden" name="operating_area" value="oncology">
+                      <button type="submit" name="status" value="approved" class="success">Autorizado</button>
+                      <button type="submit" name="status" value="pending" class="warning">Pendiente</button>
+                      <button type="submit" name="status" value="rejected" class="danger">Rechazado</button>
+                    </form>
+                  </div>
+                @else
+                  <span class="authorization-pill auth-{{ $oncologyAuthorizationStatus }} authorization-locked" data-authorization-area="oncology">
+                    Centro Onc. {{ $oncologyAuthorizationLabel }}
+                  </span>
+                @endif
+              </td>
               <td><span class="operational-chip">{{ $statusText($item->status) }}</span></td>
               <td><a class="operational-view-button" href="{{ route('operational.dashboard', ['area' => 'oncology', 'section' => 'support', 'oncology_track' => 'infusions', 'unit' => $contextUnit?->id, 'request' => $item->id]) }}">Ver</a></td>
               @if ($isPendingServices)
@@ -128,7 +169,7 @@
               @endif
             </tr>
           @empty
-            <tr><td colspan="{{ $isPendingServices ? 9 : 8 }}">Sin servicios para esta vista.</td></tr>
+            <tr><td colspan="{{ $isPendingServices ? 10 : 9 }}">Sin servicios para esta vista.</td></tr>
           @endforelse
         </tbody>
       </table>
