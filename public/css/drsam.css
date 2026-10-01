@@ -15410,7 +15410,9 @@ body.is-register-modal-open {
 
 .native-shell.provider-import-native-body .shell {
   display: block;
+  width: 100%;
   max-width: none;
+  margin: 0;
   padding: 0;
 }
 
@@ -15711,6 +15713,589 @@ body.is-register-modal-open {
   color: #fff;
   font-size: 12px;
   font-weight: 900;
+}
+
+.native-shell.provider-import-native-body,
+.native-shell .provider-import-native-screen {
+  background: #f7fafb;
+}
+
+.native-shell .provider-import-native-screen {
+  grid-template-columns: 290px minmax(0, 1fr);
+  grid-template-rows: 58px minmax(0, 1fr);
+  color: #10204a;
+}
+
+.native-shell .provider-import-native-global-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  grid-column: 1 / -1;
+  grid-row: 1;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 0;
+  border-bottom: 1px solid #dbe4ee;
+  background: #fff;
+}
+
+.native-shell .provider-import-native-global-brand {
+  display: flex;
+  flex: 0 0 290px;
+  align-items: center;
+  align-self: stretch;
+  min-width: 0;
+  padding: 0 24px;
+  border-right: 1px solid #dbe4ee;
+  font-size: 19px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.native-shell .provider-import-native-account {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 22px;
+}
+
+.native-shell .provider-import-native-notifications {
+  position: relative;
+}
+
+.native-shell .provider-import-native-notifications summary {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border-radius: 7px;
+  background: #f7fbfc;
+  color: #182f67;
+  cursor: pointer;
+  list-style: none;
+}
+
+.native-shell .provider-import-native-notifications summary::-webkit-details-marker {
+  display: none;
+}
+
+.native-shell .provider-import-native-notifications p {
+  position: absolute;
+  top: 47px;
+  right: 0;
+  z-index: 110;
+  width: 220px;
+  margin: 0;
+  padding: 14px;
+  border: 1px solid #dbe4ee;
+  border-radius: 7px;
+  background: #fff;
+  box-shadow: 0 14px 30px rgba(27, 56, 87, .12);
+  font-size: 12px;
+}
+
+.native-shell .provider-import-native-account-name {
+  display: grid;
+  gap: 3px;
+  min-width: 120px;
+}
+
+.native-shell .provider-import-native-account-name strong {
+  color: #101a30;
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.native-shell .provider-import-native-account-name small {
+  color: #34518d;
+  font-size: 11px;
+}
+
+.native-shell.provider-import-native-body button.provider-import-native-logout {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 10px;
+  padding: 0 20px;
+  border: 1px solid #ff6b6f;
+  border-radius: 7px;
+  background: #fff;
+  color: #ec303b;
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: none;
+  cursor: pointer;
+}
+
+.native-shell.provider-import-native-body button.provider-import-native-logout:hover {
+  background: #fff6f6;
+}
+
+.native-shell .provider-import-native-global-header svg,
+.native-shell .provider-import-native-intro svg,
+.native-shell .provider-import-native-empty svg {
+  width: 21px;
+  height: 21px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.native-shell .provider-import-native-logout svg {
+  flex: 0 0 21px;
+}
+
+.native-shell .provider-import-native-sidebar {
+  position: sticky;
+  top: 58px;
+  grid-column: 1;
+  grid-row: 2;
+  align-self: start;
+  height: calc(100vh - 58px);
+  min-height: 0;
+  padding: 32px 17px 28px;
+  overflow-y: auto;
+  border-right: 1px solid #e4eaf0;
+  background: #fff;
+}
+
+.native-shell .provider-import-native-menu {
+  gap: 6px;
+}
+
+.native-shell .provider-import-native-menu a {
+  min-height: 48px;
+  gap: 27px;
+  padding: 0 18px;
+  color: #254077;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.native-shell .provider-import-native-menu a.is-active {
+  background: #e7f8f6;
+  color: #008f84;
+}
+
+.native-shell .provider-import-native-menu svg {
+  flex: 0 0 22px;
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.9;
+}
+
+.native-shell .provider-import-native-menu a span {
+  width: auto;
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+.native-shell .provider-import-native-workspace {
+  grid-column: 2;
+  grid-row: 2;
+  min-width: 0;
+  padding: 12px 18px 36px;
+}
+
+.native-shell .provider-import-native-intro {
+  display: flex;
+  min-height: 107px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 10px;
+  padding: 16px 22px;
+  border: 1px solid #e3eaf1;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 7px 22px rgba(26, 53, 85, .035);
+}
+
+.native-shell .provider-import-native-intro h1,
+.native-shell .provider-import-native-intro p {
+  margin: 0;
+}
+
+.native-shell .provider-import-native-intro h1 {
+  color: #101d4c;
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.native-shell .provider-import-native-intro p {
+  margin-top: 7px;
+  color: #4b6497;
+  font-size: 15px;
+}
+
+.native-shell .provider-import-native-intro time {
+  display: inline-flex;
+  min-height: 54px;
+  align-items: center;
+  gap: 16px;
+  padding: 0 18px;
+  border: 1px solid #d7e2ed;
+  border-radius: 7px;
+  color: #304d85;
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 7px 18px rgba(25, 52, 83, .07);
+}
+
+.native-shell .provider-import-native-card {
+  margin-bottom: 14px;
+  border-color: #d7e1eb;
+  border-radius: 8px;
+  box-shadow: 0 5px 18px rgba(25, 52, 83, .045);
+}
+
+.native-shell .provider-import-native-heading {
+  min-height: 74px;
+  padding: 14px 24px;
+  border-bottom-color: #dce5ee;
+}
+
+.native-shell .provider-import-native-heading h2 {
+  color: #101d4c;
+  font-size: 21px;
+  font-weight: 800;
+}
+
+.native-shell .provider-import-native-heading p {
+  color: #4b6497;
+  font-size: 14px;
+}
+
+.native-shell .provider-import-native-heading button {
+  display: inline-flex;
+  min-height: 46px;
+  align-items: center;
+  gap: 16px;
+  padding: 0 20px;
+  background: #008f84;
+  font-size: 15px;
+  font-weight: 750;
+  white-space: nowrap;
+  box-shadow: 0 7px 16px rgba(0, 143, 132, .17);
+  cursor: pointer;
+}
+
+.native-shell .provider-import-native-plus {
+  display: grid;
+  width: 20px;
+  height: 20px;
+  place-items: center;
+  border-radius: 50%;
+  background: #fff;
+  color: #008f84;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.native-shell .provider-import-native-table {
+  min-width: 1080px;
+  table-layout: fixed;
+}
+
+.native-shell .provider-import-native-table th,
+.native-shell .provider-import-native-table td {
+  padding: 11px 24px;
+  border-bottom-color: #dce5ee;
+}
+
+.native-shell .provider-import-native-table th {
+  height: 50px;
+  background: #fbfcfe;
+  color: #304b7c;
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.native-shell .provider-import-native-table th:nth-child(1) { width: 12%; }
+.native-shell .provider-import-native-table th:nth-child(2) { width: 15%; }
+.native-shell .provider-import-native-table th:nth-child(3) { width: 15.5%; }
+.native-shell .provider-import-native-table th:nth-child(4) { width: 15%; }
+.native-shell .provider-import-native-table th:nth-child(5) { width: 13.5%; }
+.native-shell .provider-import-native-table th:nth-child(6) { width: 18%; }
+.native-shell .provider-import-native-table th:nth-child(7) { width: 11%; }
+
+.native-shell .provider-import-native-table td {
+  height: 85px;
+  color: #20386e;
+  font-size: 14px;
+  line-height: 1.3;
+}
+
+.native-shell .provider-import-native-table td strong {
+  color: #10204a;
+  font-weight: 800;
+}
+
+.native-shell .provider-import-native-table td:first-child strong {
+  display: block;
+  max-width: 130px;
+  overflow-wrap: anywhere;
+}
+
+.native-shell .provider-import-native-table td span {
+  color: #5b74a1;
+  font-size: 13px;
+}
+
+.native-shell .provider-import-native-stage {
+  display: inline-flex !important;
+  min-width: 154px;
+  justify-content: center;
+  padding: 9px 15px;
+  background: #fff0d2;
+  color: #9d4409 !important;
+  font-size: 13px !important;
+}
+
+.native-shell .provider-import-native-progress {
+  width: 100%;
+  max-width: 200px;
+  height: 10px;
+  margin-top: 9px !important;
+  background: #e3eaee;
+}
+
+.native-shell .provider-import-native-progress i {
+  background: #009688;
+}
+
+.native-shell .provider-import-native-table td button {
+  min-width: 96px;
+  min-height: 50px;
+  border-color: #d4e0ed;
+  color: #10204a;
+  font-size: 15px;
+  font-weight: 750;
+  box-shadow: 0 5px 12px rgba(26, 53, 85, .06);
+  cursor: pointer;
+}
+
+.native-shell .provider-import-native-card:has(.provider-import-native-requests) .provider-import-native-heading {
+  min-height: 80px;
+}
+
+.native-shell .provider-import-native-requests {
+  padding: 0;
+}
+
+.native-shell .provider-import-native-requests article {
+  margin: 16px;
+}
+
+.native-shell .provider-import-native-empty {
+  display: grid;
+  min-height: 169px;
+  justify-items: center;
+  align-content: center;
+  padding: 16px;
+  text-align: center;
+}
+
+.native-shell .provider-import-native-empty > span {
+  display: grid;
+  width: 58px;
+  height: 58px;
+  place-items: center;
+  margin-bottom: 9px;
+  border-radius: 50%;
+  background: #eef3fb;
+  color: #26457f;
+}
+
+.native-shell .provider-import-native-empty svg {
+  width: 28px;
+  height: 28px;
+}
+
+.native-shell .provider-import-native-empty strong {
+  color: #10204a;
+  font-size: 15px;
+}
+
+.native-shell .provider-import-native-empty p {
+  max-width: 390px;
+  margin: 8px 0 0;
+  color: #5b74a1;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+@media (min-width: 1151px) and (max-width: 1450px) {
+  .native-shell .provider-import-native-screen {
+    grid-template-columns: 250px minmax(0, 1fr);
+  }
+
+  .native-shell .provider-import-native-global-brand {
+    flex-basis: 250px;
+    padding: 0 16px;
+    font-size: 16px;
+  }
+
+  .native-shell .provider-import-native-table {
+    min-width: 0;
+  }
+
+  .native-shell .provider-import-native-table th,
+  .native-shell .provider-import-native-table td {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+
+  .native-shell .provider-import-native-stage {
+    width: 100%;
+    min-width: 0;
+    padding: 8px 5px;
+    font-size: 11px !important;
+  }
+
+  .native-shell .provider-import-native-table td button {
+    width: 100%;
+    min-width: 0;
+    min-height: 42px;
+    padding: 0 6px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 1150px) {
+  .native-shell .provider-import-native-screen {
+    grid-template-columns: 230px minmax(0, 1fr);
+  }
+
+  .native-shell .provider-import-native-global-brand {
+    flex-basis: 230px;
+    padding: 0 16px;
+    font-size: 15px;
+  }
+
+  .native-shell .provider-import-native-menu a {
+    gap: 16px;
+    padding: 0 12px;
+  }
+}
+
+@media (max-width: 760px) {
+  .native-shell .provider-import-native-screen {
+    display: block;
+  }
+
+  .native-shell .provider-import-native-global-header {
+    min-height: 58px;
+  }
+
+  .native-shell .provider-import-native-global-brand {
+    flex: 1 1 auto;
+    padding: 0 12px;
+    border-right: 0;
+    font-size: 13px;
+  }
+
+  .native-shell .provider-import-native-account {
+    gap: 6px;
+    padding: 0 10px 0 0;
+  }
+
+  .native-shell .provider-import-native-account-name {
+    display: none;
+  }
+
+  .native-shell .provider-import-native-logout {
+    width: 40px;
+    min-height: 40px;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .native-shell .provider-import-native-logout span {
+    display: none;
+  }
+
+  .native-shell .provider-import-native-sidebar {
+    position: static;
+    height: auto;
+    padding: 8px 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    border-right: 0;
+    border-bottom: 1px solid #dbe4ee;
+  }
+
+  .native-shell .provider-import-native-menu {
+    display: flex;
+    width: max-content;
+    gap: 4px;
+  }
+
+  .native-shell .provider-import-native-menu a {
+    flex: 0 0 auto;
+    min-height: 40px;
+    gap: 7px;
+    padding: 0 10px;
+    font-size: 12px;
+  }
+
+  .native-shell .provider-import-native-menu svg {
+    flex-basis: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  .native-shell .provider-import-native-workspace {
+    padding: 12px 10px 24px;
+  }
+
+  .native-shell .provider-import-native-intro {
+    flex-wrap: wrap;
+    min-height: 0;
+    padding: 18px;
+  }
+
+  .native-shell .provider-import-native-intro h1 {
+    font-size: 25px;
+  }
+
+  .native-shell .provider-import-native-intro p {
+    font-size: 13px;
+  }
+
+  .native-shell .provider-import-native-intro time {
+    min-height: 42px;
+    font-size: 13px;
+  }
+
+  .native-shell .provider-import-native-heading {
+    flex-wrap: wrap;
+    padding: 15px 16px;
+  }
+
+  .native-shell .provider-import-native-heading h2 {
+    font-size: 18px;
+  }
+
+  .native-shell .provider-import-native-heading button {
+    min-height: 40px;
+    font-size: 13px;
+  }
+
+  .native-shell .provider-import-native-requests article form {
+    grid-template-columns: 1fr;
+  }
 }
 
 .native-shell .unit-hero {

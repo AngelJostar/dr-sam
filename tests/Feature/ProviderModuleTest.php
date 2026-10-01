@@ -234,9 +234,16 @@ class ProviderModuleTest extends TestCase
             ->assertOk()
             ->assertSee('Proveedor Importacion')
             ->assertSee('provider-import-native-screen')
-            ->assertSee('Tablero de importacion')
+            ->assertSee('provider-import-native-global-header')
+            ->assertSee('Tablero de importación')
+            ->assertSee('Usuarios')
+            ->assertDontSee('Documentos')
+            ->assertSee('Expedientes con prioridad operativa')
             ->assertSee('IMP-20260611-001')
             ->assertSee('Tocilizumab')
+            ->assertSee('IMP-20260605-004')
+            ->assertSee('Valeria López Guzmán')
+            ->assertSee('No hay solicitudes para este proveedor.')
             ->assertDontSee('<iframe');
     }
 }
