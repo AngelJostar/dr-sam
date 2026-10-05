@@ -6578,6 +6578,8 @@ return array(
     'Tests\\Feature\\MessengerModuleTest' => $baseDir . '/tests/Feature/MessengerModuleTest.php',
     'Tests\\Feature\\MixtureIntegrationSyncServiceTest' => $baseDir . '/tests/Feature/MixtureIntegrationSyncServiceTest.php',
     'Tests\\Feature\\NativeModuleRouteTest' => $baseDir . '/tests/Feature/NativeModuleRouteTest.php',
+    'Tests\\Feature\\NptMixtureHardeningTest' => $baseDir . '/tests/Feature/NptMixtureHardeningTest.php',
+    'Tests\\Feature\\OncologyMixtureHardeningTest' => $baseDir . '/tests/Feature/OncologyMixtureHardeningTest.php',
     'Tests\\Feature\\OperationalModuleTest' => $baseDir . '/tests/Feature/OperationalModuleTest.php',
     'Tests\\Feature\\OrdersModuleTest' => $baseDir . '/tests/Feature/OrdersModuleTest.php',
     'Tests\\Feature\\OutpatientModuleTest' => $baseDir . '/tests/Feature/OutpatientModuleTest.php',

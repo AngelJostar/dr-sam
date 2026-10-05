@@ -1,0 +1,29 @@
+.account-module-switcher { position: fixed; top: 7px; right: 150px; z-index: 150; }
+body.native-shell button.account-avatar { width: 34px !important; min-width: 34px !important; height: 34px !important; min-height: 34px !important; padding: 0 !important; border: 0; background: #45bfb3; color: white; border-radius: 50%; font-weight: 700; }
+.account-module-menu { position: absolute; right: 0; top: 43px; width: 340px; max-width: 90vw; max-height: 80vh; overflow: auto; padding: 18px; background: white; color: #12336b; border: 1px solid #d8e5f1; border-radius: 10px; box-shadow: 0 12px 35px #183e6520; }
+.account-module-menu header { display: flex; align-items: center; gap: 12px; padding-bottom: 14px; border-bottom: 1px solid #e1eaf4; }
+.account-avatar-static { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: #45bfb3; color: white; }
+.account-module-menu small { display: block; color: #68809b; font-size: 11px; }
+.account-module-menu h3 { font-size: 13px; }
+.account-module-row { display: flex; gap: 12px; align-items: center; justify-content: space-between; padding: 9px 0; font-size: 12px; }
+.account-module-row a, .account-module-grid a { padding: 7px 15px; border: 1px solid #c4e2e5; border-radius: 20px; color: #00998e; text-decoration: none; }
+.account-module-dialog, .account-module-confirm { width: min(760px, 94vw); max-height: 85vh; overflow: auto; box-sizing: border-box; border: 0; border-radius: 12px; padding: 24px; color: #12336b; }
+.account-module-dialog::backdrop, .account-module-confirm::backdrop { background: #18314d80; }
+.account-module-dialog header { display: flex; justify-content: space-between; align-items: flex-start; }
+.account-module-dialog h2, .account-module-confirm h2 { font-size: 22px; }
+.account-module-dialog p, .account-module-confirm p { font-size: 13px; color: #64819d; }
+.account-module-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.account-module-grid article { padding: 16px; border: 1px solid #d5e3f2; border-radius: 8px; display: flex; flex-direction: column; gap: 12px; }
+.account-module-grid h3 { font-size: 14px; flex: 1; }
+.account-module-icon { color: #00998e; font-size: 30px; }
+body.native-shell .account-module-grid button { width: 100% !important; min-width: 0 !important; }
+.account-module-dialog footer, .account-module-confirm footer { display: flex; justify-content: flex-end; gap: 12px; padding-top: 22px; }
+.account-module-confirm { width: min(420px, 94vw); }
+.account-module-toast { position: fixed; top: 60px; right: 18px; background: #e5f8ed; padding: 16px; border-radius: 10px; z-index: 151; color: #147648; }
+.module-access-fields { display: flex; flex-wrap: wrap; gap: 12px; border: 1px solid #d5e3ef; padding: 12px; }
+.module-access-fields label { display: flex; align-items: center; gap: 6px; font-size: 12px; }
+.module-access-fields input[type=checkbox] { width: auto; }
+@media(max-width:600px) { .account-module-grid { grid-template-columns: 1fr; } }
+.account-module-switcher.is-inline { position: relative; top: auto; right: auto; }
+body.native-shell .account-module-switcher.is-inline button.account-avatar { width: auto !important; min-width: 34px !important; padding: 0 10px !important; gap: 9px; border-radius: 20px !important; }
+.account-session-name { font-size: 11px; }

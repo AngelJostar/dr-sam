@@ -7087,6 +7087,8 @@ class ComposerStaticInit6fe036f2d0b4daf23991aa334a8fe7f0
         'Tests\\Feature\\MessengerModuleTest' => __DIR__ . '/../..' . '/tests/Feature/MessengerModuleTest.php',
         'Tests\\Feature\\MixtureIntegrationSyncServiceTest' => __DIR__ . '/../..' . '/tests/Feature/MixtureIntegrationSyncServiceTest.php',
         'Tests\\Feature\\NativeModuleRouteTest' => __DIR__ . '/../..' . '/tests/Feature/NativeModuleRouteTest.php',
+        'Tests\\Feature\\NptMixtureHardeningTest' => __DIR__ . '/../..' . '/tests/Feature/NptMixtureHardeningTest.php',
+        'Tests\\Feature\\OncologyMixtureHardeningTest' => __DIR__ . '/../..' . '/tests/Feature/OncologyMixtureHardeningTest.php',
         'Tests\\Feature\\OperationalModuleTest' => __DIR__ . '/../..' . '/tests/Feature/OperationalModuleTest.php',
         'Tests\\Feature\\OrdersModuleTest' => __DIR__ . '/../..' . '/tests/Feature/OrdersModuleTest.php',
         'Tests\\Feature\\OutpatientModuleTest' => __DIR__ . '/../..' . '/tests/Feature/OutpatientModuleTest.php',

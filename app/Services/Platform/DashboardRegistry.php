@@ -32,12 +32,18 @@ class DashboardRegistry
 
         // Passwordless review only changes how demo users authenticate. It must
         // never broaden the modules that an authenticated role can access.
-        if ($role?->canReviewAllModules()) {
+        if ($role?->canReviewAllModules() && ($user->role === 'superadmin' || !is_array(data_get($user->metadata, 'assigned_modules')))) {
             return $modules->values();
         }
 
         return $modules
-            ->filter(fn (array $module) => in_array($user->role, $module['roles'], true))
+            ->filter(function (array $module) use ($user) {
+                $assigned = data_get($user->metadata, 'assigned_modules');
+                if (is_array($assigned) && !in_array($user->role, ['doctor', 'patient'], true)) {
+                    return !in_array($module['key'], ['superadmin', 'doctor', 'patient'], true) && in_array($module['key'], $assigned, true);
+                }
+                return in_array($user->role, $module['roles'], true);
+            })
             ->values();
     }
 

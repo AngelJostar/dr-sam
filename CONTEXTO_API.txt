@@ -1,0 +1,168 @@
+Estoy trabajando con dos aplicaciones Laravel locales que se comunican mediante una API:
+
+- Dr. Sam: `C:\laragon\www\dr-sam`
+- Mezclas Pro/CBTA: `C:\laragon\www\mezclaspro`
+- Dr. Sam se ejecuta en `http://127.0.0.1:8000`
+- Mezclas Pro se ejecuta en `http://127.0.0.1:8080`
+
+OBJETIVO
+
+Continuar desarrollando y probando la integración para enviar solicitudes de mezclas nutricionales (NPT) y oncológicas desde Dr. Sam hacia Mezclas Pro.
+
+CONFIGURACIÓN
+
+El `.env` de Dr. Sam contiene:
+
+```env
+CBTA_BASE_URL=http://127.0.0.1:8080
+CBTA_API_TOKEN=TOKEN_SANCTUM_GENERADO_EN_MEZCLAS_PRO
+CBTA_API_TIMEOUT=10
+CBTA_API_CONNECT_TIMEOUT=3
+```
+
+No mostrar, copiar a Git ni reemplazar el token real sin autorización.
+
+El token se genera desde Mezclas Pro con:
+
+```powershell
+php artisan integration:issue-drsam-token --provision
+```
+
+El valor completo generado se coloca únicamente en `CBTA_API_TOKEN` de Dr. Sam.
+
+ESTADO ACTUAL
+
+La comunicación ya funciona. Se comprobó mediante:
+
+```powershell
+php artisan cbta:check-catalog DRSAM-DEMO --type=npt
+php artisan cbta:check-catalog DRSAM-DEMO --type=oncology
+```
+
+Ambos comandos deben devolver el catálogo, su versión y número de productos. Un error `401` significa token inválido; `cURL error 7` significa que Mezclas Pro no está ejecutándose o que el puerto es incorrecto.
+
+FUNCIONAMIENTO DE LA INTEGRACIÓN
+
+Dr. Sam:
+
+- Consulta catálogos NPT y oncológicos de Mezclas Pro.
+- Prevalida productos, presentaciones, unidades, diluyentes e inventario.
+- Genera solicitudes de manera idempotente.
+- Guarda la relación en `mixture_integrations`.
+- Sincroniza estados y conserva errores y número de intentos.
+- Puede consultar documentos y remisiones generadas por Mezclas Pro.
+- Reintenta solicitudes pendientes mediante el programador de Laravel.
+
+Mezclas Pro:
+
+- Recibe las solicitudes en `/api/internal/v1`.
+- Autentica mediante Laravel Sanctum.
+- Materializa las solicitudes en los módulos nutricional u oncológico.
+- Mantiene el identificador remoto, estado, inventario y trazabilidad.
+- Expone catálogos, prevalidación, solicitudes, estados, documentos y remisiones.
+
+UNIDAD DE PRUEBA
+
+La unidad utilizada en las pruebas es:
+
+```text
+DRSAM-DEMO
+Hospital General Demo Dr. Sam
+```
+
+Debe existir y estar correctamente relacionada en ambos sistemas.
+
+AUTORIZACIONES
+
+Antes del flujo operativo, cada solicitud debe aprobarse desde sus perfiles correspondientes:
+
+NPT:
+
+- Enfermería.
+- Farmacia intrahospitalaria.
+
+Oncológica:
+
+- Centro Oncológico.
+- Farmacia intrahospitalaria.
+
+Cada perfil solo debe modificar su propia autorización. Los intentos realizados desde otro perfil deben responder con bloqueo `403`.
+
+PRUEBAS YA REALIZADAS
+
+Se crearon y enviaron satisfactoriamente:
+
+- Cinco solicitudes NPT diferentes.
+- Cinco solicitudes oncológicas diferentes.
+- Pacientes, diagnósticos, medicamentos, dosis y fechas lógicas de demostración.
+- Pruebas positivas y negativas de autorizaciones.
+- Confirmación de recepción y materialización en Mezclas Pro.
+- Pruebas de perfiles incorrectos, que fueron bloqueados correctamente.
+
+COMANDOS ÚTILES
+
+Comprobar catálogos:
+
+```powershell
+cd C:\laragon\www\dr-sam
+
+php artisan cbta:check-catalog DRSAM-DEMO --type=npt
+php artisan cbta:check-catalog DRSAM-DEMO --type=oncology
+```
+
+Reintentar sincronizaciones pendientes:
+
+```powershell
+php artisan cbta:sync-mixtures --limit=50
+```
+
+Limpiar configuración después de modificar `.env`:
+
+```powershell
+php artisan optimize:clear
+```
+
+No se necesita `queue:work` para el flujo actual, salvo que existan trabajos pendientes en la tabla `jobs`. Los reintentos de integración dependen principalmente de `schedule:work`.
+
+REGLAS PARA CONTINUAR EL TRABAJO
+
+- Revisar rutas, controladores, modelos, servicios y pruebas antes de editar.
+- No ejecutar `migrate:fresh`, `db:wipe` ni restablecimientos destructivos.
+- No eliminar solicitudes o datos de prueba sin autorización.
+- No mostrar tokens, contraseñas ni valores privados de `.env`.
+- Mantener la idempotencia para no duplicar solicitudes.
+- Probar por separado NPT y oncología.
+- Confirmar siempre el resultado tanto en Dr. Sam como en Mezclas Pro.
+- Preservar los cambios locales existentes y evitar modificar funciones ajenas al objetivo.
+
+COMANDOS PARA EJECUTAR AMBOS PROGRAMAS
+
+Terminal 1 — Mezclas Pro:
+
+```powershell
+cd C:\laragon\www\mezclaspro
+php artisan optimize:clear
+php artisan serve --host=127.0.0.1 --port=8080
+```
+
+Terminal 2 — Dr. Sam:
+
+```powershell
+cd C:\laragon\www\dr-sam
+php artisan optimize:clear
+php artisan serve --host=127.0.0.1 --port=8000
+```
+
+Terminal 3 — Procesos programados de Dr. Sam:
+
+```powershell
+cd C:\laragon\www\dr-sam
+php artisan schedule:work
+```
+
+Accesos:
+
+```text
+Dr. Sam:     http://127.0.0.1:8000
+Mezclas Pro: http://127.0.0.1:8080
+```

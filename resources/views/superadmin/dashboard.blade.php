@@ -133,6 +133,7 @@
               <form method="post" action="{{ route('superadmin.users.update', $user) }}">
                 @csrf
                 @method('patch')
+                @include('components.module-access-fields', ['accessUser' => $user])
                 <div>
                   <strong>{{ $user->name }}</strong>
                   <span>{{ $user->username }} / {{ $roleLabels[$user->role] ?? $user->role }}</span>

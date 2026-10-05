@@ -829,6 +829,9 @@ class SuperAdminDashboardController extends Controller
     {
         $data = $request->validate([
             'status' => ['required', Rule::in(['active', 'inactive', 'suspended'])],
+            'assigned_modules' => ['sometimes', 'array'],
+            'assigned_modules.*' => [Rule::in(array_diff(array_keys(config('drsam.modules')), ['superadmin', 'doctor', 'patient']))],
+            'modules_submitted' => ['sometimes', 'boolean'],
             'name' => ['nullable', 'string', 'max:180'],
             'email' => ['nullable', 'email', 'max:180', Rule::unique('users', 'email')->ignore($user->id)],
             'username' => ['nullable', 'string', 'max:80', Rule::unique('users', 'username')->ignore($user->id)],
@@ -847,7 +850,8 @@ class SuperAdminDashboardController extends Controller
             'email_verified_at' => ($data['email_validation'] ?? null) === 'validated'
                 ? ($user->email_verified_at ?? now())
                 : (($data['email_validation'] ?? null) === 'pending' ? null : $user->email_verified_at),
-            'metadata' => array_merge($user->metadata ?? [], ['phone' => $data['phone'] ?? data_get($user->metadata, 'phone')]),
+            'metadata' => array_merge($user->metadata ?? [], ['phone' => $data['phone'] ?? data_get($user->metadata, 'phone')],
+                !empty($data['modules_submitted']) && !in_array($user->role, ['superadmin', 'doctor', 'patient'], true) ? ['assigned_modules' => array_values(array_unique($data['assigned_modules'] ?? []))] : []),
         ]);
 
         if ($user->patient) {

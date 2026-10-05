@@ -9,6 +9,7 @@ use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Session\TokenMismatchException;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -26,6 +27,13 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
+        $exceptions->respond(function (Response $response) {
+            if ($response->getStatusCode() !== 419 || request()->expectsJson()) {
+                return $response;
+            }
+
+            return redirect()->route('login', ['session_expired' => 1]);
+        });
         $exceptions->render(function (TokenMismatchException $exception, Request $request) {
             if ($request->expectsJson()) {
                 return null;

@@ -19,7 +19,6 @@
       'provider' => 'Proveedor',
     ];
     $groupedUsers = $users->groupBy(fn ($user) => $user['module'] ?? $user->module);
-    $demoPassword = 'Demo2026';
   @endphp
 
   <div class="formal-login-screen">
@@ -100,7 +99,7 @@
 
           <label>
             <span>Contraseña</span>
-            <input name="password" id="demo-password" type="password" value="{{ $demoPassword }}" autocomplete="current-password" @required(!$passwordless)>
+            <input name="password" id="demo-password" type="text" autocomplete="off" spellcheck="false" required>
           </label>
 
           <button class="formal-login-submit" type="submit">Ingresar</button>
@@ -121,16 +120,15 @@
 
   <script>
     (() => {
+      const passwords = {{ Illuminate\Support\Js::from($demoPasswords) }};
       const select = document.querySelector('#demo-username');
       const password = document.querySelector('#demo-password');
-      const syncCredentials = () => {
-        const option = select?.selectedOptions[0];
-        if (!option) return;
-        password.value = @json($demoPassword);
+      const syncPassword = () => {
+        password.value = passwords[select.value] ?? '';
+        password.placeholder = password.value ? '' : 'Ingresa la contraseña de esta cuenta';
       };
-
-      select?.addEventListener('change', syncCredentials);
-      syncCredentials();
+      select.addEventListener('change', syncPassword);
+      syncPassword();
     })();
   </script>
 @endsection

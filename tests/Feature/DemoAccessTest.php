@@ -5,13 +5,14 @@ namespace Tests\Feature;
 use App\Models\User;
 use App\Services\Platform\DashboardRegistry;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class DemoAccessTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_demo_user_can_enter_without_password_when_review_mode_is_enabled(): void
+    public function test_initial_login_requires_password_even_when_review_mode_is_enabled(): void
     {
         config(['drsam.review_passwordless' => true]);
 
@@ -25,12 +26,98 @@ class DemoAccessTest extends TestCase
             'passwordless_review' => true,
         ]);
 
-        $response = $this->post('/demo-login', [
+        $response = $this->post('/login', [
             'username' => 'paciente',
         ]);
 
-        $response->assertRedirect('/dashboard');
-        $this->assertAuthenticated();
+        $response->assertSessionHasErrors('password');
+        $this->assertGuest();
+    }
+
+    public function test_initial_page_has_credentials_without_user_selector(): void
+    {
+        $this->get('/')->assertOk()->assertSee('Bienvenido a Klini')
+            ->assertSee('name="username"', false)->assertSee('name="password"', false)
+            ->assertDontSee('<select', false);
+    }
+
+    public function test_superadmin_enters_selector_and_can_then_enter_a_users_panel(): void
+    {
+        $superadmin = $this->accessUser('superadmin', 'superadmin');
+        $patient = $this->accessUser('patient', 'patient');
+
+        $this->post('/login', ['username' => $superadmin->username, 'password' => 'test-password'])
+            ->assertRedirect(route('demo-login.index'));
+        $this->get('/demo-login')->assertOk()->assertSee($patient->username);
+        $this->post('/demo-login', ['username' => $patient->username, 'password' => 'wrong'])
+            ->assertSessionHasErrors('username');
+        $this->assertAuthenticatedAs($superadmin);
+        $this->post('/demo-login', ['username' => $patient->username, 'password' => 'test-password'])
+            ->assertRedirect(route('patient.dashboard'));
+        $this->assertAuthenticatedAs($patient);
+        $this->get('/demo-login')->assertForbidden();
+        $this->post('/demo-login', ['username' => $superadmin->username, 'password' => 'test-password'])
+            ->assertForbidden();
+    }
+
+    public function test_regular_users_enter_their_assigned_authorized_panel(): void
+    {
+        foreach ([['patient', 'patient', 'patient.dashboard'], ['doctor', 'doctor', 'doctor.dashboard'],
+            ['insurance_admin', 'insurance', 'insurance.dashboard'], ['provider', 'provider', 'provider.npt.dashboard'],
+            ['operational', 'externalPharmacy', 'external-pharmacy.dashboard']] as [$role, $module, $route]) {
+            $user = $this->accessUser($role, $module);
+            $this->withSession(['url.intended' => route('superadmin.dashboard')])
+                ->post('/login', ['username' => $user->username, 'password' => 'test-password'])
+                ->assertRedirect(route($route));
+            $this->assertAuthenticatedAs($user);
+            $this->post('/logout');
+        }
+    }
+
+    public function test_guest_cannot_access_selector_or_login_through_it(): void
+    {
+        $this->get('/demo-login')->assertRedirect(route('login'));
+        $this->post('/demo-login', ['username' => 'superadmin', 'password' => 'test-password'])
+            ->assertRedirect(route('login'));
+        $this->assertGuest();
+    }
+
+    public function test_invalid_credentials_and_inactive_accounts_cannot_enter(): void
+    {
+        $user = $this->accessUser('patient', 'patient');
+        $this->post('/login', ['username' => $user->username, 'password' => 'wrong'])
+            ->assertSessionHasErrors('username');
+        $this->assertGuest();
+        $user->update(['status' => 'inactive']);
+        $this->post('/login', ['username' => $user->username, 'password' => 'test-password'])
+            ->assertSessionHasErrors('username');
+        $this->assertGuest();
+    }
+
+    private function accessUser(string $role, string $module): User
+    {
+        return User::query()->create([
+            'name' => 'Test '.$role, 'username' => 'test.'.$role, 'email' => $role.'@test.local',
+            'password' => Hash::make('test-password'), 'role' => $role, 'module' => $module, 'status' => 'active',
+        ]);
+    }
+
+    public function test_selector_only_supplies_verified_demo_passwords(): void
+    {
+        $superadmin = $this->accessUser('superadmin', 'superadmin');
+        $demo = $this->accessUser('patient', 'patient');
+        $demo->update(['is_demo' => true, 'password' => Hash::make('Demo2026')]);
+        $changed = $this->accessUser('doctor', 'doctor');
+        $changed->update(['is_demo' => true]);
+        $regular = $this->accessUser('provider', 'provider');
+        $regular->update(['password' => Hash::make('Demo2026')]);
+
+        $this->actingAs($superadmin)->get('/demo-login')->assertOk()
+            ->assertViewHas('demoPasswords', fn ($passwords) =>
+                $passwords[$demo->username] === 'Demo2026'
+                && $passwords[$changed->username] === ''
+                && $passwords[$regular->username] === '')
+            ->assertSee('id="demo-password" type="text"', false);
     }
 
     public function test_passwordless_review_does_not_grant_patient_access_to_every_module(): void

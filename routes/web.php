@@ -30,10 +30,13 @@ use App\Http\Controllers\Unit\UnitDashboardController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [DemoAccessController::class, 'index'])->name('login');
-Route::post('/demo-login', [DemoAccessController::class, 'store'])->name('demo-login.store');
+Route::post('/login', [DemoAccessController::class, 'store'])->middleware('guest')->name('login.store');
+Route::get('/demo-login', [DemoAccessController::class, 'selector'])->middleware(['auth', 'role:superadmin'])->name('demo-login.index');
+Route::post('/demo-login', [DemoAccessController::class, 'store'])->middleware(['auth', 'role:superadmin'])->name('demo-login.store');
 Route::post('/logout', [DemoAccessController::class, 'destroy'])->name('logout');
 
 Route::middleware('auth')->group(function (): void {
+    Route::post('/account/home-module', [\App\Http\Controllers\Auth\ModulePreferenceController::class, 'store'])->name('account.home-module');
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
     Route::get('/doctor', [DoctorPortalController::class, 'index'])
         ->middleware('role:superadmin,admin,doctor')
@@ -189,6 +192,15 @@ Route::middleware('auth')->group(function (): void {
         ->defaults('type', 'import')
         ->middleware('role:superadmin,admin,provider')
         ->name('provider.import.dashboard');
+    Route::post('/providers/import/patient-details', [ProviderPortalController::class, 'storeImportPatientDetails'])
+        ->middleware('role:superadmin,admin,provider')->name('provider.import.patient_details.store');
+    Route::post('/providers/import/patient-documents', [ProviderPortalController::class, 'storeImportPatientDocuments'])
+        ->middleware('role:superadmin,admin,provider')->name('provider.import.patient_documents.store');
+    Route::get('/providers/import/documents/{document}', [ProviderPortalController::class, 'viewImportDocument'])
+        ->middleware('role:superadmin,admin,provider')->name('provider.import.documents.view');
+    Route::post('/providers/import/suppliers', [ProviderPortalController::class, 'storeImportSupplier'])
+        ->middleware(['role:superadmin,admin,provider', 'permission:provider.requests.update'])
+        ->name('provider.import.suppliers.store');
     Route::get('/providers/medicines', [ProviderPortalController::class, 'index'])
         ->defaults('type', 'medicines')
         ->middleware('role:superadmin,admin,provider')

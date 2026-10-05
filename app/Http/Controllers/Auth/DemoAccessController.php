@@ -16,30 +16,37 @@ class DemoAccessController extends Controller
     public function index(DashboardRegistry $registry): View|RedirectResponse
     {
         if (Auth::check()) {
-            return redirect()->route('dashboard');
+            return $this->destination(Auth::user(), $registry, true);
         }
 
+        return view('auth.login');
+    }
+
+    public function selector(): View
+    {
+
         $users = User::query()
-            ->select(['name', 'username', 'role', 'module'])
+            ->select(['name', 'username', 'role', 'module', 'password', 'is_demo'])
             ->orderBy('role')
             ->orderBy('name')
             ->get();
 
-        if ($users->isEmpty()) {
-            $users = $registry->allDemoUsers();
-        }
+        $demoPasswords = $users->mapWithKeys(fn (User $user) => [
+            $user->username => $user->is_demo && $user->password && Hash::check('Demo2026', $user->password)
+                ? 'Demo2026' : '',
+        ]);
 
         return view('auth.demo-login', [
             'users' => $users,
-            'passwordless' => config('drsam.review_passwordless'),
+            'demoPasswords' => $demoPasswords,
         ]);
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request, DashboardRegistry $registry): RedirectResponse
     {
         $validated = $request->validate([
             'username' => ['required', 'string'],
-            'password' => [config('drsam.review_passwordless') ? 'nullable' : 'required', 'nullable', 'string'],
+            'password' => ['required', 'string'],
         ]);
 
         $user = User::query()
@@ -47,26 +54,44 @@ class DemoAccessController extends Controller
             ->where('status', 'active')
             ->first();
 
-        if (! $user) {
+        if (! $user || ! $user->password || ! Hash::check($validated['password'], $user->password)) {
             return back()
-                ->withErrors(['username' => 'El usuario no existe o esta inactivo.'])
-                ->withInput();
+                ->withErrors(['username' => 'Usuario o contraseña incorrectos.'])
+                ->withInput($request->only('username'));
         }
 
-        if (! config('drsam.review_passwordless')) {
-            $password = (string) ($validated['password'] ?? '');
-
-            if (! $user->password || ! Hash::check($password, $user->password)) {
-                return back()
-                    ->withErrors(['password' => 'Usuario o contrasena incorrectos.'])
-                    ->withInput();
-            }
-        }
+        $destination = $this->destination($user, $registry, $request->routeIs('login.store'));
 
         Auth::login($user);
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard'));
+        $request->session()->forget('url.intended');
+
+        return $destination;
+    }
+
+    private function destination(User $user, DashboardRegistry $registry, bool $initial): RedirectResponse
+    {
+        $preferred = $registry->modulesFor($user)->firstWhere('key', data_get($user->metadata, 'home_module'));
+        if ($preferred && $preferred['url'] !== '#' && !in_array($user->role, ['doctor', 'patient'], true)) {
+            return redirect()->to($preferred['url']);
+        }
+        if ($user->role === 'superadmin') {
+            return redirect()->route($initial ? 'demo-login.index' : 'superadmin.dashboard');
+        }
+
+        $aliases = [
+            'digitalPharmacy' => 'digital_pharmacy',
+            'externalPharmacy' => 'external_pharmacy',
+            'insurance' => 'insurance_health',
+            'insuranceAdvisor' => 'insurance_advisor',
+            'provider' => 'provider_npt',
+        ];
+        $modules = $registry->modulesFor($user)->filter(fn (array $module) => $module['url'] !== '#');
+        $module = $modules->firstWhere('key', $aliases[$user->module] ?? $user->module) ?? $modules->first();
+        abort_unless($module, 403, 'No tienes un módulo autorizado disponible.');
+
+        return redirect()->to($module['url']);
     }
 
     public function destroy(Request $request): RedirectResponse

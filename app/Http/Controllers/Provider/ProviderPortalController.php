@@ -18,6 +18,61 @@ use Illuminate\View\View;
 
 class ProviderPortalController extends Controller
 {
+    public function storeImportPatientDetails(Request $request): RedirectResponse
+    {
+        $data = $request->validate(['folio' => ['required', 'string'], 'details' => ['required', 'array'], 'details.*' => ['nullable', 'string', 'max:500']]);
+        $provider = $this->resolveProvider($request, 'import');
+        $record = ProviderRequest::query()->where('external_id', $data['folio'])->where('request_type', 'import')->when($provider, fn ($query) => $query->where('provider_id', $provider->id))->first();
+        abort_unless($record || (in_array($data['folio'], ['IMP-2026-001', 'IMP-2026-002', 'IMP-2026-003', 'IMP-2026-004', 'IMP-2026-005'], true) && !ProviderRequest::query()->where('external_id', $data['folio'])->exists()), 404);
+        $allowed = ['Nombre', 'CURP', 'Fecha de nacimiento', 'Correo electrónico', 'Teléfono', 'Dirección'];
+        $details = array_intersect_key($data['details'], array_flip($allowed));
+        // Keep administrative draft details separate from the clinical identity.
+        $metadata = $request->user()->metadata ?? [];
+        $metadata['import_patient_details'][$data['folio']] = $details;
+        $request->user()->update(['metadata' => $metadata]);
+        return redirect()->route('provider.import.dashboard', ['section' => 6, 'action' => 0])->with('status', 'Datos del expediente guardados.')->with('patient_details_saved', true);
+    }
+
+    public function storeImportPatientDocuments(Request $request): RedirectResponse
+    {
+        $data = $request->validate([
+            'folio' => ['required', 'string'],
+            'files' => ['required', 'array', 'min:1'],
+            'files.*' => ['file', 'mimes:pdf,jpg,jpeg,png', 'max:10240'],
+        ]);
+        $names = ['ine' => 'INE', 'address' => 'Comprobante de domicilio', 'tax' => 'Cédula fiscal', 'curp' => 'CURP', 'prescription' => 'Receta médica', 'summary' => 'Resumen clínico'];
+        abort_unless(count(array_diff(array_keys($data['files']), array_keys($names))) === 0, 422);
+        $provider = $this->resolveProvider($request, 'import');
+        $record = ProviderRequest::query()->where('external_id', $data['folio'])->where('request_type', 'import')
+            ->when($provider, fn ($query) => $query->where('provider_id', $provider->id))->first();
+        // Reference rows can accept private drafts without inventing a patient.
+        abort_unless($record || (in_array($data['folio'], ['IMP-2026-001', 'IMP-2026-002', 'IMP-2026-003', 'IMP-2026-004', 'IMP-2026-005'], true)
+            && !ProviderRequest::query()->where('external_id', $data['folio'])->exists()), 404);
+        foreach ($data['files'] as $key => $file) {
+            $path = $file->store('import-documents/'.$request->user()->id, 'local');
+            \App\Models\Document::query()->create([
+                'patient_id' => $record?->patient_id, 'name' => $file->getClientOriginalName(),
+                'document_type' => $names[$key], 'file_path' => $path, 'file_mime' => $file->getMimeType(),
+                'file_size' => $file->getSize(), 'uploaded_by' => $request->user()->id, 'loaded_at' => now(),
+                'metadata' => ['category' => $names[$key], 'provider_request_id' => $record?->id, 'folio' => $data['folio'], 'source' => 'import_administration', 'pending_patient' => !$record?->patient_id],
+            ]);
+        }
+        return redirect()->route('provider.import.dashboard', ['section' => 6, 'action' => 0])->with('status', 'Documentos del paciente guardados.');
+    }
+
+    public function viewImportDocument(Request $request, \App\Models\Document $document)
+    {
+        $provider = $this->resolveProvider($request, 'import');
+        $ownsDraft = !$document->patient_id && $document->uploaded_by === $request->user()->id && data_get($document->metadata, 'source') === 'import_administration';
+        abort_unless($ownsDraft || ($document->patient_id && ProviderRequest::query()->where('patient_id', $document->patient_id)
+            ->where('request_type', 'import')->when($provider, fn ($query) => $query->where('provider_id', $provider->id))->exists()), 403);
+        abort_unless($document->file_path && \Illuminate\Support\Facades\Storage::disk('local')->exists($document->file_path), 404);
+        if ($request->boolean('download')) {
+            return \Illuminate\Support\Facades\Storage::disk('local')->download($document->file_path, $document->name);
+        }
+        return response()->file(\Illuminate\Support\Facades\Storage::disk('local')->path($document->file_path));
+    }
+
     private const TYPES = [
         'npt' => [
             'label' => 'Proveedor NPT',
@@ -61,9 +116,9 @@ class ProviderPortalController extends Controller
 
         $requestsQuery = ProviderRequest::query()
             ->with([
-                'patient',
+                'patient.documents',
                 'medicalUnit.institution',
-                'provider',
+                'provider.user',
                 'mixtureIntegration',
                 'statusEvents' => fn ($query) => $query->latest('occurred_at')->latest(),
                 'deliveryRoutes.messenger.user',
@@ -116,6 +171,11 @@ class ProviderPortalController extends Controller
             'requests' => $requests,
             'deliveryRoutes' => $deliveryRoutes,
             'messengers' => $messengers,
+            'importRecords' => $type === 'import' ? (clone $requestsQuery)->get() : collect(),
+            'importSuppliers' => $type === 'import' ? Provider::query()->where('provider_type', 'import')
+                ->where('metadata->source', 'international_supplier')
+                ->when($request->user()->role === 'provider', fn ($query) => $query->where('metadata->created_by', $request->user()->id))
+                ->latest()->get() : collect(),
             'metrics' => [
                 'Solicitudes' => (clone $requestsQuery)->count(),
                 'Abiertas' => (clone $requestsQuery)->whereNotIn('status', ['delivered', 'cancelled', 'rejected'])->count(),
@@ -123,6 +183,40 @@ class ProviderPortalController extends Controller
                 'Entregadas' => (clone $requestsQuery)->where('status', 'delivered')->count(),
             ],
         ]);
+    }
+
+    public function storeImportSupplier(Request $request): RedirectResponse
+    {
+        $data = $request->validateWithBag('supplier', [
+            'legal_name' => ['required', 'string', 'max:180'],
+            'trade_name' => ['nullable', 'string', 'max:180'],
+            'country' => ['required', Rule::in(['Estados Unidos', 'Alemania', 'Japón', 'Suiza', 'Reino Unido', 'España', 'Corea del Sur', 'Países Bajos', 'México', 'Otro'])],
+            'supplier_type' => ['required', Rule::in(['Fabricante', 'Distribuidor', 'Comercializador'])],
+            'categories' => ['required', 'array', 'min:1'],
+            'categories.*' => [Rule::in(['Biotecnológicos', 'Oncológicos', 'Inmunológicos', 'Terapias avanzadas', 'Equipos médicos', 'Genéricos', 'Dispositivos médicos', 'Vacunas'])],
+            'contact_name' => ['required', 'string', 'max:180'],
+            'email' => ['required', 'email', 'max:180'],
+            'phone' => ['required', 'string', 'max:50'],
+            'address' => ['required', 'string', 'max:500'],
+            'currency' => ['required', Rule::in(['USD', 'EUR', 'MXN', 'JPY', 'CHF', 'GBP', 'KRW'])],
+            'response_time' => ['required', Rule::in(['12 h', '24 h', '36 h', '48 h', '72 h'])],
+            'payment_terms' => ['required', Rule::in(['Anticipado', 'Contado', 'Crédito 30 días', 'Crédito 60 días'])],
+            'sanitary_document' => ['required', 'file', 'mimes:pdf,doc,docx', 'max:10240'],
+            'framework_contract' => ['required', 'file', 'mimes:pdf,doc,docx', 'max:10240'],
+            'initial_status' => ['required', Rule::in(['active', 'preferred', 'pending', 'document_risk'])],
+            'notes' => ['nullable', 'string', 'max:500'],
+        ]);
+        unset($data['sanitary_document'], $data['framework_contract']);
+        foreach (['sanitary_document', 'framework_contract'] as $field) {
+            $data['documents'][$field] = $request->file($field)->store('import-suppliers', 'local');
+        }
+        Provider::query()->create([
+            'name' => $data['legal_name'], 'provider_type' => 'import',
+            'status' => 'active',
+            'metadata' => [...$data, 'source' => 'international_supplier', 'created_by' => $request->user()->id],
+        ]);
+
+        return redirect()->route('provider.import.dashboard', ['section' => 3, 'action' => 0])->with('status', 'Proveedor registrado correctamente.');
     }
 
     public function updateRequestStatus(Request $request, string $type, ProviderRequest $providerRequest, PlatformAuditService $audit, DomainStateTransitionService $transitions): RedirectResponse

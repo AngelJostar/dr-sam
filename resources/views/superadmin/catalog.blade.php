@@ -973,7 +973,8 @@
                 <form method="post" action="<?php echo e(route('superadmin.users.update', $platformUser)); ?>">
                   <?php echo csrf_field(); ?>
                   <?php echo method_field('patch'); ?>
-                  <div class="superadmin-user-modal-grid">
+                  @include('components.module-access-fields', ['accessUser' => $platformUser])
+<div class="superadmin-user-modal-grid">
                     <label>No. usuario de la plataforma<input value="<?php echo e($platformUser->patient?->platform_number ?? $platformUser->doctor?->external_id ?? (100000000 + $platformUser->id)); ?>" readonly></label>
                     <label>Tipo de usuario<input value="<?php echo e(\App\Enums\UserRole::tryFrom($platformUser->role)?->label() ?? $platformUser->role); ?>" readonly></label>
                     <label class="span-2">Nombre<input name="name" value="<?php echo e($platformUser->name); ?>" required></label>
@@ -1033,7 +1034,8 @@
                 <header><div><h2>Editar institucion</h2><p>Actualiza la informacion y credenciales de acceso.</p></div><a href="#">x</a></header>
                 <form method="post" action="<?php echo e(route('superadmin.institutions.update', $institutionRecord)); ?>">
                   <?php echo csrf_field(); ?> <?php echo method_field('patch'); ?>
-                  <div class="superadmin-user-modal-grid">
+                  
+<div class="superadmin-user-modal-grid">
                     <label>Nombre de la institucion<input name="name" value="<?php echo e($institutionRecord->name); ?>" required></label>
                     <label>Usuario<input name="username" value="<?php echo e($institutionRecord->owner?->username); ?>"></label>
                     <label>Contrasena<input name="password" type="password" placeholder="Dejar vacio para conservar"></label>
@@ -1053,7 +1055,8 @@
               <header><div><h2>Alta de institucion</h2><p>Crea la institucion y asigna sus credenciales de acceso.</p></div><a href="#">x</a></header>
               <form method="post" action="<?php echo e(route('superadmin.institutions.store')); ?>">
                 <?php echo csrf_field(); ?>
-                <div class="superadmin-user-modal-grid">
+                
+<div class="superadmin-user-modal-grid">
                   <label>Nombre de la institucion<input name="name" placeholder="Ej. Secretaria de Salud Estatal" required></label>
                   <label>Usuario<input name="username" placeholder="Ej. salud.estatal" required></label>
                   <label>Contrasena<input name="password" type="password" placeholder="Captura la contrasena" required></label>
@@ -1157,7 +1160,8 @@
                   <?php echo csrf_field(); ?>
                   <?php echo method_field('patch'); ?>
                   <input type="hidden" name="provider_type" value="vendor">
-                  <div class="superadmin-user-modal-grid">
+                  
+<div class="superadmin-user-modal-grid">
                     <label>Nombre<input name="name" value="<?php echo e(data_get($vendorRecord->metadata, 'first_name', $vendorRecord->name)); ?>" required></label>
                     <label>Apellidos<input name="last_name" value="<?php echo e(data_get($vendorRecord->metadata, 'last_name')); ?>"></label>
                     <label>Telefono<input name="phone" placeholder="Ej. 5551234567"></label>
@@ -1190,7 +1194,8 @@
                 <?php echo csrf_field(); ?>
                 <input type="hidden" name="provider_type" value="vendor">
                 <input type="hidden" name="password" value="Temporal2026!">
-                <div class="superadmin-user-modal-grid">
+                
+<div class="superadmin-user-modal-grid">
                   <label>Nombre<input name="name" placeholder="Ej. Mariana" required></label>
                   <label>Apellidos<input name="last_name" placeholder="Ej. Lopez Rivera"></label>
                   <label>Telefono<input name="phone" placeholder="Ej. 5551234567"></label>
@@ -1225,7 +1230,8 @@
                 <form method="post" action="<?php echo e(route('superadmin.insurance-carriers.update', $carrierRecord)); ?>">
                   <?php echo csrf_field(); ?>
                   <?php echo method_field('patch'); ?>
-                  <div class="superadmin-user-modal-grid">
+                  
+<div class="superadmin-user-modal-grid">
                     <label>Nombre<input name="name" value="<?php echo e($carrierRecord->name); ?>" required></label>
                     <label>Identificador<input name="slug" value="<?php echo e($carrierRecord->slug); ?>" required></label>
                     <label>Tipo<input name="type" value="<?php echo e($carrierRecord->type); ?>" placeholder="GMM, salud, convenio"></label>
@@ -1246,7 +1252,8 @@
                   <a href="#" aria-label="Cerrar">x</a>
               <form method="post" action="<?php echo e(route('superadmin.insurance-carriers.store')); ?>">
                 <?php echo csrf_field(); ?>
-                <div class="superadmin-user-modal-grid">
+                
+<div class="superadmin-user-modal-grid">
                   <label>Nombre<input name="name" required></label>
                   <label>Identificador<input name="slug" placeholder="aseguradora-salud" required></label>
                   <label>Tipo<input name="type" placeholder="GMM, salud, convenio"></label>
@@ -1270,7 +1277,8 @@
                 <form method="post" action="<?php echo e(route('superadmin.insurance-advisors.update', $advisorRecord)); ?>">
                   <?php echo csrf_field(); ?>
                   <?php echo method_field('patch'); ?>
-                  <div class="superadmin-user-modal-grid">
+                  
+<div class="superadmin-user-modal-grid">
                     <label>Nombre<input name="name" value="<?php echo e($advisorRecord->name); ?>" required></label>
                     <label>Usuario<input name="username" value="<?php echo e($advisorRecord->username); ?>"></label>
                     <label>Correo<input name="email" type="email" value="<?php echo e($advisorRecord->email); ?>"></label>
@@ -1292,7 +1300,8 @@
                   <a href="#" aria-label="Cerrar">x</a>
               <form method="post" action="<?php echo e(route('superadmin.insurance-advisors.store')); ?>">
                 <?php echo csrf_field(); ?>
-                <div class="superadmin-user-modal-grid">
+                
+<div class="superadmin-user-modal-grid">
                   <label>Nombre<input name="name" required></label>
                   <label>Usuario<input name="username" placeholder="Opcional"></label>
                   <label>Correo<input name="email" type="email"></label>
@@ -1316,7 +1325,8 @@
                 <header><div><h2>Editar hospital privado</h2><p>Actualiza la informacion del hospital privado.</p></div><a href="#">x</a></header>
                 <form method="post" action="<?php echo e(route('superadmin.hospitals.update', $hospitalRecord)); ?>">
                   <?php echo csrf_field(); ?> <?php echo method_field('patch'); ?>
-                  <div class="superadmin-user-modal-grid">
+                  
+<div class="superadmin-user-modal-grid">
                     <label>Nombre del hospital<input name="name" value="<?php echo e($hospitalRecord->name); ?>" required></label>
                     <label>Grupo o institucion<input name="network_type" value="<?php echo e($hospitalRecord->network_type); ?>"></label>
                     <label>Ciudad<input name="city" value="<?php echo e(data_get($hospitalRecord->metadata, 'city')); ?>" placeholder="Ej. Ciudad de Mexico"></label>
@@ -1344,7 +1354,8 @@
               <header><div><h2>Agregar hospital privado</h2><p>Captura la informacion del hospital privado.</p></div><a href="#">x</a></header>
               <form method="post" action="<?php echo e(route('superadmin.hospitals.store')); ?>">
                 <?php echo csrf_field(); ?>
-                <div class="superadmin-user-modal-grid">
+                
+<div class="superadmin-user-modal-grid">
                   <label>Nombre del hospital<input name="name" placeholder="Ej. Hospital ABC Observatorio" required></label>
                   <label>Grupo o institucion<input name="network_type" placeholder="Ej. Hospital ABC"></label>
                   <label>Ciudad<input name="city" placeholder="Ej. Ciudad de Mexico"></label>
