@@ -1,0 +1,65 @@
+/* Shared button proportions across the application. */
+.native-shell {
+  --action-width: 120px;
+  --action-height: 40px;
+}
+.native-shell button:not([data-import-navigate]):not(.import-carousel-arrow):not(.drsam-table-filter-button),
+.native-shell input[type="submit"],
+.native-shell input[type="button"],
+.native-shell a.button,
+.native-shell a.btn,
+.native-shell a[role="button"],
+.native-shell a[class*="-button"] {
+  box-sizing: border-box !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: var(--action-width) !important;
+  min-width: var(--action-width) !important;
+  height: var(--action-height) !important;
+  min-height: var(--action-height) !important;
+  border-radius: 999px !important;
+  padding: 5px 12px !important;
+  font-size: 11px !important;
+  line-height: 1.15 !important;
+  text-align: center !important;
+  white-space: normal !important;
+  flex-shrink: 0;
+  gap: 5px;
+}
+.native-shell .import-detail-table .import-provider-pill {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--action-width);
+  min-height: var(--action-height);
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-size: 11px;
+  line-height: 1.15;
+  text-align: center;
+}
+.native-shell .import-expedients-table { min-width: 1400px !important; }
+.native-shell button:disabled { cursor: default; }
+.native-shell table tbody {
+  --action-width: 108px;
+  --action-height: 34px;
+}
+.native-shell table tbody .import-provider-pill {
+  min-height: var(--action-height);
+  padding: 4px 10px;
+  font-size: 10px;
+}
+/* Compact header controls follow the spreadsheet filter reference. */
+.native-shell button.drsam-table-filter-button { width: 26px !important; min-width: 26px !important; height: 26px !important; min-height: 26px !important; border-radius: 5px !important; padding: 3px !important; }
+.native-shell .drsam-table-filter-footer button { width: 80px !important; min-width: 80px !important; height: 30px !important; min-height: 30px !important; border-radius: 5px !important; }
+.native-shell .import-expedients-table .import-column-title { min-height: 0; }
+.native-shell .drsam-table-filter-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.native-shell .drsam-table-filter-label { white-space: normal; }
+/* Header filter arrows remain compact despite shared action-button styles. */
+body.native-shell table thead th button.drsam-table-filter-button { width: 16px !important; min-width: 16px !important; max-width: 16px !important; height: 16px !important; min-height: 16px !important; padding: 0 !important; border-radius: 50% !important; flex: 0 0 16px !important; font-size: 9px !important; }
+body.native-shell table thead th button.drsam-table-filter-button::after { width: 4px; height: 4px; }
+body.native-shell table thead .drsam-table-filter-head { gap: 4px; }
+body.native-shell table thead .drsam-table-filter-label { display: block; flex: 1 1 auto; min-width: 0; overflow: visible; white-space: normal; text-overflow: clip; color: #12336b; line-height: 1.25; }
+body.native-shell table thead .drsam-table-filter-label .import-column-title { display: block; min-height: 0; max-width: none; }

@@ -189,6 +189,15 @@ Route::middleware('auth')->group(function (): void {
         ->defaults('type', 'import')
         ->middleware('role:superadmin,admin,provider')
         ->name('provider.import.dashboard');
+    Route::post('/providers/import/patient-details', [ProviderPortalController::class, 'storeImportPatientDetails'])
+        ->middleware('role:superadmin,admin,provider')->name('provider.import.patient_details.store');
+    Route::post('/providers/import/patient-documents', [ProviderPortalController::class, 'storeImportPatientDocuments'])
+        ->middleware('role:superadmin,admin,provider')->name('provider.import.patient_documents.store');
+    Route::get('/providers/import/documents/{document}', [ProviderPortalController::class, 'viewImportDocument'])
+        ->middleware('role:superadmin,admin,provider')->name('provider.import.documents.view');
+    Route::post('/providers/import/suppliers', [ProviderPortalController::class, 'storeImportSupplier'])
+        ->middleware(['role:superadmin,admin,provider', 'permission:provider.requests.update'])
+        ->name('provider.import.suppliers.store');
     Route::get('/providers/medicines', [ProviderPortalController::class, 'index'])
         ->defaults('type', 'medicines')
         ->middleware('role:superadmin,admin,provider')

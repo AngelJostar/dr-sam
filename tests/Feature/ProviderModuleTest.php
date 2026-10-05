@@ -10,11 +10,29 @@ use App\Models\Provider;
 use App\Models\ProviderRequest;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class ProviderModuleTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function test_reference_expedient_accepts_private_pending_patient_documents(): void
+    {
+        Storage::fake('local');
+        $user = User::query()->create(['name' => 'Carga', 'username' => 'upload-test', 'role' => 'provider', 'status' => 'active']);
+        $this->actingAs($user)->post(route('provider.import.patient_documents.store'), [
+            'folio' => 'IMP-2026-001', 'files' => ['ine' => UploadedFile::fake()->create('ine.pdf', 20, 'application/pdf')],
+        ])->assertRedirect();
+        $document = \App\Models\Document::query()->firstOrFail();
+        $this->assertNull($document->patient_id);
+        $this->assertTrue(data_get($document->metadata, 'pending_patient'));
+        Storage::disk('local')->assertExists($document->file_path);
+        $this->get(route('provider.import.dashboard', ['section' => 6, 'action' => 0]))->assertSee('1 de 5');
+        $other = User::query()->create(['name' => 'Otro', 'username' => 'upload-other', 'role' => 'provider', 'status' => 'active']);
+        $this->actingAs($other)->get(route('provider.import.documents.view', $document))->assertForbidden();
+    }
 
     public function test_provider_user_can_open_native_npt_dashboard(): void
     {
@@ -81,6 +99,16 @@ class ProviderModuleTest extends TestCase
             ->assertSee('Soporte nutricional postoperatorio')
             ->assertSee('1 partida(s)')
             ->assertDontSee('<iframe');
+
+        foreach (['Expedientes y pacientes', 'Hospital', 'Proveedor', 'Regulatorio', 'Logística', 'Administración', 'Usuarios', 'Reportes'] as $index => $section) {
+            $this->get(route('provider.import.dashboard', ['section' => $index + 1]))
+                ->assertOk()
+                ->assertSee($section)
+                ->assertSee('import-summary')
+                ->assertSee('data-import-filter', false)
+                ->assertSee('aria-current="page"', false)
+                ->assertDontSee('Tablero de importación');
+        }
 
         $this->actingAs($user)
             ->get(route('provider.npt.dashboard', ['section' => 'pending']))
@@ -234,16 +262,49 @@ class ProviderModuleTest extends TestCase
             ->assertOk()
             ->assertSee('Proveedor Importacion')
             ->assertSee('provider-import-native-screen')
-            ->assertSee('provider-import-native-global-header')
             ->assertSee('Tablero de importación')
-            ->assertSee('Usuarios')
-            ->assertDontSee('Documentos')
-            ->assertSee('Expedientes con prioridad operativa')
             ->assertSee('IMP-20260611-001')
             ->assertSee('Tocilizumab')
-            ->assertSee('IMP-20260605-004')
-            ->assertSee('Valeria López Guzmán')
-            ->assertSee('No hay solicitudes para este proveedor.')
             ->assertDontSee('<iframe');
+    }
+
+    public function test_import_supplier_form_validates_and_stores_private_documents(): void
+    {
+        Storage::fake('local');
+        $user = User::query()->create(['name' => 'Import Supplier', 'username' => 'import.supplier', 'email' => 'supplier@test.local', 'role' => 'provider', 'module' => 'provider_import', 'status' => 'active']);
+        $this->actingAs($user)->post(route('provider.import.suppliers.store'), [])->assertSessionHasErrors(['legal_name', 'sanitary_document'], null, 'supplier');
+        $data = ['legal_name' => 'Proveedor registrado prueba', 'country' => 'México', 'supplier_type' => 'Distribuidor', 'categories' => ['Oncológicos'], 'contact_name' => 'Contacto prueba', 'email' => 'contacto@test.local', 'phone' => '+52 5555555555', 'address' => 'Dirección de prueba', 'currency' => 'MXN', 'response_time' => '24 h', 'payment_terms' => 'Contado', 'initial_status' => 'active', 'sanitary_document' => UploadedFile::fake()->create('sanitario.pdf', 20, 'application/pdf'), 'framework_contract' => UploadedFile::fake()->create('contrato.pdf', 20, 'application/pdf')];
+        $this->post(route('provider.import.suppliers.store'), $data)->assertRedirect(route('provider.import.dashboard', ['section' => 3, 'action' => 0]));
+        $supplier = Provider::query()->where('name', 'Proveedor registrado prueba')->firstOrFail();
+        $this->assertSame($user->id, $supplier->metadata['created_by']);
+        foreach ($supplier->metadata['documents'] as $path) { Storage::disk('local')->assertExists($path); }
+        $this->get(route('provider.import.dashboard', ['section' => 3, 'action' => 0]))->assertSee('Proveedor registrado prueba');
+    }
+
+    public function test_import_sections_show_scoped_records_and_all_carousel_options_render(): void
+    {
+        $user = User::query()->create(['name' => 'Import Test', 'username' => 'import.sections', 'email' => 'sections@test.local', 'role' => 'provider', 'module' => 'provider_import', 'status' => 'active']);
+        $provider = Provider::query()->create(['user_id' => $user->id, 'name' => 'Proveedor propio', 'provider_type' => 'import', 'status' => 'active']);
+        $other = Provider::query()->create(['name' => 'Proveedor ajeno', 'provider_type' => 'import', 'status' => 'active']);
+        $patient = Patient::query()->create(['full_name' => 'Paciente propio', 'status' => 'active']);
+        $unit = MedicalUnit::query()->create(['name' => 'Unidad propia', 'status' => 'active']);
+        ProviderRequest::query()->create(['provider_id' => $provider->id, 'patient_id' => $patient->id, 'medical_unit_id' => $unit->id, 'external_id' => 'IMPORT-PROPIO', 'request_type' => 'import', 'status' => 'requested', 'requested_at' => now(), 'payload' => ['diagnosis' => 'Diagnóstico prueba', 'prescription_code' => 'RECETA-PROPIA', 'prescription_items' => [['medication_name' => 'Medicamento propio', 'quantity' => 2]]]]);
+        ProviderRequest::query()->create(['provider_id' => $other->id, 'external_id' => 'IMPORT-AJENO', 'request_type' => 'import', 'status' => 'requested', 'requested_at' => now()]);
+        $this->actingAs($user);
+        foreach ([5, 5, 5, 5, 7, 8, 6, 5, 5] as $section => $actions) {
+            for ($action = 0; $action < $actions; $action++) {
+                $this->get(route('provider.import.dashboard', compact('section', 'action')))
+                    ->assertOk()->assertSee('import-summary')->assertSee('data-import-search', false)
+                    ->assertSee('import-detail-table')->assertDontSee('IMPORT-AJENO');
+            }
+        }
+        $this->get(route('provider.import.dashboard', ['section' => 1, 'action' => 1]))->assertSee('Paciente propio')->assertSee('Unidad propia');
+        $this->get(route('provider.import.dashboard', ['section' => 1, 'action' => 2]))->assertSee('RECETA-PROPIA');
+        $this->get(route('provider.import.dashboard', ['section' => 3, 'action' => 1]))->assertSee('Medicamento propio');
+        $this->get(route('provider.import.dashboard', ['section' => 3, 'action' => 2]))->assertSee('COT-2026-001')->assertSee('Comparativa de propuestas');
+        $this->get(route('provider.import.dashboard', ['section' => 5, 'action' => 1]))->assertSee('Kuehne+Nagel')->assertSee('En aduana');
+        $this->get(route('provider.import.dashboard', ['section' => 7, 'action' => 0]))->assertSee('Ana Torres')->assertSee('Carlos Rivas');
+        $this->get(route('provider.import.dashboard', ['section' => 4, 'action' => 6]))->assertSee('Poder Simple (Cofepris)')->assertSee('Paciente propio')->assertSee('data-letter-patient', false);
+        $this->get(route('provider.import.dashboard', ['section' => 5, 'action' => 7]))->assertSee('Carta Encomienda (Agencia Aduanal)')->assertSee('Paciente propio');
     }
 }

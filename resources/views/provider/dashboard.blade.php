@@ -2,6 +2,13 @@
 
 @section('body_class', $type === 'chemotherapy' ? 'provider-chemo-native-body' : ($type === 'import' ? 'provider-import-native-body' : 'provider-native-body'))
 
+@if ($type === 'import')
+  @push('styles')
+    <link rel="stylesheet" href="{{ asset('css/buttons.css') }}?v={{ filemtime(public_path('css/buttons.css')) }}">
+    <link rel="stylesheet" href="{{ asset('css/provider-import.css') }}?v={{ filemtime(public_path('css/provider-import.css')) }}">
+  @endpush
+@endif
+
 @php
   $statusLabels = [
     'requested' => 'Pendiente',
@@ -47,95 +54,96 @@
   ]);
 
   $importFiles = collect([
-    ['folio' => 'IMP-20260607-003', 'patient' => 'Ximena Sofia Martinez Perez', 'medication' => 'Cannabidiol solución oral', 'detail' => '100 mg/ml', 'stage' => 'En documentación', 'responsible' => 'Área administrativa', 'progress' => 11],
+    ['folio' => 'IMP-20260607-003', 'patient' => 'Ximena Sofia Martinez Perez', 'medication' => 'Cannabidiol solucion oral', 'detail' => '100 mg/ml', 'stage' => 'En documentacion', 'responsible' => 'Area administrativa', 'progress' => 11],
     ['folio' => 'IMP-20260611-001', 'patient' => 'Claudia Beatriz Salinas Vega', 'medication' => 'Tocilizumab', 'detail' => '162 mg solución inyectable', 'stage' => 'Permiso Cofepris', 'responsible' => 'Regulatorio', 'progress' => 44],
     ['folio' => 'IMP-20260609-002', 'patient' => 'Rafael Ortega Morales', 'medication' => 'Asfotasa alfa', 'detail' => '80 mg/0.8 ml', 'stage' => 'Aduana CDMX', 'responsible' => 'Logística', 'progress' => 78],
     ['folio' => 'IMP-20260605-004', 'patient' => 'Valeria López Guzmán', 'medication' => 'Nivolumab', 'detail' => '10 mg/ml', 'stage' => 'En revisión', 'responsible' => 'Proveedor', 'progress' => 32],
   ]);
-  $importMenu = [
-    ['grid', 'Tablero'],
-    ['file', 'Expedientes'],
-    ['user', 'Paciente'],
-    ['hospital', 'Hospital'],
-    ['globe', 'Proveedor'],
-    ['shield', 'Regulatorio'],
-    ['truck', 'Logística'],
-    ['chart', 'Administración'],
-    ['users', 'Usuarios'],
-    ['chart', 'Reportes'],
-  ];
 
   $statusText = fn (?string $value) => $statusLabels[$value ?? ''] ?? ($value ? ucfirst(str_replace('_', ' ', $value)) : 'Sin estatus');
   $activeSection = $typeLabels[$type] ?? strtoupper($type);
+  $importSections = ['Tablero', 'Expedientes y pacientes', 'Hospital', 'Proveedor', 'Regulatorio', 'Logística', 'Administración', 'Usuarios', 'Reportes'];
+  $importSection = filter_var(request()->query('section', 0), FILTER_VALIDATE_INT);
+  $importSection = isset($importSections[$importSection]) ? $importSection : 0;
+  $importActions = [
+    ['Resumen', 'Prioridades', 'Solicitudes', 'Seguimiento', 'Indicadores'],
+    ['Expedientes', 'Pacientes', 'Recetas', 'Documentos', 'Historial clínico'],
+    ['Hospitales', 'Unidades', 'Contactos', 'Convenios', 'Solicitudes hospitalarias'],
+    ['Proveedores', 'Medicamentos', 'Cotizaciones', 'Órdenes de compra', 'Documentación'],
+    ['Expedientes', 'Permisos Cofepris', 'Trámites', 'Documentos sanitarios', 'Vigencias', 'Seguimiento regulatorio', 'Formatos Editables'],
+    ['Expedientes', 'Embarques', 'Aduana', 'Almacén', 'Rutas', 'Entregas', 'Trazabilidad', 'Formatos Editables'],
+    ['Expedientes', 'Facturas', 'Pagos', 'Contratos', 'Presupuestos', 'Configuración'],
+    ['Directorio', 'Perfiles', 'Roles', 'Permisos', 'Actividad'],
+    ['Importaciones', 'Tiempos de entrega', 'Costos', 'Cumplimiento', 'Exportaciones'],
+  ];
+  $importDefaultActions = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+  $importAction = filter_var(request()->query('action', $importDefaultActions[$importSection]), FILTER_VALIDATE_INT);
+  $importAction = isset($importActions[$importSection][$importAction]) ? $importAction : 0;
 @endphp
 
 @section('content')
   @if ($type === 'import')
     <div class="provider-import-native-screen">
-      <header class="provider-import-native-global-header">
-        <strong class="provider-import-native-global-brand">PROVEEDOR IMPORTACIÓN</strong>
-        <div class="provider-import-native-account">
-          <details class="provider-import-native-notifications">
-            <summary aria-label="Notificaciones" title="Notificaciones">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z"/><path d="M10 21h4"/></svg>
-            </summary>
-            <p>No hay notificaciones nuevas.</p>
-          </details>
-          <div class="provider-import-native-account-name">
-            <strong>Usuario activo</strong>
-            <small>{{ data_get($provider?->metadata, 'city') ?: 'Ciudad de México' }}</small>
-          </div>
-          <form method="post" action="{{ route('logout') }}">
-            @csrf
-            <button class="provider-import-native-logout" type="submit" aria-label="Cerrar sesión">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/><path d="M15 4h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4"/></svg>
-              <span>Cerrar sesión</span>
-            </button>
-          </form>
+      <header class="import-account-header">
+        <strong>PROVEEDOR IMPORTACIÓN</strong>
+        <div class="import-account-actions">
+          <span class="import-account-bell" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 17h14l-2-3V9a5 5 0 0 0-10 0v5z M10 20h4"/></svg></span>
+          <div><b>{{ auth()->user()->name }}</b><small>Usuario activo</small></div>
+          <form method="post" action="{{ route('logout') }}">@csrf<button type="submit">↪ &nbsp; Cerrar sesión</button></form>
         </div>
       </header>
-
       <aside class="provider-import-native-sidebar" aria-label="Navegacion proveedor importacion">
-        <nav class="provider-import-native-menu" aria-label="Secciones de importación">
-          @foreach ($importMenu as [$icon, $label])
-            <a class="{{ $loop->first ? 'is-active' : '' }}" href="{{ route('provider.import.dashboard') }}" @if ($loop->first) aria-current="page" @endif>
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                @switch($icon)
-                  @case('grid')
-                    <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
-                    @break
-                  @case('file')
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M8 13h8M8 17h8"/>
-                    @break
-                  @case('user')
-                    <circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0Z"/>
-                    @break
-                  @case('users')
-                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
-                    @break
-                  @case('hospital')
-                    <path d="M4 22V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v17M2 22h20M9 22v-5h6v5M9 8h.01M15 8h.01M9 12h.01M15 12h.01"/>
-                    @break
-                  @case('globe')
-                    <circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/>
-                    @break
-                  @case('shield')
-                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/>
-                    @break
-                  @case('truck')
-                    <path d="M3 6h11v11H3ZM14 10h4l3 3v4h-7"/><circle cx="7" cy="18" r="2"/><circle cx="18" cy="18" r="2"/>
-                    @break
-                  @default
-                    <path d="M3 21h18M6 21v-7h3v7M11 21V9h3v12M16 21V3h3v18"/>
-                @endswitch
-              </svg>
-              <span>{{ $label }}</span>
-            </a>
+        <nav class="provider-import-native-menu">
+          @foreach ([
+            ['Tablero', 'M3 3h7v7H3z M14 3h7v7h-7z M3 14h7v7H3z M14 14h7v7h-7z'],
+            ['Expedientes y pacientes', 'M6 3h8l4 4v14H6z M14 3v5h4 M9 12h6 M9 16h6'],
+            ['Hospital', 'M5 21V3h14v18 M3 21h18 M9 7h1 M14 7h1 M9 11h1 M14 11h1 M10 21v-6h4v6'],
+            ['Proveedor', 'M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0 M3 12h18 M12 3a18 18 0 0 1 0 18a18 18 0 0 1 0-18'],
+            ['Regulatorio', 'M12 3l8 4v5c0 5-8 9-8 9s-8-4-8-9V7z M8 12l3 3l5-6'],
+            ['Logística', 'M3 6h12v11H3z M15 10h4l3 4v3h-7 M5 17a2 2 0 1 0 4 0 M16 17a2 2 0 1 0 4 0'],
+            ['Administración', 'M4 21V13h4v8 M10 21V8h4v13 M16 21V3h4v18'],
+            ['Usuarios', 'M8 7a3 3 0 1 0 6 0a3 3 0 1 0-6 0 M4 21v-3a7 7 0 0 1 14 0v3 M18 4a3 3 0 0 1 0 6 M20 14a5 5 0 0 1 2 4v3'],
+            ['Reportes', 'M4 21V13h4v8 M10 21V8h4v13 M16 21V3h4v18'],
+          ] as [$label, $icon])
+            <form method="get" action="{{ route('provider.import.dashboard') }}" class="import-menu-navigation">
+              <input type="hidden" name="section" value="{{ $loop->index }}">
+              <input type="hidden" name="action" value="{{ $importDefaultActions[$loop->index] }}">
+              <button type="submit" data-import-navigate="{{ route('provider.import.dashboard', ['section' => $loop->index, 'action' => $importDefaultActions[$loop->index]], false) }}" @class(['is-active' => $importSection === $loop->index]) @if ($importSection === $loop->index) aria-current="page" @endif>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $icon }}"/></svg>{{ $label }}
+              </button>
+            </form>
           @endforeach
         </nav>
       </aside>
 
       <section class="provider-import-native-workspace">
+        <header class="import-section-banner"><h1>{{ $importSections[$importSection] }}</h1><span>{{ $importActions[$importSection][$importAction] }}</span></header>
+        <nav class="import-action-carousel" aria-label="Opciones de {{ $importSections[$importSection] }}">
+          <button type="button" class="import-carousel-arrow" data-import-scroll="-1" aria-label="Opciones anteriores">‹</button>
+          <div class="import-carousel-track">
+            @foreach ($importActions[$importSection] as $action)
+              <a @class(['import-carousel-item', 'is-active' => $importAction === $loop->index])
+                 href="{{ route('provider.import.dashboard', ['section' => $importSection, 'action' => $loop->index]) }}"
+                 @if ($importAction === $loop->index) aria-current="page" @endif>
+                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 3h14v18H5z M8 7h8 M8 12h8 M8 17h5"/></svg>
+                <span>{{ $action }}</span>
+              </a>
+            @endforeach
+          </div>
+          <button type="button" class="import-carousel-arrow" data-import-scroll="1" aria-label="Opciones siguientes">›</button>
+        </nav>
+        @push('scripts')
+          <script>
+            document.querySelectorAll('[data-import-scroll]').forEach(button => {
+              button.addEventListener('click', () => {
+                const track = button.closest('.import-action-carousel').querySelector('.import-carousel-track');
+                track.scrollBy({ left: Number(button.dataset.importScroll) * Math.max(140, track.clientWidth * .75), behavior: 'smooth' });
+              });
+            });
+          </script>
+        @endpush
+        @include('provider.import-section', ['panelTitle' => $importActions[$importSection][$importAction], 'sectionTitle' => $importSections[$importSection]])
+        @if ($importSection === 0 && $importAction === 0)
         @if (session('status'))
           <div class="notice success">{{ session('status') }}</div>
         @endif
@@ -151,21 +159,22 @@
           </div>
         @endif
 
-        <header class="provider-import-native-intro">
+        <header class="provider-import-native-topbar">
           <div>
             <h1>Tablero de importación</h1>
-            <p>Seguimiento de recetas, permisos, aduana y almacén.</p>
+            <p class="import-subtitle">Seguimiento de recetas, permisos, aduana y almacén.</p>
           </div>
-          <time datetime="{{ now()->toDateString() }}">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18"/></svg>
-            {{ now()->format('d M Y') }}
-          </time>
+          <div>
+            <time>{{ now()->format('d M Y') }}</time>
+          </div>
         </header>
 
         <section class="provider-import-native-card">
           <div class="provider-import-native-heading">
-            <h2>Expedientes con prioridad operativa</h2>
-            <button type="button"><span class="provider-import-native-plus" aria-hidden="true">+</span>Nuevo expediente</button>
+            <div>
+              <h2>Expedientes con prioridad operativa</h2>
+            </div>
+            <button type="button"><span aria-hidden="true">⊕</span> Nuevo expediente</button>
           </div>
           <div class="provider-import-native-table-scroll">
             <table class="provider-import-native-table">
@@ -177,7 +186,7 @@
                   <th>Etapa</th>
                   <th>Responsable</th>
                   <th>Avance</th>
-                  <th>Acción</th>
+                  <th>Accion</th>
                 </tr>
               </thead>
               <tbody>
@@ -234,14 +243,11 @@
                 </form>
               </article>
             @empty
-              <div class="provider-import-native-empty">
-                <span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M8 13h8M8 17h8"/></svg></span>
-                <strong>No hay solicitudes para este proveedor.</strong>
-                <p>En este momento no hay solicitudes pendientes de atención para este proveedor.</p>
-              </div>
+              <p>No hay solicitudes para este proveedor.</p>
             @endforelse
           </div>
         </section>
+        @endif
       </section>
     </div>
   @elseif ($type === 'chemotherapy')

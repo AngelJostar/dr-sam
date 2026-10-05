@@ -46,7 +46,7 @@
   function getHeaderRow(table) {
     var rows = Array.prototype.slice.call(table.tHead ? table.tHead.rows : []);
     return rows.find(function (row) {
-      if (isLegacyFilterRow(row)) return false;
+      if (isLegacyFilterRow(row) && !row.querySelector('[data-import-column]')) return false;
       return Array.prototype.filter.call(row.cells, isHeaderCellFilterable).length > 0;
     }) || null;
   }
@@ -92,7 +92,7 @@
   function isFilterableTable(table) {
     if (!table || table.hasAttribute(READY_ATTR)) return false;
     if (!table.tHead || !table.tBodies.length) return false;
-    if (table.closest("[data-drsam-table-filter-skip]")) return false;
+    if (table.closest("[data-drsam-table-filter-skip]") && !table.classList.contains('import-detail-table')) return false;
     if (table.closest("form")) return false;
     if (table.classList.contains("doctor-prescription-table")) return false;
     if (table.classList.contains("superadmin-oncology-table")) return false;
@@ -156,6 +156,7 @@
       row.classList.toggle(FILTER_CLASS, !visible);
     });
     updateButtons(table);
+    table.dispatchEvent(new CustomEvent('drsam:filtered', { bubbles: true }));
   }
 
   function closeMenu() {
@@ -309,6 +310,7 @@
   }
 
   function ensureHeadContent(th) {
+    th.querySelectorAll('[data-import-column]').forEach(function (select) { select.remove(); });
     th.querySelectorAll(".institution-table-head-buttons").forEach(function (legacyButtons) {
       legacyButtons.remove();
     });
