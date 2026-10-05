@@ -47,10 +47,23 @@
   ]);
 
   $importFiles = collect([
-    ['folio' => 'IMP-20260607-003', 'patient' => 'Ximena Sofia Martinez Perez', 'medication' => 'Cannabidiol solucion oral', 'detail' => '100 mg/ml', 'stage' => 'En documentacion', 'responsible' => 'Area administrativa', 'progress' => 11],
-    ['folio' => 'IMP-20260611-001', 'patient' => 'Claudia Beatriz Salinas Vega', 'medication' => 'Tocilizumab', 'detail' => '162 mg solucion inyectable', 'stage' => 'Permiso Cofepris', 'responsible' => 'Gestion de Cofepris', 'progress' => 44],
-    ['folio' => 'IMP-20260609-002', 'patient' => 'Rafael Ortega Morales', 'medication' => 'Asfotasa alfa', 'detail' => '80 mg/0.8 ml', 'stage' => 'Aduana CDMX', 'responsible' => 'Operador logistico', 'progress' => 78],
+    ['folio' => 'IMP-20260607-003', 'patient' => 'Ximena Sofia Martinez Perez', 'medication' => 'Cannabidiol solución oral', 'detail' => '100 mg/ml', 'stage' => 'En documentación', 'responsible' => 'Área administrativa', 'progress' => 11],
+    ['folio' => 'IMP-20260611-001', 'patient' => 'Claudia Beatriz Salinas Vega', 'medication' => 'Tocilizumab', 'detail' => '162 mg solución inyectable', 'stage' => 'Permiso Cofepris', 'responsible' => 'Regulatorio', 'progress' => 44],
+    ['folio' => 'IMP-20260609-002', 'patient' => 'Rafael Ortega Morales', 'medication' => 'Asfotasa alfa', 'detail' => '80 mg/0.8 ml', 'stage' => 'Aduana CDMX', 'responsible' => 'Logística', 'progress' => 78],
+    ['folio' => 'IMP-20260605-004', 'patient' => 'Valeria López Guzmán', 'medication' => 'Nivolumab', 'detail' => '10 mg/ml', 'stage' => 'En revisión', 'responsible' => 'Proveedor', 'progress' => 32],
   ]);
+  $importMenu = [
+    ['grid', 'Tablero'],
+    ['file', 'Expedientes'],
+    ['user', 'Paciente'],
+    ['hospital', 'Hospital'],
+    ['globe', 'Proveedor'],
+    ['shield', 'Regulatorio'],
+    ['truck', 'Logística'],
+    ['chart', 'Administración'],
+    ['users', 'Usuarios'],
+    ['chart', 'Reportes'],
+  ];
 
   $statusText = fn (?string $value) => $statusLabels[$value ?? ''] ?? ($value ? ucfirst(str_replace('_', ' ', $value)) : 'Sin estatus');
   $activeSection = $typeLabels[$type] ?? strtoupper($type);
@@ -59,25 +72,66 @@
 @section('content')
   @if ($type === 'import')
     <div class="provider-import-native-screen">
-      <aside class="provider-import-native-sidebar" aria-label="Navegacion proveedor importacion">
-        <div class="provider-import-native-brand">
-          <span>I</span>
-          <div>
-            <strong>Proveedor Importacion</strong>
-            <small>Medicamentos internacionales</small>
+      <header class="provider-import-native-global-header">
+        <strong class="provider-import-native-global-brand">PROVEEDOR IMPORTACIÓN</strong>
+        <div class="provider-import-native-account">
+          <details class="provider-import-native-notifications">
+            <summary aria-label="Notificaciones" title="Notificaciones">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z"/><path d="M10 21h4"/></svg>
+            </summary>
+            <p>No hay notificaciones nuevas.</p>
+          </details>
+          <div class="provider-import-native-account-name">
+            <strong>Usuario activo</strong>
+            <small>{{ data_get($provider?->metadata, 'city') ?: 'Ciudad de México' }}</small>
           </div>
+          <form method="post" action="{{ route('logout') }}">
+            @csrf
+            <button class="provider-import-native-logout" type="submit" aria-label="Cerrar sesión">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/><path d="M15 4h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4"/></svg>
+              <span>Cerrar sesión</span>
+            </button>
+          </form>
         </div>
-        <nav class="provider-import-native-menu">
-          <a class="is-active" href="{{ route('provider.import.dashboard') }}"><span>T</span>Tablero</a>
-          <a href="{{ route('provider.import.dashboard') }}"><span>D</span>Dashboard de Entrega</a>
-          <a href="{{ route('provider.import.dashboard') }}"><span>E</span>Expedientes</a>
-          <a href="{{ route('provider.import.dashboard') }}"><span>S</span>Seguimiento</a>
-          <a href="{{ route('provider.import.dashboard') }}"><span>A</span>Area Administrativa</a>
-          <a href="{{ route('provider.import.dashboard') }}"><span>P</span>Proveedor Extranjero</a>
-          <a href="{{ route('provider.import.dashboard') }}"><span>C</span>Gestion Cofepris</a>
-          <a href="{{ route('provider.import.dashboard') }}"><span>O</span>Operador Logistico</a>
-          <a href="{{ route('provider.import.dashboard') }}"><span>DO</span>Documentos</a>
-          <a href="{{ route('provider.import.dashboard') }}"><span>R</span>Reportes</a>
+      </header>
+
+      <aside class="provider-import-native-sidebar" aria-label="Navegacion proveedor importacion">
+        <nav class="provider-import-native-menu" aria-label="Secciones de importación">
+          @foreach ($importMenu as [$icon, $label])
+            <a class="{{ $loop->first ? 'is-active' : '' }}" href="{{ route('provider.import.dashboard') }}" @if ($loop->first) aria-current="page" @endif>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                @switch($icon)
+                  @case('grid')
+                    <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
+                    @break
+                  @case('file')
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M8 13h8M8 17h8"/>
+                    @break
+                  @case('user')
+                    <circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0Z"/>
+                    @break
+                  @case('users')
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+                    @break
+                  @case('hospital')
+                    <path d="M4 22V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v17M2 22h20M9 22v-5h6v5M9 8h.01M15 8h.01M9 12h.01M15 12h.01"/>
+                    @break
+                  @case('globe')
+                    <circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/>
+                    @break
+                  @case('shield')
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/>
+                    @break
+                  @case('truck')
+                    <path d="M3 6h11v11H3ZM14 10h4l3 3v4h-7"/><circle cx="7" cy="18" r="2"/><circle cx="18" cy="18" r="2"/>
+                    @break
+                  @default
+                    <path d="M3 21h18M6 21v-7h3v7M11 21V9h3v12M16 21V3h3v18"/>
+                @endswitch
+              </svg>
+              <span>{{ $label }}</span>
+            </a>
+          @endforeach
         </nav>
       </aside>
 
@@ -97,24 +151,21 @@
           </div>
         @endif
 
-        <header class="provider-import-native-topbar">
+        <header class="provider-import-native-intro">
           <div>
-            <p class="eyebrow">Proveedor extranjero y tramite sanitario</p>
-            <h1>Tablero de importacion</h1>
+            <h1>Tablero de importación</h1>
+            <p>Seguimiento de recetas, permisos, aduana y almacén.</p>
           </div>
-          <div>
-            <a href="{{ route('dashboard') }}">&larr; Atras</a>
-            <time>{{ now()->format('d M Y') }}</time>
-          </div>
+          <time datetime="{{ now()->toDateString() }}">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18"/></svg>
+            {{ now()->format('d M Y') }}
+          </time>
         </header>
 
         <section class="provider-import-native-card">
           <div class="provider-import-native-heading">
-            <div>
-              <h2>Expedientes con prioridad operativa</h2>
-              <p>Seguimiento de recetas, permisos, aduana y almacen.</p>
-            </div>
-            <button type="button">Nuevo expediente</button>
+            <h2>Expedientes con prioridad operativa</h2>
+            <button type="button"><span class="provider-import-native-plus" aria-hidden="true">+</span>Nuevo expediente</button>
           </div>
           <div class="provider-import-native-table-scroll">
             <table class="provider-import-native-table">
@@ -126,7 +177,7 @@
                   <th>Etapa</th>
                   <th>Responsable</th>
                   <th>Avance</th>
-                  <th>Accion</th>
+                  <th>Acción</th>
                 </tr>
               </thead>
               <tbody>
@@ -183,7 +234,11 @@
                 </form>
               </article>
             @empty
-              <p>No hay solicitudes para este proveedor.</p>
+              <div class="provider-import-native-empty">
+                <span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M8 13h8M8 17h8"/></svg></span>
+                <strong>No hay solicitudes para este proveedor.</strong>
+                <p>En este momento no hay solicitudes pendientes de atención para este proveedor.</p>
+              </div>
             @endforelse
           </div>
         </section>
