@@ -13499,12 +13499,10 @@ body.is-register-modal-open {
   color: #047857;
 }
 .native-shell .operational-authorization-menu {
-  position: absolute;
-  z-index: 25;
-  top: calc(100% + 5px);
-  left: 0;
+  position: static;
   display: none;
   min-width: 118px;
+  margin-top: 5px;
   gap: 5px;
   padding: 6px;
   border: 1px solid #d9e2e0;

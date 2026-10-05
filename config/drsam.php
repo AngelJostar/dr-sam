@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 return [
     'review_passwordless' => (bool) env('DRSAM_REVIEW_PASSWORDLESS', false),

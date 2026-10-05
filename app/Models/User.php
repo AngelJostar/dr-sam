@@ -10,10 +10,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use Notifiable;
+    use HasApiTokens, Notifiable;
 
     protected $fillable = [
         'name',
@@ -72,6 +73,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function messengerProfile(): HasOne
     {
         return $this->hasOne(MessengerProfile::class);
+    }
+
+    public function mobileDeviceRegistrations(): HasMany
+    {
+        return $this->hasMany(MobileDeviceRegistration::class);
     }
 
     public function accessiblePatientProfileLinks(): HasMany

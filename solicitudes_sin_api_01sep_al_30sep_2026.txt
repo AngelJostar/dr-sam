@@ -1,0 +1,75 @@
+SOLICITUDES REALIZADAS DEL 1 AL 30 DE SEPTIEMBRE DE 2026
+EXCLUYE ACTIVIDADES RELACIONADAS CON APIs
+
+Nota: listado reconstruido a partir de la conversación disponible. Las peticiones se
+normalizaron y resumieron para evitar repeticiones, conservando su intención original.
+
+BASES DE DATOS Y CONFIGURACIÓN FUNCIONAL
+
+1. Revisar las bases de datos actuales de producción de Dr. Sam y Mezclas Pro.
+2. Generar consultas para completar datos faltantes y permitir pruebas funcionales.
+3. Identificar dónde se asigna un hospital a un cliente dentro del sistema.
+4. Localizar la opción correspondiente cuando Administración solamente mostraba reportes.
+5. Configurar o habilitar el acceso necesario desde el módulo de Personal y Capacitaciones.
+6. Buscar un hospital con inventario disponible para realizar pruebas.
+
+FORMULARIOS Y EXPERIENCIA DE USUARIO
+
+7. Homologar visualmente el formulario de solicitudes oncológicas de Dr. Sam con el de CBTA.
+8. Homologar los campos, comportamiento y validaciones del formulario oncológico.
+9. Permitir en Dr. Sam todas las operaciones disponibles para el cliente oncológico.
+10. Corregir los botones del formulario para mostrar sus textos en color blanco.
+11. Quitar temporalmente la obligatoriedad de adjuntar documentos para agilizar pruebas.
+12. Revisar por qué los menús de Compras, Distribución e Instituciones no se cerraban en producción.
+13. Corregir el comportamiento o animación de apertura y cierre del menú lateral.
+
+SERVIDOR Y DESPLIEGUE
+
+14. Proporcionar instrucciones para ingresar por SSH al servidor de Mezclas Pro.
+15. Explicar cómo limpiar y reconstruir la caché de Laravel en el servidor.
+16. Configurar la tarea cron de Laravel para ejecutarse cada minuto.
+17. Revisar la configuración de Nginx y Varnish ante errores 404.
+18. Corregir el acceso mediante index.php y las rutas amigables de Laravel.
+19. Revisar la configuración especial para cargar Livewire correctamente en producción.
+20. Confirmar si la configuración personalizada de Livewire seguiría funcionando localmente.
+21. Diagnosticar la falta de Node.js/NPM en el servidor y trabajar con archivos ya compilados.
+22. Revisar la configuración del archivo .env para publicar un nuevo sitio Laravel.
+23. Corregir valores de producción como APP_ENV, APP_DEBUG, APP_URL y conexión de base de datos.
+24. Diagnosticar un error 404 de Nginx después de configurar y subir el sitio.
+25. Explicar cómo acceder temporalmente como usuario root para revisar la configuración del servidor.
+
+MAPAS Y SERVICIOS VISUALES
+
+26. Diagnosticar el bloqueo 403 de mosaicos de OpenStreetMap en el módulo de rutas.
+27. Revisar qué componente o proveedor de mapas estaba instalado en la aplicación.
+28. Ajustar la configuración para cumplir la política de uso de mosaicos del mapa.
+
+CONTROL DE VERSIONES
+
+29. Solucionar el bloqueo de Git provocado por el archivo .git/index.lock.
+30. Explicar cómo recuperar la capacidad de agregar cambios, crear commits y hacer push.
+31. Conservar los cambios locales existentes durante integraciones entre ramas.
+32. Evitar que cambios ajenos o de versiones antiguas modificaran módulos no solicitados.
+
+PRUEBAS Y VALIDACIONES FUNCIONALES
+
+33. Verificar las validaciones completas de los formularios nutricionales y oncológicos.
+34. Realizar pruebas con solicitudes distintas y datos lógicos de demostración.
+35. Comprobar que cada autorización solo pudiera realizarse desde el perfil responsable.
+36. Validar que perfiles incorrectos no pudieran aprobar acciones de otras áreas.
+37. Confirmar la trazabilidad de las autorizaciones efectuadas por cada usuario operativo.
+
+REPORTES
+
+38. Preparar un resumen de las actividades realizadas durante septiembre con estimación de horas.
+39. Excluir del reporte los trabajos incorporados mediante ramas de terceros.
+40. Crear un archivo de texto con las peticiones de septiembre, excluyendo todo lo relacionado con APIs.
+
+EXCLUSIONES APLICADAS
+
+- Desarrollo, configuración, diagnóstico y pruebas de APIs.
+- Comunicación o sincronización técnica entre Dr. Sam y CBTA.
+- Endpoints, tokens, catálogos remotos, prevalidación y conciliación de estados.
+- Pruebas cuyo objetivo principal fuera validar la transferencia mediante API.
+- Merges realizados específicamente sobre ramas denominadas API.
+

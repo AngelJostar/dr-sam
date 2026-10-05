@@ -1,0 +1,67 @@
+RESUMEN DE TAREAS REALIZADAS HASTA EL 30 DE SEPTIEMBRE DE 2026
+
+El documento se divide en dos apartados:
+- APIs: incluye todo el trabajo histórico realizado hasta la fecha.
+- Septiembre: incluye únicamente trabajo nuevo realizado desde el 1 de septiembre.
+
+No se contabilizan merges de ramas de terceros, homologaciones provenientes de GGH,
+correcciones de funcionalidades antiguas ni tareas incidentales como bloqueos de Git.
+
+
+1. DESARROLLO E INTEGRACIÓN DE APIs — HISTÓRICO COMPLETO
+
+- Implementación de la comunicación segura entre Dr. Sam y CBTA mediante token de servicio.
+- Creación y configuración del cliente de integración de CBTA dentro de Dr. Sam.
+- Consulta remota de catálogos nutricionales y oncológicos con control de versión.
+- Prevalidación de medicamentos, presentaciones, diluyentes, unidades y existencias.
+- Envío idempotente de solicitudes NPT y oncológicas para evitar registros duplicados.
+- Materialización automática de solicitudes externas en los módulos operativos de CBTA.
+- Sincronización y conciliación de estados entre ambos sistemas.
+- Implementación de reintentos y registro detallado de errores de integración.
+- Consulta y descarga de remisiones generadas por CBTA.
+- Carga y descarga segura de documentos asociados a las solicitudes.
+- Implementación de estados de inventario, validación, consumo y disponibilidad.
+- Integración de las autorizaciones operativas antes del envío de solicitudes.
+- Separación de autorizaciones NPT: Enfermería y Farmacia intrahospitalaria.
+- Separación de autorizaciones oncológicas: Centro Oncológico y Farmacia intrahospitalaria.
+- Restricción de cada autorización al perfil operativo responsable.
+- Incorporación de trazabilidad de usuarios, fechas, notas y cambios de autorización.
+- Pruebas automatizadas de contratos, catálogos, prevalidación, sincronización y permisos.
+- Ejecución de pruebas reales con cinco solicitudes NPT y cinco oncológicas diferentes.
+- Confirmación de recepción, materialización y seguimiento de las solicitudes en CBTA.
+
+
+2. TAREAS NUEVAS REALIZADAS DEL 1 AL 30 DE SEPTIEMBRE DE 2026
+
+- Análisis de las bases de datos de Dr. Sam y Mezclas Pro para preparar datos de prueba.
+- Elaboración de consultas para completar hospitales, inventarios y relaciones necesarias.
+- Configuración de un hospital demostrativo con usuarios y perfiles operativos activos.
+- Homologación funcional del formulario oncológico de Dr. Sam con el flujo de CBTA.
+- Incorporación de campos clínicos, medicamentos, diluyentes, vías y fechas de entrega.
+- Implementación de múltiples mezclas y múltiples medicamentos por solicitud oncológica.
+- Implementación de validaciones clínicas y de formulario para solicitudes oncológicas.
+- Fortalecimiento de las validaciones y casos límite del formulario nutricional.
+- Incorporación del flujo de autorización específico para solicitudes oncológicas.
+- Incorporación del flujo de autorización específico para solicitudes nutricionales.
+- Configuración de perfiles de Enfermería, Centro Oncológico y Farmacia intrahospitalaria.
+- Validación de que cada perfil solamente pueda autorizar el área que le corresponde.
+- Registro histórico y trazabilidad de todas las autorizaciones operativas.
+- Preparación de pacientes, diagnósticos, medicamentos y dosis lógicas de demostración.
+- Creación y validación de cinco solicitudes nutricionales distintas.
+- Creación y validación de cinco solicitudes oncológicas distintas.
+- Configuración del programador de tareas de Laravel para los procesos automáticos.
+- Preparación de configuraciones de producción para Laravel, cron y servicios asociados.
+- Creación de pruebas de endurecimiento para los flujos nutricional y oncológico.
+- Pruebas negativas de permisos, validaciones incompletas y combinaciones no permitidas.
+- Elaboración del resumen de actividades y estimación general de esfuerzo de septiembre.
+
+
+EXCLUSIONES
+
+- Merges desde ramas GGH, GGH11, GGH12 y variantes relacionadas.
+- Funcionalidades creadas originalmente por terceros e incorporadas mediante merge.
+- Correcciones de menús, animaciones o componentes previamente existentes.
+- Diagnóstico de caché, errores 404, configuración temporal de Nginx y Livewire.
+- Solución de bloqueos locales de Git o archivos index.lock.
+- Ajustes menores de estilo y mantenimiento de funcionalidades anteriores.
+
