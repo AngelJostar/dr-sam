@@ -78,11 +78,7 @@
   <div class="digital-pharmacy-native-screen">
     <aside class="digital-pharmacy-native-sidebar" aria-label="Navegacion farmacia digital">
       <div class="digital-pharmacy-native-brand">
-        <span>{{ $section === 'dashboard' ? 'F' : 'H' }}</span>
-        <div>
-          <strong>Farmacia Digital</strong>
-          <small>Operacion y catalogos</small>
-        </div>
+        <x-klini-brand label="Farmacia digital" />
       </div>
 
       <nav class="digital-pharmacy-native-menu">

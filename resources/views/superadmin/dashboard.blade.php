@@ -25,6 +25,7 @@
   ];
 
   $moduleDescriptions = [
+    'community_admin' => 'Comunidades de bienestar, miembros, eventos, publicaciones y participación.',
     'institution' => 'Catalogo institucional, unidades, servicios, contratos y cobertura.',
     'operational' => 'Solicitudes, autorizaciones, historial operativo y reportes por area.',
     'provider_npt' => 'Catalogos de productos, solicitudes NPT y quimioterapias, estatus de central y reportes.',
@@ -42,6 +43,7 @@
   ];
 
   $moduleDepartments = [
+    'community_admin' => 'Klini Wellness',
     'doctor' => 'Direccion Medica',
     'patient' => 'Atencion a Pacientes',
     'superadmin' => 'Gobierno modular',
@@ -76,8 +78,8 @@
           <p>{{ $activeModules }} de {{ $totalModules }} modulos activos</p>
         </div>
         <div class="superadmin-native-actions">
-          <a href="{{ route('superadmin.dashboard') }}">â†» Restablecer</a>
-          <strong>{{ auth()->user()?->name ?? 'Superadministrador' }} - {{ now()->format('d/m/Y') }}</strong>
+          <a href="{{ route('superadmin.dashboard') }}">↻ Restablecer</a>
+          <x-klini-session-menu />
         </div>
       </header>
 
@@ -97,7 +99,7 @@
             <h2>Estado de modulos</h2>
             <p>{{ $activeModules }} de {{ $totalModules }} modulos activos</p>
           </div>
-          <a href="{{ route('superadmin.catalog', 'modules') }}">â†’ Administrar</a>
+          <a href="{{ route('superadmin.catalog', 'modules') }}">→ Administrar</a>
         </div>
 
         <div class="superadmin-native-module-grid">
@@ -107,11 +109,23 @@
                 <span @class(['is-disabled' => ! $module->enabled])></span>
                 {{ $module->enabled ? 'Activo' : 'Inactivo' }}
               </div>
-              <h3>{{ $module->label }}</h3>
+              @php
+                $panelRoute = config("drsam.modules.{$module->key}.route", $module->target);
+              @endphp
+              <h3>
+                @if($panelRoute && \Illuminate\Support\Facades\Route::has($panelRoute))
+                  <a class="klini-module-panel-link" href="{{ route($panelRoute) }}" aria-label="Entrar a {{ $module->label }}">{{ $module->label }}</a>
+                @else
+                  <a class="klini-module-panel-link" href="{{ route('superadmin.catalog', ['section' => 'modules', 'selected_module' => $module->key]) }}#module-config" aria-label="Abrir configuración de {{ $module->label }}">{{ $module->label }}</a>
+                @endif
+              </h3>
               <small>{{ $moduleDepartments[$module->key] ?? 'Direccion Administrativa' }}</small>
               <p>{{ $moduleDescriptions[$module->key] ?? 'Modulo administrable de plataforma.' }}</p>
               <div class="superadmin-native-module-footer">
                 <strong>{{ count($module->roles ?? []) }} perfiles</strong>
+                @if($panelRoute && \Illuminate\Support\Facades\Route::has($panelRoute))
+                  <a class="klini-module-access" href="{{ route($panelRoute) }}" aria-label="Acceder a {{ $module->label }}">Acceder ↗</a>
+                @endif
                 <a href="{{ route('superadmin.catalog', ['section' => 'modules', 'selected_module' => $module->key]) }}#module-config">âŒ Editar</a>
               </div>
             </article>

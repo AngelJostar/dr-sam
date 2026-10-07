@@ -1,0 +1,32 @@
+
+   PASS  Tests\Feature\KliniBrandingTest
+  ✓ public home precedes the existing access page                                                                0.14s  
+  ✓ landing assets are available locally                                                                         0.01s  
+
+   PASS  Tests\Feature\OperationalModuleTest
+  ✓ operational user can open native dashboard                                                                   5.92s  
+  ✓ operational service request can link outpatient prescription                                                 0.04s  
+  ✓ operational user can update provider request status                                                          0.02s  
+  ✓ inspected mixture cannot be sent to provider again                                                           0.62s  
+  ✓ authorizations are independent and restricted to the operational area                                        0.07s  
+  ✓ spanish oncology operator can approve oncology authorization                                                 0.06s  
+  ✓ rejected authorization cancels and locks the request with traceability                                       0.29s  
+  ✓ unit user can operate only the current area authorization                                                    0.04s  
+  ✓ inpatient pharmacy can cancel only after both authorizations are approved                                    0.03s  
+  ✓ superadmin can create and edit an infusion room                                                              0.06s  
+  ✓ operational patient edit button opens and updates the patient                                                0.05s  
+  ✓ oncology calendar assigns available infusion room and blocks capacity overlap                                0.04s  
+
+   PASS  Tests\Feature\SeederStabilityTest
+  ✓ database seeder creates demo users and native module targets                                                 3.88s  
+
+   PASS  Tests\Feature\UnitModuleTest
+  ✓ unit status message uses a dismissible dialog                                                                0.06s  
+  ✓ unit user can open native dashboard                                                                          0.77s  
+  ✓ unit user can update appointment status                                                                      0.04s  
+  ✓ unit user can create edit and cancel a consultation appointment                                              0.06s  
+  ✓ unit books public consultation without private doctor availability                                           0.06s  
+
+  Tests:    20 passed (616 assertions)
+  Duration: 12.41s
+

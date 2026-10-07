@@ -149,8 +149,9 @@ class InsuranceHealthSeeder extends Seeder
         $provider = Provider::query()->first();
 
         return Hospital::query()->updateOrCreate(
-            ['name' => 'Hospital General Demo Dr. Sam'],
+            ['rfc' => 'HGD260101AB1'],
             [
+                'name' => 'Hospital General Demo Klini',
                 'medical_unit_id' => $unit?->id,
                 'provider_id' => $provider?->id,
                 'rfc' => 'HGD260101AB1',

@@ -85,6 +85,7 @@
   var csrfToken = panel.dataset.csrfToken || "";
   var accountsTrack = $("[data-profile-accounts-track]");
   var accountsDots = $("[data-profile-accounts-dots]");
+  var profileSelector = $("[data-patient-profile-selector]");
   var accountsPanTimer = 0;
   var accountsPanClickLockUntil = 0;
   var pendingProfilePhoto = "";
@@ -379,7 +380,9 @@
     try {
       var saved = JSON.parse(localStorage.getItem(storageKey) || "null");
       if (saved && saved.profile) {
-        saved.profile.name = initialState.profile.name;
+        saved.profile.name = saved.profile.nameSource === initialState.profile.name
+          ? (saved.profile.name || initialState.profile.name)
+          : initialState.profile.name;
         saved.profile.userId = initialState.profile.userId;
         saved.profile.status = initialState.profile.status;
         saved.profile.doctor = initialState.profile.doctor;
@@ -631,6 +634,7 @@
   }
 
   function switchActiveProfile(accountId, options) {
+    var previousState = clone(state);
     persistActiveProfileData();
     var requestedId = String(accountId || PRIMARY_ACCOUNT_CARD_ID);
     var requestedPlatformId = normalizePlatformUserId(requestedId, state.profile && state.profile.userId);
@@ -650,7 +654,11 @@
     activateProfileData();
     var payload = activeProfilePayload();
     paintActiveProfileHeader(payload.profile);
-    saveState();
+    if (!saveState()) {
+      state = previousState;
+      updateUI();
+      return false;
+    }
     updateUI();
     emit("account:selected", Object.assign({
       accountId: state.activeAlternateId || "",
@@ -675,6 +683,7 @@
     var profile = getActiveProfile();
     paintActiveProfileHeader(profile);
     renderAlternateAccounts();
+    renderProfileSelector();
     setCount("requests", state.requests.filter(function (item) { return item.status === "pending"; }).length, "Sin solicitudes pendientes", "Solicitud pendiente");
     setCount("messages", state.messages.filter(function (item) { return item.unread; }).length, "Sin mensajes pendientes", "Médicos, seguros y unidades");
     setCount("alerts", state.alerts.filter(function (item) { return item.unread; }).length, "Sin alertas pendientes", "Recordatorios y avisos importantes");
@@ -694,6 +703,49 @@
 
   function accountBadge(account) {
     return icon(account && account.kind === "pet" ? "paw" : "user");
+  }
+
+  function renderProfileSelector() {
+    if (!profileSelector || typeof profileSelector.configure !== "function") return;
+    profileSelector.configure({
+      profiles: managedProfileCards().map(function (account) {
+        return {
+          id: account.id,
+          name: account.name,
+          type: account.kind === "primary" ? "Perfil principal" : account.role,
+          accountName: state.profile.name,
+          userId: account.userId,
+          photo: account.photo || ""
+        };
+      }),
+      activeId: activeAccountCardId(),
+      onSwitch: function (profile) {
+        if (!switchActiveProfile(profile.id)) {
+          throw new Error(lastStateSaveError || "No se pudo cambiar de perfil.");
+        }
+      },
+      onSave: function (profile) {
+        var name = String(profile.name || "").trim();
+        var account = profile.id === PRIMARY_ACCOUNT_CARD_ID ? state.profile : (state.alternateAccounts || []).find(function (item) {
+          return item.id === profile.id;
+        });
+        if (!account || !name || name.length > 280) throw new Error("Revisa el nombre del perfil.");
+        var previousState = clone(state);
+        account.name = name;
+        account.initials = initials(name);
+        if (profile.id === PRIMARY_ACCOUNT_CARD_ID) account.nameSource = initialState.profile.name;
+        if (!saveState()) {
+          state = previousState;
+          updateUI();
+          throw new Error(lastStateSaveError || "No se pudo guardar el perfil.");
+        }
+        if (profile.id === activeAccountCardId()) {
+          emit("profile:updated", activeProfilePayload());
+          emitActiveProfileChanged();
+        }
+        return { name: name };
+      }
+    });
   }
 
   function renderAlternateAccounts() {
@@ -1785,9 +1837,21 @@
   }
   document.addEventListener("keydown", function (event) {
     if (event.key !== "Escape") return;
+    if (profileSelector && profileSelector.isOpen) return;
     if (!modal.hidden) closeModal();
     else if (!panel.hidden) closePanel();
   });
+
+  if (profileSelector) {
+    profileSelector.addEventListener("profile-add", async function () {
+      await profileSelector.close();
+      renderAddAccount();
+    });
+    profileSelector.addEventListener("profile-logout", async function () {
+      await profileSelector.close();
+      renderLogout();
+    });
+  }
 
   window.DrSamPatientProfilePanel = {
     open: openPanel,

@@ -73,6 +73,8 @@ body.patient-profile-modal-open {
 }
 
 .patient-profile-panel svg,
+.patient-profile-row svg,
+.patient-profile-support-item svg,
 .patient-profile-modal svg {
   width: 21px;
   height: 21px;
@@ -90,6 +92,26 @@ body.patient-profile-modal-open {
   gap: 13px;
   padding-bottom: 18px;
   border-bottom: 1px solid #e4eeee;
+}
+
+.patient-profile-selector-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.patient-profile-selector-heading > strong {
+  color: var(--pp-navy);
+  font-size: 19px;
+}
+
+klini-profiles {
+  display: block;
+  --mint: var(--pp-mint);
+  --teal: var(--pp-teal-dark);
+  --navy: var(--pp-navy);
 }
 
 .patient-profile-account-flow {
@@ -603,6 +625,21 @@ body.patient-profile-modal-open {
 
 .patient-profile-support-item:first-child {
   margin-top: 9px;
+}
+
+.native-shell .patient-portal-menu {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.patient-portal-menu > button,
+.patient-portal-menu > .patient-profile-support-group {
+  flex-shrink: 0;
+  margin-top: 0;
+}
+
+.patient-portal-menu .patient-profile-row-copy small {
+  white-space: normal;
 }
 
 .patient-profile-badge {

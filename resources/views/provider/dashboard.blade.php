@@ -85,7 +85,7 @@
   @if ($type === 'import')
     <div class="provider-import-native-screen">
       <header class="import-account-header">
-        <strong>PROVEEDOR IMPORTACIÓN</strong>
+        <x-klini-brand label="Proveedor importación" />
         <div class="import-account-actions">
           <span class="import-account-bell" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 17h14l-2-3V9a5 5 0 0 0-10 0v5z M10 20h4"/></svg></span>
           <div><b>{{ auth()->user()->name }}</b><small>Usuario activo</small></div>
@@ -254,11 +254,7 @@
     <div class="provider-chemo-native-screen">
       <aside class="provider-chemo-native-sidebar" aria-label="Navegacion proveedor quimioterapias">
         <div class="provider-chemo-native-brand">
-          <span>Q</span>
-          <div>
-            <strong>Proveedor Quimioterapias</strong>
-            <small>Central oncologica</small>
-          </div>
+        <x-klini-brand label="Proveedor quimioterapias" />
         </div>
         <nav class="provider-chemo-native-menu">
           <a class="is-active" href="{{ route('provider.chemo.dashboard') }}"><span>M</span>Medicamentos</a>
@@ -488,11 +484,7 @@
     <div class="provider-native-screen">
       <aside class="provider-native-sidebar" aria-label="Navegacion proveedor">
         <div class="provider-native-brand">
-          <span>P</span>
-          <div>
-            <strong>Proveedor Integral</strong>
-            <small>Central de mezclas NPT y oncologicas</small>
-          </div>
+        <x-klini-brand label="Proveedor integral" />
         </div>
 
         <nav class="provider-native-menu">

@@ -32,7 +32,9 @@ class PatientPortalTest extends TestCase
             ->assertSee('data-support-toggle', false)
             ->assertSee('aria-hidden="true"', false)
             ->assertDontSee('data-open-view="history"', false)
-            ->assertSee('¿Cómo amaneciste hoy?')
+            ->assertSee('data-patient-home-posts-root', false)
+            ->assertSee("startView: 'posts'", false)
+            ->assertDontSee('¿Cómo amaneciste hoy?')
             ->assertSee('data-ai-top-input', false)
             ->assertSee('Mi Seguro')
             ->assertSee('Resumen de información')
@@ -51,6 +53,36 @@ class PatientPortalTest extends TestCase
             ->assertDontSee('Farmacia Digital')
             ->assertSee('Paciente Acciones')
             ->assertDontSee('<iframe');
+    }
+
+    public function test_imported_patient_styles_do_not_replace_other_modules_styles(): void
+    {
+        [$user] = $this->makePatient();
+        $this->actingAs($user)->get(route('patient.dashboard'))->assertOk()
+            ->assertSee('css/patient-portal-source.css', false)
+            ->assertSee('js/patient-portal-table-filters.js', false)
+            ->assertSee('css/communities.css', false)
+            ->assertDontSee('css/klini-system.css', false)
+            ->assertDontSee('css/klini-carousels.css', false)
+            ->assertDontSee('js/klini-patient-workspace.js', false);
+
+        $user->update(['role' => 'superadmin', 'module' => 'superadmin']);
+        $this->get(route('superadmin.dashboard'))->assertOk()
+            ->assertSee('css/drsam.css', false)
+            ->assertSee('css/klini-system.css', false)
+            ->assertSee('css/klini-carousels.css', false)
+            ->assertDontSee('css/patient-portal-source.css', false)
+            ->assertDontSee('js/patient-portal-table-filters.js', false);
+    }
+
+    public function test_patient_can_reach_community_panel_from_menu_or_direct_link(): void
+    {
+        [$user] = $this->makePatient();
+        $response = $this->actingAs($user)->get(route('patient.dashboard'))->assertOk()
+            ->assertSee('class="patient-bottom-communities"', false)
+            ->assertSee('data-patient-view="communities"', false)
+            ->assertSee("window.location.hash === '#communities'", false);
+        $this->assertSame(2, substr_count($response->getContent(), 'data-open-view="communities"'));
     }
 
     public function test_my_health_includes_the_clinical_history_switch_and_shared_history(): void
@@ -302,6 +334,42 @@ class PatientPortalTest extends TestCase
         } finally {
             Carbon::setTestNow();
         }
+    }
+
+    public function test_redesigned_calendar_exposes_only_the_authenticated_patients_appointments(): void
+    {
+        [$user, $patient] = $this->makePatient();
+        $otherPatient = Patient::query()->create(['full_name' => 'Otro paciente', 'status' => 'active']);
+        $ownAppointment = Appointment::query()->create([
+            'patient_id' => $patient->id, 'starts_at' => now()->addDay()->setTime(7, 15),
+            'ends_at' => now()->addDay()->setTime(8, 0), 'status' => 'scheduled',
+            'specialty' => 'Medicina general', 'location' => 'Sede de prueba', 'reason' => 'Control autorizado',
+        ]);
+        Appointment::query()->create([
+            'patient_id' => $otherPatient->id, 'starts_at' => now()->addDay(),
+            'status' => 'scheduled', 'reason' => 'Motivo privado de otro paciente',
+        ]);
+
+        $response = $this->actingAs($user)->get(route('patient.dashboard', ['view' => 'calendar']))->assertOk();
+        $response->assertSee('data-calendar-item', false)
+            ->assertSee('data-open-view="communities"', false)
+            ->assertSee('Control autorizado')
+            ->assertSee('07:15')
+            ->assertSee('Programada')
+            ->assertSee('Sede de prueba')
+            ->assertDontSee('Motivo privado de otro paciente');
+        $appointments = $response->viewData('patient')->appointments;
+        $this->assertCount(1, $appointments);
+        $this->assertSame($ownAppointment->id, $appointments->first()->id);
+    }
+
+    public function test_redesigned_calendar_does_not_invent_appointments_for_empty_accounts(): void
+    {
+        [$user] = $this->makePatient();
+        $response = $this->actingAs($user)->get(route('patient.dashboard'))->assertOk();
+        $response->assertSee('No hay citas o estudios programados.')
+            ->assertDontSee('<article class="patient-calendar-card"', false);
+        $this->assertCount(0, $response->viewData('patient')->appointments);
     }
 
     private function makePatient(): array

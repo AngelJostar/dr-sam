@@ -121,7 +121,7 @@
 @section('content')
   <div class="operational-native-screen">
     <header class="operational-native-topbar" aria-label="Barra superior operativa">
-      <strong>MODULO OPERATIVO</strong>
+      <x-klini-brand label="MODULO OPERATIVO" />
       <span>{{ strtoupper($institutionName) }}</span>
       <div class="operational-native-user">
         <button type="button" aria-label="Notificaciones">
@@ -460,7 +460,7 @@
                             <button type="submit" class="danger">Cancelar</button>
                           </form>
                         @else
-                          <button type="button" class="operational-disabled-action" disabled title="{{ $cancellationLockedByCbta ? 'La solicitud ya fue aprobada en Mezclas y no puede cancelarse desde Dr. Sam' : 'Solo Farmacia intrahospitalaria puede cancelar cuando ambas autorizaciones están aprobadas' }}">Cancelar</button>
+                          <button type="button" class="operational-disabled-action" disabled title="{{ $cancellationLockedByCbta ? 'La solicitud ya fue aprobada en Mezclas y no puede cancelarse desde Klini' : 'Solo Farmacia intrahospitalaria puede cancelar cuando ambas autorizaciones están aprobadas' }}">Cancelar</button>
                         @endif
                       </td>
                     @endunless
@@ -531,7 +531,7 @@
                   <div><dt>Servicio</dt><dd>{{ data_get($detailPayload, 'service', $detailRequest->request_type) }}</dd></div>
                   <div><dt>Volumen</dt><dd>{{ data_get($detailPayload, 'clinical_format.total_volume', data_get($detailPayload, 'volume', '—')) }} ml</dd></div>
                   <div><dt>Diagnóstico</dt><dd>{{ data_get($detailPayload, 'diagnosis', 'No informado') }}</dd></div>
-                  <div><dt>Estado Dr. Sam</dt><dd>{{ $statusText($detailRequest->status) }}</dd></div>
+                  <div><dt>Estado Klini</dt><dd>{{ $statusText($detailRequest->status) }}</dd></div>
                   <div><dt>Estado CBTA</dt><dd>{{ $detailRemoteStatus ? $statusText($detailRemoteStatus) : 'Sin sincronización' }}</dd></div>
                   <div><dt>Enfermería</dt><dd>{{ $statusText(data_get($detailAuthorizations, 'operational', 'pending')) }}</dd></div>
                   <div><dt>Farmacia intrahospitalaria</dt><dd>{{ $statusText(data_get($detailAuthorizations, 'pharmacy', 'pending')) }}</dd></div>

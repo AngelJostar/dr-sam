@@ -1,0 +1,177 @@
+{
+  "name": "Klini Comunidades y Calendario",
+  "version": "1.0.0",
+  "type": "frontend-integration-kit",
+  "files": [
+    {
+      "path": "PROMPT_PARA_CODEX.md",
+      "bytes": 3925,
+      "sha256": "4effdef4fbc0356df8246c8f6e113f57118bfd7a97afebbe9c978fdec68310e3"
+    },
+    {
+      "path": "README.md",
+      "bytes": 4052,
+      "sha256": "98d9efe5bea7510ffd7304ec2331aee4a528e9b4c7b3d15b07e28048d4561b9b"
+    },
+    {
+      "path": "assets/avatars/ana.png",
+      "bytes": 31080,
+      "sha256": "5a04453e09a5b5f50a141a40955853868799cae9c6cf6d4a9c34236ab474a4b2"
+    },
+    {
+      "path": "assets/avatars/carlos.png",
+      "bytes": 28515,
+      "sha256": "c6658ea7a049b9dc6c1dea158ca20d614dbaf239014d2d6e47b136acb8a1a6a3"
+    },
+    {
+      "path": "assets/avatars/diego.png",
+      "bytes": 32392,
+      "sha256": "40862b5e1b110a0e501ef9d8a2a3517aea0a652f59e66474adc25e708f9ba3a4"
+    },
+    {
+      "path": "assets/avatars/mariana.png",
+      "bytes": 32568,
+      "sha256": "9fb9b3e95f9f4d37a776cdcf6d6841f510f0a6e048d8c2dd8cb482c125c024fe"
+    },
+    {
+      "path": "assets/avatars/perfil.png",
+      "bytes": 23555,
+      "sha256": "2c51d2df843712553c30e5206c9e8bc54e0be1b76fa73431728a86338061eeb0"
+    },
+    {
+      "path": "assets/avatars/valeria.png",
+      "bytes": 32226,
+      "sha256": "ee04065993ceae6e915471d8dd6b33ab117ed0dae774ab4aa85dcbf4f6810ec7"
+    },
+    {
+      "path": "assets/brand/klini-logo-primary.svg",
+      "bytes": 50588,
+      "sha256": "6f7c1a5fff932b72aa644f37b0d966f189d13f38e6b46c40f121b6a3cfe57544"
+    },
+    {
+      "path": "assets/fonts/DejaVuSans-Bold.woff",
+      "bytes": 350676,
+      "sha256": "e2628176bc9349ce845ca54d9680058665209f7d21488f15a836cfc1439aeb2a"
+    },
+    {
+      "path": "assets/fonts/DejaVuSans.woff",
+      "bytes": 379400,
+      "sha256": "e62e0ba87b06e53b604c473be54ba859d59bf7cf99478a850d979e2fe94c0a99"
+    },
+    {
+      "path": "assets/photos/meditacion.png",
+      "bytes": 175535,
+      "sha256": "4b85997e22aa867e9ba4b735a7c2b89c9741ed2eeda1456c0be9e314536b695e"
+    },
+    {
+      "path": "assets/photos/running.png",
+      "bytes": 885248,
+      "sha256": "178cbefe87d6516a6130e296925bfaa6e6534eec1ba07aafe56fe967fab41691"
+    },
+    {
+      "path": "assets/photos/yoga.png",
+      "bytes": 1310902,
+      "sha256": "c0b090b5a0432f71151a58242e8d2142a663c3884ca308dc8e033e7b7a01c1c2"
+    },
+    {
+      "path": "assets/provenance.json",
+      "bytes": 2227,
+      "sha256": "a05712c249df6a6d562ddd203745de2a4654889a7702b5442b490c3f6b15514b"
+    },
+    {
+      "path": "docs/INTEGRACION.md",
+      "bytes": 5685,
+      "sha256": "9f8d229b8f93ff39c9a031f3617b5f6d010d0a4bfac8acf164a3b7402c9482b4"
+    },
+    {
+      "path": "docs/VALIDACION.md",
+      "bytes": 1727,
+      "sha256": "68fbf29be26dfcef8c82beff7e4b0370a83e7d9d2d6e9d1008e57718700152cd"
+    },
+    {
+      "path": "examples/KliniPanel.tsx",
+      "bytes": 966,
+      "sha256": "d50fa4da690746dc0a4478b1529aa4f9f1626016edb54874315d0f40da156d8e"
+    },
+    {
+      "path": "index.html",
+      "bytes": 529,
+      "sha256": "e6a63af59ed3caf32b83fce61fa0bc8d9020074f708ddf9d3b59ddd063df9639"
+    },
+    {
+      "path": "licenses/DejaVu.txt",
+      "bytes": 3859,
+      "sha256": "63d3ba759d12804c5b31a9d5940d855c1820d1f5999e6b0872eb1c7ff045fbc9"
+    },
+    {
+      "path": "licenses/Lucide.txt",
+      "bytes": 3208,
+      "sha256": "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57"
+    },
+    {
+      "path": "package.json",
+      "bytes": 189,
+      "sha256": "002a3b1f5a3c0d1f4449f15636646a1c08df4ee95e06a4440ef10472a7fb386e"
+    },
+    {
+      "path": "references/calendario.png",
+      "bytes": 2206441,
+      "sha256": "723f3981ce035524e965ee5ba850af92987648a8e31dfe5919ce415764da64a4"
+    },
+    {
+      "path": "references/comunidades.png",
+      "bytes": 4842620,
+      "sha256": "3dadd3c6f29015fb05ed9de582a991159f859ed09ac2aaf01c179209a1c48880"
+    },
+    {
+      "path": "serve.mjs",
+      "bytes": 1130,
+      "sha256": "e6612bc61c9128ef2e6a89ff2863939e78f1038243dc4b365d70c181617f2a20"
+    },
+    {
+      "path": "src/app.js",
+      "bytes": 33420,
+      "sha256": "a11de3bfec2f0db3b9e3f2606ad191caa4acb11101617d2713da2960492f6199"
+    },
+    {
+      "path": "src/contracts.d.ts",
+      "bytes": 952,
+      "sha256": "7257c0aedfcb26395a1f2730cfcb5d4041faad6582fd6bfb0bb85dc201f3b13f"
+    },
+    {
+      "path": "src/data.js",
+      "bytes": 2784,
+      "sha256": "28205817c0b2acd830aa9fed7b09f0f05df92474a68bb3c83c07563995971fb1"
+    },
+    {
+      "path": "src/icon-nodes.js",
+      "bytes": 7991,
+      "sha256": "81d25fb4f7a0f7a365cec59658d94d0d94765409d1a0d93fa866dfbdf8d510fd"
+    },
+    {
+      "path": "src/icons.js",
+      "bytes": 1022,
+      "sha256": "74d918dcd3ba0d8445f63074f604847671a71ecd432a88babf32378f618323b7"
+    },
+    {
+      "path": "src/model.js",
+      "bytes": 3141,
+      "sha256": "bcee81ca32f908c36a0b0170574321df5c4954f49d1e906ee5a047f1da969932"
+    },
+    {
+      "path": "src/styles.css",
+      "bytes": 16829,
+      "sha256": "f5787e33b88e3f8e5d6b4af41640a360d22695f749a9f2f7727b6e4c8f1b5445"
+    },
+    {
+      "path": "tests/model.test.js",
+      "bytes": 3358,
+      "sha256": "213bbb5e7ae6af6fdf13eee6523dbe2944e849cdf9b0dcff29fd7c0e2d543362"
+    },
+    {
+      "path": "tests/render.test.js",
+      "bytes": 1802,
+      "sha256": "e219226ec3d35f8b6e0ed6d5d510d1ec8d67b01047a3cef523b85e28025a537a"
+    }
+  ]
+}

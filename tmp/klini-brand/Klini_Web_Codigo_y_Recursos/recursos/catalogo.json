@@ -1,0 +1,243 @@
+{
+  "marca": "Klini",
+  "campana": "Muévete. Conecta. Sé parte.",
+  "fecha": "2026-10-05",
+  "imagenes_e_iconos": 26,
+  "recursos": [
+    {
+      "nombre": "Yoga y comunidad · web",
+      "archivo": "sitio/assets/wellness-yoga.webp",
+      "uso": "Portada: jóvenes compartiendo yoga y estiramientos. Mantener formato vertical. Versión optimizada.",
+      "bytes": 191740,
+      "sha256": "5e5724dbc2a1f7d45e0fc30a50fa2c3dc7be55c01fb436d88851d1e364188529",
+      "ancho_px": 1120,
+      "alto_px": 1400
+    },
+    {
+      "nombre": "Yoga y comunidad · original",
+      "archivo": "recursos/originales/klini-wellness-yoga.png",
+      "uso": "Portada: jóvenes compartiendo yoga y estiramientos. Mantener formato vertical. Original de alta resolución.",
+      "bytes": 7584157,
+      "sha256": "a99f6b2753424d2280a6bb3fb7d35447da2262c679aae4b2a4b1775fbafc8563",
+      "ancho_px": 2048,
+      "alto_px": 2560
+    },
+    {
+      "nombre": "Ejercicio en grupo · web",
+      "archivo": "sitio/assets/wellness-running.webp",
+      "uso": "Jóvenes haciendo ejercicio y conectando en comunidad. Versión optimizada.",
+      "bytes": 179368,
+      "sha256": "b7d6dc43e55e49ab36d4d98de4c2a65626d175ab2e9520506c27026dc37901bb",
+      "ancho_px": 1200,
+      "alto_px": 900
+    },
+    {
+      "nombre": "Ejercicio en grupo · original",
+      "archivo": "recursos/originales/klini-wellness-running.png",
+      "uso": "Jóvenes haciendo ejercicio y conectando en comunidad. Original de alta resolución.",
+      "bytes": 7123807,
+      "sha256": "b9b493ddb09e6221de491e513b897362c42eaa35d99a6d78ffff9b3b488c63bb",
+      "ancho_px": 2560,
+      "alto_px": 1920
+    },
+    {
+      "nombre": "Reloj inteligente · web",
+      "archivo": "sitio/assets/wellness-watch.webp",
+      "uso": "Consulta de un indicador ilustrativo de bienestar en un reloj. Versión optimizada.",
+      "bytes": 95840,
+      "sha256": "2b47442beb45bb88421cdfe4a8482bcf75797552b5cd8229e228519caf423375",
+      "ancho_px": 1200,
+      "alto_px": 900
+    },
+    {
+      "nombre": "Reloj inteligente · original",
+      "archivo": "recursos/originales/klini-wellness-watch.png",
+      "uso": "Consulta de un indicador ilustrativo de bienestar en un reloj. Original de alta resolución.",
+      "bytes": 5862725,
+      "sha256": "8669e438785bd75be46076858f6e3b632ca86fefd1defa2a173f4bb74d60a98a",
+      "ancho_px": 2560,
+      "alto_px": 1920
+    },
+    {
+      "nombre": "Logotipo principal",
+      "archivo": "sitio/assets/klini.svg",
+      "uso": "Azul y turquesa para fondos claros.",
+      "bytes": 42140,
+      "sha256": "1ed6b9af3ce71101b09b74ea1c7a6b80b04fbbce700961886f26279891a317e2",
+      "viewBox": "198 184 445 214"
+    },
+    {
+      "nombre": "Logotipo blanco",
+      "archivo": "sitio/assets/klini-white.svg",
+      "uso": "Una tinta para fondos oscuros.",
+      "bytes": 42140,
+      "sha256": "6b8b133bb7b5b0f58a356afbc984a738e7f84d6b877b665d00dfb3e141de738b",
+      "viewBox": "198 184 445 214"
+    },
+    {
+      "nombre": "Favicon",
+      "archivo": "sitio/assets/favicon.svg",
+      "uso": "Letra k para pestañas del navegador.",
+      "bytes": 13748,
+      "sha256": "b0694f53433bf2a7a3ea476d210823cc4ff88db5bbf90b75ae082192fa95e9cc",
+      "viewBox": "184 182 180 220"
+    },
+    {
+      "nombre": "Acceso de usuario",
+      "archivo": "recursos/iconos/persona.svg",
+      "uso": "Ícono individual del sistema SVG incluido en el código.",
+      "bytes": 273,
+      "sha256": "0899d8774a4ae8fa62cd7bc9005226d7af7a368f677aeb84e34b9e50d1382846",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "nombre": "Carpeta",
+      "archivo": "recursos/iconos/carpeta.svg",
+      "uso": "Ícono individual del sistema SVG incluido en el código.",
+      "bytes": 303,
+      "sha256": "4cd487f84173f03ff847fa41098c5cbcd34d66401060663f1c7a34122082bcc8",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "nombre": "Documento",
+      "archivo": "recursos/iconos/documento.svg",
+      "uso": "Ícono individual del sistema SVG incluido en el código.",
+      "bytes": 301,
+      "sha256": "120584da7c686dce31581b1097bddfe31eef7427adb44de88e6a5407d7f9ca4c",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "nombre": "Salud y frecuencia cardíaca",
+      "archivo": "recursos/iconos/salud.svg",
+      "uso": "Ícono individual del sistema SVG incluido en el código.",
+      "bytes": 365,
+      "sha256": "7d31c22fdc995c8642e5b22553f477a6c718168d102cacfe9e2f7b1e4b34faa5",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "nombre": "Confirmación",
+      "archivo": "recursos/iconos/confirmacion.svg",
+      "uso": "Ícono individual del sistema SVG incluido en el código.",
+      "bytes": 226,
+      "sha256": "2e04be87aa50c6d8d628458f77aff365690090a96e515c74bfd4682f4a42a1d7",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "nombre": "Visibilidad de contraseña",
+      "archivo": "recursos/iconos/ver-contrasena.svg",
+      "uso": "Ícono individual del sistema SVG incluido en el código.",
+      "bytes": 300,
+      "sha256": "04fd2583abe43fc9ba5401d2fbf0392ad9eb6ec3efb00cfbe2e4801b49d92aca",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "nombre": "Cerrar ventana",
+      "archivo": "recursos/iconos/cerrar.svg",
+      "uso": "Ícono individual del sistema SVG incluido en el código.",
+      "bytes": 233,
+      "sha256": "1f746c6c6e7d2163f4ef1956672854ff5b38e01e624c20d414161f29814ad66a",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "nombre": "Presentación",
+      "archivo": "recursos/iconos/reproducir.svg",
+      "uso": "Ícono individual del sistema SVG incluido en el código.",
+      "bytes": 227,
+      "sha256": "ed690939acc17ea589604b16bb39e4d5f3afa15bd7fc4cafea6a94301e0fa160",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "nombre": "Navegación móvil",
+      "archivo": "recursos/iconos/menu.svg",
+      "uso": "Ícono individual del sistema SVG incluido en el código.",
+      "bytes": 240,
+      "sha256": "e30caa7c017746ef8b07f897f432e966e615902318b7c952cb7404eda5fbfb76",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "nombre": "Agregar o desplegar",
+      "archivo": "recursos/iconos/mas.svg",
+      "uso": "Ícono individual del sistema SVG incluido en el código.",
+      "bytes": 234,
+      "sha256": "8cf2e77bc520713d498d108c485c1a4935ea2caa4262dbe4e780e06e7a883adf",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "nombre": "Acceso",
+      "archivo": "recursos/iconos/candado.svg",
+      "uso": "Ícono individual del sistema SVG incluido en el código.",
+      "bytes": 286,
+      "sha256": "6bfa2f4c825b80914115e7a721147c98fbac5e16165103220da170e134a7e32b",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "nombre": "Actividad física",
+      "archivo": "recursos/iconos/actividad.svg",
+      "uso": "Ícono individual del sistema SVG incluido en el código.",
+      "bytes": 238,
+      "sha256": "9a0f88a412d3baf98b9f4a1cc21e8318d6a69157ec43d34d3191c35d6e39e6d8",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "nombre": "Comunidad",
+      "archivo": "recursos/iconos/comunidad.svg",
+      "uso": "Ícono individual del sistema SVG incluido en el código.",
+      "bytes": 326,
+      "sha256": "6b696790abf96484e9aa336a34cddb7a67c210027edbc495f8810c973ced694d",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "nombre": "Reloj inteligente",
+      "archivo": "recursos/iconos/reloj.svg",
+      "uso": "Ícono individual del sistema SVG incluido en el código.",
+      "bytes": 301,
+      "sha256": "d239b5cfe58d707b6c6e1945ef91091614660b36e1dff6d823b7daa470941e9a",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "nombre": "Hidratación",
+      "archivo": "recursos/iconos/hidratacion.svg",
+      "uso": "Ícono individual del sistema SVG incluido en el código.",
+      "bytes": 258,
+      "sha256": "de43b6d75f95e31dbbff6ce5f21a21c4eb624870d790a2a143b14b79bd21924c",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "nombre": "Descanso",
+      "archivo": "recursos/iconos/descanso.svg",
+      "uso": "Ícono individual del sistema SVG incluido en el código.",
+      "bytes": 251,
+      "sha256": "a0624dc344f22a49a6c650b82ac547fc4d9bbf3cb71931767f68cc09a8b3296d",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "nombre": "Bienestar diario",
+      "archivo": "recursos/iconos/bienestar.svg",
+      "uso": "Ícono individual del sistema SVG incluido en el código.",
+      "bytes": 331,
+      "sha256": "e0fa58ea5e8afd8140d6f442a04a7611015870d0384c590e08f38683afef1c95",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "nombre": "dejavu.woff",
+      "archivo": "sitio/assets/dejavu.woff",
+      "uso": "Tipografía o licencia",
+      "bytes": 30212,
+      "sha256": "92744b3299377f9f002dd3ccb6a077b313c0c26dca949f989f741c2b80e4800c"
+    },
+    {
+      "nombre": "dejavu-bold.woff",
+      "archivo": "sitio/assets/dejavu-bold.woff",
+      "uso": "Tipografía o licencia",
+      "bytes": 28220,
+      "sha256": "6628c9ae4c3c7b6c239cd2fef05e0bcfef03b3182875c94bae217aa230bb6fc2"
+    },
+    {
+      "nombre": "font-license.txt",
+      "archivo": "sitio/assets/font-license.txt",
+      "uso": "Tipografía o licencia",
+      "bytes": 3859,
+      "sha256": "63d3ba759d12804c5b31a9d5940d855c1820d1f5999e6b0872eb1c7ff045fbc9"
+    }
+  ]
+}

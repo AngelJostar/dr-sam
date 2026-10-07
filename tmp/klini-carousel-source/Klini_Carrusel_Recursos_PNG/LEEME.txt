@@ -1,0 +1,10 @@
+RECURSOS KLINI — CARRUSEL EN TONOS CLAROS
+
+6 botones completos en PNG con fondo exterior transparente.
+Conservan los iconos, textos y flechas del diseño aprobado.
+Consulta externa incluye el estado seleccionado y la insignia «En uso».
+
+INSTRUCCIÓN PARA CODEX
+Integra los seis archivos PNG como accesos del carrusel de módulos de Klini, en el orden de manifest.json. Usa cada imagen dentro de un único enlace o botón accesible, con el nombre del módulo como etiqueta. Conecta los destinos a las rutas existentes del proyecto; no inventes rutas ni permisos. Mantén la proporción original (sin estirar las imágenes), el fondo azul marino y el desplazamiento horizontal. Las flechas dibujadas dentro de cada tarjeta pertenecen a la misma acción de acceso. Implementa por separado los controles anterior/siguiente y el foco de teclado.
+
+Los PNG son recursos gráficos rasterizados; texto, icono y estado visual están integrados en cada archivo. No son componentes interactivos ni capas editables. Si se necesita cambiar texto o estado seleccionado, reconstruir esas partes en código.

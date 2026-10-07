@@ -19,7 +19,7 @@
   <nav class="insurance-health-native-sidebar-menu" aria-label="Menu aseguradora salud">
     @foreach($insuranceMenu as $item)
       <a @class(['is-active' => request()->routeIs($item['match'])]) href="{{ route($item['route']) }}">
-        <span>{{ $item['icon'] }}</span>
+        <span class="klini-nav-icon" aria-hidden="true"><x-klini-icon name="{{ $item['label'] }}" /></span>
         <strong>{{ $item['label'] }}</strong>
       </a>
     @endforeach

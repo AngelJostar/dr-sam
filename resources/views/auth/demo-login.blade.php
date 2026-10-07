@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Dr. Sam - Acceso de usuarios'])
+@extends('layouts.app', ['title' => 'Klini - Acceso de usuarios'])
 
 @section('body_class', 'formal-login-body')
 
@@ -24,22 +24,12 @@
 
   <div class="formal-login-screen">
     <header class="formal-login-header">
-      <a class="formal-login-brand" href="{{ route('login') }}" aria-label="Dr. Sam inicio">
-        <span class="formal-login-brand-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24">
-            <path d="M6 4v5a5 5 0 0 0 10 0V4"></path>
-            <path d="M9 4H5"></path>
-            <path d="M17 4h-4"></path>
-            <path d="M11 14v2a4 4 0 0 0 8 0v-3"></path>
-            <circle cx="19" cy="10" r="2"></circle>
-          </svg>
-        </span>
-        <strong>Dr. Sam</strong>
-        <small>Plataforma externa de salud</small>
+      <a class="formal-login-brand" href="{{ route('home') }}" aria-label="Klini inicio">
+        <x-klini-brand label="Tu salud, en un solo lugar." />
       </a>
 
       <div class="formal-login-profile">
-        <span class="formal-login-avatar">DS</span>
+        <span class="formal-login-avatar">K</span>
         <div>
           <strong>Acceso de usuarios</strong>
           <small>Sesión segura</small>
@@ -51,7 +41,7 @@
       <section class="formal-login-welcome" aria-labelledby="login-title">
         <p class="eyebrow">Ingreso unificado</p>
         <h1 id="login-title">¿A qué módulo quieres ingresar hoy?</h1>
-        <p>Usa tus credenciales y Dr. Sam abrirá automáticamente el módulo autorizado: institución, unidad, operación, mensajero, proveedor, médico, paciente o seguros.</p>
+        <p>Usa tus credenciales y Klini abrirá automáticamente el módulo autorizado: institución, unidad, operación, mensajero, proveedor, médico, paciente o seguros.</p>
         <div class="formal-login-modules" aria-label="Rutas disponibles">
           @foreach (['Institución', 'Unidad', 'Área operativa', 'Médico', 'Paciente', 'Seguros GMM', 'Mensajero', 'Proveedor'] as $module)
             <span>{{ $module }}</span>

@@ -152,7 +152,7 @@ class InsuranceAdvisorModuleTest extends TestCase
             ->assertSee('Póliza vencida')
             ->assertSee('POL-ADV-DUE')
             ->assertSee('POL-ADV-EXP')
-            ->assertSee('Plataforma Dr. Sam');
+            ->assertSee('Plataforma Klini');
 
         $this->actingAs($user)
             ->get(route('insurance-advisor.dashboard', ['section' => 'alerts']))

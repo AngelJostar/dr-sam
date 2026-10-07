@@ -1,0 +1,32 @@
+
+   PASS  Tests\Feature\DemoAccessTest
+  ✓ demo user can enter without password when review mode is enabled                                             6.69s  
+  ✓ landing login accepts email and returns errors to the popup                                                  0.49s  
+  ✓ passwordless review does not grant patient access to every module                                            0.03s  
+  ✓ superadmin can still review every module                                                                     0.05s  
+  ✓ general admin can review every module                                                                        0.03s  
+  ✓ insurance admin only sees the insurance flow                                                                 0.03s  
+  ✓ role module matrix matches the approved assignment                                                           0.02s  
+  ✓ login page is never cached by the browser                                                                    0.03s  
+
+   PASS  Tests\Feature\SuperAdminModuleTest
+  ✓ superadmin user can open native dashboard                                                                    0.08s  
+  ✓ superadmin catalog menu sections open native views                                                           0.16s  
+  ✓ superadmin can disable module and dashboard registry hides it                                                0.04s  
+  ✓ superadmin can update user status                                                                            0.04s  
+  ✓ superadmin catalog filters and csv export work                                                               0.05s  
+  ✓ superadmin can create institutions and private hospitals                                                     0.18s  
+  ✓ superadmin can update module details and section settings                                                    0.04s  
+  ✓ superadmin can create doctor patient and provider users                                                      0.50s  
+  ✓ superadmin patient catalog matches source two panel layout                                                   0.03s  
+  ✓ superadmin access catalog matches source destination actions                                                 0.03s  
+  ✓ superadmin can update people catalog statuses                                                                0.04s  
+  ✓ module edit links open the module catalog with the selected record                                           0.06s  
+  ✓ superadmin can view filter and export insurance carriers                                                     0.04s  
+  ✓ superadmin can view search and export insurance advisors                                                     0.03s  
+  ✓ superadmin can view search and export medical devices                                                        0.03s  
+  ✓ superadmin can view and update subscription settings                                                         0.07s  
+
+  Tests:    24 passed (278 assertions)
+  Duration: 8.95s
+

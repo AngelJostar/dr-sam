@@ -99,7 +99,7 @@
     </aside>
 
     <header class="unit-native-topbar">
-      <strong>Unidad</strong>
+      <x-klini-brand label="Unidad" />
       <span>{{ $unit->institution?->name ?? 'IMSS Bienestar Estado de Mexico' }}</span>
       <div class="unit-native-topbar-user">
         <button type="button" aria-label="Notificaciones">

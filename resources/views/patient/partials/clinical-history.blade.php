@@ -12,6 +12,17 @@
     <button class="is-hospitalization" type="button" data-history-filter="hospitalization" aria-pressed="false"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/history-icons/hospitalization.png?v=20260827-history-icons" alt="" loading="lazy"></span><b>Hospitalización</b></button>
     <button class="is-vaccine" type="button" data-history-filter="vaccine" aria-pressed="false"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/history-icons/vaccines.png?v=20260827-history-icons" alt="" loading="lazy"></span><b>Vacunas</b></button>
     <button class="is-manual" type="button" data-history-filter="manual" aria-pressed="false"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/history-icons/manual-register.png?v=20260827-history-icons" alt="" loading="lazy"></span><b>Registro manual</b></button>
+    <button class="is-devices" type="button" data-open-view="devices" title="Ver dispositivos médicos">
+      <span class="patient-register-history-glyph" aria-hidden="true">
+        <svg viewBox="0 0 44 44" width="44" height="44" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="8" y="4" width="28" height="36" rx="6" fill="#e1f8f4"></rect>
+          <rect x="12" y="9" width="20" height="19" rx="3" fill="#fff"></rect>
+          <path d="M15 19h3l2-5 4 10 2-5h3"></path>
+          <circle cx="22" cy="34" r="2" fill="currentColor" stroke="none"></circle>
+        </svg>
+      </span>
+      <b>Dispositivos médicos</b>
+    </button>
   </nav>
   <div class="patient-history-table-wrap">
     <table class="patient-history-table">

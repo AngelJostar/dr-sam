@@ -11,6 +11,43 @@ class DemoAccessTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_superadmin_login_opens_its_module_even_with_an_intended_url(): void
+    {
+        config(['drsam.review_passwordless' => false]);
+        $user = User::query()->create([
+            'name' => 'Superadmin Demo', 'username' => 'superadmin.login',
+            'email' => 'superadmin.login@example.com', 'role' => 'superadmin',
+            'module' => 'superadmin', 'status' => 'active', 'password' => bcrypt('demo-password'),
+        ]);
+
+        $this->withSession(['url.intended' => route('dashboard')])
+            ->post('/demo-login', ['username' => $user->username, 'password' => 'demo-password'])
+            ->assertRedirect(route('superadmin.dashboard'));
+
+        $this->assertAuthenticatedAs($user);
+    }
+
+    public function test_logout_returns_every_web_user_to_the_home_page(): void
+    {
+        foreach (['superadmin', 'institution', 'unit', 'provider', 'doctor', 'patient', 'insurance_admin', 'insurance_advisor', 'operational', 'messenger'] as $role) {
+            $user = User::query()->create([
+                'name' => 'Logout Demo',
+                'username' => 'logout.'.$role,
+                'email' => 'logout.'.$role.'@example.com',
+                'role' => $role,
+                'module' => $role,
+                'status' => 'active',
+            ]);
+
+            $this->actingAs($user)->withSession(['logout_marker' => 'discard'])
+                ->post(route('logout'))
+                ->assertRedirect(route('home'))
+                ->assertSessionMissing('logout_marker');
+
+            $this->assertGuest();
+        }
+    }
+
     public function test_demo_user_can_enter_without_password_when_review_mode_is_enabled(): void
     {
         config(['drsam.review_passwordless' => true]);
@@ -31,6 +68,21 @@ class DemoAccessTest extends TestCase
 
         $response->assertRedirect('/dashboard');
         $this->assertAuthenticated();
+    }
+
+    public function test_landing_login_accepts_email_and_returns_errors_to_the_popup(): void
+    {
+        config(['drsam.review_passwordless' => false]);
+        $user = User::query()->create([
+            'name' => 'Klini Demo', 'username' => 'klini.demo', 'email' => 'klini@example.com',
+            'role' => 'patient', 'module' => 'patient', 'status' => 'active', 'password' => bcrypt('demo-password'),
+        ]);
+        $this->from('/')->post('/demo-login', ['username' => $user->email, 'password' => 'incorrect'])
+            ->assertRedirect('/')->assertSessionHasErrors('password');
+        $this->assertGuest();
+        $this->from('/')->post('/demo-login', ['username' => $user->email, 'password' => 'demo-password'])
+            ->assertRedirect('/dashboard');
+        $this->assertAuthenticatedAs($user);
     }
 
     public function test_passwordless_review_does_not_grant_patient_access_to_every_module(): void
@@ -157,7 +209,7 @@ class DemoAccessTest extends TestCase
 
     public function test_login_page_is_never_cached_by_the_browser(): void
     {
-        $response = $this->get('/');
+        $response = $this->get('/acceso');
 
         $response->assertOk();
         $this->assertStringContainsString('no-store', (string) $response->headers->get('Cache-Control'));

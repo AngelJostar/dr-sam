@@ -229,7 +229,7 @@
 @section('content')
   <div class="institution-native-screen">
     <header class="institution-native-topbar" aria-label="Barra superior institucional">
-      <strong>PORTAL INSTITUCIONAL</strong>
+      <x-klini-brand label="Institución" />
       <span>{{ strtoupper($institutionLabel) }}</span>
       <div class="institution-native-user">
         <button type="button" aria-label="Notificaciones">

@@ -4,6 +4,7 @@ return [
     'review_passwordless' => (bool) env('DRSAM_REVIEW_PASSWORDLESS', false),
     'module_priorities' => [
         'superadmin' => 'high',
+        'community_admin' => 'high',
         'institution' => 'high',
         'unit' => 'high',
         'operational' => 'high',
@@ -22,6 +23,12 @@ return [
         'messenger' => 'high',
     ],
     'modules' => [
+        'community_admin' => [
+            'label' => 'Administrador de Comunidades',
+            'target' => 'community.dashboard',
+            'route' => 'community.dashboard',
+            'roles' => ['superadmin', 'admin'],
+        ],
         'superadmin' => [
             'label' => 'Modulo superadministrador',
             'target' => 'superadmin.dashboard',

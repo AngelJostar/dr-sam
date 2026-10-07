@@ -1,0 +1,71 @@
+{
+  "source": "Klini_Carrusel_Tonos_Claros.png",
+  "assets": [
+    {
+      "id": "catalogo",
+      "label": "Catálogo",
+      "file": "01_catalogo.png",
+      "width": 403,
+      "height": 507,
+      "selected": false,
+      "format": "PNG",
+      "transparent": true,
+      "includes_text": true
+    },
+    {
+      "id": "consulta_externa",
+      "label": "Consulta externa",
+      "file": "02_consulta_externa.png",
+      "width": 442,
+      "height": 540,
+      "selected": true,
+      "format": "PNG",
+      "transparent": true,
+      "includes_text": true
+    },
+    {
+      "id": "nutricion_parenteral",
+      "label": "Nutrición parenteral",
+      "file": "03_nutricion_parenteral.png",
+      "width": 378,
+      "height": 506,
+      "selected": false,
+      "format": "PNG",
+      "transparent": true,
+      "includes_text": true
+    },
+    {
+      "id": "quimioterapia",
+      "label": "Quimioterapia",
+      "file": "04_quimioterapia.png",
+      "width": 387,
+      "height": 506,
+      "selected": false,
+      "format": "PNG",
+      "transparent": true,
+      "includes_text": true
+    },
+    {
+      "id": "importacion_medicamentos",
+      "label": "Importación de medicamentos",
+      "file": "05_importacion_medicamentos.png",
+      "width": 403,
+      "height": 506,
+      "selected": false,
+      "format": "PNG",
+      "transparent": true,
+      "includes_text": true
+    },
+    {
+      "id": "pedido_entrega_medicamentos",
+      "label": "Pedido y entrega de medicamentos",
+      "file": "06_pedido_entrega_medicamentos.png",
+      "width": 408,
+      "height": 507,
+      "selected": false,
+      "format": "PNG",
+      "transparent": true,
+      "includes_text": true
+    }
+  ]
+}

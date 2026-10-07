@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\DemoAccessController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Community\CommunityDashboardController;
 use App\Http\Controllers\Doctor\DoctorPortalController;
 use App\Http\Controllers\ExternalPharmacy\ExternalPharmacyController;
 use App\Http\Controllers\Insurance\AdminController as InsuranceAdminController;
@@ -29,11 +30,16 @@ use App\Http\Controllers\SuperAdmin\SuperAdminDashboardController;
 use App\Http\Controllers\Unit\UnitDashboardController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [DemoAccessController::class, 'index'])->name('login');
+Route::view('/', 'marketing.klini')->name('home');
+Route::get('/acceso', [DemoAccessController::class, 'index'])->name('login');
 Route::post('/demo-login', [DemoAccessController::class, 'store'])->name('demo-login.store');
 Route::post('/logout', [DemoAccessController::class, 'destroy'])->name('logout');
 
 Route::middleware('auth')->group(function (): void {
+    Route::get('/communities/admin', [CommunityDashboardController::class, 'admin'])
+        ->middleware('role:superadmin,admin')->name('community.dashboard');
+    Route::get('/communities', [CommunityDashboardController::class, 'explore'])
+        ->middleware('role:superadmin,admin,patient')->name('community.explore');
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
     Route::get('/doctor', [DoctorPortalController::class, 'index'])
         ->middleware('role:superadmin,admin,doctor')

@@ -1,0 +1,236 @@
+
+   PASS  Tests\Feature\ActionPermissionTest
+  ✓ institution can view operational but cannot update provider request status                                   5.88s  
+  ✓ institution can view unit but cannot update appointment status                                               0.05s  
+
+   PASS  Tests\Feature\Api\Mobile\DoctorApiTest
+  ✓ doctor only lists related patients and own agenda                                                            0.39s  
+  ✓ doctor can view related patient and create audited note                                                      0.21s  
+  ✓ doctor can create prescription and laboratory request for related patient                                    0.21s  
+  ✓ patient cannot open doctor endpoints                                                                         0.18s  
+  ✓ doctor can prevalidate and create an idempotent mobile npt request                                           0.35s  
+
+   PASS  Tests\Feature\Api\Mobile\MobileAuthenticationTest
+  ✓ patient can login and read their identity                                                                    0.35s  
+  ✓ doctor can login with username                                                                               0.34s  
+  ✓ login rejects invalid credentials inactive accounts and other roles                                          0.91s  
+  ✓ mobile errors use the uniform json contract                                                                  0.05s  
+  ✓ user can list and revoke only their own sessions                                                             0.34s  
+  ✓ token without mobile ability is rejected                                                                     0.18s  
+  ✓ password recovery does not reveal if an account exists                                                       0.35s  
+  ✓ user can reset password with a valid token                                                                   0.77s  
+  ✓ authenticated user can change password and other sessions are revoked                                        0.62s  
+  ✓ roles cannot cross mobile modules and expired tokens are rejected                                            0.31s  
+  ✓ authenticated user can enable and disable only their push device                                             0.32s  
+  ✓ logout disables push devices linked to current session                                                       0.17s  
+
+   PASS  Tests\Feature\Api\Mobile\PatientReadApiTest
+  ✓ patient reads only their paginated clinical resources                                                        0.32s  
+  ✓ patient document download is private and scoped to owner                                                     0.35s  
+  ✓ doctor cannot open patient role endpoints                                                                    0.18s  
+  ✓ patient dashboard profile update and appointment detail are scoped                                           0.32s  
+
+   PASS  Tests\Feature\CbtaCatalogClientTest
+  ✓ it reads the npt catalog using the service token                                                             0.01s  
+  ✓ it rejects an invalid catalog contract                                                                       0.01s  
+  ✓ it prevalidates a mixture without creating it                                                                0.01s  
+  ✓ it uploads a private mixture document                                                                        0.02s  
+  ✓ it downloads a private mixture document                                                                      0.01s  
+  ✓ it downloads the official mixture remission                                                                  0.01s  
+
+   PASS  Tests\Feature\DemoAccessTest
+  ✓ demo user can enter without password when review mode is enabled                                             0.04s  
+  ✓ landing login accepts email and returns errors to the popup                                                  0.47s  
+  ✓ passwordless review does not grant patient access to every module                                            0.02s  
+  ✓ superadmin can still review every module                                                                     0.05s  
+  ✓ general admin can review every module                                                                        0.03s  
+  ✓ insurance admin only sees the insurance flow                                                                 0.03s  
+  ✓ role module matrix matches the approved assignment                                                           0.04s  
+  ✓ login page is never cached by the browser                                                                    0.03s  
+
+   PASS  Tests\Feature\DigitalPharmacyModuleTest
+  ✓ operational user can open native pharmacy dashboard                                                          0.28s  
+  ✓ operational user can update order status                                                                     0.04s  
+
+   PASS  Tests\Feature\DoctorPortalTest
+  ✓ doctor user can open native blade portal                                                                     0.08s  
+  ✓ unit doctors can claim a pending consultation only once                                                      0.11s  
+  ✓ claim ignores private hours but not existing doctor appointments                                             0.05s  
+  ✓ private doctor receives native operational services                                                          0.06s  
+  ✓ doctor sees important cbta mixture updates                                                                   0.04s  
+  ✓ doctor can download own cbta document through the private proxy                                              0.04s  
+  ✓ doctor can download the official cbta remission                                                              0.03s  
+  ✓ doctor can open the oncology mixture request format                                                          0.06s  
+  ✓ doctor agenda renders its calendar workspace                                                                 0.05s  
+  ✓ doctor video schedule renders the isolated patient step                                                      0.04s  
+  ✓ video schedule redirect renders the ready step                                                               0.05s  
+  ✓ video schedule creates a virtual clinic when the doctor has none                                             0.04s  
+  ✓ doctor can publish availability and overlaps are rejected                                                    0.06s  
+  ✓ doctor can manage own clinics                                                                                0.04s  
+  ✓ doctor can create and cancel an appointment from agenda                                                      0.05s  
+  ✓ doctor can create edit and open a patient record                                                             0.07s  
+  ✓ doctor cannot edit an unrelated patient                                                                      0.04s  
+  ✓ doctor can start and complete a clinical encounter                                                           0.03s  
+  ✓ doctor can schedule and open a video consultation                                                            0.03s  
+  ✓ doctor can save clinical progress and complete the encounter                                                 0.05s  
+  ✓ doctor can open an encounter from own appointment                                                            0.04s  
+  ✓ doctor can issue a prescription and send it to external pharmacy                                             0.04s  
+  ✓ doctor can edit a pending prescription and pharmacy receives the changes                                     0.05s  
+  ✓ doctor can send each clinical request type to the operational flow                                           0.06s  
+  ✓ npt create url renders the focused request form                                                              0.04s  
+  ✓ doctor can submit multiple oncology mixtures with multiple medications                                       0.05s  
+  ✓ npt rejects time and infusion rate when both are filled                                                      0.05s  
+  ✓ npt form shows medicine additives and excludes auxiliary materials                                           0.04s  
+  ✓ real npt form prevalidates with cbta and persists the integration result                                     0.05s  
+  ✓ rejected cbta prevalidation does not create request or integration                                           0.04s  
+  ✓ cbta creation failure keeps the local request ready for retry                                                0.27s  
+
+   PASS  Tests\Feature\ExternalPharmacyModuleTest
+  ✓ operational user can open native external pharmacy dashboard                                                 0.16s  
+  ✓ external pharmacy can mark order in route and create delivery route                                          0.04s  
+  ✓ outpatient prescription is received and can be dispensed partially from inventory                            0.08s  
+  ✓ external pharmacy persists warehouses and manual inventory movements                                         0.05s  
+
+   PASS  Tests\Feature\InstitutionModuleTest
+  ✓ institution user can open native dashboard                                                                   0.38s  
+  ✓ institution user can open grouped unit registration form                                                     0.04s  
+  ✓ institution user can view and update a unit password                                                         0.48s  
+  ✓ institution user can update unit status                                                                      0.04s  
+
+   PASS  Tests\Feature\InsuranceAdvisorModuleTest
+  ✓ insurance advisor can open native dashboard                                                                  0.18s  
+  ✓ insurance advisor can create claim from inline form                                                          0.05s  
+  ✓ insurance advisor can update policy status                                                                   0.04s  
+  ✓ insurance advisor can upload payment and renew policy                                                        0.04s  
+  ✓ insurance advisor can export and request policy synchronization                                              0.05s  
+  ✓ insurance advisor can manage claim documents discharge and quotations                                        0.09s  
+
+   PASS  Tests\Feature\InsuranceHealthModuleTest
+  ✓ insurance admin can open native dashboard                                                                    0.05s  
+  ✓ insurance internal views use native visual layer                                                             0.10s  
+  ✓ insurance admin can run core patient flow                                                                    0.08s  
+  ✓ read only user cannot create patient                                                                         0.04s  
+
+   PASS  Tests\Feature\KliniBrandingTest
+  ✓ public home precedes the existing access page                                                                0.02s  
+  ✓ landing assets are available locally                                                                         0.02s  
+
+   PASS  Tests\Feature\MedicationCatalogFlowTest
+  ✓ official catalog is visible and unit activation is independent                                               3.74s  
+
+   PASS  Tests\Feature\MessengerModuleTest
+  ✓ messenger user can open native dashboard                                                                     0.06s  
+  ✓ messenger can report delivery and close patient order                                                        0.05s  
+  ✓ pharmacy in route status creates delivery route                                                              0.04s  
+
+   PASS  Tests\Feature\MixtureIntegrationSyncServiceTest
+  ✓ it preserves a remote processing error for visual follow up                                                  0.04s  
+  ✓ it reconciles the remote lifecycle without duplicating status events                                         0.04s  
+  ✓ signed cbta webhook triggers an authoritative status sync                                                    0.05s  
+  ✓ cbta webhook rejects an invalid signature                                                                    0.03s  
+  ✓ a temporary sync failure uses exponential retry tracking                                                     0.26s  
+
+   PASS  Tests\Feature\NativeModuleRouteTest
+  ✓ module routes resolve to application controllers                                                             0.03s  
+
+   PASS  Tests\Feature\NptMixtureHardeningTest
+  ✓ npt rejects invalid clinical and integration payloads                                                        0.06s  
+  ✓ npt rejected stock does not leave partial records                                                            0.02s  
+  ✓ npt valid boundary creates only an authorization pending request                                             0.04s  
+
+   PASS  Tests\Feature\OncologyMixtureHardeningTest
+  ✓ oncology rejects incomplete or clinically invalid payloads                                                   0.05s  
+  ✓ oncology accepts concentration boundaries without duplicate creation                                         0.04s  
+
+   PASS  Tests\Feature\OperationalModuleTest
+  ✓ operational user can open native dashboard                                                                   0.32s  
+  ✓ operational service request can link outpatient prescription                                                 0.04s  
+  ✓ operational user can update provider request status                                                          0.04s  
+  ✓ inspected mixture cannot be sent to provider again                                                           0.66s  
+  ✓ authorizations are independent and restricted to the operational area                                        0.05s  
+  ✓ spanish oncology operator can approve oncology authorization                                                 0.05s  
+  ✓ rejected authorization cancels and locks the request with traceability                                       0.55s  
+  ✓ unit user can operate only the current area authorization                                                    0.06s  
+  ✓ inpatient pharmacy can cancel only after both authorizations are approved                                    0.04s  
+  ✓ superadmin can create and edit an infusion room                                                              0.06s  
+  ✓ operational patient edit button opens and updates the patient                                                0.06s  
+  ✓ oncology calendar assigns available infusion room and blocks capacity overlap                                0.05s  
+
+   PASS  Tests\Feature\OrdersModuleTest
+  ✓ patient can open native orders module                                                                        0.05s  
+  ✓ patient can create pharmacy order                                                                            0.03s  
+
+   PASS  Tests\Feature\OutpatientModuleTest
+  ✓ operational user can use outpatient module                                                                   0.13s  
+  ✓ outpatient respects published doctor schedule and rejects overlaps                                           0.04s  
+  ✓ outpatient patient catalog supports create and edit like native                                              0.05s  
+  ✓ outpatient room catalog supports create edit and weekly availability                                         0.05s  
+  ✓ outpatient room can be deleted only when it has no appointments                                              0.04s  
+  ✓ outpatient calendar admin updates room slots used by agenda                                                  0.04s  
+  ✓ outpatient prescriptions support create view dynamic items and edit                                          0.07s  
+
+   PASS  Tests\Feature\OwnershipScopeTest
+  ✓ institution cannot update unit from another institution                                                      0.04s  
+  ✓ unit cannot update appointment from another unit                                                             0.03s  
+  ✓ messenger cannot update route assigned to another messenger                                                  0.03s  
+  ✓ operational user cannot update provider request from another unit                                            0.03s  
+
+   PASS  Tests\Feature\PatientPortalTest
+  ✓ patient user can open native blade portal                                                                    0.07s  
+  ✓ my health includes the clinical history switch and shared history                                            0.05s  
+  ✓ quick register has parameter and clinical history tabs                                                       0.05s  
+  ✓ patient can upload and download a quick register attachment                                                  0.05s  
+  ✓ quick register attachment rejects invalid files and other patients                                           0.05s  
+  ✓ patient can update own profile                                                                               0.03s  
+  ✓ calendar orders scheduled appointments before past appointments                                              0.04s  
+  ✓ patient can register insurance policy                                                                        0.04s  
+  ✓ patient can schedule an available doctor appointment                                                         0.03s  
+
+   PASS  Tests\Feature\ProviderModuleTest
+  ✓ reference expedient accepts private pending patient documents                                                0.10s  
+  ✓ provider user can open native npt dashboard                                                                  0.15s  
+  ✓ provider can update request and create delivery route when in route                                          0.06s  
+  ✓ import provider dashboard uses native route                                                                  0.05s  
+  ✓ import supplier form validates and stores private documents                                                  0.06s  
+  ✓ import sections show scoped records and all carousel options render                                          0.69s  
+
+   PASS  Tests\Feature\SeederStabilityTest
+  ✓ database seeder creates demo users and native module targets                                                 3.59s  
+
+   PASS  Tests\Feature\SessionConfigurationTest
+  ✓ session cookie name is php cookie safe                                                                       0.01s  
+
+   PASS  Tests\Feature\StateTransitionTest
+  ✓ terminal order cannot return to preparing                                                                    0.04s  
+  ✓ terminal provider request cannot be reopened                                                                 0.04s  
+  ✓ completed appointment cannot return to scheduled                                                             0.03s  
+  ✓ delivered route cannot return to assigned                                                                    0.03s  
+
+   PASS  Tests\Feature\SuperAdminModuleTest
+  ✓ superadmin user can open native dashboard                                                                    0.06s  
+  ✓ superadmin catalog menu sections open native views                                                           0.13s  
+  ✓ superadmin can disable module and dashboard registry hides it                                                0.05s  
+  ✓ superadmin can update user status                                                                            0.04s  
+  ✓ superadmin catalog filters and csv export work                                                               0.04s  
+  ✓ superadmin can create institutions and private hospitals                                                     0.18s  
+  ✓ superadmin can update module details and section settings                                                    0.03s  
+  ✓ superadmin can create doctor patient and provider users                                                      0.48s  
+  ✓ superadmin patient catalog matches source two panel layout                                                   0.04s  
+  ✓ superadmin access catalog matches source destination actions                                                 0.02s  
+  ✓ superadmin can update people catalog statuses                                                                0.04s  
+  ✓ module edit links open the module catalog with the selected record                                           0.05s  
+  ✓ superadmin can view filter and export insurance carriers                                                     0.05s  
+  ✓ superadmin can view search and export insurance advisors                                                     0.05s  
+  ✓ superadmin can view search and export medical devices                                                        0.05s  
+  ✓ superadmin can view and update subscription settings                                                         0.07s  
+
+   PASS  Tests\Feature\UnitModuleTest
+  ✓ unit status message uses a dismissible dialog                                                                0.06s  
+  ✓ unit user can open native dashboard                                                                          0.65s  
+  ✓ unit user can update appointment status                                                                      0.03s  
+  ✓ unit user can create edit and cancel a consultation appointment                                              0.05s  
+  ✓ unit books public consultation without private doctor availability                                           0.07s  
+
+  Tests:    172 passed (2699 assertions)
+  Duration: 32.91s
+

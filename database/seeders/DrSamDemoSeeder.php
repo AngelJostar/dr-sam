@@ -110,7 +110,7 @@ class DrSamDemoSeeder extends Seeder
                 'institution_id' => $institution->id,
                 'code' => 'DRSAM-DEMO',
                 'clues' => 'DRSAM000001',
-                'name' => 'Hospital General Demo Dr. Sam',
+                'name' => 'Hospital General Demo Klini',
                 'city' => 'Ciudad de Mexico',
                 'municipality' => 'Benito Juarez',
                 'state' => 'Ciudad de Mexico',

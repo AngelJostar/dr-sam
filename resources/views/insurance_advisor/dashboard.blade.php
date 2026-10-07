@@ -49,17 +49,13 @@
   <div class="insurance-advisor-native-screen">
     <aside class="insurance-advisor-native-sidebar" aria-label="Navegacion asesor seguros">
       <div class="insurance-advisor-native-brand">
-        <span>OK</span>
-        <div>
-          <strong>Seguros GMM</strong>
-          <small>Asesor de polizas</small>
-        </div>
+        <x-klini-brand label="Seguros GMM" />
       </div>
 
       <nav class="insurance-advisor-native-menu">
         @foreach ($menu as $item)
           <a class="{{ $section === $item['key'] ? 'is-active' : '' }}" href="{{ $sectionRoute($item['key']) }}">
-            <span>{{ $item['icon'] }}</span>{{ $item['label'] }}
+            <span class="klini-nav-icon" aria-hidden="true"><x-klini-icon name="{{ $item['label'] }}" /></span>{{ $item['label'] }}
           </a>
         @endforeach
       </nav>
@@ -85,9 +81,9 @@
 
       <header class="insurance-advisor-native-topbar">
         <div class="insurance-advisor-native-user">
-          <span>DS</span>
+          <span>K</span>
           <div>
-            <strong>Dr. Sam</strong>
+            <strong>Klini</strong>
             <small>Asesor de seguros GMM</small>
           </div>
         </div>
@@ -315,7 +311,7 @@
                   data-policy="{{ $selectedPolicy->policy_number }}"
                   data-amount="{{ (float) data_get($selectedPolicy->metadata, 'premium', 31750) }}"
                 >Subir pago</button>
-                <button class="is-wide" type="button" data-open-policy-assistant data-policy-id="{{ $selectedPolicy->id }}">Consultar poliza con Dr. Sam</button>
+                <button class="is-wide" type="button" data-open-policy-assistant data-policy-id="{{ $selectedPolicy->id }}">Consultar poliza con Klini</button>
               </div>
               @php
                 $latestRenewal = collect(data_get($selectedPolicy->metadata, 'renewal_history', []))->first();
@@ -396,7 +392,7 @@
           <div class="insurance-advisor-native-advisor-alerts insurance-advisor-native-messages">
             @forelse ($policyMessages as $message)
               <article>
-                <small>{{ $message['sent_at'] }} &nbsp; Plataforma Dr. Sam &nbsp; {{ $message['patient'] }}</small>
+                <small>{{ $message['sent_at'] }} &nbsp; Plataforma Klini &nbsp; {{ $message['patient'] }}</small>
                 <strong>{{ $message['subject'] }}</strong>
                 <p>{{ $message['body'] }}</p>
               </article>
@@ -414,7 +410,7 @@
           <div class="insurance-advisor-native-advisor-alerts">
             @forelse ($policyAlerts as $alert)
               <article>
-                <small>{{ $alert['created_at'] }} &nbsp; Plataforma Dr. Sam &nbsp; Asesor</small>
+                <small>{{ $alert['created_at'] }} &nbsp; Plataforma Klini &nbsp; Asesor</small>
                 <strong>{{ $alert['subject'] }}</strong>
                 <p>{{ $alert['body'] }}</p>
               </article>
@@ -619,8 +615,8 @@
       <section class="insurance-advisor-native-assistant" role="dialog" aria-modal="true" aria-labelledby="insurance-policy-assistant-title">
         <header>
           <div class="insurance-advisor-native-assistant-identity">
-            <span>DS</span>
-            <div><h2 id="insurance-policy-assistant-title">Dr. Sam</h2><small>Asistente de polizas</small></div>
+            <span>K</span>
+            <div><h2 id="insurance-policy-assistant-title">Klini</h2><small>Asistente de polizas</small></div>
           </div>
           <div><strong data-policy-assistant-status>Poliza</strong><small data-policy-assistant-label>Selecciona una poliza</small></div>
           <button type="button" data-close-policy-assistant aria-label="Cerrar">X</button>

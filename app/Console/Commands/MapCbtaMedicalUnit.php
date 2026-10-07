@@ -10,10 +10,10 @@ use Throwable;
 class MapCbtaMedicalUnit extends Command
 {
     protected $signature = 'cbta:map-unit
-        {unit : ID, codigo o CLUES de la unidad en Dr. Sam}
+        {unit : ID, codigo o CLUES de la unidad en Klini}
         {cbtaCode : Codigo externo de la unidad en CBTA}';
 
-    protected $description = 'Vincula una unidad de Dr. Sam con su unidad operativa en CBTA';
+    protected $description = 'Vincula una unidad de Klini con su unidad operativa en CBTA';
 
     public function handle(CbtaCatalogClient $client): int
     {
@@ -27,7 +27,7 @@ class MapCbtaMedicalUnit extends Command
             ->first();
 
         if (! $unit) {
-            $this->error('No se encontro la unidad indicada en Dr. Sam.');
+            $this->error('No se encontro la unidad indicada en Klini.');
 
             return self::FAILURE;
         }

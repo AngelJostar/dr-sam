@@ -1,0 +1,326 @@
+
+   FAIL  Tests\Feature\DemoAccessTest
+  ⨯ superadmin can still review every module                                                                     6.13s  
+  ✓ insurance admin only sees the insurance flow                                                                 0.04s  
+
+   PASS  Tests\Feature\InsuranceAdvisorModuleTest
+  ✓ insurance advisor can open native dashboard                                                                  0.23s  
+  ✓ insurance advisor can create claim from inline form                                                          0.05s  
+  ✓ insurance advisor can update policy status                                                                   0.03s  
+  ✓ insurance advisor can upload payment and renew policy                                                        0.12s  
+  ✓ insurance advisor can export and request policy synchronization                                              0.13s  
+  ✓ insurance advisor can manage claim documents discharge and quotations                                        0.08s  
+
+   PASS  Tests\Feature\InsuranceHealthModuleTest
+  ✓ insurance admin can open native dashboard                                                                    0.06s  
+  ✓ insurance internal views use native visual layer                                                             0.22s  
+  ✓ insurance admin can run core patient flow                                                                    0.14s  
+  ✓ read only user cannot create patient                                                                         0.06s  
+
+   PASS  Tests\Feature\OperationalModuleTest
+  ✓ superadmin can create and edit an infusion room                                                              0.09s  
+
+   PASS  Tests\Feature\PatientPortalTest
+  ✓ patient can register insurance policy                                                                        0.03s  
+
+   PASS  Tests\Feature\SuperAdminModuleTest
+  ✓ superadmin user can open native dashboard                                                                    0.05s  
+  ✓ superadmin catalog menu sections open native views                                                           0.21s  
+  ✓ superadmin can disable module and dashboard registry hides it                                                0.06s  
+  ✓ superadmin can update user status                                                                            0.04s  
+  ✓ superadmin catalog filters and csv export work                                                               0.04s  
+  ✓ superadmin can create institutions and private hospitals                                                     0.20s  
+  ✓ superadmin can update module details and section settings                                                    0.03s  
+  ✓ superadmin can create doctor patient and provider users                                                      0.49s  
+  ✓ superadmin patient catalog matches source two panel layout                                                   0.04s  
+  ✓ superadmin access catalog matches source destination actions                                                 0.05s  
+  ✓ superadmin can update people catalog statuses                                                                0.03s  
+  ✓ module edit links open the module catalog with the selected record                                           0.05s  
+  ✓ superadmin can view filter and export insurance carriers                                                     0.04s  
+  ✓ superadmin can view search and export insurance advisors                                                     0.04s  
+  ✓ superadmin can view search and export medical devices                                                        0.05s  
+  ✓ superadmin can view and update subscription settings                                                         0.08s  
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\DemoAccessTest > superadmin can still review every module                                      
+  Expected: <!doctype html>\r\n
+<html lang="es">\r\n
+  <head>\r\n
+    <meta charset="utf-8">\r\n
+    <meta name="viewport" content="width=device-width, initial-scale=1">\r\n
+    <title>Dashboard Klini</title>\r\n
+    <meta name="theme-color" content="#082441">\r\n
+    <link rel="icon" type="image/svg+xml" href="http://localhost:8000/brand/klini/favicon.svg">\r\n
+    <link rel="preload" href="http://localhost:8000/brand/klini/dejavu.woff" as="font" type="font/woff" crossorigin>\r\n
+    <link rel="stylesheet" href="http://localhost:8000/css/drsam.css?v=1791244835">\r\n
+        <link rel="stylesheet" href="http://localhost:8000/css/klini-brand.css?v=1791245005">\r\n
+    <link rel="stylesheet" href="http://localhost:8000/css/klini-workspace.css?v=1791264338">\r\n
+  </head>\r\n
+  <body class="native-shell klini-access-body">\r\n
+    <main class="shell">\r\n
+        <section class="page-heading klini-access-hero">\r\n
+    <div>\r\n
+      <span class="klini-brand">\r\n
+  <img src="http://localhost:8000/brand/klini/klini-white.svg" alt="Klini" width="120" height="56">\r\n
+  </span>\r\n
+      <p class="eyebrow">Tu espacio de trabajo</p>\r\n
+      <h1>Superadministrador</h1>\r\n
+      <p>Todo Klini. Una sola visión. Elige el módulo en el que quieres trabajar.</p>\r\n
+    </div>\r\n
+    <form method="post" action="http://localhost:8000/logout" class="dashboard-logout-form">\r\n
+      <input type="hidden" name="_token" value="1CCVbqyu8TuWxnk36pP6hRTxahYDeY2eNQiDkY8s" autocomplete="off">      <button type="submit" class="dashboard-logout-button" aria-label="Cerrar sesión">\r\n
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/><path d="M15 4h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4"/></svg>\r\n
+        Cerrar sesión\r\n
+      </button>\r\n
+    </form>\r\n
+  </section>\r\n
+\r\n
+  <section class="metric-grid" aria-label="Resumen de datos">\r\n
+          <article class="metric-card">\r\n
+        <span>Instituciones</span>\r\n
+        <strong>0</strong>\r\n
+      </article>\r\n
+          <article class="metric-card">\r\n
+        <span>Unidades</span>\r\n
+        <strong>0</strong>\r\n
+      </article>\r\n
+          <article class="metric-card">\r\n
+        <span>Pacientes</span>\r\n
+        <strong>0</strong>\r\n
+      </article>\r\n
+          <article class="metric-card">\r\n
+        <span>Citas</span>\r\n
+        <strong>0</strong>\r\n
+      </article>\r\n
+          <article class="metric-card">\r\n
+        <span>Solicitudes proveedor</span>\r\n
+        <strong>0</strong>\r\n
+      </article>\r\n
+          <article class="metric-card">\r\n
+        <span>Pedidos farmacia</span>\r\n
+        <strong>0</strong>\r\n
+      </article>\r\n
+          <article class="metric-card">\r\n
+        <span>Entregas aseguradora</span>\r\n
+        <strong>0</strong>\r\n
+      </article>\r\n
+          <article class="metric-card">\r\n
+        <span>Facturas hospitalarias</span>\r\n
+        <strong>0</strong>\r\n
+      </article>\r\n
+      </section>\r\n
+\r\n
+  <section class="module-section">\r\n
+    <div class="section-title">\r\n
+      <h2>Flujos disponibles</h2>\r\n
+      <span>17 modulos</span>\r\n
+    </div>\r\n
+\r\n
+    <div class="module-grid">\r\n
+              <a class="module-card module-card-priority-high" href="http://localhost:8000/superadmin">\r\n
+                      <span class="module-priority-mark">\r\n
+              <i aria-hidden="true"></i>\r\n
+              Prioridad alta\r\n
+            </span>\r\n
+                    <span class="klini-module-symbol" aria-hidden="true"><svg class="klini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3h7v7H3z M14 3h7v7h-7z M3 14h7v7H3z M14 14h7v7h-7z"/></svg>\r\n
+</span>\r\n
+          <span>Modulo superadministrador</span>\r\n
+          <small>Gobierno de la plataforma, usuarios y permisos.</small>\r\n
+<strong class="module-card-access">Abrir módulo <span aria-hidden="true">↗</span></strong>\r\n
+        </a>\r\n
+              <a class="module-card module-card-priority-high" href="http://localhost:8000/institution">\r\n
+                      <span class="module-priority-mark">\r\n
+              <i aria-hidden="true"></i>\r\n
+              Prioridad alta\r\n
+            </span>\r\n
+                    <span class="klini-module-symbol" aria-hidden="true"><svg class="klini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18 M5 21V7h14v14 M8 3h8v4 M9 11h1 M14 11h1 M9 15h1 M14 15h1 M10 21v-3h4v3"/></svg>\r\n
+</span>\r\n
+          <span>Modulo institucion</span>\r\n
+          <small>Una red organizada de instituciones y servicios.</small>\r\n
+<strong class="module-card-access">Abrir módulo <span aria-hidden="true">↗</span></strong>\r\n
+        </a>\r\n
+              <a class="module-card module-card-priority-high" href="http://localhost:8000/unit">\r\n
+                      <span class="module-priority-mark">\r\n
+              <i aria-hidden="true"></i>\r\n
+              Prioridad alta\r\n
+            </span>\r\n
+                    <span class="klini-module-symbol" aria-hidden="true"><svg class="klini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18 M5 21V7h14v14 M8 3h8v4 M9 11h1 M14 11h1 M9 15h1 M14 15h1 M10 21v-3h4v3"/></svg>\r\n
+</span>\r\n
+          <span>Modulo de unidad</span>\r\n
+          <small>Agenda, inventario y operación de tu unidad.</small>\r\n
+<strong class="module-card-access">Abrir módulo <span aria-hidden="true">↗</span></strong>\r\n
+        </a>\r\n
+              <a class="module-card module-card-priority-high" href="http://localhost:8000/operational">\r\n
+                      <span class="module-priority-mark">\r\n
+              <i aria-hidden="true"></i>\r\n
+              Prioridad alta\r\n
+            </span>\r\n
+                    <span class="klini-module-symbol" aria-hidden="true"><svg class="klini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3h7v7H3z M14 3h7v7h-7z M3 14h7v7H3z M14 14h7v7h-7z"/></svg>\r\n
+</span>\r\n
+          <span>Modulo operativo</span>\r\n
+          <small>Solicitudes, autorizaciones y seguimiento operativo.</small>\r\n
+<strong class="module-card-access">Abrir módulo <span aria-hidden="true">↗</span></strong>\r\n
+        </a>\r\n
+              <a class="module-card module-card-priority-high" href="http://localhost:8000/outpatient">\r\n
+                      <span class="module-priority-mark">\r\n
+              <i aria-hidden="true"></i>\r\n
+              Prioridad alta\r\n
+            </span>\r\n
+                    <span class="klini-module-symbol" aria-hidden="true"><svg class="klini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3h7v7H3z M14 3h7v7h-7z M3 14h7v7H3z M14 14h7v7h-7z"/></svg>\r\n
+</span>\r\n
+          <span>Modulo operativo Consulta Externa</span>\r\n
+          <small>Atención y seguimiento de consulta externa.</small>\r\n
+<strong class="module-card-access">Abrir módulo <span aria-hidden="true">↗</span></strong>\r\n
+        </a>\r\n
+              <a class="module-card module-card-priority-high" href="http://localhost:8000/external-pharmacy">\r\n
+                      <span class="module-priority-mark">\r\n
+              <i aria-hidden="true"></i>\r\n
+              Prioridad alta\r\n
+            </span>\r\n
+                    <span class="klini-module-symbol" aria-hidden="true"><svg class="klini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3h7v7H3z M14 3h7v7h-7z M3 14h7v7H3z M14 14h7v7h-7z"/></svg>\r\n
+</span>\r\n
+          <span>Modulo operativo Farmacia</span>\r\n
+          <small>Surtido y entregas de farmacia externa.</small>\r\n
+<strong class="module-card-access">Abrir módulo <span aria-hidden="true">↗</span></strong>\r\n
+        </a>\r\n
+              <a class="module-card module-card-priority-medium" href="http://localhost:8000/pharmacy">\r\n
+                      <span class="module-priority-mark">\r\n
+              <i aria-hidden="true"></i>\r\n
+              Prioridad media\r\n
+            </span>\r\n
+                    <span class="klini-module-symbol" aria-hidden="true"><svg class="klini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3h7v7H3z M14 3h7v7h-7z M3 14h7v7H3z M14 14h7v7h-7z"/></svg>\r\n
+</span>\r\n
+          <span>Farmacia Digital</span>\r\n
+          <small>Productos, pedidos y despacho de farmacia.</small>\r\n
+<strong class="module-card-access">Abrir módulo <span aria-hidden="true">↗</span></strong>\r\n
+        </a>\r\n
+              <a class="module-card module-card-priority-medium" href="http://localhost:8000/orders">\r\n
+                      <span class="module-priority-mark">\r\n
+              <i aria-hidden="true"></i>\r\n
+              Prioridad media\r\n
+            </span>\r\n
+                    <span class="klini-module-symbol" aria-hidden="true"><svg class="klini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3h7v7H3z M14 3h7v7h-7z M3 14h7v7H3z M14 14h7v7h-7z"/></svg>\r\n
+</span>\r\n
+          <span>Pedidos paciente</span>\r\n
+          <small>Consulta y seguimiento de pedidos del paciente.</small>\r\n
+<strong class="module-card-access">Abrir módulo <span aria-hidden="true">↗</span></strong>\r\n
+        </a>\r\n
+              <a class="module-card module-card-priority-medium" href="http://localhost:8000/insurance">\r\n
+                      <span class="module-priority-mark">\r\n
+              <i aria-hidden="true"></i>\r\n
+              Prioridad media\r\n
+            </span>\r\n
+                    <span class="klini-module-symbol" aria-hidden="true"><svg class="klini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11 M8 12l3 3 5-6"/></svg>\r\n
+</span>\r\n
+          <span>Aseguradora salud</span>\r\n
+          <small>Atención, autorizaciones y cuentas conectadas.</small>\r\n
+<strong class="module-card-access">Abrir módulo <span aria-hidden="true">↗</span></strong>\r\n
+        </a>\r\n
+              <a class="module-card module-card-priority-high" href="http://localhost:8000/doctor">\r\n
+                      <span class="module-priority-mark">\r\n
+              <i aria-hidden="true"></i>\r\n
+              Prioridad alta\r\n
+            </span>\r\n
+                    <span class="klini-module-symbol" aria-hidden="true"><svg class="klini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8 M22 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75"/></svg>\r\n
+</span>\r\n
+          <span>Modulo medico</span>\r\n
+          <small>Consultas, recetas y expediente clínico.</small>\r\n
+<strong class="module-card-access">Abrir módulo <span aria-hidden="true">↗</span></strong>\r\n
+        </a>\r\n
+              <a class="module-card module-card-priority-high" href="http://localhost:8000/patient">\r\n
+                      <span class="module-priority-mark">\r\n
+              <i aria-hidden="true"></i>\r\n
+              Prioridad alta\r\n
+            </span>\r\n
+                    <span class="klini-module-symbol" aria-hidden="true"><svg class="klini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3h7v7H3z M14 3h7v7h-7z M3 14h7v7H3z M14 14h7v7h-7z"/></svg>\r\n
+</span>\r\n
+          <span>Modulo paciente</span>\r\n
+          <small>Tu información de salud y seguimiento personal.</small>\r\n
+<strong class="module-card-access">Abrir módulo <span aria-hidden="true">↗</span></strong>\r\n
+        </a>\r\n
+              <a class="module-card module-card-priority-high" href="http://localhost:8000/insurance-advisor">\r\n
+                      <span class="module-priority-mark">\r\n
+              <i aria-hidden="true"></i>\r\n
+              Prioridad alta\r\n
+            </span>\r\n
+                    <span class="klini-module-symbol" aria-hidden="true"><svg class="klini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11 M8 12l3 3 5-6"/></svg>\r\n
+</span>\r\n
+          <span>Asesor de seguros GMM</span>\r\n
+          <small>Cartera de pólizas, renovaciones y siniestros.</small>\r\n
+<strong class="module-card-access">Abrir módulo <span aria-hidden="true">↗</span></strong>\r\n
+        </a>\r\n
+              <a class="module-card module-card-priority-high" href="http://localhost:8000/providers/npt">\r\n
+                      <span class="module-priority-mark">\r\n
+              <i aria-hidden="true"></i>\r\n
+              Prioridad alta\r\n
+            </span>\r\n
+                    <span class="klini-module-symbol" aria-hidden="true"><svg class="klini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3h7v7H3z M14 3h7v7h-7z M3 14h7v7H3z M14 14h7v7h-7z"/></svg>\r\n
+</span>\r\n
+          <span>Proveedor NPT</span>\r\n
+          <small>Productos y solicitudes de nutrición parenteral.</small>\r\n
+<strong class="module-card-access">Abrir módulo <span aria-hidden="true">↗</span></strong>\r\n
+        </a>\r\n
+              <a class="module-card module-card-priority-medium" href="http://localhost:8000/providers/import">\r\n
+                      <span class="module-priority-mark">\r\n
+              <i aria-hidden="true"></i>\r\n
+              Prioridad media\r\n
+            </span>\r\n
+                    <span class="klini-module-symbol" aria-hidden="true"><svg class="klini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3h7v7H3z M14 3h7v7h-7z M3 14h7v7H3z M14 14h7v7h-7z"/></svg>\r\n
+</span>\r\n
+          <span>Proveedor importacion</span>\r\n
+          <small>Expedientes, permisos y trazabilidad de importación.</small>\r\n
+<strong class="module-card-access">Abrir módulo <span aria-hidden="true">↗</span></strong>\r\n
+        </a>\r\n
+              <a class="module-card module-card-priority-medium" href="http://localhost:8000/providers/medicines">\r\n
+                      <span class="module-priority-mark">\r\n
+              <i aria-hidden="true"></i>\r\n
+              Prioridad media\r\n
+            </span>\r\n
+                    <span class="klini-module-symbol" aria-hidden="true"><svg class="klini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8 M22 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75"/></svg>\r\n
+</span>\r\n
+          <span>Distribuidor de medicamentos</span>\r\n
+          <small>Distribución y seguimiento de medicamentos.</small>\r\n
+<strong class="module-card-access">Abrir módulo <span aria-hidden="true">↗</span></strong>\r\n
+        </a>\r\n
+              <a class="module-card" href="http://localhost:8000/providers/clinical-labs">\r\n
+                    <span class="klini-module-symbol" aria-hidden="true"><svg class="klini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3h7v7H3z M14 3h7v7h-7z M3 14h7v7H3z M14 14h7v7h-7z"/></svg>\r\n
+</span>\r\n
+          <span>Proveedor analisis clinicos</span>\r\n
+          <small>Solicitudes y resultados de laboratorio.</small>\r\n
+<strong class="module-card-access">Abrir módulo <span aria-hidden="true">↗</span></strong>\r\n
+        </a>\r\n
+              <a class="module-card module-card-priority-high" href="http://localhost:8000/messenger">\r\n
+                      <span class="module-priority-mark">\r\n
+              <i aria-hidden="true"></i>\r\n
+              Prioridad alta\r\n
+            </span>\r\n
+                    <span class="klini-module-symbol" aria-hidden="true"><svg class="klini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3h7v7H3z M14 3h7v7h-7z M3 14h7v7H3z M14 14h7v7h-7z"/></svg>\r\n
+</span>\r\n
+          <span>Mensajero</span>\r\n
+          <small>Rutas, evidencias y confirmación de entregas.</small>\r\n
+<strong class="module-card-access">Abrir módulo <span aria-hidden="true">↗</span></strong>\r\n
+        </a>\r\n
+          </div>\r\n
+  </section>\r\n
+    </main>\r\n
+        <script src="http://localhost:8000/js/drsam-table-filters.js?v=1791237399" defer></script>\r\n
+  </body>\r\n
+</html>\r\n
+
+
+  To contain: Acceder
+
+  at tests\Feature\DemoAccessTest.php:94
+     90▕         $this->actingAs($superadmin)
+     91▕             ->get('/dashboard')
+     92▕             ->assertOk()
+     93▕             ->assertSee('Modulo operativo')
+  ➜  94▕             ->assertSee('Acceder')
+     95▕             ->assertSee('Prioridad alta')
+     96▕             ->assertSee('Prioridad media')
+     97▕             ->assertSee('Cerrar sesión')
+     98▕             ->assertSee('action="'.route('logout').'"', false)
+
+
+  Tests:    1 failed, 29 passed (471 assertions)
+  Duration: 9.51s
+

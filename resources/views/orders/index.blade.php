@@ -26,11 +26,7 @@
   <div class="orders-store-native-screen">
     <header class="orders-store-native-topbar">
       <a class="orders-store-native-brand" href="{{ route('orders.index') }}">
-        <span>+</span>
-        <div>
-          <strong>Farmacia Digital</strong>
-          <small>Pagina de inicio</small>
-        </div>
+        <x-klini-brand label="Farmacia digital" />
       </a>
 
       <form class="orders-store-native-search" method="get" action="{{ route('orders.index') }}">

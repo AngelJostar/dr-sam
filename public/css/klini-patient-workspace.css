@@ -1,0 +1,30 @@
+.native-shell .patient-portal:is([data-active-view="communities"],[data-active-view="calendar"]) .patient-portal-topbar { grid-template-columns:108px 44px minmax(0,1fr) 46px; height:70px; min-height:70px; padding:8px 22px; gap:12px; border-radius:0; }
+.native-shell .patient-portal:is([data-active-view="communities"],[data-active-view="calendar"]) .klini-patient-brand { width:92px; min-width:0; }
+.native-shell .patient-portal:is([data-active-view="communities"],[data-active-view="calendar"]) .klini-patient-brand img { width:86px; min-width:0; max-height:48px; }
+.native-shell .patient-portal:is([data-active-view="communities"],[data-active-view="calendar"]) .patient-portal-dots { width:40px; height:40px; padding:0; }
+.native-shell .patient-portal:is([data-active-view="communities"],[data-active-view="calendar"]) .patient-portal-question { width:min(100%,500px); justify-self:end; }
+.native-shell .patient-portal-view[data-patient-view="communities"],
+.native-shell .patient-portal-view[data-patient-view="calendar"] { max-width:1450px; padding:14px 10px 100px; }
+.native-shell .patient-wellness-navigation { display:flex; justify-content:center; gap:5px; width:fit-content; margin:0 auto 18px; padding:5px; border:1px solid #dcebe8; border-radius:30px; background:#fff; }
+.native-shell .patient-wellness-navigation button { display:flex; align-items:center; gap:8px; border:0; border-radius:24px; padding:10px 20px; color:#536575; background:transparent; box-shadow:none; min-height:42px; font:700 12px 'Klini Sans',sans-serif; }
+.native-shell .patient-wellness-navigation button.is-active { background:#ddf3ef; color:#007d79; }
+.patient-wellness-navigation svg { width:19px; height:19px; fill:none; stroke:currentColor; stroke-width:1.7; }
+.patient-community-demo-note { max-width:1100px; margin:0 auto 12px; text-align:center; color:#627781; font-size:11px; padding:0 12px; }
+.patient-workspace-loading { padding:60px; text-align:center; color:#007d79; }
+.native-shell .patient-calendar-records { margin:12px 30px 0; padding:18px; border:1px solid #dfecea; border-radius:18px; background:#fff; }
+.patient-calendar-records>summary { cursor:pointer; color:#007d79; font-size:14px; font-weight:700; }
+.patient-calendar-records[open]>summary { margin-bottom:20px; }
+.patient-calendar-records .patient-calendar-history { margin-top:20px; }
+.native-shell .patient-portal-bottom-nav>.patient-communities-link:not(.is-active) { background:transparent; color:#536575; }
+.native-shell .patient-portal-bottom-nav>.patient-communities-link.is-active { background:#ddf3ef; color:#007d79; }
+@media(max-width:700px) {
+  .native-shell .patient-portal:is([data-active-view="communities"],[data-active-view="calendar"]) .patient-portal-topbar { grid-template-columns:78px 36px minmax(0,1fr) 42px; gap:6px; padding:8px 12px; }
+  .native-shell .patient-portal:is([data-active-view="communities"],[data-active-view="calendar"]) .klini-patient-brand { width:74px; }
+  .native-shell .patient-portal:is([data-active-view="communities"],[data-active-view="calendar"]) .klini-patient-brand img { width:70px; }
+  .native-shell .patient-portal-view[data-patient-view="communities"],
+  .native-shell .patient-portal-view[data-patient-view="calendar"] { padding:10px 0 95px; }
+  .native-shell .patient-wellness-navigation { margin-bottom:14px; }
+  .native-shell .patient-wellness-navigation button { padding:9px 15px; font-size:11px; }
+  .patient-community-demo-note { font-size:10px; line-height:1.5; }
+  .native-shell .patient-calendar-records { margin:12px 0; padding:14px; }
+}

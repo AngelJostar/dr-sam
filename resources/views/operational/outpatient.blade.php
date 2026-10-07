@@ -23,7 +23,7 @@
 @section('content')
   <div class="operational-native-screen outpatient-operational-screen">
     <header class="operational-native-topbar" aria-label="Barra superior operativa">
-      <strong>MODULO OPERATIVO</strong>
+      <x-klini-brand label="MODULO OPERATIVO" />
       <span>{{ strtoupper($institutionName) }}</span>
       <div class="operational-native-user">
         <button type="button" aria-label="Notificaciones">

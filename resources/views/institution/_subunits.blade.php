@@ -33,7 +33,7 @@
   ])->filter()->implode(', ') ?: null;
   $demoUnit = (object) [
     'id' => null,
-    'name' => 'Hospital General Demo Dr. Sam',
+    'name' => 'Hospital General Demo Klini',
     'clues' => 'DRSAM000001',
     'code' => null,
     'external_id' => null,

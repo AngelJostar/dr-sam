@@ -3,7 +3,7 @@
   --action-width: 120px;
   --action-height: 40px;
 }
-.native-shell button:not([data-import-navigate]):not(.import-carousel-arrow):not(.drsam-table-filter-button),
+.native-shell button:not([data-import-navigate]):not(.import-carousel-arrow):not(.klini-carousel-indicator):not(.drsam-table-filter-button),
 .native-shell input[type="submit"],
 .native-shell input[type="button"],
 .native-shell a.button,
@@ -61,5 +61,5 @@
 body.native-shell table thead th button.drsam-table-filter-button { width: 16px !important; min-width: 16px !important; max-width: 16px !important; height: 16px !important; min-height: 16px !important; padding: 0 !important; border-radius: 50% !important; flex: 0 0 16px !important; font-size: 9px !important; }
 body.native-shell table thead th button.drsam-table-filter-button::after { width: 4px; height: 4px; }
 body.native-shell table thead .drsam-table-filter-head { gap: 4px; }
-body.native-shell table thead .drsam-table-filter-label { display: block; flex: 1 1 auto; min-width: 0; overflow: visible; white-space: normal; text-overflow: clip; color: #12336b; line-height: 1.25; }
+body.native-shell table thead .drsam-table-filter-label { display: block; flex: 1 1 auto; min-width: 0; overflow: visible; white-space: normal; text-overflow: clip; color: #082441; line-height: 1.25; }
 body.native-shell table thead .drsam-table-filter-label .import-column-title { display: block; min-height: 0; max-width: none; }

@@ -1,0 +1,11 @@
+KLINI — CÓDIGO Y RECURSOS
+
+Campaña: Muévete. Conecta. Sé parte.
+
+1. Extrae el ZIP y abre sitio/index.html para ver la página.
+2. Abre recursos/catalogo.html para ver las imágenes y los íconos.
+3. Consulta INSTRUCCIONES.md antes de integrar el sitio.
+
+Sube el contenido de sitio a tu hosting, conservando assets. No se requiere compilación.
+
+El acceso y la creación de cuentas siguen pendientes de conectar. La demostración de registro usa datos de ejemplo en memoria, no los guarda ni envía. La conexión con relojes inteligentes no está implementada.

@@ -43,7 +43,7 @@ class DemoAccessController extends Controller
         ]);
 
         $user = User::query()
-            ->where('username', $validated['username'])
+            ->where(fn ($query) => $query->where('username', $validated['username'])->orWhere('email', $validated['username']))
             ->where('status', 'active')
             ->first();
 
@@ -66,6 +66,12 @@ class DemoAccessController extends Controller
         Auth::login($user);
         $request->session()->regenerate();
 
+        if ($user->role === 'superadmin') {
+            $request->session()->forget('url.intended');
+
+            return redirect()->route('superadmin.dashboard');
+        }
+
         return redirect()->intended(route('dashboard'));
     }
 
@@ -76,7 +82,7 @@ class DemoAccessController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('login');
+        return redirect()->route('home');
     }
 }
 

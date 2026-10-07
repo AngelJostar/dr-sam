@@ -1,12 +1,12 @@
 :root {
   color-scheme: light;
-  --bg: #f6f7f8;
+  --bg: #f5f9f8;
   --panel: #ffffff;
-  --ink: #18212b;
-  --muted: #65707d;
+  --ink: #082441;
+  --muted: #536575;
   --line: #d9dee5;
-  --teal: #0f766e;
-  --teal-dark: #115e59;
+  --teal: #007d79;
+  --teal-dark: #007d79;
   --amber: #b7791f;
   --red: #b42318;
   --blue: #164e9f;
@@ -70,7 +70,7 @@
 
 .native-shell .doctor-sweet-alert-success .doctor-sweet-alert-icon { color: #0aae9d; }
 .native-shell .doctor-sweet-alert-error .doctor-sweet-alert-icon { color: #e04e55; }
-.native-shell .doctor-sweet-alert-card h2 { margin: 0 0 9px; color: #102b3b; font-size: 21px; }
+.native-shell .doctor-sweet-alert-card h2 { margin: 0 0 9px; color: #082441; font-size: 21px; }
 .native-shell .doctor-sweet-alert-card p { margin: 0; color: #526b78; line-height: 1.55; }
 
 .native-shell .doctor-sweet-alert-confirm {
@@ -843,7 +843,7 @@ textarea {
 
 .module-card-priority-high .module-priority-mark {
   background: #e7f8f3;
-  color: #087f75;
+  color: #007d79;
 }
 
 .module-card-priority-medium .module-priority-mark {
@@ -864,17 +864,17 @@ textarea {
   width: fit-content;
   margin-top: 4px;
   padding: 7px 14px;
-  border: 1px solid #087f75;
+  border: 1px solid #007d79;
   border-radius: 7px;
   background: #fff;
-  color: #087f75;
+  color: #007d79;
   font-size: 12px;
   font-weight: 800;
   line-height: 1;
 }
 
 .module-card:hover .module-card-access {
-  background: #087f75;
+  background: #007d79;
   color: #fff;
 }
 
@@ -1764,7 +1764,7 @@ textarea {
 
 .native-shell .module-card.module-card-priority-high .module-priority-mark {
   background: #e7f8f3;
-  color: #087f75;
+  color: #007d79;
 }
 
 .native-shell .module-card.module-card-priority-medium .module-priority-mark {
@@ -2000,7 +2000,7 @@ textarea {
 .superadmin-user-modal-card header > a { display: grid; width: 42px; height: 42px; place-items: center; border: 1px solid #dce6e8; border-radius: 10px; color: #26323f; font-size: 25px; text-decoration: none; }
 .superadmin-user-modal-card form { padding: 20px; }
 .superadmin-user-modal-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
-.superadmin-user-modal-grid label { gap: 7px; color: #52615f; font-size: 12px; font-weight: 800; }
+.superadmin-user-modal-grid label { gap: 7px; color: #536575; font-size: 12px; font-weight: 800; }
 .superadmin-user-modal-grid input, .superadmin-user-modal-grid select { min-height: 44px; border-radius: 9px; background: #fff; }
 .superadmin-user-modal-grid input[readonly], .superadmin-user-modal-grid input:disabled { background: #f6f8f8; color: #687674; }
 .superadmin-user-modal-grid .span-2 { grid-column: 1 / -1; }
@@ -2032,11 +2032,11 @@ textarea {
 .superadmin-doctor-commission-scroll { width: 100%; overflow-x: auto; }
 .superadmin-doctor-commission-scroll table { min-width: 2550px; border-collapse: collapse; }
 .superadmin-doctor-commission-scroll th, .superadmin-doctor-commission-scroll td { min-width: 92px; padding: 11px 9px; border-right: 1px solid #d5dddb; border-bottom: 1px solid #d5dddb; text-align: right; vertical-align: middle; }
-.superadmin-doctor-commission-scroll th { background: #f2f8f6; color: #071018; font-size: 10px; line-height: 1.05; text-transform: uppercase; white-space: normal; }
+.superadmin-doctor-commission-scroll th { background: #f2f8f6; color: #082441; font-size: 10px; line-height: 1.05; text-transform: uppercase; white-space: normal; }
 .superadmin-doctor-commission-scroll td { color: #27312f; font-size: 12px; white-space: nowrap; }
 .superadmin-doctor-commission-scroll td:nth-child(-n+7) { text-align: left; }
-.superadmin-doctor-commission-scroll button { min-height: 32px; border: 1px solid #ccd8d5; border-radius: 7px; background: #fff; color: #071018; font-weight: 800; }
-.superadmin-doctor-commission-scroll td a { display: inline-grid; min-height: 32px; place-items: center; padding: 0 10px; border: 1px solid #ccd8d5; border-radius: 7px; background: #fff; color: #071018; font-weight: 800; text-decoration: none; }
+.superadmin-doctor-commission-scroll button { min-height: 32px; border: 1px solid #ccd8d5; border-radius: 7px; background: #fff; color: #082441; font-weight: 800; }
+.superadmin-doctor-commission-scroll td a { display: inline-grid; min-height: 32px; place-items: center; padding: 0 10px; border: 1px solid #ccd8d5; border-radius: 7px; background: #fff; color: #082441; font-weight: 800; text-decoration: none; }
 .superadmin-doctor-commission-scroll small { display: block; margin-top: 6px; color: #71808d; }
 .superadmin-commission-format { display: none; margin-top: 16px; overflow: hidden; border: 1px solid #d5dddb; border-radius: 9px; background: #fff; }
 .superadmin-commission-format:target { display: block; }
@@ -2044,7 +2044,7 @@ textarea {
 .superadmin-commission-format h3, .superadmin-commission-format p { margin: 0; }
 .superadmin-commission-format h3 { font-size: 14px; }
 .superadmin-commission-format header p { margin-top: 4px; color: #71808d; font-size: 12px; }
-.superadmin-commission-format header a { padding: 9px 13px; border: 1px solid #d5dddb; border-radius: 8px; color: #071018; font-weight: 800; text-decoration: none; }
+.superadmin-commission-format header a { padding: 9px 13px; border: 1px solid #d5dddb; border-radius: 8px; color: #082441; font-weight: 800; text-decoration: none; }
 .superadmin-commission-toolbar { display: grid; grid-template-columns: 320px minmax(420px, 1fr) auto; gap: 14px; align-items: end; padding: 14px 18px; }
 .superadmin-commission-toolbar label { gap: 7px; font-size: 11px; font-weight: 850; }
 .superadmin-commission-toolbar select, .superadmin-commission-toolbar input { min-height: 42px; background: #fff; }
@@ -2053,11 +2053,11 @@ textarea {
 .superadmin-commission-toolbar .search input { padding-left: 42px; }
 .superadmin-commission-toolbar > strong { align-self: center; font-size: 13px; }
 .superadmin-commission-toolbar > strong small { display: block; margin-top: 4px; color: #71808d; }
-.superadmin-commission-help { padding: 11px 18px; border-top: 1px solid #d5dddb; border-bottom: 1px solid #d5dddb; color: #52615f; font-size: 11px; font-weight: 750; }
+.superadmin-commission-help { padding: 11px 18px; border-top: 1px solid #d5dddb; border-bottom: 1px solid #d5dddb; color: #536575; font-size: 11px; font-weight: 750; }
 .superadmin-commission-products-scroll { max-height: 570px; overflow: auto; }
 .superadmin-commission-products-scroll table { min-width: 1650px; border-collapse: collapse; }
 .superadmin-commission-products-scroll th, .superadmin-commission-products-scroll td { padding: 10px 12px; border-right: 1px solid #d5dddb; border-bottom: 1px solid #d5dddb; text-align: left; vertical-align: middle; }
-.superadmin-commission-products-scroll th { position: sticky; top: 0; z-index: 1; background: #f7faf9; color: #53615f; font-size: 10px; text-transform: uppercase; }
+.superadmin-commission-products-scroll th { position: sticky; top: 0; z-index: 1; background: #f7faf9; color: #536575; font-size: 10px; text-transform: uppercase; }
 .superadmin-commission-products-scroll td { font-size: 12px; }
 .superadmin-commission-products-scroll td:nth-child(3) { min-width: 190px; }
 .superadmin-commission-products-scroll td:nth-child(7), .superadmin-commission-products-scroll td:nth-child(8) { min-width: 260px; }
@@ -2065,7 +2065,7 @@ textarea {
 .superadmin-commission-products-scroll input[type="number"] { width: 90px; min-height: 38px; background: #fff; }
 .superadmin-commission-products-scroll input[type="checkbox"] { width: 18px; height: 18px; accent-color: #078a7b; }
 .superadmin-vendor-filters { display: grid; grid-template-columns: repeat(5, minmax(180px, 1fr)); gap: 14px; margin-top: 32px; padding: 16px; border: 1px solid #d5dddb; border-radius: 9px; background: #fff; }
-.superadmin-vendor-filters label { gap: 7px; color: #53615f; font-size: 11px; font-weight: 850; }
+.superadmin-vendor-filters label { gap: 7px; color: #536575; font-size: 11px; font-weight: 850; }
 .superadmin-vendor-filters select { min-height: 42px; background: #fff; }
 .superadmin-vendor-commissions { min-height: 420px; }
 .superadmin-vendor-commissions .superadmin-doctor-commission-scroll { min-height: 330px; }
@@ -2080,13 +2080,13 @@ textarea {
 @media (max-width: 1100px) { .superadmin-vendor-filters { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .superadmin-vendor-modal-card { width: min(780px, 100%); }
 .superadmin-vendor-doctors { margin-top: 18px; padding: 14px; border: 1px solid #d5dddb; border-radius: 10px; }
-.superadmin-vendor-doctors legend { padding: 0 8px; color: #53615f; font-size: 12px; font-weight: 850; }
+.superadmin-vendor-doctors legend { padding: 0 8px; color: #536575; font-size: 12px; font-weight: 850; }
 .superadmin-vendor-doctor-search { position: relative; display: block; }
 .superadmin-vendor-doctor-search span { position: absolute; top: 10px; left: 14px; font-size: 20px; }
 .superadmin-vendor-doctor-search input { width: 100%; min-height: 42px; padding-left: 44px; background: #fff; }
 .superadmin-vendor-doctor-list { max-height: 260px; margin-top: 12px; overflow: auto; border: 1px solid #d5dddb; border-radius: 8px; }
 .superadmin-vendor-doctor-list table { width: 100%; border-collapse: collapse; }
-.superadmin-vendor-doctor-list th, .superadmin-vendor-doctor-list td { padding: 10px 12px; border-bottom: 1px solid #d5dddb; color: #53615f; font-size: 11px; text-align: left; }
+.superadmin-vendor-doctor-list th, .superadmin-vendor-doctor-list td { padding: 10px 12px; border-bottom: 1px solid #d5dddb; color: #536575; font-size: 11px; text-align: left; }
 .superadmin-vendor-doctor-list th { background: #f7faf9; font-weight: 900; text-transform: uppercase; }
 .superadmin-vendor-doctor-list td strong { color: #27312f; }
 .superadmin-vendor-doctor-list td span { color: #71808d; }
@@ -2140,7 +2140,7 @@ textarea {
 .outpatient-module-screen { display: grid; grid-template-columns: 220px minmax(0, 1fr); min-height: 100vh; background: #f4f7f6; color: #142022; }
 .outpatient-module-sidebar { border-right: 1px solid #d5dedd; background: #fff; }
 .outpatient-module-brand { display: flex; gap: 10px; align-items: center; padding: 18px 14px; }
-.outpatient-module-brand > span { display: grid; width: 34px; height: 34px; place-items: center; border-radius: 8px; background: #e5f6f2; color: #087f75; font-size: 20px; font-weight: 800; }
+.outpatient-module-brand > span { display: grid; width: 34px; height: 34px; place-items: center; border-radius: 8px; background: #e5f6f2; color: #007d79; font-size: 20px; font-weight: 800; }
 .outpatient-module-brand div { display: grid; gap: 2px; }
 .outpatient-module-brand strong { font-size: 14px; }
 .outpatient-module-brand small { color: #667476; font-size: 10px; }
@@ -2570,7 +2570,7 @@ textarea {
   border: 1px solid #bde5df;
   border-radius: 999px;
   background: #eefbf8;
-  color: #007a6c;
+  color: #007d79;
   font-size: 12px;
   font-weight: 900;
 }
@@ -2616,7 +2616,7 @@ textarea {
   padding: 5px 10px;
   border-radius: 999px;
   background: #e8f7f4;
-  color: #007a6c;
+  color: #007d79;
   font-size: 11px;
   font-style: normal;
   font-weight: 900;
@@ -2899,7 +2899,7 @@ html:has(> body.patient-portal-body) { scrollbar-gutter: stable; }
   border-radius: 16px;
   background: linear-gradient(135deg, #f2fffc, #fff);
 }
-.native-shell .patient-ai-smart-card small { color: #008f82; font-size: 12px; font-weight: 950; text-transform: uppercase; }
+.native-shell .patient-ai-smart-card small { color: #007d79; font-size: 12px; font-weight: 950; text-transform: uppercase; }
 .native-shell .patient-ai-smart-card strong { color: #132542; font-size: 19px; }
 .native-shell .patient-ai-smart-card span,
 .native-shell .patient-ai-smart-card p { margin: 0; color: #51657f; font-size: 14px; font-weight: 800; }
@@ -3195,7 +3195,7 @@ html:has(> body.patient-portal-body) { scrollbar-gutter: stable; }
 }
 
 .native-shell .patient-analyses-filter-bar button {
-  --analysis-color: #008f82;
+  --analysis-color: #007d79;
   position: relative;
   display: grid;
   flex: 0 0 128px;
@@ -3208,7 +3208,7 @@ html:has(> body.patient-portal-body) { scrollbar-gutter: stable; }
   border: 1px solid #dbe8ed !important;
   border-radius: 18px;
   background: #fff !important;
-  color: #142542;
+  color: #082441;
   font: inherit;
   font-size: 20px;
   font-weight: 950;
@@ -3244,7 +3244,7 @@ html:has(> body.patient-portal-body) { scrollbar-gutter: stable; }
 .native-shell .patient-analyses-filter-bar button b {
   max-width: 100%;
   overflow: hidden;
-  color: #142542;
+  color: #082441;
   font-size: 12px;
   font-weight: 950;
   line-height: 1.05;
@@ -3254,11 +3254,11 @@ html:has(> body.patient-portal-body) { scrollbar-gutter: stable; }
 .native-shell .patient-analyses-filter-bar button.is-active {
   border-color: #09a99b !important;
   background: linear-gradient(150deg, #eafffa, #fff) !important;
-  color: #142542 !important;
+  color: #082441 !important;
   box-shadow: 0 18px 36px rgba(10, 158, 145, .11) !important;
 }
 
-.native-shell .patient-analyses-filter-bar .is-all { --analysis-color: #008f82; }
+.native-shell .patient-analyses-filter-bar .is-all { --analysis-color: #007d79; }
 .native-shell .patient-analyses-filter-bar .is-lab { --analysis-color: #0a9f62; }
 .native-shell .patient-analyses-filter-bar .is-image { --analysis-color: #166dd2; }
 .native-shell .patient-analyses-filter-bar .is-pdf { --analysis-color: #6825b5; }
@@ -3502,7 +3502,7 @@ html:has(> body.patient-portal-body) { scrollbar-gutter: stable; }
   border-radius: 20px;
   overflow: hidden;
   background: #fff !important;
-  color: #142542;
+  color: #082441;
   box-shadow: 0 32px 92px rgba(9, 26, 37, .34);
 }
 
@@ -3530,7 +3530,7 @@ html:has(> body.patient-portal-body) { scrollbar-gutter: stable; }
 
 .native-shell .patient-analysis-filter-header h2 {
   margin: 0;
-  color: #142542;
+  color: #082441;
   font-size: 21px;
   font-weight: 950;
   line-height: 1;
@@ -3574,7 +3574,7 @@ html:has(> body.patient-portal-body) { scrollbar-gutter: stable; }
 
 .native-shell .patient-analysis-filter-group h3 {
   margin: 0;
-  color: #142542;
+  color: #082441;
   font-size: 18px;
   font-weight: 950;
 }
@@ -3589,7 +3589,7 @@ html:has(> body.patient-portal-body) { scrollbar-gutter: stable; }
   padding: 0;
   border: 0;
   background: transparent;
-  color: #142542;
+  color: #082441;
   font: inherit;
   text-align: left;
   cursor: pointer;
@@ -4247,14 +4247,14 @@ body.is-health-screen-open {
   border: 0;
   border-radius: 50%;
   background: transparent;
-  color: #142542;
+  color: #082441;
   font-size: 27px;
   cursor: pointer;
 }
 
 .native-shell .patient-health-screen-header h2 {
   margin: 0;
-  color: #142542;
+  color: #082441;
   font-size: 23px;
   font-weight: 950;
   letter-spacing: 0;
@@ -4270,7 +4270,7 @@ body.is-health-screen-open {
 
 .native-shell .patient-health-screen-subtitle {
   margin: 10px 4px 0;
-  color: #142542;
+  color: #082441;
   font-size: 18px;
   font-weight: 950;
 }
@@ -4333,7 +4333,7 @@ body.is-health-screen-open {
 .native-shell .patient-health-mobile-card h3,
 .native-shell .patient-health-data-detail strong {
   margin: 0;
-  color: #142542;
+  color: #082441;
   font-size: 17px;
   font-weight: 950;
   line-height: 1.2;
@@ -4406,7 +4406,7 @@ body.is-health-screen-open {
 
 .native-shell .patient-health-data-detail strong small {
   display: inline;
-  color: #142542;
+  color: #082441;
   font-size: 13px;
 }
 
@@ -4587,7 +4587,7 @@ body.is-register-modal-open {
   border: 1px solid #d7e7e9;
   border-radius: 14px;
   background: #fff;
-  color: #142542;
+  color: #082441;
   font-size: 25px;
   line-height: 1;
   cursor: pointer;
@@ -4605,7 +4605,7 @@ body.is-register-modal-open {
 
 .native-shell .patient-register-sheet h2 {
   margin: 4px 52px 6px 0;
-  color: #142542;
+  color: #082441;
   font-size: 27px;
   font-weight: 950;
   letter-spacing: 0;
@@ -4705,7 +4705,7 @@ body.is-register-modal-open {
   border: 1px solid #d7e7e9;
   border-radius: 16px;
   background: #fbfefe;
-  color: #142542;
+  color: #082441;
   font: inherit;
   font-weight: 800;
   outline: 0;
@@ -4781,7 +4781,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .patient-register-attachment-box strong {
-  color: #142542;
+  color: #082441;
   font-size: 14px;
   font-weight: 950;
 }
@@ -4825,7 +4825,7 @@ body.is-register-modal-open {
 .native-shell .patient-register-secondary {
   border: 1px solid #d7e7e9;
   background: #fff;
-  color: #142542;
+  color: #082441;
 }
 
 .native-shell .patient-register-primary {
@@ -4909,17 +4909,17 @@ body.is-register-modal-open {
 .native-shell .patient-prescriptions-redesign { display: grid; gap: 18px; padding: 20px 18px 28px; background: #fff; }
 .native-shell .patient-prescription-filter-bar { display: flex; align-items: stretch; gap: 14px; min-width: 0; overflow-x: auto; padding: 2px 2px 18px; scrollbar-width: none; overscroll-behavior-x: contain; touch-action: pan-x; cursor: grab; -webkit-overflow-scrolling: touch; }
 .native-shell .patient-prescription-filter-bar::-webkit-scrollbar { display: none; }
-.native-shell .patient-prescription-filter { --prescription-filter-color: #008f82; position: relative; display: grid; flex: 0 0 128px; width: 128px; min-height: 118px; place-items: center; align-content: center; gap: 12px; padding: 16px 12px; border: 1px solid #d8e6ec !important; border-radius: 18px; background: #fff !important; color: #142542; font: inherit; font-size: 20px; font-weight: 950; text-align: center; white-space: nowrap; box-shadow: none !important; cursor: pointer; overflow: hidden; scroll-snap-align: start; }
+.native-shell .patient-prescription-filter { --prescription-filter-color: #007d79; position: relative; display: grid; flex: 0 0 128px; width: 128px; min-height: 118px; place-items: center; align-content: center; gap: 12px; padding: 16px 12px; border: 1px solid #d8e6ec !important; border-radius: 18px; background: #fff !important; color: #082441; font: inherit; font-size: 20px; font-weight: 950; text-align: center; white-space: nowrap; box-shadow: none !important; cursor: pointer; overflow: hidden; scroll-snap-align: start; }
 .native-shell .patient-prescription-filter .patient-register-history-image,
 .native-shell .patient-prescription-filter .patient-register-history-glyph { display: grid; width: 50px; height: 46px; place-items: center; color: var(--prescription-filter-color); font-size: 26px; line-height: 1; }
 .native-shell .patient-prescription-filter .patient-register-history-image img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: center; pointer-events: none; filter: drop-shadow(0 7px 10px rgba(18, 43, 72, .13)); }
 .native-shell .patient-prescription-filter .patient-register-history-glyph { border-radius: 16px; background: color-mix(in srgb, var(--prescription-filter-color) 11%, #fff); font-weight: 950; }
-.native-shell .patient-prescription-filter b { max-width: 100%; overflow: hidden; color: #142542; font-size: 12px; font-weight: 950; line-height: 1.05; text-overflow: ellipsis; }
-.native-shell .patient-prescription-filter.is-active { border-color: #0aa89e !important; background: linear-gradient(150deg, #eafffa, #fff) !important; color: #142542 !important; box-shadow: 0 18px 36px rgba(10, 158, 145, .11) !important; }
-.native-shell .patient-prescription-filter.is-all { --prescription-filter-color: #008f82; }
+.native-shell .patient-prescription-filter b { max-width: 100%; overflow: hidden; color: #082441; font-size: 12px; font-weight: 950; line-height: 1.05; text-overflow: ellipsis; }
+.native-shell .patient-prescription-filter.is-active { border-color: #0aa89e !important; background: linear-gradient(150deg, #eafffa, #fff) !important; color: #082441 !important; box-shadow: 0 18px 36px rgba(10, 158, 145, .11) !important; }
+.native-shell .patient-prescription-filter.is-all { --prescription-filter-color: #007d79; }
 .native-shell .patient-prescription-filter-active { --prescription-filter-color: #10a75a; }
 .native-shell .patient-prescription-filter-expired { --prescription-filter-color: #f23d3d; }
-.native-shell .patient-prescription-filter-redeemed { --prescription-filter-color: #008f82; }
+.native-shell .patient-prescription-filter-redeemed { --prescription-filter-color: #007d79; }
 .native-shell .patient-prescription-filter-partial { --prescription-filter-color: #f2a900; }
 .native-shell .patient-prescription-card-list { display: grid; gap: 18px; min-width: 0; }
 .native-shell .patient-prescription-card {
@@ -5012,7 +5012,7 @@ body.is-register-modal-open {
 .native-shell .patient-prescription-status.is-redeemed {
   border-color: #bfe9e4;
   background: #edfcf9;
-  color: #008f82;
+  color: #007d79;
 }
 .native-shell .patient-prescription-status.is-partial {
   border-color: #ffe6a8;
@@ -5067,7 +5067,7 @@ body.is-register-modal-open {
   border: 1px solid #d8e6ec !important;
   border-radius: 15px;
   background: #fff !important;
-  color: #008f82;
+  color: #007d79;
   font: inherit;
   font-size: 18px;
   font-weight: 950;
@@ -5562,7 +5562,7 @@ body.is-register-modal-open {
 
 .native-shell .patient-register-heading h2 {
   margin: 14px 0 10px;
-  color: #142542;
+  color: #082441;
   font-size: clamp(38px, 5vw, 52px);
   line-height: 1;
   letter-spacing: 0;
@@ -5586,7 +5586,7 @@ body.is-register-modal-open {
 .native-shell .patient-register-sheet .patient-register-history-selector h3,
 .native-shell .patient-register-sheet .patient-register-main-title {
   margin: 0;
-  color: #142542;
+  color: #082441;
   font-size: var(--patient-register-main-title-size);
   font-weight: 950;
   line-height: 1.08;
@@ -5627,7 +5627,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .patient-register-history-carousel button[data-register-history-category] {
-  --history-color: #008f82;
+  --history-color: #007d79;
   appearance: none;
   position: relative;
   display: grid;
@@ -5640,7 +5640,7 @@ body.is-register-modal-open {
   border: 1px solid #d5e2e8 !important;
   border-radius: 18px;
   background: #fff !important;
-  color: #142542;
+  color: #082441;
   box-shadow: none !important;
   font: inherit;
   font-size: 20px;
@@ -5685,7 +5685,7 @@ body.is-register-modal-open {
 .native-shell .patient-register-history-carousel button b {
   max-width: 100%;
   overflow: hidden;
-  color: #142542;
+  color: #082441;
   font-size: 12px;
   font-weight: 950;
   line-height: 1.05;
@@ -5725,8 +5725,8 @@ body.is-register-modal-open {
 .native-shell .patient-register-history-carousel .is-study { --history-color: #8945f4; }
 .native-shell .patient-register-history-carousel .is-prescription { --history-color: #f47a00; }
 .native-shell .patient-register-history-carousel .is-hospitalization { --history-color: #f0212a; }
-.native-shell .patient-register-history-carousel .is-vaccine { --history-color: #008f82; }
-.native-shell .patient-register-history-carousel .is-manual { --history-color: #008f82; }
+.native-shell .patient-register-history-carousel .is-vaccine { --history-color: #007d79; }
+.native-shell .patient-register-history-carousel .is-manual { --history-color: #007d79; }
 
 .native-shell .patient-register-history-composer {
   position: relative;
@@ -5738,7 +5738,7 @@ body.is-register-modal-open {
   border: 1px solid #63d7cf;
   border-radius: 24px;
   background: linear-gradient(150deg, #f5fffd, #fff);
-  color: #142542;
+  color: #082441;
   box-shadow: 0 28px 64px rgba(11, 93, 87, .16);
 }
 
@@ -5773,7 +5773,7 @@ body.is-register-modal-open {
   border: 0 !important;
   border-radius: 14px;
   background: transparent !important;
-  color: #142542;
+  color: #082441;
   box-shadow: none !important;
   cursor: pointer;
 }
@@ -5794,7 +5794,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .patient-register-history-composer h4 {
-  color: #142542;
+  color: #082441;
   font-size: 25px;
   font-weight: 950;
   line-height: 1.12;
@@ -5813,7 +5813,7 @@ body.is-register-modal-open {
   display: grid;
   gap: 12px;
   min-width: 0;
-  color: #142542;
+  color: #082441;
   font-size: 20px;
   font-weight: 950;
 }
@@ -5836,7 +5836,7 @@ body.is-register-modal-open {
   border: 1px solid #d7e5eb;
   border-radius: 18px;
   background: #fbfefe;
-  color: #142542;
+  color: #082441;
   font: inherit;
   font-size: 20px;
   font-weight: 850;
@@ -5862,7 +5862,7 @@ body.is-register-modal-open {
   border: 1px solid #cedce5;
   border-radius: 18px;
   background: #fff;
-  color: #142542;
+  color: #082441;
   font: inherit;
   font-size: 22px;
   font-weight: 700;
@@ -5941,7 +5941,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .patient-register-history-photo:focus-visible {
-  outline: 2px solid #008f82;
+  outline: 2px solid #007d79;
   outline-offset: 2px;
 }
 
@@ -6026,7 +6026,7 @@ body.is-register-modal-open {
   border-radius: 22px;
   overflow: hidden;
   background: #fff;
-  color: #142542;
+  color: #082441;
   box-shadow: 0 32px 92px rgba(9, 26, 37, .34);
 }
 
@@ -6052,7 +6052,7 @@ body.is-register-modal-open {
 
 .native-shell .patient-register-image-sheet h2 {
   margin: 0;
-  color: #142542;
+  color: #082441;
   font-size: 20px;
   font-weight: 950;
   line-height: 1.15;
@@ -6067,7 +6067,7 @@ body.is-register-modal-open {
   border: 0 !important;
   border-radius: 50%;
   background: #f4faf9 !important;
-  color: #142542;
+  color: #082441;
   font: inherit;
   font-size: 28px;
   line-height: 1;
@@ -6108,7 +6108,7 @@ body.is-register-modal-open {
   border: 0;
   border-top: 1px solid #edf3f5;
   background: transparent;
-  color: #142542;
+  color: #082441;
   font: inherit;
   text-align: left;
   cursor: pointer;
@@ -6143,7 +6143,7 @@ body.is-register-modal-open {
 
 .native-shell .patient-register-image-stage strong,
 .native-shell .patient-register-image-cancel strong {
-  color: #142542;
+  color: #082441;
   font-size: 15px;
   font-weight: 950;
 }
@@ -6170,7 +6170,7 @@ body.is-register-modal-open {
 
 .native-shell .patient-register-image-cancel > span {
   background: #fff;
-  color: #142542;
+  color: #082441;
 }
 
 .native-shell .patient-register-main-title {
@@ -6269,7 +6269,7 @@ body.is-register-modal-open {
   justify-content: flex-start;
   gap: 16px;
   padding: 0 2px;
-  color: #142542;
+  color: #082441;
 }
 
 .native-shell .patient-register-strip-title span {
@@ -6339,7 +6339,7 @@ body.is-register-modal-open {
   border: 1px solid #d5e2e8 !important;
   border-radius: 18px;
   background: #fff !important;
-  color: #142542;
+  color: #082441;
   box-shadow: none !important;
   font-size: 20px;
   font-weight: 950;
@@ -6546,7 +6546,7 @@ body.is-register-modal-open {
 
 .native-shell .patient-register-selected-metric h3 {
   margin-top: 0;
-  color: #142542;
+  color: #082441;
   font-size: 25px;
   font-weight: 950;
   line-height: 1.08;
@@ -6576,7 +6576,7 @@ body.is-register-modal-open {
 .native-shell .patient-register-attachment {
   display: grid;
   gap: 12px;
-  color: #142542;
+  color: #082441;
   font-size: 20px;
   font-weight: 950;
 }
@@ -6618,7 +6618,7 @@ body.is-register-modal-open {
   border-radius: 0;
   background: transparent;
   box-shadow: none;
-  color: #142542;
+  color: #082441;
   font-size: 24px;
   font-weight: 850;
   padding: 0 22px;
@@ -6681,7 +6681,7 @@ body.is-register-modal-open {
   border: 1px solid #cedce5;
   border-radius: 18px;
   background: #fff;
-  color: #142542;
+  color: #082441;
   font-size: 22px;
   font-weight: 700;
   line-height: 1.4;
@@ -6786,7 +6786,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .patient-register-attachment-box i {
-  color: #142542;
+  color: #082441;
   font-style: normal;
   font-size: 46px;
   line-height: 1;
@@ -6828,7 +6828,7 @@ body.is-register-modal-open {
 
 .native-shell .patient-register-file-type.is-image {
   background: #e5fbf6;
-  color: #008f82;
+  color: #007d79;
 }
 
 .native-shell .patient-register-uploaded-preview {
@@ -6861,7 +6861,7 @@ body.is-register-modal-open {
 
 .native-shell .patient-register-uploaded-file b {
   margin-bottom: 3px;
-  color: #008f82;
+  color: #007d79;
   font-size: 12px;
   font-weight: 950;
   text-transform: uppercase;
@@ -6911,7 +6911,7 @@ body.is-register-modal-open {
   flex-wrap: wrap;
   align-items: center;
   gap: 10px 14px;
-  color: #008f82;
+  color: #007d79;
   font-size: 15px;
   font-weight: 900;
 }
@@ -6933,7 +6933,7 @@ body.is-register-modal-open {
   border: 1px solid #0bb5aa !important;
   border-radius: 10px;
   background: #fff !important;
-  color: #008f82;
+  color: #007d79;
   box-shadow: none !important;
   font-size: 14px;
   font-weight: 950;
@@ -6964,7 +6964,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .patient-register-transcript-card header strong {
-  color: #142542;
+  color: #082441;
   font-size: 16px;
   font-weight: 950;
 }
@@ -6993,7 +6993,7 @@ body.is-register-modal-open {
   border: 1px solid #0fb7aa !important;
   border-radius: 10px;
   background: #fff !important;
-  color: #008f82;
+  color: #007d79;
   box-shadow: none !important;
   font-size: 13px;
   font-weight: 950;
@@ -7045,7 +7045,7 @@ body.is-register-modal-open {
   border: 1px solid #d4e5eb;
   border-radius: 14px;
   background: #fbfefe;
-  color: #142542;
+  color: #082441;
   font: inherit;
   font-size: 15px;
   font-weight: 850;
@@ -7080,7 +7080,7 @@ body.is-register-modal-open {
   place-items: center;
   border-radius: 50%;
   background: #d6f9ef;
-  color: #008f82;
+  color: #007d79;
   font-size: 34px;
   font-weight: 950;
 }
@@ -7126,7 +7126,7 @@ body.is-register-modal-open {
   border: 1px solid #d7e7e9;
   border-radius: 24px;
   background: #fff;
-  color: #142542;
+  color: #082441;
   text-align: center;
   box-shadow: 0 20px 52px rgba(22, 54, 72, .07);
 }
@@ -7146,7 +7146,7 @@ body.is-register-modal-open {
   height: 88px;
   place-items: center;
   border-radius: 50%;
-  background: linear-gradient(135deg, #19c8bb, #008f82);
+  background: linear-gradient(135deg, #19c8bb, #007d79);
   color: #fff;
   font-size: 52px;
   font-weight: 950;
@@ -7161,7 +7161,7 @@ body.is-register-modal-open {
 
 .native-shell .patient-register-saved-screen h3 {
   margin-top: 16px;
-  color: #142542;
+  color: #082441;
   font-size: 22px;
   font-weight: 950;
   line-height: 1.15;
@@ -7204,7 +7204,7 @@ body.is-register-modal-open {
 .native-shell .patient-register-saved-actions button:last-child {
   border: 1px solid #0bb5aa !important;
   background: #fff !important;
-  color: #008f82;
+  color: #007d79;
   box-shadow: none !important;
 }
 
@@ -7237,7 +7237,7 @@ body.is-register-modal-open {
 
 .native-shell .patient-register-primary {
   border: 0 !important;
-  background: linear-gradient(135deg, #1dc7bb, #008f82) !important;
+  background: linear-gradient(135deg, #1dc7bb, #007d79) !important;
   color: #fff;
   box-shadow: 0 18px 36px rgba(4,170,155,.24) !important;
 }
@@ -8145,7 +8145,7 @@ body.is-register-modal-open {
 .native-shell .doctor-assistant-native-session a {
   padding: 0 16px;
   background: #e8f7f4;
-  color: #007a6c;
+  color: #007d79;
 }
 
 .native-shell .doctor-assistant-native-session button {
@@ -8479,7 +8479,7 @@ body.is-register-modal-open {
 }
 .native-shell .doctor-menu-panel[data-doctor-menu-panel="main"] > a:hover .doctor-menu-icon,
 .native-shell .doctor-menu-panel[data-doctor-menu-panel="main"] > button:hover .doctor-menu-icon {
-  stroke: #008f82;
+  stroke: #007d79;
 }
 .native-shell .doctor-menu-panel[data-doctor-menu-panel="main"] > a:focus:not(:focus-visible),
 .native-shell .doctor-menu-panel[data-doctor-menu-panel="main"] > button:focus:not(:focus-visible) {
@@ -9922,7 +9922,7 @@ body.is-register-modal-open {
   border: 1px solid #bde5df;
   border-radius: 999px;
   background: #eefbf8;
-  color: #007a6c;
+  color: #007d79;
   font-size: 12px;
   font-weight: 900;
 }
@@ -11154,7 +11154,7 @@ body.is-register-modal-open {
   gap: 12px;
   padding: 0 14px;
   border-radius: 7px;
-  color: #52616f;
+  color: #536575;
   font-size: 14px;
   font-weight: 900;
   text-decoration: none;
@@ -11187,7 +11187,7 @@ body.is-register-modal-open {
 
 .native-shell .messenger-native-topbar .eyebrow {
   margin: 0 0 4px;
-  color: #52616f;
+  color: #536575;
   font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
@@ -11203,7 +11203,7 @@ body.is-register-modal-open {
 .native-shell .messenger-native-topbar span {
   display: block;
   margin-top: 5px;
-  color: #52616f;
+  color: #536575;
   font-size: 12px;
 }
 
@@ -11239,7 +11239,7 @@ body.is-register-modal-open {
 .native-shell .messenger-native-summary span {
   display: block;
   margin-bottom: 6px;
-  color: #52616f;
+  color: #536575;
   font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
@@ -11290,12 +11290,12 @@ body.is-register-modal-open {
 
 .native-shell .messenger-native-card-head p {
   margin-top: 4px;
-  color: #52616f;
+  color: #536575;
   font-size: 12px;
 }
 
 .native-shell .messenger-native-card-head > span {
-  color: #52616f;
+  color: #536575;
   font-size: 12px;
   font-weight: 900;
 }
@@ -11359,7 +11359,7 @@ body.is-register-modal-open {
 .native-shell .messenger-native-route-head span {
   display: block;
   margin-bottom: 5px;
-  color: #52616f;
+  color: #536575;
   font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
@@ -11377,7 +11377,7 @@ body.is-register-modal-open {
 
 .native-shell .messenger-native-route-head p {
   margin-top: 4px;
-  color: #52616f;
+  color: #536575;
   font-size: 12px;
 }
 
@@ -11393,7 +11393,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 999px;
   background: #f8fbfa;
-  color: #52616f;
+  color: #536575;
   font-size: 11px;
   font-weight: 900;
 }
@@ -11419,7 +11419,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .messenger-native-table th {
-  color: #52616f;
+  color: #536575;
   font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
@@ -11436,7 +11436,7 @@ body.is-register-modal-open {
 
 .native-shell .messenger-native-table td span {
   margin-top: 4px;
-  color: #52616f;
+  color: #536575;
   font-size: 11px;
 }
 
@@ -11467,7 +11467,7 @@ body.is-register-modal-open {
 
 .native-shell .messenger-native-empty {
   height: 88px;
-  color: #52616f;
+  color: #536575;
   font-size: 14px !important;
   font-weight: 900;
   text-align: center !important;
@@ -11505,7 +11505,7 @@ body.is-register-modal-open {
 
 .native-shell .messenger-native-history-list span,
 .native-shell .messenger-native-history-list p {
-  color: #52616f;
+  color: #536575;
   font-size: 12px;
 }
 
@@ -11525,7 +11525,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .operational-hero-mark {
-  background: linear-gradient(135deg, #22c55e 0%, #0f766e 100%);
+  background: linear-gradient(135deg, #22c55e 0%, #007d79 100%);
   box-shadow: 0 14px 24px rgba(15, 118, 110, 0.18);
 }
 
@@ -11590,7 +11590,7 @@ body.is-register-modal-open {
   place-items: center;
   border: 1px solid #b8e8e5;
   border-radius: 22px;
-  background: linear-gradient(135deg, #22c55e 0%, #0f766e 100%);
+  background: linear-gradient(135deg, #22c55e 0%, #007d79 100%);
   color: #fff;
   box-shadow: 0 14px 24px rgba(15, 118, 110, 0.18);
   font-size: 24px;
@@ -11766,7 +11766,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .operational-native-user strong {
-  color: #071018;
+  color: #082441;
   font-size: 12px;
   font-weight: 900;
 }
@@ -11811,7 +11811,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .operational-native-brand span {
-  color: #52615f;
+  color: #536575;
   font-size: 12px;
 }
 
@@ -11823,7 +11823,7 @@ body.is-register-modal-open {
   border: 1px solid #9fd8cf;
   border-radius: 9px;
   background: #e6f5f2;
-  color: #007a6c;
+  color: #007d79;
   font-size: 24px;
   line-height: 1;
 }
@@ -11864,7 +11864,7 @@ body.is-register-modal-open {
   padding: 8px 12px;
   border: 1px solid transparent;
   border-radius: 6px;
-  color: #53615f;
+  color: #536575;
   font-size: 12px;
   font-weight: 850;
   text-decoration: none;
@@ -11899,7 +11899,7 @@ body.is-register-modal-open {
   padding: 8px 11px;
   border: 1px solid transparent;
   border-radius: 7px;
-  color: #53615f;
+  color: #536575;
   font-size: 14px;
 }
 .native-shell .operational-legacy-menu section.is-active .operational-legacy-group-title {
@@ -11992,7 +11992,7 @@ body.is-register-modal-open {
 .native-shell .operational-area-menu a:hover,
 .native-shell .operational-area-menu a.is-active {
   background: #e4f5f2;
-  color: #007f73;
+  color: #007d79;
 }
 
 .native-shell .operational-area-menu a > span {
@@ -12005,7 +12005,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .operational-area-menu a.is-active > span {
-  background: #0f9487;
+  background: #007d79;
   color: #fff;
 }
 
@@ -12382,7 +12382,7 @@ body.is-register-modal-open {
   min-height: 24px;
   border: 0 !important;
   background: transparent !important;
-  color: #007f73 !important;
+  color: #007d79 !important;
   font-size: 9px;
   font-weight: 850;
   text-align: center;
@@ -12442,7 +12442,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .operational-service-calendar-dialog header small {
-  color: #007f73;
+  color: #007d79;
   font-size: 9px;
   font-weight: 900;
 }
@@ -12493,7 +12493,7 @@ body.is-register-modal-open {
   padding: 0 18px;
   border-color: #14998b;
   background: #fff;
-  color: #007f73;
+  color: #007d79;
 }
 
 .native-shell .operational-service-calendar-dialog-count {
@@ -12598,7 +12598,7 @@ body.is-register-modal-open {
   padding: 0 13px;
   border: 1px solid #14998b;
   border-radius: 6px;
-  color: #007f73;
+  color: #007d79;
   font-size: 11px;
   font-weight: 850;
   text-decoration: none;
@@ -12705,7 +12705,7 @@ body.is-register-modal-open {
 
 .native-shell .operational-oncology-mixture-section h4 {
   margin: 0 0 13px;
-  color: #007f73;
+  color: #007d79;
   font-size: 11px;
 }
 
@@ -12969,7 +12969,7 @@ body.is-register-modal-open {
 .native-shell .operational-native-controls label {
   display: grid;
   gap: 6px;
-  color: #53615f;
+  color: #536575;
   font-size: 11px;
   font-weight: 800;
 }
@@ -12993,7 +12993,7 @@ body.is-register-modal-open {
 
 .native-shell .operational-native-controls time {
   justify-self: end;
-  color: #52615f;
+  color: #536575;
   font-size: 12px;
   font-weight: 850;
 }
@@ -13226,7 +13226,7 @@ body.is-register-modal-open {
 .native-shell .operational-section-tabs a.is-active {
   border-color: #009688;
   background: #e9f7f4;
-  color: #007f73;
+  color: #007d79;
   box-shadow: inset 0 -2px 0 #009688;
 }
 
@@ -13276,13 +13276,13 @@ body.is-register-modal-open {
 
 .native-shell .operational-native-metrics span,
 .native-shell .operational-native-metrics small {
-  color: #53615f;
+  color: #536575;
   font-size: 12px;
   font-weight: 800;
 }
 
 .native-shell .operational-native-metrics strong {
-  color: #071018;
+  color: #082441;
   font-size: 28px;
   line-height: 1;
 }
@@ -13311,7 +13311,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .operational-native-table-heading span {
-  color: #53615f;
+  color: #536575;
   font-size: 12px;
 }
 
@@ -13335,7 +13335,7 @@ body.is-register-modal-open {
 .native-shell .operational-native-filter label {
   display: grid;
   gap: 7px;
-  color: #53615f;
+  color: #536575;
   font-size: 11px;
   font-weight: 800;
 }
@@ -13377,7 +13377,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .operational-native-table th {
-  color: #53615f;
+  color: #536575;
   font-size: 11px;
   font-weight: 850;
 }
@@ -14108,7 +14108,7 @@ body.is-register-modal-open {
   min-height: 100vh;
   grid-template-columns: 232px minmax(0, 1fr);
   background: #f3f5f4;
-  color: #071018;
+  color: #082441;
 }
 
 .native-shell .provider-native-sidebar {
@@ -14136,7 +14136,7 @@ body.is-register-modal-open {
   place-items: center;
   border-radius: 8px;
   background: #e1f4f1;
-  color: #00776d;
+  color: #007d79;
   font-size: 14px;
   font-weight: 900;
 }
@@ -14147,13 +14147,13 @@ body.is-register-modal-open {
 }
 
 .native-shell .provider-native-brand strong {
-  color: #071018;
+  color: #082441;
   font-size: 14px;
   font-weight: 900;
 }
 
 .native-shell .provider-native-brand small {
-  color: #52615f;
+  color: #536575;
   font-size: 11px;
   line-height: 1.25;
 }
@@ -14166,7 +14166,7 @@ body.is-register-modal-open {
 .native-shell .provider-native-menu p {
   margin: 18px 0 4px;
   padding: 0 8px;
-  color: #52615f;
+  color: #536575;
   font-size: 10px;
   font-weight: 900;
   text-transform: uppercase;
@@ -14175,7 +14175,7 @@ body.is-register-modal-open {
 .native-shell .provider-native-menu strong {
   display: block;
   padding: 0 8px 8px;
-  color: #071018;
+  color: #082441;
   font-size: 11px;
   font-weight: 900;
 }
@@ -14190,7 +14190,7 @@ body.is-register-modal-open {
   padding: 8px 10px 8px 16px;
   border: 1px solid transparent;
   border-radius: 0 8px 8px 0;
-  color: #52615f;
+  color: #536575;
   font-size: 13px;
   font-weight: 900;
   line-height: 1.15;
@@ -14200,7 +14200,7 @@ body.is-register-modal-open {
 .native-shell .provider-native-menu a.is-active {
   border-color: #b8ded8;
   background: #dff2ee;
-  color: #00776d;
+  color: #007d79;
 }
 
 .native-shell .provider-native-menu a span {
@@ -14223,12 +14223,12 @@ body.is-register-modal-open {
 }
 
 .native-shell .provider-native-topbar .eyebrow {
-  color: #52615f;
+  color: #536575;
 }
 
 .native-shell .provider-native-topbar h1 {
   margin: 4px 0 0;
-  color: #071018;
+  color: #082441;
   font-size: 20px;
 }
 
@@ -14244,14 +14244,14 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-size: 13px;
   font-weight: 900;
   text-decoration: none;
 }
 
 .native-shell .provider-native-actions time {
-  color: #52615f;
+  color: #536575;
   font-size: 12px;
   font-weight: 900;
 }
@@ -14275,14 +14275,14 @@ body.is-register-modal-open {
 
 .native-shell .provider-native-heading h2 {
   margin: 0 0 4px;
-  color: #071018;
+  color: #082441;
   font-size: 16px;
 }
 
 .native-shell .provider-native-heading p,
 .native-shell .provider-native-heading span {
   margin: 0;
-  color: #52615f;
+  color: #536575;
   font-size: 12px;
 }
 
@@ -14312,7 +14312,7 @@ body.is-register-modal-open {
   place-items: center;
   border-radius: 7px;
   background: #e1f4f1;
-  color: #00776d;
+  color: #007d79;
   font-weight: 900;
 }
 
@@ -14328,13 +14328,13 @@ body.is-register-modal-open {
 }
 
 .native-shell .provider-native-catalogs strong {
-  color: #071018;
+  color: #082441;
   font-size: 13px;
 }
 
 .native-shell .provider-native-catalogs p {
   margin-top: 5px;
-  color: #52615f;
+  color: #536575;
   font-size: 12px;
 }
 
@@ -14353,7 +14353,7 @@ body.is-register-modal-open {
   display: grid;
   grid-row: span 2;
   gap: 8px;
-  color: #52615f;
+  color: #536575;
   font-size: 11px;
   font-weight: 900;
 }
@@ -14364,7 +14364,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-size: 12px;
   font-weight: 900;
 }
@@ -14374,7 +14374,7 @@ body.is-register-modal-open {
   min-height: 88px;
   place-items: center;
   border-top: 1px solid #d5dddb;
-  color: #52615f;
+  color: #536575;
   font-size: 13px;
 }
 
@@ -14405,12 +14405,12 @@ body.is-register-modal-open {
 }
 
 .native-shell .provider-native-request-head strong {
-  color: #071018;
+  color: #082441;
   font-size: 14px;
 }
 
 .native-shell .provider-native-request-head span {
-  color: #52615f;
+  color: #536575;
   font-size: 12px;
 }
 
@@ -14444,7 +14444,7 @@ body.is-register-modal-open {
 .native-shell .provider-native-requests dt,
 .native-shell .provider-native-requests dd {
   margin: 0;
-  color: #52615f;
+  color: #536575;
   font-size: 12px;
 }
 
@@ -14466,7 +14466,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-size: 13px;
 }
 
@@ -14490,7 +14490,7 @@ body.is-register-modal-open {
 
 .native-shell .provider-native-timeline span {
   display: block;
-  color: #52615f;
+  color: #536575;
   font-size: 12px;
 }
 
@@ -14565,7 +14565,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .provider-native-table th {
-  color: #52615f;
+  color: #536575;
   font-size: 10px;
   font-weight: 900;
 }
@@ -14631,7 +14631,7 @@ body.is-register-modal-open {
 .native-shell .provider-native-status-pill.is-muted {
   border: 1px solid #9aa5a2;
   background: #f6f8f8;
-  color: #52615f;
+  color: #536575;
 }
 
 .native-shell .provider-native-central-select {
@@ -14641,7 +14641,7 @@ body.is-register-modal-open {
   border: 1px solid #9aa5a2;
   border-radius: 4px;
   background: #f6f8f8;
-  color: #52615f;
+  color: #536575;
   font-size: 11px;
   font-weight: 800;
 }
@@ -14660,7 +14660,7 @@ body.is-register-modal-open {
 .native-shell .provider-native-observation.is-neutral {
   border: 1px solid #5d6b69;
   background: #fff;
-  color: #52615f;
+  color: #536575;
 }
 
 .native-shell .provider-native-observation.is-danger {
@@ -14747,7 +14747,7 @@ body.is-register-modal-open {
 .native-shell .provider-native-dialog > p {
   margin: 0;
   padding: 18px;
-  color: #52615f;
+  color: #536575;
 }
 
 .native-shell .provider-native-dialog dl {
@@ -14797,7 +14797,7 @@ body.is-register-modal-open {
   display: grid;
   width: min(260px, 100%);
   gap: 8px;
-  color: #52615f;
+  color: #536575;
   font-size: 10px;
   font-weight: 900;
   text-transform: uppercase;
@@ -14808,7 +14808,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-size: 12px;
   font-weight: 900;
 }
@@ -14817,7 +14817,7 @@ body.is-register-modal-open {
   padding: 10px 18px;
   border-bottom: 1px solid #b8ded8;
   background: #e7f6f2;
-  color: #00776d;
+  color: #007d79;
   font-size: 12px;
   font-weight: 900;
 }
@@ -14863,12 +14863,12 @@ body.is-register-modal-open {
 .native-shell .provider-native-messenger-body {
   display: grid;
   gap: 5px;
-  color: #52615f;
+  color: #536575;
   font-size: 12px;
 }
 
 .native-shell .provider-native-messenger-body strong {
-  color: #071018;
+  color: #082441;
   font-size: 13px;
 }
 
@@ -14892,7 +14892,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .provider-native-messenger-body b {
-  color: #071018;
+  color: #082441;
   font-size: 12px;
 }
 
@@ -14910,7 +14910,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-size: 12px;
   font-weight: 900;
 }
@@ -14951,20 +14951,20 @@ body.is-register-modal-open {
   padding: 6px 12px;
   border-radius: 999px;
   background: #eef0f0;
-  color: #071018;
+  color: #082441;
   font-size: 11px;
   font-weight: 900;
 }
 
 .native-shell .provider-native-route-card h3 {
   margin: 14px 0 4px;
-  color: #071018;
+  color: #082441;
   font-size: 15px;
 }
 
 .native-shell .provider-native-route-card p {
   margin: 0 0 14px;
-  color: #52615f;
+  color: #536575;
   font-size: 12px;
 }
 
@@ -14984,14 +14984,14 @@ body.is-register-modal-open {
 }
 
 .native-shell .provider-native-route-stats small {
-  color: #52615f;
+  color: #536575;
   font-size: 10px;
   font-weight: 900;
   text-transform: uppercase;
 }
 
 .native-shell .provider-native-route-stats b {
-  color: #071018;
+  color: #082441;
   font-size: 13px;
 }
 
@@ -15067,7 +15067,7 @@ body.is-register-modal-open {
   min-height: 100vh;
   grid-template-columns: 236px minmax(0, 1fr);
   background: #f3f5f4;
-  color: #071018;
+  color: #082441;
 }
 
 .native-shell .provider-chemo-native-sidebar {
@@ -15106,13 +15106,13 @@ body.is-register-modal-open {
 }
 
 .native-shell .provider-chemo-native-brand strong {
-  color: #071018;
+  color: #082441;
   font-size: 14px;
   font-weight: 900;
 }
 
 .native-shell .provider-chemo-native-brand small {
-  color: #52615f;
+  color: #536575;
   font-size: 11px;
   line-height: 1.2;
 }
@@ -15130,7 +15130,7 @@ body.is-register-modal-open {
   min-height: 44px;
   padding: 10px 12px;
   border-radius: 7px;
-  color: #52615f;
+  color: #536575;
   font-size: 13px;
   font-weight: 900;
   text-decoration: none;
@@ -15155,12 +15155,12 @@ body.is-register-modal-open {
 }
 
 .native-shell .provider-chemo-native-topbar .eyebrow {
-  color: #52615f;
+  color: #536575;
 }
 
 .native-shell .provider-chemo-native-topbar h1 {
   margin: 4px 0 0;
-  color: #071018;
+  color: #082441;
   font-size: 20px;
 }
 
@@ -15176,14 +15176,14 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-size: 13px;
   font-weight: 900;
   text-decoration: none;
 }
 
 .native-shell .provider-chemo-native-topbar time {
-  color: #52615f;
+  color: #536575;
   font-size: 12px;
   font-weight: 900;
 }
@@ -15202,7 +15202,7 @@ body.is-register-modal-open {
   min-height: 38px;
   padding: 11px 16px;
   border-radius: 6px;
-  color: #52615f;
+  color: #536575;
   font-size: 13px;
   font-weight: 900;
   text-decoration: none;
@@ -15223,7 +15223,7 @@ body.is-register-modal-open {
 .native-shell .provider-chemo-native-filters label {
   display: grid;
   gap: 7px;
-  color: #52615f;
+  color: #536575;
   font-size: 11px;
   font-weight: 900;
 }
@@ -15246,7 +15246,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-size: 12px;
   font-weight: 800;
 }
@@ -15275,14 +15275,14 @@ body.is-register-modal-open {
 
 .native-shell .provider-chemo-native-heading h2 {
   margin: 0 0 4px;
-  color: #071018;
+  color: #082441;
   font-size: 16px;
 }
 
 .native-shell .provider-chemo-native-heading p,
 .native-shell .provider-chemo-native-heading span {
   margin: 0;
-  color: #52615f;
+  color: #536575;
   font-size: 12px;
 }
 
@@ -15292,7 +15292,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-size: 12px;
   font-weight: 900;
 }
@@ -15316,14 +15316,14 @@ body.is-register-modal-open {
 }
 
 .native-shell .provider-chemo-native-table th {
-  color: #52615f;
+  color: #536575;
   font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
 }
 
 .native-shell .provider-chemo-native-table td {
-  color: #071018;
+  color: #082441;
   font-size: 13px;
 }
 
@@ -15512,7 +15512,7 @@ body.is-register-modal-open {
 
 .native-shell .provider-import-native-topbar .eyebrow {
   margin: 0 0 5px;
-  color: #52616f;
+  color: #536575;
   font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
@@ -15546,7 +15546,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .provider-import-native-topbar time {
-  color: #52616f;
+  color: #536575;
   font-size: 12px;
   font-weight: 900;
 }
@@ -15582,7 +15582,7 @@ body.is-register-modal-open {
 
 .native-shell .provider-import-native-heading p {
   margin-top: 4px;
-  color: #52616f;
+  color: #536575;
   font-size: 12px;
 }
 
@@ -15616,7 +15616,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .provider-import-native-table th {
-  color: #52616f;
+  color: #536575;
   font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
@@ -15629,7 +15629,7 @@ body.is-register-modal-open {
 .native-shell .provider-import-native-table td span {
   display: block;
   margin-top: 2px;
-  color: #52616f;
+  color: #536575;
   font-size: 12px;
 }
 
@@ -16471,7 +16471,7 @@ body.is-register-modal-open {
   grid-template-columns: 260px minmax(0, 1fr);
   grid-template-rows: 58px minmax(0, 1fr);
   background: #f3f5f4;
-  color: #071018;
+  color: #082441;
 }
 
 .native-shell .unit-native-topbar {
@@ -16537,13 +16537,13 @@ body.is-register-modal-open {
 }
 
 .native-shell .unit-native-topbar-user strong {
-  color: #071018;
+  color: #082441;
   font-size: 11px;
   font-weight: 950;
 }
 
 .native-shell .unit-native-topbar-user small {
-  color: #53615f;
+  color: #536575;
   font-size: 9px;
   font-weight: 750;
 }
@@ -16586,7 +16586,7 @@ body.is-register-modal-open {
   border: 1px solid #a8dcd3;
   border-radius: 8px;
   background: #e6f5f2;
-  color: #007a6c;
+  color: #007d79;
   font-size: 20px;
   font-weight: 900;
 }
@@ -16597,13 +16597,13 @@ body.is-register-modal-open {
 }
 
 .native-shell .unit-native-brand strong {
-  color: #071018;
+  color: #082441;
   font-size: 14px;
   font-weight: 900;
 }
 
 .native-shell .unit-native-brand small {
-  color: #53615f;
+  color: #536575;
   font-size: 11px;
 }
 
@@ -16620,7 +16620,7 @@ body.is-register-modal-open {
   min-height: 42px;
   padding: 9px 12px;
   border-radius: 7px;
-  color: #52615f;
+  color: #536575;
   font-size: 13px;
   font-weight: 850;
   line-height: 1.15;
@@ -16629,7 +16629,7 @@ body.is-register-modal-open {
 
 .native-shell .unit-native-menu a.is-active {
   background: #dff2ee;
-  color: #007a6c;
+  color: #007d79;
 }
 
 .native-shell .unit-native-menu a span {
@@ -16654,7 +16654,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .unit-native-menu a.is-active span {
-  background: #0f9487;
+  background: #007d79;
   color: #fff;
 }
 
@@ -16675,7 +16675,7 @@ body.is-register-modal-open {
   border: 1px solid #d5dddb;
   border-radius: 8px;
   background: #fff;
-  color: #14233c;
+  color: #082441;
   box-shadow: 0 24px 68px rgba(15, 33, 55, 0.25);
 }
 
@@ -16753,12 +16753,12 @@ body.is-register-modal-open {
 }
 
 .native-shell .unit-native-header .eyebrow {
-  color: #53615f;
+  color: #536575;
 }
 
 .native-shell .unit-native-header h1 {
   margin: 3px 0 5px;
-  color: #071018;
+  color: #082441;
   font-size: 25px;
   line-height: 1.08;
   letter-spacing: 0;
@@ -16766,7 +16766,7 @@ body.is-register-modal-open {
 
 .native-shell .unit-native-header p {
   margin: 0;
-  color: #53615f;
+  color: #536575;
   font-size: 12px;
 }
 
@@ -16793,14 +16793,14 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-size: 12px;
   font-weight: 750;
 }
 
 .native-shell .unit-native-selector time {
   padding-bottom: 10px;
-  color: #52615f;
+  color: #536575;
   font-size: 12px;
   font-weight: 850;
 }
@@ -16870,7 +16870,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-weight: 900;
 }
 
@@ -16900,20 +16900,20 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-size: 13px;
   font-weight: 900;
 }
 
 .native-shell .unit-native-table-heading h2 {
   margin: 0 0 3px;
-  color: #071018;
+  color: #082441;
   font-size: 15px;
 }
 
 .native-shell .unit-native-table-heading p {
   margin: 0;
-  color: #53615f;
+  color: #536575;
   font-size: 12px;
 }
 
@@ -16934,7 +16934,7 @@ body.is-register-modal-open {
   border-radius: 7px;
   background: #fff;
   padding: 0 12px;
-  color: #071018;
+  color: #082441;
   font-size: 12px;
   font-weight: 750;
 }
@@ -16948,7 +16948,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .unit-native-table th {
-  color: #53615f;
+  color: #536575;
   font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
@@ -16975,7 +16975,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-size: 12px;
   font-weight: 850;
   text-decoration: none;
@@ -16985,7 +16985,7 @@ body.is-register-modal-open {
 .native-shell .unit-service-table td:nth-child(6),
 .native-shell .unit-service-table td:nth-child(7) { width: 145px; }
 .native-shell .unit-service-table td strong + small { display: block; margin-top: 4px; color: #66716f; font-size: 10px; }
-.native-shell .unit-service-table .unit-service-operation { display: inline-flex; min-height: 32px; align-items: center; justify-content: center; padding: 0 12px; border: 1px solid #0b887b; border-radius: 7px; color: #fff; background: #0b887b; font-size: 12px; font-weight: 850; text-decoration: none; }
+.native-shell .unit-service-table .unit-service-operation { display: inline-flex; min-height: 32px; align-items: center; justify-content: center; padding: 0 12px; border: 1px solid #007d79; border-radius: 7px; color: #fff; background: #007d79; font-size: 12px; font-weight: 850; text-decoration: none; }
 .native-shell .unit-service-table tbody tr:not([hidden]) { background: #f2faf8; }
 .native-shell .unit-service-table tbody tr[hidden] { display: none; }
 
@@ -17032,7 +17032,7 @@ body.is-register-modal-open {
   border: 1px solid #a8dcd3;
   border-radius: 50%;
   background: #fff;
-  color: #0f9487;
+  color: #007d79;
   font: inherit;
   font-size: 24px;
   font-weight: 800;
@@ -17053,7 +17053,7 @@ body.is-register-modal-open {
   border: 1px solid #d5dddb;
   border-radius: 8px;
   background: #fff;
-  color: #14233c;
+  color: #082441;
   font: inherit;
   text-align: center;
   text-decoration: none;
@@ -17063,10 +17063,10 @@ body.is-register-modal-open {
 }
 
 .native-shell .unit-service-carousel .unit-service-carousel-button.is-active {
-  border-color: #0f9487;
+  border-color: #007d79;
   background: #fff;
-  color: #007f73;
-  box-shadow: inset 0 -3px 0 #0f9487, 0 16px 34px rgba(15, 148, 135, 0.14);
+  color: #007d79;
+  box-shadow: inset 0 -3px 0 #007d79, 0 16px 34px rgba(15, 148, 135, 0.14);
 }
 
 .native-shell .unit-service-carousel-icon {
@@ -17074,7 +17074,7 @@ body.is-register-modal-open {
   width: 44px;
   height: 44px;
   place-items: center;
-  color: #0f9487;
+  color: #007d79;
   font-size: 26px;
   font-weight: 900;
 }
@@ -17101,14 +17101,14 @@ body.is-register-modal-open {
 
 .native-shell .unit-service-carousel .unit-service-carousel-button strong {
   min-height: 27px;
-  color: #14233c;
+  color: #082441;
   font-size: 11.5px;
   font-weight: 950;
   -webkit-line-clamp: 2;
 }
 
 .native-shell .unit-service-carousel .unit-service-carousel-button small {
-  color: #007f73;
+  color: #007d79;
   font-size: 11px;
   font-weight: 750;
   opacity: 1;
@@ -17118,7 +17118,7 @@ body.is-register-modal-open {
 .native-shell .unit-service-carousel .unit-service-carousel-button.is-active strong,
 .native-shell .unit-service-carousel .unit-service-carousel-button.is-active small,
 .native-shell .unit-service-carousel .unit-service-carousel-button.is-active .unit-service-carousel-icon {
-  color: #007f73;
+  color: #007d79;
 }
 
 .native-shell .unit-consultation-submenu-card {
@@ -17210,7 +17210,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .institution-catalog-summary-card p {
-  color: #53615f;
+  color: #536575;
   font-size: 11px;
   font-weight: 720;
   line-height: 1.35;
@@ -17260,7 +17260,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd9d7;
   border-radius: 7px;
   background: #fff;
-  color: #14233c;
+  color: #082441;
   box-shadow: none;
   font: inherit;
   font-size: 10px;
@@ -17270,8 +17270,8 @@ body.is-register-modal-open {
 }
 
 .native-shell .institution-catalog-filter-buttons button.is-active {
-  border-color: #0f9487;
-  background: #0f9487;
+  border-color: #007d79;
+  background: #007d79;
   color: #fff;
 }
 
@@ -17328,7 +17328,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd9d7;
   border-radius: 7px;
   background: #fff;
-  color: #14233c;
+  color: #082441;
   font: inherit;
   font-size: 10px;
   font-weight: 750;
@@ -17343,9 +17343,9 @@ body.is-register-modal-open {
   justify-content: center;
   gap: 7px;
   padding: 8px 15px;
-  border: 1px solid #0f9487;
+  border: 1px solid #007d79;
   border-radius: 7px;
-  background: #0f9487;
+  background: #007d79;
   color: #fff;
   box-shadow: 0 9px 20px rgba(15, 148, 135, 0.13);
   font: inherit;
@@ -17507,14 +17507,14 @@ body.is-register-modal-open {
 
 .native-shell button.unit-consultation-submenu-button:hover,
 .native-shell button.unit-consultation-submenu-button:focus-visible {
-  border-color: #0f9487;
+  border-color: #007d79;
   outline: 0;
   box-shadow: 0 0 0 3px rgba(15, 148, 135, 0.1);
 }
 
 .native-shell button.unit-consultation-submenu-button.is-active {
-  border-color: #0f9487;
-  background: #0f9487;
+  border-color: #007d79;
+  background: #007d79;
   color: #fff;
   box-shadow: 0 8px 18px rgba(15, 148, 135, 0.16);
 }
@@ -17550,8 +17550,8 @@ body.is-register-modal-open {
 
 .native-shell .unit-service-panel-actions button.unit-consultation-new-appointment {
   gap: 8px;
-  border-color: #0f9487;
-  background: #0f9487;
+  border-color: #007d79;
+  background: #007d79;
   color: #fff;
   box-shadow: 0 10px 22px rgba(15, 148, 135, 0.16);
 }
@@ -17563,7 +17563,7 @@ body.is-register-modal-open {
 
 .native-shell .unit-consultation-calendar {
   min-width: 0;
-  color: #14233c;
+  color: #082441;
 }
 
 .native-shell .unit-consultation-calendar-toolbar {
@@ -17603,7 +17603,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .unit-consultation-calendar-modes button.is-active {
-  background: #0f9487;
+  background: #007d79;
   color: #fff;
 }
 
@@ -17663,7 +17663,7 @@ body.is-register-modal-open {
   border: 0;
   outline: 0;
   background: transparent;
-  color: #14233c;
+  color: #082441;
   font: inherit;
   font-size: 11px;
   font-weight: 850;
@@ -17673,7 +17673,7 @@ body.is-register-modal-open {
   display: grid;
   gap: 5px;
   min-width: 0;
-  color: #53615f;
+  color: #536575;
   font-size: 10px;
   font-weight: 850;
 }
@@ -17686,7 +17686,7 @@ body.is-register-modal-open {
   border: 1px solid #cfdbd8;
   border-radius: 7px;
   background: #fff;
-  color: #14233c;
+  color: #082441;
   font: inherit;
   font-size: 11px;
   font-weight: 750;
@@ -17735,7 +17735,7 @@ body.is-register-modal-open {
   border-right: 1px solid #d7e2df;
   border-bottom: 1px solid #cadbd7;
   background: #edf8f6;
-  color: #14233c;
+  color: #082441;
   text-align: center;
 }
 
@@ -17756,7 +17756,7 @@ body.is-register-modal-open {
 .native-shell .unit-consultation-calendar-corner {
   left: 0;
   z-index: 4;
-  color: #53615f;
+  color: #536575;
   font-size: 10px;
   font-weight: 900;
 }
@@ -17818,7 +17818,7 @@ body.is-register-modal-open {
   border-left: 3px solid #f5b616;
   border-radius: 5px;
   background: #fff3d6;
-  color: #14233c;
+  color: #082441;
   font: inherit;
   text-align: left;
   cursor: pointer;
@@ -17971,7 +17971,7 @@ body.is-register-modal-open {
   border: 0;
   border-radius: 50%;
   background: transparent;
-  color: #14233c;
+  color: #082441;
   font: inherit;
   font-size: 10px;
   font-weight: 900;
@@ -17979,7 +17979,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .unit-consultation-month-day.is-selected > button:first-child {
-  background: #0f9487;
+  background: #007d79;
   color: #fff;
 }
 
@@ -18004,7 +18004,7 @@ body.is-register-modal-open {
   border: 0;
   border-bottom: 1px solid #dce5e3;
   background: #fff;
-  color: #14233c;
+  color: #082441;
   font: inherit;
   text-align: left;
   cursor: pointer;
@@ -18161,12 +18161,12 @@ body.is-register-modal-open {
   width: 3px;
   height: 3px;
   border-radius: 50%;
-  background: #0f9487;
+  background: #007d79;
   content: '';
 }
 
 .native-shell .unit-consultation-mini-days button.is-selected {
-  background: #0f9487;
+  background: #007d79;
   color: #fff;
   box-shadow: none;
 }
@@ -18177,7 +18177,7 @@ body.is-register-modal-open {
 
 .native-shell .unit-consultation-calendar-summary h3 {
   margin: 0 0 10px;
-  color: #14233c;
+  color: #082441;
   font-size: 13px;
   font-weight: 950;
 }
@@ -18205,7 +18205,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .unit-consultation-calendar-summary > div strong {
-  color: #14233c;
+  color: #082441;
   font-size: 11px;
   font-weight: 950;
 }
@@ -18291,7 +18291,7 @@ body.is-register-modal-open {
   border: 0;
   border-radius: 8px;
   background: transparent;
-  color: #14233c;
+  color: #082441;
   box-shadow: 0 28px 80px rgba(15, 33, 55, 0.28);
 }
 
@@ -18392,7 +18392,7 @@ body.is-register-modal-open {
   border: 0;
   border-radius: 50%;
   background: transparent;
-  color: #14233c;
+  color: #082441;
   font: inherit;
   font-size: 21px;
   line-height: 1;
@@ -18541,7 +18541,7 @@ body.is-register-modal-open {
   height: 26px;
   place-items: center;
   border-radius: 50%;
-  background: #087f75;
+  background: #007d79;
   color: #fff;
   font-size: 10px;
   font-weight: 900;
@@ -18597,7 +18597,7 @@ body.is-register-modal-open {
   border: 1px solid #cbd9d7;
   border-radius: 6px;
   background: #fff;
-  color: #14233c;
+  color: #082441;
   font: inherit;
   font-size: 10px;
 }
@@ -18621,7 +18621,7 @@ body.is-register-modal-open {
 .native-shell .unit-consultation-program-grid select:focus,
 .native-shell .unit-consultation-clinical-grid select:focus,
 .native-shell .unit-consultation-clinical-grid textarea:focus {
-  border-color: #0f9487;
+  border-color: #007d79;
   outline: 2px solid rgba(15, 148, 135, 0.12);
 }
 
@@ -18638,7 +18638,7 @@ body.is-register-modal-open {
   padding: 3px 0;
   border: 0;
   background: transparent;
-  color: #087f75;
+  color: #007d79;
   font: inherit;
   font-size: 8.5px;
   font-weight: 850;
@@ -18720,7 +18720,7 @@ body.is-register-modal-open {
   place-items: center;
   border-radius: 50%;
   background: #e1f5f1;
-  color: #087f75;
+  color: #007d79;
 }
 
 .native-shell .unit-consultation-modality-options svg,
@@ -18867,7 +18867,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .unit-consultation-booking-layout .unit-consultation-available-slots button small {
-  color: #087f75;
+  color: #007d79;
 }
 
 .native-shell .unit-consultation-booking-layout .unit-consultation-available-slots button.is-selected > span {
@@ -18903,7 +18903,7 @@ body.is-register-modal-open {
   place-items: center;
   border-radius: 50%;
   background: #d8f2ed;
-  color: #087f75;
+  color: #007d79;
 }
 
 .native-shell .unit-consultation-selection-preview div,
@@ -18920,7 +18920,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .unit-consultation-selection-preview small { color: #61758b; font-size: 7.5px; }
-.native-shell .unit-consultation-selection-preview strong { color: #087f75; font-size: 11px; font-weight: 950; }
+.native-shell .unit-consultation-selection-preview strong { color: #007d79; font-size: 11px; font-weight: 950; }
 .native-shell .unit-consultation-selection-preview b { color: #18304e; font-size: 8.5px; }
 .native-shell .unit-consultation-selection-preview p { display: flex; flex-wrap: wrap; gap: 5px; color: #536a80; font-size: 7.5px; }
 .native-shell .unit-consultation-selection-preview i { font-style: normal; }
@@ -18983,7 +18983,7 @@ body.is-register-modal-open {
   transition: transform 160ms ease;
 }
 
-.native-shell .unit-consultation-notifications input[type='checkbox']:checked { background: #087f75; }
+.native-shell .unit-consultation-notifications input[type='checkbox']:checked { background: #007d79; }
 .native-shell .unit-consultation-notifications input[type='checkbox']:checked::before { transform: translateX(14px); }
 
 .native-shell .unit-consultation-booking-actions {
@@ -19157,7 +19157,7 @@ body.is-register-modal-open {
 
 .native-shell .unit-consultation-new-dialog .unit-consultation-booking-section-head h4 {
   margin: 0;
-  color: #14233c;
+  color: #082441;
   font-size: 12px;
   font-weight: 900;
 }
@@ -19205,7 +19205,7 @@ body.is-register-modal-open {
   border: 1px solid #cad9d7;
   border-radius: 7px;
   background: #fff;
-  color: #14233c;
+  color: #082441;
   font: inherit;
   font-size: 10px;
 }
@@ -19237,7 +19237,7 @@ body.is-register-modal-open {
 .native-shell .unit-consultation-new-dialog input:focus,
 .native-shell .unit-consultation-new-dialog select:focus,
 .native-shell .unit-consultation-new-dialog textarea:focus {
-  border-color: #0f9487;
+  border-color: #007d79;
   outline: 2px solid rgba(15, 148, 135, 0.12);
 }
 
@@ -19277,7 +19277,7 @@ body.is-register-modal-open {
   border: 0;
   background: transparent;
   box-shadow: none;
-  color: #087f75;
+  color: #007d79;
   font-size: 8.5px;
 }
 
@@ -19320,7 +19320,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .unit-consultation-new-dialog .unit-consultation-modality-options label:has(input:checked) {
-  border-color: #0f9487;
+  border-color: #007d79;
   background: #eef9f7;
   box-shadow: none;
 }
@@ -19339,7 +19339,7 @@ body.is-register-modal-open {
   place-items: center;
   border-radius: 50%;
   background: #e1f5f1;
-  color: #087f75;
+  color: #007d79;
 }
 
 .native-shell .unit-consultation-new-dialog .unit-consultation-modality-options label > span svg {
@@ -19364,8 +19364,8 @@ body.is-register-modal-open {
 
 .native-shell .unit-consultation-new-dialog .unit-consultation-modality-options label:has(input:checked) i {
   border: 3px solid #fff;
-  background: #0f9487;
-  box-shadow: 0 0 0 1px #0f9487;
+  background: #007d79;
+  box-shadow: 0 0 0 1px #007d79;
 }
 
 .native-shell .unit-consultation-details-grid {
@@ -19448,8 +19448,8 @@ body.is-register-modal-open {
 }
 
 .native-shell .unit-consultation-booking-week button[aria-pressed='true'] {
-  border-color: #0f9487;
-  background: #0f9487;
+  border-color: #007d79;
+  background: #007d79;
   color: #fff;
 }
 
@@ -19470,7 +19470,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .unit-consultation-slots-head strong {
-  color: #087f75;
+  color: #007d79;
   font-size: 8px;
 }
 
@@ -19511,8 +19511,8 @@ body.is-register-modal-open {
 }
 
 .native-shell .unit-consultation-new-dialog .unit-consultation-available-slots button.is-selected {
-  border-color: #0f9487;
-  background: #0f9487;
+  border-color: #007d79;
+  background: #007d79;
   color: #fff;
 }
 
@@ -19570,7 +19570,7 @@ body.is-register-modal-open {
   min-height: 14px;
   margin: 1px 0 0;
   appearance: auto;
-  accent-color: #0f9487;
+  accent-color: #007d79;
   border: initial;
   border-radius: 2px;
   background: initial;
@@ -19640,7 +19640,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .unit-consultation-booking-summary strong {
-  color: #14233c;
+  color: #082441;
   font-size: 9px;
   font-weight: 900;
 }
@@ -19677,8 +19677,8 @@ body.is-register-modal-open {
 }
 
 .native-shell .unit-consultation-new-dialog .unit-consultation-booking-action-buttons button.is-primary {
-  border-color: #0f9487;
-  background: #0f9487;
+  border-color: #007d79;
+  background: #007d79;
   color: #fff;
 }
 
@@ -19948,8 +19948,8 @@ body.is-register-modal-open {
 
 .native-shell .unit-consultation-flow-actions button.is-primary,
 .native-shell .unit-consultation-flow-actions button.is-soft {
-  border-color: #0f9487;
-  background: #0f9487;
+  border-color: #007d79;
+  background: #007d79;
   color: #fff;
 }
 
@@ -20015,7 +20015,7 @@ body.is-register-modal-open {
   border: 1px solid #cddbd8;
   border-radius: 7px;
   background: #fff;
-  color: #14233c;
+  color: #082441;
   font: inherit;
   font-size: 11px;
 }
@@ -20040,7 +20040,7 @@ body.is-register-modal-open {
 .native-shell .unit-consultation-cancel-reason textarea:focus,
 .native-shell .unit-consultation-wizard-notes textarea:focus,
 .native-shell .unit-consultation-search-control:focus-within {
-  border-color: #0f9487;
+  border-color: #007d79;
   outline: 2px solid rgba(15, 148, 135, 0.12);
 }
 
@@ -20148,8 +20148,8 @@ body.is-register-modal-open {
 
 .native-shell .unit-consultation-wizard-progress li.is-active b,
 .native-shell .unit-consultation-wizard-progress li.is-complete b {
-  border-color: #0f9487;
-  background: #0f9487;
+  border-color: #007d79;
+  background: #007d79;
   color: #fff;
 }
 
@@ -20211,7 +20211,7 @@ body.is-register-modal-open {
   border: 0;
   outline: 0;
   background: transparent;
-  color: #14233c;
+  color: #082441;
   font: inherit;
   font-size: 11px;
 }
@@ -20241,7 +20241,7 @@ body.is-register-modal-open {
   border-bottom: 1px solid #e5ecea;
   border-radius: 4px;
   background: #fff;
-  color: #14233c;
+  color: #082441;
   font: inherit;
   text-align: left;
   cursor: pointer;
@@ -20401,8 +20401,8 @@ body.is-register-modal-open {
 }
 
 .native-shell .unit-consultation-available-slots button.is-selected {
-  border-color: #0f9487;
-  background: #0f9487;
+  border-color: #007d79;
+  background: #007d79;
   color: #fff;
 }
 
@@ -20506,14 +20506,14 @@ body.is-register-modal-open {
 }
 
 .native-shell .unit-service-panel-header h2 {
-  color: #071018;
+  color: #082441;
   font-size: 15px;
   font-weight: 950;
 }
 
 .native-shell .unit-service-panel-header p {
   margin-top: 6px;
-  color: #53615f;
+  color: #536575;
   font-size: 11px;
   font-weight: 650;
 }
@@ -20527,7 +20527,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .unit-service-panel-badges > span:not(.unit-native-status) {
-  color: #53615f;
+  color: #536575;
   font-size: 11px;
   font-weight: 750;
 }
@@ -20550,7 +20550,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font: inherit;
   font-size: 11px;
   font-weight: 900;
@@ -20560,20 +20560,20 @@ body.is-register-modal-open {
 }
 
 .native-shell .unit-service-panel-actions a:first-child {
-  border-color: #0f9487;
-  background: #0f9487;
+  border-color: #007d79;
+  background: #007d79;
   color: #fff;
 }
 
 .native-shell .unit-service-panel-actions button {
   border-color: #b9ded7;
   background: #e1f3ef;
-  color: #007a6c;
+  color: #007d79;
 }
 
 .native-shell .unit-service-panel-actions button.unit-service-operation-toggle {
-  border-color: #0f9487;
-  background: #0f9487;
+  border-color: #007d79;
+  background: #007d79;
   color: #fff;
   box-shadow: 0 10px 22px rgba(15, 148, 135, 0.14);
 }
@@ -20627,9 +20627,9 @@ body.is-register-modal-open {
   justify-content: center;
   gap: 8px;
   padding: 0 13px;
-  border: 1px solid #0f9487;
+  border: 1px solid #007d79;
   border-radius: 6px;
-  background: #0f9487;
+  background: #007d79;
   color: #fff;
   font-size: 10px;
   font-weight: 900;
@@ -20729,7 +20729,7 @@ body.is-register-modal-open {
 
 .native-shell .unit-consultation-room-heading h3 {
   overflow: hidden;
-  color: #14233c;
+  color: #082441;
   font-size: 18px;
   font-weight: 950;
   line-height: 1.1;
@@ -20760,7 +20760,7 @@ body.is-register-modal-open {
   justify-content: center;
   gap: 8px;
   padding: 0 13px;
-  border: 1px solid #0f9487;
+  border: 1px solid #007d79;
   border-radius: 6px;
   background: #fff;
   color: #087d72;
@@ -20777,8 +20777,8 @@ body.is-register-modal-open {
 }
 
 .native-shell .unit-consultation-room-more > button {
-  border-color: #0f9487;
-  background: #0f9487;
+  border-color: #007d79;
+  background: #007d79;
   color: #fff;
 }
 
@@ -20926,7 +20926,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .unit-consultation-room-metrics strong {
-  color: #14233c;
+  color: #082441;
   font-size: 13px;
   font-weight: 950;
 }
@@ -20954,7 +20954,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .unit-consultation-room-agenda h4 {
-  color: #14233c;
+  color: #082441;
   font-size: 14px;
   font-weight: 950;
 }
@@ -20989,7 +20989,7 @@ body.is-register-modal-open {
   border: 1px solid #ccd9d6;
   border-radius: 5px;
   background: #fff;
-  color: #14233c;
+  color: #082441;
   font: inherit;
   font-size: 9px;
   font-weight: 750;
@@ -21079,7 +21079,7 @@ body.is-register-modal-open {
 
 .native-shell .unit-consultation-room-agenda-table td time,
 .native-shell .unit-consultation-room-agenda-table td strong {
-  color: #14233c;
+  color: #082441;
   font-weight: 900;
 }
 
@@ -21193,7 +21193,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .unit-consultation-room-empty h3 {
-  color: #14233c;
+  color: #082441;
   font-size: 17px;
   font-weight: 950;
 }
@@ -21279,7 +21279,7 @@ body.is-register-modal-open {
 
 .native-shell .unit-consultation-subview-header h3 {
   margin-top: 3px;
-  color: #14233c;
+  color: #082441;
   font-size: 15px;
   font-weight: 950;
 }
@@ -21296,7 +21296,7 @@ body.is-register-modal-open {
   align-items: center;
   justify-content: center;
   padding: 0 13px;
-  border: 1px solid #0f9487;
+  border: 1px solid #007d79;
   border-radius: 7px;
   background: #fff;
   color: #087d72;
@@ -21341,7 +21341,7 @@ body.is-register-modal-open {
 
 .native-shell .unit-service-operation-live > span {
   gap: 7px;
-  color: #007f73;
+  color: #007d79;
   font-size: 11px;
   font-weight: 900;
 }
@@ -21370,7 +21370,7 @@ body.is-register-modal-open {
   padding: 0 11px;
   border: 1px solid #b8dcd5;
   border-radius: 7px;
-  color: #007f73;
+  color: #007d79;
   background: #fff;
   font-size: 10px;
   font-weight: 900;
@@ -21429,7 +21429,7 @@ body.is-register-modal-open {
 .native-shell .unit-service-operation-metrics small {
   grid-column: 1 / -1;
   overflow: hidden;
-  color: #53615f;
+  color: #536575;
   font-size: 10px;
   font-style: normal;
   font-weight: 800;
@@ -21439,7 +21439,7 @@ body.is-register-modal-open {
 
 .native-shell .unit-service-operation-metrics strong {
   margin-top: 3px;
-  color: #14233c;
+  color: #082441;
   font-size: 19px;
   font-weight: 950;
   white-space: nowrap;
@@ -21509,7 +21509,7 @@ body.is-register-modal-open {
   display: grid;
   min-width: 0;
   gap: 6px;
-  color: #14233c;
+  color: #082441;
   font-size: 9px;
   font-weight: 900;
 }
@@ -21523,7 +21523,7 @@ body.is-register-modal-open {
   border: 1px solid #cfdad7;
   border-radius: 7px;
   outline: none;
-  color: #14233c;
+  color: #082441;
   background: #fff;
   font: inherit;
   font-size: 10px;
@@ -21532,7 +21532,7 @@ body.is-register-modal-open {
 
 .native-shell .unit-service-operation-filters input:focus,
 .native-shell .unit-service-operation-filters select:focus {
-  border-color: #0f9487;
+  border-color: #007d79;
   box-shadow: 0 0 0 3px rgba(15, 148, 135, 0.1);
 }
 
@@ -21573,7 +21573,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .unit-service-operation-footer strong {
-  color: #007f73;
+  color: #007d79;
 }
 
 .native-shell .unit-service-detail-table {
@@ -21608,13 +21608,13 @@ body.is-register-modal-open {
 
 .native-shell .unit-consultation-table td {
   height: 56px;
-  color: #14233c;
+  color: #082441;
   font-size: 12px;
   font-weight: 650;
 }
 
 .native-shell .unit-consultation-table td strong {
-  color: #071018;
+  color: #082441;
   font-size: 12px;
   font-weight: 950;
 }
@@ -21622,7 +21622,7 @@ body.is-register-modal-open {
 .native-shell .unit-consultation-table td small {
   display: block;
   margin-top: 3px;
-  color: #53615f;
+  color: #536575;
   font-size: 10px;
   font-weight: 700;
 }
@@ -21722,7 +21722,7 @@ body.is-register-modal-open {
 
 .native-shell .unit-consultation-chip.is-status-scheduled {
   background: #ddf4f0;
-  color: #007a6c;
+  color: #007d79;
 }
 
 .native-shell .unit-consultation-chip.is-status-scheduled::before {
@@ -21755,7 +21755,7 @@ body.is-register-modal-open {
   border: 1px solid #d0dbd8;
   border-radius: 7px;
   background: #fff;
-  color: #14233c;
+  color: #082441;
   font-size: 12px;
   font-weight: 900;
   text-decoration: none;
@@ -21772,7 +21772,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .unit-consultation-actions a:first-child {
-  color: #007f73;
+  color: #007d79;
 }
 
 .native-shell .unit-consultation-actions a:last-child {
@@ -21852,15 +21852,15 @@ body.is-register-modal-open {
 
 .native-shell .unit-nutrition-request-tabs button:hover,
 .native-shell .unit-nutrition-request-tabs button:focus-visible {
-  border-color: #0f9487;
+  border-color: #007d79;
   outline: 0;
   box-shadow: 0 0 0 3px rgba(15, 148, 135, 0.1);
 }
 
 .native-shell .unit-nutrition-request-tabs button.is-active {
-  border-color: #0f9487;
+  border-color: #007d79;
   color: #fff;
-  background: #0f9487;
+  background: #007d79;
   box-shadow: 0 8px 18px rgba(15, 148, 135, 0.16);
 }
 
@@ -21890,9 +21890,9 @@ body.is-register-modal-open {
   justify-content: center;
   gap: 8px;
   padding: 0 18px;
-  border: 1px solid #0f9487;
+  border: 1px solid #007d79;
   border-radius: 7px;
-  background: #0f9487;
+  background: #007d79;
   color: #fff;
   font: inherit;
   font-size: 12px;
@@ -21995,7 +21995,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .unit-nutrition-request-table td strong {
-  color: #14233c;
+  color: #082441;
   font-weight: 850;
 }
 
@@ -22039,7 +22039,7 @@ body.is-register-modal-open {
 
 .native-shell .unit-nutrition-request-view:hover,
 .native-shell .unit-nutrition-request-view:focus-visible {
-  border-color: #0f9487;
+  border-color: #007d79;
   outline: 0;
   background: #e7f7f3;
 }
@@ -22210,7 +22210,7 @@ body.is-register-modal-open {
   padding: 7px 12px;
   border-radius: 999px;
   background: #dff2ee;
-  color: #007a6c;
+  color: #007d79;
   font-size: 12px;
   font-weight: 900;
 }
@@ -22240,7 +22240,7 @@ body.is-register-modal-open {
   border: 1px solid #d5dddb;
   border-radius: 8px;
   background: #fff;
-  color: #14233c;
+  color: #082441;
   box-shadow: 0 24px 68px rgba(15, 33, 55, .25);
 }
 .native-shell .unit-doctor-create-dialog { width: min(800px, calc(100vw - 32px)); }
@@ -22255,7 +22255,7 @@ body.is-register-modal-open {
 .native-shell .unit-doctor-dialog-body { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 22px; min-height: 0; padding: 22px 24px; overflow-y: auto; }
 .native-shell .unit-doctor-dialog-body > label { display: grid; min-width: 0; gap: 7px; color: #24354b; font-size: 11px; font-weight: 850; }
 .native-shell .unit-doctor-dialog-body em { color: #cf3333; font-style: normal; }
-.native-shell .unit-doctor-dialog-body input:not([type="checkbox"]), .native-shell .unit-doctor-dialog-body select { width: 100%; min-width: 0; min-height: 40px; box-sizing: border-box; padding: 8px 11px; border: 1px solid #cbd8d5; border-radius: 6px; background: #fff; color: #14233c; font-size: 12px; }
+.native-shell .unit-doctor-dialog-body input:not([type="checkbox"]), .native-shell .unit-doctor-dialog-body select { width: 100%; min-width: 0; min-height: 40px; box-sizing: border-box; padding: 8px 11px; border: 1px solid #cbd8d5; border-radius: 6px; background: #fff; color: #082441; font-size: 12px; }
 .native-shell .unit-doctor-dialog-body input:focus-visible, .native-shell .unit-doctor-dialog-body select:focus-visible { outline: 2px solid #0b9689; outline-offset: 1px; }
 .native-shell .unit-doctor-dialog-body .wide, .native-shell .unit-doctor-dialog-errors { grid-column: 1 / -1; }
 .native-shell .unit-doctor-dialog-body fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
@@ -22264,7 +22264,7 @@ body.is-register-modal-open {
 .native-shell .unit-doctor-dialog-errors { padding: 10px 13px; border: 1px solid #efb7b7; border-radius: 6px; background: #fff5f5; color: #8f2020; font-size: 11px; }
 .native-shell .unit-doctor-dialog-errors ul { margin: 5px 0 0; padding-left: 18px; }
 .native-shell .unit-doctor-dialog-actions { display: flex; justify-content: flex-end; gap: 10px; padding: 16px 24px; border-top: 1px solid #dbe4e2; background: #fff; }
-.native-shell .unit-doctor-dialog-actions button, .native-shell button.unit-doctor-success-action { min-width: 108px; min-height: 38px; padding: 8px 16px; border: 1px solid #cbd8d5; border-radius: 6px; background: #fff; color: #14233c; box-shadow: none; font-size: 12px; font-weight: 850; cursor: pointer; }
+.native-shell .unit-doctor-dialog-actions button, .native-shell button.unit-doctor-success-action { min-width: 108px; min-height: 38px; padding: 8px 16px; border: 1px solid #cbd8d5; border-radius: 6px; background: #fff; color: #082441; box-shadow: none; font-size: 12px; font-weight: 850; cursor: pointer; }
 .native-shell .unit-doctor-dialog-actions button.is-primary, .native-shell button.unit-doctor-success-action { border-color: #078a7b; background: #078a7b; color: #fff; }
 .native-shell .unit-doctor-success-dialog { width: min(380px, calc(100vw - 32px)); padding: 30px 24px 24px; text-align: center; }
 .native-shell .unit-doctor-success-dialog > .unit-doctor-dialog-close { position: absolute; top: 12px; right: 12px; border: 0; }
@@ -22281,7 +22281,7 @@ body.is-register-modal-open {
 
 .native-shell .unit-native-empty {
   height: 220px;
-  color: #53615f !important;
+  color: #536575 !important;
   text-align: center !important;
 }
 
@@ -22289,7 +22289,7 @@ body.is-register-modal-open {
   margin: 0;
   padding: 13px 18px;
   border-bottom: 1px solid #d5dddb;
-  color: #53615f;
+  color: #536575;
   font-size: 13px;
 }
 
@@ -22325,14 +22325,14 @@ body.is-register-modal-open {
 
 .native-shell .unit-native-form-card h2,
 .native-shell .unit-native-user-list h3 {
-  color: #071018;
+  color: #082441;
   font-size: 15px;
   font-weight: 950;
 }
 
 .native-shell .unit-native-form-card p,
 .native-shell .unit-native-user-list p {
-  color: #53615f;
+  color: #536575;
   font-size: 12px;
   font-weight: 650;
 }
@@ -22366,7 +22366,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   padding: 0 12px;
   font-size: 12px;
   font-weight: 750;
@@ -22420,7 +22420,7 @@ body.is-register-modal-open {
 
 .native-shell .unit-native-choice-grid small {
   margin-top: 5px;
-  color: #53615f;
+  color: #536575;
   font-size: 11px;
   font-weight: 700;
 }
@@ -22468,7 +22468,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   padding: 0 12px;
   font-size: 12px;
   font-weight: 900;
@@ -22634,7 +22634,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .unit-service-generic-request-table td strong {
-  color: #14233c;
+  color: #082441;
   font-weight: 850;
 }
 
@@ -22748,7 +22748,7 @@ body.is-register-modal-open {
   padding: 0 12px 0 40px;
   border: 1px solid #ced9d7;
   border-radius: 7px;
-  color: #14233c;
+  color: #082441;
   background: #fff;
   font: inherit;
   font-size: 12px;
@@ -22756,7 +22756,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .unit-catalog-search input:focus {
-  border-color: #0f9487;
+  border-color: #007d79;
   outline: 0;
   box-shadow: 0 0 0 3px rgba(15, 148, 135, 0.1);
 }
@@ -22770,7 +22770,7 @@ body.is-register-modal-open {
   padding: 0 16px;
   border: 1px solid #ced9d7;
   border-radius: 7px;
-  color: #14233c;
+  color: #082441;
   background: #fff;
   box-shadow: none;
   font: inherit;
@@ -22781,9 +22781,9 @@ body.is-register-modal-open {
 
 .native-shell .unit-medication-screen button.unit-catalog-secondary-action:hover,
 .native-shell .unit-medication-screen button.unit-catalog-secondary-action:focus-visible {
-  border-color: #0f9487;
+  border-color: #007d79;
   outline: 0;
-  color: #007f73;
+  color: #007d79;
 }
 
 .native-shell .unit-catalog-content-card {
@@ -23240,7 +23240,7 @@ body.is-register-modal-open {
   min-height: 100vh;
   grid-template-columns: 236px minmax(0, 1fr);
   background: #f3f5f4;
-  color: #071018;
+  color: #082441;
 }
 
 .native-shell .institution-native-sidebar {
@@ -23269,7 +23269,7 @@ body.is-register-modal-open {
   border: 1px solid #a8dcd3;
   border-radius: 8px;
   background: #e6f5f2;
-  color: #007a6c;
+  color: #007d79;
   font-size: 20px;
   font-weight: 900;
 }
@@ -23280,13 +23280,13 @@ body.is-register-modal-open {
 }
 
 .native-shell .institution-native-brand strong {
-  color: #071018;
+  color: #082441;
   font-size: 14px;
   font-weight: 900;
 }
 
 .native-shell .institution-native-brand small {
-  color: #53615f;
+  color: #536575;
   font-size: 11px;
 }
 
@@ -23303,7 +23303,7 @@ body.is-register-modal-open {
   min-height: 42px;
   padding: 9px 12px;
   border-radius: 7px;
-  color: #52615f;
+  color: #536575;
   font-size: 13px;
   font-weight: 850;
   line-height: 1.15;
@@ -23312,7 +23312,7 @@ body.is-register-modal-open {
 
 .native-shell .institution-native-menu a.is-active {
   background: #dff2ee;
-  color: #007a6c;
+  color: #007d79;
 }
 
 .native-shell .institution-native-menu a span {
@@ -23334,12 +23334,12 @@ body.is-register-modal-open {
 }
 
 .native-shell .institution-native-header .eyebrow {
-  color: #53615f;
+  color: #536575;
 }
 
 .native-shell .institution-native-header h1 {
   margin: 3px 0 5px;
-  color: #071018;
+  color: #082441;
   font-size: 20px;
   line-height: 1.1;
   letter-spacing: 0;
@@ -23369,7 +23369,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-size: 12px;
   font-weight: 750;
 }
@@ -23382,7 +23382,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .institution-native-session strong {
-  color: #52615f;
+  color: #536575;
   font-size: 12px;
 }
 
@@ -23394,7 +23394,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 8px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-size: 18px;
   font-weight: 900;
   text-decoration: none;
@@ -23411,7 +23411,7 @@ body.is-register-modal-open {
 .native-shell .institution-native-filters label {
   display: grid;
   gap: 7px;
-  color: #53615f;
+  color: #536575;
   font-size: 11px;
   font-weight: 850;
 }
@@ -23437,7 +23437,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-weight: 900;
 }
 
@@ -23503,7 +23503,7 @@ body.is-register-modal-open {
   border: 1px solid #a8dcd3;
   border-radius: 50%;
   background: #fff;
-  color: #0f9487;
+  color: #007d79;
   font: inherit;
   font-size: 24px;
   font-weight: 800;
@@ -23525,7 +23525,7 @@ body.is-register-modal-open {
   border: 1px solid #d5dddb;
   border-radius: 8px;
   background: #fff;
-  color: #14233c;
+  color: #082441;
   font: inherit;
   text-align: center;
   text-decoration: none;
@@ -23536,8 +23536,8 @@ body.is-register-modal-open {
 
 .native-shell button.institution-service-carousel-new {
   width: 150px;
-  border-color: #0f9487;
-  background: #0f9487;
+  border-color: #007d79;
+  background: #007d79;
   color: #fff;
   box-shadow: 0 14px 28px rgba(15, 148, 135, 0.16);
 }
@@ -23545,7 +23545,7 @@ body.is-register-modal-open {
 .native-shell .institution-service-carousel button.institution-service-carousel-button {
   border-color: #d5dddb;
   background: #fff;
-  color: #14233c;
+  color: #082441;
   box-shadow: 0 12px 24px rgba(19, 36, 58, 0.07);
 }
 
@@ -23554,7 +23554,7 @@ body.is-register-modal-open {
   width: 44px;
   height: 44px;
   place-items: center;
-  color: #0f9487;
+  color: #007d79;
   font-size: 26px;
   font-weight: 900;
 }
@@ -23593,7 +23593,7 @@ body.is-register-modal-open {
 .native-shell button.institution-service-carousel-new strong,
 .native-shell .institution-service-carousel button.institution-service-carousel-button strong {
   min-height: 27px;
-  color: #14233c;
+  color: #082441;
   font-size: 11.5px;
   font-weight: 950;
   -webkit-line-clamp: 2;
@@ -23601,7 +23601,7 @@ body.is-register-modal-open {
 
 .native-shell button.institution-service-carousel-new small,
 .native-shell .institution-service-carousel button.institution-service-carousel-button small {
-  color: #007f73;
+  color: #007d79;
   font-size: 11px;
   font-weight: 750;
   opacity: 1;
@@ -23614,16 +23614,16 @@ body.is-register-modal-open {
 }
 
 .native-shell .institution-service-carousel button.institution-service-carousel-button.is-active {
-  border-color: #0f9487;
+  border-color: #007d79;
   background: #fff;
-  color: #007f73;
-  box-shadow: inset 0 -3px 0 #0f9487, 0 16px 34px rgba(15, 148, 135, 0.14);
+  color: #007d79;
+  box-shadow: inset 0 -3px 0 #007d79, 0 16px 34px rgba(15, 148, 135, 0.14);
 }
 
 .native-shell .institution-service-carousel button.institution-service-carousel-button.is-active strong,
 .native-shell .institution-service-carousel button.institution-service-carousel-button.is-active small,
 .native-shell .institution-service-carousel button.institution-service-carousel-button.is-active .institution-service-carousel-icon {
-  color: #007f73;
+  color: #007d79;
 }
 
 .native-shell .institution-service-create-dialog {
@@ -23635,7 +23635,7 @@ body.is-register-modal-open {
   border: 1px solid #cfdad7;
   border-radius: 10px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   box-shadow: 0 30px 90px rgba(17, 28, 26, 0.3);
 }
 
@@ -23660,14 +23660,14 @@ body.is-register-modal-open {
 }
 
 .native-shell .institution-service-create-dialog > header h2 {
-  color: #071018;
+  color: #082441;
   font-size: 18px;
   line-height: 1.1;
 }
 
 .native-shell .institution-service-create-dialog > header p {
   margin-top: 5px;
-  color: #53615f;
+  color: #536575;
   font-size: 12px;
   font-weight: 700;
 }
@@ -23682,7 +23682,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 8px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font: inherit;
   font-size: 26px;
   line-height: 1;
@@ -23762,7 +23762,7 @@ body.is-register-modal-open {
 
 .native-shell .institution-service-hospitals-table td small {
   margin-top: 4px;
-  color: #53615f;
+  color: #536575;
   font-size: 10px;
 }
 
@@ -23770,12 +23770,12 @@ body.is-register-modal-open {
 .native-shell .institution-service-all-table td { vertical-align: middle; }
 .native-shell .institution-service-all-table td strong,
 .native-shell .institution-service-all-table td small { display: block; }
-.native-shell .institution-service-all-table td small { margin-top: 4px; color: #53615f; font-size: 10px; }
+.native-shell .institution-service-all-table td small { margin-top: 4px; color: #536575; font-size: 10px; }
 .native-shell .institution-service-all-table th:last-child,
 .native-shell .institution-service-all-table td:last-child { width: 120px; }
-.native-shell .institution-service-all-table button { min-height: 32px; padding: 5px 10px; border: 1px solid #cbd8d5; border-radius: 6px; background: #fff; color: #007f73; box-shadow: none; font: inherit; font-weight: 850; white-space: nowrap; cursor: pointer; }
+.native-shell .institution-service-all-table button { min-height: 32px; padding: 5px 10px; border: 1px solid #cbd8d5; border-radius: 6px; background: #fff; color: #007d79; box-shadow: none; font: inherit; font-weight: 850; white-space: nowrap; cursor: pointer; }
 .native-shell .institution-service-all-table button:hover,
-.native-shell .institution-service-all-table button:focus-visible { border-color: #0f9487; background: #e6f8f5; }
+.native-shell .institution-service-all-table button:focus-visible { border-color: #007d79; background: #e6f8f5; }
 
 .native-shell .institution-service-panel .institution-service-unit-panel {
   width: calc(100% - 36px);
@@ -23833,7 +23833,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .institution-service-panel.institution-catalog-section-panel .institution-service-copy p {
-  color: #53615f;
+  color: #536575;
   font-size: 11px;
   font-weight: 720;
   line-height: 1.35;
@@ -23875,13 +23875,13 @@ body.is-register-modal-open {
 
 .native-shell .institution-service-copy h2 {
   margin: 0 0 6px;
-  color: #071018;
+  color: #082441;
   font-size: 15px;
 }
 
 .native-shell .institution-service-copy p {
   margin: 0 0 13px;
-  color: #53615f;
+  color: #536575;
   font-size: 11px;
 }
 
@@ -23892,7 +23892,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .institution-service-copy small {
-  color: #53615f;
+  color: #536575;
   font-size: 11px;
 }
 
@@ -23913,7 +23913,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-size: 10px;
   font-weight: 850;
 }
@@ -23921,12 +23921,12 @@ body.is-register-modal-open {
 .native-shell .institution-service-actions button.is-info {
   border-color: #b9ded7;
   background: #e1f3ef;
-  color: #007a6c;
+  color: #007d79;
 }
 
 .native-shell .institution-service-actions select {
   min-width: 126px;
-  color: #53615f;
+  color: #536575;
 }
 
 .native-shell .institution-service-unit-panel {
@@ -23968,7 +23968,7 @@ body.is-register-modal-open {
   position: absolute;
   top: 11px;
   left: 13px;
-  color: #53615f;
+  color: #536575;
 }
 
 .native-shell .institution-service-unit-search input {
@@ -24018,7 +24018,7 @@ body.is-register-modal-open {
 
 .native-shell .institution-service-unit-list small {
   margin-top: 3px;
-  color: #53615f;
+  color: #536575;
   font-size: 10px;
 }
 
@@ -24034,13 +24034,13 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-weight: 850;
 }
 
 .native-shell .institution-service-unit-panel footer button.is-primary {
-  border-color: #0f8178;
-  background: #0f8178;
+  border-color: #007d79;
+  background: #007d79;
   color: #fff;
 }
 
@@ -24066,13 +24066,13 @@ body.is-register-modal-open {
 
 .native-shell .institution-native-table-heading h2 {
   margin: 0 0 3px;
-  color: #071018;
+  color: #082441;
   font-size: 15px;
 }
 
 .native-shell .institution-native-table-heading p {
   margin: 0;
-  color: #53615f;
+  color: #536575;
   font-size: 12px;
 }
 
@@ -24092,14 +24092,14 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-weight: 850;
 }
 
 .native-shell .institution-medication-new {
   min-height: 44px;
-  border-color: #0f8178;
-  background: #0f8178;
+  border-color: #007d79;
+  background: #007d79;
   color: #fff;
 }
 
@@ -24123,7 +24123,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-size: 10px;
   font-weight: 750;
 }
@@ -24156,7 +24156,7 @@ body.is-register-modal-open {
 
 .native-shell .institution-medication-availability.is-yes {
   background: #dff2ee;
-  color: #007a6c;
+  color: #007d79;
 }
 
 .native-shell .institution-medication-form-card[hidden],
@@ -24177,7 +24177,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-weight: 850;
 }
 
@@ -24191,7 +24191,7 @@ body.is-register-modal-open {
 .native-shell .institution-medication-form label {
   display: grid;
   gap: 8px;
-  color: #53615f;
+  color: #536575;
   font-size: 10px;
   font-weight: 900;
   text-transform: uppercase;
@@ -24207,7 +24207,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font: inherit;
   font-weight: 700;
   text-transform: none;
@@ -24220,9 +24220,9 @@ body.is-register-modal-open {
 
 .native-shell .institution-medication-form > button {
   min-height: 44px;
-  border: 1px solid #0f8178;
+  border: 1px solid #007d79;
   border-radius: 7px;
-  background: #0f8178;
+  background: #007d79;
   color: #fff;
   font-weight: 900;
 }
@@ -24270,7 +24270,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-size: 10px;
   font-weight: 850;
 }
@@ -24416,7 +24416,7 @@ body.is-register-modal-open {
   padding: 6px 10px;
   border-radius: 999px;
   background: #edf3f1;
-  color: #52615f;
+  color: #536575;
   font-size: 9px;
   font-weight: 800;
 }
@@ -24512,7 +24512,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .provider-native-shipment-detail > header small {
-  color: #52615f;
+  color: #536575;
   font-size: 9px;
   font-weight: 900;
 }
@@ -24637,7 +24637,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-weight: 850;
 }
 
@@ -24651,7 +24651,7 @@ body.is-register-modal-open {
 .native-shell .institution-specialty-form label {
   display: grid;
   gap: 8px;
-  color: #53615f;
+  color: #536575;
   font-size: 10px;
   font-weight: 900;
 }
@@ -24669,16 +24669,16 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-weight: 750;
 }
 
 .native-shell .institution-specialty-form > button {
   align-self: end;
   min-height: 42px;
-  border: 1px solid #0f8178;
+  border: 1px solid #007d79;
   border-radius: 7px;
-  background: #0f8178;
+  background: #007d79;
   color: #fff;
   font-weight: 900;
 }
@@ -24702,7 +24702,7 @@ body.is-register-modal-open {
 .unit-doctor-authorization-form fieldset { min-width: 0; border: 1px solid #d9e1df; border-radius: 8px; padding: 10px; }
 .unit-doctor-authorization-actions { grid-column: 1 / -1; display: flex; justify-content: flex-end; gap: 8px; }
 .unit-doctor-authorization-actions button { min-height: 38px; padding: 8px 13px; border: 1px solid #ccd8d5; border-radius: 7px; background: #fff; color: #111; font-weight: 800; }
-.unit-doctor-authorization-actions button[type="submit"] { border-color: #0b887b; background: #0b887b; color: #fff; }
+.unit-doctor-authorization-actions button[type="submit"] { border-color: #007d79; background: #007d79; color: #fff; }
 @media (max-width: 800px) { .unit-doctor-authorization-form { grid-template-columns: 1fr; } }
 .native-shell .unit-external-pharmacy-table { min-width: 1250px; table-layout: fixed; }
 .native-shell .unit-external-pharmacy-table th:nth-child(1) { width: 120px; }
@@ -24770,13 +24770,13 @@ body.is-register-modal-open {
   border-radius: 5px;
   background: #fff;
   box-shadow: none;
-  color: #007f73;
+  color: #007d79;
   cursor: pointer;
 }
 .native-shell button.unit-medication-filter-trigger:hover,
 .native-shell button.unit-medication-filter-trigger.has-filter,
 .native-shell .unit-medication-catalog-table td button.unit-medication-view:hover {
-  border-color: #0f9487;
+  border-color: #007d79;
   background: #e6f8f5;
 }
 .native-shell .unit-medication-filter-trigger svg,
@@ -24830,7 +24830,7 @@ body.is-register-modal-open {
   border-radius: 6px;
   background: #fff;
   box-shadow: 0 16px 38px rgba(20, 38, 58, 0.24);
-  color: #14233c;
+  color: #082441;
   font-size: 12px;
 }
 .native-shell .unit-medication-filter-popover > input {
@@ -24866,7 +24866,7 @@ body.is-register-modal-open {
   border: 1px solid #bfcdd4;
   border-radius: 5px;
   background: #fff;
-  color: #14233c;
+  color: #082441;
   font: inherit;
   cursor: pointer;
 }
@@ -24878,7 +24878,7 @@ body.is-register-modal-open {
   padding: 0;
   border: 1px solid #cbd9d7;
   border-radius: 8px;
-  color: #14233c;
+  color: #082441;
   background: #fff;
   box-shadow: 0 20px 50px rgba(10, 28, 48, 0.25);
 }
@@ -24892,7 +24892,7 @@ body.is-register-modal-open {
 .native-shell .unit-medication-detail-dialog dl { display: grid; gap: 14px; margin: 0; padding: 18px; }
 .native-shell .unit-medication-detail-dialog dt { margin-bottom: 4px; color: #526763; font-size: 11px; font-weight: 750; }
 .native-shell .unit-medication-detail-dialog dd { margin: 0; overflow-wrap: anywhere; font-size: 13px; line-height: 1.45; }
-.native-shell .unit-medication-detail-dialog button { min-height: 32px; padding: 4px 10px; border: 1px solid #cbd9d7; border-radius: 5px; background: #fff; color: #14233c; cursor: pointer; }
+.native-shell .unit-medication-detail-dialog button { min-height: 32px; padding: 4px 10px; border: 1px solid #cbd9d7; border-radius: 5px; background: #fff; color: #082441; cursor: pointer; }
 .native-shell .unit-medication-feedback {
   position: fixed;
   right: 20px;
@@ -24928,7 +24928,7 @@ body.is-register-modal-open {
 .native-shell .unit-procedure-card { min-height: 325px; }
 .unit-procedure-heading-actions { display: flex; gap: 8px; }
 .native-shell .unit-procedure-heading-actions button, .native-shell .unit-procedure-heading-actions a { display: inline-flex; min-height: 36px; align-items: center; padding: 8px 13px; border: 1px solid #ccd8d5; border-radius: 7px; color: #111; background: #fff; font-weight: 800; text-decoration: none; }
-.native-shell .unit-procedure-heading-actions .is-primary { border-color: #0b887b; color: #fff; background: #0b887b; }
+.native-shell .unit-procedure-heading-actions .is-primary { border-color: #007d79; color: #fff; background: #007d79; }
 .native-shell .unit-procedure-heading-actions .is-primary span { margin-right: 6px; font-size: 17px; line-height: 1; }
 .native-shell .unit-procedure-table { min-width: 1100px; table-layout: fixed; }
 .native-shell .unit-procedure-table th:nth-child(1) { width: 170px; }
@@ -24953,7 +24953,7 @@ body.is-register-modal-open {
 .unit-procedure-schedule > div > span { display: grid; width: 26px; height: 26px; place-items: center; border: 1px solid #ccd8d5; border-radius: 6px; background: #fff; font-weight: 900; }
 .unit-procedure-form-actions { display: flex; gap: 8px; }
 .unit-procedure-form-actions button, .unit-procedure-form-actions a { display: inline-flex; min-height: 38px; align-items: center; padding: 8px 14px; border: 1px solid #ccd8d5; border-radius: 7px; color: #111; background: #fff; font-weight: 800; text-decoration: none; }
-.unit-procedure-form-actions button { border-color: #0b887b; color: #fff; background: #0b887b; }
+.unit-procedure-form-actions button { border-color: #007d79; color: #fff; background: #007d79; }
 
 .native-shell .unit-procedure-dialog {
   width: min(980px, calc(100vw - 32px));
@@ -24963,7 +24963,7 @@ body.is-register-modal-open {
   overflow: visible;
   border: 0;
   border-radius: 8px;
-  color: #14233c;
+  color: #082441;
   background: transparent;
 }
 .native-shell .unit-procedure-dialog::backdrop { background: rgba(15, 33, 55, .58); backdrop-filter: blur(2px); }
@@ -25000,17 +25000,17 @@ body.is-register-modal-open {
 .native-shell .unit-procedure-dialog-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; padding: 18px; overflow: auto; }
 .native-shell .unit-procedure-dialog-body .wide { grid-column: 1 / -1; }
 .native-shell .unit-procedure-dialog-body > label { display: grid; min-width: 0; gap: 6px; color: #24354b; font-size: 10px; font-weight: 850; }
-.native-shell .unit-procedure-dialog-body input:not([type="checkbox"]):not([type="hidden"]), .native-shell .unit-procedure-dialog-body select { width: 100%; min-width: 0; min-height: 40px; box-sizing: border-box; padding: 8px 10px; border: 1px solid #cbd8d5; border-radius: 7px; color: #14233c; background: #fff; }
+.native-shell .unit-procedure-dialog-body input:not([type="checkbox"]):not([type="hidden"]), .native-shell .unit-procedure-dialog-body select { width: 100%; min-width: 0; min-height: 40px; box-sizing: border-box; padding: 8px 10px; border: 1px solid #cbd8d5; border-radius: 7px; color: #082441; background: #fff; }
 .native-shell .unit-procedure-dialog-body input:focus, .native-shell .unit-procedure-dialog-body select:focus { border-color: #0b9689; outline: 2px solid rgba(11, 150, 137, .15); outline-offset: 1px; }
 .native-shell .unit-procedure-dialog-body fieldset { min-width: 0; margin: 0; padding: 12px; border: 1px solid #cbd8d5; border-radius: 8px; }
-.native-shell .unit-procedure-dialog-body fieldset legend { padding: 0 7px; color: #14233c; font-size: 12px; font-weight: 850; }
+.native-shell .unit-procedure-dialog-body fieldset legend { padding: 0 7px; color: #082441; font-size: 12px; font-weight: 850; }
 .native-shell .unit-procedure-dialog .unit-procedure-schedule > div { grid-template-columns: minmax(145px, 1fr) 28px 160px 160px; }
 .native-shell .unit-procedure-dialog .unit-procedure-schedule > div > label:first-child { grid-template-columns: 20px minmax(0, 1fr); align-items: center; align-self: center; font-size: 10px; }
 .native-shell .unit-procedure-dialog .unit-procedure-schedule input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: #0b9689; }
 .native-shell .unit-procedure-dialog-error { display: grid; gap: 3px; padding: 10px 12px; border: 1px solid #efb7b7; border-radius: 7px; color: #8f2020; background: #fff5f5; font-size: 10px; }
 .native-shell .unit-procedure-dialog-actions { position: sticky; z-index: 4; bottom: 0; display: flex; justify-content: flex-end; gap: 10px; padding: 13px 18px; border-top: 1px solid #d9e4e1; background: #fff; }
 .native-shell .unit-procedure-dialog-actions button { display: inline-flex; min-width: 130px; min-height: 40px; align-items: center; justify-content: center; padding: 8px 15px; border: 1px solid #bdcfcb; border-radius: 7px; color: #20344d; background: #fff; font-weight: 850; cursor: pointer; }
-.native-shell .unit-procedure-dialog-actions button.is-primary { border-color: #0b887b; color: #fff; background: #0b887b; }
+.native-shell .unit-procedure-dialog-actions button.is-primary { border-color: #007d79; color: #fff; background: #007d79; }
 .native-shell .unit-procedure-dialog-actions button:hover, .native-shell .unit-procedure-dialog-actions button:focus-visible { outline: 0; box-shadow: 0 8px 18px rgba(15, 128, 117, .14); }
 
 @keyframes unit-procedure-dialog-in { from { opacity: 0; transform: translateY(8px) scale(.99); } to { opacity: 1; transform: translateY(0) scale(1); } }
@@ -25042,7 +25042,7 @@ body.is-register-modal-open {
 }
 .native-shell .institution-edit-unit-page { width:100%; display:grid; gap:16px; }
 .native-shell .institution-edit-unit-bar { display:flex; align-items:center; justify-content:space-between; padding:16px 18px; border:1px solid #d5dddb; border-radius:8px; background:#fff; }.native-shell .institution-edit-unit-bar div { display:grid; gap:4px; }.native-shell .institution-edit-unit-bar small { color:#56707a; font-size:10px; }.native-shell .institution-edit-unit-bar a,.native-shell .institution-unit-edit-card > header a,.native-shell .institution-edit-actions a { display:inline-flex; align-items:center; min-height:38px; padding:0 14px; border:1px solid #d0dcda; border-radius:8px; color:#111d25; font-size:10px; font-weight:800; text-decoration:none; background:#fff; }
-.native-shell .institution-unit-edit-card { width:100%; }.native-shell .institution-unit-edit-card > header { display:flex; align-items:center; justify-content:space-between; }.native-shell .institution-edit-actions { grid-column:1/-1; display:flex; justify-content:flex-end; gap:10px; }.native-shell .institution-edit-actions button { min-height:40px; padding:0 16px; border:1px solid #0f8178; border-radius:8px; background:#0f8178; color:#fff; font-weight:900; }
+.native-shell .institution-unit-edit-card { width:100%; }.native-shell .institution-unit-edit-card > header { display:flex; align-items:center; justify-content:space-between; }.native-shell .institution-edit-actions { grid-column:1/-1; display:flex; justify-content:flex-end; gap:10px; }.native-shell .institution-edit-actions button { min-height:40px; padding:0 16px; border:1px solid #007d79; border-radius:8px; background:#007d79; color:#fff; font-weight:900; }
 
 .native-shell .institution-unit-create-card > header {
   padding: 18px;
@@ -25064,7 +25064,7 @@ body.is-register-modal-open {
 .native-shell .institution-unit-create-form label {
   display: grid;
   gap: 8px;
-  color: #53615f;
+  color: #536575;
   font-size: 10px;
   font-weight: 900;
 }
@@ -25083,7 +25083,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font: inherit;
   font-weight: 700;
 }
@@ -25100,9 +25100,9 @@ body.is-register-modal-open {
 .native-shell .institution-unit-create-form > button {
   align-self: end;
   min-height: 44px;
-  border: 1px solid #0f8178;
+  border: 1px solid #007d79;
   border-radius: 7px;
-  background: #0f8178;
+  background: #007d79;
   color: #fff;
   font-weight: 900;
 }
@@ -25392,8 +25392,8 @@ body.is-register-modal-open {
 
 .native-shell .institution-unit-form-actions button {
   min-width: 230px;
-  border: 1px solid #087f75;
-  background: linear-gradient(135deg, #159d91, #087f75);
+  border: 1px solid #007d79;
+  background: linear-gradient(135deg, #159d91, #007d79);
   color: #fff;
   box-shadow: 0 10px 20px rgba(8, 127, 117, .16);
 }
@@ -25409,7 +25409,7 @@ body.is-register-modal-open {
 .native-shell .institution-unit-form-actions button:hover,
 .native-shell .institution-unit-form-actions button:focus-visible {
   border-color: #056f67;
-  background: #087f75;
+  background: #007d79;
   outline: 2px solid rgba(8, 127, 117, .2);
   outline-offset: 2px;
 }
@@ -25432,7 +25432,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-weight: 850;
   text-decoration: none;
 }
@@ -25486,7 +25486,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .institution-native-table th {
-  color: #53615f;
+  color: #536575;
   font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
@@ -25509,7 +25509,7 @@ body.is-register-modal-open {
   padding: 7px 12px;
   border-radius: 999px;
   background: #dff2ee;
-  color: #007a6c;
+  color: #007d79;
   font-size: 12px;
   font-weight: 900;
 }
@@ -25537,7 +25537,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-size: 12px;
   font-weight: 850;
 }
@@ -25702,7 +25702,7 @@ body.is-register-modal-open {
   min-height: 100vh;
   grid-template-columns: 260px minmax(0, 1fr);
   background: #f5f7f6;
-  color: #071018;
+  color: #082441;
 }
 
 .native-shell .superadmin-native-sidebar {
@@ -25732,7 +25732,7 @@ body.is-register-modal-open {
   border: 1px solid #a8dcd3;
   border-radius: 9px;
   background: #e6f5f2;
-  color: #007a6c;
+  color: #007d79;
   font-weight: 900;
 }
 
@@ -25742,13 +25742,13 @@ body.is-register-modal-open {
 }
 
 .native-shell .superadmin-native-brand strong {
-  color: #071018;
+  color: #082441;
   font-size: 14px;
   font-weight: 900;
 }
 
 .native-shell .superadmin-native-brand small {
-  color: #52615f;
+  color: #536575;
   font-size: 11px;
 }
 
@@ -25765,7 +25765,7 @@ body.is-register-modal-open {
   min-height: 42px;
   padding: 9px 12px;
   border-radius: 7px;
-  color: #52615f;
+  color: #536575;
   font-size: 13px;
   font-weight: 850;
   line-height: 1.15;
@@ -25774,7 +25774,7 @@ body.is-register-modal-open {
 
 .native-shell .superadmin-native-menu a.is-active {
   background: #dff2ee;
-  color: #007a6c;
+  color: #007d79;
 }
 
 .native-shell .superadmin-native-menu a span {
@@ -25796,12 +25796,12 @@ body.is-register-modal-open {
 }
 
 .native-shell .superadmin-native-header .eyebrow {
-  color: #52615f;
+  color: #536575;
 }
 
 .native-shell .superadmin-native-header h1 {
   margin: 4px 0 2px;
-  color: #071018;
+  color: #082441;
   font-size: 23px;
   line-height: 1.1;
   letter-spacing: 0;
@@ -25809,7 +25809,7 @@ body.is-register-modal-open {
 
 .native-shell .superadmin-native-header p {
   margin: 0;
-  color: #52615f;
+  color: #536575;
   font-size: 12px;
 }
 
@@ -25828,13 +25828,13 @@ body.is-register-modal-open {
   border: 1px solid #d0d9d6;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-weight: 850;
   text-decoration: none;
 }
 
 .native-shell .superadmin-native-actions strong {
-  color: #52615f;
+  color: #536575;
   font-size: 12px;
 }
 
@@ -25857,13 +25857,13 @@ body.is-register-modal-open {
 
 .native-shell .superadmin-native-metrics span,
 .native-shell .superadmin-native-metrics small {
-  color: #53615f;
+  color: #536575;
   font-size: 11px;
   font-weight: 850;
 }
 
 .native-shell .superadmin-native-metrics strong {
-  color: #071018;
+  color: #082441;
   font-size: 18px;
   line-height: 1;
 }
@@ -25886,13 +25886,13 @@ body.is-register-modal-open {
 
 .native-shell .superadmin-native-section-heading h2 {
   margin: 0 0 3px;
-  color: #071018;
+  color: #082441;
   font-size: 16px;
 }
 
 .native-shell .superadmin-native-section-heading p {
   margin: 0;
-  color: #53615f;
+  color: #536575;
   font-size: 12px;
 }
 
@@ -25903,7 +25903,7 @@ body.is-register-modal-open {
   padding: 0 16px;
   border: 1px solid #d0d9d6;
   border-radius: 7px;
-  color: #071018;
+  color: #082441;
   font-weight: 850;
   text-decoration: none;
 }
@@ -25928,20 +25928,20 @@ body.is-register-modal-open {
 .native-shell .superadmin-native-module-card h3 {
   max-width: calc(100% - 94px);
   margin: 0 0 2px;
-  color: #071018;
+  color: #082441;
   font-size: 15px;
   line-height: 1.2;
 }
 
 .native-shell .superadmin-native-module-card small {
-  color: #53615f;
+  color: #536575;
   font-size: 11px;
   font-weight: 850;
 }
 
 .native-shell .superadmin-native-module-card p {
   margin: 18px 0 18px;
-  color: #52615f;
+  color: #536575;
   font-size: 12px;
   font-weight: 750;
   line-height: 1.45;
@@ -25982,7 +25982,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .superadmin-native-module-footer strong {
-  color: #52615f;
+  color: #536575;
   font-size: 12px;
 }
 
@@ -25997,7 +25997,7 @@ body.is-register-modal-open {
   border: 1px solid #d0d9d6;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-weight: 850;
 }
 
@@ -26041,11 +26041,11 @@ body.is-register-modal-open {
 }
 
 .native-shell .superadmin-native-user-list strong {
-  color: #071018;
+  color: #082441;
 }
 
 .native-shell .superadmin-native-user-list span {
-  color: #53615f;
+  color: #536575;
   font-size: 12px;
 }
 
@@ -26101,7 +26101,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-size: 12px;
   font-weight: 850;
 }
@@ -26116,7 +26116,7 @@ body.is-register-modal-open {
   display: grid;
   min-width: min(100%, 320px);
   gap: 6px;
-  color: #53615f;
+  color: #536575;
   font-size: 11px;
   font-weight: 850;
 }
@@ -26139,7 +26139,7 @@ body.is-register-modal-open {
 .native-shell .superadmin-native-catalog-filters label {
   display: grid;
   gap: 6px;
-  color: #53615f;
+  color: #536575;
   font-size: 11px;
   font-weight: 900;
 }
@@ -26150,7 +26150,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-size: 13px;
   font-weight: 750;
 }
@@ -26182,7 +26182,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-size: 13px;
   font-weight: 900;
   text-decoration: none;
@@ -26215,7 +26215,7 @@ body.is-register-modal-open {
 
 .native-shell .superadmin-native-admin-form h2 {
   margin: 0;
-  color: #071018;
+  color: #082441;
   font-size: 20px;
   line-height: 1.15;
   font-weight: 900;
@@ -26231,7 +26231,7 @@ body.is-register-modal-open {
 .native-shell .superadmin-native-admin-form label {
   display: grid;
   gap: 6px;
-  color: #53615f;
+  color: #536575;
   font-size: 11px;
   font-weight: 900;
 }
@@ -26242,7 +26242,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-size: 13px;
   font-weight: 750;
 }
@@ -26273,7 +26273,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .superadmin-native-catalog-table th {
-  color: #53615f;
+  color: #536575;
   font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
@@ -26350,7 +26350,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .superadmin-native-row-actions button {
-  color: #071018;
+  color: #082441;
 }
 
 .native-shell .superadmin-native-row-actions .superadmin-native-module-detail-form {
@@ -26381,7 +26381,7 @@ body.is-register-modal-open {
 
 .native-shell .superadmin-native-patient-card td > span:not(.superadmin-native-status-pill) {
   margin-top: 3px;
-  color: #53615f;
+  color: #536575;
   font-size: 12px;
   font-weight: 650;
 }
@@ -26398,15 +26398,15 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 8px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font: inherit;
   font-weight: 850;
   cursor: pointer;
 }
 
 .native-shell .superadmin-patient-back:hover {
-  border-color: #0f8178;
-  color: #0f8178;
+  border-color: #007d79;
+  color: #007d79;
 }
 
 .native-shell .superadmin-native-advertising-controls {
@@ -26420,7 +26420,7 @@ body.is-register-modal-open {
 .native-shell .superadmin-native-advertising-controls label {
   display: grid;
   gap: 7px;
-  color: #53615f;
+  color: #536575;
   font-size: 11px;
   font-weight: 900;
 }
@@ -26432,7 +26432,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-size: 13px;
   font-weight: 900;
 }
@@ -26487,7 +26487,7 @@ body.is-register-modal-open {
 
 .native-shell .superadmin-native-advertising-card p,
 .native-shell .superadmin-native-advertising-card span {
-  color: #53615f;
+  color: #536575;
   font-size: 12px;
   font-weight: 650;
 }
@@ -26509,7 +26509,7 @@ body.is-register-modal-open {
   border: 1px solid #d5dddb;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-size: 13px;
   font-weight: 900;
 }
@@ -26541,7 +26541,7 @@ body.is-register-modal-open {
 .native-shell .superadmin-native-advertising-preview > header p,
 .native-shell .superadmin-native-advertising-banner article span,
 .native-shell .superadmin-native-advertising-side article span {
-  color: #53615f;
+  color: #536575;
   font-size: 10px;
   font-weight: 950;
   text-transform: uppercase;
@@ -26552,7 +26552,7 @@ body.is-register-modal-open {
   padding: 8px 13px;
   border-radius: 999px;
   background: #dff4ee;
-  color: #53615f;
+  color: #536575;
   font-size: 10px;
   font-weight: 950;
   text-transform: uppercase;
@@ -26680,7 +26680,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .superadmin-native-module-config h3 {
-  color: #071018;
+  color: #082441;
   font-size: 16px;
   line-height: 1.2;
   font-weight: 950;
@@ -26688,7 +26688,7 @@ body.is-register-modal-open {
 
 .native-shell .superadmin-native-module-config p {
   margin-top: 4px;
-  color: #53615f;
+  color: #536575;
   font-size: 12px;
   font-weight: 650;
 }
@@ -26702,7 +26702,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-size: 13px;
   font-weight: 950;
 }
@@ -26721,7 +26721,7 @@ body.is-register-modal-open {
 
 .native-shell .superadmin-native-module-config label,
 .native-shell .superadmin-native-module-config legend {
-  color: #53615f;
+  color: #536575;
   font-size: 11px;
   font-weight: 900;
 }
@@ -26737,7 +26737,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-size: 13px;
   font-weight: 800;
 }
@@ -26796,14 +26796,14 @@ body.is-register-modal-open {
 }
 
 .native-shell .superadmin-native-module-permissions strong {
-  color: #071018;
+  color: #082441;
   font-size: 13px;
   font-weight: 950;
 }
 
 .native-shell .superadmin-native-module-permissions small {
   margin-top: 6px;
-  color: #53615f;
+  color: #536575;
   font-size: 11px;
   font-weight: 750;
 }
@@ -26846,7 +26846,7 @@ body.is-register-modal-open {
   border: 1px solid #ccd8d5;
   border-radius: 8px;
   background: #fff;
-  color: #071018;
+  color: #082441;
 }
 
 .native-shell .superadmin-native-prescription-head {
@@ -26882,7 +26882,7 @@ body.is-register-modal-open {
   display: grid;
   justify-items: end;
   gap: 3px;
-  color: #53615f;
+  color: #536575;
   font-size: 11px;
   font-weight: 900;
 }
@@ -26928,7 +26928,7 @@ body.is-register-modal-open {
 .native-shell .superadmin-native-prescription-paper label {
   display: grid;
   gap: 7px;
-  color: #53615f;
+  color: #536575;
   font-size: 10px;
   font-weight: 900;
 }
@@ -26940,7 +26940,7 @@ body.is-register-modal-open {
   border: 1px solid #ccd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-size: 12px;
   font-weight: 850;
 }
@@ -26990,13 +26990,13 @@ body.is-register-modal-open {
 }
 
 .native-shell .superadmin-native-prescription-meds th {
-  color: #53615f;
+  color: #536575;
   font-size: 9px;
   font-weight: 950;
 }
 
 .native-shell .superadmin-native-prescription-meds td {
-  color: #071018;
+  color: #082441;
   font-size: 11px;
   font-weight: 750;
 }
@@ -27025,7 +27025,7 @@ body.is-register-modal-open {
   border: 1px solid #ccd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-size: 16px;
   font-weight: 950;
 }
@@ -27177,7 +27177,7 @@ body.is-register-modal-open {
   min-height: 100vh;
   grid-template-columns: 242px minmax(0, 1fr);
   background: #f3f5f4;
-  color: #071018;
+  color: #082441;
 }
 
 .native-shell .digital-pharmacy-native-sidebar {
@@ -27218,13 +27218,13 @@ body.is-register-modal-open {
 }
 
 .native-shell .digital-pharmacy-native-brand strong {
-  color: #071018;
+  color: #082441;
   font-size: 14px;
   font-weight: 900;
 }
 
 .native-shell .digital-pharmacy-native-brand small {
-  color: #53615f;
+  color: #536575;
   font-size: 11px;
   font-weight: 700;
 }
@@ -27243,7 +27243,7 @@ body.is-register-modal-open {
   padding: 8px 9px;
   border: 1px solid transparent;
   border-radius: 7px;
-  color: #52615f;
+  color: #536575;
   font-size: 13px;
   font-weight: 850;
   line-height: 1.15;
@@ -27253,7 +27253,7 @@ body.is-register-modal-open {
 .native-shell .digital-pharmacy-native-menu a.is-active {
   border-color: #9bd4cb;
   background: #dff2ee;
-  color: #007a6c;
+  color: #007d79;
 }
 
 .native-shell .digital-pharmacy-native-menu a span {
@@ -27269,7 +27269,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-size: 13px;
   font-weight: 850;
   text-align: center;
@@ -27290,19 +27290,19 @@ body.is-register-modal-open {
 
 .native-shell .digital-pharmacy-native-header .eyebrow {
   margin: 0 0 5px;
-  color: #53615f;
+  color: #536575;
 }
 
 .native-shell .digital-pharmacy-native-header h1 {
   margin: 0 0 5px;
-  color: #071018;
+  color: #082441;
   font-size: 21px;
   line-height: 1.12;
 }
 
 .native-shell .digital-pharmacy-native-header p {
   margin: 0;
-  color: #53615f;
+  color: #536575;
   font-size: 13px;
 }
 
@@ -27322,7 +27322,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-size: 12px;
   font-weight: 900;
   text-decoration: none;
@@ -27331,11 +27331,11 @@ body.is-register-modal-open {
 .native-shell .digital-pharmacy-native-actions a {
   border-color: #a8dcd3;
   background: #e5f5f1;
-  color: #007a6c;
+  color: #007d79;
 }
 
 .native-shell .digital-pharmacy-native-actions time {
-  color: #52615f;
+  color: #536575;
   font-size: 12px;
   font-weight: 900;
 }
@@ -27375,12 +27375,12 @@ body.is-register-modal-open {
   min-height: 38px;
   border: 1px solid #cdd8d5;
   border-radius: 7px;
-  color: #071018;
+  color: #082441;
   font-size: 13px;
 }
 
 .native-shell .digital-pharmacy-native-search strong {
-  color: #52615f;
+  color: #536575;
   font-size: 12px;
   font-weight: 900;
   white-space: nowrap;
@@ -27416,7 +27416,7 @@ body.is-register-modal-open {
 .native-shell .digital-pharmacy-native-metrics small {
   display: block;
   margin-bottom: 8px;
-  color: #53615f;
+  color: #536575;
   font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
@@ -27424,14 +27424,14 @@ body.is-register-modal-open {
 
 .native-shell .digital-pharmacy-native-metrics strong {
   display: block;
-  color: #071018;
+  color: #082441;
   font-size: 24px;
   line-height: 1;
 }
 
 .native-shell .digital-pharmacy-native-metrics p {
   margin: 8px 0 0;
-  color: #53615f;
+  color: #536575;
   font-size: 13px;
 }
 
@@ -27460,14 +27460,14 @@ body.is-register-modal-open {
 
 .native-shell .digital-pharmacy-native-card-heading h2 {
   margin: 0 0 4px;
-  color: #071018;
+  color: #082441;
   font-size: 16px;
 }
 
 .native-shell .digital-pharmacy-native-card-heading p,
 .native-shell .digital-pharmacy-native-card-heading strong {
   margin: 0;
-  color: #53615f;
+  color: #536575;
   font-size: 12px;
 }
 
@@ -27495,7 +27495,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .digital-pharmacy-native-table th {
-  color: #53615f;
+  color: #536575;
   font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
@@ -27590,12 +27590,12 @@ body.is-register-modal-open {
 }
 
 .native-shell .digital-pharmacy-native-control-list strong {
-  color: #071018;
+  color: #082441;
   font-size: 13px;
 }
 
 .native-shell .digital-pharmacy-native-control-list span {
-  color: #53615f;
+  color: #536575;
   font-size: 12px;
 }
 
@@ -27623,7 +27623,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-size: 13px;
 }
 
@@ -27926,7 +27926,7 @@ body.is-register-modal-open {
   border: 1px solid #cfdfe4;
   border-radius: 8px;
   background: #fff;
-  color: #53615f;
+  color: #536575;
   font-size: 13px;
   font-weight: 900;
 }
@@ -27934,7 +27934,7 @@ body.is-register-modal-open {
 .native-shell .digital-tabs span.is-active {
   border-color: #8fd2c7;
   background: #e2f5f1;
-  color: #007a6c;
+  color: #007d79;
 }
 
 .native-shell .digital-tabs b {
@@ -28022,7 +28022,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .digital-messenger-grid small {
-  color: #53615f;
+  color: #536575;
   font-size: 12px;
 }
 
@@ -28083,7 +28083,7 @@ body.is-register-modal-open {
 
 .native-shell .digital-route-stats small,
 .native-shell .digital-route-profile small {
-  color: #53615f;
+  color: #536575;
   font-size: 12px;
   font-weight: 850;
 }
@@ -28109,7 +28109,7 @@ body.is-register-modal-open {
 
 .native-shell .digital-scan-panel p,
 .native-shell .digital-scan-panel strong {
-  color: #53615f;
+  color: #536575;
   font-size: 13px;
 }
 
@@ -28146,7 +28146,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .digital-cold-form label {
-  color: #53615f;
+  color: #536575;
   font-size: 12px;
   font-weight: 900;
 }
@@ -28219,7 +28219,7 @@ body.is-register-modal-open {
 .native-shell .digital-report-grid p {
   display: block;
   margin-top: 6px;
-  color: #53615f;
+  color: #536575;
   font-size: 13px;
 }
 
@@ -28300,7 +28300,7 @@ body.is-register-modal-open {
   min-height: 100vh;
   grid-template-columns: 248px minmax(0, 1fr);
   background: #f3f5f4;
-  color: #071018;
+  color: #082441;
 }
 
 .native-shell .external-pharmacy-native-sidebar {
@@ -28331,7 +28331,7 @@ body.is-register-modal-open {
   border: 1px solid #a8dcd3;
   border-radius: 8px;
   background: #e6f5f2;
-  color: #007a6c;
+  color: #007d79;
   font-size: 20px;
   font-weight: 900;
 }
@@ -28342,13 +28342,13 @@ body.is-register-modal-open {
 }
 
 .native-shell .external-pharmacy-native-brand strong {
-  color: #071018;
+  color: #082441;
   font-size: 14px;
   font-weight: 900;
 }
 
 .native-shell .external-pharmacy-native-brand small {
-  color: #53615f;
+  color: #536575;
   font-size: 11px;
 }
 
@@ -28365,7 +28365,7 @@ body.is-register-modal-open {
   min-height: 42px;
   padding: 9px 12px;
   border-radius: 7px;
-  color: #52615f;
+  color: #536575;
   font-size: 13px;
   font-weight: 850;
   line-height: 1.15;
@@ -28374,7 +28374,7 @@ body.is-register-modal-open {
 
 .native-shell .external-pharmacy-native-menu a.is-active {
   background: #dff2ee;
-  color: #007a6c;
+  color: #007d79;
 }
 
 .native-shell .external-pharmacy-native-menu a span {
@@ -28390,7 +28390,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-size: 13px;
   font-weight: 850;
   text-align: center;
@@ -28409,12 +28409,12 @@ body.is-register-modal-open {
 }
 
 .native-shell .external-pharmacy-native-header .eyebrow {
-  color: #53615f;
+  color: #536575;
 }
 
 .native-shell .external-pharmacy-native-header h1 {
   margin: 4px 0 5px;
-  color: #071018;
+  color: #082441;
   font-size: 23px;
   line-height: 1.1;
 }
@@ -28422,7 +28422,7 @@ body.is-register-modal-open {
 .native-shell .external-pharmacy-native-header p {
   max-width: 720px;
   margin: 0;
-  color: #53615f;
+  color: #536575;
   font-size: 12px;
 }
 
@@ -28453,14 +28453,14 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-size: 12px;
   font-weight: 750;
 }
 
 .native-shell .external-pharmacy-native-selectors time {
   padding-bottom: 10px;
-  color: #52615f;
+  color: #536575;
   font-size: 12px;
   font-weight: 850;
 }
@@ -28483,13 +28483,13 @@ body.is-register-modal-open {
 
 .native-shell .external-pharmacy-native-heading h2 {
   margin: 0 0 4px;
-  color: #071018;
+  color: #082441;
   font-size: 16px;
 }
 
 .native-shell .external-pharmacy-native-heading p {
   margin: 0;
-  color: #53615f;
+  color: #536575;
   font-size: 12px;
 }
 
@@ -28520,7 +28520,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .external-pharmacy-native-table th {
-  color: #53615f;
+  color: #536575;
   font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
@@ -28557,7 +28557,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-size: 13px;
   font-weight: 900;
 }
@@ -28584,11 +28584,11 @@ body.is-register-modal-open {
 
 .native-shell .external-pharmacy-native-status.is-filled {
   background: #def6ef;
-  color: #007a6c;
+  color: #007d79;
 }
 
 .native-shell .external-pharmacy-native-status.is-filled::before {
-  background: #007a6c;
+  background: #007d79;
 }
 
 .native-shell .external-pharmacy-native-status.is-partial {
@@ -28608,7 +28608,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 999px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-size: 11px;
   font-weight: 900;
 }
@@ -28647,7 +28647,7 @@ body.is-register-modal-open {
 .native-shell .external-prescription-inner h3 {
   margin-top: 18px;
   margin-bottom: 10px;
-  color: #007a6c;
+  color: #007d79;
   font-size: 13px;
 }
 
@@ -28693,14 +28693,14 @@ body.is-register-modal-open {
 .native-shell .external-prescription-grid span,
 .native-shell .external-prescription-box label,
 .native-shell .external-prescription-select label {
-  color: #53615f;
+  color: #536575;
   font-size: 10px;
   font-weight: 900;
 }
 
 .native-shell .external-prescription-grid strong,
 .native-shell .external-prescription-select strong {
-  color: #071018;
+  color: #082441;
   font-size: 11px;
   font-weight: 900;
 }
@@ -28716,7 +28716,7 @@ body.is-register-modal-open {
   width: 100%;
   min-height: 42px;
   padding: 9px 12px;
-  color: #071018;
+  color: #082441;
   font: inherit;
   font-size: 12px;
   font-weight: 800;
@@ -28749,7 +28749,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .external-prescription-table th {
-  color: #53615f;
+  color: #536575;
   font-size: 9px;
   font-weight: 900;
   text-align: left;
@@ -28802,7 +28802,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-size: 18px;
   font-weight: 900;
   cursor: pointer;
@@ -28824,7 +28824,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .external-prescription-medication-picker small {
-  color: #007a6c;
+  color: #007d79;
   font-size: 8px;
   font-weight: 900;
 }
@@ -28882,7 +28882,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff;
-  color: #071018;
+  color: #082441;
   font-size: 12px;
   font-weight: 800;
 }
@@ -28923,7 +28923,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .external-warehouse-identity strong {
-  color: #071018;
+  color: #082441;
   font-size: 13px;
 }
 
@@ -28956,7 +28956,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd8d5;
   border-radius: 7px;
   background: #fff !important;
-  color: #071018 !important;
+  color: #082441 !important;
   font-family: inherit;
   font-size: 12px;
   font-weight: 900;
@@ -28979,7 +28979,7 @@ body.is-register-modal-open {
 .native-shell .external-pharmacy-module-main .external-pharmacy-native-heading .eyebrow,
 .native-shell .external-pharmacy-section-heading .eyebrow {
   margin: 0 0 4px;
-  color: #007f73;
+  color: #007d79;
   font-size: 10px;
   font-weight: 900;
 }
@@ -29000,7 +29000,7 @@ body.is-register-modal-open {
 
 .native-shell .external-pharmacy-section-heading p:last-child {
   margin: 0;
-  color: #53615f;
+  color: #536575;
   font-size: 12px;
 }
 
@@ -29113,7 +29113,7 @@ body.is-register-modal-open {
   min-height: 100vh;
   grid-template-columns: 206px minmax(0, 1fr);
   background: #eef6f8;
-  color: #07182c;
+  color: #082441;
 }
 
 .native-shell .insurance-advisor-native-sidebar {
@@ -29142,7 +29142,7 @@ body.is-register-modal-open {
   height: 42px;
   place-items: center;
   border-radius: 10px;
-  background: #00776d;
+  background: #007d79;
   color: #fff;
   font-size: 17px;
   font-weight: 900;
@@ -29154,7 +29154,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .insurance-advisor-native-brand strong {
-  color: #07182c;
+  color: #082441;
   font-size: 14px;
   font-weight: 900;
 }
@@ -29187,7 +29187,7 @@ body.is-register-modal-open {
 .native-shell .insurance-advisor-native-menu a.is-active,
 .native-shell .insurance-advisor-native-menu a:hover {
   background: #e2f7f2;
-  color: #00776d;
+  color: #007d79;
 }
 
 .native-shell .insurance-advisor-native-menu a span {
@@ -29203,7 +29203,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd9dd;
   border-radius: 7px;
   background: #fff;
-  color: #00776d;
+  color: #007d79;
   font-size: 13px;
   font-weight: 900;
   text-align: center;
@@ -29250,7 +29250,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .insurance-advisor-native-user strong {
-  color: #07182c;
+  color: #082441;
   font-size: 16px;
   font-weight: 900;
 }
@@ -29268,7 +29268,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .insurance-advisor-native-actions strong {
-  color: #07182c;
+  color: #082441;
   font-size: 14px;
   font-weight: 900;
 }
@@ -29279,7 +29279,7 @@ body.is-register-modal-open {
   padding: 0 18px;
   border: 0;
   border-radius: 7px;
-  background: #00776d;
+  background: #007d79;
   color: #fff;
   font-size: 13px;
   font-weight: 900;
@@ -29305,7 +29305,7 @@ body.is-register-modal-open {
 .native-shell .insurance-advisor-native-hero h1 {
   max-width: 620px;
   margin: 6px 0 10px;
-  color: #07182c;
+  color: #082441;
   font-size: 52px;
   line-height: 0.98;
 }
@@ -29325,7 +29325,7 @@ body.is-register-modal-open {
 .native-shell .insurance-advisor-native-hero-actions button:last-child {
   border: 1px solid #cdd9dd;
   background: #fff;
-  color: #07182c;
+  color: #082441;
 }
 
 .native-shell .insurance-advisor-native-metrics {
@@ -29368,7 +29368,7 @@ body.is-register-modal-open {
 .native-shell .insurance-advisor-native-metrics strong {
   display: block;
   margin-top: 8px;
-  color: #07182c;
+  color: #082441;
   font-size: 30px;
   line-height: 1;
 }
@@ -29402,7 +29402,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .insurance-advisor-native-tabs a.is-active {
-  border-color: #00776d;
+  border-color: #007d79;
   background: #008a7f;
   color: #fff;
 }
@@ -29434,7 +29434,7 @@ body.is-register-modal-open {
 
 .native-shell .insurance-advisor-native-heading h2 {
   margin: 0 0 4px;
-  color: #07182c;
+  color: #082441;
   font-size: 22px;
 }
 
@@ -29451,7 +29451,7 @@ body.is-register-modal-open {
   border: 1px solid #9bd8cf;
   border-radius: 7px;
   background: #fff;
-  color: #00776d;
+  color: #007d79;
   font-size: 12px;
   font-weight: 900;
 }
@@ -29480,7 +29480,7 @@ body.is-register-modal-open {
   border: 1px solid #cdd9dd;
   border-radius: 7px;
   background: #fff;
-  color: #07182c;
+  color: #082441;
   font-size: 12px;
   font-weight: 750;
 }
@@ -29521,7 +29521,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .insurance-advisor-native-table td {
-  color: #07182c;
+  color: #082441;
   font-size: 12px;
   font-weight: 800;
 }
@@ -29581,7 +29581,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .insurance-advisor-native-policy-link {
-  color: #07182c;
+  color: #082441;
   font-weight: 900;
   text-decoration: none;
 }
@@ -29604,7 +29604,7 @@ body.is-register-modal-open {
   border: 1px solid #a9d9d4;
   border-radius: 7px;
   background: #fff;
-  color: #00776d;
+  color: #007d79;
   font-size: 11px;
   font-weight: 900;
 }
@@ -29677,7 +29677,7 @@ body.is-register-modal-open {
 
 .native-shell .insurance-advisor-native-detail h2 {
   margin: 18px 0 8px;
-  color: #07182c;
+  color: #082441;
   font-size: 22px;
   line-height: 1.05;
 }
@@ -29716,7 +29716,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .insurance-advisor-native-detail-grid strong {
-  color: #07182c;
+  color: #082441;
   font-size: 13px;
   line-height: 1.45;
 }
@@ -29735,22 +29735,22 @@ body.is-register-modal-open {
   border: 1px solid #b8d7dd;
   border-radius: 7px;
   background: #fff;
-  color: #00776d;
+  color: #007d79;
   font-size: 12px;
   font-weight: 900;
 }
 
 .native-shell .insurance-advisor-native-detail-actions button:last-child,
 .native-shell .insurance-advisor-native-claim-actions button:last-child {
-  border-color: #00776d;
-  background: #00776d;
+  border-color: #007d79;
+  background: #007d79;
   color: #fff;
 }
 
 .native-shell .insurance-advisor-native-note {
   margin-top: 12px !important;
   padding: 12px;
-  border-left: 3px solid #00776d;
+  border-left: 3px solid #007d79;
   border-radius: 6px;
   background: #eefaf7;
 }
@@ -29778,7 +29778,7 @@ body.is-register-modal-open {
   border: 1px solid #d5e1e5;
   border-radius: 7px;
   background: #fbfdfd;
-  color: #07182c;
+  color: #082441;
   text-decoration: none;
 }
 
@@ -29859,7 +29859,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .insurance-advisor-native-policy-cards strong {
-  color: #07182c;
+  color: #082441;
   font-size: 16px;
 }
 
@@ -29934,7 +29934,7 @@ body.is-register-modal-open {
 
 .native-shell .insurance-advisor-native-advisor-alerts strong {
   margin-top: 8px;
-  color: #07182c;
+  color: #082441;
   font-size: 15px;
 }
 
@@ -30010,16 +30010,16 @@ body.is-register-modal-open {
   border: 1px solid #cdd9dd;
   border-radius: 7px;
   background: #fff;
-  color: #07182c;
+  color: #082441;
   font: inherit;
   font-weight: 750;
 }
 
 .native-shell .insurance-advisor-native-new-claim form > button {
   min-height: 42px;
-  border: 1px solid #00776d;
+  border: 1px solid #007d79;
   border-radius: 7px;
-  background: #00776d;
+  background: #007d79;
   color: #fff;
   font-weight: 900;
 }
@@ -30067,7 +30067,7 @@ body.is-register-modal-open {
 .native-shell .insurance-advisor-native-claims article.is-open > .insurance-advisor-native-claim-row:focus,
 .native-shell .insurance-advisor-native-claims article.is-open > .insurance-advisor-native-claim-row:active {
   background: #fff !important;
-  color: #07182c !important;
+  color: #082441 !important;
   box-shadow: none;
 }
 
@@ -30078,7 +30078,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .insurance-advisor-native-claim-row strong {
-  color: #07182c;
+  color: #082441;
   font-size: 14px;
 }
 
@@ -30102,7 +30102,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .insurance-advisor-native-claim-summary > div > span {
-  color: #00776d;
+  color: #007d79;
   font-size: 12px;
   font-weight: 900;
   text-transform: uppercase;
@@ -30130,7 +30130,7 @@ body.is-register-modal-open {
 
 .native-shell .insurance-advisor-native-claim-detail h2 {
   margin: 10px 0;
-  color: #07182c;
+  color: #082441;
   font-size: 22px;
 }
 
@@ -30170,7 +30170,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .insurance-advisor-native-claim-steps div.is-active {
-  border-color: #00776d;
+  border-color: #007d79;
   background: #eafaf7;
 }
 
@@ -30190,7 +30190,7 @@ body.is-register-modal-open {
 
 .native-shell .insurance-advisor-native-claim-meta strong,
 .native-shell .insurance-advisor-native-claim-steps strong {
-  color: #07182c;
+  color: #082441;
   font-size: 13px;
 }
 
@@ -30243,7 +30243,7 @@ body.is-register-modal-open {
   padding: 10px;
   border: 1px solid #d5e1e5;
   border-radius: 7px;
-  color: #00776d;
+  color: #007d79;
   font-size: 12px;
   font-weight: 900;
   text-align: center;
@@ -30956,7 +30956,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .insurance-table-panel .data-table th {
-  color: #0f766e;
+  color: #007d79;
 }
 
 .native-shell .insurance-table-panel .data-table tr:hover td {
@@ -31682,7 +31682,7 @@ body.is-register-modal-open {
 .superadmin-subscription-modal-window form > div { display: flex; justify-content: flex-end; gap: 10px; }
 .superadmin-subscription-modal-window form > div a,
 .superadmin-subscription-modal-window button { min-width: 160px; padding: 12px 18px; border: 1px solid #ccd8d5; border-radius: 9px; text-align: center; font-weight: 800; }
-.superadmin-subscription-modal-window button { border-color: #0b887b; color: #fff; background: #0b887b; }
+.superadmin-subscription-modal-window button { border-color: #007d79; color: #fff; background: #007d79; }
 .superadmin-subscription-editor-row > td { padding: 0 !important; background: #f7fbfa; }
 .superadmin-subscription-editor-row details { padding: 10px 16px; }
 .superadmin-subscription-editor-row summary,
@@ -31696,14 +31696,14 @@ body.is-register-modal-open {
 .superadmin-subscription-legal textarea { width: 100%; padding: 10px; border: 1px solid #ccd8d5; border-radius: 8px; background: #fff; }
 .superadmin-subscription-form textarea { min-height: 92px; }
 .superadmin-subscription-form button,
-.superadmin-subscription-legal button { align-self: end; min-height: 40px; border: 0; border-radius: 8px; color: #fff; background: #0b887b; font-weight: 800; }
+.superadmin-subscription-legal button { align-self: end; min-height: 40px; border: 0; border-radius: 8px; color: #fff; background: #007d79; font-weight: 800; }
 .superadmin-subscription-legal-copy { padding: 16px; line-height: 1.6; white-space: normal; }
 .superadmin-subscription-legal details { padding: 0 16px 16px; }
 .superadmin-subscription-legal form { display: grid; gap: 10px; margin-top: 10px; }
 .superadmin-subscription-legal textarea { min-height: 260px; }
 .superadmin-subscription-legal-form { padding: 14px 0 0; }
 .superadmin-subscription-legal-form.hidden { display: none; }
-.superadmin-subscription-legal-form textarea { min-height: 320px; border-color: #0b887b; }
+.superadmin-subscription-legal-form textarea { min-height: 320px; border-color: #007d79; }
 .superadmin-subscription-legal-actions { display: flex; gap: 8px; }
 .superadmin-subscription-legal-actions.hidden { display: none; }
 .superadmin-subscription-legal-actions button { min-width: 120px; padding: 11px 16px; }
@@ -31751,7 +31751,7 @@ body.is-register-modal-open {
 .superadmin-oncology-footer aside p { margin: 0; }
 .superadmin-oncology-file { place-items: center; border: 1px solid #078879; border-radius: 8px; padding: 8px; text-align: center; }
 .superadmin-oncology-file input { width: 100%; padding: 0; border: 0; }
-.superadmin-oncology-save { justify-self: center; min-width: 230px; padding: 15px 24px; border: 0; border-radius: 8px; color: #fff; background: #0b887b; font-size: 16px; font-weight: 900; }
+.superadmin-oncology-save { justify-self: center; min-width: 230px; padding: 15px 24px; border: 0; border-radius: 8px; color: #fff; background: #007d79; font-size: 16px; font-weight: 900; }
 .superadmin-mix-pending { padding: 40px; border: 1px solid #d5dfdd; border-radius: 10px; background: #fff; }
 .superadmin-npt-form { border: 1px solid #d5dfdd; border-radius: 10px; background: #fff; }
 .superadmin-npt-form > .superadmin-mix-format-toolbar { margin: 0; padding: 16px; }
@@ -31806,7 +31806,7 @@ body.is-register-modal-open {
 .institution-service-detail button { border: 1px solid #d3d9d8; color: #111; background: #fff; box-shadow: none; font-weight: 800; }
 .institution-service-detail > nav { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; padding: 0; border: 0; background: transparent; }
 .institution-service-detail > nav button { min-width: 150px; padding: 10px 16px; border: 1px solid #cfd7d5 !important; border-radius: 7px; color: #111 !important; background: #fff !important; }
-.institution-service-detail > nav button.is-active { border-color: #0b887b !important; color: #075f57 !important; background: #edf8f5 !important; }
+.institution-service-detail > nav button.is-active { border-color: #007d79 !important; color: #075f57 !important; background: #edf8f5 !important; }
 .institution-service-editor, .institution-service-enable, .institution-service-detail-title, .institution-contract-preview, .institution-contract-summary { border: 1px solid #d8dedd; border-radius: 8px; background: #fff; }
 .institution-service-enable { display: grid; gap: 14px; padding: 16px; }
 .institution-service-enable > header h2, .institution-service-enable > header p { margin: 0; }
@@ -31825,7 +31825,7 @@ body.is-register-modal-open {
 .institution-service-enable-list span strong, .institution-service-enable-list span small { display: block; }
 .institution-service-enable-list span small, .institution-service-enable-list em { color: #66716f; font-size: 10px; font-style: normal; }
 .institution-service-enable > footer { display: flex; justify-content: flex-end; gap: 8px; }
-.institution-service-enable button.is-primary { border-color: #0b887b; color: #fff; background: #0b887b; }
+.institution-service-enable button.is-primary { border-color: #007d79; color: #fff; background: #007d79; }
 .institution-service-editor { display: grid; gap: 14px; padding: 16px; }
 .institution-service-editor > header, .institution-service-detail-title, .institution-contract-preview > header { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 .institution-service-editor h2, .institution-service-editor h3, .institution-service-editor p, .institution-service-detail-title h2, .institution-service-detail-title p, .institution-contract-preview h2, .institution-contract-preview p, .institution-contract-summary h2, .institution-contract-summary p { margin: 0; }
@@ -31858,7 +31858,7 @@ body.is-register-modal-open {
 .institution-service-active-list em { color: #66716f; font-size: 10px; font-style: normal; }
 .institution-service-editor > footer { display: flex; justify-content: flex-end; gap: 8px; }
 .institution-service-editor > footer button, .institution-contract-summary > button { padding: 11px 18px; border-radius: 7px; }
-.institution-service-editor button.is-primary, .institution-contract-summary button.is-primary { border-color: #0b887b; color: #fff; background: #0b887b; }
+.institution-service-editor button.is-primary, .institution-contract-summary button.is-primary { border-color: #007d79; color: #fff; background: #007d79; }
 .institution-service-detail-title { margin-bottom: 14px; padding: 16px; }
 .institution-contract-layout { display: grid; grid-template-columns: 1.4fr 1fr; gap: 14px; }
 .institution-contract-preview, .institution-contract-summary { padding: 16px; }
@@ -32037,7 +32037,7 @@ body.is-register-modal-open {
 .native-shell .institution-native-menu a:hover,
 .native-shell .institution-native-menu a.is-active {
   background: #e4f5f2;
-  color: #007f73;
+  color: #007d79;
 }
 
 .native-shell .institution-native-menu a > span {
@@ -32050,7 +32050,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .institution-native-menu a.is-active > span {
-  background: #0f9487;
+  background: #007d79;
   color: #fff;
 }
 
@@ -32104,7 +32104,7 @@ body.is-register-modal-open {
 
 .native-shell .institution-native-header h1 {
   margin: 0 0 8px;
-  color: #14233c;
+  color: #082441;
   font-size: 28px;
   line-height: 1.08;
   letter-spacing: 0;
@@ -32213,7 +32213,7 @@ body.is-register-modal-open {
 
 .native-shell .institution-native-tabs a.is-active,
 .native-shell .institution-native-tabs button.is-active {
-  box-shadow: inset 0 -3px 0 #0f9487;
+  box-shadow: inset 0 -3px 0 #007d79;
   color: #008275;
 }
 
@@ -32267,7 +32267,7 @@ body.is-register-modal-open {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  border: 1px solid #0f8178;
+  border: 1px solid #007d79;
   border-radius: 7px;
   background: #fff;
   color: #13243a;
@@ -32276,7 +32276,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .institution-native-filters button span {
-  color: #0f9487;
+  color: #007d79;
   font-size: 16px;
   line-height: 1;
 }
@@ -32326,7 +32326,7 @@ body.is-register-modal-open {
 .native-shell .institution-subunit-unit-filter label {
   display: grid;
   gap: 7px;
-  color: #53615f;
+  color: #536575;
   font-size: 10px;
   font-weight: 900;
   text-transform: uppercase;
@@ -32362,7 +32362,7 @@ body.is-register-modal-open {
 
 .native-shell .institution-native-table-heading h2 {
   margin: 0 0 3px;
-  color: #14233c;
+  color: #082441;
   font-size: 17px;
   line-height: 1.1;
 }
@@ -32544,8 +32544,8 @@ body.is-register-modal-open {
 
 .native-shell .institution-table-head-buttons button:hover,
 .native-shell .institution-table-head-buttons button.is-active {
-  border-color: #0f9487;
-  color: #0f9487;
+  border-color: #007d79;
+  color: #007d79;
   background: #e8f8f5;
 }
 
@@ -32586,7 +32586,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .institution-table-filter-row button {
-  color: #0f8178;
+  color: #007d79;
   cursor: pointer;
 }
 
@@ -32782,7 +32782,7 @@ body.is-register-modal-open {
   justify-content: center;
   gap: 7px;
   padding: 0 14px;
-  border: 1px solid #0f8178;
+  border: 1px solid #007d79;
   border-radius: 7px;
   background: #fff;
   color: #0d5f59;
@@ -32890,10 +32890,10 @@ body.is-register-modal-open {
   justify-content: center;
   box-sizing: border-box;
   padding: 0;
-  border: 1px solid #0f9487;
+  border: 1px solid #007d79;
   border-radius: 8px;
   background: #fff !important;
-  color: #007f73 !important;
+  color: #007d79 !important;
   font: inherit;
   font-size: 13px;
   font-weight: 950;
@@ -32906,7 +32906,7 @@ body.is-register-modal-open {
 
 .native-shell .institution-services-count-button:hover,
 .native-shell .institution-services-count-button:focus-visible {
-  border-color: #007f73;
+  border-color: #007d79;
   background: #e7f7f4 !important;
   color: #005f56 !important;
   outline: none;
@@ -32937,7 +32937,7 @@ body.is-register-modal-open {
   min-height: 32px;
   padding: 0;
   place-items: center;
-  border: 1px solid #0f9487;
+  border: 1px solid #007d79;
   border-radius: 7px;
   background: #fff;
   color: #087c72;
@@ -33070,7 +33070,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .institution-unit-password-input input:focus {
-  border-color: #0f9487;
+  border-color: #007d79;
   outline: 3px solid rgba(15, 148, 135, .12);
 }
 
@@ -33104,8 +33104,8 @@ body.is-register-modal-open {
 }
 
 .native-shell .institution-unit-password-dialog footer .is-primary {
-  border: 1px solid #087f75;
-  background: #087f75;
+  border: 1px solid #007d79;
+  background: #007d79;
   color: #fff;
 }
 
@@ -33121,7 +33121,7 @@ body.is-register-modal-open {
   border: 1px solid #ccd8d5;
   border-radius: 8px;
   background: #f5f8f7;
-  color: #071018;
+  color: #082441;
   box-shadow: 0 28px 80px rgba(18, 31, 35, 0.28);
 }
 
@@ -33144,7 +33144,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .institution-unit-services-dialog > header strong {
-  color: #007f73;
+  color: #007d79;
   font-size: 11px;
   font-weight: 950;
   text-transform: uppercase;
@@ -33276,9 +33276,9 @@ body.is-register-modal-open {
 }
 
 .native-shell .institution-native-table-footer strong {
-  border: 1px solid #0f8178;
+  border: 1px solid #007d79;
   border-radius: 7px;
-  color: #0f8178;
+  color: #007d79;
   font-size: 13px;
 }
 
@@ -33369,7 +33369,7 @@ body.is-register-modal-open {
 .unit-profile-image-box img { width: 100%; height: 132px; object-fit: cover; }
 .unit-profile-image-row > div:last-child { display: grid; gap: 10px; }
 .unit-profile-remove { display: inline-flex; width: fit-content; align-items: center; gap: 6px; padding: 8px 10px; border: 1px solid #ced8d6; border-radius: 6px; background: #fff; font-size: 10px; font-weight: 800; }
-.unit-profile-form > button { width: fit-content; min-width: 150px; padding: 11px 18px; border: 1px solid #0b887b; border-radius: 7px; color: #fff; background: #0b887b; font-weight: 800; }
+.unit-profile-form > button { width: fit-content; min-width: 150px; padding: 11px 18px; border: 1px solid #007d79; border-radius: 7px; color: #fff; background: #007d79; font-weight: 800; }
 .unit-profile-preview-card { position: sticky; top: 14px; }
 .unit-profile-preview { margin: 16px; overflow: hidden; border: 1px solid #d4dcda; border-radius: 7px; }
 .unit-profile-cover { display: grid; min-height: 225px; place-items: center; background: #edf7f5; }
@@ -33456,7 +33456,7 @@ body.is-register-modal-open {
 .outpatient-room-form .outpatient-form-actions a,
 .outpatient-room-form .outpatient-form-actions button { min-height: 36px; padding: 8px 12px; border-radius: 7px; box-shadow: none; font-size: 12px; font-weight: 800; }
 .outpatient-room-form .outpatient-form-actions a { border: 1px solid #cbd7d5; color: #101b19; background: #fff; }
-.outpatient-room-form .outpatient-form-actions button { border: 1px solid #0b887b; color: #fff; background: #0b887b; }
+.outpatient-room-form .outpatient-form-actions button { border: 1px solid #007d79; color: #fff; background: #007d79; }
 @media (max-width: 760px) { .outpatient-room-calendar-head { flex-direction: column; } .outpatient-room-range-fields { grid-template-columns: 1fr; } }
 .outpatient-module-card-head > div:last-child { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 .outpatient-module-card-head a.is-secondary { border: 1px solid #cbd6d4; color: #111; background: #fff; box-shadow: none; }
@@ -33601,7 +33601,7 @@ body.is-register-modal-open {
   place-items: center;
   border-radius: 12px;
   background: #e5fbf6;
-  color: #008f82;
+  color: #007d79;
   font-size: 18px;
   font-weight: 950;
 }
@@ -33616,7 +33616,7 @@ body.is-register-modal-open {
   place-items: center;
   border: 0 !important;
   border-radius: 50%;
-  background: #142542 !important;
+  background: #082441 !important;
   color: #fff;
   font: inherit;
   font-size: 20px;
@@ -33637,7 +33637,7 @@ body.is-register-modal-open {
   border-bottom: 0;
 }
 .native-shell .patient-calendar-month-column strong {
-  color: #008f82;
+  color: #007d79;
   font-size: 26px;
   font-weight: 950;
 }
@@ -33671,7 +33671,7 @@ body.is-register-modal-open {
   border-top: 2px solid #079789;
 }
 .native-shell .patient-calendar-filters button {
-  --calendar-filter-color: #008f82;
+  --calendar-filter-color: #007d79;
   position: relative;
   display: grid;
   flex: 0 0 128px;
@@ -33684,7 +33684,7 @@ body.is-register-modal-open {
   border: 1px solid #d5e2e8 !important;
   border-radius: 18px;
   background: #fff !important;
-  color: #142542;
+  color: #082441;
   box-shadow: none !important;
   font: inherit;
   font-size: 20px;
@@ -33721,7 +33721,7 @@ body.is-register-modal-open {
 .native-shell .patient-calendar-filters button b {
   max-width: 100%;
   overflow: hidden;
-  color: #142542;
+  color: #082441;
   font-size: 12px;
   font-weight: 950;
   line-height: 1.05;
@@ -33730,11 +33730,11 @@ body.is-register-modal-open {
 .native-shell .patient-calendar-filters button.is-active {
   border-color: #009d8f !important;
   background: linear-gradient(150deg, #eafffa, #fff) !important;
-  color: #142542;
+  color: #082441;
   box-shadow: 0 18px 36px rgba(10, 158, 145, .11) !important;
 }
 .native-shell .patient-calendar-filters button.is-all,
-.native-shell .patient-calendar-filters button.is-upcoming { --calendar-filter-color: #008f82; }
+.native-shell .patient-calendar-filters button.is-upcoming { --calendar-filter-color: #007d79; }
 .native-shell .patient-calendar-filters button.is-laboratory { --calendar-filter-color: #0a9f62; }
 .native-shell .patient-calendar-filters button.is-consultation { --calendar-filter-color: #1761c7; }
 .native-shell .patient-calendar-list { display: grid; gap: 16px; padding: 0 22px; }
@@ -35597,7 +35597,7 @@ body.is-register-modal-open {
   user-select: none;
 }
 .native-shell .patient-history-filters button {
-  --history-color: #008f82;
+  --history-color: #007d79;
   position: relative;
   display: grid;
   flex: 0 0 128px;
@@ -35610,7 +35610,7 @@ body.is-register-modal-open {
   border: 1px solid #d5e2e8 !important;
   border-radius: 18px;
   background: #fff;
-  color: #142542;
+  color: #082441;
   box-shadow: none !important;
   font: inherit;
   font-size: 20px;
@@ -35642,7 +35642,7 @@ body.is-register-modal-open {
 .native-shell .patient-history-filters button b {
   max-width: 100%;
   overflow: hidden;
-  color: #142542;
+  color: #082441;
   font-size: 12px;
   font-weight: 950;
   line-height: 1.05;
@@ -35653,20 +35653,20 @@ body.is-register-modal-open {
 .native-shell .patient-history-filters button.is-study { color: #7443e9; }
 .native-shell .patient-history-filters button.is-prescription { color: #ed7700; }
 .native-shell .patient-history-filters button.is-hospitalization { color: #f1383e; }
-.native-shell .patient-history-filters button.is-manual { color: #008f82; }
+.native-shell .patient-history-filters button.is-manual { color: #007d79; }
 .native-shell .patient-history-filters button.is-vaccine { color: #0b8f62; }
-.native-shell .patient-history-filters button.is-all { --history-color: #008f82; }
+.native-shell .patient-history-filters button.is-all { --history-color: #007d79; }
 .native-shell .patient-history-filters button.is-consultation { --history-color: #1761c7; }
 .native-shell .patient-history-filters button.is-laboratory { --history-color: #0a9f62; }
 .native-shell .patient-history-filters button.is-study { --history-color: #8945f4; }
 .native-shell .patient-history-filters button.is-prescription { --history-color: #f47a00; }
 .native-shell .patient-history-filters button.is-hospitalization { --history-color: #f0212a; }
-.native-shell .patient-history-filters button.is-vaccine { --history-color: #008f82; }
-.native-shell .patient-history-filters button.is-manual { --history-color: #008f82; }
+.native-shell .patient-history-filters button.is-vaccine { --history-color: #007d79; }
+.native-shell .patient-history-filters button.is-manual { --history-color: #007d79; }
 .native-shell .patient-history-filters button[data-history-filter].is-active {
   border-color: #009d8f !important;
   background: linear-gradient(150deg, #eafffa, #fff) !important;
-  color: #142542;
+  color: #082441;
   box-shadow: 0 18px 36px rgba(10, 158, 145, .11) !important;
 }
 .native-shell .patient-history-filters button[data-history-filter].is-active::after {
@@ -35760,7 +35760,7 @@ body.is-register-modal-open {
 .native-shell .patient-history-category.is-study { background: #eee8ff; color: #7140e4; }
 .native-shell .patient-history-category.is-prescription { background: #fff2df; color: #db6d00; }
 .native-shell .patient-history-category.is-hospitalization { background: #ffe5e5; color: #e83239; }
-.native-shell .patient-history-category.is-manual { background: #e4fbf6; color: #008f82; }
+.native-shell .patient-history-category.is-manual { background: #e4fbf6; color: #007d79; }
 .native-shell .patient-history-category.is-vaccine { background: #e2f9ef; color: #0b8f62; }
 .native-shell .patient-history-manual-note { margin: 7px 0 0; color: #536783; font-size: 13px; line-height: 1.45; }
 .native-shell .patient-history-manual-transcript { white-space: pre-wrap; }
@@ -35773,12 +35773,12 @@ body.is-register-modal-open {
   border-radius: 13px;
   background: #f0fffc;
 }
-.native-shell .patient-history-manual-evidence > span { color: #008f82; font-size: 18px; }
+.native-shell .patient-history-manual-evidence > span { color: #007d79; font-size: 18px; }
 .native-shell .patient-history-manual-evidence strong { display: block; color: #17304a; font-size: 12px; }
 .native-shell .patient-history-manual-evidence p { margin: 3px 0 0; color: #60738b; font-size: 12px; }
-.native-shell .patient-history-manual-evidence small { display: block; margin-top: 5px; color: #008f82; font-size: 11px; font-weight: 900; }
+.native-shell .patient-history-manual-evidence small { display: block; margin-top: 5px; color: #007d79; font-size: 11px; font-weight: 900; }
 .native-shell .patient-history-attachment-download { display: inline-block; margin-top: 8px; color: #006f66; font-size: 12px; font-weight: 900; text-decoration: underline; text-underline-offset: 2px; }
-.native-shell .patient-history-attachment-download:focus-visible { outline: 2px solid #008f82; outline-offset: 2px; }
+.native-shell .patient-history-attachment-download:focus-visible { outline: 2px solid #007d79; outline-offset: 2px; }
 .native-shell .patient-history-indications {
   padding: 14px 16px;
   border: 1px solid #f3d2a4;
@@ -35978,7 +35978,7 @@ body.is-register-modal-open {
 
 .native-shell .provider-native-remission-header small,
 .native-shell .provider-native-remission-summary small {
-  color: #52615f;
+  color: #536575;
   font-size: 9px;
   font-weight: 900;
 }
@@ -36096,7 +36096,7 @@ body.is-register-modal-open {
 
 .native-shell .provider-native-remission-note {
   padding: 12px 0 !important;
-  color: #52615f;
+  color: #536575;
   font-size: 9px;
   font-weight: 700;
   line-height: 1.35 !important;
@@ -36401,7 +36401,7 @@ body.is-register-modal-open {
 
 .native-shell .patient-health-parameter-head h2 {
   margin: 0;
-  color: #142542;
+  color: #082441;
   font-size: 26px;
   font-weight: 950;
   line-height: 1;
@@ -36510,7 +36510,7 @@ body.is-register-modal-open {
   border: 1px solid #d7e5ec;
   border-radius: 18px;
   background: #fff;
-  color: #142542;
+  color: #082441;
   box-shadow: 0 14px 28px rgba(18, 48, 64, .045);
   cursor: pointer;
   transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
@@ -36632,7 +36632,7 @@ body.is-register-modal-open {
 
 .native-shell .patient-health-detail-header h2 {
   margin: 0;
-  color: #142542;
+  color: #082441;
   font-size: 28px;
   font-weight: 950;
   line-height: 1;
@@ -37183,7 +37183,7 @@ body.is-register-modal-open {
   border: 1px solid #9aa9bd;
   border-radius: 2px;
   background: #fff;
-  color: #14233c;
+  color: #082441;
   box-shadow: none;
   font: inherit;
   font-size: 12px;
@@ -37192,7 +37192,7 @@ body.is-register-modal-open {
 }
 
 .native-shell .drsam-table-filter-footer button:first-child {
-  border-color: #14233c;
+  border-color: #082441;
   color: #07182d;
 }
 
@@ -37212,7 +37212,7 @@ body.is-register-modal-open {
   border: 1px solid #b8d7dd;
   border-radius: 7px;
   background: #fff;
-  color: #00776d;
+  color: #007d79;
   font-size: 12px;
   font-weight: 900;
   text-decoration: none;
@@ -37267,7 +37267,7 @@ body.is-register-modal-open {
 
 .native-shell .insurance-advisor-native-sync-bulk form button:hover {
   background: #eaf8f5;
-  color: #00776d;
+  color: #007d79;
 }
 
 .native-shell .insurance-advisor-native-table {
@@ -37298,7 +37298,7 @@ body.is-register-modal-open {
   border: 1px solid #b8d7dd;
   border-radius: 6px;
   background: #fff;
-  color: #00776d;
+  color: #007d79;
   font: inherit;
   font-size: 11px;
   font-weight: 900;
@@ -37350,7 +37350,7 @@ body.is-register-modal-open {
   justify-content: space-between;
   gap: 14px;
   padding: 0 14px;
-  color: #07182c;
+  color: #082441;
   list-style: none;
   cursor: pointer;
 }
@@ -37557,7 +37557,7 @@ body.is-register-modal-open {
   border: 1px solid #b8d7dd;
   border-radius: 7px;
   background: #fff;
-  color: #00776d;
+  color: #007d79;
   font: inherit;
   font-size: 12px;
   font-weight: 900;

@@ -1,5 +1,5 @@
 <header class="insurance-health-native-topbar" aria-label="Barra superior aseguradora salud">
-  <strong>Aseguradora salud</strong>
+  <x-klini-brand label="Aseguradora salud" />
   <span>{{ strtoupper(auth()->user()?->name ?? 'Aseguradora Salud') }}</span>
   <div class="insurance-health-native-session">
     <button type="button" aria-label="Notificaciones">

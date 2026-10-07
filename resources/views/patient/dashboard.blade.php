@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="{{ asset('css/policy-saved-overlay.css') }}?v={{ filemtime(public_path('css/policy-saved-overlay.css')) }}">
   <link rel="stylesheet" href="{{ asset('css/patient-history-mobile.css') }}?v={{ filemtime(public_path('css/patient-history-mobile.css')) }}">
   <link rel="stylesheet" href="{{ asset('css/patient-bottom-nav-mobile.css') }}?v={{ filemtime(public_path('css/patient-bottom-nav-mobile.css')) }}">
+  <link rel="stylesheet" href="{{ asset('css/patient-calendar-mobile.css') }}?v={{ filemtime(public_path('css/patient-calendar-mobile.css')) }}">
 @endpush
 
 @php
@@ -22,8 +23,9 @@
     'insurance' => ['Mi Seguro', 'shield'],
     'analyses' => ['Análisis Clínicos', 'flask'],
     'prescriptions' => ['Recetas', 'file'],
-    'calendar' => ['Calendario', 'calendar'],
     'doctors' => ['Médicos y terapeutas', 'people'],
+    'devices' => ['Dispositivos médicos', 'device'],
+    'communities' => ['Comunidad', 'people'],
   ];
 @endphp
 
@@ -64,6 +66,46 @@
   <div class="patient-portal-layout">
     <aside id="patient-support-menu" class="patient-assistant-native-menu patient-portal-menu" aria-label="Menú del paciente" aria-hidden="true" data-support-menu>
       <strong class="patient-portal-menu-title">Soporte médico</strong>
+      <button class="patient-profile-row patient-profile-finance-row" type="button" data-profile-view="finance">
+        <span class="patient-profile-finance-art" aria-hidden="true">
+          <span class="patient-profile-wallet-shape"></span>
+          <span class="patient-profile-coin patient-profile-coin-one"></span>
+          <span class="patient-profile-coin patient-profile-coin-two"></span>
+        </span>
+        <span class="patient-profile-row-copy"><strong>Billetera y Suscripción</strong><small>Pagos, saldo y plan de acceso</small></span>
+        <span class="patient-profile-row-action" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></span>
+      </button>
+
+      <section class="patient-profile-support-group" data-profile-support-group>
+        <button class="patient-profile-row" type="button" data-profile-support-toggle aria-expanded="false">
+          <span class="patient-profile-row-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="2.7"/><circle cx="6.3" cy="9.4" r="2"/><circle cx="17.7" cy="9.4" r="2"/><path d="M7.7 18.8c.7-2.9 2.2-4.4 4.3-4.4s3.6 1.5 4.3 4.4"/><path d="M2.8 18.7c.5-2.2 1.7-3.4 3.6-3.4.7 0 1.3.1 1.8.4"/><path d="M21.2 18.7c-.5-2.2-1.7-3.4-3.6-3.4-.7 0-1.3.1-1.8.4"/></svg></span>
+          <span class="patient-profile-row-copy"><strong>Interacciones</strong><small>Solicitudes, mensajes, alertas y enlaces</small></span>
+          <span class="patient-profile-row-action patient-profile-support-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></span>
+        </button>
+        <div class="patient-profile-support-menu" data-profile-support-menu hidden>
+          <button class="patient-profile-support-item" type="button" data-profile-view="requests">
+            <span class="patient-profile-row-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 3h6v3H9zM9 11h6M9 15h4"/></svg></span>
+            <span class="patient-profile-row-copy"><strong>Solicitudes</strong><small data-profile-count-label="requests">Sin solicitudes pendientes</small></span>
+            <b class="patient-profile-badge" data-profile-count="requests">0</b>
+          </button>
+          <button class="patient-profile-support-item" type="button" data-profile-view="messages">
+            <span class="patient-profile-row-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"/><path d="M8 9h8M8 13h5"/></svg></span>
+            <span class="patient-profile-row-copy"><strong>Mensajes</strong><small data-profile-count-label="messages">Médicos, seguros y unidades</small></span>
+            <b class="patient-profile-badge" data-profile-count="messages">3</b>
+          </button>
+          <button class="patient-profile-support-item" type="button" data-profile-view="alerts">
+            <span class="patient-profile-row-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9ZM9 21h6"/></svg></span>
+            <span class="patient-profile-row-copy"><strong>Alertas</strong><small data-profile-count-label="alerts">Recordatorios y avisos importantes</small></span>
+            <b class="patient-profile-badge" data-profile-count="alerts">2</b>
+          </button>
+          <button class="patient-profile-support-item" type="button" data-profile-view="sync">
+            <span class="patient-profile-row-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 7h-6V1M4 17h6v6"/><path d="M20 7a9 9 0 0 0-15-3M4 17a9 9 0 0 0 15 3"/></svg></span>
+            <span class="patient-profile-row-copy"><strong>Sincronización</strong><small data-profile-count-label="sync">2 enlaces activos</small></span>
+            <b class="patient-profile-badge" data-profile-count="sync">2</b>
+          </button>
+        </div>
+      </section>
+
       @foreach ($supportViews as $key => [$label, $icon])
         <button type="button" data-open-view="{{ $key }}">
           <span class="patient-support-icon patient-support-icon-{{ $icon }}" aria-hidden="true"></span>{{ $label }}
@@ -111,11 +153,8 @@
         <div class="patient-portal-notice is-error">{{ $errors->first() }}</div>
       @endif
 
-      <section class="patient-portal-view is-active" data-patient-view="home">
-        <div class="patient-assistant-native-intro patient-portal-intro">
-          <span class="patient-assistant-native-spark">+</span>
-          <h1>¿Cómo amaneciste hoy?</h1>
-        </div>
+      <section class="patient-portal-view patient-portal-home-view is-active" data-patient-view="home">
+        <div id="patient-home-posts-root" data-patient-home-posts-root></div>
       </section>
 
       <section class="patient-portal-view" data-patient-view="profile">
@@ -644,6 +683,17 @@
             <span class="patient-calendar-hero-icon" aria-hidden="true"><img src="/images/calendar-icons/calendar.png?v=20260828-calendar-icon" alt="" loading="lazy"></span>
             <div><h1>Calendario</h1></div>
           </header>
+          <nav class="patient-calendar-section-switch" role="tablist" aria-label="Secciones del calendario">
+            <button type="button" id="patient-calendar-activities-tab" role="tab" aria-selected="false" aria-controls="patient-calendar-activities-panel" tabindex="-1" data-calendar-section="activities">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/><circle cx="9" cy="7" r="4"/></svg>
+              <span>Actividades de comunidades</span>
+            </button>
+            <button type="button" id="patient-calendar-medical-tab" role="tab" aria-selected="true" aria-controls="patient-calendar-medical-panel" data-calendar-section="medical">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg>
+              <span>Citas médicas</span>
+            </button>
+          </nav>
+          <section id="patient-calendar-medical-panel" role="tabpanel" aria-labelledby="patient-calendar-medical-tab" data-calendar-section-panel="medical">
           <div class="patient-calendar-toolbar">
             <div class="patient-calendar-filters" data-calendar-filter-carousel aria-label="Filtrar calendario">
               <button class="is-all is-active" type="button" data-calendar-filter="all" aria-pressed="true">
@@ -727,6 +777,8 @@
             <div class="patient-calendar-empty" data-calendar-filter-empty hidden>No hay citas que coincidan con este filtro.</div>
           </div>
           <p class="patient-calendar-timezone">ⓘ Las citas y estudios se muestran en la zona horaria de tu ubicación actual.</p>
+          </section>
+          <section class="patient-portal-communities-view patient-calendar-activities" id="patient-calendar-activities-panel" role="tabpanel" aria-labelledby="patient-calendar-activities-tab" data-calendar-section-panel="activities" hidden></section>
         </div>
         <section class="patient-calendar-history" hidden>
           <header><h2>Historial de consultas</h2><p>Consultas anteriores del paciente</p></header>
@@ -1736,10 +1788,11 @@
       </section>
 
       <nav class="patient-portal-bottom-nav" aria-label="Navegación principal del paciente">
-        <button class="is-active" type="button" data-open-view="home"><span class="patient-bottom-icon">⌂</span>Home</button>
-        <button type="button" data-open-view="devices"><span class="patient-bottom-icon">▯</span>Dispositivos</button>
+        <button class="is-active" type="button" data-open-view="home"><span class="patient-bottom-icon">⌂</span>Inicio</button>
+        <button class="patient-bottom-communities" type="button" data-open-view="communities"><span class="patient-bottom-icon patient-support-icon patient-support-icon-people" aria-hidden="true"></span>Comunidades</button>
         <button class="patient-bottom-register" type="button" data-open-view="register"><span>＋</span>Registro</button>
-        <button type="button" data-open-view="wellness"><span class="patient-bottom-icon">☆</span>Mi salud</button>
+        <button type="button" data-open-view="wellness"><span class="patient-bottom-icon">☆</span>Mi Salud</button>
+        <button type="button" data-open-view="calendar"><span class="patient-bottom-icon patient-support-icon patient-support-icon-calendar" aria-hidden="true"></span>Calendario</button>
       </nav>
     </main>
   </div>
@@ -1765,90 +1818,16 @@
   aria-hidden="true"
   hidden>
   <div class="patient-profile-scroll">
-    <section class="patient-profile-account-flow" aria-label="Cuentas del paciente">
-      <header class="patient-profile-header">
-        <button class="patient-profile-avatar-button" type="button" data-profile-view="photo" aria-label="Ver o cambiar foto de perfil">
-          <span class="patient-profile-avatar" data-profile-panel-avatar>{{ $initials ?: 'PX' }}</span>
-          <span class="patient-profile-avatar-add" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>
-        </button>
-        <div class="patient-profile-identity">
-          <strong data-profile-panel-name>{{ $patient->full_name }}</strong>
-          <span>ID DE USUARIO - <b data-profile-panel-id>{{ $patient->platform_number ?? $patient->id }}</b></span>
-        </div>
+    <section class="patient-profile-selector" aria-label="Cuentas del paciente">
+      <header class="patient-profile-selector-heading">
+        <strong>Tu cuenta</strong>
         <button class="patient-profile-icon-button" type="button" data-profile-panel-close aria-label="Cerrar perfil">
           <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg>
         </button>
       </header>
-
-      <section class="patient-profile-alternates" aria-label="Cuentas alternas">
-        <div class="patient-profile-accounts-shell">
-          <button class="patient-profile-accounts-nav is-prev" type="button" data-profile-account-step="-1" aria-label="Ver cuentas anteriores">
-            <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
-          </button>
-          <div class="patient-profile-accounts-track" data-profile-accounts-track aria-label="Carrusel de cuentas alternas"></div>
-          <button class="patient-profile-accounts-nav" type="button" data-profile-account-step="1" aria-label="Ver más cuentas">
-            <svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
-          </button>
-        </div>
-        <div class="patient-profile-accounts-dots" data-profile-accounts-dots aria-hidden="true"></div>
-      </section>
+      <klini-profiles data-patient-profile-selector aria-label="Selector de perfiles"></klini-profiles>
     </section>
 
-    <button class="patient-profile-row patient-profile-finance-row" type="button" data-profile-view="finance">
-      <span class="patient-profile-finance-art" aria-hidden="true">
-        <span class="patient-profile-wallet-shape"></span>
-        <span class="patient-profile-coin patient-profile-coin-one"></span>
-        <span class="patient-profile-coin patient-profile-coin-two"></span>
-      </span>
-      <span class="patient-profile-row-copy"><strong>Billetera y Suscripción</strong><small>Pagos, saldo y plan de acceso</small></span>
-      <span class="patient-profile-row-action" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></span>
-    </button>
-
-    <section class="patient-profile-support-group" data-profile-support-group>
-      <button class="patient-profile-row" type="button" data-profile-support-toggle aria-expanded="false">
-        <span class="patient-profile-row-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="2.7"/><circle cx="6.3" cy="9.4" r="2"/><circle cx="17.7" cy="9.4" r="2"/><path d="M7.7 18.8c.7-2.9 2.2-4.4 4.3-4.4s3.6 1.5 4.3 4.4"/><path d="M2.8 18.7c.5-2.2 1.7-3.4 3.6-3.4.7 0 1.3.1 1.8.4"/><path d="M21.2 18.7c-.5-2.2-1.7-3.4-3.6-3.4-.7 0-1.3.1-1.8.4"/></svg></span>
-        <span class="patient-profile-row-copy"><strong>Interacciones</strong><small>Solicitudes, mensajes, alertas y enlaces</small></span>
-        <span class="patient-profile-row-action patient-profile-support-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></span>
-      </button>
-      <div class="patient-profile-support-menu" data-profile-support-menu hidden>
-        <button class="patient-profile-support-item" type="button" data-profile-view="requests">
-          <span class="patient-profile-row-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 3h6v3H9zM9 11h6M9 15h4"/></svg></span>
-          <span class="patient-profile-row-copy"><strong>Solicitudes</strong><small data-profile-count-label="requests">Sin solicitudes pendientes</small></span>
-          <b class="patient-profile-badge" data-profile-count="requests">0</b>
-        </button>
-        <button class="patient-profile-support-item" type="button" data-profile-view="messages">
-          <span class="patient-profile-row-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"/><path d="M8 9h8M8 13h5"/></svg></span>
-          <span class="patient-profile-row-copy"><strong>Mensajes</strong><small data-profile-count-label="messages">Médicos, seguros y unidades</small></span>
-          <b class="patient-profile-badge" data-profile-count="messages">3</b>
-        </button>
-        <button class="patient-profile-support-item" type="button" data-profile-view="alerts">
-          <span class="patient-profile-row-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9ZM9 21h6"/></svg></span>
-          <span class="patient-profile-row-copy"><strong>Alertas</strong><small data-profile-count-label="alerts">Recordatorios y avisos importantes</small></span>
-          <b class="patient-profile-badge" data-profile-count="alerts">2</b>
-        </button>
-        <button class="patient-profile-support-item" type="button" data-profile-view="sync">
-          <span class="patient-profile-row-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 7h-6V1M4 17h6v6"/><path d="M20 7a9 9 0 0 0-15-3M4 17a9 9 0 0 0 15 3"/></svg></span>
-          <span class="patient-profile-row-copy"><strong>Sincronización</strong><small data-profile-count-label="sync">2 enlaces activos</small></span>
-          <b class="patient-profile-badge" data-profile-count="sync">2</b>
-        </button>
-      </div>
-    </section>
-
-    <div class="patient-profile-divider"></div>
-    <button class="patient-profile-row" type="button" data-profile-view="profile">
-      <span class="patient-profile-row-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span>
-      <span class="patient-profile-row-copy"><strong>Información de perfil</strong><small>Datos personales e identificación</small></span>
-      <span class="patient-profile-row-action" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></span>
-    </button>
-    <button class="patient-profile-row patient-profile-create-row" type="button" data-profile-add-account>
-      <span class="patient-profile-row-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>
-      <span class="patient-profile-row-copy"><strong>Crear perfil para niño o mascota.</strong></span>
-      <span class="patient-profile-row-action" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></span>
-    </button>
-    <button class="patient-profile-row patient-profile-logout-row" type="button" data-profile-view="logout">
-      <span class="patient-profile-row-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10 17l5-5-5-5M15 12H3M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/></svg></span>
-      <span class="patient-profile-row-copy"><strong>Cerrar sesión</strong></span>
-    </button>
   </div>
 </aside>
 
@@ -1863,6 +1842,7 @@
 </div>
 <input type="file" accept="image/*" data-patient-profile-photo hidden>
 
+<script src="{{ asset('js/klini-profiles.js') }}?v={{ filemtime(public_path('js/klini-profiles.js')) }}"></script>
 <script src="{{ asset('js/patient-profile-panel.js') }}?v={{ filemtime(public_path('js/patient-profile-panel.js')) }}"></script>
 <script src="{{ asset('js/communities.js') }}?v={{ filemtime(public_path('js/communities.js')) }}"></script>
 <script>
@@ -1966,9 +1946,31 @@
   };
   const registerPatientName = () => getActivePatientProfile().name || primaryPatientProfile.name;
   applyActivePatientProfileShell();
+  let homePostsApp = null;
+  const mountHomePosts = () => {
+    const root = portal.querySelector('[data-patient-home-posts-root]');
+    if (!root || homePostsApp || !window.KliniCommunities) return;
+    const activeProfile = getActivePatientProfile();
+    homePostsApp = window.KliniCommunities.mount(root, {
+      patient: {
+        id: getActivePatientProfileId(),
+        name: activeProfile.name,
+        photo: activeProfile.photo,
+      },
+      storageKey: activeCommunitiesStorageKey(),
+      profileStorageKey: profilePanelStorageKey,
+      startView: 'posts',
+      hideBottomNav: true,
+      onAction: event => window.dispatchEvent(new CustomEvent('drsam:communities-action', { detail: event })),
+    });
+  };
   let communitiesApp = null;
+  const communitiesHome = portal.querySelector('[data-patient-view="communities"]');
+  const communitiesRoot = portal.querySelector('[data-communities-root]');
+  const calendarActivities = portal.querySelector('[data-calendar-section-panel="activities"]');
+  let calendarSection = 'medical';
   const mountCommunities = () => {
-    const root = portal.querySelector('[data-communities-root]');
+    const root = communitiesRoot;
     if (!root || communitiesApp || !window.KliniCommunities) return;
     const activeProfile = getActivePatientProfile();
     communitiesApp = window.KliniCommunities.mount(root, {
@@ -1979,15 +1981,63 @@
       },
       storageKey: activeCommunitiesStorageKey(),
       profileStorageKey: profilePanelStorageKey,
+      separateCalendar: true,
+      hideBottomNav: true,
+      onNavigate: view => {
+        if (view === 'calendar') {
+          calendarSection = 'activities';
+          openView('calendar');
+        } else if (root.parentElement === calendarActivities) {
+          openView('communities');
+        }
+      },
       onAction: event => window.dispatchEvent(new CustomEvent('drsam:communities-action', { detail: event })),
     });
     window.KliniCommunitiesApp = communitiesApp;
+    @if (app()->isLocal() && request()->boolean('demo_reservations'))
+    communitiesApp.seedDemoReservations();
+    homePostsApp?.load();
+    @endif
   };
+  const selectCalendarSection = section => {
+    calendarSection = section === 'activities' ? 'activities' : 'medical';
+    portal.querySelectorAll('[data-calendar-section]').forEach(button => {
+      const selected = button.dataset.calendarSection === calendarSection;
+      button.setAttribute('aria-selected', String(selected));
+      button.tabIndex = selected ? 0 : -1;
+    });
+    portal.querySelectorAll('[data-calendar-section-panel]').forEach(panel => {
+      panel.hidden = panel.dataset.calendarSectionPanel !== calendarSection;
+    });
+    if (calendarSection === 'activities') {
+      mountCommunities();
+      if (communitiesRoot && calendarActivities) calendarActivities.append(communitiesRoot);
+      communitiesApp?.showCalendar();
+    }
+  };
+  const calendarSectionButtons = [...portal.querySelectorAll('[data-calendar-section]')];
+  calendarSectionButtons.forEach((button, index) => {
+    button.addEventListener('click', () => selectCalendarSection(button.dataset.calendarSection));
+    button.addEventListener('keydown', event => {
+      if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+      event.preventDefault();
+      const nextIndex = event.key === 'Home' ? 0 : event.key === 'End' ? calendarSectionButtons.length - 1
+        : (index + (event.key === 'ArrowRight' ? 1 : -1) + calendarSectionButtons.length) % calendarSectionButtons.length;
+      const next = calendarSectionButtons[nextIndex];
+      selectCalendarSection(next.dataset.calendarSection);
+      next.focus();
+    });
+  });
   const openView = (name) => {
     portal.querySelectorAll('[data-patient-view]').forEach(el => el.classList.toggle('is-active', el.dataset.patientView === name));
     portal.querySelectorAll('[data-open-view]').forEach(el => el.classList.toggle('is-active', el.dataset.openView === name));
     sessionStorage.setItem('patientPortalView', name);
-    if (name === 'communities') mountCommunities();
+    if (name === 'home') mountHomePosts();
+    if (name === 'communities') {
+      if (communitiesRoot && communitiesHome) communitiesHome.append(communitiesRoot);
+      mountCommunities();
+    }
+    if (name === 'calendar') selectCalendarSection(calendarSection);
     if (name === 'wellness') renderHealthDashboard();
     if (name === 'register') {
       if (registerSuccess) registerSuccess.hidden = true;
@@ -4449,13 +4499,16 @@
       if (healthFavorites) healthFavorites.scrollLeft = healthFavoriteScroll;
       if (healthOptions) healthOptions.scrollLeft = healthOptionsScroll;
     });
-    if (communitiesApp?.switchPatientProfile) {
+    if (homePostsApp?.switchPatientProfile || communitiesApp?.switchPatientProfile) {
       const activeProfile = getActivePatientProfile();
-      communitiesApp.switchPatientProfile({
+      const patientContext = {
         id: getActivePatientProfileId(),
         name: activeProfile.name,
         photo: activeProfile.photo,
-      }, activeCommunitiesStorageKey());
+      };
+      homePostsApp?.switchPatientProfile(patientContext, activeCommunitiesStorageKey());
+      communitiesApp?.switchPatientProfile(patientContext, activeCommunitiesStorageKey());
+      if (calendarSection === 'activities' && communitiesRoot?.parentElement === calendarActivities) communitiesApp?.showCalendar();
     }
   };
   window.addEventListener('drsam:patient-profile', event => {
@@ -4490,9 +4543,17 @@
       menu?.setAttribute('aria-hidden', willOpen ? 'false' : 'true');
       return;
     }
+    if (event.target.closest('[data-support-menu] [data-profile-view]')) {
+      portal.classList.remove('is-support-open');
+      portal.querySelector('[data-support-toggle]')?.setAttribute('aria-expanded', 'false');
+      portal.querySelector('[data-support-menu]')?.setAttribute('aria-hidden', 'true');
+      return;
+    }
     const trigger = event.target.closest('[data-open-view]');
     if (trigger) {
       openView(trigger.dataset.openView);
+      if (trigger.dataset.openView === 'home') homePostsApp?.showPosts();
+      if (trigger.dataset.openView === 'communities') communitiesApp?.showFeed();
       portal.classList.remove('is-support-open');
       portal.querySelector('[data-support-toggle]')?.setAttribute('aria-expanded', 'false');
       portal.querySelector('[data-support-menu]')?.setAttribute('aria-hidden', 'true');
@@ -4511,7 +4572,15 @@
     portal.querySelector('[data-support-toggle]')?.setAttribute('aria-expanded', 'false');
     portal.querySelector('[data-support-menu]')?.setAttribute('aria-hidden', 'true');
   });
-  const initialHashView = window.location.hash?.startsWith('#community-admin-') ? 'communities' : null;
+  const initialHashView = window.location.hash === '#communities' || window.location.hash?.startsWith('#community-admin-') ? 'communities' : null;
+  window.addEventListener('hashchange', () => {
+    if (window.location.hash === '#communities') {
+      openView('communities');
+      communitiesApp?.showFeed();
+    } else if (window.location.hash?.startsWith('#community-admin-')) {
+      openView('communities');
+    }
+  });
   const serverRequestedView = @json(session('patient_open_view'));
   const validationErrorView = @json($errors->any() ? (old('doctor_id') ? 'doctors' : (old('policy_number') ? 'insurance' : 'profile')) : null);
   const initial = initialHashView || serverRequestedView || validationErrorView || sessionStorage.getItem('patientPortalView') || 'home';
@@ -4875,6 +4944,7 @@
     }
   });
   doctorBookingRoot?.querySelector('[data-booking-open-calendar]')?.addEventListener('click', () => {
+    calendarSection = 'medical';
     openView('calendar');
     requestAnimationFrame(() => portal.querySelector('[data-patient-view="calendar"]')?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
   });
@@ -5019,6 +5089,11 @@
       }
     };
 
+    const activateHistoryCarouselButton = (button, options = {}) => {
+      if (button.dataset.openView) openView(button.dataset.openView);
+      else selectHistoryFilter(button, options);
+    };
+
     historyViewButtons.forEach((button, index) => {
       button.addEventListener('click', () => selectHistoryView(button));
       button.addEventListener('keydown', event => {
@@ -5051,7 +5126,7 @@
       historyFilterClickBlocked = false;
       historyFilterPanStart = event.clientX;
       historyFilterPanScroll = historyFilterCarousel.scrollLeft;
-      historyFilterPointerButton = event.target.closest('[data-history-filter]');
+      historyFilterPointerButton = event.target.closest('[data-history-filter], [data-open-view]');
       historyFilterCarousel.setPointerCapture?.(event.pointerId);
     });
 
@@ -5073,8 +5148,8 @@
       if (historyFilterCarousel.hasPointerCapture?.(event.pointerId)) {
         historyFilterCarousel.releasePointerCapture(event.pointerId);
       }
-      if (!historyFilterPanMoved && historyFilterPointerButton) {
-        selectHistoryFilter(historyFilterPointerButton, { scroll: false });
+      if (event.type === 'pointerup' && !historyFilterPanMoved && historyFilterPointerButton) {
+        activateHistoryCarouselButton(historyFilterPointerButton, { scroll: false });
         historyFilterTapHandled = true;
         window.setTimeout(() => {
           historyFilterTapHandled = false;
@@ -5095,11 +5170,12 @@
       historyFilterCarousel.addEventListener(type, finishHistoryFilterPan);
     });
     historyFilterCarousel.addEventListener('click', event => {
-      const button = event.target.closest('[data-history-filter]');
+      const button = event.target.closest('[data-history-filter], [data-open-view]');
       if (!button || !historyFilterCarousel.contains(button)) return;
       event.preventDefault();
+      event.stopPropagation();
       if (historyFilterClickBlocked || historyFilterTapHandled) return;
-      selectHistoryFilter(button);
+      activateHistoryCarouselButton(button);
     });
     historyScope.querySelectorAll('[data-history-step]').forEach(button => button.addEventListener('click', () => {
       const current = Math.max(0, historyFilters.findIndex(item => item.classList.contains('is-active')));
@@ -5594,6 +5670,8 @@
 
     calendarFilterCarousel.addEventListener('pointerdown', event => {
       if (event.button !== undefined && event.button !== 0) return;
+      calendarFilterPanMoved = false;
+      if (calendarFilterCarousel.scrollWidth <= calendarFilterCarousel.clientWidth) return;
       isCalendarFilterPanning = true;
       calendarFilterPanStart = event.clientX;
       calendarFilterPanScroll = calendarFilterCarousel.scrollLeft;

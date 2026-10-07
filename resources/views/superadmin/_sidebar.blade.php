@@ -23,18 +23,12 @@
 @endphp
 
 <aside class="superadmin-native-sidebar" aria-label="Navegacion superadministrador">
-  <div class="superadmin-native-brand">
-    <span aria-hidden="true">OK</span>
-    <div>
-      <strong>Superadministrador</strong>
-      <small>Gobierno modular</small>
-    </div>
-  </div>
+  <div class="superadmin-native-brand"><x-klini-brand label="Superadministrador" /></div>
 
   <nav class="superadmin-native-menu">
     @foreach ($sidebarItems as $item)
       <a @class(['is-active' => $active === $item['key']]) href="{{ $item['href'] }}">
-        <span aria-hidden="true">{{ $item['icon'] }}</span>
+        <span class="klini-nav-icon" aria-hidden="true"><x-klini-icon name="{{ $item['label'] }}" /></span>
         {{ $item['label'] }}
       </a>
     @endforeach

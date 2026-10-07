@@ -56,11 +56,7 @@
   <div class="messenger-native-screen">
     <aside class="messenger-native-sidebar" aria-label="Navegacion mensajero">
       <div class="messenger-native-brand">
-        <span>M</span>
-        <div>
-          <strong>Modulo Mensajero</strong>
-          <small>Entregas proveedor NPT</small>
-        </div>
+        <x-klini-brand label="Mensajero" />
       </div>
 
       <nav class="messenger-native-menu">

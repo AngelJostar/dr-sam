@@ -1,0 +1,22 @@
+
+   PASS  Tests\Feature\SuperAdminModuleTest
+  ✓ superadmin user can open native dashboard                                                                    5.27s  
+  ✓ superadmin catalog menu sections open native views                                                           0.14s  
+  ✓ superadmin can disable module and dashboard registry hides it                                                0.05s  
+  ✓ superadmin can update user status                                                                            0.03s  
+  ✓ superadmin catalog filters and csv export work                                                               0.03s  
+  ✓ superadmin can create institutions and private hospitals                                                     0.17s  
+  ✓ superadmin can update module details and section settings                                                    0.03s  
+  ✓ superadmin can create doctor patient and provider users                                                      0.47s  
+  ✓ superadmin patient catalog matches source two panel layout                                                   0.03s  
+  ✓ superadmin access catalog matches source destination actions                                                 0.04s  
+  ✓ superadmin can update people catalog statuses                                                                0.04s  
+  ✓ module edit links open the module catalog with the selected record                                           0.07s  
+  ✓ superadmin can view filter and export insurance carriers                                                     0.04s  
+  ✓ superadmin can view search and export insurance advisors                                                     0.05s  
+  ✓ superadmin can view search and export medical devices                                                        0.04s  
+  ✓ superadmin can view and update subscription settings                                                         0.09s  
+
+  Tests:    16 passed (225 assertions)
+  Duration: 6.72s
+

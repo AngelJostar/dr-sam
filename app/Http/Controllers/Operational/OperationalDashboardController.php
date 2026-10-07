@@ -667,7 +667,7 @@ class OperationalDashboardController extends Controller
             abort_if(
                 MixtureAuthorizationPolicy::cancellationLockedByCbta($providerRequest->mixtureIntegration?->remote_status),
                 422,
-                'La solicitud ya fue aprobada en Mezclas y no puede cancelarse desde Dr. Sam.',
+                'La solicitud ya fue aprobada en Mezclas y no puede cancelarse desde Klini.',
             );
 
             abort_unless(

@@ -64,7 +64,7 @@
     @endif
     <header class="doctor-assistant-native-topbar">
       <div class="doctor-assistant-native-brand">
-        <span>+</span>
+        <x-klini-brand />
         <div>
           <strong>Asistente Clinico</strong>
           <small>{{ $doctor->full_name }} - {{ $doctor->professional_license ?? 'Sin cedula' }}</small>

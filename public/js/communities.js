@@ -6,6 +6,10 @@
     storageKey: "klini_communities_portable",
     catalogStorageKey: "klini_communities_catalog_repository",
     profileStorageKey: "",
+    startView: "feed",
+    hideBottomNav: false,
+    separateCalendar: false,
+    onNavigate: function () {},
     onAction: function () {}
   };
 
@@ -446,7 +450,9 @@
     this.root = root;
     this.options = merge(DEFAULTS, options);
     this.state = {
-      view: "feed", detailId: null, filter: "explore", category: "all",
+      view: this.options.startView, detailId: null, filter: "explore", category: "all",
+      calendarFilter: "reserved", calendarDetailId: null,
+      demoReservationsSeeded: false,
       memberships: {}, reservations: { e1: true }, limits: { week: 5, next: 5, soon: 5 }, likes: {},
       commentsOpen: {},
       sharesOpen: {},
@@ -454,6 +460,7 @@
       replyThreads: {},
       replyDrafts: {},
       storyIndex: null,
+      showAllStories: false,
       storyUploads: {},
       adminCommunityEdits: {},
       adminTextEdit: null,
@@ -574,28 +581,33 @@
       isPatient: true,
       canUploadStory: true
     }];
-    this.adminStoryCommunities().forEach(function (community) {
-      var storyId = "community:" + (community.slug || community.id);
-      var communityPhoto = community.profileImage || community.heroImage || "/images/communities/create-cover.png";
+    if (this.options.startView !== "posts") {
+      this.adminStoryCommunities().forEach(function (community) {
+        var storyId = "community:" + (community.slug || community.id);
+        var communityPhoto = community.profileImage || community.heroImage || "/images/communities/create-cover.png";
+        items.push({
+          id: storyId,
+          communityId: community.id,
+          name: community.name,
+          short: community.name === "Ash and Olmo" ? "Ash Olmo" : community.name,
+          avatar: this.storyImageFor(storyId, communityPhoto),
+          storyPhoto: this.storyImageFor(storyId, community.heroImage || communityPhoto),
+          isManagedCommunity: true,
+          canUploadStory: true
+        });
+      }, this);
+    }
+    (this.options.startView === "posts" && !this.state.showAllStories ? people.slice(0, 4) : people)
+      .forEach(function (person) { items.push(person); });
+    if (this.options.startView !== "posts") {
       items.push({
-        id: storyId,
-        communityId: community.id,
-        name: community.name,
-        short: community.name === "Ash and Olmo" ? "Ash Olmo" : community.name,
-        avatar: this.storyImageFor(storyId, communityPhoto),
-        storyPhoto: this.storyImageFor(storyId, community.heroImage || communityPhoto),
-        isManagedCommunity: true,
-        canUploadStory: true
+        id: "more",
+        name: "Más historias",
+        short: "Más",
+        avatar: "/images/communities/create-cover.png",
+        isMore: true
       });
-    }, this);
-    people.forEach(function (person) { items.push(person); });
-    items.push({
-      id: "more",
-      name: "Más historias",
-      short: "Más",
-      avatar: "/images/communities/create-cover.png",
-      isMore: true
-    });
+    }
     return items;
   };
 
@@ -617,6 +629,7 @@
       if (saved) {
         this.state.memberships = saved.memberships || {};
         this.state.reservations = saved.reservations || { e1: true };
+        this.state.demoReservationsSeeded = saved.demoReservationsSeeded === true;
         this.state.likes = saved.likes || {};
         this.state.replyThreads = saved.replyThreads || {};
         this.state.storyUploads = saved.storyUploads || {};
@@ -642,6 +655,7 @@
       localStorage.setItem(this.options.storageKey, JSON.stringify({
         memberships: this.state.memberships,
         reservations: this.state.reservations,
+        demoReservationsSeeded: this.state.demoReservationsSeeded,
         likes: this.state.likes,
         replyThreads: this.state.replyThreads,
         storyUploads: this.state.storyUploads,
@@ -672,6 +686,7 @@
   };
 
   CommunityApp.prototype.handleHashRoute = function () {
+    if (this.options.startView === "posts") return;
     var match = window.location.hash.match(/^#community-admin-(.+)$/);
     if (!match) return;
     var id = decodeURIComponent(match[1]);
@@ -695,6 +710,15 @@
     });
     window.addEventListener("hashchange", function () {
       self.handleHashRoute();
+    });
+    this.root.addEventListener("keydown", function (event) {
+      var tab = closestFromEvent(event, "[data-calendar-tabs] [role=tab]");
+      if (!tab || ["ArrowLeft", "ArrowRight", "Home", "End"].indexOf(event.key) === -1) return;
+      event.preventDefault();
+      var tabs = Array.from(tab.closest("[data-calendar-tabs]").querySelectorAll("[role=tab]"));
+      var index = tabs.indexOf(tab);
+      index = event.key === "Home" ? 0 : event.key === "End" ? tabs.length - 1 : (index + (event.key === "ArrowRight" ? 1 : -1) + tabs.length) % tabs.length;
+      tabs[index].click();
     });
     this.root.addEventListener("click", function (event) {
       var adminControl = closestFromEvent(event, "[data-admin-panel-link]");
@@ -720,6 +744,25 @@
       if (!control) return;
       var action = control.getAttribute("data-action");
       var id = control.getAttribute("data-id");
+      var previousView = self.state.view;
+      if (["community-section", "calendar-filter", "calendar-detail", "calendar-back"].indexOf(action) !== -1) {
+        var sectionScroll = action === "community-section" ? self.captureScrollPosition() : null;
+        if (action === "community-section") {
+          self.state.view = id === "calendar" ? "calendar" : "feed";
+          self.state.calendarDetailId = null;
+        }
+        if (action === "calendar-filter") self.state.calendarFilter = id === "past" ? "past" : "reserved";
+        if (action === "calendar-detail") self.state.calendarDetailId = id;
+        if (action === "calendar-back") self.state.calendarDetailId = null;
+        self.render();
+        if (self.state.view !== previousView) self.options.onNavigate(self.state.view);
+        var focusTarget = action === "calendar-detail" ? "[data-calendar-detail-heading]" : action === "calendar-back" ? "[data-calendar-list-heading]" : '[data-action="' + action + '"][data-id="' + id + '"]';
+        var focusControl = self.root.querySelector(focusTarget);
+        if (focusControl) focusControl.focus({ preventScroll: true });
+        if (sectionScroll) self.restoreScrollPosition(sectionScroll);
+        else if (action !== "calendar-filter") self.scrollToScreenTop("auto");
+        return;
+      }
       var preserveScroll = self.shouldPreserveFilterScroll(action);
       var scrollSnapshot = preserveScroll ? self.captureScrollPosition() : null;
       if (action === "open-admin-panel") {
@@ -737,6 +780,13 @@
       if (action === "create-upload-cover") { self.uploadCreateImage("coverImage"); return; }
       if (action === "create-upload-profile") { self.uploadCreateImage("profileImage"); return; }
       if (action === "upload-story") { self.uploadStoryImage(id || "patient"); return; }
+      if (action === "show-more-stories") {
+        self.state.showAllStories = true;
+        self.render();
+        var stories = self.root.querySelector('[data-carousel="stories"]');
+        if (stories) stories.scrollLeft = 320;
+        return;
+      }
       if (action === "create-add-admin") self.addCreateAdministrator();
       if (action === "clear-event-search") {
         self.state.eventSearch = "";
@@ -808,8 +858,9 @@
       if (action === "reservation-submit") self.confirmReservationFlow();
       if (action === "reservation-view-reservations") {
         self.state.reservationFlow = null;
-        self.state.view = "directory";
-        self.state.filter = "events";
+        self.state.view = "calendar";
+        self.state.calendarFilter = "reserved";
+        self.state.calendarDetailId = null;
       }
       if (action === "reservation-open-community") {
         var flow = self.state.reservationFlow;
@@ -838,6 +889,7 @@
         return;
       }
       self.save(); self.render();
+      if (self.state.view !== previousView) self.options.onNavigate(self.state.view);
       if (preserveScroll) self.restoreScrollPosition(scrollSnapshot);
       if (action === "admin-create-event" || action === "admin-event-next" || action === "admin-event-prev" || action === "admin-create-class" || action === "admin-class-next" || action === "admin-class-prev" || action === "admin-class-step") {
         self.scrollToAdminEventSection("smooth");
@@ -1383,9 +1435,32 @@
   CommunityApp.prototype.openCommunityPanel = function (id) {
     var community = this.findCommunity(id);
     if (!community) return;
+    this.state.detailReturnView = this.state.view === "feed" ? "feed" : "directory";
     this.state.view = "detail";
     this.state.detailId = community.id;
     this.emit("community.opened", community);
+  };
+
+  CommunityApp.prototype.showFeed = function () {
+    if (this.state.view === "feed" && this.state.storyIndex == null) return;
+    this.state.view = "feed";
+    this.state.storyIndex = null;
+    this.save();
+    this.render();
+  };
+
+  CommunityApp.prototype.showCalendar = function () {
+    this.state.view = "calendar";
+    this.state.storyIndex = null;
+    this.state.calendarDetailId = null;
+    this.render();
+  };
+
+  CommunityApp.prototype.showPosts = function () {
+    if (this.state.view === "posts" && this.state.storyIndex == null) return;
+    this.state.view = "posts";
+    this.state.storyIndex = null;
+    this.render();
   };
 
   CommunityApp.prototype.openAdminPanel = function (id) {
@@ -2010,7 +2085,7 @@
   };
 
   CommunityApp.prototype.findReservableItem = function (id) {
-    var event = events.find(function (item) { return item.id === id; });
+    var event = events.concat(this.state.adminCreatedEvents || []).find(function (item) { return item.id === id; });
     if (event) return { type: "event", item: event, community: this.findCommunity(event.communityId) || communities[0] };
     var classItem = null;
     var classCommunity = null;
@@ -2100,15 +2175,22 @@
 
   CommunityApp.prototype.render = function () {
     var shellClass = this.state.view === "create" ? "kc-shell kc-shell-create" : "kc-shell";
-    var hideBottomNav = this.state.view === "create" || this.state.view === "reservation";
+    var hideBottomNav = this.options.hideBottomNav || this.state.view === "create" || this.state.view === "reservation";
     this.root.innerHTML = '<div class="klini-communities">' +
       '<section class="' + shellClass + '">' + this.renderView() + '</section>' + this.renderStoryViewer() + this.renderCancelConfirmModal() + (hideBottomNav ? "" : this.renderBottomNav()) + '</div>';
+    this.root.querySelectorAll("[data-community-feed-image]").forEach(function (image) {
+      image.addEventListener("error", function () {
+        if (image.getAttribute("src") !== image.dataset.fallbackSrc) image.src = image.dataset.fallbackSrc;
+      }, { once: true });
+    });
     this.syncStoryTimer();
     this.syncDirectoryFocus();
     this.applyEventSearch(this.state.eventSearch || "");
   };
 
   CommunityApp.prototype.renderView = function () {
+    if (this.state.view === "calendar") return this.renderCommunityCalendar();
+    if (this.state.view === "posts") return this.renderPostsFeed();
     if (this.state.view === "directory") return this.renderDirectory();
     if (this.state.view === "detail") return this.renderDetail();
     if (this.state.view === "admin") return this.renderAdminPanel();
@@ -2118,24 +2200,175 @@
   };
 
   CommunityApp.prototype.renderFeed = function () {
-    var shortcuts = [
-      ["create-open", "", "Crear Comunidad", "plus", "is-create"],
-      ["open-directory-filter", "events", "Eventos y Clases", "calendar", ""],
-      ["open-directory-filter", "explore", "Explorar", "compass", ""],
-      ["open-directory-filter", "mine", "Mis Comunidades", "users", ""]
+    var allCommunities = this.catalogCommunities();
+    return '<div class="kc-feed-wrap kc-community-feed">' +
+      this.renderCommunityHeader("feed") + '<section id="kc-community-feed-panel"' + (this.options.separateCalendar ? ' aria-label="Comunidades"' : ' role="tabpanel" aria-labelledby="kc-community-feed-tab"') + '>' +
+      this.renderStories() +
+      '<div class="kc-community-feed-list" aria-label="Todas las comunidades">' +
+      (allCommunities.length ? allCommunities.map(this.renderFeedCommunity.bind(this)).join("") : '<p class="kc-empty">No hay comunidades disponibles.</p>') +
+      '</div></section></div>';
+  };
+
+  CommunityApp.prototype.renderCommunityHeader = function (section) {
+    if (this.options.separateCalendar) {
+      if (section === "calendar") return "";
+      return '<header class="kc-community-workspace-heading"><h1 class="kc-community-workspace-title">Comunidades</h1><div class="kc-community-heading-actions"><button type="button" data-action="open-directory-filter" data-id="explore" aria-label="Explorar comunidades" title="Explorar comunidades">' + icon("compass") + '</button><button type="button" data-action="create-open" aria-label="Crear comunidad" title="Crear comunidad">' + icon("plus") + '</button></div></header>';
+    }
+    return '<header class="kc-community-workspace-heading"><div class="kc-community-switch" role="tablist" aria-label="Comunidades y calendario" data-calendar-tabs>' +
+      [{ id: "feed", label: "Comunidades", icon: "users" }, { id: "calendar", label: "Calendario", icon: "calendar" }].map(function (tab) {
+        var selected = section === tab.id;
+        return '<button type="button" role="tab" id="kc-community-' + tab.id + '-tab" aria-controls="kc-community-' + tab.id + '-panel" aria-selected="' + selected + '" tabindex="' + (selected ? "0" : "-1") + '" data-action="community-section" data-id="' + tab.id + '">' + icon(tab.icon) + '<span>' + tab.label + '</span></button>';
+      }).join("") + '</div><div class="kc-community-heading-actions"><button type="button" data-action="open-directory-filter" data-id="explore" aria-label="Explorar comunidades" title="Explorar comunidades">' + icon("compass") + '</button><button type="button" data-action="create-open" aria-label="Crear comunidad" title="Crear comunidad">' + icon("plus") + '</button></div></header>';
+  };
+
+  CommunityApp.prototype.calendarItemDate = function (item) {
+    var raw = String(item.dateKey || item.isoDate || item.date || "");
+    var iso = raw.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    var numeric = raw.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+    var textDate = normalizeSearch(raw).match(/(\d{1,2})\s+de\s+([a-z]+)/);
+    var yearMatch = raw.match(/\b(20\d{2})\b/);
+    // The imported July/August demo records belong to 2026, not the current year.
+    var year = iso ? Number(iso[1]) : numeric ? Number(numeric[3]) : Number(item.year || (yearMatch && yearMatch[1]) || 2026);
+    var month = iso ? Number(iso[2]) - 1 : numeric ? Number(numeric[2]) - 1 : EVENT_MONTH_INDEX[normalizeSearch(textDate ? textDate[2] : item.month || "")];
+    var day = iso ? Number(iso[3]) : numeric ? Number(numeric[1]) : Number(textDate ? textDate[1] : item.number);
+    if (month == null || !day) return null;
+    var date = new Date(year, month, day);
+    if (date.getFullYear() !== year || date.getMonth() !== month || date.getDate() !== day) return null;
+    return date;
+  };
+
+  CommunityApp.prototype.calendarItemTime = function (item, date) {
+    if (!date) return null;
+    var raw = String(item.endTime || item.time || item.startTime || "").toLowerCase().replace(/\./g, "");
+    var matches = Array.from(raw.matchAll(/(\d{1,2}):(\d{2})\s*([ap]\s*m)?/g));
+    // Use the end of a supplied range; undated times remain reserved through that day.
+    var time = matches[matches.length - 1];
+    var result = new Date(date.getTime());
+    if (!time) { result.setHours(23, 59, 59, 999); return result; }
+    var hour = Number(time[1]), minute = Number(time[2]);
+    if (minute > 59 || hour > 23 || (time[3] && (hour < 1 || hour > 12))) { result.setHours(23, 59, 59, 999); return result; }
+    if (time[3]) hour = hour % 12 + (time[3].charAt(0) === "p" ? 12 : 0);
+    result.setHours(hour, minute, 0, 0);
+    return result;
+  };
+
+  CommunityApp.prototype.calendarReservations = function (now) {
+    now = now || new Date();
+    return Object.keys(this.state.reservations).filter(function (id) { return !!this.state.reservations[id]; }, this).map(function (id) {
+      var reservation = this.findReservableItem(id);
+      if (!reservation.item.title) return null;
+      reservation.id = id;
+      reservation.date = this.calendarItemDate(reservation.item);
+      reservation.endsAt = this.calendarItemTime(reservation.item, reservation.date);
+      reservation.past = !!reservation.endsAt && reservation.endsAt.getTime() < now.getTime();
+      return reservation;
+    }, this).filter(Boolean).sort(function (a, b) {
+      return (a.endsAt ? a.endsAt.getTime() : Infinity) - (b.endsAt ? b.endsAt.getTime() : Infinity) || a.id.localeCompare(b.id);
+    });
+  };
+
+  // Explicit local-demo setup only; normal visits and profile changes do not seed data.
+  CommunityApp.prototype.seedDemoReservations = function () {
+    if (this.state.demoReservationsSeeded) return false;
+    var today = this.todayDateStart();
+    var activities = [
+      { id: "yoga", title: "Yoga suave", communityId: "respira", days: 2, time: "08:00", endTime: "09:00", place: "Estudio Klini · Sala Wellness", image: "/brand/klini/wellness-yoga.webp", description: "Respiración, estiramientos y un momento para reconectar contigo." },
+      { id: "walking", title: "Caminata en comunidad", communityId: "ritmo", days: 3, time: "09:00", endTime: "10:00", place: "Parque La Mexicana · Punto de encuentro", image: "/brand/klini/wellness-running.webp", description: "Movimiento a tu ritmo y una mañana para compartir al aire libre." },
+      { id: "meditation", title: "Meditación guiada", communityId: "mente", days: 6, time: "17:00", endTime: "17:50", place: "En línea", modality: "Virtual", image: "/images/communities/create-cover.png", description: "Una pausa consciente para respirar, soltar tensión y encontrar calma." },
+      { id: "past-yoga", title: "Yoga y equilibrio", communityId: "respira", days: -3, time: "08:00", endTime: "09:00", place: "Estudio Klini · Sala Wellness", image: "/brand/klini/wellness-yoga.webp", description: "Práctica suave de movilidad, equilibrio y respiración." },
+      { id: "past-walking", title: "Movimiento al aire libre", communityId: "ritmo", days: -7, time: "09:00", endTime: "10:00", place: "Parque La Mexicana", image: "/brand/klini/wellness-running.webp", description: "Una caminata para compartir energía y bienestar en comunidad." }
     ];
-    return '<div class="kc-blank-hero" aria-hidden="true"></div>' +
-      '<div class="kc-feed-wrap">' +
-      '<section class="kc-community-shortcuts" data-pan data-carousel="community-shortcuts" aria-label="Accesos de comunidades">' + shortcuts.map(function (item) {
-        return '<button class="kc-community-shortcut ' + item[4] + '" data-action="' + item[0] + '"' + (item[1] ? ' data-id="' + item[1] + '"' : "") + '><span>' + icon(item[3]) + '</span><strong>' + item[2] + '</strong></button>';
-      }).join("") + '</section>' +
-      this.renderStories() + '<div class="kc-post-list">' + posts.map(this.renderPost.bind(this)).join("") + '</div></div>';
+    activities.forEach(function (activity) {
+      var id = "demo-calendar-v1-" + activity.id;
+      var date = new Date(today.getFullYear(), today.getMonth(), today.getDate() + activity.days);
+      if (!this.state.adminCreatedEvents.some(function (item) { return item.id === id; })) {
+        this.state.adminCreatedEvents.push({
+          id: id, communityId: activity.communityId, title: activity.title,
+          dateKey: dateKeyFromDate(date), date: date.toLocaleDateString("es-MX", { weekday: "long", day: "numeric", month: "long", year: "numeric" }),
+          day: EVENT_DAY_LABELS[date.getDay()], number: String(date.getDate()), month: date.toLocaleDateString("es-MX", { month: "short" }),
+          time: activity.time, endTime: activity.endTime, place: activity.place,
+          modality: activity.modality || "Presencial", coverImage: activity.image,
+          description: activity.description + " Actividad de demostración de Klini.",
+          category: "Bienestar", status: "Publicado", capacity: 20, available: 12, price: "Gratis", demo: true
+        });
+      }
+      this.state.reservations[id] = true;
+    }, this);
+    this.state.demoReservationsSeeded = true;
+    this.save();
+    return true;
+  };
+
+  CommunityApp.prototype.calendarDateLabel = function (reservation) {
+    var date = reservation.date;
+    var label = date ? date.toLocaleDateString("es-MX", { weekday: "short", day: "numeric", month: "short", year: "numeric" }) : "Fecha por confirmar";
+    var item = reservation.item;
+    var time = item.time || item.startTime || "";
+    if (item.endTime) time += (time ? " – " : "Hasta ") + item.endTime;
+    return label + (time ? " · " + time : "");
+  };
+
+  CommunityApp.prototype.renderCalendarCard = function (reservation, detail) {
+    var item = reservation.item, community = reservation.community || {};
+    var cover = item.coverImage || item.image || this.communityHeroImage(community);
+    var status = reservation.past ? "Anterior" : "Confirmada";
+    return '<article class="kc-calendar-card' + (detail ? ' is-detail' : '') + '"><img class="kc-calendar-cover" src="' + escapeHtml(cover) + '" alt="" data-community-feed-image data-fallback-src="/images/communities/category-wellness.png" loading="lazy"><div class="kc-calendar-card-content">' +
+      '<div class="kc-calendar-card-heading"><h2>' + escapeHtml(item.title) + '</h2><span class="kc-calendar-status' + (reservation.past ? ' is-past' : '') + '">' + icon(reservation.past ? "clock" : "check") + status + '</span></div>' +
+      '<ul class="kc-calendar-meta"><li>' + icon("users") + '<span>' + escapeHtml(community.name || "Comunidad") + '</span></li><li>' + icon("calendar") + '<span>' + escapeHtml(this.calendarDateLabel(reservation)) + '</span></li><li>' + icon("map") + '<span>' + escapeHtml(item.place || item.modality || "Ubicación por confirmar") + '</span></li></ul>' +
+      (detail ? '<p class="kc-calendar-description">' + escapeHtml(item.description || community.description || "") + '</p>' + (item.modality ? '<p class="kc-calendar-modality">Modalidad: ' + escapeHtml(item.modality) + '</p>' : '') : '<button type="button" class="kc-calendar-open" data-action="calendar-detail" data-id="' + escapeHtml(reservation.id) + '" aria-label="Ver reservación: ' + escapeHtml(item.title) + '">Ver reservación ' + icon("arrow") + '</button>') + '</div></article>';
+  };
+
+  CommunityApp.prototype.renderCommunityCalendar = function () {
+    var reservations = this.calendarReservations();
+    var past = this.state.calendarFilter === "past";
+    var detail = reservations.find(function (item) { return item.id === this.state.calendarDetailId; }, this);
+    var content;
+    if (detail) {
+      content = '<button type="button" class="kc-calendar-back" data-action="calendar-back">' + icon("back") + ' Volver al calendario</button><h1 class="kc-calendar-detail-heading" tabindex="-1" data-calendar-detail-heading>Tu reservación</h1>' + this.renderCalendarCard(detail, true);
+    } else {
+      var visible = reservations.filter(function (item) { return item.past === past; });
+      if (past) visible.reverse();
+      content = '<div class="kc-calendar-filters" role="tablist" aria-label="Filtrar reservaciones" data-calendar-tabs>' + [{ id: "reserved", label: "Reservadas" }, { id: "past", label: "Anteriores" }].map(function (filter) {
+        var selected = (past ? "past" : "reserved") === filter.id;
+        return '<button type="button" role="tab" id="kc-calendar-' + filter.id + '-tab" aria-controls="kc-calendar-' + filter.id + '-panel" aria-selected="' + selected + '" tabindex="' + (selected ? "0" : "-1") + '" data-action="calendar-filter" data-id="' + filter.id + '">' + filter.label + '</button>';
+      }).join("") + '</div><section role="tabpanel" id="kc-calendar-' + (past ? "past" : "reserved") + '-panel" aria-labelledby="kc-calendar-' + (past ? "past" : "reserved") + '-tab"><header class="kc-calendar-list-heading"><h1 tabindex="-1" data-calendar-list-heading>' + (past ? "Actividades anteriores" : "Tus próximas actividades") + '</h1><p role="status">' + visible.length + (visible.length === 1 ? ' reservación' : ' reservaciones') + '</p></header><div class="kc-calendar-list">' +
+        (visible.length ? visible.map(function (item) { return this.renderCalendarCard(item, false); }, this).join("") : '<div class="kc-calendar-empty"><span>' + icon("calendar") + '</span><h2>' + (past ? "Aquí empieza tu historia" : "Haz espacio para tu bienestar") + '</h2><p>' + (past ? "Tus actividades reservadas aparecerán aquí cuando hayan pasado." : "Aún no tienes próximas actividades reservadas. Explora tus comunidades y encuentra tu siguiente momento de bienestar.") + '</p><button type="button" class="kc-calendar-open" data-action="open-directory-filter" data-id="explore">Explorar comunidades ' + icon("arrow") + '</button></div>') + '</div></section>';
+    }
+    return '<div class="kc-feed-wrap kc-community-feed kc-community-calendar">' + this.renderCommunityHeader("calendar") + '<section id="kc-community-calendar-panel"' + (this.options.separateCalendar ? ' aria-label="Reservaciones de comunidades"' : ' role="tabpanel" aria-labelledby="kc-community-calendar-tab"') + '>' + content + '</section></div>';
+  };
+
+  CommunityApp.prototype.renderPostsFeed = function () {
+    return '<div class="kc-feed-wrap kc-posts-home">' +
+      this.renderStories() +
+      '<div class="kc-post-list" aria-label="Publicaciones de usuarios">' + posts.map(this.renderPost.bind(this)).join("") + '</div></div>';
+  };
+
+  CommunityApp.prototype.renderFeedCommunity = function (community) {
+    var id = escapeHtml(community.id);
+    var name = escapeHtml(community.name);
+    var image = escapeHtml(this.communityHeroImage(community));
+    var fallback = "/images/communities/category-wellness.png";
+    var initials = escapeHtml(community.logoInitials || community.initials || initialsFromName(community.name));
+    return '<article class="kc-community-feed-card" data-community-feed-card data-community-id="' + id + '">' +
+      '<header><span class="kc-community-feed-avatar ' + escapeHtml(community.tone || "mint") + '">' + initials + '</span>' +
+      '<div><strong>' + name + '</strong><small>' + escapeHtml(community.category || "Bienestar") + ' · ' + escapeHtml(community.city || "En linea") + '</small></div>' +
+      '<span class="kc-community-feed-access">' + (community.access === "open" ? "Abierta" : "Con solicitud") + '</span></header>' +
+      '<button class="kc-community-feed-cover" type="button" data-action="open-community-panel" data-id="' + id + '" aria-label="Ver comunidad ' + name + '">' +
+      '<img src="' + image + '" data-community-feed-image data-fallback-src="' + fallback + '" alt="Portada de ' + name + '" loading="lazy"></button>' +
+      '<div class="kc-community-feed-body"><span>' + icon("users") + ' ' + escapeHtml(community.members || 0) + ' miembros</span>' +
+      '<p>' + escapeHtml(community.description || "") + '</p>' +
+      '<button type="button" data-action="open-community-panel" data-id="' + id + '">Ver comunidad ' + icon("arrow") + '</button></div></article>';
   };
 
   CommunityApp.prototype.renderStories = function () {
     var items = this.storyItems();
+    var isHomePosts = this.options.startView === "posts";
+    var hasPatientStory = !!(this.state.storyUploads || {}).patient;
     return '<div class="kc-stories" data-pan data-carousel="stories">' +
       items.map(function (person) {
+        if (isHomePosts && person.isPatient) {
+          return '<button type="button" class="kc-story kc-story-own" data-action="' + (hasPatientStory ? "open-story" : "upload-story") + '" data-id="' + (hasPatientStory ? escapeHtml(person.id) : "patient") + '" aria-label="' + (hasPatientStory ? "Ver tu historia" : "Agregar tu historia") + '"><span class="kc-story-home-add">' + (hasPatientStory ? '<img src="' + escapeHtml(person.avatar) + '" alt="">' : icon("plus")) + '</span><b>Tu historia</b></button>';
+        }
         if (person.canUploadStory) {
           return '<button class="kc-story kc-story-own ' + (person.isManagedCommunity ? "kc-story-managed" : "") + '" data-action="open-story" data-id="' + person.id + '"><span class="kc-story-thumb"><img src="' + escapeHtml(person.avatar) + '" alt="' + escapeHtml(person.name) + '"><em class="kc-story-upload" data-action="upload-story" data-id="' + person.id + '" role="button" aria-label="Subir foto a historia" title="Subir foto">' + icon("plus") + '</em></span><b>' + escapeHtml(person.isPatient ? "Tu historia" : person.short) + '</b></button>';
         }
@@ -2143,7 +2376,8 @@
           return '<button class="kc-story kc-story-more" data-action="upload-story" data-id="patient"><span class="kc-story-thumb"><img src="' + escapeHtml(person.avatar) + '" alt="' + escapeHtml(person.name) + '"><em class="kc-story-upload" aria-hidden="true">' + icon("plus") + '</em></span><b>Mas</b></button>';
         }
         return '<button class="kc-story" data-action="open-story" data-id="' + person.id + '"><img src="' + person.avatar + '" alt="' + escapeHtml(person.name) + '"><b>' + escapeHtml(person.short) + '</b></button>';
-      }).join("") + '</div>';
+      }).join("") +
+      (isHomePosts && !this.state.showAllStories ? '<button type="button" class="kc-story kc-story-more" data-action="show-more-stories" aria-label="Mostrar más historias"><span class="kc-story-more-mark" aria-hidden="true">•••</span><b>Más</b></button>' : "") + '</div>';
   };
 
   CommunityApp.prototype.renderStoryViewer = function () {
@@ -3607,7 +3841,7 @@
       { title: "Publicaciones", detail: "Comparte avances, dudas y aprendizajes.", icon: "message" }
     ];
     return '<div class="kc-detail kc-detail-mobile">' +
-      '<button class="kc-back kc-detail-back" data-action="back-directory">' + icon("back") + ' Volver a comunidades</button>' +
+      '<button class="kc-back kc-detail-back" data-action="' + (this.state.detailReturnView === "feed" ? "back-feed" : "back-directory") + '">' + icon("back") + ' Volver a comunidades</button>' +
       '<section class="kc-detail-public-hero ' + community.tone + '" style="--community-hero:url(' + "'" + escapeHtml(heroImage) + "'" + ')">' +
       '<div class="kc-detail-hero-media"><span>' + escapeHtml(community.logoInitials || community.initials) + '</span></div>' +
       '<div class="kc-detail-hero-copy"><small>' + escapeHtml(community.category) + ' · ' + (community.access === "open" ? "Comunidad abierta" : "Acceso con solicitud") + '</small><h1>' + escapeHtml(community.name) + '</h1><p>' + escapeHtml(community.description) + '</p></div>' +
@@ -3625,9 +3859,9 @@
   };
 
   CommunityApp.prototype.renderBottomNav = function () {
-    return '<nav class="kc-bottom-nav" aria-label="Navegacion principal"><button data-action="home">' + icon("home") + '<span>Home</span></button>' +
-      '<button>' + icon("calendar") + '<span>Dispositivos</span></button><button class="register">' + icon("plus") + '<span>Registro</span></button>' +
-      '<button>' + icon("heart") + '<span>Mi salud</span></button><button class="active" data-action="back-feed">' + icon("users") + '<span>Comunidades</span></button></nav>';
+    return '<nav class="kc-bottom-nav" aria-label="Navegacion principal"><button data-action="home">' + icon("home") + '<span>Inicio</span></button>' +
+      '<button class="active" data-action="back-feed">' + icon("users") + '<span>Comunidades</span></button><button class="register">' + icon("plus") + '<span>Registro</span></button>' +
+      '<button>' + icon("heart") + '<span>Mi Salud</span></button><button>' + icon("calendar") + '<span>Dispositivos</span></button></nav>';
   };
 
   window.KliniCommunityCatalog = {
