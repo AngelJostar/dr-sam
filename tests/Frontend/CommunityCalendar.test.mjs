@@ -41,12 +41,12 @@ test('reservadas y anteriores incluyen sólo reservas vigentes y ordenan por fec
   app.state.reservations.unknown = true;
   app.state.reservations.falseValue = false;
   click('community-section','calendar');
-  assert.match(root.innerHTML,/Tus próximas actividades/);
+  assert.match(root.innerHTML,/Mis reservaciones/);
   assert.match(root.innerHTML,/2 reservaciones/);
   assert.ok(root.innerHTML.indexOf('>sooner<') < root.innerHTML.indexOf('>later<'));
   assert.doesNotMatch(root.innerHTML,/>old<|>cancelled<|>unknown</);
   click('calendar-filter','past');
-  assert.match(root.innerHTML,/Actividades anteriores/);
+  assert.match(root.innerHTML,/2 reservaciones anteriores/);
   assert.ok(root.innerHTML.indexOf('>recent<') < root.innerHTML.indexOf('>old<'));
   assert.doesNotMatch(root.innerHTML,/>sooner<|>later</);
 });
@@ -80,10 +80,10 @@ test('clases y eventos creados comparten listado, detalle y navegación del swit
   assert.match(root.innerHTML,/Tu reservación/);
   assert.match(root.innerHTML,/Modalidad: Presencial/);
   click('calendar-back');
-  assert.match(root.innerHTML,/Tus próximas actividades/);
+  assert.match(root.innerHTML,/Mis reservaciones/);
   click('community-section','feed');
   assert.match(root.innerHTML,/aria-selected="true" tabindex="0" data-action="community-section" data-id="feed"/);
-  assert.doesNotMatch(root.innerHTML,/Tus próximas actividades/);
+  assert.doesNotMatch(root.innerHTML,/Mis reservaciones/);
 });
 
 test('la confirmación existente aparece en el calendario y conserva la reserva al recargar',()=>{
@@ -167,4 +167,21 @@ test('el calendario integrado conserva reservas y notifica la navegación hacia 
   app.showCalendar();
   assert.match(root.innerHTML,/>previous</);
   assert.equal(app.calendarReservations(today).length,2);
+});
+
+
+test('la tarjeta conserva asistentes y abre la comunidad vinculada',()=>{
+  const {app,root,storage,click} = mount({separateCalendar:true});
+  app.openReservationFlow('class-respira-1');
+  app.updateReservationAttendees(2);
+  app.confirmReservationFlow();
+  app.save();
+  app.load();
+  assert.equal(JSON.parse(storage.get('patient-a')).reservations['class-respira-1'].attendees,3);
+  const reservation = app.calendarReservations(today).find(item=>item.id === 'class-respira-1');
+  assert.match(app.renderCalendarCard(reservation,false),/3 lugares reservados/);
+  assert.match(app.renderCalendarCard(reservation,false),/data-action="open-community-panel" data-id="respira"/);
+  click('open-community-panel','respira');
+  assert.equal(app.state.detailId,'respira');
+  assert.equal(app.state.view,'detail');
 });

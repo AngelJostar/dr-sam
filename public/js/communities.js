@@ -21,55 +21,55 @@
   ];
 
   people = people.concat([
-    { id: "camila", name: "Camila Torres", short: "Camila", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=240&h=240&q=82" },
-    { id: "andres", name: "Andres Vega", short: "Andres", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=240&h=240&q=82" },
-    { id: "lucia", name: "Lucia Herrera", short: "Lucia", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=240&h=240&q=82" },
-    { id: "mateo", name: "Mateo Silva", short: "Mateo", avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=240&h=240&q=82" },
-    { id: "renata", name: "Renata Cruz", short: "Renata", avatar: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=240&h=240&q=82" },
-    { id: "pablo", name: "Pablo Neri", short: "Pablo", avatar: "https://images.unsplash.com/photo-1527980965255-d3b416303d12?auto=format&fit=crop&w=240&h=240&q=82" },
-    { id: "valeria", name: "Valeria Montes", short: "Valeria", avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=240&h=240&q=82" },
-    { id: "ivan", name: "Ivan Rojas", short: "Ivan", avatar: "https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?auto=format&fit=crop&w=240&h=240&q=82" },
-    { id: "sofia", name: "Sofia Palma", short: "Sofia", avatar: "https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?auto=format&fit=crop&w=240&h=240&q=82" },
-    { id: "emilio", name: "Emilio Fuentes", short: "Emilio", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=240&h=240&q=82" },
-    { id: "paulina", name: "Paulina Leon", short: "Paulina", avatar: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=240&h=240&q=82" },
-    { id: "ricardo", name: "Ricardo Cano", short: "Ricardo", avatar: "https://images.unsplash.com/photo-1552058544-f2b08422138a?auto=format&fit=crop&w=240&h=240&q=82" },
-    { id: "ximena", name: "Ximena Arias", short: "Ximena", avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=240&h=240&q=82" },
-    { id: "lara", name: "Lara Medina", short: "Lara", avatar: "https://images.unsplash.com/photo-1554151228-14d9def656e4?auto=format&fit=crop&w=240&h=240&q=82" },
-    { id: "natalia", name: "Natalia Sol", short: "Natalia", avatar: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=240&h=240&q=82" },
-    { id: "hector", name: "Hector Pineda", short: "Hector", avatar: "https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?auto=format&fit=crop&w=240&h=240&q=82" },
-    { id: "brenda", name: "Brenda Santos", short: "Brenda", avatar: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=240&h=240&q=82" },
-    { id: "daniel", name: "Daniel Ortiz", short: "Daniel", avatar: "https://images.unsplash.com/photo-1546961329-78bef0414d7c?auto=format&fit=crop&w=240&h=240&q=82" },
-    { id: "oscar", name: "Oscar Molina", short: "Oscar", avatar: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=240&h=240&q=82" },
-    { id: "tomas", name: "Tomas Rey", short: "Tomas", avatar: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=240&h=240&q=82" },
-    { id: "isabel", name: "Isabel Luna", short: "Isabel", avatar: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=240&h=240&q=82" },
-    { id: "miranda", name: "Miranda Paz", short: "Miranda", avatar: "https://images.unsplash.com/photo-1542206395-9feb3edaa68d?auto=format&fit=crop&w=240&h=240&q=82" },
-    { id: "elena", name: "Elena Vargas", short: "Elena", avatar: "https://images.unsplash.com/photo-1520813792240-56fc4a3765a7?auto=format&fit=crop&w=240&h=240&q=82" },
-    { id: "alejandro", name: "Alejandro Ruiz", short: "Alejandro", avatar: "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?auto=format&fit=crop&w=240&h=240&q=82" },
-    { id: "samuel", name: "Samuel Diaz", short: "Samuel", avatar: "https://images.unsplash.com/photo-1521119989659-a83eee488004?auto=format&fit=crop&w=240&h=240&q=82" },
-    { id: "jorge", name: "Jorge Vidal", short: "Jorge", avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=240&h=240&q=82" },
-    { id: "raul", name: "Raul Campos", short: "Raul", avatar: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=240&h=240&q=82" },
-    { id: "maria", name: "Maria Aguilar", short: "Maria", avatar: "https://images.unsplash.com/photo-1521566652839-697aa473761a?auto=format&fit=crop&w=240&h=240&q=82" },
-    { id: "fernando", name: "Fernando Gil", short: "Fernando", avatar: "https://images.unsplash.com/photo-1519345182560-3f2917c472ef?auto=format&fit=crop&w=240&h=240&q=82" },
-    { id: "claudia", name: "Claudia Romero", short: "Claudia", avatar: "https://images.unsplash.com/photo-1525134479668-1bee5c7c6845?auto=format&fit=crop&w=240&h=240&q=82" }
+    { id: "camila", name: "Camila Torres", short: "Camila", avatar: "/images/patient-export/9640e7795c8db2cdba57.jpg" },
+    { id: "andres", name: "Andres Vega", short: "Andres", avatar: "/images/patient-export/e7553043d2dd01250832.jpg" },
+    { id: "lucia", name: "Lucia Herrera", short: "Lucia", avatar: "/images/patient-export/93b6a487565a6d983f8e.jpg" },
+    { id: "mateo", name: "Mateo Silva", short: "Mateo", avatar: "/images/patient-export/d48389cc338d6118e8b2.jpg" },
+    { id: "renata", name: "Renata Cruz", short: "Renata", avatar: "/images/patient-export/42dee029eaeb6a9103fc.jpg" },
+    { id: "pablo", name: "Pablo Neri", short: "Pablo", avatar: "/images/patient-export/a8739ed0eb5ad2677255.jpg" },
+    { id: "valeria", name: "Valeria Montes", short: "Valeria", avatar: "/images/patient-export/df94a43f03f910053436.jpg" },
+    { id: "ivan", name: "Ivan Rojas", short: "Ivan", avatar: "/images/patient-export/41d374994b6ce1850cc2.jpg" },
+    { id: "sofia", name: "Sofia Palma", short: "Sofia", avatar: "/images/patient-export/f0d4bfbd855cbea59304.jpg" },
+    { id: "emilio", name: "Emilio Fuentes", short: "Emilio", avatar: "/images/patient-export/38d14bf66ff30240c8bc.jpg" },
+    { id: "paulina", name: "Paulina Leon", short: "Paulina", avatar: "/images/patient-export/fdae6f1f9d838e48f96e.jpg" },
+    { id: "ricardo", name: "Ricardo Cano", short: "Ricardo", avatar: "/images/patient-export/3984b99af2b59454d85e.jpg" },
+    { id: "ximena", name: "Ximena Arias", short: "Ximena", avatar: "/images/patient-export/66b4b1b9c976d3999ae6.jpg" },
+    { id: "lara", name: "Lara Medina", short: "Lara", avatar: "/images/patient-export/2b4d0e28bd24e5cc52dc.jpg" },
+    { id: "natalia", name: "Natalia Sol", short: "Natalia", avatar: "/images/patient-export/4e8616057ba3ddd057c2.jpg" },
+    { id: "hector", name: "Hector Pineda", short: "Hector", avatar: "/images/patient-export/d170c3103974c5febbd0.jpg" },
+    { id: "brenda", name: "Brenda Santos", short: "Brenda", avatar: "/images/patient-export/e49873da2b386a07d76a.jpg" },
+    { id: "daniel", name: "Daniel Ortiz", short: "Daniel", avatar: "/images/patient-export/7c6c94b37faf68177701.jpg" },
+    { id: "oscar", name: "Oscar Molina", short: "Oscar", avatar: "/images/patient-export/de157019d31e6c6f8325.jpg" },
+    { id: "tomas", name: "Tomas Rey", short: "Tomas", avatar: "/images/patient-export/aa061533cdffccf31974.jpg" },
+    { id: "isabel", name: "Isabel Luna", short: "Isabel", avatar: "/images/patient-export/6de0a7f0c746ad783b31.jpg" },
+    { id: "miranda", name: "Miranda Paz", short: "Miranda", avatar: "/images/patient-export/17bcd799e74650458a0e.jpg" },
+    { id: "elena", name: "Elena Vargas", short: "Elena", avatar: "/images/patient-export/97828858e7cb4ebc41c2.jpg" },
+    { id: "alejandro", name: "Alejandro Ruiz", short: "Alejandro", avatar: "/images/patient-export/f8f0f44d6906551ddbcd.jpg" },
+    { id: "samuel", name: "Samuel Diaz", short: "Samuel", avatar: "/images/patient-export/fe4d65015c1a79c1acae.jpg" },
+    { id: "jorge", name: "Jorge Vidal", short: "Jorge", avatar: "/images/patient-export/41fafeca192d22ac1c04.jpg" },
+    { id: "raul", name: "Raul Campos", short: "Raul", avatar: "/images/patient-export/fd7ce2230d3ca6a58cae.jpg" },
+    { id: "maria", name: "Maria Aguilar", short: "Maria", avatar: "/images/patient-export/23deab93472032b80cf5.jpg" },
+    { id: "fernando", name: "Fernando Gil", short: "Fernando", avatar: "/images/patient-export/408d9fc2edb97e4d641f.jpg" },
+    { id: "claudia", name: "Claudia Romero", short: "Claudia", avatar: "/images/patient-export/6b0b240436ac1414521e.jpg" }
   ]);
 
   var posts = [
     {
       id: "post-1", author: people[0], time: "Hoy · 8:30 a.m.",
       text: "Iniciando el día con gratitud y respiración consciente. Pequeños pasos, grandes cambios.",
-      image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1200&q=88",
+      image: "/images/patient-export/9bfe0ef87111af6547ae.jpg",
       likes: 128, comments: 24, shares: 15
     },
     {
       id: "post-2", author: people[1], time: "Ayer · 7:15 p.m.",
       text: "Nada como una buena caminata al aire libre para limpiar la mente y recargar energía.",
-      image: "https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=1200&q=88",
+      image: "/images/patient-export/053bd5cb0be986bb99b7.jpg",
       likes: 96, comments: 18, shares: 7
     },
     {
       id: "post-3", author: people[2], time: "2 días · 9:45 a.m.",
       text: "Mi smoothie favorito para empezar el día con toda la energía.",
-      image: "https://images.unsplash.com/photo-1623065422902-30a2d299bbe4?auto=format&fit=crop&w=1200&q=88",
+      image: "/images/patient-export/a875f0e9e033f205a761.jpg",
       likes: 74, comments: 12, shares: 6
     }
   ];
@@ -141,7 +141,7 @@
       logoInitials: "RA",
       tone: "mint",
       role: "admin",
-      heroImage: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1400&q=88",
+      heroImage: "/images/patient-export/44d5adc37ae04f49c009.jpg",
       features: ["Bienestar integral", "Eventos semanales", "Comunidad activa"],
       classes: [
         { id: "class-respira-1", communityId: "respira", category: "Yoga", title: "Respiracion consciente", date: "lunes, 27 de julio", day: "lun", number: "27", month: "jul", time: "07:30 a.m.", place: "Casa Klini Roma Norte", modality: "Presencial", capacity: 18, available: 9, detail: "Rutina guiada de 12 minutos", icon: "leaf" },
@@ -170,7 +170,7 @@
       logoInitials: "NI",
       tone: "gold",
       role: "member",
-      heroImage: "https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=1400&q=88",
+      heroImage: "/images/patient-export/a3dde8d27437d87d2bd8.jpg",
       features: ["Plan semanal", "Recetas saludables", "Comunidad moderada"],
       classes: [
         { id: "class-nutricion-1", communityId: "nutricion", category: "Nutricion", title: "Menu semanal practico", date: "martes, 28 de julio", day: "mar", number: "28", month: "jul", time: "06:30 p.m.", place: "Remoto", modality: "Remoto", capacity: 40, available: 23, detail: "Organiza comidas para 5 dias", icon: "calendar" },
@@ -178,37 +178,37 @@
         { id: "class-nutricion-3", communityId: "nutricion", category: "Habitos", title: "Adherencia simple", date: "sabado, 1 de agosto", day: "sab", number: "01", month: "ago", time: "10:00 a.m.", place: "Remoto", modality: "Remoto", capacity: 35, available: 19, detail: "Seguimiento sin culpa", icon: "check" }
       ]
     },
-    { id: "ritmo", catalogId: "community-running-cardio", slug: "ritmo-cardiometabolico", repositorySource: "catalogo-base", name: "Ritmo Cardiometabolico", category: "Running", access: "closed", visibility: "public", members: 86, city: "Ciudad de Mexico", description: "Caminatas, running ligero y metas medicas seguras.", longDescription: "Grupo de seguimiento para mejorar actividad fisica, compartir avances y organizar sesiones presenciales con enfoque preventivo.", initials: "RC", logoInitials: "RC", tone: "blue", role: "requested", heroImage: "https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=1400&q=88", features: ["Caminatas guiadas", "Metas medicas", "Seguimiento semanal"] },
-    { id: "mente", catalogId: "community-mental-balance", slug: "mente-en-equilibrio", repositorySource: "catalogo-base", name: "Mente en Equilibrio", category: "Salud mental", access: "open", visibility: "public", members: 71, city: "Queretaro", description: "Meditacion, descanso y acompanamiento entre pares.", longDescription: "Espacio seguro para practicar meditacion, descanso y pequenas pausas de regulacion emocional.", initials: "ME", logoInitials: "ME", tone: "violet", role: "none", heroImage: "https://images.unsplash.com/photo-1593811167562-9cef47bfc4d7?auto=format&fit=crop&w=1400&q=88", features: ["Pausas conscientes", "Descanso", "Apoyo entre pares"] },
-    { id: "sendero", catalogId: "community-senderos-proposito", slug: "senderos-con-proposito", repositorySource: "catalogo-base", name: "Senderos con Proposito", category: "Senderismo", access: "open", visibility: "public", members: 55, city: "Monterrey", description: "Naturaleza, comunidad y movimiento consciente.", longDescription: "Comunidad para conectar con la naturaleza, preparar caminatas y moverse en grupo con seguridad.", initials: "SP", logoInitials: "SP", tone: "mint", role: "none", heroImage: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1400&q=88", features: ["Salidas grupales", "Preparacion", "Naturaleza"] },
-    { id: "fuerza", catalogId: "community-fuerza-funcional", slug: "fuerza-funcional", repositorySource: "catalogo-base", name: "Fuerza Funcional", category: "Fuerza", access: "closed", visibility: "public", members: 64, city: "Guadalajara", description: "Entrenamiento progresivo y bienestar integral.", longDescription: "Entrenamiento funcional progresivo con foco en fuerza, movilidad y prevencion.", initials: "FF", logoInitials: "FF", tone: "blue", role: "none", heroImage: "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1400&q=88", features: ["Fuerza segura", "Movilidad", "Progresion"] }
+    { id: "ritmo", catalogId: "community-running-cardio", slug: "ritmo-cardiometabolico", repositorySource: "catalogo-base", name: "Ritmo Cardiometabolico", category: "Running", access: "closed", visibility: "public", members: 86, city: "Ciudad de Mexico", description: "Caminatas, running ligero y metas medicas seguras.", longDescription: "Grupo de seguimiento para mejorar actividad fisica, compartir avances y organizar sesiones presenciales con enfoque preventivo.", initials: "RC", logoInitials: "RC", tone: "blue", role: "requested", heroImage: "/images/patient-export/b59b76e1620259f879ce.jpg", features: ["Caminatas guiadas", "Metas medicas", "Seguimiento semanal"] },
+    { id: "mente", catalogId: "community-mental-balance", slug: "mente-en-equilibrio", repositorySource: "catalogo-base", name: "Mente en Equilibrio", category: "Salud mental", access: "open", visibility: "public", members: 71, city: "Queretaro", description: "Meditacion, descanso y acompanamiento entre pares.", longDescription: "Espacio seguro para practicar meditacion, descanso y pequenas pausas de regulacion emocional.", initials: "ME", logoInitials: "ME", tone: "violet", role: "none", heroImage: "/images/patient-export/8b44dedfdfafe0addfce.jpg", features: ["Pausas conscientes", "Descanso", "Apoyo entre pares"] },
+    { id: "sendero", catalogId: "community-senderos-proposito", slug: "senderos-con-proposito", repositorySource: "catalogo-base", name: "Senderos con Proposito", category: "Senderismo", access: "open", visibility: "public", members: 55, city: "Monterrey", description: "Naturaleza, comunidad y movimiento consciente.", longDescription: "Comunidad para conectar con la naturaleza, preparar caminatas y moverse en grupo con seguridad.", initials: "SP", logoInitials: "SP", tone: "mint", role: "none", heroImage: "/images/patient-export/4bc03be023db6becef69.jpg", features: ["Salidas grupales", "Preparacion", "Naturaleza"] },
+    { id: "fuerza", catalogId: "community-fuerza-funcional", slug: "fuerza-funcional", repositorySource: "catalogo-base", name: "Fuerza Funcional", category: "Fuerza", access: "closed", visibility: "public", members: 64, city: "Guadalajara", description: "Entrenamiento progresivo y bienestar integral.", longDescription: "Entrenamiento funcional progresivo con foco en fuerza, movilidad y prevencion.", initials: "FF", logoInitials: "FF", tone: "blue", role: "none", heroImage: "/images/patient-export/2b9f2acde9605c18f665.jpg", features: ["Fuerza segura", "Movilidad", "Progresion"] }
   ];
 
   communities = communities.concat([
-    { id: "yoga-calma", catalogId: "community-yoga-calma", slug: "yoga-en-calma", repositorySource: "catalogo-base", exploreCategory: "yoga", name: "Yoga en Calma", category: "Yoga", access: "closed", visibility: "public", members: 84, city: "Ciudad de Mexico", description: "Practicas suaves para respirar, estirar y descansar mejor.", longDescription: "Sesiones guiadas para construir calma diaria con ejercicios de respiracion, movilidad ligera y meditacion.", initials: "YC", logoInitials: "YC", tone: "mint", role: "none", heroImage: "https://images.unsplash.com/photo-1545389336-cf090694435e?auto=format&fit=crop&w=1400&q=88", features: ["Yoga suave", "Respiracion", "Descanso"] },
-    { id: "meditacion-movimiento", catalogId: "community-meditacion-movimiento", slug: "meditacion-en-movimiento", repositorySource: "catalogo-base", exploreCategory: "yoga", name: "Meditacion en Movimiento", category: "Yoga", access: "open", visibility: "public", members: 97, city: "Queretaro", description: "Meditacion activa, movilidad consciente y pausas breves.", longDescription: "Comunidad para integrar pausas conscientes durante el dia con movimiento amable y respiracion guiada.", initials: "MM", logoInitials: "MM", tone: "blue", role: "none", heroImage: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1400&q=88", features: ["Meditacion activa", "Pausas", "Movimiento"] },
-    { id: "equilibrio-interior", catalogId: "community-equilibrio-interior", slug: "equilibrio-interior", repositorySource: "catalogo-base", exploreCategory: "yoga", name: "Equilibrio Interior", category: "Yoga", access: "closed", visibility: "public", members: 76, city: "Guadalajara", description: "Rutinas de meditacion y respiracion para recuperar equilibrio.", longDescription: "Espacio para practicar respiracion, estiramientos sencillos y habitos de recuperacion emocional.", initials: "EI", logoInitials: "EI", tone: "gold", role: "none", heroImage: "https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?auto=format&fit=crop&w=1400&q=88", features: ["Meditacion", "Balance", "Respiracion"] },
-    { id: "paso-constante", catalogId: "community-paso-constante", slug: "paso-constante", repositorySource: "catalogo-base", exploreCategory: "running", name: "Paso Constante", category: "Running", access: "open", visibility: "public", members: 68, city: "Ciudad de Mexico", description: "Caminata, trote ligero y metas semanales faciles de seguir.", longDescription: "Comunidad para comenzar actividad fisica con caminatas progresivas y seguimiento amable.", initials: "PC", logoInitials: "PC", tone: "blue", role: "none", heroImage: "https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=1400&q=88", features: ["Caminata", "Trote ligero", "Metas"] },
-    { id: "running-klini", catalogId: "community-running-klini", slug: "running-klini", repositorySource: "catalogo-base", exploreCategory: "running", name: "Running Klini", category: "Running", access: "closed", visibility: "public", members: 73, city: "Monterrey", description: "Entrenamiento seguro para retomar carrera sin presion.", longDescription: "Planes simples para correr o caminar con seguimiento de esfuerzo, descanso y progreso.", initials: "RK", logoInitials: "RK", tone: "mint", role: "none", heroImage: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=1400&q=88", features: ["Carrera suave", "Progreso", "Prevencion"] },
-    { id: "caminata-metabolica", catalogId: "community-caminata-metabolica", slug: "caminata-metabolica", repositorySource: "catalogo-base", exploreCategory: "running", name: "Caminata Metabolica", category: "Running", access: "open", visibility: "public", members: 92, city: "Ciudad de Mexico", description: "Caminatas guiadas para energia, glucosa y bienestar diario.", longDescription: "Grupo de caminatas con enfoque cardiometabolico, seguimiento semanal y actividades al aire libre.", initials: "CM", logoInitials: "CM", tone: "blue", role: "none", heroImage: "https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=1400&q=88", features: ["Caminatas", "Metabolismo", "Habitos"] },
-    { id: "cocina-saludable", catalogId: "community-cocina-saludable", slug: "cocina-saludable", repositorySource: "catalogo-base", exploreCategory: "nutricion", name: "Cocina Saludable", category: "Nutricion", access: "open", visibility: "public", members: 74, city: "Ciudad de Mexico", description: "Recetas simples y listas de compra para comer mejor.", longDescription: "Ideas de menu, sustituciones y preparacion sencilla para mejorar adherencia nutricional.", initials: "CS", logoInitials: "CS", tone: "gold", role: "none", heroImage: "https://images.unsplash.com/photo-1543352634-a1c51d9f1fa7?auto=format&fit=crop&w=1400&q=88", features: ["Recetas", "Compras", "Menu"] },
-    { id: "nutricion-consciente", catalogId: "community-nutricion-consciente", slug: "nutricion-consciente", repositorySource: "catalogo-base", exploreCategory: "nutricion", name: "Nutricion Consciente", category: "Nutricion", access: "open", visibility: "public", members: 73, city: "Puebla", description: "Planificacion, porciones y seguimiento sin culpa.", longDescription: "Acompanamiento comunitario para construir habitos de alimentacion sostenibles.", initials: "NC", logoInitials: "NC", tone: "mint", role: "none", heroImage: "https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=1400&q=88", features: ["Porciones", "Planificacion", "Habitos"] },
-    { id: "fuerza-en-equilibrio", catalogId: "community-fuerza-equilibrio", slug: "fuerza-en-equilibrio", repositorySource: "catalogo-base", exploreCategory: "fuerza", name: "Fuerza en Equilibrio", category: "Fuerza", access: "open", visibility: "public", members: 65, city: "Guadalajara", description: "Entrenamiento progresivo, movilidad y tecnica segura.", longDescription: "Ejercicios de fuerza funcional adaptados para crear constancia sin sobrecarga.", initials: "FE", logoInitials: "FE", tone: "violet", role: "none", heroImage: "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1400&q=88", features: ["Fuerza", "Tecnica", "Movilidad"] },
-    { id: "movilidad-funcional", catalogId: "community-movilidad-funcional", slug: "movilidad-funcional", repositorySource: "catalogo-base", exploreCategory: "fuerza", name: "Movilidad Funcional", category: "Fuerza", access: "closed", visibility: "public", members: 58, city: "Ciudad de Mexico", description: "Rutinas de movilidad y fuerza para cuidar articulaciones.", longDescription: "Sesiones cortas para mejorar movilidad, postura y fuerza de forma progresiva.", initials: "MF", logoInitials: "MF", tone: "blue", role: "none", heroImage: "https://images.unsplash.com/photo-1518459031867-a89b944bffe4?auto=format&fit=crop&w=1400&q=88", features: ["Movilidad", "Postura", "Fuerza"] },
-    { id: "mente-serena", catalogId: "community-mente-serena", slug: "mente-serena", repositorySource: "catalogo-base", exploreCategory: "salud-mental", name: "Mente Serena", category: "Salud mental", access: "open", visibility: "public", members: 88, city: "Queretaro", description: "Herramientas de calma, descanso y regulacion emocional.", longDescription: "Espacio para aprender pausas de respiracion, higiene del sueno y estrategias de autocuidado.", initials: "MS", logoInitials: "MS", tone: "violet", role: "none", heroImage: "https://images.unsplash.com/photo-1593811167562-9cef47bfc4d7?auto=format&fit=crop&w=1400&q=88", features: ["Calma", "Descanso", "Autocuidado"] },
-    { id: "pausa-consciente", catalogId: "community-pausa-consciente", slug: "pausa-consciente", repositorySource: "catalogo-base", exploreCategory: "salud-mental", name: "Pausa Consciente", category: "Salud mental", access: "open", visibility: "public", members: 62, city: "Ciudad de Mexico", description: "Pausas breves para manejar estres durante el dia.", longDescription: "Practicas simples para integrar respiracion, enfoque y descanso mental en rutinas diarias.", initials: "PA", logoInitials: "PA", tone: "mint", role: "none", heroImage: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1400&q=88", features: ["Estres", "Pausas", "Respiracion"] },
-    { id: "habitos-en-equilibrio", catalogId: "community-habitos-equilibrio", slug: "habitos-en-equilibrio", repositorySource: "catalogo-base", exploreCategory: "bienestar", name: "Habitos en Equilibrio", category: "Bienestar", access: "open", visibility: "public", members: 81, city: "Ciudad de Mexico", description: "Metas pequenas para agua, descanso, movimiento y energia.", longDescription: "Comunidad para construir habitos integrales y celebrar avances diarios.", initials: "HE", logoInitials: "HE", tone: "mint", role: "none", heroImage: "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=1400&q=88", features: ["Habitos", "Metas", "Bienestar"] },
-    { id: "ciclos-de-bienestar", catalogId: "community-ciclos-bienestar", slug: "ciclos-de-bienestar", repositorySource: "catalogo-base", exploreCategory: "bienestar", name: "Ciclos de Bienestar", category: "Bienestar", access: "open", visibility: "public", members: 51, city: "Merida", description: "Rutinas semanales para cuidar cuerpo, energia y descanso.", longDescription: "Seguimiento por ciclos con recomendaciones simples para sostener bienestar personal.", initials: "CB", logoInitials: "CB", tone: "blue", role: "none", heroImage: "https://images.unsplash.com/photo-1499728603263-13726abce5fd?auto=format&fit=crop&w=1400&q=88", features: ["Rutinas", "Energia", "Descanso"] },
-    { id: "menu-inteligente", catalogId: "community-menu-inteligente", slug: "menu-inteligente", repositorySource: "catalogo-base", exploreCategory: "nutricion", name: "Menu Inteligente", category: "Nutricion", access: "closed", visibility: "public", members: 69, city: "Ciudad de Mexico", description: "Planeacion de comidas, adherencia y recetas practicas.", longDescription: "Grupo para preparar menus semanales, revisar objetivos nutricionales y compartir alternativas saludables.", initials: "MI", logoInitials: "MI", tone: "gold", role: "none", heroImage: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=1400&q=88", features: ["Menu", "Recetas", "Adherencia"] },
-    { id: "core-seguro", catalogId: "community-core-seguro", slug: "core-seguro", repositorySource: "catalogo-base", exploreCategory: "fuerza", name: "Core Seguro", category: "Fuerza", access: "open", visibility: "public", members: 60, city: "Monterrey", description: "Fuerza central, estabilidad y progresion sin dolor.", longDescription: "Ejercicios de core y estabilidad con niveles para avanzar de forma segura.", initials: "CO", logoInitials: "CO", tone: "violet", role: "none", heroImage: "https://images.unsplash.com/photo-1571019613914-85f342c6a11e?auto=format&fit=crop&w=1400&q=88", features: ["Core", "Estabilidad", "Progresion"] },
-    { id: "descanso-profundo", catalogId: "community-descanso-profundo", slug: "descanso-profundo", repositorySource: "catalogo-base", exploreCategory: "salud-mental", name: "Descanso Profundo", category: "Salud mental", access: "closed", visibility: "public", members: 79, city: "Ciudad de Mexico", description: "Rutinas de descanso, sueno y pausas para recuperar energia.", longDescription: "Practicas para mejorar descanso, reducir tension y preparar el cuerpo para dormir mejor.", initials: "DP", logoInitials: "DP", tone: "violet", role: "none", heroImage: "https://images.unsplash.com/photo-1520206183501-b80df61043c2?auto=format&fit=crop&w=1400&q=88", features: ["Sueno", "Descanso", "Calma"] },
-    { id: "bienestar-integral-klini", catalogId: "community-bienestar-integral-klini", slug: "bienestar-integral-klini", repositorySource: "catalogo-base", exploreCategory: "bienestar", name: "Bienestar Integral Klini", category: "Bienestar", access: "open", visibility: "public", members: 93, city: "Guadalajara", description: "Seguimiento integral para metas pequenas y sostenibles.", longDescription: "Comunidad para combinar hidratacion, movimiento, descanso y seguimiento de metas personales.", initials: "BI", logoInitials: "BI", tone: "mint", role: "none", heroImage: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1400&q=88", features: ["Integral", "Metas", "Seguimiento"] },
-    { id: "respira-profundo", catalogId: "community-respira-profundo", slug: "respira-profundo", repositorySource: "catalogo-base", exploreCategory: "yoga", name: "Respira Profundo", category: "Yoga", access: "open", visibility: "public", members: 102, city: "Puebla", description: "Respiracion guiada y calma para todos los dias.", longDescription: "Comunidad para practicar respiracion profunda, estiramientos suaves y pausas de bienestar en grupo.", initials: "RP", logoInitials: "RP", tone: "mint", role: "none", heroImage: "https://images.unsplash.com/photo-1593810450967-f9c42742e326?auto=format&fit=crop&w=1400&q=88", features: ["Respiracion", "Calma", "Pausas"] },
-    { id: "energia-matutina", catalogId: "community-energia-matutina", slug: "energia-matutina", repositorySource: "catalogo-base", exploreCategory: "bienestar", name: "Energia Matutina", category: "Bienestar", access: "open", visibility: "public", members: 57, city: "Ciudad de Mexico", description: "Rutinas cortas para iniciar el dia con energia.", longDescription: "Grupo para compartir rituales de manana, hidratacion, movilidad breve y metas personales.", initials: "EM", logoInitials: "EM", tone: "gold", role: "none", heroImage: "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=1400&q=88", features: ["Manana", "Energia", "Habitos"] },
-    { id: "control-glucosa", catalogId: "community-control-glucosa", slug: "control-glucosa", repositorySource: "catalogo-base", exploreCategory: "nutricion", name: "Control de Glucosa", category: "Nutricion", access: "closed", visibility: "public", members: 48, city: "Ciudad de Mexico", description: "Habitos, comida y seguimiento para control metabolico.", longDescription: "Comunidad de apoyo para registrar glucosa, preparar menus sencillos y compartir avances de adherencia.", initials: "CG", logoInitials: "CG", tone: "blue", role: "none", heroImage: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=1400&q=88", features: ["Glucosa", "Menu", "Seguimiento"] },
-    { id: "movimiento-suave", catalogId: "community-movimiento-suave", slug: "movimiento-suave", repositorySource: "catalogo-base", exploreCategory: "fuerza", name: "Movimiento Suave", category: "Fuerza", access: "open", visibility: "public", members: 66, city: "Merida", description: "Movilidad, fuerza ligera y rutinas seguras.", longDescription: "Espacio para retomar movimiento con ejercicios simples, fuerza progresiva y cuidado articular.", initials: "MV", logoInitials: "MV", tone: "violet", role: "none", heroImage: "https://images.unsplash.com/photo-1518459031867-a89b944bffe4?auto=format&fit=crop&w=1400&q=88", features: ["Movilidad", "Fuerza ligera", "Rutinas"] },
-    { id: "familia-saludable", catalogId: "community-familia-saludable", slug: "familia-saludable", repositorySource: "catalogo-base", exploreCategory: "bienestar", name: "Familia Saludable", category: "Bienestar", access: "open", visibility: "public", members: 90, city: "Monterrey", description: "Metas de bienestar para pacientes y familias.", longDescription: "Comunidad para coordinar habitos familiares, movimiento, alimentacion sencilla y recordatorios de salud.", initials: "FS", logoInitials: "FS", tone: "mint", role: "none", heroImage: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=1400&q=88", features: ["Familia", "Recordatorios", "Metas"] },
-    { id: "estres-bajo-control", catalogId: "community-estres-bajo-control", slug: "estres-bajo-control", repositorySource: "catalogo-base", exploreCategory: "salud-mental", name: "Estres Bajo Control", category: "Salud mental", access: "closed", visibility: "public", members: 52, city: "Queretaro", description: "Tecnicas sencillas para regular estres y descansar mejor.", longDescription: "Grupo para practicar respiracion, pausas conscientes, higiene del sueno y seguimiento emocional.", initials: "EC", logoInitials: "EC", tone: "violet", role: "none", heroImage: "https://images.unsplash.com/photo-1520206183501-b80df61043c2?auto=format&fit=crop&w=1400&q=88", features: ["Estres", "Descanso", "Regulacion"] }
+    { id: "yoga-calma", catalogId: "community-yoga-calma", slug: "yoga-en-calma", repositorySource: "catalogo-base", exploreCategory: "yoga", name: "Yoga en Calma", category: "Yoga", access: "closed", visibility: "public", members: 84, city: "Ciudad de Mexico", description: "Practicas suaves para respirar, estirar y descansar mejor.", longDescription: "Sesiones guiadas para construir calma diaria con ejercicios de respiracion, movilidad ligera y meditacion.", initials: "YC", logoInitials: "YC", tone: "mint", role: "none", heroImage: "/images/patient-export/37242dce71befb619f94.jpg", features: ["Yoga suave", "Respiracion", "Descanso"] },
+    { id: "meditacion-movimiento", catalogId: "community-meditacion-movimiento", slug: "meditacion-en-movimiento", repositorySource: "catalogo-base", exploreCategory: "yoga", name: "Meditacion en Movimiento", category: "Yoga", access: "open", visibility: "public", members: 97, city: "Queretaro", description: "Meditacion activa, movilidad consciente y pausas breves.", longDescription: "Comunidad para integrar pausas conscientes durante el dia con movimiento amable y respiracion guiada.", initials: "MM", logoInitials: "MM", tone: "blue", role: "none", heroImage: "/images/patient-export/44d5adc37ae04f49c009.jpg", features: ["Meditacion activa", "Pausas", "Movimiento"] },
+    { id: "equilibrio-interior", catalogId: "community-equilibrio-interior", slug: "equilibrio-interior", repositorySource: "catalogo-base", exploreCategory: "yoga", name: "Equilibrio Interior", category: "Yoga", access: "closed", visibility: "public", members: 76, city: "Guadalajara", description: "Rutinas de meditacion y respiracion para recuperar equilibrio.", longDescription: "Espacio para practicar respiracion, estiramientos sencillos y habitos de recuperacion emocional.", initials: "EI", logoInitials: "EI", tone: "gold", role: "none", heroImage: "/images/patient-export/18ff3de3a304845f9d98.jpg", features: ["Meditacion", "Balance", "Respiracion"] },
+    { id: "paso-constante", catalogId: "community-paso-constante", slug: "paso-constante", repositorySource: "catalogo-base", exploreCategory: "running", name: "Paso Constante", category: "Running", access: "open", visibility: "public", members: 68, city: "Ciudad de Mexico", description: "Caminata, trote ligero y metas semanales faciles de seguir.", longDescription: "Comunidad para comenzar actividad fisica con caminatas progresivas y seguimiento amable.", initials: "PC", logoInitials: "PC", tone: "blue", role: "none", heroImage: "/images/patient-export/b59b76e1620259f879ce.jpg", features: ["Caminata", "Trote ligero", "Metas"] },
+    { id: "running-klini", catalogId: "community-running-klini", slug: "running-klini", repositorySource: "catalogo-base", exploreCategory: "running", name: "Running Klini", category: "Running", access: "closed", visibility: "public", members: 73, city: "Monterrey", description: "Entrenamiento seguro para retomar carrera sin presion.", longDescription: "Planes simples para correr o caminar con seguimiento de esfuerzo, descanso y progreso.", initials: "RK", logoInitials: "RK", tone: "mint", role: "none", heroImage: "/images/patient-export/b59ab911e2e7afa4f63e.jpg", features: ["Carrera suave", "Progreso", "Prevencion"] },
+    { id: "caminata-metabolica", catalogId: "community-caminata-metabolica", slug: "caminata-metabolica", repositorySource: "catalogo-base", exploreCategory: "running", name: "Caminata Metabolica", category: "Running", access: "open", visibility: "public", members: 92, city: "Ciudad de Mexico", description: "Caminatas guiadas para energia, glucosa y bienestar diario.", longDescription: "Grupo de caminatas con enfoque cardiometabolico, seguimiento semanal y actividades al aire libre.", initials: "CM", logoInitials: "CM", tone: "blue", role: "none", heroImage: "/images/patient-export/847391ad6e1a2d5a1665.jpg", features: ["Caminatas", "Metabolismo", "Habitos"] },
+    { id: "cocina-saludable", catalogId: "community-cocina-saludable", slug: "cocina-saludable", repositorySource: "catalogo-base", exploreCategory: "nutricion", name: "Cocina Saludable", category: "Nutricion", access: "open", visibility: "public", members: 74, city: "Ciudad de Mexico", description: "Recetas simples y listas de compra para comer mejor.", longDescription: "Ideas de menu, sustituciones y preparacion sencilla para mejorar adherencia nutricional.", initials: "CS", logoInitials: "CS", tone: "gold", role: "none", heroImage: "/images/patient-export/d058a3cf7b1d172870e0.jpg", features: ["Recetas", "Compras", "Menu"] },
+    { id: "nutricion-consciente", catalogId: "community-nutricion-consciente", slug: "nutricion-consciente", repositorySource: "catalogo-base", exploreCategory: "nutricion", name: "Nutricion Consciente", category: "Nutricion", access: "open", visibility: "public", members: 73, city: "Puebla", description: "Planificacion, porciones y seguimiento sin culpa.", longDescription: "Acompanamiento comunitario para construir habitos de alimentacion sostenibles.", initials: "NC", logoInitials: "NC", tone: "mint", role: "none", heroImage: "/images/patient-export/a3dde8d27437d87d2bd8.jpg", features: ["Porciones", "Planificacion", "Habitos"] },
+    { id: "fuerza-en-equilibrio", catalogId: "community-fuerza-equilibrio", slug: "fuerza-en-equilibrio", repositorySource: "catalogo-base", exploreCategory: "fuerza", name: "Fuerza en Equilibrio", category: "Fuerza", access: "open", visibility: "public", members: 65, city: "Guadalajara", description: "Entrenamiento progresivo, movilidad y tecnica segura.", longDescription: "Ejercicios de fuerza funcional adaptados para crear constancia sin sobrecarga.", initials: "FE", logoInitials: "FE", tone: "violet", role: "none", heroImage: "/images/patient-export/2b9f2acde9605c18f665.jpg", features: ["Fuerza", "Tecnica", "Movilidad"] },
+    { id: "movilidad-funcional", catalogId: "community-movilidad-funcional", slug: "movilidad-funcional", repositorySource: "catalogo-base", exploreCategory: "fuerza", name: "Movilidad Funcional", category: "Fuerza", access: "closed", visibility: "public", members: 58, city: "Ciudad de Mexico", description: "Rutinas de movilidad y fuerza para cuidar articulaciones.", longDescription: "Sesiones cortas para mejorar movilidad, postura y fuerza de forma progresiva.", initials: "MF", logoInitials: "MF", tone: "blue", role: "none", heroImage: "/images/patient-export/88ac192570ebecf4e969.jpg", features: ["Movilidad", "Postura", "Fuerza"] },
+    { id: "mente-serena", catalogId: "community-mente-serena", slug: "mente-serena", repositorySource: "catalogo-base", exploreCategory: "salud-mental", name: "Mente Serena", category: "Salud mental", access: "open", visibility: "public", members: 88, city: "Queretaro", description: "Herramientas de calma, descanso y regulacion emocional.", longDescription: "Espacio para aprender pausas de respiracion, higiene del sueno y estrategias de autocuidado.", initials: "MS", logoInitials: "MS", tone: "violet", role: "none", heroImage: "/images/patient-export/8b44dedfdfafe0addfce.jpg", features: ["Calma", "Descanso", "Autocuidado"] },
+    { id: "pausa-consciente", catalogId: "community-pausa-consciente", slug: "pausa-consciente", repositorySource: "catalogo-base", exploreCategory: "salud-mental", name: "Pausa Consciente", category: "Salud mental", access: "open", visibility: "public", members: 62, city: "Ciudad de Mexico", description: "Pausas breves para manejar estres durante el dia.", longDescription: "Practicas simples para integrar respiracion, enfoque y descanso mental en rutinas diarias.", initials: "PA", logoInitials: "PA", tone: "mint", role: "none", heroImage: "/images/patient-export/44d5adc37ae04f49c009.jpg", features: ["Estres", "Pausas", "Respiracion"] },
+    { id: "habitos-en-equilibrio", catalogId: "community-habitos-equilibrio", slug: "habitos-en-equilibrio", repositorySource: "catalogo-base", exploreCategory: "bienestar", name: "Habitos en Equilibrio", category: "Bienestar", access: "open", visibility: "public", members: 81, city: "Ciudad de Mexico", description: "Metas pequenas para agua, descanso, movimiento y energia.", longDescription: "Comunidad para construir habitos integrales y celebrar avances diarios.", initials: "HE", logoInitials: "HE", tone: "mint", role: "none", heroImage: "/images/patient-export/8de7f3abd9b1451e2fc4.jpg", features: ["Habitos", "Metas", "Bienestar"] },
+    { id: "ciclos-de-bienestar", catalogId: "community-ciclos-bienestar", slug: "ciclos-de-bienestar", repositorySource: "catalogo-base", exploreCategory: "bienestar", name: "Ciclos de Bienestar", category: "Bienestar", access: "open", visibility: "public", members: 51, city: "Merida", description: "Rutinas semanales para cuidar cuerpo, energia y descanso.", longDescription: "Seguimiento por ciclos con recomendaciones simples para sostener bienestar personal.", initials: "CB", logoInitials: "CB", tone: "blue", role: "none", heroImage: "/images/patient-export/f8bdbee90198bf11fadc.jpg", features: ["Rutinas", "Energia", "Descanso"] },
+    { id: "menu-inteligente", catalogId: "community-menu-inteligente", slug: "menu-inteligente", repositorySource: "catalogo-base", exploreCategory: "nutricion", name: "Menu Inteligente", category: "Nutricion", access: "closed", visibility: "public", members: 69, city: "Ciudad de Mexico", description: "Planeacion de comidas, adherencia y recetas practicas.", longDescription: "Grupo para preparar menus semanales, revisar objetivos nutricionales y compartir alternativas saludables.", initials: "MI", logoInitials: "MI", tone: "gold", role: "none", heroImage: "/images/patient-export/998ce081eeca9ff6b6eb.jpg", features: ["Menu", "Recetas", "Adherencia"] },
+    { id: "core-seguro", catalogId: "community-core-seguro", slug: "core-seguro", repositorySource: "catalogo-base", exploreCategory: "fuerza", name: "Core Seguro", category: "Fuerza", access: "open", visibility: "public", members: 60, city: "Monterrey", description: "Fuerza central, estabilidad y progresion sin dolor.", longDescription: "Ejercicios de core y estabilidad con niveles para avanzar de forma segura.", initials: "CO", logoInitials: "CO", tone: "violet", role: "none", heroImage: "/images/patient-export/5f8ec1f0b28698a301dc.jpg", features: ["Core", "Estabilidad", "Progresion"] },
+    { id: "descanso-profundo", catalogId: "community-descanso-profundo", slug: "descanso-profundo", repositorySource: "catalogo-base", exploreCategory: "salud-mental", name: "Descanso Profundo", category: "Salud mental", access: "closed", visibility: "public", members: 79, city: "Ciudad de Mexico", description: "Rutinas de descanso, sueno y pausas para recuperar energia.", longDescription: "Practicas para mejorar descanso, reducir tension y preparar el cuerpo para dormir mejor.", initials: "DP", logoInitials: "DP", tone: "violet", role: "none", heroImage: "/images/patient-export/93851cce76f290545d44.jpg", features: ["Sueno", "Descanso", "Calma"] },
+    { id: "bienestar-integral-klini", catalogId: "community-bienestar-integral-klini", slug: "bienestar-integral-klini", repositorySource: "catalogo-base", exploreCategory: "bienestar", name: "Bienestar Integral Klini", category: "Bienestar", access: "open", visibility: "public", members: 93, city: "Guadalajara", description: "Seguimiento integral para metas pequenas y sostenibles.", longDescription: "Comunidad para combinar hidratacion, movimiento, descanso y seguimiento de metas personales.", initials: "BI", logoInitials: "BI", tone: "mint", role: "none", heroImage: "/images/patient-export/44d5adc37ae04f49c009.jpg", features: ["Integral", "Metas", "Seguimiento"] },
+    { id: "respira-profundo", catalogId: "community-respira-profundo", slug: "respira-profundo", repositorySource: "catalogo-base", exploreCategory: "yoga", name: "Respira Profundo", category: "Yoga", access: "open", visibility: "public", members: 102, city: "Puebla", description: "Respiracion guiada y calma para todos los dias.", longDescription: "Comunidad para practicar respiracion profunda, estiramientos suaves y pausas de bienestar en grupo.", initials: "RP", logoInitials: "RP", tone: "mint", role: "none", heroImage: "/images/patient-export/58f5ec6b1b32fa8dfa5a.jpg", features: ["Respiracion", "Calma", "Pausas"] },
+    { id: "energia-matutina", catalogId: "community-energia-matutina", slug: "energia-matutina", repositorySource: "catalogo-base", exploreCategory: "bienestar", name: "Energia Matutina", category: "Bienestar", access: "open", visibility: "public", members: 57, city: "Ciudad de Mexico", description: "Rutinas cortas para iniciar el dia con energia.", longDescription: "Grupo para compartir rituales de manana, hidratacion, movilidad breve y metas personales.", initials: "EM", logoInitials: "EM", tone: "gold", role: "none", heroImage: "/images/patient-export/8de7f3abd9b1451e2fc4.jpg", features: ["Manana", "Energia", "Habitos"] },
+    { id: "control-glucosa", catalogId: "community-control-glucosa", slug: "control-glucosa", repositorySource: "catalogo-base", exploreCategory: "nutricion", name: "Control de Glucosa", category: "Nutricion", access: "closed", visibility: "public", members: 48, city: "Ciudad de Mexico", description: "Habitos, comida y seguimiento para control metabolico.", longDescription: "Comunidad de apoyo para registrar glucosa, preparar menus sencillos y compartir avances de adherencia.", initials: "CG", logoInitials: "CG", tone: "blue", role: "none", heroImage: "/images/patient-export/2249ee14324419269d99.jpg", features: ["Glucosa", "Menu", "Seguimiento"] },
+    { id: "movimiento-suave", catalogId: "community-movimiento-suave", slug: "movimiento-suave", repositorySource: "catalogo-base", exploreCategory: "fuerza", name: "Movimiento Suave", category: "Fuerza", access: "open", visibility: "public", members: 66, city: "Merida", description: "Movilidad, fuerza ligera y rutinas seguras.", longDescription: "Espacio para retomar movimiento con ejercicios simples, fuerza progresiva y cuidado articular.", initials: "MV", logoInitials: "MV", tone: "violet", role: "none", heroImage: "/images/patient-export/88ac192570ebecf4e969.jpg", features: ["Movilidad", "Fuerza ligera", "Rutinas"] },
+    { id: "familia-saludable", catalogId: "community-familia-saludable", slug: "familia-saludable", repositorySource: "catalogo-base", exploreCategory: "bienestar", name: "Familia Saludable", category: "Bienestar", access: "open", visibility: "public", members: 90, city: "Monterrey", description: "Metas de bienestar para pacientes y familias.", longDescription: "Comunidad para coordinar habitos familiares, movimiento, alimentacion sencilla y recordatorios de salud.", initials: "FS", logoInitials: "FS", tone: "mint", role: "none", heroImage: "/images/patient-export/79c1f3731e62fb9ad0ec.jpg", features: ["Familia", "Recordatorios", "Metas"] },
+    { id: "estres-bajo-control", catalogId: "community-estres-bajo-control", slug: "estres-bajo-control", repositorySource: "catalogo-base", exploreCategory: "salud-mental", name: "Estres Bajo Control", category: "Salud mental", access: "closed", visibility: "public", members: 52, city: "Queretaro", description: "Tecnicas sencillas para regular estres y descansar mejor.", longDescription: "Grupo para practicar respiracion, pausas conscientes, higiene del sueno y seguimiento emocional.", initials: "EC", logoInitials: "EC", tone: "violet", role: "none", heroImage: "/images/patient-export/93851cce76f290545d44.jpg", features: ["Estres", "Descanso", "Regulacion"] }
   ]);
 
   var events = [
@@ -389,11 +389,14 @@
       check: '<path d="m20 6-11 11-5-5"/>',
       eye: '<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/>',
       leaf: '<path d="M20 4C12 4 6 8 5 16c7 1 13-2 15-12Z"/><path d="M5 20c3-5 7-8 12-10"/>',
+      lotus: '<path d="M12 20C8 16 7 10 12 3c5 7 4 13 0 17Z"/><path d="M8 9 3 7c0 8 3 13 9 13M16 9l5-2c0 8-3 13-9 13M5 13l-4-1c1 6 5 9 11 8m7-7 4-1c-1 6-5 9-11 8"/>',
+      person: '<circle cx="12" cy="7" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2Z"/>',
       tag: '<path d="M20 13 11 4H4v7l9 9a2 2 0 0 0 3 0l4-4a2 2 0 0 0 0-3Z"/><circle cx="7.5" cy="7.5" r="1.5"/>',
       sparkles: '<path d="m12 3 1.8 4.2L18 9l-4.2 1.8L12 15l-1.8-4.2L6 9l4.2-1.8L12 3ZM19 15l.9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9L19 15Z"/>',
       search: '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
       filter: '<path d="M4 6h16"/><path d="M7 12h10"/><path d="M10 18h4"/>',
       heart: '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"/>',
+      repost: '<path d="m17 2 4 4-4 4M3 11V8a2 2 0 0 1 2-2h16M7 22l-4-4 4-4m14-1v3a2 2 0 0 1-2 2H3"/>',
       message: '<path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v8Z"/>',
       send: '<path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/>',
       map: '<path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/>',
@@ -458,6 +461,9 @@
       sharesOpen: {},
       activeReplyThreads: {},
       replyThreads: {},
+      postComments: {},
+      reposts: {},
+      followRequests: {},
       replyDrafts: {},
       storyIndex: null,
       showAllStories: false,
@@ -482,6 +488,7 @@
       createdCommunities: [],
       createStep: 1, createDraft: defaultCreateDraft(), createCompleted: false, createdCommunityId: null,
       eventSearch: "",
+      communitySearch: "",
       eventFilters: { country: "MX Mexico", city: "", community: "", location: "", date: "" },
       eventFilterQueries: {},
       activeEventFilter: "",
@@ -494,9 +501,12 @@
     this.storyTimer = null;
     this.storyTimerToken = 0;
     this.load();
+    this.stories = this.options.stories && window.KliniPatientStories
+      ? window.KliniPatientStories.create(this, merge(this.options.stories, {people: people})) : null;
     this.bind();
     this.render();
     this.handleHashRoute();
+    if (this.stories) this.stories.refresh();
   }
 
   CommunityApp.prototype.activePatientProfile = function () {
@@ -619,6 +629,7 @@
       this.load();
       this.handleHashRoute();
     }
+    if (this.stories) this.stories.reset();
     this.render();
   };
 
@@ -631,6 +642,9 @@
         this.state.reservations = saved.reservations || { e1: true };
         this.state.demoReservationsSeeded = saved.demoReservationsSeeded === true;
         this.state.likes = saved.likes || {};
+        this.state.reposts = saved.reposts || {};
+        this.state.followRequests = saved.followRequests || {};
+        this.state.postComments = saved.postComments || {};
         this.state.replyThreads = saved.replyThreads || {};
         this.state.storyUploads = saved.storyUploads || {};
         this.state.adminCommunityEdits = saved.adminCommunityEdits || {};
@@ -657,6 +671,9 @@
         reservations: this.state.reservations,
         demoReservationsSeeded: this.state.demoReservationsSeeded,
         likes: this.state.likes,
+        reposts: this.state.reposts,
+        followRequests: this.state.followRequests,
+        postComments: this.state.postComments,
         replyThreads: this.state.replyThreads,
         storyUploads: this.state.storyUploads,
         adminCommunityEdits: this.state.adminCommunityEdits,
@@ -673,7 +690,8 @@
   };
 
   CommunityApp.prototype.emit = function (type, data) {
-    this.options.onAction({ type: type, data: data || null, state: this.state });
+    var profile = this.activePatientProfile();
+    this.options.onAction({ type: type, data: data || null, state: this.state, profileId: String(profile.userId || profile.id), source: this.options.startView === "posts" ? "home" : "communities" });
   };
 
   CommunityApp.prototype.navigateAdminPanel = function (id) {
@@ -780,6 +798,7 @@
       if (action === "create-upload-cover") { self.uploadCreateImage("coverImage"); return; }
       if (action === "create-upload-profile") { self.uploadCreateImage("profileImage"); return; }
       if (action === "upload-story") { self.uploadStoryImage(id || "patient"); return; }
+      if (action === "retry-stories" && self.stories) { self.stories.refresh(); return; }
       if (action === "show-more-stories") {
         self.state.showAllStories = true;
         self.render();
@@ -876,11 +895,25 @@
       }
       if (action === "cancel") self.cancel(id);
       if (action === "more") self.state.limits[id] += 5;
-      if (action === "like") self.state.likes[id] = !self.state.likes[id];
+      if (action === "like") {
+        self.state.likes[id] = !self.state.likes[id];
+        self.emit("post.liked", {post: self.socialPosts[id], active: self.state.likes[id]});
+      }
+      if (action === "repost") {
+        self.state.reposts[id] = !self.state.reposts[id];
+        self.emit("post.reposted", {post: self.socialPosts[id], active: self.state.reposts[id]});
+      }
+      if (action === "follow-author") {
+        var socialPost = self.socialPosts[id];
+        var authorId = socialPost.author.id;
+        self.state.followRequests[authorId] = !self.state.followRequests[authorId];
+        self.emit("user.follow-requested", {post: socialPost, active: self.state.followRequests[authorId]});
+      }
       if (action === "toggle-post-messages") self.state.commentsOpen[id] = !self.state.commentsOpen[id];
       if (action === "toggle-post-share") self.state.sharesOpen[id] = !self.state.sharesOpen[id];
       if (action === "toggle-message-thread") self.state.activeReplyThreads[id] = !self.state.activeReplyThreads[id];
       if (action === "send-message-reply") self.addMessageReply(id);
+      if (action === "send-post-message") self.addPostMessage(id);
       if (action === "share-post") self.emit("post.shared", { postId: id, network: control.getAttribute("data-network"), mode: control.getAttribute("data-mode") });
       if (action === "open-story") self.openStory(id);
       if (action === "close-story") self.closeStory();
@@ -900,6 +933,11 @@
       }
     });
     this.root.addEventListener("input", function (event) {
+      if (event.target.hasAttribute("data-community-search")) {
+        self.state.communitySearch = event.target.value;
+        self.applyCommunitySearch();
+        return;
+      }
       if (event.target.hasAttribute("data-event-search")) {
         self.state.eventSearch = event.target.value;
         self.applyEventSearch(event.target.value);
@@ -1322,6 +1360,7 @@
   };
 
   CommunityApp.prototype.openStory = function (id) {
+    if (this.stories) { this.stories.open(id); return; }
     var items = this.storyItems();
     var index = items.findIndex(function (person) { return person.id === id; });
     this.state.storyIndex = index >= 0 ? index : 0;
@@ -1461,6 +1500,19 @@
     this.state.view = "posts";
     this.state.storyIndex = null;
     this.render();
+  };
+
+  CommunityApp.prototype.openSocialPost = function (postId, communityId, showMessages) {
+    this.state.storyIndex = null;
+    if (communityId && this.findCommunity(communityId)) this.openCommunityPanel(communityId);
+    else this.state.view = "posts";
+    if (showMessages) this.state.commentsOpen[postId] = true;
+    this.render();
+    var post = Array.from(this.root.querySelectorAll("[data-social-post]")).find(function (item) { return item.getAttribute("data-social-post") === postId; });
+    if (post) {
+      post.scrollIntoView({block: "start", behavior: "smooth"});
+      post.focus({preventScroll: true});
+    }
   };
 
   CommunityApp.prototype.openAdminPanel = function (id) {
@@ -1780,7 +1832,7 @@
       allowCancellations: true,
       reminder: "24 horas antes del inicio",
       access: "Abierto a todos",
-      coverImage: "https://images.unsplash.com/photo-1599447421416-3414500d18a5?auto=format&fit=crop&w=1200&q=88"
+      coverImage: "/images/patient-export/697acf432c30040e98d8.jpg"
     };
   };
 
@@ -2006,7 +2058,7 @@
   };
 
   CommunityApp.prototype.renderAdminClassCard = function (item) {
-    var cover = item.coverImage || item.image || "https://images.unsplash.com/photo-1599447421416-3414500d18a5?auto=format&fit=crop&w=900&q=88";
+    var cover = item.coverImage || item.image || "/images/patient-export/c5f724b7a75a6cd919b7.jpg";
     var enrolled = Number(item.enrolled || 8);
     var capacity = Math.max(1, Number(item.capacity || 20));
     return '<article class="kc-admin-event-created-card kc-admin-class-created-card"><div class="kc-admin-event-created-media"><img src="' + escapeHtml(cover) + '" alt="' + escapeHtml(item.title) + '"></div><div class="kc-admin-event-created-copy"><span>Destacada</span><h3>' + escapeHtml(item.title) + '</h3><div class="kc-admin-event-created-meta"><p>' + icon("calendar") + '<b>' + escapeHtml(item.date || "Martes, 27 de mayo 2025") + '</b><small>' + escapeHtml(item.day || "mar") + '</small></p><p>' + icon("clock") + '<b>' + escapeHtml(item.time || "8:00 a.m. - 9:00 a.m.") + '</b><small>Horario</small></p><p>' + icon("video") + '<b>' + escapeHtml(item.modality || "Presencial") + '</b><small>Modalidad</small></p><p>' + icon("map") + '<b>' + escapeHtml(item.place || "Sala Wellness") + '</b><small>Ubicacion</small></p></div><div class="kc-admin-event-created-footer"><p><small>Instructora</small><b>' + escapeHtml(item.instructor || "Mariana Lopez") + '</b></p><p><small>Precio</small><b>' + escapeHtml(item.price || "Gratis") + '</b></p><p><small>Estado</small><b class="is-published">' + escapeHtml(item.status || "Publicada") + '</b></p><div><button type="button">' + icon("eye") + ' Ver clase</button><button type="button">' + icon("edit") + ' Editar</button><button type="button">' + icon("file") + ' Duplicar</button></div></div></div></article><dl class="kc-admin-event-repository"><div><dt>ID de la clase</dt><dd>' + escapeHtml(item.repositoryId || item.id || "CLS-2025-0057") + '</dd></div><div><dt>Capacidad</dt><dd>' + escapeHtml(capacity) + ' personas</dd></div><div><dt>Inscritos</dt><dd><span><i style="width:' + Math.min(100, Math.round((enrolled / capacity) * 100)) + '%"></i></span>' + escapeHtml(enrolled) + ' / ' + escapeHtml(capacity) + '</dd></div><div><dt>Administrador</dt><dd>Klini Wellness (Tu)</dd></div><div><dt>Ultima actualizacion</dt><dd>' + escapeHtml(item.updatedAt || "Hoy") + '</dd></div></dl>';
@@ -2162,6 +2214,7 @@
     var flow = this.state.reservationFlow;
     if (!flow || !flow.confirmAttend || !flow.confirmRules) return;
     this.reserve(flow.itemId);
+    this.state.reservations[flow.itemId] = { attendees: flow.attendees, modality: flow.modality };
     flow.step = "success";
   };
 
@@ -2186,6 +2239,7 @@
     this.syncStoryTimer();
     this.syncDirectoryFocus();
     this.applyEventSearch(this.state.eventSearch || "");
+    this.applyCommunitySearch();
   };
 
   CommunityApp.prototype.renderView = function () {
@@ -2202,17 +2256,19 @@
   CommunityApp.prototype.renderFeed = function () {
     var allCommunities = this.catalogCommunities();
     return '<div class="kc-feed-wrap kc-community-feed">' +
-      this.renderCommunityHeader("feed") + '<section id="kc-community-feed-panel"' + (this.options.separateCalendar ? ' aria-label="Comunidades"' : ' role="tabpanel" aria-labelledby="kc-community-feed-tab"') + '>' +
-      this.renderStories() +
+      '<section id="kc-community-feed-panel"' + (this.options.separateCalendar ? ' aria-label="Comunidades"' : ' role="tabpanel" aria-labelledby="kc-community-feed-tab"') + '>' +
+      this.renderStories() + '<div class="kc-community-toolbar-slot">' + this.renderCommunityHeader("feed") + '</div>' +
+      '<p class="kc-community-search-status" data-community-search-status role="status" hidden></p>' +
       '<div class="kc-community-feed-list" aria-label="Todas las comunidades">' +
       (allCommunities.length ? allCommunities.map(this.renderFeedCommunity.bind(this)).join("") : '<p class="kc-empty">No hay comunidades disponibles.</p>') +
+      '<p class="kc-empty" data-community-search-empty hidden>No encontramos comunidades con esa búsqueda. Prueba con otro nombre, tema o ciudad.</p>' +
       '</div></section></div>';
   };
 
   CommunityApp.prototype.renderCommunityHeader = function (section) {
     if (this.options.separateCalendar) {
       if (section === "calendar") return "";
-      return '<header class="kc-community-workspace-heading"><h1 class="kc-community-workspace-title">Comunidades</h1><div class="kc-community-heading-actions"><button type="button" data-action="open-directory-filter" data-id="explore" aria-label="Explorar comunidades" title="Explorar comunidades">' + icon("compass") + '</button><button type="button" data-action="create-open" aria-label="Crear comunidad" title="Crear comunidad">' + icon("plus") + '</button></div></header>';
+      return '<header class="kc-community-workspace-heading"><label class="kc-community-search">' + icon("search") + '<input type="search" data-community-search value="' + escapeHtml(this.state.communitySearch) + '" placeholder="Buscar comunidades" aria-label="Buscar comunidades" autocomplete="off" enterkeyhint="search"></label><div class="kc-community-heading-actions"><button type="button" data-action="open-directory-filter" data-id="explore" aria-label="Explorar comunidades" title="Explorar comunidades">' + icon("compass") + '</button><button type="button" data-action="create-open" aria-label="Crear comunidad" title="Crear comunidad">' + icon("plus") + '</button></div></header>';
     }
     return '<header class="kc-community-workspace-heading"><div class="kc-community-switch" role="tablist" aria-label="Comunidades y calendario" data-calendar-tabs>' +
       [{ id: "feed", label: "Comunidades", icon: "users" }, { id: "calendar", label: "Calendario", icon: "calendar" }].map(function (tab) {
@@ -2301,7 +2357,7 @@
 
   CommunityApp.prototype.calendarDateLabel = function (reservation) {
     var date = reservation.date;
-    var label = date ? date.toLocaleDateString("es-MX", { weekday: "short", day: "numeric", month: "short", year: "numeric" }) : "Fecha por confirmar";
+    var label = date ? date.toLocaleDateString("es-MX", { day: "numeric", month: "short", year: "numeric" }) : "Fecha por confirmar";
     var item = reservation.item;
     var time = item.time || item.startTime || "";
     if (item.endTime) time += (time ? " – " : "Hasta ") + item.endTime;
@@ -2312,10 +2368,17 @@
     var item = reservation.item, community = reservation.community || {};
     var cover = item.coverImage || item.image || this.communityHeroImage(community);
     var status = reservation.past ? "Anterior" : "Confirmada";
-    return '<article class="kc-calendar-card' + (detail ? ' is-detail' : '') + '"><img class="kc-calendar-cover" src="' + escapeHtml(cover) + '" alt="" data-community-feed-image data-fallback-src="/images/communities/category-wellness.png" loading="lazy"><div class="kc-calendar-card-content">' +
-      '<div class="kc-calendar-card-heading"><h2>' + escapeHtml(item.title) + '</h2><span class="kc-calendar-status' + (reservation.past ? ' is-past' : '') + '">' + icon(reservation.past ? "clock" : "check") + status + '</span></div>' +
-      '<ul class="kc-calendar-meta"><li>' + icon("users") + '<span>' + escapeHtml(community.name || "Comunidad") + '</span></li><li>' + icon("calendar") + '<span>' + escapeHtml(this.calendarDateLabel(reservation)) + '</span></li><li>' + icon("map") + '<span>' + escapeHtml(item.place || item.modality || "Ubicación por confirmar") + '</span></li></ul>' +
-      (detail ? '<p class="kc-calendar-description">' + escapeHtml(item.description || community.description || "") + '</p>' + (item.modality ? '<p class="kc-calendar-modality">Modalidad: ' + escapeHtml(item.modality) + '</p>' : '') : '<button type="button" class="kc-calendar-open" data-action="calendar-detail" data-id="' + escapeHtml(reservation.id) + '" aria-label="Ver reservación: ' + escapeHtml(item.title) + '">Ver reservación ' + icon("arrow") + '</button>') + '</div></article>';
+    var saved = this.state.reservations[reservation.id] || {};
+    var attendees = Number(saved.attendees);
+    var places = attendees > 0 ? attendees + (attendees === 1 ? " lugar reservado" : " lugares reservados") : "Asistencia reservada";
+    return '<article class="kc-calendar-card' + (detail ? ' is-detail' : '') + '">' +
+      '<header class="kc-calendar-card-top"><span class="kc-calendar-kind">' + icon("lotus") + ' Comunidad</span><span class="kc-calendar-status' + (reservation.past ? ' is-past' : '') + '">' + icon(reservation.past ? "clock" : "check") + status + '</span></header>' +
+      '<div class="kc-calendar-card-heading"><img class="kc-calendar-cover" src="' + escapeHtml(cover) + '" alt="" data-community-feed-image data-fallback-src="/images/communities/category-wellness.png" loading="lazy"><div><h2>' + escapeHtml(item.title) + '</h2><p>Comunidad ' + escapeHtml(community.name || "por confirmar") + '</p></div></div>' +
+      '<ul class="kc-calendar-meta"><li>' + icon("calendar") + '<span>' + escapeHtml(this.calendarDateLabel(reservation)) + '</span></li><li>' + icon("map") + '<span>' + escapeHtml(item.place || saved.modality || item.modality || "Ubicación por confirmar") + '</span></li>' +
+      (item.instructor ? '<li>' + icon("person") + '<span>Instructor: ' + escapeHtml(item.instructor) + '</span></li>' : '') +
+      '<li>' + icon("users") + '<span>' + escapeHtml(places) + '</span></li></ul>' +
+      (detail ? '<p class="kc-calendar-description">' + escapeHtml(item.description || community.description || "") + '</p>' + (item.modality ? '<p class="kc-calendar-modality">Modalidad: ' + escapeHtml(item.modality) + '</p>' : '') : '<button type="button" class="kc-calendar-open" data-action="calendar-detail" data-id="' + escapeHtml(reservation.id) + '" aria-label="Ver reservación: ' + escapeHtml(item.title) + '">Ver reservación</button>') +
+      (community.id ? '<button type="button" class="kc-calendar-community-link" data-action="open-community-panel" data-id="' + escapeHtml(community.id) + '">Ver comunidad</button>' : '') + '</article>';
   };
 
   CommunityApp.prototype.renderCommunityCalendar = function () {
@@ -2328,10 +2391,10 @@
     } else {
       var visible = reservations.filter(function (item) { return item.past === past; });
       if (past) visible.reverse();
-      content = '<div class="kc-calendar-filters" role="tablist" aria-label="Filtrar reservaciones" data-calendar-tabs>' + [{ id: "reserved", label: "Reservadas" }, { id: "past", label: "Anteriores" }].map(function (filter) {
+      content = '<div class="kc-calendar-filters" role="tablist" aria-label="Filtrar reservaciones" data-calendar-tabs>' + [{ id: "reserved", label: "Próximas" }, { id: "past", label: "Anteriores" }].map(function (filter) {
         var selected = (past ? "past" : "reserved") === filter.id;
         return '<button type="button" role="tab" id="kc-calendar-' + filter.id + '-tab" aria-controls="kc-calendar-' + filter.id + '-panel" aria-selected="' + selected + '" tabindex="' + (selected ? "0" : "-1") + '" data-action="calendar-filter" data-id="' + filter.id + '">' + filter.label + '</button>';
-      }).join("") + '</div><section role="tabpanel" id="kc-calendar-' + (past ? "past" : "reserved") + '-panel" aria-labelledby="kc-calendar-' + (past ? "past" : "reserved") + '-tab"><header class="kc-calendar-list-heading"><h1 tabindex="-1" data-calendar-list-heading>' + (past ? "Actividades anteriores" : "Tus próximas actividades") + '</h1><p role="status">' + visible.length + (visible.length === 1 ? ' reservación' : ' reservaciones') + '</p></header><div class="kc-calendar-list">' +
+      }).join("") + '</div><section role="tabpanel" id="kc-calendar-' + (past ? "past" : "reserved") + '-panel" aria-labelledby="kc-calendar-' + (past ? "past" : "reserved") + '-tab"><header class="kc-calendar-list-heading"><h1 tabindex="-1" data-calendar-list-heading>Mis reservaciones</h1><p class="kc-calendar-count" role="status">' + visible.length + (visible.length === 1 ? ' reservación' : ' reservaciones') + (past ? ' anteriores' : ' próximas') + '</p></header><div class="kc-calendar-list">' +
         (visible.length ? visible.map(function (item) { return this.renderCalendarCard(item, false); }, this).join("") : '<div class="kc-calendar-empty"><span>' + icon("calendar") + '</span><h2>' + (past ? "Aquí empieza tu historia" : "Haz espacio para tu bienestar") + '</h2><p>' + (past ? "Tus actividades reservadas aparecerán aquí cuando hayan pasado." : "Aún no tienes próximas actividades reservadas. Explora tus comunidades y encuentra tu siguiente momento de bienestar.") + '</p><button type="button" class="kc-calendar-open" data-action="open-directory-filter" data-id="explore">Explorar comunidades ' + icon("arrow") + '</button></div>') + '</div></section>';
     }
     return '<div class="kc-feed-wrap kc-community-feed kc-community-calendar">' + this.renderCommunityHeader("calendar") + '<section id="kc-community-calendar-panel"' + (this.options.separateCalendar ? ' aria-label="Reservaciones de comunidades"' : ' role="tabpanel" aria-labelledby="kc-community-calendar-tab"') + '>' + content + '</section></div>';
@@ -2339,7 +2402,7 @@
 
   CommunityApp.prototype.renderPostsFeed = function () {
     return '<div class="kc-feed-wrap kc-posts-home">' +
-      this.renderStories() +
+      this.renderStories() + '<div class="kc-community-toolbar-slot" aria-hidden="true"></div>' +
       '<div class="kc-post-list" aria-label="Publicaciones de usuarios">' + posts.map(this.renderPost.bind(this)).join("") + '</div></div>';
   };
 
@@ -2353,14 +2416,39 @@
       '<header><span class="kc-community-feed-avatar ' + escapeHtml(community.tone || "mint") + '">' + initials + '</span>' +
       '<div><strong>' + name + '</strong><small>' + escapeHtml(community.category || "Bienestar") + ' · ' + escapeHtml(community.city || "En linea") + '</small></div>' +
       '<span class="kc-community-feed-access">' + (community.access === "open" ? "Abierta" : "Con solicitud") + '</span></header>' +
+      '<p class="kc-community-feed-description">' + escapeHtml(community.description || "") + '</p>' +
       '<button class="kc-community-feed-cover" type="button" data-action="open-community-panel" data-id="' + id + '" aria-label="Ver comunidad ' + name + '">' +
       '<img src="' + image + '" data-community-feed-image data-fallback-src="' + fallback + '" alt="Portada de ' + name + '" loading="lazy"></button>' +
-      '<div class="kc-community-feed-body"><span>' + icon("users") + ' ' + escapeHtml(community.members || 0) + ' miembros</span>' +
-      '<p>' + escapeHtml(community.description || "") + '</p>' +
+      '<div class="kc-community-feed-body"><span>' + icon("users") + ' ' + escapeHtml(community.members || 0) + (Number(community.members) === 1 ? ' miembro</span>' : ' miembros</span>') +
       '<button type="button" data-action="open-community-panel" data-id="' + id + '">Ver comunidad ' + icon("arrow") + '</button></div></article>';
   };
 
+  CommunityApp.prototype.communityMatchesSearch = function (community, query) {
+    var words = normalizeSearch(query || "").trim().split(/\s+/).filter(Boolean);
+    var text = normalizeSearch([community.name, community.category, community.description, community.city].join(" "));
+    return words.every(function (word) { return text.indexOf(word) !== -1; });
+  };
+
+  CommunityApp.prototype.applyCommunitySearch = function () {
+    var self = this;
+    var query = this.state.communitySearch || "";
+    var count = 0;
+    this.root.querySelectorAll("[data-community-feed-card]").forEach(function (card) {
+      var community = self.findCommunity(card.getAttribute("data-community-id"));
+      card.hidden = !community || !self.communityMatchesSearch(community, query);
+      if (!card.hidden) count++;
+    });
+    var status = this.root.querySelector("[data-community-search-status]");
+    if (status) {
+      status.hidden = !query.trim();
+      status.textContent = count + (count === 1 ? " comunidad encontrada" : " comunidades encontradas");
+    }
+    var empty = this.root.querySelector("[data-community-search-empty]");
+    if (empty) empty.hidden = !query.trim() || count > 0;
+  };
+
   CommunityApp.prototype.renderStories = function () {
+    if (this.stories) return this.stories.render();
     var items = this.storyItems();
     var isHomePosts = this.options.startView === "posts";
     var hasPatientStory = !!(this.state.storyUploads || {}).patient;
@@ -2495,28 +2583,37 @@
   };
 
   CommunityApp.prototype.renderPost = function (post) {
+    this.socialPosts = this.socialPosts || {};
+    this.socialPosts[post.id] = post;
+    var id = escapeHtml(post.id);
     var liked = !!this.state.likes[post.id];
+    var reposted = !!this.state.reposts[post.id];
+    var requested = !!this.state.followRequests[post.author.id];
+    var commentCount = post.comments + (this.state.postComments[post.id] || []).length;
     var messagesOpen = !!this.state.commentsOpen[post.id];
     var shareOpen = !!this.state.sharesOpen[post.id];
-    return '<article class="kc-post">' +
-      '<header><img src="' + post.author.avatar + '" alt=""><div><strong>' + escapeHtml(post.author.name) + '</strong><small>' + escapeHtml(post.time) + '</small></div><button aria-label="Más opciones">•••</button></header>' +
-      '<p>' + escapeHtml(post.text) + '</p><img class="kc-post-image" src="' + post.image + '" alt="Publicacion de bienestar">' +
-      '<div class="kc-post-actions"><button class="' + (liked ? "is-liked" : "") + '" data-action="like" data-id="' + post.id + '">' + icon("heart") + ' ' + (post.likes + (liked ? 1 : 0)) + '</button>' +
-      '<button class="' + (messagesOpen ? "is-open" : "") + '" data-action="toggle-post-messages" data-id="' + post.id + '" aria-expanded="' + String(messagesOpen) + '">' + icon("message") + ' ' + post.comments + '</button><button class="' + (shareOpen ? "is-open" : "") + '" data-action="toggle-post-share" data-id="' + post.id + '" aria-expanded="' + String(shareOpen) + '">' + icon("send") + ' ' + post.shares + '</button></div>' +
+    return '<article class="kc-post" data-social-post="' + id + '" tabindex="-1">' +
+      '<header><img src="' + escapeHtml(post.author.avatar) + '" alt=""><div><strong>' + escapeHtml(post.author.name) + '</strong><small>' + escapeHtml(post.time) + '</small></div><button type="button" class="kc-follow-button" data-action="follow-author" data-id="' + id + '" aria-pressed="' + requested + '">' + (requested ? "Solicitado" : "Seguir") + '</button></header>' +
+      '<p>' + escapeHtml(post.text) + '</p><img class="kc-post-image" src="' + escapeHtml(post.image) + '" alt="Publicación de bienestar">' +
+      '<div class="kc-post-actions"><button type="button" class="' + (liked ? "is-liked" : "") + '" data-action="like" data-id="' + id + '" aria-label="Me gusta" aria-pressed="' + liked + '">' + icon("heart") + ' ' + (post.likes + (liked ? 1 : 0)) + '</button>' +
+      '<button type="button" class="' + (messagesOpen ? "is-open" : "") + '" data-action="toggle-post-messages" data-id="' + id + '" aria-label="Mensajes" aria-expanded="' + messagesOpen + '">' + icon("message") + ' ' + commentCount + '</button>' +
+      '<button type="button" class="' + (reposted ? "is-reposted" : "") + '" data-action="repost" data-id="' + id + '" aria-label="Repost" aria-pressed="' + reposted + '">' + icon("repost") + ' ' + (post.shares + (reposted ? 1 : 0)) + '</button>' +
+      '<button type="button" class="' + (shareOpen ? "is-open" : "") + '" data-action="toggle-post-share" data-id="' + id + '" aria-label="Compartir" aria-expanded="' + shareOpen + '">' + icon("send") + '</button></div>' +
+      (reposted ? '<p class="kc-social-notice" role="status">Repost guardado en tu actividad.</p>' : "") +
       (messagesOpen ? this.renderPostMessages(post) : "") +
       (shareOpen ? this.renderPostShare(post) : "") +
       '<div class="kc-liked-by"><span class="kc-mini-avatars">' + people.slice(0, 3).map(function (p) { return '<img src="' + p.avatar + '" alt="">'; }).join("") + '</span>A ' + escapeHtml(people[1].short) + ', ' + escapeHtml(people[2].short) + ' y ' + (post.likes - 3) + ' personas más les gusta esto</div></article>';
   };
 
   CommunityApp.prototype.renderPostMessages = function (post) {
-    var messages = postMessages[post.id] || [];
+    var messages = (postMessages[post.id] || []).concat(this.state.postComments[post.id] || []);
     var self = this;
     return '<section class="kc-post-messages" aria-label="Mensajes de la publicación">' +
-      '<div class="kc-post-messages-head"><strong>Mensajes de la publicación</strong><span>' + post.comments + ' en total</span></div>' +
+      '<div class="kc-post-messages-head"><strong>Mensajes de la publicación</strong><span>' + (post.comments + (this.state.postComments[post.id] || []).length) + ' en total</span></div>' +
       messages.map(function (message, index) {
         return self.renderPostMessage(post, message, index);
       }).join("") +
-      '</section>';
+      '<div class="kc-post-compose"><input data-reply-field="' + escapeHtml(post.id) + '-new" value="' + escapeHtml(this.state.replyDrafts[post.id + '-new'] || '') + '" aria-label="Escribe un mensaje" placeholder="Escribe un mensaje…" maxlength="2000"><button type="button" data-action="send-post-message" data-id="' + escapeHtml(post.id) + '">Publicar</button></div></section>';
   };
 
   CommunityApp.prototype.renderPostMessage = function (post, message, index) {
@@ -2547,7 +2644,20 @@
     });
     this.state.replyDrafts[threadId] = "";
     this.state.activeReplyThreads[threadId] = true;
-    this.emit("message.replied", { threadId: threadId, text: text });
+    var postId = threadId.split("-message-")[0];
+    var messages = (postMessages[postId] || []).concat(this.state.postComments[postId] || []);
+    var message = messages[Number(threadId.split("-message-")[1])];
+    this.emit("message.replied", { threadId: threadId, text: text, messageId: "reply-" + Date.now() + "-" + Math.random().toString(36).slice(2, 8), peer: message && message.author, post: this.socialPosts[postId] });
+  };
+
+  CommunityApp.prototype.addPostMessage = function (postId) {
+    var text = (this.state.replyDrafts[postId + "-new"] || "").trim().slice(0, 2000);
+    if (!text) return;
+    var message = {id: "message-" + Date.now() + "-" + Math.random().toString(36).slice(2, 8), author: {name: "Tú", avatar: this.patientProfilePhoto() || "/images/communities/category-mine.png"}, time: "Ahora", text: text};
+    (this.state.postComments[postId] || (this.state.postComments[postId] = [])).push(message);
+    this.state.replyDrafts[postId + "-new"] = "";
+    this.state.commentsOpen[postId] = true;
+    this.emit("message.sent", {post: this.socialPosts[postId], messageId: message.id, text: text});
   };
 
   CommunityApp.prototype.renderPostShare = function (post) {
@@ -2689,6 +2799,7 @@
   };
 
   CommunityApp.prototype.uploadStoryImage = function (storyId) {
+    if (this.stories) { this.stories.upload(); return; }
     var self = this;
     var targetId = storyId === "more" ? "patient" : (storyId || "patient");
     var input = document.createElement("input");
@@ -3691,12 +3802,12 @@
 
   CommunityApp.prototype.communityHeroImage = function (community) {
     var images = {
-      respira: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1100&q=88",
-      ritmo: "https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=1100&q=88",
-      nutricion: "https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=1100&q=88",
-      mente: "https://images.unsplash.com/photo-1593811167562-9cef47bfc4d7?auto=format&fit=crop&w=1100&q=88",
-      sendero: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1100&q=88",
-      fuerza: "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1100&q=88"
+      respira: "/images/patient-export/bae5b7d5f17ea4346b8e.jpg",
+      ritmo: "/images/patient-export/943f4dd5afbf6af7fc9e.jpg",
+      nutricion: "/images/patient-export/afe20faba2275119b253.jpg",
+      mente: "/images/patient-export/22ed010786489ca9fe1e.jpg",
+      sendero: "/images/patient-export/12abb8f6d5927a3c831c.jpg",
+      fuerza: "/images/patient-export/cd307ee6afc3f2957403.jpg"
     };
     return community.heroImage || community.backgroundImage || community.coverImage || images[community.id] || posts[0].image;
   };
@@ -3707,21 +3818,23 @@
   };
 
   CommunityApp.prototype.renderDetailMiniPost = function (post) {
-    return '<article class="kc-detail-post-card"><header><img src="' + escapeHtml(post.author.avatar) + '" alt="' + escapeHtml(post.author.name) + '"><div><strong>' + escapeHtml(post.author.name) + '</strong><small>' + escapeHtml(post.time) + '</small></div></header><p>' + escapeHtml(post.text) + '</p>' + (post.image ? '<img src="' + escapeHtml(post.image) + '" alt="Publicacion de comunidad">' : '') + '<footer><span>' + icon("heart") + ' ' + post.likes + '</span><span>' + icon("message") + ' ' + post.comments + '</span><span>' + icon("send") + ' ' + post.shares + '</span></footer></article>';
+    return this.renderPost(post);
   };
 
   CommunityApp.prototype.detailPostsForCommunity = function (community) {
     var specific = {
       respira: [
         { author: people[0], time: "Hoy · 8:30 a.m.", text: "Iniciando el dia con gratitud y respiracion consciente. Pequenos pasos, grandes cambios.", image: this.communityHeroImage(community), likes: 128, comments: 24, shares: 15 },
-        { author: people[3], time: "Ayer · 6:10 p.m.", text: "La practica de movilidad suave me ayudo a cerrar el dia con menos tension.", image: "https://images.unsplash.com/photo-1545205597-3d9d02c29597?auto=format&fit=crop&w=1100&q=88", likes: 82, comments: 11, shares: 6 }
+        { author: people[3], time: "Ayer · 6:10 p.m.", text: "La practica de movilidad suave me ayudo a cerrar el dia con menos tension.", image: "/images/patient-export/a659aa3215522fb9f590.jpg", likes: 82, comments: 11, shares: 6 }
       ],
       nutricion: [
         { author: people[2], time: "Hoy · 1:20 p.m.", text: "Lista base para la semana: proteina simple, vegetales listos y colaciones faciles de preparar.", image: this.communityHeroImage(community), likes: 64, comments: 18, shares: 9 },
-        { author: people[1], time: "Ayer · 7:45 p.m.", text: "Guardar porciones listas me ayudo a seguir el plan sin improvisar tanto.", image: "https://images.unsplash.com/photo-1543352634-a1c51d9f1fa7?auto=format&fit=crop&w=1100&q=88", likes: 51, comments: 8, shares: 4 }
+        { author: people[1], time: "Ayer · 7:45 p.m.", text: "Guardar porciones listas me ayudo a seguir el plan sin improvisar tanto.", image: "/images/patient-export/88790920a1b06a6b679a.jpg", likes: 51, comments: 8, shares: 4 }
       ]
     };
-    return specific[community.id] || posts.slice(0, 2);
+    return (specific[community.id] || posts.slice(0, 2)).map(function (post, index) {
+      return merge(post, {id: "community-" + community.id + "-post-" + index, communityId: community.id});
+    });
   };
 
   CommunityApp.prototype.detailMembersForCommunity = function (community) {
@@ -3764,8 +3877,8 @@
         rating: 5,
         text: "Las sesiones de respiracion me ayudaron a crear una rutina real. Me gusta que las actividades sean claras y faciles de seguir.",
         images: [
-          "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=420&q=82",
-          "https://images.unsplash.com/photo-1545205597-3d9d02c29597?auto=format&fit=crop&w=420&q=82"
+          "/images/patient-export/025137a57f3ca9681a57.jpg",
+          "/images/patient-export/fef141294fffa9354688.jpg"
         ]
       },
       {
@@ -3775,8 +3888,8 @@
         rating: 4,
         text: "La comunidad se siente cercana. Reserve un evento desde aqui y el recordatorio del administrador fue muy util.",
         images: [
-          "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=420&q=82",
-          "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=420&q=82"
+          "/images/patient-export/0eed2f25295ada06cb90.jpg",
+          "/images/patient-export/025137a57f3ca9681a57.jpg"
         ]
       },
       {
@@ -3786,7 +3899,7 @@
         rating: 5,
         text: "Me gusto encontrar publicaciones de otros miembros sin sentir presion. Es un espacio tranquilo para retomar habitos.",
         images: [
-          "https://images.unsplash.com/photo-1545205597-3d9d02c29597?auto=format&fit=crop&w=420&q=82",
+          "/images/patient-export/fef141294fffa9354688.jpg",
           hero
         ]
       },
@@ -3797,7 +3910,7 @@
         rating: 5,
         text: "Los eventos tienen buena informacion y el panel de la comunidad facilita seguir el calendario.",
         images: [
-          "https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=420&q=82"
+          "/images/patient-export/f122e1d2a549e41a1c36.jpg"
         ]
       }
     ];

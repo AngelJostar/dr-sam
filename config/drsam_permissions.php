@@ -16,6 +16,7 @@ return [
     'provider.requests.update' => ['superadmin', 'admin', 'provider'],
     'unit.appointments.update' => ['superadmin', 'admin', 'unit'],
     'unit.profile.update' => ['superadmin', 'admin', 'institution', 'unit'],
+    'unit.requests.interact' => ['superadmin', 'admin', 'institution', 'unit'],
     'unit.operational_users.manage' => ['superadmin', 'admin', 'institution', 'unit'],
     'unit.doctors.manage' => ['superadmin', 'admin', 'institution', 'unit'],
     'unit.external_pharmacy.update' => ['superadmin', 'admin', 'institution', 'unit'],

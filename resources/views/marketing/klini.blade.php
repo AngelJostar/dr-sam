@@ -42,15 +42,22 @@
       <a href="#inicio" class="brand brand-wellness" aria-label="Klini, inicio"><img src="{{ asset('brand/klini/klini.svg') }}" alt="Klini" width="120" height="56"></a>
       <nav class="nav-links" aria-label="Navegación principal" id="main-nav">
         <a href="#comunidad">La comunidad</a><a href="#experiencia">Tu bienestar digital</a><a href="#como-funciona">Lo que viene</a>
+        <button class="mobile-login" type="button" data-login>Ingresar</button>
       </nav>
       <div class="nav-actions">
-        <button class="mobile-menu icon-button" aria-label="Abrir menú" aria-expanded="false" aria-controls="main-nav"><svg class="icon"><use href="#i-menu"/></svg></button>
-        <button class="login-trigger" data-login aria-label="Ingresar a Klini"><span>Ingresar</span><span class="user-circle"><svg class="icon" aria-hidden="true"><use href="#i-user"/></svg></span></button>
         <button class="header-signup" type="button" data-signup><svg class="icon" aria-hidden="true"><use href="#i-user"/></svg><span>Únete, crea tu cuenta</span></button>
+        <button class="login-trigger" data-login aria-label="Ingresar a Klini"><span>Ingresar</span><span class="user-circle"><svg class="icon" aria-hidden="true"><use href="#i-user"/></svg></span></button>
+        <button class="mobile-menu icon-button" type="button" aria-label="Ingresar a Klini" aria-haspopup="dialog" aria-controls="login-dialog"><svg class="icon" aria-hidden="true"><use href="#i-user"/></svg></button>
       </div>
     </div>
   </header>
 
+  <form class="landing-inline-access section-shell" method="POST" action="{{ route('demo-login.store') }}" aria-label="Inicio de sesión">
+    @csrf
+    <label class="landing-access-field"><svg class="icon" aria-hidden="true"><use href="#i-user"/></svg><input name="username" aria-label="Usuario o correo electrónico" autocomplete="username" placeholder="Usuario" value="{{ old('username') }}" required></label>
+    <label class="landing-access-field"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg><input name="password" aria-label="Contraseña" type="password" autocomplete="current-password" placeholder="Contraseña" @required(!config('drsam.review_passwordless'))></label>
+    <button class="landing-access-submit" type="submit" aria-label="Entrar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button>
+  </form>
   <main id="contenido">
     <section class="hero section-shell wellness-hero" id="inicio" aria-labelledby="hero-title">
       <div class="hero-copy">
@@ -160,13 +167,57 @@
     <p class="auth-switch"><span>¿No tienes cuenta?</span> <button type="button" data-signup>Únete, crea tu cuenta</button></p>
     <p class="login-preview">Acceso a los módulos autorizados de Klini.</p>
   </dialog>
-  <dialog class="login-dialog" id="signup-dialog" aria-labelledby="signup-title" aria-describedby="signup-intro">
+  <dialog class="login-dialog signup-dialog" id="signup-dialog" aria-labelledby="signup-title" aria-describedby="signup-intro">
     <button class="dialog-close icon-button" type="button" aria-label="Cerrar"><svg class="icon"><use href="#i-close"/></svg></button>
     <div class="login-brand"><img src="{{ asset('brand/klini/klini.svg') }}" alt="Klini" width="120" height="56"></div>
     <div class="login-emblem"><svg class="icon"><use href="#i-users"/></svg></div>
     <h2 id="signup-title">Sé parte de Klini.</h2>
-    <p id="signup-intro">Estamos preparando el registro para nuevos usuarios. Si ya tienes una cuenta, puedes ingresar a tu módulo.</p>
-    <a class="button button-dark login-submit" href="{{ route('login') }}">Ingresar a mi cuenta</a>
+    @if(session('klini_registration'))
+      <p id="signup-intro">Tu registro fue recibido.</p>
+      <div class="signup-confirmation" data-registration-success role="status">
+        <span>Tu Usuario Klini</span>
+        <strong>{{ session('klini_registration.member_id') }}</strong>
+        <p>{{ session('klini_registration.role') === 'doctor' ? 'Tu cuenta de médico está pendiente de revisión y activación por el administrador.' : 'Tu cuenta está lista. Ingresa con tu usuario o correo y tu contraseña.' }}</p>
+      </div>
+      <button type="button" class="button button-dark login-submit" data-login>Ir a Ingresar</button>
+    @else
+      <p id="signup-intro">Crea tu cuenta de paciente o médico y recibe tu Usuario Klini.</p>
+      <form id="signup-form" method="POST" action="{{ route('klini.register') }}">
+        @csrf
+        @if($errors->registration->any())
+          <div class="login-feedback" role="alert"><ul>@foreach($errors->registration->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>
+        @endif
+        <label for="signup-type">Tipo de cuenta</label>
+        <select id="signup-type" name="registration_type" required>
+          <option value="patient" @selected(old('registration_type', 'patient') === 'patient')>Paciente</option>
+          <option value="doctor" @selected(old('registration_type') === 'doctor')>Médico</option>
+        </select>
+        <div class="signup-fields">
+          <div><label for="signup-first-name">Nombre(s)</label><input id="signup-first-name" name="first_name" value="{{ old('first_name') }}" autocomplete="given-name" maxlength="80" required></div>
+          <div><label for="signup-last-name">Apellidos</label><input id="signup-last-name" name="last_name" value="{{ old('last_name') }}" autocomplete="family-name" maxlength="100" required></div>
+        </div>
+        <label for="signup-email">Correo electrónico</label>
+        <input id="signup-email" name="email" type="email" value="{{ old('email') }}" autocomplete="email" maxlength="180" required>
+        <label for="signup-username">Usuario para ingresar</label>
+        <input id="signup-username" name="username" value="{{ old('username') }}" autocomplete="username" minlength="3" maxlength="60" pattern="[a-zA-Z0-9][a-zA-Z0-9._\-]*" required aria-describedby="signup-username-hint">
+        <p class="field-hint" id="signup-username-hint">Letras sin acentos, números, punto, guion o guion bajo.</p>
+        <div class="signup-fields">
+          <div><label for="signup-password">Contraseña</label><input id="signup-password" name="password" type="password" autocomplete="new-password" minlength="10" maxlength="72" required aria-describedby="signup-password-hint"></div>
+          <div><label for="signup-confirm-password">Confirmar contraseña</label><input id="signup-confirm-password" name="password_confirmation" type="password" autocomplete="new-password" minlength="10" maxlength="72" required></div>
+        </div>
+        <p class="field-hint" id="signup-password-hint">Mínimo 10 caracteres, con letras y números.</p>
+        <fieldset id="signup-doctor-fields" @if(old('registration_type') !== 'doctor') hidden disabled @endif>
+          <legend>Datos del médico</legend>
+          <div class="signup-fields">
+            <div><label for="signup-license">Cédula profesional</label><input id="signup-license" name="professional_license" value="{{ old('professional_license') }}" maxlength="80" required></div>
+            <div><label for="signup-specialty">Especialidad</label><input id="signup-specialty" name="specialty" value="{{ old('specialty') }}" maxlength="120" required></div>
+          </div>
+          <p class="field-hint">El administrador revisará tu registro antes de activar tu acceso como médico.</p>
+        </fieldset>
+        <button type="submit" class="button button-dark login-submit">Crear mi cuenta Klini</button>
+      </form>
+      <p class="auth-switch"><span>¿Ya tienes cuenta?</span> <button type="button" data-login>Ingresar</button></p>
+    @endif
   </dialog>
 </body>
 </html>

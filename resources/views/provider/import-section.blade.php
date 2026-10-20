@@ -49,7 +49,10 @@
     'Cumplimiento' => ['Folio', 'Fecha requerida', 'Estado'],
     'Exportaciones' => ['Archivo', 'Formato', 'Fecha', 'Estado'],
   ];
-  $columns = $schemas[$panelTitle];
+  $isUserDirectory = $importSection === 7;
+  $isExpedientDirectory = $panelTitle === 'Expedientes' && in_array($importSection, [1, 4, 5, 6], true);
+  $isSupplierListing = !$isUserDirectory && $panelTitle === 'Proveedores';
+  $columns = $isUserDirectory ? ['Clave', 'Usuario', 'Nombre', 'Correo', 'Rol', 'Área', 'Estatus', 'Acciones'] : $schemas[$panelTitle];
   $rows = collect();
   $displayStatus = fn ($status) => $statusText($status);
   $date = fn ($value) => $value?->format('d/m/Y H:i') ?? 'Sin fecha';
@@ -57,7 +60,16 @@
     $rows->push(['cells' => $cells, 'status' => $status]);
   };
   $requestPanels = ['Resumen', 'Prioridades', 'Solicitudes', 'Seguimiento', 'Expedientes', 'Solicitudes hospitalarias', 'Importaciones'];
-  if ($panelTitle === 'Formatos Editables') {
+  if ($isUserDirectory) {
+    foreach ($importUsers as $item) {
+      $area = \App\Services\Platform\ImportUserDirectory::area($item);
+      $areaLabel = \App\Services\Platform\ImportUserDirectory::AREAS[$area] ?? 'Sin asignar';
+      if ($importAction !== 0 && $areaLabel !== $panelTitle) continue;
+      $addRow(['USR-'.str_pad($item->id, 6, '0', STR_PAD_LEFT), $item->username ?? 'Sin usuario', $item->name, $item->email ?? 'Sin correo',
+        \App\Enums\UserRole::tryFrom($item->role)?->label() ?? $item->role, $areaLabel,
+        $item->status === 'active' ? 'Activo' : 'Inactivo', 'Abrir'], $item->status);
+    }
+  } elseif ($panelTitle === 'Formatos Editables') {
     $formats = $importSection === 5 ? ['Carta Encomienda (Agencia Aduanal)', 'Carta Responsiva (Agencia Aduanal)'] : ['Poder Simple (Cofepris)', 'Carta Motivo (Cofepris)'];
     foreach ($importRecords->filter(fn ($record) => $record->patient) as $record) {
       foreach ($formats as $format) {
@@ -95,7 +107,7 @@
       $addRow([$item->name, 'Medicamentos de importación', $importRecords->where('provider_id', $item->id)->count(), $item->status === 'active' ? 'Activo' : 'Inactivo'], $item->status);
     }
   } elseif (in_array($panelTitle, ['Directorio', 'Perfiles', 'Roles', 'Permisos'], true)) {
-    $users = $importRecords->pluck('provider.user')->filter()->unique('id');
+    $users = $importUsers->concat($importRecords->pluck('provider.user')->filter())->unique('id');
     if ($provider?->user) { $users->push($provider->user); $users = $users->unique('id'); }
     foreach ($users as $item) {
       $cells = $panelTitle === 'Permisos'
@@ -154,7 +166,7 @@
   }
 @endphp
 
-@if ($panelTitle === 'Proveedores')
+@if ($isSupplierListing)
   @php
     $demoListing = require resource_path('views/provider/international-providers.php');
     $columns = $demoListing['columns'];
@@ -178,73 +190,43 @@
 @endif
 
 <section class="import-detail-panel" data-import-panel>
-  @if (in_array($panelTitle, ['Embarques', 'Directorio', 'Trámites', 'Pacientes', 'Expedientes'], true))
+  @if (!$isUserDirectory && in_array($panelTitle, ['Embarques', 'Trámites', 'Pacientes', 'Expedientes'], true))
     @php
       $referenceListing = require resource_path('views/provider/reference-lists.php');
       $columns = $referenceListing['columns'];
       $rows = $panelTitle === 'Pacientes' && $rows->isNotEmpty() ? $rows->map(fn ($row) => ['cells' => [$row['cells'][0], 'Sin registrar', 'Sin registrar', $row['cells'][1], $row['cells'][2], 'Ver detalle'], 'status' => $row['status']]) : $referenceListing['rows'];
       $filterLabels[$importSection] = $referenceListing['filters'];
-      if ($panelTitle === 'Expedientes' && $importSection === 1) {
+      if ($panelTitle === 'Expedientes') {
+        $recordRows = $importRecords->map(fn ($record) => ['cells' => [
+          $record->medicalUnit?->institution?->name ?? data_get($record->payload, 'import_details.institution') ?? 'Pendiente',
+          $record->medicalUnit?->name ?? data_get($record->payload, 'import_details.hospital') ?? 'Pendiente',
+          $record->patient?->full_name ?? data_get($record->payload, 'import_details.patient_name', 'Pendiente'),
+          $record->external_id ?? 'Solicitud '.$record->id, $record->provider?->name ?? 'Pendiente',
+          data_get($record->payload, 'prescription_items.0.medication_name', 'Pendiente'),
+          match ($record->status) { 'documentation' => 'En documentación', 'draft' => 'Borrador', default => $displayStatus($record->status) },
+          'Editar poder', 'Editar carta motivo', 'Pendiente', 'Pendiente', 'Ver documento', 'Abrir', 'Editar cartas', 'Editar cartas',
+        ], 'status' => $record->status]);
+        $rows = $recordRows->concat($rows->reject(fn ($row) => $importRecords->contains('external_id', $row['cells'][3])));
+      }
+      if ($isExpedientDirectory) {
         $columns = [...array_slice($columns, 0, 7), 'Documentos del paciente', 'Documentos Regulatorio', 'Documentos Logística'];
         $rows = $rows->map(function ($row) use ($importRecords) {
           $record = $importRecords->firstWhere('external_id', $row['cells'][3]);
-          $documents = $record?->patient?->documents ?? collect();
-          $row['documents'] = collect(['INE', 'Comprobante de domicilio', 'Cédula fiscal', 'CURP', 'Receta médica'])->map(function ($name) use ($documents) {
-            $document = $documents->first(fn ($item) => mb_strtolower($item->document_type) === mb_strtolower($name) || mb_strtolower(data_get($item->metadata, 'category', '')) === mb_strtolower($name));
-            $exists = $document?->file_path && \Illuminate\Support\Facades\Storage::disk('local')->exists($document->file_path);
-            return ['name' => $name, 'url' => $exists ? route('provider.import.documents.view', $document) : null];
-          })->values();
-          $row['cells'] = [...array_slice($row['cells'], 0, 7), 'Ver '.$row['documents']->whereNotNull('url')->count().' de 5', 'Ver', 'Ver'];
-          return $row;
-        });
-      }
-      if ($panelTitle === 'Expedientes' && $importSection === 6) {
-        if ($importRecords->isNotEmpty()) {
-          $rows = $importRecords->map(fn ($record) => ['cells' => [
-            $record->medicalUnit?->institution?->name ?? 'Pendiente', $record->medicalUnit?->name ?? 'Pendiente',
-            $record->patient?->full_name ?? 'Pendiente', $record->external_id ?? 'Solicitud '.$record->id,
-            $record->provider?->name ?? 'Pendiente', data_get($record->payload, 'prescription_items.0.medication_name', 'Pendiente'),
-            $displayStatus($record->status), 'Editar poder', 'Editar carta motivo', 'Pendiente',
-          ], 'status' => $record->status]);
-        }
-        $columns = [...array_slice($columns, 0, 3), 'Datos del paciente', 'Documentos', ...array_slice($columns, 3, 7), 'Documento agencia aduanal 1', 'Documento agencia aduanal 2'];
-        $rows = $rows->map(function ($row) use ($importRecords) {
-          $patientDocuments = $importRecords->firstWhere('external_id', $row['cells'][3])?->patient?->documents ?? collect();
-          $patientDocuments = $patientDocuments->concat(\App\Models\Document::query()->where('uploaded_by', auth()->id())->where('metadata->folio', $row['cells'][3])->get());
-          $loadedCount = collect(['INE', 'Comprobante de domicilio', 'Cédula fiscal', 'CURP', 'Receta médica'])->filter(function ($name) use ($patientDocuments) {
-            return $patientDocuments->contains(fn ($document) => (mb_strtolower($document->document_type) === mb_strtolower($name) || mb_strtolower(data_get($document->metadata, 'category', '')) === mb_strtolower($name)) && $document->file_path && \Illuminate\Support\Facades\Storage::disk('local')->exists($document->file_path));
-          })->count();
-          $row['loadedDocuments'] = $loadedCount;
-          $patient = $importRecords->firstWhere('external_id', $row['cells'][3])?->patient;
-          $row['patientDetails'] = ['Nombre' => $patient?->full_name ?? 'Pendiente de vincular', 'CURP' => $patient?->curp ?? 'Pendiente', 'Fecha de nacimiento' => $patient?->birth_date?->format('d/m/Y') ?? 'Pendiente', 'Correo electrónico' => $patient?->email ?? 'Pendiente', 'Teléfono' => $patient?->phone ?? 'Pendiente', 'Dirección' => $patient?->address ?? 'Pendiente'];
-          if (!$patient && !$importRecords->firstWhere('external_id', $row['cells'][3])) {
-            $demoNames = ['IMP-2026-001' => 'María López Hernández', 'IMP-2026-002' => 'Jorge Martínez Ruiz', 'IMP-2026-003' => 'Ana Torres García', 'IMP-2026-004' => 'Carlos Pérez Luna', 'IMP-2026-005' => 'Valeria López Guzmán'];
-            $row['patientDetails'] = ['Nombre' => $demoNames[$row['cells'][3]] ?? 'Paciente de demostración', 'CURP' => 'CURP-DEMO-000001', 'Fecha de nacimiento' => '15/03/1992', 'Correo electrónico' => 'paciente.demo@example.com', 'Teléfono' => '55 0000 1234', 'Dirección' => 'Av. Ejemplo 123, Col. Demostración, Ciudad de México'];
-          }
-          $row['patientDetails'] = array_merge($row['patientDetails'], auth()->user()->metadata['import_patient_details'][$row['cells'][3]] ?? []);
-          $row['uploadedFiles'] = collect(['ine' => 'INE', 'address' => 'Comprobante de domicilio', 'tax' => 'Cédula fiscal', 'curp' => 'CURP', 'prescription' => 'Receta médica', 'summary' => 'Resumen clínico'])->map(function ($name) use ($patientDocuments) {
-            $document = $patientDocuments->sortByDesc('id')->first(fn ($item) => (mb_strtolower($item->document_type) === mb_strtolower($name) || mb_strtolower(data_get($item->metadata, 'category', '')) === mb_strtolower($name)) && $item->file_path && \Illuminate\Support\Facades\Storage::disk('local')->exists($item->file_path));
-            return $document ? ['name' => $document->name, 'url' => route('provider.import.documents.view', $document)] : null;
-          })->filter()->all();
-          $row['cells'] = [...array_slice($row['cells'], 0, 3), 'Ver', $loadedCount.' de 5', ...array_slice($row['cells'], 3, 7), 'Pendiente', 'Pendiente'];
+          $row['documentGroups'] = app(\App\Services\Platform\ImportExpedientDocuments::class)->listing($record, $row['cells'][3], auth()->user());
+          $counts = collect($row['documentGroups'])->map(fn ($documents) => 'Ver '.collect($documents)->whereNotNull('url')->count().' de '.count($documents))->values()->all();
+          $row['cells'] = [...array_slice($row['cells'], 0, 7), ...$counts];
           return $row;
         });
       }
     @endphp
   @endif
+  @php
+    // Keep source indexes for document actions; filters use visible positions.
+    $visibleColumns = collect($columns)->reject(fn ($column) =>
+      (in_array($importSection, [4, 5], true) && in_array($column, ['Institución', 'Hospital'], true))
+      || ($importSection === 4 && $column === 'Documentos Regulatorio'))->all();
+  @endphp
   @if (session('status'))<div class="notice success">{{ session('status') }}</div>@endif
-  <div class="provider-import-native-card import-summary">
-    <div>
-      <h2>{{ $panelTitle }}</h2>
-      <p>{{ $sectionTitle }} · Consulta y seguimiento de {{ mb_strtolower($panelTitle) }}.</p>
-      <span class="import-summary-badge">{{ $rows->count() }} registros disponibles</span>
-      @if (in_array($panelTitle, ['Proveedores', 'Cotizaciones', 'Embarques', 'Directorio', 'Trámites', 'Pacientes', 'Expedientes']))<small class="import-demo-label">Diseño de referencia; los registros ilustrativos son de demostración.</small>@endif
-    </div>
-    <div class="import-summary-actions">
-      @if ($panelTitle === 'Proveedores')<button type="button" class="import-export-button" data-new-supplier>⊕ Nuevo proveedor</button>@endif
-      <button type="button" class="import-export-button" data-import-export>Descargar CSV</button>
-    </div>
-  </div>
   @if ($importSection === 0 && $importAction === 0)
     @include('provider.import-welcome')
   @endif
@@ -255,21 +237,34 @@
     @foreach ($filterLabels[$importSection] as $filter)
       <button type="button" @class(['import-filter-button', 'is-active' => $loop->first]) data-import-filter="{{ $filter }}" aria-pressed="{{ $loop->first ? 'true' : 'false' }}">{{ $filter }}</button>
     @endforeach
-    <label class="import-search">Buscar en {{ mb_strtolower($panelTitle) }}<input type="search" placeholder="Buscar por nombre, folio o estado" data-import-search></label>
+    @if ($importSection === 1 && $importAction === 0)
+      <button type="button" class="import-export-button import-new-expedient-button" data-new-expedient><span aria-hidden="true">＋</span> Nuevo Expediente</button>
+    @endif
+    @if ($isUserDirectory && auth()->user()->role === 'superadmin')
+      <button type="button" class="import-export-button import-new-expedient-button" data-new-import-user><span aria-hidden="true">＋</span> Nuevo usuario</button>
+    @endif
+    <label class="import-search">Buscar en {{ mb_strtolower($panelTitle) }}<input type="search" placeholder="{{ $isUserDirectory ? 'Buscar por clave, usuario o nombre' : 'Buscar por nombre, folio o estado' }}" data-import-search></label>
   </div>
   <div @class(['import-quotes-layout' => $panelTitle === 'Cotizaciones'])>
   <section class="provider-import-native-card">
-    <div class="provider-import-native-heading"><div><h2>{{ match ($panelTitle) { 'Proveedores' => 'Listado de proveedores', 'Cotizaciones' => 'Listado de cotizaciones', default => $panelTitle } }}</h2>@if ($panelTitle === 'Proveedores')<p>Consulta la información de tus proveedores internacionales.</p>@elseif ($panelTitle === 'Cotizaciones')<p>Cotizaciones recibidas de proveedores con sus condiciones comerciales.</p>@endif</div><span data-import-count>{{ $rows->count() }} registros</span></div>
-    <div class="provider-import-native-table-scroll">
-      <table class="provider-import-native-table import-detail-table {{ $panelTitle === 'Expedientes' ? 'import-expedients-table' : '' }}" data-drsam-table-filter-skip>
-        <thead><tr>@foreach ($columns as $index => $column)<th><span class="import-column-title">
+    <div class="provider-import-native-heading">
+      <div><h2>{{ $isUserDirectory ? $panelTitle : match ($panelTitle) { 'Proveedores' => 'Listado de proveedores', 'Cotizaciones' => 'Listado de cotizaciones', default => $panelTitle } }}</h2>@if ($isSupplierListing)<p>Consulta la información de tus proveedores internacionales.</p>@elseif ($panelTitle === 'Cotizaciones')<p>Cotizaciones recibidas de proveedores con sus condiciones comerciales.</p>@endif</div>
+      <div class="import-table-actions">
+        <span data-import-count>{{ $rows->count() }} registros</span>
+        @if ($isSupplierListing)<button type="button" class="import-export-button" data-new-supplier>⊕ Nuevo proveedor</button>@endif
+        <button type="button" class="import-export-button" data-import-export>Descargar CSV</button>
+      </div>
+    </div>
+    <div class="provider-import-native-table-scroll" tabindex="0" role="region" aria-label="Tabla de {{ mb_strtolower($panelTitle) }}. Desplaza para ver todas las columnas.">
+      <table class="provider-import-native-table import-detail-table {{ $panelTitle === 'Expedientes' ? 'import-expedients-table' : '' }}" style="--import-columns: {{ count($visibleColumns) }}" data-drsam-table-filter-skip>
+        <thead><tr>@foreach ($visibleColumns as $index => $column)<th><span class="import-column-title">
           @if ($column === 'Documentos del paciente')
             Documentos del<br>paciente
           @else
             {{ $column }}
           @endif
         </span>
-          <select data-import-column="{{ $index }}" aria-label="Filtrar {{ $column }}">
+          <select data-import-column="{{ $loop->index }}" aria-label="Filtrar {{ $column }}">
             <option value="">Todos</option>
             @foreach ($rows->map(fn ($row) => (string) ($row['cells'][$index] ?? 'Sin información'))->unique()->sort() as $value)
               <option value="{{ $value }}">{{ $value }}</option>
@@ -280,25 +275,24 @@
           @foreach ($rows as $row)
             <tr data-import-row data-status="{{ $row['status'] }}">
               @foreach ($row['cells'] as $index => $cell)
+                @continue(!array_key_exists($index, $visibleColumns))
                 <td data-filter-value="{{ $cell ?? 'Sin información' }}">
                   @php
-                    $administrationPatientDetails = $panelTitle === 'Expedientes' && $importSection === 6 && $index === 3;
-                    $administrationDocuments = $panelTitle === 'Expedientes' && $importSection === 6 && $index === 4;
-                    if ($panelTitle === 'Expedientes' && $importSection === 6 && $index > 4) $index -= 2;
-                    $expedientFolio = $panelTitle === 'Expedientes' ? $row['cells'][$importSection === 6 ? 5 : 3] : '';
-                    $expedientMedicine = $panelTitle === 'Expedientes' ? $row['cells'][$importSection === 6 ? 7 : 5] : '';
-                    $expedientStage = $panelTitle === 'Expedientes' ? $row['cells'][$importSection === 6 ? 8 : 6] : '';
+                    $expedientFolio = $panelTitle === 'Expedientes' ? $row['cells'][3] : '';
+                    $expedientMedicine = $panelTitle === 'Expedientes' ? $row['cells'][5] : '';
+                    $expedientStage = $panelTitle === 'Expedientes' ? $row['cells'][6] : '';
                   @endphp
-                  @if ($administrationPatientDetails)
-                    <button type="button" data-patient-folio="{{ $expedientFolio }}" data-patient-details="{{ json_encode($row['patientDetails']) }}">Ver</button>
-                  @elseif ($administrationDocuments)
-                    <button type="button" class="import-upload-count {{ ($row['loadedDocuments'] ?? 0) === 5 ? 'is-complete' : 'is-pending' }}" data-patient-upload data-uploaded-files="{{ json_encode($row['uploadedFiles'] ?? []) }}" data-upload-folio="{{ $expedientFolio }}" data-upload-enabled="{{ $importRecords->firstWhere('external_id', $expedientFolio)?->patient_id ? 'true' : 'false' }}" aria-label="{{ $cell }} documentos cargados. Abrir carga de documentos">{{ $cell }}</button>
-                  @elseif ($panelTitle === 'Expedientes' && $importSection === 6 && $index >= 10)
-                    <span class="import-provider-pill is-pending">{{ $cell }}</span>
-                  @elseif ($panelTitle === 'Expedientes' && $importSection === 1 && $index >= 7)
-                    <button type="button" @class(['import-upload-count' => $index === 7, 'is-pending' => $index === 7 && $row['documents']->whereNotNull('url')->count() < 5, 'is-complete' => $index === 7 && $row['documents']->whereNotNull('url')->count() === 5]) data-expedient-documents data-document-title="{{ $columns[$index] }}" data-documents="{{ $index === 7 ? $row['documents']->toJson() : '[]' }}">{{ $cell }}</button>
+                  @if ($isExpedientDirectory && $index >= 7)
+                    @php
+                      $documentGroup = array_keys(\App\Services\Platform\ImportExpedientDocuments::GROUPS)[$index - 7];
+                      $groupDocuments = $row['documentGroups'][$documentGroup];
+                      $documentsComplete = collect($groupDocuments)->whereNotNull('url')->count() === count($groupDocuments);
+                    @endphp
+                    <button type="button" @class(['import-upload-count', 'is-pending' => !$documentsComplete, 'is-complete' => $documentsComplete]) data-expedient-documents data-folio="{{ $expedientFolio }}" data-document-group="{{ $documentGroup }}" data-can-edit="{{ \App\Services\Platform\ImportExpedientDocuments::canUploadFromSection($importSection, $documentGroup) ? 'true' : 'false' }}" data-document-title="{{ $columns[$index] }}" data-documents="{{ json_encode($groupDocuments) }}">{{ $cell }}</button>
                   @elseif ($panelTitle === 'Formatos Editables' && $index === 4)
                     <button type="button" data-expedient-editor data-letter-group="{{ $importSection === 5 ? 'aduanal' : 'cofepris' }}" data-letter-type="{{ $row['cells'][3] }}" data-folio="{{ $row['cells'][1] }}" data-medicine="{{ $row['cells'][2] }}" data-letter-patient="{{ json_encode($row['patientData']) }}">Editar formato</button>
+                  @elseif ($isExpedientDirectory && $index === 6 && $row['status'] === 'draft')
+                    <a class="import-provider-pill is-pending" href="{{ route('provider.import.dashboard', ['section' => 1, 'action' => 0, 'draft' => $importRecords->firstWhere('external_id', $expedientFolio)?->id]) }}">Continuar borrador</a>
                   @elseif ($panelTitle === 'Expedientes' && $index === 6)
                     <button type="button" class="import-provider-pill is-{{ $row['status'] }}" data-expedient-dashboard data-folio="{{ $expedientFolio }}" data-medicine="{{ $expedientMedicine }}" data-stage="{{ $expedientStage }}" data-status="{{ $row['status'] }}">{{ $cell }}</button>
                     @elseif ($panelTitle === 'Expedientes' && in_array($index, [7, 8]))
@@ -320,9 +314,13 @@
                       ])->values();
                     @endphp
                     <button type="button" data-patient-dashboard data-patient-name="{{ $row['cells'][0] }}" data-patient-orders="{{ $patientOrders->toJson() }}">Ver dashboard</button>
-                  @elseif (in_array($panelTitle, ['Proveedores', 'Cotizaciones', 'Directorio', 'Trámites', 'Expedientes']) && $index === count($columns) - 1)
+                  @elseif (($isUserDirectory || in_array($panelTitle, ['Proveedores', 'Cotizaciones', 'Trámites', 'Expedientes'])) && $index === count($columns) - 1)
                     <button type="button" data-import-open>{{ $panelTitle === 'Cotizaciones' ? 'Ver' : 'Abrir' }}</button>
-                  @elseif ((in_array($panelTitle, ['Embarques', 'Trámites']) && $index === 4) || (in_array($panelTitle, ['Directorio', 'Expedientes']) && $index === 3))
+                  @elseif ($isUserDirectory && $index === 6)
+                    <span class="import-provider-pill is-{{ $row['status'] }}">{{ $cell }}</span>
+                  @elseif ($isUserDirectory)
+                    {{ $cell }}
+                  @elseif ((in_array($panelTitle, ['Embarques', 'Trámites']) && $index === 4) || ($panelTitle === 'Expedientes' && $index === 3))
                     <span class="import-provider-pill is-{{ $row['status'] }}">{{ $cell }}</span>
                   @elseif ($panelTitle === 'Cotizaciones' && $index === 1)
                     <strong>{{ $cell }}</strong><small class="import-cell-detail">{{ $row['country'] }}</small>
@@ -343,7 +341,7 @@
               @endforeach
             </tr>
           @endforeach
-          <tr data-import-empty @if ($rows->isNotEmpty()) hidden @endif><td colspan="{{ count($columns) }}">{{ $rows->isEmpty() ? 'No hay registros disponibles para esta opción.' : 'No hay resultados para los filtros seleccionados.' }}</td></tr>
+          <tr data-import-empty @if ($rows->isNotEmpty()) hidden @endif><td colspan="{{ count($visibleColumns) }}">{{ $rows->isEmpty() ? 'No hay registros disponibles para esta opción.' : 'No hay resultados para los filtros seleccionados.' }}</td></tr>
         </tbody>
       </table>
     </div>
@@ -358,17 +356,23 @@
   @endif
   </div>
 </section>
-@if ($panelTitle === 'Proveedores')
+@if ($importSection === 1 && $importAction === 0)
+  @include('provider.new-expedient')
+@endif
+@if ($isUserDirectory && auth()->user()->role === 'superadmin')
+  @include('provider.new-user')
+@endif
+@if ($isSupplierListing)
   @include('provider.new-supplier')
   <dialog class="import-provider-dialog" data-import-dialog>
     <form method="dialog"><button aria-label="Cerrar detalle">Cerrar ×</button></form>
     <h2 data-import-detail-title></h2><p>Proveedor internacional · Datos de demostración</p><dl data-import-detail-fields></dl>
   </dialog>
 @endif
-@if (in_array($panelTitle, ['Cotizaciones', 'Directorio', 'Trámites', 'Pacientes', 'Expedientes'], true))
+@if ($isUserDirectory || in_array($panelTitle, ['Cotizaciones', 'Trámites', 'Pacientes', 'Expedientes'], true))
   <dialog class="import-provider-dialog" data-import-dialog>
     <form method="dialog"><button aria-label="Cerrar detalle">Cerrar ×</button></form>
-    <h2 data-import-detail-title></h2><p>{{ $panelTitle }} · Datos de demostración</p><dl data-import-detail-fields></dl>
+    <h2 data-import-detail-title></h2><p>{{ $isUserDirectory ? 'Datos del usuario' : $panelTitle.' · Datos de demostración' }}</p><dl data-import-detail-fields></dl>
   </dialog>
 @endif
 @push('scripts')
@@ -409,109 +413,7 @@
   </dialog>
   @push('scripts')<script src="{{ asset('js/patient-import-dashboard.js') }}?v={{ filemtime(public_path('js/patient-import-dashboard.js')) }}" defer></script>@endpush
 @endif
-<dialog class="import-provider-dialog import-patient-documents-dialog" data-documents-dialog>
-  <header><span class="import-documents-heading-icon" aria-hidden="true">▤</span><h2 data-documents-title>Documentos del paciente</h2><button type="button" data-documents-close aria-label="Cerrar">×</button></header>
-  <p>Consulta y visualización de archivos cargados</p>
-  <table class="import-patient-documents-table" data-drsam-table-filter-skip><thead><tr><th>Documento</th><th>Estado</th><th>Acciones</th></tr></thead><tbody data-documents-list></tbody></table>
-  <footer data-patient-documents-footer><button type="button" data-patient-documents-close>Cerrar</button><button type="button" data-documents-download>↓ Descargar todo</button></footer>
-  <div class="import-logistics-documents" data-logistics-documents hidden></div>
-  <footer data-logistics-footer hidden><button type="button" data-logistics-close>Cerrar</button></footer>
-</dialog>
-@push('scripts')
-<script>
-document.querySelectorAll('[data-expedient-documents]').forEach(button => button.addEventListener('click', () => {
- const dialog = document.querySelector('[data-documents-dialog]');
- dialog.querySelector('[data-documents-title]').textContent = button.dataset.documentTitle;
- const body = dialog.querySelector('[data-documents-list]'); body.replaceChildren();
- const documents = JSON.parse(button.dataset.documents);
- const logistics = button.dataset.documentTitle === 'Documentos Logística';
- dialog.classList.toggle('is-logistics-documents', logistics);
- dialog.querySelector('table').hidden = logistics;
- const cards = dialog.querySelector('[data-logistics-documents]'); cards.hidden = !logistics; cards.replaceChildren();
- dialog.querySelector('[data-logistics-footer]').hidden = !logistics;
- dialog.querySelector('[data-patient-documents-footer]').hidden = logistics;
- const download = dialog.querySelector('[data-documents-download]');
- download.disabled = !documents.some(item => item.url);
- download.onclick = () => documents.filter(item => item.url).forEach(item => { const link = window.document.createElement('a'); link.href = item.url + '?download=1'; link.download = ''; window.document.body.append(link); link.click(); link.remove(); });
- if (logistics) {
-  dialog.querySelector('p').textContent = 'Consulta y visualiza los documentos disponibles en el expediente.';
-  ['Documento agencia Aduanal 1', 'Documento agencia Aduanal 2'].forEach(name => {
-   const doc = documents.find(item => item.name === name);
-   const card = window.document.createElement('article');
-   const icon = window.document.createElement('span'); icon.className = 'import-logistics-file-icon'; icon.textContent = '▤'; icon.setAttribute('aria-hidden', 'true');
-   const info = window.document.createElement('div'); const title = window.document.createElement('strong'); title.textContent = name;
-   const detail = window.document.createElement('small'); detail.textContent = doc?.detail || 'Archivo pendiente de carga'; info.append(title, detail);
-   const state = window.document.createElement('span'); state.className = 'import-logistics-state'; state.textContent = doc?.url ? '● Disponible' : '● Pendiente';
-   const view = window.document.createElement(doc?.url ? 'a' : 'button'); view.textContent = '◉ Ver';
-   if (doc?.url) { view.href = doc.url; view.target = '_blank'; view.rel = 'noopener'; } else { view.disabled = true; }
-   card.append(icon, info, state, view); cards.append(card);
-  });
-  dialog.showModal(); return;
- }
- dialog.querySelector('p').textContent = 'Consulta y visualización de archivos cargados';
- if (!documents.length) { const row = body.insertRow(); row.insertCell().textContent = 'No hay documentos cargados para este expediente.'; }
- documents.forEach(document => {
-  const row = body.insertRow(); const name = row.insertCell();
-  const icon = window.document.createElement('span'); icon.className = 'import-document-row-icon'; icon.textContent = '▤'; icon.setAttribute('aria-hidden', 'true'); name.append(icon, document.name);
-  const status = window.document.createElement('span'); status.className = document.url ? 'import-document-status is-loaded' : 'import-document-status'; status.textContent = document.url ? '✓ Cargado' : 'Pendiente'; row.insertCell().append(status);
-  const cell = row.insertCell();
-  if (document.url) { const link = window.document.createElement('a'); link.href = document.url; link.target = '_blank'; link.rel = 'noopener'; link.textContent = 'Ver'; cell.append(link); }
-  else { const button = window.document.createElement('button'); button.textContent = 'Ver'; button.disabled = true; cell.append(button); }
- }); dialog.showModal();
-}));
-document.querySelector('[data-documents-close]').addEventListener('click', () => document.querySelector('[data-documents-dialog]').close());
-document.querySelector('[data-logistics-close]').addEventListener('click', () => document.querySelector('[data-documents-dialog]').close());
-document.querySelector('[data-patient-documents-close]').addEventListener('click', () => document.querySelector('[data-documents-dialog]').close());
-</script>
-@endpush
-@if ($panelTitle === 'Expedientes' && $importSection === 6)
-<dialog class="import-provider-dialog import-upload-dialog" data-upload-dialog>
-<form method="post" enctype="multipart/form-data" action="{{ route('provider.import.patient_documents.store') }}">
-@csrf
-<input type="hidden" name="folio" data-upload-folio-field>
-<header><span class="import-documents-heading-icon">▤</span><div><h2>Agregar archivos del paciente</h2><p>Sube los documentos solicitados para integrarlos al expediente.</p></div><button type="button" data-upload-close aria-label="Cerrar">×</button></header>
-<p data-upload-warning hidden>Los archivos se guardarán en este expediente como pendientes de vinculación al paciente.</p>
-@foreach (['ine' => 'INE', 'address' => 'Comprobante de domicilio', 'tax' => 'Cédula fiscal', 'curp' => 'CURP', 'prescription' => 'Receta médica', 'summary' => 'Resumen clínico'] as $key => $name)
-<article class="import-upload-row"><span class="import-document-row-icon">▤</span><div><strong>{{ $name }}</strong><small>Formatos aceptados: PDF / JPG / PNG · Máx. 10 MB</small></div><label class="import-upload-drop">↑ Subir archivo<small data-upload-name>o arrastra y suelta aquí</small><input type="file" name="files[{{ $key }}]" accept=".pdf,.jpg,.jpeg,.png" aria-label="Subir {{ $name }}"></label></article>
-@endforeach
-<footer><small>Todos los archivos serán vinculados al expediente del paciente.</small><button type="button" data-upload-close>Cancelar</button><button type="submit" data-upload-save>Guardar</button></footer>
-</form></dialog>
-@push('scripts')
-<script>
-(() => {
- const dialog = document.querySelector('[data-upload-dialog]');
- document.querySelectorAll('[data-patient-upload]').forEach(button => button.addEventListener('click', () => {
-  dialog.querySelector('form').reset(); dialog.querySelector('[data-upload-folio-field]').value = button.dataset.uploadFolio;
-  const enabled = button.dataset.uploadEnabled === 'true'; dialog.querySelector('[data-upload-warning]').hidden = enabled;
-  dialog.querySelector('[data-upload-save]').disabled = false;
-  const saved = JSON.parse(button.dataset.uploadedFiles || '{}');
-  dialog.querySelectorAll('input[type=file]').forEach(input => {
-   input.disabled = false;
-   const label = input.parentElement, key = input.name.match(/\[(.*?)\]/)[1], file = saved[key];
-   label.querySelector('[data-upload-name]').textContent = 'o arrastra y suelta aquí';
-   label.hidden = Boolean(file);
-   let completed = label.parentElement.querySelector('.import-upload-completed');
-   if (completed) completed.remove();
-   if (file) {
-    completed = document.createElement('div'); completed.className = 'import-upload-completed';
-    const name = document.createElement('strong'); name.textContent = file.name;
-    const link = document.createElement('a'); link.href = file.url; link.target = '_blank'; link.rel = 'noopener'; link.textContent = 'Ver';
-    completed.append(name, link); label.after(completed);
-   }
-  }); dialog.showModal();
- }));
- dialog.querySelectorAll('[data-upload-close]').forEach(button => button.addEventListener('click', () => dialog.close()));
- dialog.querySelectorAll('.import-upload-drop').forEach(label => {
-  const input = label.querySelector('input'); const update = () => label.querySelector('[data-upload-name]').textContent = input.files[0]?.name || 'o arrastra y suelta aquí';
-  input.addEventListener('change', update);
-  label.addEventListener('dragover', event => event.preventDefault());
-  label.addEventListener('drop', event => { event.preventDefault(); if (input.disabled) return; const transfer = new DataTransfer(); if (event.dataTransfer.files[0]) transfer.items.add(event.dataTransfer.files[0]); input.files = transfer.files; update(); });
- });
- dialog.querySelector('form').addEventListener('submit', event => { if (![...dialog.querySelectorAll('input[type=file]')].some(input => input.files.length)) { event.preventDefault(); dialog.querySelector('input[type=file]').focus(); alert('Selecciona al menos un archivo para guardar.'); } });
-})();
-</script>
-@endpush
-@endif
+@include('provider.expedient-documents')
 @if ($panelTitle === 'Expedientes' && $importSection === 6)
 <dialog class="import-provider-dialog import-patient-info-dialog" data-patient-details-dialog><header><span class="patient-info-avatar" aria-hidden="true">♟</span><div><h2>Datos del paciente</h2><p>Información general del paciente en el expediente.</p></div><button type="button" data-patient-details-close aria-label="Cerrar">×</button></header><dl data-patient-details-list></dl><footer><button type="button" data-patient-details-close>× &nbsp; Cerrar</button><button type="button" data-patient-details-edit>✎ Editar</button></footer><form method="post" action="{{ route('provider.import.patient_details.store') }}" data-patient-details-form hidden>@csrf<input type="hidden" name="folio" data-details-folio><div data-details-fields></div><button type="submit">Guardar</button></form></dialog>
 @push('scripts')

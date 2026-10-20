@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Services\Platform\DashboardRegistry;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,6 +21,7 @@ class DemoAccessController extends Controller
         }
 
         $users = User::query()
+            ->where('passwordless_review', true)
             ->select(['name', 'username', 'role', 'module'])
             ->orderBy('role')
             ->orderBy('name')
@@ -50,16 +52,16 @@ class DemoAccessController extends Controller
         if (! $user) {
             return back()
                 ->withErrors(['username' => 'El usuario no existe o esta inactivo.'])
-                ->withInput();
+                ->withInput($request->only('username'));
         }
 
-        if (! config('drsam.review_passwordless')) {
+        if (! (config('drsam.review_passwordless') && $user->passwordless_review)) {
             $password = (string) ($validated['password'] ?? '');
 
             if (! $user->password || ! Hash::check($password, $user->password)) {
                 return back()
                     ->withErrors(['password' => 'Usuario o contrasena incorrectos.'])
-                    ->withInput();
+                    ->withInput($request->only('username'));
             }
         }
 
@@ -72,15 +74,25 @@ class DemoAccessController extends Controller
             return redirect()->route('superadmin.dashboard');
         }
 
+        if ($user->account_category === User::CATEGORY_KLINI && in_array($user->role, ['patient', 'doctor'], true)) {
+            $request->session()->forget('url.intended');
+
+            return redirect()->route($user->role.'.dashboard');
+        }
+
         return redirect()->intended(route('dashboard'));
     }
 
-    public function destroy(Request $request): RedirectResponse
+    public function destroy(Request $request): RedirectResponse|JsonResponse
     {
         Auth::logout();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
+        if ($request->expectsJson()) {
+            return response()->json(['redirect' => route('home')]);
+        }
 
         return redirect()->route('home');
     }

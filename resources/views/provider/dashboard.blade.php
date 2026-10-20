@@ -73,7 +73,7 @@
     ['Expedientes', 'Permisos Cofepris', 'Trámites', 'Documentos sanitarios', 'Vigencias', 'Seguimiento regulatorio', 'Formatos Editables'],
     ['Expedientes', 'Embarques', 'Aduana', 'Almacén', 'Rutas', 'Entregas', 'Trazabilidad', 'Formatos Editables'],
     ['Expedientes', 'Facturas', 'Pagos', 'Contratos', 'Presupuestos', 'Configuración'],
-    ['Directorio', 'Perfiles', 'Roles', 'Permisos', 'Actividad'],
+    ['Directorio', 'Proveedores', 'Regulatorio', 'Logística', 'Administración'],
     ['Importaciones', 'Tiempos de entrega', 'Costos', 'Cumplimiento', 'Exportaciones'],
   ];
   $importDefaultActions = [0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -117,7 +117,7 @@
       </aside>
 
       <section class="provider-import-native-workspace">
-        <header class="import-section-banner"><h1>{{ $importSections[$importSection] }}</h1><span>{{ $importActions[$importSection][$importAction] }}</span></header>
+        <h1 class="sr-only">{{ $importSections[$importSection] }}: {{ $importActions[$importSection][$importAction] }}</h1>
         <nav class="import-action-carousel" aria-label="Opciones de {{ $importSections[$importSection] }}">
           <button type="button" class="import-carousel-arrow" data-import-scroll="-1" aria-label="Opciones anteriores">‹</button>
           <div class="import-carousel-track">
@@ -159,15 +159,7 @@
           </div>
         @endif
 
-        <header class="provider-import-native-topbar">
-          <div>
-            <h1>Tablero de importación</h1>
-            <p class="import-subtitle">Seguimiento de recetas, permisos, aduana y almacén.</p>
-          </div>
-          <div>
-            <time>{{ now()->format('d M Y') }}</time>
-          </div>
-        </header>
+        <h2 class="sr-only">Tablero de importación</h2>
 
         <section class="provider-import-native-card">
           <div class="provider-import-native-heading">

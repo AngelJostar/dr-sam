@@ -13,10 +13,11 @@ body.native-shell.provider-import-native-body > .shell { width: 100%; max-width:
 .native-shell.provider-import-native-body .provider-import-native-sidebar { min-height: calc(100dvh - 50px); padding: 26px 14px; background: white; border-color: #d8e4f1; top: 0; }
 .native-shell.provider-import-native-body .provider-import-native-menu { gap: 8px; }
 .native-shell.provider-import-native-body .provider-import-native-menu :is(a, button) { min-height: 44px; gap: 14px; padding: 8px 12px; color: #082441; background: #fff; border: 1px solid #d2dff0; box-shadow: 0 2px 4px #12336b06; font-size: 12px; font-weight: 600; border-radius: 6px; cursor: pointer; transition: background-color .15s, border-color .15s; }
-.native-shell.provider-import-native-body .provider-import-native-menu :is(a, button):hover { background: #f0faf9; border-color: #00998e; }
+body.native-shell.provider-import-native-body .provider-import-native-menu :is(a, button):is(:hover, :focus-visible) { background: #ddf3ef; color: #006762; border-color: #00998e; }
+body.native-shell.provider-import-native-body .provider-import-native-menu :is(a, button):is(:hover, :focus-visible, .is-active) :is(span, svg) { color: inherit; }
 .native-shell.provider-import-native-body .provider-import-native-menu :is(a, button):focus-visible { outline: 3px solid #00998e; outline-offset: 2px; }
 .native-shell.provider-import-native-body .provider-import-native-menu :is(a, button):active { background: #d5f0ec; }
-.native-shell.provider-import-native-body .provider-import-native-menu :is(a, button).is-active { color: #008f92; background: #e5f8f6; border-color: #a9ded8; }
+body.native-shell.provider-import-native-body .provider-import-native-menu :is(a, button).is-active { color: #006762; background: #e5f8f6; border-color: #a9ded8; }
 .provider-import-native-menu svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
 .native-shell.provider-import-native-body .provider-import-native-workspace { padding: 10px 10px 32px 15px; min-width: 0; }
 .native-shell.provider-import-native-body .provider-import-native-topbar { align-items: center; gap: 16px; min-height: 86px; margin: 0 0 8px; padding: 17px 19px; background: white; border: 1px solid #d8e4f1; border-radius: 6px; box-shadow: 0 4px 16px #12336b04; }
@@ -75,10 +76,6 @@ body.native-shell.provider-import-native-body > .shell { width: 100%; max-width:
 .native-shell.provider-import-native-body .import-carousel-item:focus-visible,
 .native-shell.provider-import-native-body .import-carousel-arrow:focus-visible { outline: 2px solid #00998e; outline-offset: -3px; }
 
-.native-shell.provider-import-native-body .import-summary { display: flex; align-items: center; justify-content: space-between; padding: 20px; gap: 16px; min-height: 108px; }
-.import-summary h2 { margin: 0 0 6px; font-size: 18px; }
-.import-summary p { margin: 0 0 10px; font-size: 12px; color: #5475ad; }
-.import-summary-badge { display: inline-flex; border-radius: 20px; background: #e5f8f6; color: #008f87; padding: 6px 12px; font-size: 11px; font-weight: 700; }
 .native-shell.provider-import-native-body .import-export-button,
 .native-shell.provider-import-native-body .import-filter-button { min-height: 36px; padding: 0 16px; border: 1px solid #cfdcde; border-radius: 5px; background: white; color: #082441; box-shadow: none; font-size: 12px; }
 .native-shell.provider-import-native-body .import-export-button,
@@ -86,13 +83,24 @@ body.native-shell.provider-import-native-body > .shell { width: 100%; max-width:
 .import-section-filters { display: flex; align-items: end; flex-wrap: wrap; gap: 8px; margin: 14px 0; }
 .import-search { margin-left: auto; display: grid; gap: 4px; font-size: 11px; color: #5475ad; }
 .import-search input { width: 300px; min-height: 36px; padding: 8px 12px; border: 1px solid #cfdcde; border-radius: 5px; }
+.import-new-expedient-button { margin-left: auto; }
+.import-new-expedient-button + .import-search { margin-left: 8px; }
+.import-bottom-scroll { position: fixed; bottom: 0; z-index: 40; height: 20px; overflow-x: scroll; overflow-y: hidden; background: #f4f8f9; border-top: 1px solid #cfdcde; box-shadow: 0 -3px 10px #10244114; }
+.import-bottom-scroll[hidden] { display: none; }
+.import-bottom-scroll > div { height: 1px; }
+.import-bottom-scroll::-webkit-scrollbar { height: 14px; }
+.import-bottom-scroll::-webkit-scrollbar-track { background: #edf2f4; }
+.import-bottom-scroll::-webkit-scrollbar-thumb { background: #8199a8; border: 3px solid #edf2f4; border-radius: 20px; }
+.provider-import-native-table-scroll[data-import-scroll-managed] { scrollbar-width: none; }
+.provider-import-native-table-scroll[data-import-scroll-managed]::-webkit-scrollbar { display: none; }
+.import-bottom-scroll:focus-visible { outline: 2px solid #00998e; outline-offset: -2px; }
 .native-shell.provider-import-native-body .import-detail-table { table-layout: auto; min-width: 680px; }
 .native-shell.provider-import-native-body .import-detail-table th:first-child,
 .native-shell.provider-import-native-body .import-detail-table th:last-child { width: auto; }
 .import-detail-panel [hidden] { display: none !important; }
 .native-shell.provider-import-native-body .import-filter-button:focus-visible,
 .native-shell.provider-import-native-body .import-export-button:focus-visible { outline: 2px solid #00998e; outline-offset: 2px; }
-@media (max-width: 600px) { .import-summary { flex-wrap: wrap; } .import-search { width: 100%; margin-left: 0; } .import-search input { width: 100%; } }
+@media (max-width: 600px) { .import-search { width: 100%; margin-left: 0; } .import-search input { width: 100%; } }
 .native-shell.provider-import-native-body .import-detail-table th select { display: block; width: 100%; min-width: 90px; max-width: 260px; margin-top: 6px; min-height: 30px; padding: 4px 8px; border: 1px solid #d2dff0; border-radius: 5px; color: #082441; background: white; font-size: 11px; font-weight: 400; text-transform: none; }
 .native-shell.provider-import-native-body .import-carousel-arrow:disabled,
 .native-shell.provider-import-native-body .import-export-button:disabled { opacity: .4; cursor: default; }
@@ -112,9 +120,13 @@ body.native-shell.provider-import-native-body > .shell { width: 100%; max-width:
 .import-provider-dialog dl { display: grid; grid-template-columns: 160px 1fr; gap: 12px; font-size: 13px; }
 .import-provider-dialog dt { font-weight: 700; }
 .import-provider-dialog dd { margin: 0; overflow-wrap: anywhere; }
-.import-summary-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.import-table-actions { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; justify-content: flex-end; }
+.import-table-actions [data-import-count] { color: #54708a; font-size: 12px; white-space: nowrap; }
 .import-new-supplier { width: min(690px, 94vw); max-height: 92dvh; padding: 20px; border: 1px solid #d2dff0; border-radius: 8px; background: white; color: #082441; }
 .import-new-supplier::backdrop { background: #15293890; }
+.native-shell .import-user-dialog header button { width: 36px !important; min-width: 36px !important; height: 36px !important; min-height: 36px !important; flex: 0 0 36px; font-size: 24px !important; }
+.import-user-dialog label { display: grid; gap: 6px; }
+.import-user-dialog input, .import-user-dialog select { min-width: 0; width: 100%; }
 .import-new-supplier header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid #e2eaf3; padding-bottom: 12px; }
 .import-new-supplier h2 { margin: 0; font-size: 20px; }
 .import-new-supplier p { margin: 6px 0 0; font-size: 12px; color: #5475ad; }
@@ -194,7 +206,7 @@ body.native-shell.provider-import-native-body > .shell { width: 100%; max-width:
 .import-section-banner { display: flex; align-items: center; gap: 14px; padding: 10px 4px 16px; }
 .import-section-banner h1 { margin: 0; font-size: 22px; color: #082441; }
 .import-section-banner > span { font-size: 12px; color: #5475ad; }
-.native-shell.provider-import-native-body .provider-import-native-sidebar { position: relative; z-index: 2; isolation: isolate; }
+.native-shell.provider-import-native-body .provider-import-native-sidebar { position: relative; z-index: 2; isolation: isolate; align-self: stretch; height: auto; }
 .native-shell.provider-import-native-body .import-menu-navigation { display: block; margin: 0; padding: 0; width: 100%; }
 .native-shell.provider-import-native-body .import-menu-navigation button { display: flex; align-items: center; width: 100%; text-align: left; line-height: 1.3; font-family: inherit; transform: none; }
 .import-menu-navigation button svg { pointer-events: none; }
@@ -238,9 +250,9 @@ body.native-shell.provider-import-native-body > .shell { width: 100%; max-width:
 .import-letter-editor small { color: #5475ad; }
 .native-shell.provider-import-native-body .import-detail-table:has([data-expedient-editor]) { table-layout: auto; min-width: 1000px !important; }
 .native-shell.provider-import-native-body .import-expedients-table { table-layout: fixed !important; }
-.native-shell.provider-import-native-body .import-expedients-table .import-column-title { display: block; max-width: 100px; min-height: 3.6em; line-height: 1.2; white-space: normal; text-wrap: balance; }
+.native-shell.provider-import-native-body .import-expedients-table .import-column-title { display: block; max-width: none; min-height: 2.8em; line-height: 1.4; white-space: normal; }
 .native-shell.provider-import-native-body .import-expedients-table th select { width: 100%; min-width: 0; }
-.native-shell.provider-import-native-body .import-expedients-table td { white-space: normal; overflow-wrap: anywhere; }
+.native-shell.provider-import-native-body .import-expedients-table td { white-space: normal; overflow-wrap: break-word; }
 .native-shell.provider-import-native-body .import-detail-table:has([data-expedient-editor]) th,
 .native-shell.provider-import-native-body .import-detail-table:has([data-expedient-editor]) td { padding: 8px 7px; font-size: 10px; }
 .native-shell.provider-import-native-body .import-detail-table:has([data-expedient-editor]) th select { min-width: 65px; padding: 3px; font-size: 10px; }
@@ -343,6 +355,42 @@ body.native-shell.provider-import-native-body > .shell { width: 100%; max-width:
 .native-shell button.import-upload-count.is-pending { background: #fff2cf; color: #8d641e; border-color: #f1d99c; }
 .native-shell button.import-upload-count.is-complete { background: #dff8e6; color: #25834c; border-color: #a5e4b6; }
 .import-upload-drop[hidden] { display: none !important; }
+.native-shell .import-expedient-documents-dialog { width: min(820px, 95vw); max-height: 90dvh; padding: 22px; }
+.import-expedient-documents-dialog > form { display: flex; flex-direction: column; max-height: calc(90dvh - 44px); text-align: left; }
+.import-expedient-documents-dialog header { flex-shrink: 0; align-items: flex-start; }
+.import-expedient-documents-dialog header > div { flex: 1; min-width: 0; }
+.import-expedient-documents-dialog header p { margin: 6px 0 16px; color: #526981; font-size: 13px; }
+.import-expedient-documents-body { overflow: auto; min-height: 0; }
+.import-expedient-documents-dialog [hidden] { display: none !important; }
+.import-document-table-wrap { overflow-x: auto; }
+.import-expedient-documents-dialog .import-patient-documents-table { table-layout: fixed; min-width: 620px !important; }
+.import-expedient-documents-dialog .import-patient-documents-table th:first-child { width: 40%; }
+.import-expedient-documents-dialog .import-patient-documents-table th:nth-child(2) { width: 18%; }
+.import-expedient-documents-dialog .import-patient-documents-table th:nth-child(3), .import-expedient-documents-dialog .import-patient-documents-table th:nth-child(4) { width: 21%; }
+.import-expedient-documents-dialog[data-read-only="true"] .import-patient-documents-table th:first-child { width: 58%; }
+.import-expedient-documents-dialog[data-read-only="true"] .import-patient-documents-table th:last-child { width: 24%; }
+.import-expedient-documents-dialog .import-patient-documents-table :is(th, td):nth-child(n+2) { text-align: center; }
+.import-expedient-documents-dialog .import-patient-documents-table :is(button, a) { --action-width: 88px; --action-height: 34px; }
+.native-shell .import-expedient-documents-dialog .import-document-add { background: #008f88; color: #fff; border-color: #008f88; }
+.native-shell .import-expedient-documents-dialog .import-document-view { box-sizing: border-box; width: 88px; min-height: 34px; padding: 7px 12px; border: 1px solid #dbe5ee; border-radius: 999px; background: #f5f8fb; color: #006762; }
+.native-shell .import-expedient-documents-dialog .import-document-view:disabled { color: #697b8b; background: #eef2f6; opacity: .65; }
+.import-document-filename { display: block; margin-top: 6px; color: #526981; overflow-wrap: anywhere; }
+.import-document-empty { font-size: 12px; color: #526981; }
+.import-document-help { margin: 0 0 14px; color: #526981; font-size: 12px; line-height: 1.5; }
+.import-expedient-documents-dialog tr.is-dragging { background: #e5f8f6; outline: 2px solid #00998e; outline-offset: -2px; }
+.native-shell .import-expedient-documents-dialog .import-document-clear { --action-height: 24px; display: block; margin: 4px auto 0; background: transparent; border: 0; color: #526981; box-shadow: none; text-decoration: underline; }
+.native-shell .import-expedient-documents-dialog footer { flex-shrink: 0; flex-wrap: wrap; margin-top: 16px; padding-top: 16px; }
+.import-expedient-documents-dialog [data-documents-close] { --action-width: 100px; }
+.native-shell .import-expedient-documents-dialog header [data-documents-close] { width: 36px !important; min-width: 36px !important; height: 36px; padding: 0; font-size: 26px !important; }
+.import-expedient-documents-dialog [data-documents-save] { --action-width: 145px; background: #008f88 !important; color: white !important; }
+.import-expedient-documents-dialog [data-documents-download] { --action-width: 135px; }
+.import-expedient-documents-dialog [data-documents-save]:disabled { opacity: .55; }
+@media (max-width: 600px) {
+  .native-shell .import-expedient-documents-dialog { padding: 16px; }
+  .import-expedient-documents-dialog > form { max-height: calc(90dvh - 32px); }
+  .import-expedient-documents-dialog .import-documents-heading-icon { display: none; }
+  .import-expedient-documents-dialog footer { justify-content: flex-end; gap: 8px; }
+}
 .import-upload-completed { box-sizing: border-box; width: 270px; padding: 15px; background: #e4f8eb; border: 1px solid #9bddb1; border-radius: 8px; text-align: center; }
 .import-upload-completed strong { display: block; color: #26744a; font-size: 13px; overflow-wrap: anywhere; }
 .import-upload-completed a { display: inline-block; margin-top: 8px; color: #008b73; font-size: 13px; font-weight: 700; text-decoration: underline; }
@@ -370,3 +418,32 @@ body.native-shell .import-patient-info-dialog header button { width: 42px !impor
 .native-shell .import-save-success { width: min(440px, 92vw); padding: 32px; border: 0; border-radius: 16px; text-align: center; box-sizing: border-box; }
 .import-save-success-icon { display: grid; place-items: center; width: 64px; height: 64px; margin: 0 auto 20px; border-radius: 50%; background: #def7e9; color: #009a73; font-size: 34px; }
 .native-shell .import-save-success h2 { font-size: 22px; line-height: 1.4; margin: 0 0 24px; color: #203369; }
+
+/* Each field owns a full column; wide records scroll inside their card. */
+.native-shell.provider-import-native-body .provider-import-native-table-scroll { max-width: 100%; overflow-x: auto; overscroll-behavior-x: contain; }
+.native-shell.provider-import-native-body .provider-import-native-table.import-detail-table {
+  width: 100% !important;
+  min-width: calc(var(--import-columns, 5) * 180px) !important;
+  table-layout: fixed !important;
+}
+.native-shell.provider-import-native-body .import-detail-table :is(th, td) {
+  box-sizing: border-box; width: auto !important; min-width: 0;
+  padding: 12px 16px !important; vertical-align: middle;
+  white-space: normal; word-break: normal; overflow-wrap: break-word;
+}
+.native-shell.provider-import-native-body .import-detail-table .import-column-title {
+  display: block; max-width: none; min-height: 2.8em;
+  line-height: 1.4; white-space: normal; word-break: normal;
+}
+.native-shell.provider-import-native-body .import-detail-table th select { min-width: 0; max-width: 100%; }
+.native-shell.provider-import-native-body .import-detail-table td button { max-width: 100%; white-space: normal; }
+@media (max-width: 600px) {
+  .native-shell.provider-import-native-body .provider-import-native-heading { flex-wrap: wrap; gap: 12px; }
+  .import-table-actions { justify-content: flex-start; }
+}
+@media (min-width: 901px) {
+  body.native-shell.provider-import-native-body { zoom: .85; }
+  .native-shell.provider-import-native-body .provider-import-native-screen { min-height: calc(100dvh / .85); }
+  .native-shell.provider-import-native-body .provider-import-native-table.import-detail-table td { font-size: 13px; line-height: 1.45; }
+  .native-shell.provider-import-native-body .provider-import-native-table.import-detail-table th { font-size: 11px; }
+}

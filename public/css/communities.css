@@ -9861,17 +9861,18 @@ body.native-shell .patient-portal-home-view .kc-story {
 
 .patient-portal-home-view .kc-post-list {
   display: grid;
-  gap: 14px;
+  gap: 0;
 }
 
 .patient-portal-home-view .kc-post {
   min-width: 0;
   overflow: hidden;
   padding: 0;
-  border: 1px solid #dbe8ea;
-  border-radius: 8px;
+  border: 0;
+  border-bottom: 1px solid #e3ebee;
+  border-radius: 0;
   background: #fff;
-  box-shadow: 0 10px 26px rgba(28, 72, 83, .05);
+  box-shadow: none;
 }
 
 .patient-portal-home-view .kc-post header {
@@ -9884,17 +9885,17 @@ body.native-shell .patient-portal-home-view .kc-story {
 }
 
 .patient-portal-home-view .kc-post header strong {
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .patient-portal-home-view .kc-post > p {
   padding: 0 12px 9px;
   color: #294056;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .patient-portal-home-view .kc-post-image {
-  aspect-ratio: 16 / 6;
+  aspect-ratio: 16 / 9;
   max-height: none;
   border-radius: 0;
 }
@@ -9927,10 +9928,37 @@ body.native-shell .patient-portal-home-view .kc-post-actions button {
   .patient-portal-home-view .kc-post-image { aspect-ratio: 16 / 9; }
 }
 
+/* Inicio uses a continuous feed; only text and controls have inner padding. */
+.native-shell .patient-portal-home-view {
+  width: calc(100% + 56px);
+  max-width: none;
+  margin-inline: -28px;
+}
+.patient-portal-home-view .klini-communities { background: #fff; }
+.patient-portal-home-view .kc-post-actions { justify-content: space-between; }
+.patient-portal-home-view .kc-stories { padding-inline: 12px; }
+body.native-shell .patient-portal-home-view .kc-follow-button {
+  padding: 7px 0;
+  border-radius: 0;
+  font-size: 13px;
+}
+@media (max-width: 767px) {
+  .native-shell .patient-portal-home-view {
+    width: calc(100% + 24px);
+    margin-inline: -12px;
+  }
+}
 /* Patient communities: shared section switch and personal activity calendar. */
 .patient-portal-communities-view .kc-community-calendar { width: min(100%, 640px); margin-inline: auto; }
 .patient-portal-communities-view .kc-community-workspace-heading { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
 .patient-portal-communities-view .kc-community-workspace-title { flex: 1; margin: 0; color: #193456; font-size: 28px; font-weight: 800; line-height: 1.3; letter-spacing: -.6px; }
+.patient-portal-communities-view .kc-community-search { display: flex; align-items: center; flex: 1; min-width: 0; gap: 8px; height: 46px; padding: 0 12px; background: #fff; border: 1px solid #c4e4e7; border-radius: 14px; color: #00a4a0; }
+.patient-portal-communities-view .kc-community-search svg { width: 18px; height: 18px; flex-shrink: 0; }
+body.native-shell .patient-portal-communities-view .kc-community-search input { width: 100%; min-width: 0; padding: 0; margin: 0; background: transparent; color: #193456; border: 0; border-radius: 0; box-shadow: none; outline: none; font: inherit; font-size: 16px; }
+.patient-portal-communities-view .kc-community-search:focus-within { border-color: #00a4a0; box-shadow: 0 0 0 3px #00a4a01a; }
+.patient-portal-communities-view .kc-community-search input::placeholder { color: #738797; font-size: 13px; }
+.patient-portal-communities-view .kc-community-search-status { margin: 0 0 14px; color: #607389; font-size: 13px; }
+.patient-portal-communities-view :is([data-community-feed-card],[data-community-search-empty],[data-community-search-status])[hidden] { display: none !important; }
 .patient-portal-communities-view .kc-community-switch { display: flex; flex: 1; min-width: 0; padding: 4px; border-radius: 23px; background: #e3f6f3; }
 .patient-portal-communities-view .kc-community-heading-actions { display: flex; gap: 8px; }
 body.native-shell .patient-portal-communities-view .kc-community-switch > button {
@@ -9958,17 +9986,22 @@ body.native-shell .patient-portal-communities-view .kc-calendar-filters > button
 .patient-portal-communities-view .kc-calendar-detail-heading { margin: 0 0 6px; color: #183253; font-size: 24px; font-weight: 800; letter-spacing: -.7px; line-height: 1.3; }
 .patient-portal-communities-view .kc-calendar-list-heading p { margin: 0; color: #76879b; font-size: 14px; }
 .patient-portal-communities-view .kc-calendar-list { display: grid; gap: 14px; }
-.patient-portal-communities-view .kc-calendar-card { display: grid; grid-template-columns: 164px minmax(0,1fr); gap: 20px; padding: 16px; border: 1px solid #dce8ed; border-radius: 16px; background: #fff; box-shadow: 0 8px 28px #305e7210; }
-.patient-portal-communities-view .kc-calendar-cover { display: block; width: 100%; height: 100%; min-height: 168px; object-fit: cover; border-radius: 11px; }
+.patient-portal-communities-view .kc-calendar-count { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.patient-portal-communities-view .kc-calendar-card { display: grid; grid-template-columns: minmax(0,1fr); gap: 12px; padding: 16px; border: 1px solid #e0edf0; border-radius: 14px; background: linear-gradient(150deg,#fff,#fbfefe); box-shadow: 0 5px 20px #2a697709; }
+.patient-portal-communities-view .kc-calendar-card-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.patient-portal-communities-view .kc-calendar-kind { display: inline-flex; align-items: center; gap: 9px; color: #7d93a9; font-size: 10px; font-weight: 750; letter-spacing: .6px; text-transform: uppercase; }
+.patient-portal-communities-view .kc-calendar-kind svg { width: 25px; height: 25px; color: #27b9b7; }
+.patient-portal-communities-view .kc-calendar-cover { display: block; width: 76px; height: 76px; min-height: 0; object-fit: cover; border-radius: 10px; }
 .patient-portal-communities-view .kc-calendar-card-content { min-width: 0; display: flex; flex-direction: column; align-items: stretch; gap: 12px; }
-.patient-portal-communities-view .kc-calendar-card-heading { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 8px; }
+.patient-portal-communities-view .kc-calendar-card-heading { display: grid; grid-template-columns: 76px minmax(0,1fr); align-items: center; gap: 12px; }
+.patient-portal-communities-view .kc-calendar-card-heading p { margin: 5px 0 0; color: #8495a9; font-size: 12px; line-height: 1.5; }
 .patient-portal-communities-view .kc-calendar-card-heading h2 { flex: 1 1 120px; min-width: 0; margin: 0; color: #193456; font-size: 18px; font-weight: 800; line-height: 1.3; overflow-wrap: anywhere; }
-.patient-portal-communities-view .kc-calendar-status { display: inline-flex; align-items: center; gap: 6px; padding: 7px 11px; border-radius: 20px; background: #dcf4ef; color: #007e7a; font-size: 11px; font-weight: 750; white-space: nowrap; }
+.patient-portal-communities-view .kc-calendar-status { display: inline-flex; align-items: center; gap: 4px; padding: 5px 8px; border-radius: 20px; background: #e0f6f4; color: #129b9a; font-size: 10px; font-weight: 750; white-space: nowrap; }
 .patient-portal-communities-view .kc-calendar-status svg { width: 14px; height: 14px; }
 .patient-portal-communities-view .kc-calendar-status.is-past { color: #617389; background: #eff4f7; }
-.patient-portal-communities-view .kc-calendar-meta { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.patient-portal-communities-view .kc-calendar-meta { display: grid; gap: 10px; margin: 2px 0 0; padding: 14px 0 0; border-top: 1px solid #eaf1f3; list-style: none; }
 .patient-portal-communities-view .kc-calendar-meta li { display: flex; align-items: flex-start; gap: 10px; color: #5d718a; font-size: 13px; line-height: 1.5; overflow-wrap: anywhere; }
-.patient-portal-communities-view .kc-calendar-meta svg { flex: 0 0 18px; width: 18px; height: 18px; margin-top: 1px; }
+.patient-portal-communities-view .kc-calendar-meta svg { flex: 0 0 20px; width: 20px; height: 20px; color: #27b9b7; }
 body.native-shell .patient-portal-communities-view .kc-calendar-open,
 body.native-shell .patient-portal-communities-view .kc-calendar-back {
   display: inline-flex; align-items: center; justify-content: center; align-self: flex-end; gap: 9px; margin-top: auto; padding: 10px 14px;
@@ -9979,7 +10012,10 @@ body.native-shell .patient-portal-communities-view .kc-calendar-back {
 .patient-portal-communities-view .kc-calendar-back svg { width: 16px; height: 16px; }
 body.native-shell .patient-portal-communities-view .kc-calendar-back { margin-bottom: 16px; }
 .patient-portal-communities-view .kc-calendar-card.is-detail { grid-template-columns: 1fr; margin-top: 18px; padding: 20px; }
-.patient-portal-communities-view .kc-calendar-card.is-detail .kc-calendar-cover { height: 240px; }
+.patient-portal-communities-view .kc-calendar-card.is-detail .kc-calendar-cover { height: 76px; }
+body.native-shell .patient-portal-communities-view .kc-calendar-card > .kc-calendar-open { align-self: stretch; width: 100%; min-height: 40px; margin: 0; border: 0 !important; border-radius: 10px !important; background: linear-gradient(100deg,#0bb4b5,#129e98) !important; color: #fff !important; font-size: 13px; }
+body.native-shell .patient-portal-communities-view .kc-calendar-community-link { display: flex; align-items: center; justify-content: center; min-height: 36px; margin-top: -10px; padding: 7px 10px; border: 0 !important; background: transparent !important; box-shadow: none !important; color: #10a6a6 !important; font: inherit; font-size: 12px; font-weight: 650; cursor: pointer; }
+body.native-shell .patient-portal-communities-view .kc-calendar-community-link:hover { text-decoration: underline; }
 .patient-portal-communities-view .kc-calendar-description,
 .patient-portal-communities-view .kc-calendar-modality { margin: 0; color: #5d718a; font-size: 14px; line-height: 1.65; }
 .patient-portal-communities-view .kc-calendar-empty { padding: 42px 28px; text-align: center; border: 1px solid #dce8ed; border-radius: 18px; background: linear-gradient(145deg,#fff,#f4fcfa); }
@@ -9995,9 +10031,8 @@ body.native-shell .patient-portal-communities-view :is(.kc-calendar-open,.kc-cal
   .patient-portal-communities-view .kc-community-heading-actions { margin-left: auto; }
   body.native-shell .patient-portal-communities-view .kc-community-switch > button { min-height: 46px; gap: 8px; padding: 9px; font-size: 14px; }
   .patient-portal-communities-view .kc-community-switch svg { width: 21px; height: 21px; }
-  .patient-portal-communities-view .kc-calendar-card { grid-template-columns: 92px minmax(0,1fr); padding: 12px; gap: 12px; }
-  .patient-portal-communities-view .kc-calendar-cover { min-height: 144px; }
-  .patient-portal-communities-view .kc-calendar-card-heading { gap: 6px; }
+  .patient-portal-communities-view .kc-calendar-card { padding: 14px; gap: 12px; }
+  .patient-portal-communities-view .kc-calendar-card-heading { gap: 12px; }
   .patient-portal-communities-view .kc-calendar-card-heading h2 { flex-basis: 100%; font-size: 16px; }
   .patient-portal-communities-view .kc-calendar-meta li { gap: 7px; font-size: 12px; }
   .patient-portal-communities-view .kc-calendar-card-content { gap: 10px; }
@@ -10031,3 +10066,37 @@ body.native-shell .patient-portal-communities-view :is(.kc-calendar-open,.kc-cal
   .native-shell .patient-calendar-activities .klini-communities { padding: 22px 12px 28px; }
   .patient-portal-communities-view .kc-community-workspace-title { font-size: 25px; }
 }
+
+/* Inicio and the community feed use the same full-width mobile canvas. */
+.native-shell .patient-portal-communities-view:has(.kc-community-feed:not(.kc-community-calendar)) {width:calc(100% + 56px);max-width:none;margin-inline:-28px;}
+.patient-portal-communities-view .klini-communities:has(.kc-community-feed:not(.kc-community-calendar)) {padding:0 0 24px;background:#fff;}
+.patient-portal-communities-view .kc-shell:has(.kc-community-feed:not(.kc-community-calendar)) {padding:0;background:#fff;}
+.patient-portal-communities-view .kc-feed-wrap.kc-community-feed:not(.kc-community-calendar) {width:min(100%,656px);max-width:656px;margin-inline:auto;}
+.patient-portal-communities-view .kc-community-feed:not(.kc-community-calendar) .kc-stories {display:flex;align-items:flex-start;gap:8px;margin:0 0 16px;padding:5px 12px 12px;}
+.patient-portal-communities-view .kc-community-feed .kc-story {flex:0 0 64px;min-width:64px;padding:0!important;border:0!important;background:transparent!important;border-radius:0;box-shadow:none!important;text-align:center;}
+.patient-portal-communities-view .kc-community-feed .kc-story b {font-size:11px;color:#53667a;font-weight:800;}
+.patient-portal-communities-view .kc-community-feed .kc-story-thumb,.patient-portal-communities-view .kc-community-feed .kc-story>img {width:54px;height:54px;margin:0 auto 7px;border-radius:50%;object-fit:cover;}
+.patient-portal-communities-view .kc-community-workspace-heading {padding:0 12px;margin:0 0 10px;gap:8px;}
+.patient-portal-communities-view .kc-community-search {height:38px;border-radius:12px;font-size:12px;}
+.patient-portal-communities-view .kc-community-heading-actions button {width:38px;height:38px;border-radius:10px;}
+.patient-portal-communities-view .kc-community-feed-list {gap:0;}
+.patient-portal-communities-view .kc-community-feed-card {margin:0;border:0;border-bottom:1px solid #e3ebee;border-radius:0;background:#fff;box-shadow:none;}
+.patient-portal-communities-view .kc-community-feed-card>header {padding:12px 12px 7px;grid-template-columns:38px minmax(0,1fr) auto;}
+.patient-portal-communities-view .kc-community-feed-avatar {width:38px;height:38px;}
+.patient-portal-communities-view .kc-community-feed-access {background:transparent;padding:0;color:#008f83;font-weight:650;font-size:11px;}
+.patient-portal-communities-view .kc-community-feed-description {margin:0;padding:0 12px 9px;color:#294056;font-size:14px;line-height:1.45;}
+.native-shell .patient-portal-communities-view .kc-community-feed-cover {padding:0;border:0!important;border-radius:0;background:#e9f2f3!important;box-shadow:none!important;}
+.patient-portal-communities-view .kc-community-feed-cover img {width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:0;}
+.patient-portal-communities-view .kc-community-feed-body {display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px 14px;}
+.native-shell .patient-portal-communities-view .kc-community-feed-body button {padding:5px 0;min-height:34px;border:0!important;border-radius:0;background:transparent!important;box-shadow:none!important;color:#009e9d;}
+@media(max-width:767px){.native-shell .patient-portal-communities-view:has(.kc-community-feed:not(.kc-community-calendar)){width:calc(100% + 24px);margin-inline:-12px;}}
+.patient-portal-communities-view .kc-community-feed .kc-story-thumb {display:block;position:relative;box-sizing:border-box;}
+.patient-portal-communities-view .kc-community-feed .kc-story-thumb img {display:block;width:100%;height:100%;max-width:100%;margin:0;border-radius:50%;object-fit:cover;}
+.patient-portal-communities-view .kc-community-feed .kc-story-thumb em {position:absolute;right:-1px;bottom:-1px;left:auto;top:auto;display:grid;place-items:center;width:20px;height:20px;border:2px solid #fff;border-radius:50%;padding:0;background:#009e9d;box-sizing:border-box;}
+.patient-portal-communities-view .kc-community-feed .kc-story-thumb em svg {width:12px;height:12px;}
+.patient-portal-communities-view .kc-community-feed .kc-story-thumb em::before {display:none;}
+
+.patient-portal-home-view .kc-community-toolbar-slot, .patient-portal-communities-view .kc-community-feed .kc-community-toolbar-slot { height: 54px; box-sizing: border-box; }
+.patient-portal-bottom-nav { z-index: 20; }
+.patient-portal-bottom-nav > button { transition: background-color 1100ms ease, color 1100ms ease; }
+@media (prefers-reduced-motion: reduce) { .patient-portal-bottom-nav > button { transition: none; } }

@@ -76,3 +76,32 @@
     font-size: 8px;
   }
 }
+
+/* Supplied PNGs retain their original transparent canvas. */
+.native-shell .patient-portal-bottom-nav > button > .patient-bottom-png {
+  position: relative;
+  display: block;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  margin: 0 auto 3px;
+  overflow: hidden;
+  font-size: 0;
+}
+.patient-portal-bottom-nav .patient-bottom-png img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 35.5008px;
+  height: 35.5008px;
+  max-width: none;
+  object-fit: contain;
+  transform: translate(-50%, -50%);
+}
+.patient-portal-bottom-nav .patient-bottom-register .patient-bottom-png img {
+  width: 64px;
+  height: 64px;
+}
+
+.native-shell .patient-portal-bottom-nav > button { display: flex; align-items: center; justify-content: center; }
+.native-shell .patient-portal-bottom-nav > button > .patient-bottom-png { margin: 0; }

@@ -14,16 +14,8 @@
   ];
 @endphp
 
-<section class="superadmin-mix-selector" data-mix-selector>
-  <header><h2>Formato de solicitud de mezcla</h2><p>Selecciona el formato base que se usara en Modulo medico y Modulo de area operativa.</p></header>
-  <div>
-    <button type="button" data-open-mix="oncology"><strong>Mezcla oncologica</strong><span>Abre el formato de solicitud de quimioterapia copiado del proveedor integral.</span></button>
-    <button type="button" data-open-mix="parenteral"><strong>Nutricion parenteral</strong><span>Abre el formato de solicitud de NPT copiado del proveedor integral.</span></button>
-  </div>
-</section>
-
-<section class="superadmin-mix-format hidden" data-mix-panel="oncology">
-  <header class="superadmin-mix-format-toolbar"><div><h2>Formato de solicitud de servicio</h2><p>Solicitud de Oncologia / Quimioterapia</p></div><button type="button" data-close-mix>&larr; Atras</button></header>
+<section class="superadmin-mix-format" data-mix-panel="oncology" data-admin-filter-panel="oncology">
+  <header class="superadmin-mix-format-toolbar"><div><h2>Formato de solicitud de servicio</h2><p>Solicitud de Oncologia / Quimioterapia</p></div><button type="button" data-admin-filter-reset>Todos los formatos</button></header>
   <form class="superadmin-oncology-form" onsubmit="event.preventDefault()">
     <h2>SOLICITUD DE ONCOLOGICOS</h2>
     <div class="superadmin-oncology-body">
@@ -46,9 +38,9 @@
   </form>
 </section>
 
-<section class="superadmin-mix-format hidden" data-mix-panel="parenteral">
+<section class="superadmin-mix-format" data-mix-panel="parenteral" data-admin-filter-panel="parenteral">
   <form class="superadmin-npt-form" onsubmit="event.preventDefault()">
-    <header class="superadmin-mix-format-toolbar"><div><h2>Formato de solicitud de servicio</h2><p>Solicitud de Nutricion Parenteral</p></div><button type="button" data-close-mix>&larr; Atras</button></header>
+    <header class="superadmin-mix-format-toolbar"><div><h2>Formato de solicitud de servicio</h2><p>Solicitud de Nutricion Parenteral</p></div><button type="button" data-admin-filter-reset>Todos los formatos</button></header>
     <div class="superadmin-npt-body">
       <fieldset><legend>PACIENTE Y UBICACION</legend><div class="superadmin-npt-grid">
         <label>Paciente nombre(s)*<input required></label><label>Paciente apellidos*<input required></label><label>Servicio*<input required value="Nutricion clinica"></label>
@@ -72,12 +64,3 @@
     </div>
   </form>
 </section>
-
-<script>
-  (() => {
-    const selector = document.querySelector('[data-mix-selector]');
-    const panels = [...document.querySelectorAll('[data-mix-panel]')];
-    document.querySelectorAll('[data-open-mix]').forEach((button) => button.addEventListener('click', () => { selector.classList.add('hidden'); panels.forEach((panel) => panel.classList.toggle('hidden', panel.dataset.mixPanel !== button.dataset.openMix)); window.scrollTo({ top: 0, behavior: 'smooth' }); }));
-    document.querySelectorAll('[data-close-mix]').forEach((button) => button.addEventListener('click', () => { panels.forEach((panel) => panel.classList.add('hidden')); selector.classList.remove('hidden'); window.scrollTo({ top: 0, behavior: 'smooth' }); }));
-  })();
-</script>

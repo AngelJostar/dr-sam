@@ -11,6 +11,63 @@
   document.querySelector('[data-new-supplier]')?.addEventListener('click', () => supplierDialog.showModal());
   supplierDialog?.querySelectorAll('[data-close-supplier]').forEach(button => button.addEventListener('click', () => supplierDialog.close()));
   if (supplierDialog?.dataset.errors === 'true') supplierDialog.showModal();
+  const userDialog = document.querySelector('[data-new-import-user-dialog]');
+  document.querySelector('[data-new-import-user]')?.addEventListener('click', () => userDialog.showModal());
+  userDialog?.querySelectorAll('[data-close-import-user]').forEach(button => button.addEventListener('click', () => userDialog.close()));
+  if (userDialog?.dataset.errors === 'true') userDialog.showModal();
+
+  // Keep wide tables reachable without scrolling to their last row.
+  const tableViewports = [...document.querySelectorAll('.provider-import-native-table-scroll')];
+  tableViewports.forEach(viewport => {
+    const bar = document.createElement('div');
+    bar.className = 'import-bottom-scroll';
+    bar.tabIndex = 0;
+    bar.setAttribute('role', 'region');
+    bar.setAttribute('aria-label', 'Desplazar horizontalmente las columnas de la tabla');
+    const track = document.createElement('div');
+    bar.append(track);
+    document.body.append(bar);
+    viewport.dataset.importScrollManaged = 'true';
+    const sync = (source, target) => {
+      const range = source.scrollWidth - source.clientWidth;
+      const left = range > 0 ? source.scrollLeft / range * (target.scrollWidth - target.clientWidth) : 0;
+      if (Math.abs(target.scrollLeft - left) > 1) target.scrollLeft = left;
+    };
+    const update = () => {
+      const rect = viewport.getBoundingClientRect();
+      const activeViewport = tableViewports.reduce((best, candidate) => {
+        const bounds = candidate.getBoundingClientRect();
+        const visible = candidate.scrollWidth > candidate.clientWidth + 1
+          ? Math.max(0, Math.min(innerHeight - 24, bounds.bottom) - Math.max(0, bounds.top)) : 0;
+        return visible > best.visible ? { viewport: candidate, visible } : best;
+      }, { viewport: null, visible: 0 }).viewport;
+      bar.hidden = viewport.scrollWidth <= viewport.clientWidth + 1
+        || rect.top >= window.innerHeight - 24 || rect.bottom <= 24 || viewport !== activeViewport;
+      if (bar.hidden) return;
+      // The module uses CSS zoom; fixed coordinates must account for that scale.
+      const scale = viewport.offsetWidth ? rect.width / viewport.offsetWidth : 1;
+      const left = Math.max(0, rect.left);
+      const width = Math.max(0, Math.min(document.documentElement.clientWidth, rect.right) - left);
+      bar.style.left = `${left / scale}px`;
+      bar.style.width = `${width / scale}px`;
+      track.style.width = `${bar.clientWidth + viewport.scrollWidth - viewport.clientWidth}px`;
+      sync(viewport, bar);
+    };
+    let scheduled = false;
+    const schedule = () => {
+      if (scheduled) return;
+      scheduled = true;
+      requestAnimationFrame(() => { scheduled = false; update(); });
+    };
+    bar.addEventListener('scroll', () => sync(bar, viewport), { passive: true });
+    viewport.addEventListener('scroll', () => sync(viewport, bar), { passive: true });
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    const observer = new ResizeObserver(schedule);
+    observer.observe(viewport);
+    if (viewport.firstElementChild) observer.observe(viewport.firstElementChild);
+    update();
+  });
   document.querySelectorAll('.import-action-carousel').forEach(carousel => {
     const track = carousel.querySelector('.import-carousel-track');
     const arrows = [...carousel.querySelectorAll('[data-import-scroll]')];

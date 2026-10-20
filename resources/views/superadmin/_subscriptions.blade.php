@@ -5,7 +5,7 @@
 <div id="subscriptions" data-subscription-overview>
 <section class="superadmin-subscription-cards" aria-label="Resumen de planes">
   @foreach ($plans as $plan)
-    <article>
+    <article data-admin-filter-panel="{{ $plan['id'] }}">
       <small>{{ $plan['type'] === 'Gratis' ? 'GRATIS' : ($plan['id'] === 'complete' ? 'INDIVIDUAL' : ($plan['id'] === 'smart' ? 'CON IA' : ($plan['id'] === 'family' ? 'MULTIUSUARIO' : 'AVANZADO'))) }}</small>
       <h2>{{ $plan['name'] }}</h2>
       <strong>{{ $plan['price'] }}</strong>
@@ -23,13 +23,13 @@
       <thead><tr><th>Tipo de plan</th><th>Nombre recomendado</th><th>Descripcion acotada</th><th>Precio</th><th>Usuarios incluidos</th><th>Estatus</th><th>Acciones</th></tr></thead>
       <tbody>
         @foreach ($plans as $plan)
-          <tr>
+          <tr data-admin-filter-panel="{{ $plan['id'] }}">
             <td>{{ $plan['type'] }} <a class="superadmin-subscription-inline-edit" href="#subscription-price-{{ $plan['id'] }}">Editar</a></td>
             <td><strong>{{ $plan['name'] }}</strong><a class="superadmin-subscription-name-edit" href="#subscription-name-{{ $plan['id'] }}">Editar</a></td><td>{{ $plan['short_description'] }}</td>
             <td>{{ $plan['price'] }}<a class="superadmin-subscription-name-edit" href="#subscription-price-{{ $plan['id'] }}">Editar</a></td><td>{{ $plan['users_included'] }}</td><td><span class="superadmin-native-status-pill">{{ $plan['status'] === 'active' ? 'Activo' : 'Inactivo' }}</span></td>
             <td><button type="button" data-show-subscription-plan="{{ $plan['id'] }}">Ver detalle</button> <a href="#subscription-description-{{ $plan['id'] }}">Editar descripcion</a></td>
           </tr>
-          <tr id="subscription-edit-{{ $plan['id'] }}" class="superadmin-subscription-editor-row">
+          <tr id="subscription-edit-{{ $plan['id'] }}" class="superadmin-subscription-editor-row" data-admin-filter-panel="{{ $plan['id'] }}">
             <td colspan="7">
               <details>
                 <summary>Editar {{ $plan['name'] }}</summary>
@@ -125,7 +125,7 @@
   <div class="superadmin-native-catalog-scroll">
     <table class="superadmin-native-catalog-table">
       <thead><tr><th>Tipo de plan</th><th>Nombre recomendado</th><th>Descripcion</th><th>Acciones</th></tr></thead>
-      <tbody>@foreach ($plans as $plan)<tr id="subscription-detail-{{ $plan['id'] }}"><td>{{ $plan['type'] }}</td><td><strong>{{ $plan['name'] }}</strong></td><td>{{ $plan['long_description'] }}</td><td><a href="#subscription-long-description-{{ $plan['id'] }}">Editar</a></td></tr>@endforeach</tbody>
+      <tbody>@foreach ($plans as $plan)<tr id="subscription-detail-{{ $plan['id'] }}" data-admin-filter-panel="{{ $plan['id'] }}"><td>{{ $plan['type'] }}</td><td><strong>{{ $plan['name'] }}</strong></td><td>{{ $plan['long_description'] }}</td><td><a href="#subscription-long-description-{{ $plan['id'] }}">Editar</a></td></tr>@endforeach</tbody>
     </table>
   </div>
 </section>
@@ -216,6 +216,10 @@
   (() => {
     const overview = document.querySelector('[data-subscription-overview]');
     const panels = [...document.querySelectorAll('[data-subscription-plan-panel]')];
+    document.querySelector('[data-admin-carousel]')?.addEventListener('admin:filter', () => {
+      overview.classList.remove('hidden');
+      panels.forEach(panel => panel.classList.add('hidden'));
+    });
     document.querySelectorAll('[data-show-subscription-plan]').forEach((button) => button.addEventListener('click', () => {
       overview.classList.add('hidden');
       panels.forEach((panel) => panel.classList.toggle('hidden', panel.dataset.subscriptionPlanPanel !== button.dataset.showSubscriptionPlan));

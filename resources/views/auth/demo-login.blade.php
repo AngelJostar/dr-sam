@@ -42,6 +42,7 @@
         <p class="eyebrow">Ingreso unificado</p>
         <h1 id="login-title">¿A qué módulo quieres ingresar hoy?</h1>
         <p>Usa tus credenciales y Klini abrirá automáticamente el módulo autorizado: institución, unidad, operación, mensajero, proveedor, médico, paciente o seguros.</p>
+        <p><a href="{{ route('home', ['login' => 1]) }}">Ingresar con mi cuenta Klini →</a></p>
         <div class="formal-login-modules" aria-label="Rutas disponibles">
           @foreach (['Institución', 'Unidad', 'Área operativa', 'Médico', 'Paciente', 'Seguros GMM', 'Mensajero', 'Proveedor'] as $module)
             <span>{{ $module }}</span>
@@ -96,8 +97,8 @@
           <button class="formal-login-submit" type="submit">Ingresar</button>
 
           <div class="formal-login-register" aria-label="Opciones de registro">
-            <button type="button" title="Flujo disponible próximamente">Registrarme, soy paciente</button>
-            <button type="button" title="Flujo disponible próximamente">Registrarme, soy médico</button>
+            <a href="{{ route('home', ['register' => 'patient']) }}">Registrarme, soy paciente</a>
+            <a href="{{ route('home', ['register' => 'doctor']) }}">Registrarme, soy médico</a>
           </div>
 
           @if ($errors->any())

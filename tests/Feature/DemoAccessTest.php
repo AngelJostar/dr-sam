@@ -48,6 +48,24 @@ class DemoAccessTest extends TestCase
         }
     }
 
+    public function test_patient_logout_confirms_the_home_url_for_the_mobile_preview(): void
+    {
+        $user = User::query()->create([
+            'name' => 'Paciente Logout', 'username' => 'patient.logout.json',
+            'email' => 'patient.logout.json@example.com', 'role' => 'patient',
+            'module' => 'patient', 'status' => 'active',
+        ]);
+
+        $this->actingAs($user)->withSession(['logout_marker' => 'discard'])
+            ->postJson(route('logout'))
+            ->assertOk()
+            ->assertJson(['redirect' => route('home')])
+            ->assertSessionMissing('logout_marker');
+
+        $this->assertGuest();
+        $this->get(route('patient.dashboard'))->assertRedirect(route('login'));
+    }
+
     public function test_demo_user_can_enter_without_password_when_review_mode_is_enabled(): void
     {
         config(['drsam.review_passwordless' => true]);

@@ -105,9 +105,9 @@
     <div class="institution-unit-services-dialog-body">
       @if ($mirrorContracts->isNotEmpty())
         <div class="unit-service-dashboard institution-unit-service-mirror" data-institution-unit-service-dashboard="{{ $mirrorUnit->id }}">
-          <section class="unit-service-carousel-card">
-            <button type="button" class="unit-service-carousel-arrow" data-unit-service-carousel-prev aria-label="Servicio anterior">&lsaquo;</button>
-            <div class="unit-service-carousel" data-unit-service-carousel aria-label="Servicios habilitados">
+          <section class="unit-service-carousel-card institution-service-carousel-card" data-carousel-style="compact">
+            <button type="button" class="unit-service-carousel-arrow institution-service-carousel-arrow" data-unit-service-carousel-prev aria-label="Servicio anterior">&lsaquo;</button>
+            <div class="unit-service-carousel institution-service-carousel" data-unit-service-carousel aria-label="Servicios habilitados">
               @foreach ($mirrorContracts as $mirrorContract)
                 @php
                   $mirrorServiceIcon = $mirrorServiceIconFor($mirrorContract);
@@ -115,9 +115,9 @@
                   $mirrorServiceKey = $mirrorUnit->id.'-'.$mirrorContract->id;
                 @endphp
                 <button type="button"
-                        @class(['unit-service-carousel-button', 'is-active' => $loop->first])
+                        @class(['unit-service-carousel-button', 'institution-service-carousel-button', 'is-active' => $loop->first])
                         data-unit-service-tab="{{ $mirrorServiceKey }}">
-                  <span class="unit-service-carousel-icon is-{{ $mirrorServiceIcon }}" aria-hidden="true">
+                  <span class="unit-service-carousel-icon institution-service-carousel-icon is-{{ $mirrorServiceIcon }}" aria-hidden="true">
                     @switch($mirrorServiceIcon)
                       @case('consultation')
                         <svg viewBox="0 0 24 24"><path d="M6 4v5a4 4 0 0 0 8 0V4"/><path d="M10 13v2a5 5 0 0 0 10 0v-2"/><circle cx="20" cy="10" r="2"/><path d="M4 4h4M12 4h4"/></svg>
@@ -154,7 +154,7 @@
                 </button>
               @endforeach
             </div>
-            <button type="button" class="unit-service-carousel-arrow" data-unit-service-carousel-next aria-label="Servicio siguiente">&rsaquo;</button>
+            <button type="button" class="unit-service-carousel-arrow institution-service-carousel-arrow" data-unit-service-carousel-next aria-label="Servicio siguiente">&rsaquo;</button>
           </section>
 
           <div class="unit-service-panels">
@@ -175,12 +175,12 @@
                   : route('operational.dashboard', ['area' => $mirrorOperationArea, 'section' => 'history', 'unit' => $mirrorUnit->id, 'service' => $mirrorContract->service_id]);
               @endphp
               <section class="unit-service-panel" data-unit-service-panel="{{ $mirrorServiceKey }}" @if (! $loop->first) hidden @endif>
-                <header class="unit-service-panel-header">
+                <header class="unit-service-panel-header institution-service-panel-header">
                   <div>
                     <h2>{{ $mirrorServiceName }}</h2>
                     <p>{{ $mirrorService?->category ?? 'Sin categoria' }} &middot; {{ $mirrorService?->specialty ?? 'Servicio general' }}</p>
                     <div class="unit-service-panel-badges">
-                      <span class="unit-native-status">{{ $statusText($mirrorContract->status) }}</span>
+                      <span class="unit-native-status institution-native-status">{{ $statusText($mirrorContract->status) }}</span>
                       <span>1 hospital habilitado</span>
                     </div>
                   </div>
@@ -190,9 +190,9 @@
                   </div>
                 </header>
 
-                <div class="unit-native-table-scroll">
+                <div class="unit-native-table-scroll institution-native-table-scroll">
                   @if ($mirrorIsConsultationService)
-                    <table class="unit-native-table unit-consultation-table">
+                    <table class="unit-native-table institution-native-table unit-consultation-table">
                       <thead>
                         <tr>
                           <th>Folio</th>
@@ -256,7 +256,7 @@
                         ? 'Sin solicitudes de quimioterapia registradas.'
                         : 'Sin solicitudes de nutricion parenteral registradas.';
                     @endphp
-                    <table class="unit-native-table unit-nutrition-table">
+                    <table class="unit-native-table institution-native-table unit-nutrition-table">
                       <thead>
                         <tr>
                           <th>Tipo</th>
@@ -314,7 +314,7 @@
                       </tbody>
                     </table>
                   @else
-                    <table class="unit-native-table unit-service-detail-table">
+                    <table class="unit-native-table institution-native-table unit-service-detail-table">
                       <thead>
                         <tr>
                           <th>Hospital</th>

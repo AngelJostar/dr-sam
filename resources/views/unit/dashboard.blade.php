@@ -2,6 +2,14 @@
 
 @section('body_class', 'unit-native-body')
 
+@push('styles')
+  <link rel="stylesheet" href="{{ asset('css/unit-workspace.css') }}?v={{ filemtime(public_path('css/unit-workspace.css')) }}">
+@endpush
+
+@push('scripts')
+  <script src="{{ asset('js/unit-request-interactions.js') }}?v={{ filemtime(public_path('js/unit-request-interactions.js')) }}" defer></script>
+@endpush
+
 @php
   $statusLabels = [
     'active' => 'Activo',
@@ -100,22 +108,12 @@
 
     <header class="unit-native-topbar">
       <x-klini-brand label="Unidad" />
-      <span>{{ $unit->institution?->name ?? 'IMSS Bienestar Estado de Mexico' }}</span>
-      <div class="unit-native-topbar-user">
-        <button type="button" aria-label="Notificaciones">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z"/><path d="M10 21h4"/></svg>
-        </button>
-        <div>
-          <strong>Usuario activo</strong>
-          <small>{{ $unit->state ?? $unit->entity ?? 'Estado de Mexico' }}</small>
-        </div>
-        <form method="post" action="{{ route('logout') }}" class="unit-native-logout">
-          @csrf
-          <button type="submit">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/><path d="M15 4h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4"/></svg>
-            Cerrar sesion
-          </button>
-        </form>
+      <div class="unit-workspace-context">
+        <strong>{{ $unit->institution?->name ?? 'IMSS Bienestar Estado de Mexico' }}</strong>
+        <small>{{ $unit->name }}</small>
+      </div>
+      <div class="unit-workspace-session">
+        <x-klini-session-menu :show-profile="true" />
       </div>
     </header>
 
@@ -580,7 +578,7 @@
 
         <div class="unit-service-dashboard" data-unit-service-dashboard>
           @if ($unitServiceContracts->isNotEmpty())
-            <section class="unit-service-carousel-card">
+            <section class="unit-service-carousel-card" data-carousel-style="compact">
               <button type="button" class="unit-service-carousel-arrow" data-unit-service-carousel-prev aria-label="Servicio anterior">&lsaquo;</button>
               <div class="unit-service-carousel" data-unit-service-carousel aria-label="Servicios integrales">
                 <button type="button"
@@ -1327,6 +1325,12 @@
                             <button type="button" data-unit-nutrition-filter="pending" data-unit-request-filter="pending" role="tab" aria-selected="false">
                               Pendientes <span>{{ $nutritionRequestCounts->get('pending', 0) }}</span>
                             </button>
+                            <button type="button" data-unit-request-filter="messages" role="tab" aria-selected="false">
+                              Mensajería <span data-request-message-total>{{ $serviceProviderRequests->where('message_count', '>', 0)->count() }}</span>
+                            </button>
+                            <button type="button" data-unit-request-filter="adjustments" role="tab" aria-selected="false">
+                              En ajuste <span data-request-adjustment-total>{{ $serviceProviderRequests->where('open_adjustment_count', '>', 0)->count() }}</span>
+                            </button>
                             <button type="button" data-unit-nutrition-filter="preparing" data-unit-request-filter="preparing" role="tab" aria-selected="false">
                               En preparaci&oacute;n <span>{{ $nutritionRequestCounts->get('preparing', 0) }}</span>
                             </button>
@@ -1373,7 +1377,9 @@
                                 <th>Estado operativo</th>
                                 <th>Lote</th>
                                 <th>Ver</th>
+                                <th>Mensajes</th>
                                 <th>Aprobaci&oacute;n</th>
+                                <th>Ajustes</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -1403,7 +1409,12 @@
                                     'request' => $nutritionRequest->id,
                                   ]);
                                 @endphp
-                                <tr data-unit-nutrition-row data-unit-request-row data-category="{{ $nutritionCategory }}">
+                                <tr data-unit-nutrition-row data-unit-request-row data-category="{{ $nutritionCategory }}"
+                                    data-interaction-request="{{ $nutritionRequest->id }}"
+                                    data-interaction-url="{{ route('unit.requests.interactions.index', $nutritionRequest) }}"
+                                    data-request-folio="{{ $nutritionRequestNumber }}"
+                                    data-message-count="{{ $nutritionRequest->message_count ?? 0 }}"
+                                    data-adjustment-count="{{ $nutritionRequest->open_adjustment_count ?? 0 }}">
                                   <td><span class="unit-consultation-chip is-type-{{ $nutritionTypeClass }}">{{ $nutritionTypeLabel }}</span></td>
                                   <td><strong>{{ $nutritionMixId }}</strong></td>
                                   <td><strong>{{ $nutritionRequestNumber }}</strong></td>
@@ -1423,15 +1434,32 @@
                                       Ver
                                     </a>
                                   </td>
+                                  <td>
+                                    <div class="unit-request-message-actions">
+                                      <button type="button" class="unit-request-message-button {{ $nutritionRequest->message_count ? 'has-messages' : '' }}" data-request-interaction-open="message" aria-haspopup="dialog" aria-label="Ver mensajes de {{ $nutritionRequestNumber }}" title="Ver mensajes">
+                                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9H13a8.5 8.5 0 0 1 8 8v.5Z"/><path d="M8 10h8M8 14h5"/></svg>
+                                        <span data-request-message-count @if (!$nutritionRequest->message_count) hidden @endif>{{ $nutritionRequest->message_count ?? 0 }}</span>
+                                      </button>
+                                      <button type="button" class="unit-request-compose-button" data-request-interaction-open="message" data-request-compose aria-haspopup="dialog" aria-label="Escribir mensaje de {{ $nutritionRequestNumber }}" title="Escribir mensaje">
+                                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+                                      </button>
+                                    </div>
+                                  </td>
                                   <td><span class="unit-nutrition-approval is-{{ $nutritionApprovalClass }}"><i aria-hidden="true"></i>{{ $nutritionApprovalLabel }}</span></td>
+                                  <td>
+                                    <button type="button" class="unit-request-adjustment-button {{ $nutritionRequest->open_adjustment_count ? 'has-adjustments' : '' }}" data-request-interaction-open="adjustment" aria-haspopup="dialog" aria-label="Ver ajustes de {{ $nutritionRequestNumber }}">
+                                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 10h12v10H6zM9 10V7a3 3 0 0 1 6 0v3M12 14v2"/></svg>
+                                      <span data-request-adjustment-label>{{ $nutritionRequest->open_adjustment_count ? 'En ajuste ('.$nutritionRequest->open_adjustment_count.')' : 'Sin ajustes' }}</span>
+                                    </button>
+                                  </td>
                                 </tr>
                               @empty
                                 <tr data-unit-nutrition-empty data-unit-request-empty>
-                                  <td colspan="11">{{ $isChemotherapyService ? 'No se encontraron solicitudes de quimioterapia.' : 'No se encontraron solicitudes.' }}</td>
+                                  <td colspan="13">{{ $isChemotherapyService ? 'No se encontraron solicitudes de quimioterapia.' : 'No se encontraron solicitudes.' }}</td>
                                 </tr>
                               @endforelse
                               @if ($serviceProviderRequests->isNotEmpty())
-                                <tr data-unit-nutrition-no-results data-unit-request-no-results hidden><td colspan="11">No se encontraron solicitudes para este filtro.</td></tr>
+                                <tr data-unit-nutrition-no-results data-unit-request-no-results hidden><td colspan="13">No se encontraron solicitudes para este filtro.</td></tr>
                               @endif
                             </tbody>
                           </table>
@@ -3396,7 +3424,10 @@
                       button.setAttribute('aria-selected', active ? 'true' : 'false');
                     });
                     rows.forEach((row) => {
-                      const matches = filter === 'all' || categories.includes(row.dataset.category);
+                      const matches = filter === 'all'
+                        || (filter === 'messages' ? Number(row.dataset.messageCount) > 0
+                          : filter === 'adjustments' ? Number(row.dataset.adjustmentCount) > 0
+                            : categories.includes(row.dataset.category));
                       row.hidden = !matches;
                       if (matches) visible += 1;
                     });
@@ -3407,6 +3438,13 @@
                   filters.forEach((button) => button.addEventListener('click', () => {
                     applyRequestFilter(button.dataset.unitRequestFilter);
                   }));
+                  board.addEventListener('unit:request-interactions-updated', () => {
+                    const messageTotal = board.querySelector('[data-request-message-total]');
+                    const adjustmentTotal = board.querySelector('[data-request-adjustment-total]');
+                    if (messageTotal) messageTotal.textContent = rows.filter(row => Number(row.dataset.messageCount) > 0).length;
+                    if (adjustmentTotal) adjustmentTotal.textContent = rows.filter(row => Number(row.dataset.adjustmentCount) > 0).length;
+                    applyRequestFilter(board.dataset.activeFilter || 'all');
+                  });
                   board.querySelectorAll('[data-unit-nutrition-status]').forEach((button) => {
                     button.addEventListener('click', () => applyRequestFilter(button.dataset.unitNutritionStatus));
                   });
@@ -3565,7 +3603,7 @@
       @endif
 
       @if ($section === 'users')
-        <div class="unit-catalog-screen" data-unit-catalog-screen>
+        <div class="unit-catalog-screen unit-users-screen" data-unit-catalog-screen>
           <section class="unit-service-panel-header unit-catalog-info-card" data-unit-catalog-info>
             <div class="unit-service-panel-copy">
               <h2>Usuarios</h2>
@@ -3575,13 +3613,16 @@
                 <span>{{ $unit->operationalProfiles->count() }} usuarios registrados</span>
               </div>
             </div>
+            <div class="unit-service-panel-actions">
+              <button type="button" data-operational-export>Descargar catalogo</button>
+            </div>
           </section>
 
-          <div class="unit-catalog-toolbar" data-unit-catalog-controls>
-            <div class="unit-nutrition-request-tabs" role="tablist" aria-label="Filtrar usuarios operativos">
-              <button type="button" class="is-active" data-unit-catalog-status="all" role="tab" aria-selected="true">Todos</button>
-              <button type="button" data-unit-catalog-status="active" role="tab" aria-selected="false">Activos <span>{{ $unit->operationalProfiles->where('status', 'active')->count() }}</span></button>
-              <button type="button" data-unit-catalog-status="inactive" role="tab" aria-selected="false">Inactivos <span>{{ $unit->operationalProfiles->where('status', 'inactive')->count() }}</span></button>
+          <div class="unit-catalog-toolbar unit-consultation-submenu-card" data-unit-catalog-controls>
+            <div class="unit-nutrition-request-tabs unit-consultation-submenu" role="tablist" aria-label="Filtrar usuarios operativos">
+              <button type="button" class="unit-consultation-submenu-button is-active" data-unit-catalog-status="all" role="tab" aria-selected="true">Todos</button>
+              <button type="button" class="unit-consultation-submenu-button" data-unit-catalog-status="active" role="tab" aria-selected="false">Activos <span>{{ $unit->operationalProfiles->where('status', 'active')->count() }}</span></button>
+              <button type="button" class="unit-consultation-submenu-button" data-unit-catalog-status="inactive" role="tab" aria-selected="false">Inactivos <span>{{ $unit->operationalProfiles->where('status', 'inactive')->count() }}</span></button>
             </div>
             <div class="unit-catalog-toolbar-actions">
               <label class="unit-catalog-search">
@@ -3589,8 +3630,7 @@
                 <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
                 <input type="search" placeholder="Buscar usuario" data-unit-catalog-search>
               </label>
-              <button type="button" class="unit-catalog-secondary-action" data-operational-export>Descargar catalogo</button>
-              <button type="button" class="unit-nutrition-new-request" data-unit-scroll-target="unit-operational-form"><span aria-hidden="true">+</span>Nuevo usuario</button>
+              <button type="button" class="unit-nutrition-new-request unit-consultation-submenu-action" data-unit-scroll-target="unit-operational-form"><span aria-hidden="true">+</span>Nuevo usuario</button>
             </div>
           </div>
 
@@ -3675,7 +3715,7 @@
       @endif
 
       @if ($section === 'patients')
-        <div class="unit-catalog-screen" data-unit-catalog-screen>
+        <div class="unit-catalog-screen" data-unit-catalog-screen data-unit-patient-panel="catalog">
           <section class="unit-service-panel-header unit-catalog-info-card" data-unit-catalog-info>
             <div class="unit-service-panel-copy">
               <h2>Pacientes</h2>
@@ -3726,6 +3766,10 @@
             </div>
           </section>
         </div>
+      @endif
+
+      @if ($section === 'patients')
+        @include('unit._patient_sections')
       @endif
 
       @if ($section === 'doctors')
@@ -4486,6 +4530,7 @@
           })();
         </script>
       @endif
+      @include('unit._request-interactions')
     </section>
   </div>
 @endsection

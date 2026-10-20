@@ -70,6 +70,11 @@ class DrSamDemoSeeder extends Seeder
                     ],
                 ],
             );
+            $user = $users[$demoUser['username']];
+            if (in_array($user->role, ['patient', 'doctor'], true)) {
+                $user->account_category = User::CATEGORY_KLINI;
+                $user->assignKliniMemberId();
+            }
         }
 
         return $users;

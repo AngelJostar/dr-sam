@@ -21,6 +21,8 @@
 .klini-community-body #wellnessView {--wellness-ink:#183e40;--wellness-muted:#6f847a;--wellness-line:#dce9de;--wellness-soft:#f1f8f0;--wellness-teal:#00aaa5;--wellness-teal-dark:#167a6e;--wellness-blue:#658fa3;--wellness-purple:#9a92b6;--wellness-gold:#c9ab69;color:var(--wellness-ink);}
 .klini-community-body #wellnessView .wellness-dashboard-panel {background:transparent;border:0;box-shadow:none;overflow:visible;}
 .klini-community-body #wellnessView .wellness-root {padding:0;}
+.klini-community-body #wellnessView :is(.wellness-communities,.wellness-community-home) {grid-template-columns:minmax(0,1fr);}
+.klini-community-body #wellnessView :is(.wellness-communities,.wellness-community-home)>* {min-width:0;}
 .klini-community-body #wellnessView :is(.wellness-admin-access-strip,.wellness-bottom-nav,.wellness-admin-standalone-link,.wellness-admin-back) {display:none;}
 .klini-community-body #wellnessView .wellness-admin-console-layout {grid-template-columns:205px minmax(0,1fr);gap:24px;align-items:start;}
 .klini-community-body #wellnessView .wellness-admin-console-main {min-width:0;}

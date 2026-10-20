@@ -16,6 +16,9 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, Notifiable;
 
+    public const CATEGORY_KLINI = 'klini';
+    public const CATEGORY_OPERATIONAL = 'operational';
+
     protected $fillable = [
         'name',
         'username',
@@ -28,6 +31,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'passwordless_review',
         'email_verified_at',
         'metadata',
+        'account_category',
     ];
 
     protected $hidden = [
@@ -48,6 +52,21 @@ class User extends Authenticatable implements MustVerifyEmail
     protected function roleEnum(): Attribute
     {
         return Attribute::get(fn () => UserRole::tryFrom($this->role));
+    }
+
+    public function assignKliniMemberId(): void
+    {
+        if ($this->account_category === self::CATEGORY_KLINI && ! $this->klini_member_id) {
+            $this->klini_member_id = str_pad((string) $this->getKey(), 8, '0', STR_PAD_LEFT);
+            $this->save();
+        }
+    }
+
+    protected function operationalUserNumber(): Attribute
+    {
+        return Attribute::get(fn () => $this->exists && $this->account_category !== self::CATEGORY_KLINI
+            ? 'OP'.str_pad((string) $this->getKey(), 8, '0', STR_PAD_LEFT)
+            : null);
     }
 
     public function institution(): HasOne

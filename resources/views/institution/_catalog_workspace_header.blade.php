@@ -10,7 +10,7 @@
      data-institution-carousel-mode="{{ $institutionCatalogUi['carousel_mode'] ?? 'shared' }}"
      data-institution-catalog-singular="{{ $institutionCatalogUi['singular'] }}"
      data-institution-catalog-plural="{{ $institutionCatalogUi['plural'] }}">
-  <section class="institution-service-carousel-card institution-catalog-carousel-card">
+  <section class="institution-service-carousel-card institution-catalog-carousel-card" data-carousel-style="compact">
     <button type="button"
             class="institution-service-carousel-arrow"
             data-institution-carousel-prev

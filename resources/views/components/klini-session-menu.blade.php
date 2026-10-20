@@ -1,3 +1,4 @@
+@props(['showProfile' => false])
 @php
   $sessionUser = auth()->user();
   $sessionModules = $sessionUser ? app(\App\Services\Platform\DashboardRegistry::class)->modulesFor($sessionUser) : collect();
@@ -5,7 +6,12 @@
 <details class="klini-session-menu">
   <summary aria-label="Opciones de sesión y módulos">
     <span class="klini-session-avatar" aria-hidden="true">{{ mb_substr($sessionUser?->name ?? 'K', 0, 1) }}</span>
-    <span>Cambiar módulo<small class="klini-session-user">{{ $sessionUser?->name ?? 'Mi sesión' }}</small></span><span aria-hidden="true">⌄</span>
+    @if($showProfile)
+      <span>{{ $sessionUser?->name ?? 'Mi sesión' }}<small class="klini-session-user">{{ $sessionUser?->role_enum?->label() ?? 'Usuario' }} · Sesión activa</small></span>
+    @else
+      <span>Cambiar módulo<small class="klini-session-user">{{ $sessionUser?->name ?? 'Mi sesión' }}</small></span>
+    @endif
+    <span aria-hidden="true">⌄</span>
   </summary>
   <div class="klini-session-dropdown">
     <div class="klini-session-heading">Cambiar de módulo<small>Accesos autorizados para tu sesión</small></div>

@@ -104,7 +104,8 @@ class ProviderModuleTest extends TestCase
             $this->get(route('provider.import.dashboard', ['section' => $index + 1]))
                 ->assertOk()
                 ->assertSee($section)
-                ->assertSee('import-summary')
+                ->assertDontSee('import-summary')
+                ->assertSee('data-import-export', false)
                 ->assertSee('data-import-filter', false)
                 ->assertSee('aria-current="page"', false)
                 ->assertDontSee('Tablero de importación');
@@ -294,7 +295,7 @@ class ProviderModuleTest extends TestCase
         foreach ([5, 5, 5, 5, 7, 8, 6, 5, 5] as $section => $actions) {
             for ($action = 0; $action < $actions; $action++) {
                 $this->get(route('provider.import.dashboard', compact('section', 'action')))
-                    ->assertOk()->assertSee('import-summary')->assertSee('data-import-search', false)
+                    ->assertOk()->assertDontSee('import-summary')->assertSee('data-import-export', false)->assertSee('data-import-search', false)
                     ->assertSee('import-detail-table')->assertDontSee('IMPORT-AJENO');
             }
         }
@@ -303,7 +304,7 @@ class ProviderModuleTest extends TestCase
         $this->get(route('provider.import.dashboard', ['section' => 3, 'action' => 1]))->assertSee('Medicamento propio');
         $this->get(route('provider.import.dashboard', ['section' => 3, 'action' => 2]))->assertSee('COT-2026-001')->assertSee('Comparativa de propuestas');
         $this->get(route('provider.import.dashboard', ['section' => 5, 'action' => 1]))->assertSee('Kuehne+Nagel')->assertSee('En aduana');
-        $this->get(route('provider.import.dashboard', ['section' => 7, 'action' => 0]))->assertSee('Ana Torres')->assertSee('Carlos Rivas');
+        $this->get(route('provider.import.dashboard', ['section' => 7, 'action' => 0]))->assertSee($user->username)->assertDontSee('ana.torres@empresa.com');
         $this->get(route('provider.import.dashboard', ['section' => 4, 'action' => 6]))->assertSee('Poder Simple (Cofepris)')->assertSee('Paciente propio')->assertSee('data-letter-patient', false);
         $this->get(route('provider.import.dashboard', ['section' => 5, 'action' => 7]))->assertSee('Carta Encomienda (Agencia Aduanal)')->assertSee('Paciente propio');
     }

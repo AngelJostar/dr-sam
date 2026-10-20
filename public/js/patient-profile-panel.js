@@ -81,7 +81,7 @@
   var photoInput = $("[data-patient-profile-photo]");
   var storageKey = panel.dataset.storageKey || "drsam_patient_profile_panel";
   var logoutUrl = panel.dataset.logoutUrl || "/logout";
-  var loginUrl = panel.dataset.loginUrl || "/";
+  var homeUrl = panel.dataset.homeUrl || "/";
   var csrfToken = panel.dataset.csrfToken || "";
   var accountsTrack = $("[data-profile-accounts-track]");
   var accountsDots = $("[data-profile-accounts-dots]");
@@ -1384,34 +1384,42 @@
   }
 
   function renderLogout() {
-    openModal("Cerrar sesión", "SEGURIDAD", '<section class="patient-profile-empty"><div class="patient-profile-row-icon" style="margin:0 auto 12px;color:#d72b43;background:#fff0f3">' + icon("logout") + '</div><h3>¿Quieres cerrar tu sesión?</h3><p>Tu información local permanecerá guardada en este dispositivo.</p><div class="patient-profile-actions" style="justify-content:center"><button class="patient-profile-button" data-profile-close-modal>Cancelar</button><button class="patient-profile-button is-danger" data-profile-confirm-logout>Cerrar sesión</button></div></section>');
+    openModal("Cerrar sesión", "SEGURIDAD", '<section class="patient-profile-empty"><div class="patient-profile-row-icon" style="margin:0 auto 12px;color:#d72b43;background:#fff0f3">' + icon("logout") + '</div><h3>¿Quieres cerrar tu sesión?</h3><p>Tu información local permanecerá guardada en este dispositivo.</p><div class="patient-profile-actions" style="justify-content:center"><button class="patient-profile-button" data-profile-close-modal>Cancelar</button><button class="patient-profile-button is-danger" data-profile-confirm-logout>Cerrar sesión</button></div><p data-profile-logout-error role="alert" hidden></p></section>');
   }
 
-  function submitLogout(button) {
+  async function submitLogout(button) {
+    if (button && button.disabled) return;
     if (button) {
       button.disabled = true;
       button.textContent = "Cerrando...";
     }
-    emit("logout");
-
-    if (!csrfToken) {
-      window.location.assign(loginUrl);
-      return;
+    var errorBox = $("[data-profile-logout-error]");
+    if (errorBox) errorBox.hidden = true;
+    var controller = new AbortController();
+    var timeout = setTimeout(function () { controller.abort(); }, 15000);
+    try {
+      if (!csrfToken) throw new Error("Recarga la página e intenta cerrar sesión de nuevo.");
+      var response = await fetch(logoutUrl, {
+        method: "POST", credentials: "same-origin", signal: controller.signal,
+        headers: { "Accept": "application/json", "X-CSRF-TOKEN": csrfToken }
+      });
+      if (!response.ok) throw new Error(response.status === 419 ? "La sesión cambió. Recarga la página e inténtalo de nuevo." : "No se pudo cerrar la sesión. Inténtalo de nuevo.");
+      var result = await response.json();
+      var destination = result.redirect || homeUrl;
+      emit("logout");
+      try { sessionStorage.removeItem("patientPortalView"); } catch (error) {}
+      // Leave the Android preview iframe after the server invalidates the session.
+      try { window.top.location.assign(destination); }
+      catch (error) { window.location.assign(destination); }
+    } catch (error) {
+      if (errorBox) {
+        errorBox.textContent = error.name === "AbortError" ? "La conexión tardó demasiado. Inténtalo de nuevo." : error.message;
+        errorBox.hidden = false;
+      }
+      if (button) { button.disabled = false; button.textContent = "Cerrar sesión"; }
+    } finally {
+      clearTimeout(timeout);
     }
-
-    var form = document.createElement("form");
-    form.method = "post";
-    form.action = logoutUrl;
-    form.style.display = "none";
-
-    var token = document.createElement("input");
-    token.type = "hidden";
-    token.name = "_token";
-    token.value = csrfToken;
-    form.appendChild(token);
-
-    document.body.appendChild(form);
-    form.submit();
   }
 
   function openView(view) {

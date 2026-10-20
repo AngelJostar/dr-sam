@@ -42,6 +42,8 @@ Route::prefix('mobile/v1')
                 ->group(function (): void {
                     Route::get('dashboard', [PatientReadController::class, 'dashboard'])->name('dashboard');
                     Route::get('profile', [PatientReadController::class, 'profile'])->name('profile');
+                    Route::get('insurance-plans', [\App\Http\Controllers\Patient\InsurancePlanFeedController::class, 'index'])->name('insurance-plans.index');
+                    Route::get('insurance-plan-documents/{document}', [\App\Http\Controllers\Patient\InsurancePlanFeedController::class, 'document'])->whereNumber('document')->name('insurance-plans.documents');
                     Route::patch('profile', [PatientReadController::class, 'updateProfile'])->name('profile.update');
                     Route::get('appointments', [PatientReadController::class, 'appointments'])->name('appointments.index');
                     Route::get('appointments/{appointment}', [PatientReadController::class, 'appointment'])->whereNumber('appointment')->name('appointments.show');

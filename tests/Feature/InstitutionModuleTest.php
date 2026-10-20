@@ -136,7 +136,7 @@ class InstitutionModuleTest extends TestCase
             ->assertSee('institution-native-screen')
             ->assertSee('institution-native-sidebar')
             ->assertSee('institution-native-table')
-            ->assertSee('INSTITUCION NATIVA TEST')
+            ->assertSee('Institucion Nativa Test')
             ->assertSee('Unidad Institucional')
             ->assertSee('Catalogo de unidades')
             ->assertDontSee('<iframe');

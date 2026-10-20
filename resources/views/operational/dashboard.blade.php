@@ -2,6 +2,10 @@
 
 @section('body_class', 'operational-native-body')
 
+@push('styles')
+  <link rel="stylesheet" href="{{ asset('css/operational-workspace.css') }}?v={{ filemtime(public_path('css/operational-workspace.css')) }}">
+@endpush
+
 @php
   $statusLabels = [
     'draft' => 'Borrador',
@@ -122,22 +126,12 @@
   <div class="operational-native-screen">
     <header class="operational-native-topbar" aria-label="Barra superior operativa">
       <x-klini-brand label="MODULO OPERATIVO" />
-      <span>{{ strtoupper($institutionName) }}</span>
-      <div class="operational-native-user">
-        <button type="button" aria-label="Notificaciones">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z"/><path d="M10 21h4"/></svg>
-        </button>
-        <div>
-          <strong>Usuario activo</strong>
-          <small>{{ $unitName }}</small>
-        </div>
-        <form method="post" action="{{ route('logout') }}" class="operational-native-logout">
-          @csrf
-          <button type="submit">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/><path d="M15 4h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4"/></svg>
-            Cerrar sesion
-          </button>
-        </form>
+      <div class="operational-workspace-context">
+        <strong>{{ $institutionName }}</strong>
+        @if ($unitName !== $institutionName)<small>{{ $unitName }}</small>@endif
+      </div>
+      <div class="operational-workspace-session">
+        <x-klini-session-menu :show-profile="true" />
       </div>
     </header>
 
@@ -202,16 +196,16 @@
       @endif
 
       @if ($isOncology)
-        <section class="operational-oncology-carousel operational-compact-carousel" aria-label="Filtros de Centro Oncologico">
+        <section class="operational-oncology-carousel operational-compact-carousel" data-carousel-style="workspace" aria-label="Filtros de Centro Oncologico">
           <button class="operational-oncology-carousel-arrow" type="button" data-operational-carousel-prev aria-label="Anterior">‹</button>
           <div class="operational-oncology-carousel-track">
             @foreach ($oncologyTrackOptions as $trackKey => $trackOption)
               <a @class(['operational-oncology-filter', 'is-active' => $activeOncologyCarouselItem === $trackKey]) href="{{ route('operational.dashboard', ['area' => 'oncology', 'section' => $trackOption['section'], 'oncology_track' => $trackOption['track']] + ($contextUnit ? ['unit' => $contextUnit->id] : [])) }}">
-                <span class="operational-oncology-filter-initial" aria-hidden="true">{{ $trackOption['initial'] }}</span>
+                <span class="operational-oncology-filter-initial" aria-hidden="true"><x-klini-icon :name="$trackKey === 'support' ? 'admin-document' : 'module'" /></span>
                 <span class="operational-oncology-filter-copy">
                   <strong>{{ $trackOption['label'] }}</strong>
                   @if ($activeOncologyCarouselItem === $trackKey)
-                    <small>✓ Seleccionada</small>
+                    <small aria-label="Seleccionada">✓</small>
                   @endif
                 </span>
               </a>
@@ -220,16 +214,16 @@
           <button class="operational-oncology-carousel-arrow" type="button" data-operational-carousel-next aria-label="Siguiente">›</button>
         </section>
       @elseif ($isHospitalization)
-        <section class="operational-oncology-carousel operational-compact-carousel operational-hospitalization-carousel" aria-label="Filtros de Hospitalizacion">
+        <section class="operational-oncology-carousel operational-compact-carousel operational-hospitalization-carousel" data-carousel-style="workspace" aria-label="Filtros de Hospitalizacion">
           <button class="operational-oncology-carousel-arrow" type="button" data-operational-carousel-prev aria-label="Anterior">‹</button>
           <div class="operational-oncology-carousel-track">
             @foreach ($hospitalizationTrackOptions as $trackKey => $trackOption)
               <a @class(['operational-oncology-filter', 'is-active' => $hospitalizationTrack === $trackKey]) href="{{ route('operational.dashboard', ['area' => 'nursing', 'section' => 'calendar', 'hospitalization_track' => $trackKey] + ($contextUnit ? ['unit' => $contextUnit->id] : [])) }}">
-                <span class="operational-oncology-filter-initial" aria-hidden="true">{{ $trackOption['initial'] }}</span>
+                <span class="operational-oncology-filter-initial" aria-hidden="true"><x-klini-icon name="hospital" /></span>
                 <span class="operational-oncology-filter-copy">
                   <strong>{{ $trackOption['label'] }}</strong>
                   @if ($hospitalizationTrack === $trackKey)
-                    <small>✓ Seleccionada</small>
+                    <small aria-label="Seleccionada">✓</small>
                   @endif
                 </span>
               </a>
@@ -238,14 +232,14 @@
           <button class="operational-oncology-carousel-arrow" type="button" data-operational-carousel-next aria-label="Siguiente">›</button>
         </section>
       @elseif ($isInpatientPharmacy)
-        <section class="operational-oncology-carousel operational-compact-carousel operational-inpatient-pharmacy-carousel" aria-label="Filtros de Farmacia intrahospitalaria">
+        <section class="operational-oncology-carousel operational-compact-carousel operational-inpatient-pharmacy-carousel" data-carousel-style="workspace" aria-label="Filtros de Farmacia intrahospitalaria">
           <button class="operational-oncology-carousel-arrow" type="button" data-operational-carousel-prev aria-label="Anterior">‹</button>
           <div class="operational-oncology-carousel-track">
             <a class="operational-oncology-filter is-active" href="{{ route('operational.dashboard', ['area' => 'inpatient-pharmacy', 'section' => 'pending'] + ($contextUnit ? ['unit' => $contextUnit->id] : [])) }}">
-              <span class="operational-oncology-filter-initial" aria-hidden="true">F</span>
+              <span class="operational-oncology-filter-initial" aria-hidden="true"><x-klini-icon name="admin-medication" /></span>
               <span class="operational-oncology-filter-copy">
                 <strong>Farmacia intrahospitalaria</strong>
-                <small>✓ Seleccionada</small>
+                <small aria-label="Seleccionada">✓</small>
               </span>
             </a>
           </div>
@@ -267,7 +261,11 @@
         <section class="operational-native-table-card">
           <div class="operational-native-table-heading">
             <div>
-              <p class="eyebrow">Historial de solicitudes</p>
+              @if ($isHospitalization)
+                <h2>Historial de solicitudes</h2>
+              @else
+                <p class="eyebrow">Historial de solicitudes</p>
+              @endif
               @unless($isHospitalization)
                 <h2>Solicitudes enviadas por hospitales</h2>
                 <span>Modulo operativo de {{ $institutionName }} - {{ $section === 'history' ? 'Historial de solicitudes enviadas por hospitales' : 'Solicitudes pendientes de '.$areaLabel }}</span>
@@ -280,7 +278,7 @@
             <input type="hidden" name="section" value="{{ $section }}">
             <input type="hidden" name="area" value="{{ $areaKey }}">
             <label>
-              <span aria-hidden="true">âŒ•</span>
+              Buscar solicitud
               <input name="search" placeholder="Buscar folio, paciente, medico o servicio">
             </label>
             <label>
@@ -731,18 +729,35 @@
     ])
   @endif
   <script>
-    document.querySelectorAll('[data-operational-carousel-prev], [data-operational-carousel-next]').forEach((button) => {
-      button.addEventListener('click', () => {
-        const carousel = button.closest('.operational-oncology-carousel');
-        const track = carousel?.querySelector('.operational-oncology-carousel-track');
-        if (!track) return;
-
-        const itemWidth = track.querySelector('.operational-oncology-filter')?.getBoundingClientRect().width ?? 168;
-        const scrollDistance = itemWidth + 10;
-
-        track.scrollBy({
-          left: button.matches('[data-operational-carousel-prev]') ? -scrollDistance : scrollDistance,
-          behavior: 'smooth',
+    document.querySelectorAll('[data-carousel-style="workspace"]').forEach((carousel) => {
+      const track = carousel.querySelector('.operational-oncology-carousel-track');
+      const tiles = [...track.querySelectorAll('.operational-oncology-filter')];
+      const previous = carousel.querySelector('[data-operational-carousel-prev]');
+      const next = carousel.querySelector('[data-operational-carousel-next]');
+      const indicators = document.createElement('div');
+      indicators.className = 'operational-carousel-indicators';
+      indicators.setAttribute('aria-hidden', 'true');
+      tiles.forEach((tile) => {
+        const dot = document.createElement('span');
+        dot.classList.toggle('is-active', tile.classList.contains('is-active'));
+        indicators.append(dot);
+        if (tile.classList.contains('is-active')) tile.setAttribute('aria-current', 'page');
+      });
+      carousel.append(indicators);
+      const syncEdges = () => {
+        previous.disabled = track.scrollLeft <= 1;
+        next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 2;
+      };
+      track.addEventListener('scroll', syncEdges, { passive: true });
+      new ResizeObserver(syncEdges).observe(track);
+      syncEdges();
+      [previous, next].forEach((button) => {
+        button.addEventListener('click', () => {
+          const distance = (tiles[0]?.offsetWidth ?? 140) + 14;
+          track.scrollBy({
+            left: button === previous ? -distance : distance,
+            behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',
+          });
         });
       });
     });

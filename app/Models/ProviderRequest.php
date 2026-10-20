@@ -37,6 +37,11 @@ class ProviderRequest extends BaseModel
         return $this->hasMany(ProviderRequestStatusEvent::class);
     }
 
+    public function interactions(): HasMany
+    {
+        return $this->hasMany(ProviderRequestInteraction::class);
+    }
+
     public function deliveryRoutes(): HasMany
     {
         return $this->hasMany(DeliveryRoute::class);

@@ -6,14 +6,14 @@
   let trigger = null;
   function closeMenu() {
     nav.classList.remove('open');
-    menu.setAttribute('aria-expanded', 'false');
-    menu.setAttribute('aria-label', 'Abrir menú');
+
+    menu.setAttribute('aria-label', 'Ingresar a Klini');
   }
   const signupDialog = document.getElementById('signup-dialog');
   function openDialog(target, button) {
     if (dialog.open) dialog.close();
     if (signupDialog.open) signupDialog.close();
-    trigger = button;
+    trigger = nav.contains(button) ? menu : button;
     closeMenu();
     target.showModal();
     document.body.classList.add('modal-open');
@@ -38,12 +38,25 @@
     event.currentTarget.setAttribute('aria-pressed', String(show));
   });
   document.getElementById('forgot-login-password').addEventListener('click', () => { document.getElementById('password-help').hidden = false; });
-  if (dialog.querySelector('[role="alert"]')) openDialog(dialog, document.querySelector('[data-login]'));
-  menu.addEventListener('click', () => {
-    const open = nav.classList.toggle('open');
-    menu.setAttribute('aria-expanded', String(open));
-    menu.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
-  });
+  const signupType = document.getElementById('signup-type');
+  const doctorFields = document.getElementById('signup-doctor-fields');
+  function updateRegistrationType() {
+    if (!signupType || !doctorFields) return;
+    const isDoctor = signupType.value === 'doctor';
+    doctorFields.hidden = !isDoctor;
+    doctorFields.disabled = !isDoctor;
+  }
+  signupType?.addEventListener('change', updateRegistrationType);
+  updateRegistrationType();
+  const accessParams = new URLSearchParams(location.search);
+  if (signupDialog.querySelector('[role="alert"], [data-registration-success]')) openDialog(signupDialog, document.querySelector('[data-signup]'));
+  else if (dialog.querySelector('[role="alert"]')) openDialog(dialog, document.querySelector('[data-login]'));
+  else if (signupType && ['patient', 'doctor'].includes(accessParams.get('register'))) {
+    signupType.value = accessParams.get('register');
+    updateRegistrationType();
+    openDialog(signupDialog, document.querySelector('[data-signup]'));
+  } else if (accessParams.get('login') === '1') openDialog(dialog, document.querySelector('[data-login]'));
+  menu.addEventListener('click', () => openDialog(dialog, menu));
   nav.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
   document.addEventListener('keydown', event => { if (event.key === 'Escape') closeMenu(); });
   const tabs = [...document.querySelectorAll('[data-feature]')];

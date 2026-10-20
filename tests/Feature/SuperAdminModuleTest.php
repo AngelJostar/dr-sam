@@ -41,7 +41,7 @@ class SuperAdminModuleTest extends TestCase
         $this->actingAs($user)
             ->get(route('superadmin.dashboard'))
             ->assertOk()
-            ->assertSee('Gobierno de modulos')
+            ->assertSee('Panel de administración')
             ->assertSee('superadmin-native-screen')
             ->assertSee('superadmin-native-sidebar')
             ->assertSee('superadmin-native-module-card')
@@ -75,10 +75,16 @@ class SuperAdminModuleTest extends TestCase
             ],
         ]);
 
-        foreach (['users', 'institutions', 'doctors', 'providers', 'hospitals', 'specialties', 'medications', 'patients', 'prescription-format', 'mix-request-format', 'advertising', 'modules', 'access'] as $section) {
+        foreach (['users', 'institutions', 'doctors', 'providers', 'insurance-carriers', 'insurance-advisors', 'hospitals', 'specialties', 'medications', 'medical-devices', 'patients', 'subscriptions', 'prescription-format', 'mix-request-format', 'advertising', 'modules', 'access'] as $section) {
             $response = $this->actingAs($user)
+                ->withSession(['status' => 'Aviso de prueba del catálogo'])
                 ->get(route('superadmin.catalog', $section))
                 ->assertOk()
+                ->assertSee('data-admin-feedback-dialog', false)
+                ->assertSee('Aviso de prueba del catálogo')
+                ->assertDontSee('class="notice success"', false)
+                ->assertSee('data-admin-carousel', false)
+                ->assertDontSee('superadmin-native-catalog-filters')
                 ->assertDontSee('<iframe');
 
             if ($section === 'prescription-format') {
@@ -93,7 +99,7 @@ class SuperAdminModuleTest extends TestCase
 
             if ($section === 'mix-request-format') {
                 $response
-                    ->assertSee('data-mix-selector', false)
+                    ->assertSee('data-admin-filter="oncology"', false)
                     ->assertSee('Mezcla oncologica')
                     ->assertSee('Nutricion parenteral')
                     ->assertSee('SOLICITUD DE ONCOLOGICOS')
@@ -120,7 +126,6 @@ class SuperAdminModuleTest extends TestCase
 
             $response
                 ->assertSee('superadmin-native-catalog-card')
-                ->assertSee('superadmin-native-catalog-toolbar')
                 ->assertSee('superadmin-native-catalog-table');
 
             if ($section === 'modules') {
@@ -130,6 +135,51 @@ class SuperAdminModuleTest extends TestCase
                     ->assertSee('Guardar configuracion');
             }
         }
+    }
+
+    public function test_doctor_carousel_switches_tables_and_keeps_the_status_filter(): void
+    {
+        $admin = User::query()->create(['name' => 'Admin', 'username' => 'doctor.views.admin', 'role' => 'superadmin', 'status' => 'active']);
+        Doctor::query()->create(['full_name' => 'Médico Activo', 'status' => 'active']);
+        Doctor::query()->create(['full_name' => 'Médico Inactivo', 'status' => 'inactive']);
+        foreach (['catalog', 'commissions', 'all', 'invalid'] as $view) {
+            $response = $this->actingAs($admin)->get(route('superadmin.catalog', ['section' => 'doctors', 'status' => 'active', 'view' => $view]))
+                ->assertOk()->assertSee('Catálogo')->assertSee('Tabla de comisiones')->assertSee('Médico Activo')->assertDontSee('Médico Inactivo');
+            $document = new \DOMDocument;
+            @$document->loadHTML('<?xml encoding="utf-8" ?>'.$response->getContent());
+            $xpath = new \DOMXPath($document);
+            $catalog = $xpath->query('//*[@data-admin-filter-panel="catalog"]')->item(0);
+            $commissions = $xpath->query('//*[@data-admin-filter-panel="commissions"]')->item(0);
+            $this->assertSame($view === 'commissions', $catalog->hasAttribute('hidden'));
+            $this->assertSame($view === 'catalog', $commissions->hasAttribute('hidden'));
+            foreach (['catalog', 'commissions'] as $filter) {
+                $href = $xpath->query('//a[@data-admin-filter="'.$filter.'"]')->item(0)->getAttribute('href');
+                parse_str(parse_url($href, PHP_URL_QUERY), $query);
+                $this->assertSame('active', $query['status']);
+                $this->assertSame($filter, $query['view']);
+            }
+        }
+    }
+
+    public function test_dashboard_paginates_modules_in_groups_of_nine_without_losing_access_links(): void
+    {
+        $admin = User::query()->create(['name' => 'Admin', 'username' => 'dashboard.pagination', 'role' => 'superadmin', 'status' => 'active']);
+        $first = $this->actingAs($admin)->get(route('superadmin.dashboard'))->assertOk();
+        $modules = $first->viewData('modules');
+        $this->assertSame(9, $modules->perPage());
+        $this->assertCount(9, $modules);
+        $first->assertSee('Páginas de módulos')->assertSee('Página siguiente');
+        $seen = $modules->pluck('id')->all();
+        foreach (range(2, $modules->lastPage()) as $page) {
+            $response = $this->get(route('superadmin.dashboard', ['page' => $page]))->assertOk();
+            $records = $response->viewData('modules');
+            $this->assertEmpty(array_intersect($seen, $records->pluck('id')->all()));
+            $seen = array_merge($seen, $records->pluck('id')->all());
+            foreach ($records as $module) {
+                $response->assertSee(route('superadmin.catalog', ['section' => 'modules', 'selected_module' => $module->key]), false);
+            }
+        }
+        $this->assertCount($modules->total(), $seen);
     }
 
     public function test_superadmin_can_disable_module_and_dashboard_registry_hides_it(): void
@@ -172,6 +222,47 @@ class SuperAdminModuleTest extends TestCase
             'event' => 'platform.module.updated',
             'auditable_id' => $module->id,
         ]);
+    }
+
+    public function test_carousel_filters_all_pages_and_exports_the_selected_device_status(): void
+    {
+        $admin = User::query()->create(['name' => 'Super Admin', 'username' => 'carousel.admin', 'role' => 'superadmin', 'module' => 'superadmin', 'status' => 'active']);
+        foreach (range(1, 21) as $number) {
+            MedicalDevice::query()->create([
+                'name' => 'Evaluacion '.str_pad((string) $number, 2, '0', STR_PAD_LEFT),
+                'code' => 'EVAL-'.$number,
+                'category' => 'Medicion', 'manufacturer' => 'Prueba', 'status' => 'evaluation',
+            ]);
+        }
+        MedicalDevice::query()->create(['name' => 'Dispositivo Activo', 'code' => 'ACTIVE', 'category' => 'Medicion', 'manufacturer' => 'Prueba', 'status' => 'active']);
+
+        $response = $this->actingAs($admin)->get(route('superadmin.catalog', ['section' => 'medical-devices', 'status' => 'evaluation', 'page' => 2]));
+        $response->assertOk()->assertSee('Evaluacion 21')->assertDontSee('Dispositivo Activo');
+        $response->assertViewHas('records', fn ($records) => $records->total() === 21 && $records->count() === 1);
+        $document = new \DOMDocument;
+        @$document->loadHTML($response->getContent());
+        $xpath = new \DOMXPath($document);
+        $active = $xpath->query('//a[@data-admin-filter="evaluation"]')->item(0);
+        $this->assertSame('true', $active->getAttribute('aria-current'));
+        parse_str(parse_url($active->getAttribute('href'), PHP_URL_QUERY), $query);
+        $this->assertSame('evaluation', $query['status']);
+        $this->assertArrayNotHasKey('page', $query);
+
+        $csv = $this->get(route('superadmin.catalog.csv', ['section' => 'medical-devices', 'status' => 'evaluation']))->assertOk()->streamedContent();
+        $this->assertStringContainsString('Evaluacion 21', $csv);
+        $this->assertStringNotContainsString('Dispositivo Activo', $csv);
+    }
+
+    public function test_access_carousel_filters_by_module_and_lists_existing_module_values(): void
+    {
+        $admin = User::query()->create(['name' => 'Super Admin', 'username' => 'carousel.admin', 'role' => 'superadmin', 'module' => 'superadmin', 'status' => 'active']);
+        $doctor = User::query()->create(['name' => 'Medico del filtro', 'username' => 'carousel.doctor', 'role' => 'doctor', 'module' => 'doctor', 'status' => 'active']);
+        User::query()->create(['name' => 'Paciente fuera del filtro', 'username' => 'carousel.patient', 'role' => 'patient', 'module' => 'patient', 'status' => 'active']);
+
+        $this->actingAs($admin)->get(route('superadmin.catalog', ['section' => 'access', 'module' => 'doctor']))
+            ->assertOk()->assertSee('data-admin-filter="doctor"', false)->assertSee('data-admin-filter="patient"', false)
+            ->assertSee('Medico del filtro')->assertDontSee('Paciente fuera del filtro')
+            ->assertViewHas('records', fn ($records) => $records->total() === 1 && $records->first()->id === $doctor->id);
     }
 
     public function test_superadmin_can_update_user_status(): void
@@ -704,7 +795,7 @@ class SuperAdminModuleTest extends TestCase
         $this->actingAs($superadmin)
             ->get(route('superadmin.catalog', ['section' => 'insurance-carriers', 'q' => 'AXA']))
             ->assertOk()
-            ->assertSee('Catalogo de Aseguradoras')
+            ->assertSee('Catálogo de aseguradoras')
             ->assertSee('AXA Seguros')
             ->assertSee('aseg-axa')
             ->assertSee('Convenios medicos');

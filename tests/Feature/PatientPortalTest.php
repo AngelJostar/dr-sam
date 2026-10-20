@@ -28,11 +28,14 @@ class PatientPortalTest extends TestCase
             ->assertSee('Portal del Paciente')
             ->assertSee('patient-assistant-native-screen')
             ->assertSee('patient-assistant-native-menu')
-            ->assertSee('Soporte médico')
+            ->assertDontSee('class="patient-portal-menu-title">Soporte</strong>', false)
             ->assertSee('data-support-toggle', false)
             ->assertSee('aria-hidden="true"', false)
             ->assertDontSee('data-open-view="history"', false)
             ->assertSee('data-patient-home-posts-root', false)
+            ->assertSee('data-patient-social', false)
+            ->assertSee('js/patient-social.js', false)
+            ->assertSee('css/patient-social.css', false)
             ->assertSee("startView: 'posts'", false)
             ->assertDontSee('¿Cómo amaneciste hoy?')
             ->assertSee('data-ai-top-input', false)
@@ -372,6 +375,89 @@ class PatientPortalTest extends TestCase
         $this->assertCount(0, $response->viewData('patient')->appointments);
     }
 
+    public function test_calendar_periods_keep_ongoing_and_undated_visits_upcoming_and_archive_finished_visits(): void
+    {
+        [$user, $patient] = $this->makePatient();
+        $this->travelTo(Carbon::parse('2026-10-07 12:00:00'));
+
+        foreach ([
+            ['En curso', now()->subMinutes(15), now()->addMinutes(15), 'scheduled', 'Presencial'],
+            ['Fecha pendiente', null, null, 'scheduled', 'Presencial'],
+            ['Ya atendida', now()->subDay(), now()->subDay()->addMinutes(30), 'completed', 'Presencial'],
+            ['Cancelada futura', now()->addDay(), null, 'cancelled', 'Presencial'],
+            ['Consulta virtual', now()->addDay(), null, 'scheduled', 'Video llamada'],
+        ] as [$title, $startsAt, $endsAt, $status, $modality]) {
+            Appointment::query()->create([
+                'patient_id' => $patient->id, 'specialty' => $title, 'starts_at' => $startsAt,
+                'ends_at' => $endsAt, 'status' => $status, 'modality' => $modality,
+                'location' => 'Clínica de prueba',
+            ]);
+        }
+
+        $html = $this->actingAs($user)->get(route('patient.dashboard'))->assertOk()->getContent();
+        preg_match_all('/<article class="patient-calendar-card"[^>]*>.*?<\/article>/s', $html, $matches);
+        $cards = collect($matches[0]);
+        $this->assertCount(5, $cards);
+        foreach (['En curso', 'Fecha pendiente', 'Consulta virtual'] as $title) {
+            $card = $cards->first(fn ($markup) => str_contains($markup, '>'.$title.'</h2>'));
+            $this->assertStringContainsString('data-calendar-upcoming="1"', $card);
+            $this->assertDoesNotMatchRegularExpression('/^<article[^>]*\bhidden\b/', $card);
+        }
+        foreach (['Ya atendida', 'Cancelada futura'] as $title) {
+            $card = $cards->first(fn ($markup) => str_contains($markup, '>'.$title.'</h2>'));
+            $this->assertStringContainsString('data-calendar-upcoming="0"', $card);
+            $this->assertMatchesRegularExpression('/^<article[^>]*\bhidden\b/', $card);
+        }
+        $this->assertStringContainsString('Cómo llegar', $cards->first(fn ($markup) => str_contains($markup, '>En curso</h2>')));
+        $this->assertStringNotContainsString('Cómo llegar', $cards->first(fn ($markup) => str_contains($markup, '>Consulta virtual</h2>')));
+        $this->travelBack();
+    }
+
+    public function test_patient_can_request_a_quote_without_replacing_existing_policy(): void
+    {
+        [$user, $patient] = $this->makePatient();
+        $response = $this->actingAs($user)->postJson(route('patient.insurance.requests.store'), [
+            'type' => 'quote', 'email' => 'patient@example.com', 'phone' => '5512345678', 'notes' => 'Cobertura familiar', 'consent' => '1',
+        ])->assertCreated()->assertJsonPath('message', 'Solicitud recibida en Klini. Pendiente de revisión.');
+        $saved = $patient->fresh()->metadata['insurance_requests'][0];
+        $this->assertSame($response->json('id'), $saved['id']);
+        $this->assertSame('received', $saved['status']);
+        $this->assertSame(0, $patient->insurancePolicies()->count());
+    }
+
+    public function test_refund_requires_a_policy_and_cannot_use_another_patients_documents(): void
+    {
+        [$user, $patient] = $this->makePatient();
+        $data = ['type'=>'refund', 'attention_date'=>now()->toDateString(), 'provider'=>'Proveedor', 'concept'=>'Consulta', 'amount'=>'100', 'documents'=>[1,2,3]];
+        $this->actingAs($user)->postJson(route('patient.insurance.requests.store'), $data)->assertStatus(422);
+        \App\Models\InsurancePolicy::query()->create(['patient_id'=>$patient->id,'policy_number'=>'TEST','insurer_name'=>'Seguro','status'=>'active']);
+        $this->actingAs($user)->postJson(route('patient.insurance.requests.store'), $data)->assertStatus(422);
+        $this->assertEmpty($patient->fresh()->metadata['insurance_requests'] ?? []);
+    }
+
+    public function test_quote_requires_consent_and_valid_contact(): void
+    {
+        [$user] = $this->makePatient();
+        $this->actingAs($user)->postJson(route('patient.insurance.requests.store'), ['type'=>'quote','email'=>'invalid'])
+            ->assertUnprocessable()->assertJsonValidationErrors(['email','phone','notes','consent']);
+    }
+    public function test_refund_saves_owned_documents_and_rejects_foreign_document(): void
+    {
+        [$user, $patient] = $this->makePatient();
+        Storage::fake('local');
+        \App\Models\InsurancePolicy::query()->create(['patient_id'=>$patient->id,'policy_number'=>'REFUND','insurer_name'=>'Seguro','status'=>'active']);
+        $ids = [];
+        foreach (range(1,3) as $i) {
+            $ids[] = $this->actingAs($user)->postJson(route('patient.register_attachments.store'), ['file'=>UploadedFile::fake()->create('document.pdf',10,'application/pdf'),'record_id'=>'insurance-'.$i,'category'=>'insurance_refund'])->assertCreated()->json('document_id');
+        }
+        $data = ['type'=>'refund','attention_date'=>now()->toDateString(),'provider'=>'Clinica','concept'=>'Consulta','amount'=>'4850','documents'=>$ids];
+        $this->actingAs($user)->postJson(route('patient.insurance.requests.store'), $data)->assertCreated();
+        $this->assertSame($ids, $patient->fresh()->metadata['insurance_requests'][0]['documents']);
+        $other = Patient::query()->create(['full_name'=>'Otro paciente','platform_number'=>'OTHER-INSURANCE','status'=>'active']);
+        Document::query()->whereKey($ids[0])->update(['patient_id'=>$other->id]);
+        $this->actingAs($user)->postJson(route('patient.insurance.requests.store'), $data)->assertStatus(422);
+        $this->assertCount(1, $patient->fresh()->metadata['insurance_requests']);
+    }
     private function makePatient(): array
     {
         $user = User::query()->create([

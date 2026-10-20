@@ -3,12 +3,16 @@
 @section('body_class', 'patient-assistant-native-body patient-portal-body')
 
 @push('styles')
+  <link rel="stylesheet" href="{{ asset('css/patient-health-icons.css') }}?v={{ filemtime(public_path('css/patient-health-icons.css')) }}">
   <link rel="stylesheet" href="{{ asset('css/patient-profile-panel.css') }}?v={{ filemtime(public_path('css/patient-profile-panel.css')) }}">
   <link rel="stylesheet" href="{{ asset('css/communities.css') }}?v={{ filemtime(public_path('css/communities.css')) }}">
+  <link rel="stylesheet" href="{{ asset('css/patient-stories.css') }}?v={{ filemtime(public_path('css/patient-stories.css')) }}">
+  <link rel="stylesheet" href="{{ asset('css/patient-insurance-drawer.css') }}?v={{ filemtime(public_path('css/patient-insurance-drawer.css')) }}">
   <link rel="stylesheet" href="{{ asset('css/policy-saved-overlay.css') }}?v={{ filemtime(public_path('css/policy-saved-overlay.css')) }}">
   <link rel="stylesheet" href="{{ asset('css/patient-history-mobile.css') }}?v={{ filemtime(public_path('css/patient-history-mobile.css')) }}">
   <link rel="stylesheet" href="{{ asset('css/patient-bottom-nav-mobile.css') }}?v={{ filemtime(public_path('css/patient-bottom-nav-mobile.css')) }}">
   <link rel="stylesheet" href="{{ asset('css/patient-calendar-mobile.css') }}?v={{ filemtime(public_path('css/patient-calendar-mobile.css')) }}">
+  <link rel="stylesheet" href="{{ asset('css/patient-social.css') }}?v={{ filemtime(public_path('css/patient-social.css')) }}">
 @endpush
 
 @php
@@ -19,6 +23,7 @@
   ];
   $statusText = fn (?string $value) => $statusLabels[$value ?? ''] ?? ($value ? ucfirst(str_replace('_', ' ', $value)) : 'Sin estatus');
   $initials = collect(explode(' ', $patient->full_name))->filter()->take(2)->map(fn ($part) => mb_substr($part, 0, 1))->implode('');
+  $storyDemo = app()->isLocal() && (auth()->user()->is_demo || in_array(auth()->user()->role, ['admin', 'superadmin'], true));
   $supportViews = [
     'insurance' => ['Mi Seguro', 'shield'],
     'analyses' => ['Análisis Clínicos', 'flask'],
@@ -32,9 +37,9 @@
 @section('content')
 <div class="patient-assistant-native-screen patient-portal" data-patient-portal>
   <header class="patient-assistant-native-topbar patient-portal-topbar">
-    <button class="patient-portal-dots" type="button" aria-label="Abrir soporte médico" aria-expanded="false" aria-controls="patient-support-menu" data-support-toggle>⋮</button>
+    <button class="patient-portal-dots" type="button" aria-label="Abrir soporte" aria-expanded="false" aria-controls="patient-support-menu" data-support-toggle>⋮</button>
     <form class="patient-portal-question" onsubmit="return false" data-ai-top-form>
-      <input aria-label="Pregunta para Dr. Sam" placeholder="Soy Dr. Sam, hazme una pregunta" data-ai-top-input>
+      <input aria-label="Pregunta para Dr. Sam" data-ai-top-input>
       <button type="submit" aria-label="Preguntar" data-ai-top-submit>
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="M22 2 11 13"></path>
@@ -65,7 +70,7 @@
 
   <div class="patient-portal-layout">
     <aside id="patient-support-menu" class="patient-assistant-native-menu patient-portal-menu" aria-label="Menú del paciente" aria-hidden="true" data-support-menu>
-      <strong class="patient-portal-menu-title">Soporte médico</strong>
+
       <button class="patient-profile-row patient-profile-finance-row" type="button" data-profile-view="finance">
         <span class="patient-profile-finance-art" aria-hidden="true">
           <span class="patient-profile-wallet-shape"></span>
@@ -107,9 +112,20 @@
       </section>
 
       @foreach ($supportViews as $key => [$label, $icon])
-        <button type="button" data-open-view="{{ $key }}">
-          <span class="patient-support-icon patient-support-icon-{{ $icon }}" aria-hidden="true"></span>{{ $label }}
-        </button>
+        @if ($key === 'analyses')
+          <h2 class="patient-support-medical-heading">Soporte médico</h2>
+        @endif
+        @if ($key === 'insurance')
+          <button class="patient-support-insurance-card" type="button" data-open-view="{{ $key }}">
+            <span class="patient-support-insurance-icon">@include('patient.partials.insurance-icon', ['icon'=>'shield'])</span>
+            <strong>{{ $label }}</strong>
+            <span class="patient-support-insurance-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></span>
+          </button>
+        @else
+          <button type="button" data-open-view="{{ $key }}">
+            <span class="patient-support-icon patient-support-icon-{{ $icon }}" aria-hidden="true"></span>{{ $label }}
+          </button>
+        @endif
       @endforeach
     </aside>
 
@@ -190,7 +206,7 @@
       <section class="patient-portal-view" data-patient-view="insurance">
         @php
           $policyMeta = $policy?->metadata ?? [];
-          $advisorName = $policyMeta['advisor_name'] ?? 'Andrea Suarez';
+          $advisorName = $policyMeta['advisor_name'] ?? 'Asesor por asignar';
           $insuranceComplete = $policy
             && $policy->policy_number
             && $policy->insurer_name
@@ -198,6 +214,7 @@
             && $policy->ends_at;
           $insuranceValue = fn ($value, $fallback = 'No registrado') => filled($value) ? $value : $fallback;
         @endphp
+        @include('patient.partials.insurance-flow')
         <article class="patient-insurance-shell">
           <header class="patient-insurance-hero">
             <div class="patient-insurance-hero-icon" aria-hidden="true"><span>✓</span></div>
@@ -298,9 +315,9 @@
           <div class="patient-analyses-body">
             <nav class="patient-analyses-filter-bar" aria-label="Filtros de an&aacute;lisis cl&iacute;nicos">
               <button class="is-all is-active" type="button" data-analysis-filter="all" aria-pressed="true"><span class="patient-register-history-image patient-register-history-all-image" aria-hidden="true"><img src="/images/history-icons/all.png?v=20260828-history-all" alt="" loading="lazy"></span><b>Todos</b></button>
-              <button class="is-lab" type="button" data-analysis-filter="laboratory" aria-pressed="false"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/history-icons/laboratory.png?v=20260827-history-icons" alt="" loading="lazy"></span><b>Laboratorio</b></button>
-              <button class="is-image" type="button" data-analysis-filter="image" aria-pressed="false"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/history-icons/studies.png?v=20260827-history-icons" alt="" loading="lazy"></span><b>Imagen</b></button>
-              <button class="is-pdf" type="button" data-analysis-filter="pdf" aria-pressed="false"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/history-icons/prescriptions.png?v=20260827-history-icons" alt="" loading="lazy"></span><b>PDF</b></button>
+              <button class="is-lab" type="button" data-analysis-filter="laboratory" aria-pressed="false"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/health-icons/history/02_analisis_laboratorio.png?v=20261013" alt="" loading="lazy"></span><b>Laboratorio</b></button>
+              <button class="is-image" type="button" data-analysis-filter="image" aria-pressed="false"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/health-icons/history/03_estudios.png?v=20261013" alt="" loading="lazy"></span><b>Imagen</b></button>
+              <button class="is-pdf" type="button" data-analysis-filter="pdf" aria-pressed="false"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/health-icons/history/04_recetas.png?v=20261013" alt="" loading="lazy"></span><b>PDF</b></button>
             </nav>
 
             <div class="patient-analyses-toolbar">
@@ -652,11 +669,11 @@
         @endforeach
       </section>
 
-      <section class="patient-portal-view" data-patient-view="calendar">
+      <section class="patient-portal-view" data-patient-view="calendar" aria-label="Calendario">
         @php
           $calendarNow = now();
-          $isCalendarScheduled = fn ($item) => $item->starts_at?->gt($calendarNow)
-            && !in_array($item->status, ['cancelled', 'completed'], true);
+          $isCalendarScheduled = fn ($item) => (($item->ends_at ?? $item->starts_at)?->gte($calendarNow) ?? true)
+            && !in_array($item->status, ['cancelled', 'completed', 'no_show'], true);
           $calendarGroup = function ($item) use ($calendarNow, $isCalendarScheduled) {
             if ($isCalendarScheduled($item)) return 0;
             if ($item->starts_at?->lte($calendarNow)) return 1;
@@ -673,64 +690,25 @@
             if ($firstGroup === 1) return ($secondTimestamp ?? PHP_INT_MIN) <=> ($firstTimestamp ?? PHP_INT_MIN);
             return ($firstTimestamp ?? PHP_INT_MAX) <=> ($secondTimestamp ?? PHP_INT_MAX);
           })->values();
-          $calendarMonths = $calendarAppointments->filter(fn ($item) => $item->starts_at)->map(fn ($item) => ['key' => $item->starts_at->format('Y-m'), 'label' => ucfirst($item->starts_at->translatedFormat('F Y'))])->unique('key')->values();
-          $calendarFirstMonth = $calendarMonths->first();
-          $calendarPickerDate = $calendarFirstMonth ? \Carbon\Carbon::createFromFormat('Y-m', $calendarFirstMonth['key'])->startOfMonth() : now()->startOfMonth();
+          $calendarStatusLabels = ['confirmed' => 'Confirmada', 'cancelled' => 'Cancelada', 'completed' => 'Atendida', 'no_show' => 'No asistió', 'in_progress' => 'En curso'];
           $consultationHistory = $patient->clinicalRecords->sortByDesc('recorded_at')->values();
         @endphp
         <div class="patient-calendar-shell">
-          <header class="patient-calendar-hero">
-            <span class="patient-calendar-hero-icon" aria-hidden="true"><img src="/images/calendar-icons/calendar.png?v=20260828-calendar-icon" alt="" loading="lazy"></span>
-            <div><h1>Calendario</h1></div>
-          </header>
           <nav class="patient-calendar-section-switch" role="tablist" aria-label="Secciones del calendario">
             <button type="button" id="patient-calendar-activities-tab" role="tab" aria-selected="false" aria-controls="patient-calendar-activities-panel" tabindex="-1" data-calendar-section="activities">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/><circle cx="9" cy="7" r="4"/></svg>
-              <span>Actividades de comunidades</span>
+              <span>Comunidades</span>
             </button>
             <button type="button" id="patient-calendar-medical-tab" role="tab" aria-selected="true" aria-controls="patient-calendar-medical-panel" data-calendar-section="medical">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg>
-              <span>Citas médicas</span>
+              <span>Salud</span>
             </button>
           </nav>
           <section id="patient-calendar-medical-panel" role="tabpanel" aria-labelledby="patient-calendar-medical-tab" data-calendar-section-panel="medical">
-          <div class="patient-calendar-toolbar">
-            <div class="patient-calendar-filters" data-calendar-filter-carousel aria-label="Filtrar calendario">
-              <button class="is-all is-active" type="button" data-calendar-filter="all" aria-pressed="true">
-                <span class="patient-register-history-image patient-register-history-all-image" aria-hidden="true"><img src="/images/history-icons/all.png?v=20260828-history-all" alt="" loading="lazy"></span>
-                <b>Todas</b>
-              </button>
-              <button class="is-upcoming" type="button" data-calendar-filter="upcoming" aria-pressed="false">
-                <span class="patient-register-history-glyph" aria-hidden="true">✓</span>
-                <b>Próximas</b>
-              </button>
-              <button class="is-laboratory" type="button" data-calendar-filter="laboratory" aria-pressed="false">
-                <span class="patient-register-history-image" aria-hidden="true"><img src="/images/history-icons/laboratory.png?v=20260827-history-icons" alt="" loading="lazy"></span>
-                <b>Laboratorio</b>
-              </button>
-              <button class="is-consultation" type="button" data-calendar-filter="consultation" aria-pressed="false">
-                <span class="patient-register-history-image" aria-hidden="true"><img src="/images/history-icons/consultation.png?v=20260827-history-icons" alt="" loading="lazy"></span>
-                <b>Consultas</b>
-              </button>
-            </div>
-            <div class="patient-calendar-month-nav">
-              <button type="button" aria-label="Mes anterior" data-calendar-month-step="-1">‹</button>
-              <div class="patient-calendar-month-picker" aria-label="Selector de mes y año">
-                <div class="patient-calendar-month-column">
-                  <span data-calendar-prev-month>{{ ucfirst($calendarPickerDate->copy()->subMonth()->translatedFormat('F')) }}</span>
-                  <strong data-calendar-month-label>{{ ucfirst($calendarPickerDate->translatedFormat('F')) }}</strong>
-                  <span data-calendar-next-month>{{ ucfirst($calendarPickerDate->copy()->addMonth()->translatedFormat('F')) }}</span>
-                </div>
-                <div class="patient-calendar-month-column">
-                  <span data-calendar-prev-year>{{ $calendarPickerDate->copy()->subYear()->format('Y') }}</span>
-                  <strong data-calendar-year-label>{{ $calendarPickerDate->format('Y') }}</strong>
-                  <span data-calendar-next-year>{{ $calendarPickerDate->copy()->addYear()->format('Y') }}</span>
-                </div>
-              </div>
-              <button type="button" aria-label="Mes siguiente" data-calendar-month-step="1">›</button>
-              <span class="patient-calendar-month-count"><i aria-hidden="true"></i>{{ $calendarAppointments->filter($isCalendarScheduled)->count() }} próximas citas</span>
-            </div>
+          <div class="patient-calendar-periods" role="tablist" aria-label="Filtrar citas">
+            <button type="button" role="tab" id="patient-calendar-upcoming-tab" aria-selected="true" aria-controls="patient-calendar-appointments" data-calendar-filter="upcoming">Próximas</button>
+            <button type="button" role="tab" id="patient-calendar-past-tab" aria-selected="false" aria-controls="patient-calendar-appointments" tabindex="-1" data-calendar-filter="past">Anteriores</button>
           </div>
+          <section id="patient-calendar-appointments" role="tabpanel" aria-labelledby="patient-calendar-upcoming-tab">
+          <h1 class="patient-calendar-list-heading">Mis citas</h1>
           <div class="patient-calendar-list">
             @forelse ($calendarAppointments as $appointment)
               @php
@@ -739,31 +717,48 @@
                 $isUpcoming = $isCalendarScheduled($appointment);
                 $appointmentUnit = $appointment->medicalUnit?->name ?? $appointment->location ?? 'Ubicación no registrada';
                 $appointmentTitle = $calendarType === 'laboratory' ? 'Laboratorio' : ($appointment->specialty ?: 'Consulta médica');
+                $appointmentStatus = $calendarStatusLabels[$appointment->status] ?? $statusText($appointment->status);
+                $doctorName = $appointment->doctor?->full_name ?? 'Médico por asignar';
+                $doctorInitials = collect(explode(' ', $doctorName))->filter()->take(2)->map(fn ($part) => mb_substr($part, 0, 1))->implode('');
+                $doctorPhoto = data_get($appointment->doctor?->metadata, 'photo_url') ?? data_get($appointment->doctor?->metadata, 'avatar_url');
+                $isVirtualAppointment = preg_match('/video|virtual|online|en l[ií]nea/i', $appointment->modality ?? '') === 1;
+                $appointmentAddress = data_get($appointment->metadata, 'location_address') ?: ($appointment->medicalUnit?->address ?: $appointment->location);
+                $appointmentMapQuery = collect([$appointment->medicalUnit?->name, $appointmentAddress, $appointment->medicalUnit?->city])->filter()->unique()->implode(', ');
               @endphp
-              <article class="patient-calendar-card" data-calendar-item data-calendar-type="{{ $calendarType }}" data-calendar-upcoming="{{ $isUpcoming ? '1' : '0' }}" data-calendar-month="{{ $appointment->starts_at?->format('Y-m') }}">
-                <div class="patient-calendar-type-icon is-{{ $calendarType }}" aria-hidden="true"><span>{{ $calendarType === 'laboratory' ? '♙' : '♥' }}</span></div>
-                <div class="patient-calendar-card-main">
-                  <h2>{{ $appointmentTitle }}</h2>
-                  <div class="patient-calendar-date"><span>▣</span><strong>{{ $appointment->starts_at?->format('d/m/Y') ?? 'Fecha pendiente' }}</strong><i>•</i><span>◷</span><strong>{{ $appointment->starts_at?->format('H:i') ?? 'Sin hora' }}</strong></div>
-                  <p>Con {{ $appointment->doctor?->full_name ?? 'médico por asignar' }}, en {{ $appointmentUnit }}. Motivo: {{ $appointment->reason ?: 'No registrado' }}</p>
-                  <div class="patient-calendar-card-meta">
-                    <div><small>MÉDICO</small><strong>{{ $appointment->doctor?->full_name ?? 'No registrado' }}</strong></div>
-                    <div><small>ESPECIALIDAD</small><strong>{{ $appointment->specialty ?: 'No registrada' }}</strong></div>
-                    <div><small>MODALIDAD</small><strong>{{ $appointment->modality ?: ($calendarType === 'laboratory' ? 'Toma de muestra' : 'Consulta presencial') }}</strong></div>
-                    <div><small>UBICACIÓN</small><strong>{{ $appointmentUnit }}</strong></div>
-                  </div>
+              <article class="patient-calendar-card" data-calendar-item data-calendar-type="{{ $calendarType }}" data-calendar-upcoming="{{ $isUpcoming ? '1' : '0' }}" @if (!$isUpcoming) hidden @endif>
+                <header class="patient-calendar-card-top">
+                  <span class="patient-calendar-kind"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3v2M11 3v2M3 4h10v6a5 5 0 0 1-10 0V4Zm5 11v2a4 4 0 0 0 8 0v-3"/><circle cx="16" cy="11" r="3"/></svg>{{ $calendarType === 'laboratory' ? 'Estudio médico' : 'Cita médica' }}</span>
+                  <span class="patient-calendar-status {{ $isUpcoming ? '' : 'is-past' }}">{{ $appointmentStatus }}</span>
+                </header>
+                <h2 class="patient-calendar-appointment-title">{{ $appointmentTitle }}</h2>
+                <div class="patient-calendar-professional">
+                  <span class="patient-calendar-avatar">
+                    @if ($doctorPhoto)
+                      <img src="{{ $doctorPhoto }}" alt="" loading="lazy">
+                    @else
+                      {{ $doctorInitials }}
+                    @endif
+                  </span>
+                  <div><strong>{{ $doctorName }}</strong><small>{{ $appointment->specialty ?: 'Especialidad por confirmar' }}</small></div>
                 </div>
-                <aside class="patient-calendar-card-actions">
-                  <span class="patient-calendar-status">{{ $statusText($appointment->status) }}</span>
-                  <button type="button" data-calendar-detail-open="patient-calendar-detail-{{ $appointment->id }}">Ver detalle <b>›</b></button>
-                  <button type="button" disabled title="La cancelación todavía no está habilitada">Cancelar cita</button>
-                </aside>
+                <ul class="patient-calendar-details">
+                  <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg><span>{{ $appointment->starts_at?->copy()->locale('es')->translatedFormat('d M Y') ?? 'Fecha por confirmar' }} · {{ $appointment->starts_at?->format('H:i') ?? 'Hora por confirmar' }}@if ($appointment->ends_at)–{{ $appointment->ends_at->format('H:i') }}@endif</span></li>
+                  <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg><span>{{ $appointment->modality ?: 'Modalidad por confirmar' }}@if (data_get($appointment->metadata, 'consulting_room')) · {{ data_get($appointment->metadata, 'consulting_room') }}@endif</span></li>
+                  <li><x-klini-icon name="hospital"/><span>{{ $appointmentUnit }}@if ($appointment->medicalUnit?->city) · {{ $appointment->medicalUnit->city }}@endif</span></li>
+                  <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2Z"/></svg><span>Paciente: {{ $patient->full_name }}</span></li>
+                </ul>
+                <div class="patient-calendar-reservation-actions">
+                  <button type="button" data-calendar-detail-open="patient-calendar-detail-{{ $appointment->id }}" aria-label="Ver cita: {{ $appointmentTitle }}">Ver cita</button>
+                  @if (!$isVirtualAppointment && $appointmentMapQuery)
+                    <a href="https://www.google.com/maps/dir/?api=1&amp;destination={{ rawurlencode($appointmentMapQuery) }}" target="_blank" rel="noopener noreferrer">Cómo llegar</a>
+                  @endif
+                  </div>
               </article>
               <dialog class="patient-calendar-dialog" id="patient-calendar-detail-{{ $appointment->id }}">
                 <header><div><small>DETALLE DE CITA</small><h2>{{ $appointmentTitle }}</h2></div><button type="button" data-calendar-detail-close aria-label="Cerrar">×</button></header>
                 <dl>
                   <div><dt>Fecha y hora</dt><dd>{{ $appointment->starts_at?->format('d/m/Y H:i') ?? 'No registrada' }}</dd></div>
-                  <div><dt>Estatus</dt><dd>{{ $statusText($appointment->status) }}</dd></div>
+                  <div><dt>Estatus</dt><dd>{{ $appointmentStatus }}</dd></div>
                   <div><dt>Médico</dt><dd>{{ $appointment->doctor?->full_name ?? 'No registrado' }}</dd></div>
                   <div><dt>Especialidad</dt><dd>{{ $appointment->specialty ?: 'No registrada' }}</dd></div>
                   <div><dt>Modalidad</dt><dd>{{ $appointment->modality ?: 'No registrada' }}</dd></div>
@@ -772,11 +767,18 @@
                 </dl>
               </dialog>
             @empty
-              <div class="patient-calendar-empty" data-calendar-empty>No hay citas o estudios programados.</div>
+              <div class="patient-calendar-empty" data-calendar-empty>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg>
+                <span>No hay citas o estudios programados.</span>
+              </div>
             @endforelse
-            <div class="patient-calendar-empty" data-calendar-filter-empty hidden>No hay citas que coincidan con este filtro.</div>
+            <div class="patient-calendar-empty" data-calendar-filter-empty hidden>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg>
+              <span data-calendar-empty-label>No tienes próximas citas.</span>
+            </div>
           </div>
           <p class="patient-calendar-timezone">ⓘ Las citas y estudios se muestran en la zona horaria de tu ubicación actual.</p>
+          </section>
           </section>
           <section class="patient-portal-communities-view patient-calendar-activities" id="patient-calendar-activities-panel" role="tabpanel" aria-labelledby="patient-calendar-activities-tab" data-calendar-section-panel="activities" hidden></section>
         </div>
@@ -1141,18 +1143,8 @@
         </div>
       </section>
 
-      <section class="patient-portal-view" data-patient-view="wellness">
+      <section class="patient-portal-view" data-patient-view="wellness" aria-label="Mi Salud">
         <article class="patient-health-panel">
-          <header class="patient-health-hero">
-            <div class="patient-health-hero-icon" aria-hidden="true">
-              <svg viewBox="0 0 48 48"><path d="M24 39s-13-7.5-17-17.5C3.5 12.7 9 7 15.2 7c3.8 0 6.4 2 8.8 5.1C26.4 9 29 7 32.8 7 39 7 44.5 12.7 41 21.5 37 31.5 24 39 24 39Z"></path><path d="M15 23h5l3-6 5 12 3-6h4"></path></svg>
-            </div>
-            <div>
-              <h1>Mi Salud</h1>
-              <p>Tu bienestar, en equilibrio</p>
-            </div>
-          </header>
-
           <nav class="patient-health-view-switch" data-health-view-switch data-active-view="parameters" role="tablist" aria-label="Secciones de Mi Salud">
             <button class="is-active" id="patient-health-tab-parameters" type="button" data-health-view-mode="parameters" role="tab" aria-selected="true" aria-controls="patient-health-panel-parameters">Par&aacute;metros</button>
             <button id="patient-health-tab-history" type="button" data-health-view-mode="history" role="tab" aria-selected="false" aria-controls="patient-health-panel-history" tabindex="-1">Historial cl&iacute;nico</button>
@@ -1522,13 +1514,13 @@
               <section class="patient-register-history-selector" aria-labelledby="patient-register-history-title">
                 <h3 class="patient-register-visually-hidden" id="patient-register-history-title">Historial Cl&iacute;nico</h3>
                 <div class="patient-register-history-carousel" data-register-history-carousel aria-label="Categor&iacute;as del historial cl&iacute;nico">
-                  <div class="patient-register-history-card" data-register-history-card="consultation"><button class="is-consultation" type="button" data-register-history-category="consultation" aria-pressed="false" aria-expanded="false" aria-controls="patient-register-history-composer"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/history-icons/consultation.png?v=20260827-history-icons" alt="" loading="lazy"></span><b>Consulta m&eacute;dica</b></button><button class="patient-register-history-favorite" type="button" data-register-history-favorite="consultation" aria-label="Agregar Consulta m&eacute;dica a favoritos" aria-pressed="false" title="Agregar a favoritos">&#9734;</button></div>
-                  <div class="patient-register-history-card" data-register-history-card="laboratory"><button class="is-laboratory" type="button" data-register-history-category="laboratory" aria-pressed="false" aria-expanded="false" aria-controls="patient-register-history-composer"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/history-icons/laboratory.png?v=20260827-history-icons" alt="" loading="lazy"></span><b>An&aacute;lisis de laboratorio</b></button><button class="patient-register-history-favorite" type="button" data-register-history-favorite="laboratory" aria-label="Agregar An&aacute;lisis de laboratorio a favoritos" aria-pressed="false" title="Agregar a favoritos">&#9734;</button></div>
-                  <div class="patient-register-history-card" data-register-history-card="study"><button class="is-study" type="button" data-register-history-category="study" aria-pressed="false" aria-expanded="false" aria-controls="patient-register-history-composer"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/history-icons/studies.png?v=20260827-history-icons" alt="" loading="lazy"></span><b>Estudios</b></button><button class="patient-register-history-favorite" type="button" data-register-history-favorite="study" aria-label="Agregar Estudios a favoritos" aria-pressed="false" title="Agregar a favoritos">&#9734;</button></div>
-                  <div class="patient-register-history-card" data-register-history-card="prescription"><button class="is-prescription" type="button" data-register-history-category="prescription" aria-pressed="false" aria-expanded="false" aria-controls="patient-register-history-composer"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/history-icons/prescriptions.png?v=20260827-history-icons" alt="" loading="lazy"></span><b>Recetas</b></button><button class="patient-register-history-favorite" type="button" data-register-history-favorite="prescription" aria-label="Agregar Recetas a favoritos" aria-pressed="false" title="Agregar a favoritos">&#9734;</button></div>
-                  <div class="patient-register-history-card" data-register-history-card="hospitalization"><button class="is-hospitalization" type="button" data-register-history-category="hospitalization" aria-pressed="false" aria-expanded="false" aria-controls="patient-register-history-composer"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/history-icons/hospitalization.png?v=20260827-history-icons" alt="" loading="lazy"></span><b>Hospitalizaci&oacute;n</b></button><button class="patient-register-history-favorite" type="button" data-register-history-favorite="hospitalization" aria-label="Agregar Hospitalizaci&oacute;n a favoritos" aria-pressed="false" title="Agregar a favoritos">&#9734;</button></div>
-                  <div class="patient-register-history-card" data-register-history-card="vaccine"><button class="is-vaccine" type="button" data-register-history-category="vaccine" aria-pressed="false" aria-expanded="false" aria-controls="patient-register-history-composer"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/history-icons/vaccines.png?v=20260827-history-icons" alt="" loading="lazy"></span><b>Vacunas</b></button><button class="patient-register-history-favorite" type="button" data-register-history-favorite="vaccine" aria-label="Agregar Vacunas a favoritos" aria-pressed="false" title="Agregar a favoritos">&#9734;</button></div>
-                  <div class="patient-register-history-card" data-register-history-card="manual"><button class="is-manual" type="button" data-register-history-category="manual" aria-pressed="false" aria-expanded="false" aria-controls="patient-register-history-composer"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/history-icons/manual-register.png?v=20260827-history-icons" alt="" loading="lazy"></span><b>Registro manual</b></button><button class="patient-register-history-favorite" type="button" data-register-history-favorite="manual" aria-label="Agregar Registro manual a favoritos" aria-pressed="false" title="Agregar a favoritos">&#9734;</button></div>
+                  <div class="patient-register-history-card" data-register-history-card="consultation"><button class="is-consultation" type="button" data-register-history-category="consultation" aria-pressed="false" aria-expanded="false" aria-controls="patient-register-history-composer"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/health-icons/history/01_consulta_medica.png?v=20261013" alt="" loading="lazy"></span><b>Consulta m&eacute;dica</b></button><button class="patient-register-history-favorite" type="button" data-register-history-favorite="consultation" aria-label="Agregar Consulta m&eacute;dica a favoritos" aria-pressed="false" title="Agregar a favoritos">&#9734;</button></div>
+                  <div class="patient-register-history-card" data-register-history-card="laboratory"><button class="is-laboratory" type="button" data-register-history-category="laboratory" aria-pressed="false" aria-expanded="false" aria-controls="patient-register-history-composer"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/health-icons/history/02_analisis_laboratorio.png?v=20261013" alt="" loading="lazy"></span><b>An&aacute;lisis de laboratorio</b></button><button class="patient-register-history-favorite" type="button" data-register-history-favorite="laboratory" aria-label="Agregar An&aacute;lisis de laboratorio a favoritos" aria-pressed="false" title="Agregar a favoritos">&#9734;</button></div>
+                  <div class="patient-register-history-card" data-register-history-card="study"><button class="is-study" type="button" data-register-history-category="study" aria-pressed="false" aria-expanded="false" aria-controls="patient-register-history-composer"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/health-icons/history/03_estudios.png?v=20261013" alt="" loading="lazy"></span><b>Estudios</b></button><button class="patient-register-history-favorite" type="button" data-register-history-favorite="study" aria-label="Agregar Estudios a favoritos" aria-pressed="false" title="Agregar a favoritos">&#9734;</button></div>
+                  <div class="patient-register-history-card" data-register-history-card="prescription"><button class="is-prescription" type="button" data-register-history-category="prescription" aria-pressed="false" aria-expanded="false" aria-controls="patient-register-history-composer"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/health-icons/history/04_recetas.png?v=20261013" alt="" loading="lazy"></span><b>Recetas</b></button><button class="patient-register-history-favorite" type="button" data-register-history-favorite="prescription" aria-label="Agregar Recetas a favoritos" aria-pressed="false" title="Agregar a favoritos">&#9734;</button></div>
+                  <div class="patient-register-history-card" data-register-history-card="hospitalization"><button class="is-hospitalization" type="button" data-register-history-category="hospitalization" aria-pressed="false" aria-expanded="false" aria-controls="patient-register-history-composer"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/health-icons/history/05_hospitalizacion.png?v=20261013" alt="" loading="lazy"></span><b>Hospitalizaci&oacute;n</b></button><button class="patient-register-history-favorite" type="button" data-register-history-favorite="hospitalization" aria-label="Agregar Hospitalizaci&oacute;n a favoritos" aria-pressed="false" title="Agregar a favoritos">&#9734;</button></div>
+                  <div class="patient-register-history-card" data-register-history-card="vaccine"><button class="is-vaccine" type="button" data-register-history-category="vaccine" aria-pressed="false" aria-expanded="false" aria-controls="patient-register-history-composer"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/health-icons/history/06_vacunas.png?v=20261013" alt="" loading="lazy"></span><b>Vacunas</b></button><button class="patient-register-history-favorite" type="button" data-register-history-favorite="vaccine" aria-label="Agregar Vacunas a favoritos" aria-pressed="false" title="Agregar a favoritos">&#9734;</button></div>
+                  <div class="patient-register-history-card" data-register-history-card="manual"><button class="is-manual" type="button" data-register-history-category="manual" aria-pressed="false" aria-expanded="false" aria-controls="patient-register-history-composer"><span class="patient-register-history-image" aria-hidden="true"><img src="/images/health-icons/history/07_registro_manual.png?v=20261013" alt="" loading="lazy"></span><b>Registro manual</b></button><button class="patient-register-history-favorite" type="button" data-register-history-favorite="manual" aria-label="Agregar Registro manual a favoritos" aria-pressed="false" title="Agregar a favoritos">&#9734;</button></div>
                 </div>
                 <p class="patient-register-history-empty" data-register-history-empty hidden>No hay categor&iacute;as favoritas.</p>
                 <section class="patient-register-history-composer" id="patient-register-history-composer" data-register-history-composer aria-live="polite" hidden>
@@ -1788,11 +1780,11 @@
       </section>
 
       <nav class="patient-portal-bottom-nav" aria-label="Navegación principal del paciente">
-        <button class="is-active" type="button" data-open-view="home"><span class="patient-bottom-icon">⌂</span>Inicio</button>
-        <button class="patient-bottom-communities" type="button" data-open-view="communities"><span class="patient-bottom-icon patient-support-icon patient-support-icon-people" aria-hidden="true"></span>Comunidades</button>
-        <button class="patient-bottom-register" type="button" data-open-view="register"><span>＋</span>Registro</button>
-        <button type="button" data-open-view="wellness"><span class="patient-bottom-icon">☆</span>Mi Salud</button>
-        <button type="button" data-open-view="calendar"><span class="patient-bottom-icon patient-support-icon patient-support-icon-calendar" aria-hidden="true"></span>Calendario</button>
+        <button class="is-active" type="button" data-open-view="home" aria-label="Inicio"><span class="patient-bottom-png" aria-hidden="true"><img src="{{ asset('images/patient-bottom-nav/01_Inicio.png') }}" alt=""></span></button>
+        <button class="patient-bottom-communities" type="button" data-open-view="communities" aria-label="Comunidades"><span class="patient-bottom-png" aria-hidden="true"><img src="{{ asset('images/patient-bottom-nav/02_Comunidades.png') }}" alt=""></span></button>
+        <button class="patient-bottom-register" type="button" data-open-view="register" aria-label="Registro"><span class="patient-bottom-png" aria-hidden="true"><img src="{{ asset('images/patient-bottom-nav/03_Registro.png') }}" alt=""></span></button>
+        <button type="button" data-open-view="wellness" aria-label="Mi Salud"><span class="patient-bottom-png" aria-hidden="true"><img src="{{ asset('images/patient-bottom-nav/04_Salud.png') }}" alt=""></span></button>
+        <button type="button" data-open-view="calendar" aria-label="Calendario"><span class="patient-bottom-png" aria-hidden="true"><img src="{{ asset('images/patient-bottom-nav/05_Calendario.png') }}" alt=""></span></button>
       </nav>
     </main>
   </div>
@@ -1812,7 +1804,7 @@
   data-profile-doctor="{{ e($patient->primaryDoctor?->full_name ?? 'Sin asignar') }}"
   data-profile-completed="{{ e($patient->profile_completed_at?->format('d/m/Y') ?? 'Pendiente') }}"
   data-logout-url="{{ route('logout') }}"
-  data-login-url="{{ route('login') }}"
+  data-home-url="{{ route('home') }}"
   data-csrf-token="{{ csrf_token() }}"
   aria-label="Perfil del paciente"
   aria-hidden="true"
@@ -1827,7 +1819,7 @@
       </header>
       <klini-profiles data-patient-profile-selector aria-label="Selector de perfiles"></klini-profiles>
     </section>
-
+    <section class="patient-social" data-patient-social data-storage-key="{{ 'drsam_patient_social_'.$patient->id }}" data-demo="{{ app()->isLocal() ? 'true' : 'false' }}" aria-label="Solicitudes de seguidores y actividad social"></section>
   </div>
 </aside>
 
@@ -1844,7 +1836,11 @@
 
 <script src="{{ asset('js/klini-profiles.js') }}?v={{ filemtime(public_path('js/klini-profiles.js')) }}"></script>
 <script src="{{ asset('js/patient-profile-panel.js') }}?v={{ filemtime(public_path('js/patient-profile-panel.js')) }}"></script>
+<script src="{{ asset('js/patient-social.js') }}?v={{ filemtime(public_path('js/patient-social.js')) }}"></script>
 <script src="{{ asset('js/communities.js') }}?v={{ filemtime(public_path('js/communities.js')) }}"></script>
+<script src="{{ asset('js/patient-stories.js') }}?v={{ filemtime(public_path('js/patient-stories.js')) }}"></script>
+<script src="{{ asset('js/insurance-enrollment.js') }}?v={{ filemtime(public_path('js/insurance-enrollment.js')) }}"></script>
+<script src="{{ asset('js/patient-insurance-drawer.js') }}?v={{ filemtime(public_path('js/patient-insurance-drawer.js')) }}"></script>
 <script>
 (() => {
   const portal = document.querySelector('[data-patient-portal]');
@@ -1947,9 +1943,15 @@
   const registerPatientName = () => getActivePatientProfile().name || primaryPatientProfile.name;
   applyActivePatientProfileShell();
   let homePostsApp = null;
+  const patientStoryOptions = {
+    url: @json(route('patient.stories.index')),
+    csrf: @json(csrf_token()),
+    demo: @json($storyDemo),
+  };
   const mountHomePosts = () => {
     const root = portal.querySelector('[data-patient-home-posts-root]');
-    if (!root || homePostsApp || !window.KliniCommunities) return;
+    if (!root || !window.KliniCommunities) return;
+    if (homePostsApp) { homePostsApp.load(); homePostsApp.render(); return; }
     const activeProfile = getActivePatientProfile();
     homePostsApp = window.KliniCommunities.mount(root, {
       patient: {
@@ -1960,6 +1962,7 @@
       storageKey: activeCommunitiesStorageKey(),
       profileStorageKey: profilePanelStorageKey,
       startView: 'posts',
+      stories: patientStoryOptions,
       hideBottomNav: true,
       onAction: event => window.dispatchEvent(new CustomEvent('drsam:communities-action', { detail: event })),
     });
@@ -1971,7 +1974,8 @@
   let calendarSection = 'medical';
   const mountCommunities = () => {
     const root = communitiesRoot;
-    if (!root || communitiesApp || !window.KliniCommunities) return;
+    if (!root || !window.KliniCommunities) return;
+    if (communitiesApp) { communitiesApp.load(); communitiesApp.render(); return; }
     const activeProfile = getActivePatientProfile();
     communitiesApp = window.KliniCommunities.mount(root, {
       patient: {
@@ -2028,14 +2032,38 @@
       next.focus();
     });
   });
+  const insuranceDrawer = window.KliniInsuranceDrawer?.mount(portal);
   const openView = (name) => {
+    if (name === 'insurance' && insuranceDrawer) {
+      mountHomePosts();
+      insuranceDrawer.open();
+      return;
+    }
+    portal.querySelectorAll('[data-social-transition-overlay]').forEach(el => el.remove());
+    const previousSocialView = portal.querySelector('[data-patient-view].is-active')?.dataset.patientView;
+    const previousTrack = portal.querySelector('[data-patient-view].is-active [data-carousel="stories"]');
+    const storyScrollLeft = previousTrack?.scrollLeft || 0;
+    const outgoingFeed = portal.querySelector('[data-patient-view].is-active .kc-post-list, [data-patient-view].is-active .kc-community-feed-list');
+    const outgoingRect = outgoingFeed?.getBoundingClientRect();
+    const outgoingCopy = outgoingFeed?.cloneNode(true);
+    const socialSwitch = ['home', 'communities'].includes(name) && ['home', 'communities'].includes(previousSocialView) && name !== previousSocialView;
+    insuranceDrawer?.close();
     portal.querySelectorAll('[data-patient-view]').forEach(el => el.classList.toggle('is-active', el.dataset.patientView === name));
     portal.querySelectorAll('[data-open-view]').forEach(el => el.classList.toggle('is-active', el.dataset.openView === name));
     sessionStorage.setItem('patientPortalView', name);
-    if (name === 'home') mountHomePosts();
+    if (name === 'home') {
+      if (homePostsApp?.stories) homePostsApp.stories.app = homePostsApp;
+      mountHomePosts();
+    }
     if (name === 'communities') {
       if (communitiesRoot && communitiesHome) communitiesHome.append(communitiesRoot);
+      if (!homePostsApp) mountHomePosts();
       mountCommunities();
+      if (homePostsApp?.stories && communitiesApp) {
+        communitiesApp.stories = homePostsApp.stories;
+        communitiesApp.stories.app = communitiesApp;
+        communitiesApp.render();
+      }
     }
     if (name === 'calendar') selectCalendarSection(calendarSection);
     if (name === 'wellness') renderHealthDashboard();
@@ -2047,8 +2075,40 @@
       hideRegisterMetricPanel({ sync: false });
       selectRegisterMetric(registerMetricInput?.value || 'water');
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (socialSwitch) {
+      const activeView = portal.querySelector('[data-patient-view="' + name + '"]');
+      const track = activeView?.querySelector('[data-carousel="stories"]');
+      if (track) track.scrollLeft = storyScrollLeft;
+      const feed = activeView?.querySelector('.kc-post-list, .kc-community-feed-list');
+      feed?.getAnimations?.().forEach(animation => animation.cancel());
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        const timing = {duration:1100,easing:'cubic-bezier(.22,.61,.36,1)'};
+        feed?.animate([{opacity:0},{opacity:1}], timing);
+        activeView?.querySelector('.kc-community-workspace-heading')?.animate([{opacity:0},{opacity:1}], timing);
+        if (outgoingCopy && outgoingRect && window.scrollY < 1) {
+          outgoingCopy.dataset.socialTransitionOverlay = 'true';
+          outgoingCopy.setAttribute('aria-hidden','true'); outgoingCopy.inert = true;
+          outgoingCopy.querySelectorAll('[id]').forEach(el => el.removeAttribute('id'));
+          Object.assign(outgoingCopy.style,{position:'fixed',top:outgoingRect.top+'px',left:outgoingRect.left+'px',width:outgoingRect.width+'px',pointerEvents:'none',zIndex:'2',background:'#fff'});
+          const overlayHost = document.createElement('div');
+          overlayHost.className = 'patient-portal-' + previousSocialView + '-view';
+          overlayHost.dataset.socialTransitionOverlay = 'true'; overlayHost.setAttribute('aria-hidden','true'); overlayHost.inert = true;
+          overlayHost.appendChild(outgoingCopy); portal.appendChild(overlayHost);
+          outgoingCopy.animate([{opacity:1},{opacity:0}], timing).finished.catch(() => {}).finally(() => overlayHost.remove());
+        }
+      }
+    }
+    window.scrollTo({ top: 0, behavior: socialSwitch ? 'instant' : 'smooth' });
   };
+
+  window.addEventListener('drsam:social-open', event => {
+    const item = event.detail || {};
+    const view = item.source === 'communities' ? 'communities' : 'home';
+    window.DrSamPatientProfilePanel?.close();
+    openView(view);
+    const app = view === 'communities' ? communitiesApp : homePostsApp;
+    app?.openSocialPost(item.postId, item.communityId, item.type === 'message');
+  });
 
   const policySavedOverlay = document.querySelector('[data-policy-saved-overlay]');
   if (policySavedOverlay) {
@@ -2164,40 +2224,40 @@
   const registerImageFileName = portal.querySelector('[data-register-image-file-name]');
   const registerSavedScreens = [...portal.querySelectorAll('[data-register-saved-screen]')];
   const historyScopes = [...portal.querySelectorAll('[data-clinical-history]')];
-  const registerIconVersion = '20260827-iconless';
+  const registerIconVersion = '20261013-health-icons';
   const registerMetricImageSrc = src => src
     ? `${src}${src.includes('?') ? '&' : '?'}v=${registerIconVersion}`
     : '';
   const registerMetricConfig = {
-    water: { label: 'Agua', image: '/images/register-icons/water.png', icon: '&#9676;', unit: 'L', inputType: 'number', step: '0.1', placeholder: 'Meta sugerida: 2.5 L' },
-    steps: { label: 'Pasos', image: '/images/register-icons/steps.png', icon: '&#8961;', unit: 'pasos', inputType: 'number', step: '1', placeholder: 'Ej. 8000' },
-    sleep: { label: 'Sueño', image: '/images/register-icons/sleep.png', icon: '&#9684;', unit: 'h', inputType: 'number', step: '0.1', placeholder: 'Ej. 7.5' },
-    rest: { label: 'Descanso', image: '/images/register-icons/rest.png', icon: '&#9684;', unit: 'h', inputType: 'number', step: '0.1', placeholder: 'Ej. 8' },
-    weight: { label: 'Peso', icon: '&#9635;', unit: 'kg', inputType: 'number', step: '0.1', placeholder: 'Ej. 72.4' },
-    pressure: { label: 'Presión', image: '/images/register-icons/pressure.png', icon: '&#9825;', unit: 'mmHg', inputType: 'text', step: '', placeholder: 'Ej. 120/80' },
-    glucose: { label: 'Glucosa', image: '/images/register-icons/glucose.png', icon: '&#9826;', unit: 'mg/dL', inputType: 'number', step: '0.1', placeholder: 'Ej. 92' },
-    ph: { label: 'PH', image: '/images/register-icons/ph.png', icon: '&#9676;', unit: 'pH', inputType: 'number', step: '0.1', placeholder: 'Ej. 7.4' },
-    medication: { label: 'Medicamentos', image: '/images/register-icons/medication.png', icon: '&#9877;', unit: '', inputType: 'text', step: '', placeholder: 'Ej. Metformina 500 mg' },
-    nutrition: { label: 'Alimentos', image: '/images/register-icons/foods.png', icon: '&#9671;', unit: '', inputType: 'text', step: '', placeholder: 'Ej. Desayuno alto en proteína' },
-    calories: { label: 'Calorías', image: '/images/register-icons/calories.png', icon: '&#9672;', unit: 'kcal', inputType: 'number', step: '1', placeholder: 'Ej. 1850' },
-    activity: { label: 'Ejercicio', image: '/images/register-icons/activity.png', icon: '&#10022;', unit: 'min', inputType: 'number', step: '1', placeholder: 'Ej. 45' },
-    meditation: { label: 'Meditación', image: '/images/register-icons/meditation.png', icon: '&#10003;', unit: 'min', inputType: 'number', step: '1', placeholder: 'Ej. 15' },
-    menstrualCycle: { label: 'Ciclo menstrual', image: '/images/register-icons/menstrual-cycle.png', icon: '&#9792;', unit: '', inputType: 'text', step: '', placeholder: 'Ej. Día 12 / fase folicular' },
-    fertility: { label: 'Fertilidad', image: '/images/register-icons/fertility.png', icon: '&#9825;', unit: '', inputType: 'text', step: '', placeholder: 'Ej. Ventana fértil / prueba negativa' },
-    laboratory: { label: 'Análisis de laboratorio', image: '/images/register-icons/laboratory.png', icon: '&#9879;', unit: '', inputType: 'text', step: '', placeholder: 'Ej. Biometría hemática' },
-    studies: { label: 'Estudios', image: '/images/register-icons/studies.png', icon: '&#9635;', unit: '', inputType: 'text', step: '', placeholder: 'Ej. Ultrasonido abdominal' },
-    prescriptions: { label: 'Recetas', image: '/images/register-icons/prescriptions.png', icon: '&#9877;', unit: '', inputType: 'text', step: '', placeholder: 'Ej. Receta de control' },
-    hospitalization: { label: 'Hospitalización', image: '/images/register-icons/hospitalization.png', icon: '&#9873;', unit: '', inputType: 'text', step: '', placeholder: 'Ej. Ingreso / egreso hospitalario' },
-    vaccines: { label: 'Vacunas', image: '/images/register-icons/vaccines.png', icon: '&#10003;', unit: '', inputType: 'text', step: '', placeholder: 'Ej. Influenza 2026' },
-    manualRegister: { label: 'Registro manual', image: '/images/register-icons/manual-register.png', icon: '+', unit: '', inputType: 'text', step: '', placeholder: 'Ingresa el valor o detalle' },
-    mood: { label: 'Ánimo', image: '/images/register-icons/mood.png', icon: '&#9786;', unit: '/5', inputType: 'number', step: '1', placeholder: 'Ej. 4' },
-    temperature: { label: 'Temperatura', image: '/images/register-icons/vitals.png', icon: '&#8451;', unit: 'C', inputType: 'number', step: '0.1', placeholder: 'Ej. 36.7' },
-    oxygen: { label: 'Oxígeno', image: '/images/register-icons/vitals.png', icon: '&#9711;', unit: '%', inputType: 'number', step: '1', placeholder: 'Ej. 98' },
-    heartRate: { label: 'Frecuencia', image: '/images/register-icons/vitals.png', icon: '&#9825;', unit: 'lpm', inputType: 'number', step: '1', placeholder: 'Ej. 72' },
-    pain: { label: 'Dolor', image: '/images/register-icons/vitals.png', icon: '&#9675;', unit: '/10', inputType: 'number', step: '1', placeholder: 'Ej. 3' },
-    symptoms: { label: 'Síntomas', image: '/images/register-icons/vitals.png', icon: '&#8942;', unit: '', inputType: 'text', step: '', placeholder: 'Ej. Dolor de cabeza leve' },
-    note: { label: 'Nota personal', icon: '+', unit: '', inputType: 'text', step: '', placeholder: 'Ej. Me sentí con más energía' },
-    custom: { label: 'Personalizado', icon: '+', unit: '', inputType: 'text', step: '', placeholder: 'Ingresa el valor' },
+    water: { label: 'Agua', image: '/images/health-icons/parameters/01_agua.png', icon: '&#9676;', unit: 'L', inputType: 'number', step: '0.1', placeholder: 'Meta sugerida: 2.5 L' },
+    steps: { label: 'Pasos', image: '/images/health-icons/parameters/02_pasos.png', icon: '&#8961;', unit: 'pasos', inputType: 'number', step: '1', placeholder: 'Ej. 8000' },
+    sleep: { label: 'Sueño', image: '/images/health-icons/parameters/03_sueno.png', icon: '&#9684;', unit: 'h', inputType: 'number', step: '0.1', placeholder: 'Ej. 7.5' },
+    rest: { label: 'Descanso', image: '/images/health-icons/parameters/04_descanso.png', icon: '&#9684;', unit: 'h', inputType: 'number', step: '0.1', placeholder: 'Ej. 8' },
+    weight: { label: 'Peso', image: '/images/health-icons/parameters/05_peso.png', icon: '&#9635;', unit: 'kg', inputType: 'number', step: '0.1', placeholder: 'Ej. 72.4' },
+    pressure: { label: 'Presión', image: '/images/health-icons/parameters/06_presion.png', icon: '&#9825;', unit: 'mmHg', inputType: 'text', step: '', placeholder: 'Ej. 120/80' },
+    glucose: { label: 'Glucosa', image: '/images/health-icons/parameters/07_glucosa.png', icon: '&#9826;', unit: 'mg/dL', inputType: 'number', step: '0.1', placeholder: 'Ej. 92' },
+    ph: { label: 'PH', image: '/images/health-icons/parameters/08_ph.png', icon: '&#9676;', unit: 'pH', inputType: 'number', step: '0.1', placeholder: 'Ej. 7.4' },
+    medication: { label: 'Medicamentos', image: '/images/health-icons/parameters/09_medicamentos.png', icon: '&#9877;', unit: '', inputType: 'text', step: '', placeholder: 'Ej. Metformina 500 mg' },
+    nutrition: { label: 'Alimentos', image: '/images/health-icons/parameters/10_alimentos.png', icon: '&#9671;', unit: '', inputType: 'text', step: '', placeholder: 'Ej. Desayuno alto en proteína' },
+    calories: { label: 'Calorías', image: '/images/health-icons/parameters/11_calorias.png', icon: '&#9672;', unit: 'kcal', inputType: 'number', step: '1', placeholder: 'Ej. 1850' },
+    activity: { label: 'Ejercicio', image: '/images/health-icons/parameters/12_ejercicio.png', icon: '&#10022;', unit: 'min', inputType: 'number', step: '1', placeholder: 'Ej. 45' },
+    meditation: { label: 'Meditación', image: '/images/health-icons/parameters/13_meditacion.png', icon: '&#10003;', unit: 'min', inputType: 'number', step: '1', placeholder: 'Ej. 15' },
+    menstrualCycle: { label: 'Ciclo menstrual', image: '/images/health-icons/parameters/14_ciclo_menstrual.png', icon: '&#9792;', unit: '', inputType: 'text', step: '', placeholder: 'Ej. Día 12 / fase folicular' },
+    fertility: { label: 'Fertilidad', image: '/images/health-icons/parameters/15_fertilidad.png', icon: '&#9825;', unit: '', inputType: 'text', step: '', placeholder: 'Ej. Ventana fértil / prueba negativa' },
+    laboratory: { label: 'Análisis de laboratorio', image: '/images/health-icons/parameters/16_analisis_laboratorio.png', icon: '&#9879;', unit: '', inputType: 'text', step: '', placeholder: 'Ej. Biometría hemática' },
+    studies: { label: 'Estudios', image: '/images/health-icons/parameters/17_estudios.png', icon: '&#9635;', unit: '', inputType: 'text', step: '', placeholder: 'Ej. Ultrasonido abdominal' },
+    prescriptions: { label: 'Recetas', image: '/images/health-icons/parameters/18_recetas.png', icon: '&#9877;', unit: '', inputType: 'text', step: '', placeholder: 'Ej. Receta de control' },
+    hospitalization: { label: 'Hospitalización', image: '/images/health-icons/parameters/19_hospitalizacion.png', icon: '&#9873;', unit: '', inputType: 'text', step: '', placeholder: 'Ej. Ingreso / egreso hospitalario' },
+    vaccines: { label: 'Vacunas', image: '/images/health-icons/parameters/20_vacunas.png', icon: '&#10003;', unit: '', inputType: 'text', step: '', placeholder: 'Ej. Influenza 2026' },
+    manualRegister: { label: 'Registro manual', image: '/images/health-icons/parameters/21_registro_manual.png', icon: '+', unit: '', inputType: 'text', step: '', placeholder: 'Ingresa el valor o detalle' },
+    mood: { label: 'Ánimo', image: '/images/health-icons/parameters/22_animo.png', icon: '&#9786;', unit: '/5', inputType: 'number', step: '1', placeholder: 'Ej. 4' },
+    temperature: { label: 'Temperatura', image: '/images/health-icons/parameters/23_temperatura.png', icon: '&#8451;', unit: 'C', inputType: 'number', step: '0.1', placeholder: 'Ej. 36.7' },
+    oxygen: { label: 'Oxígeno', image: '/images/health-icons/parameters/24_oxigeno.png', icon: '&#9711;', unit: '%', inputType: 'number', step: '1', placeholder: 'Ej. 98' },
+    heartRate: { label: 'Frecuencia', image: '/images/health-icons/parameters/25_frecuencia.png', icon: '&#9825;', unit: 'lpm', inputType: 'number', step: '1', placeholder: 'Ej. 72' },
+    pain: { label: 'Dolor', image: '/images/health-icons/parameters/26_dolor.png', icon: '&#9675;', unit: '/10', inputType: 'number', step: '1', placeholder: 'Ej. 3' },
+    symptoms: { label: 'Síntomas', image: '/images/health-icons/parameters/27_sintomas.png', icon: '&#8942;', unit: '', inputType: 'text', step: '', placeholder: 'Ej. Dolor de cabeza leve' },
+    note: { label: 'Nota personal', image: '/images/health-icons/parameters/28_nota_personal.png', icon: '+', unit: '', inputType: 'text', step: '', placeholder: 'Ej. Me sentí con más energía' },
+    custom: { label: 'Personalizado', image: '/images/health-icons/parameters/29_personalizado.png', icon: '+', unit: '', inputType: 'text', step: '', placeholder: 'Ingresa el valor' },
   };
   const registerMetricViewConfig = {
     water: { valueLabel: 'Litros de agua' },
@@ -5614,118 +5674,43 @@
   });
   const calendarItems = [...portal.querySelectorAll('[data-calendar-item]')];
   const calendarFilters = [...portal.querySelectorAll('[data-calendar-filter]')];
-  const calendarFilterCarousel = portal.querySelector('[data-calendar-filter-carousel]');
-  const calendarMonths = @json($calendarMonths ?? collect());
-  let calendarFilter = 'all';
-  let calendarMonthIndex = 0;
-  let calendarMonthEnabled = false;
-  let calendarFilterPanMoved = false;
-  const calendarMonthFormatter = new Intl.DateTimeFormat('es-MX', { month: 'long' });
-  const titleCaseCalendarText = value => {
-    const text = String(value || '');
-    return text ? text.charAt(0).toUpperCase() + text.slice(1) : '';
-  };
-  const calendarMonthDate = () => {
-    const key = calendarMonths[calendarMonthIndex]?.key;
-    if (/^\d{4}-\d{2}$/.test(key || '')) {
-      const [year, month] = key.split('-').map(Number);
-      return new Date(year, month - 1, 1);
-    }
-    return new Date();
-  };
-  const shiftCalendarMonth = (date, amount) => new Date(date.getFullYear(), date.getMonth() + amount, 1);
-  const updateCalendarPicker = () => {
-    const date = calendarMonthDate();
-    const previousMonth = portal.querySelector('[data-calendar-prev-month]');
-    const currentMonth = portal.querySelector('[data-calendar-month-label]');
-    const nextMonth = portal.querySelector('[data-calendar-next-month]');
-    const previousYear = portal.querySelector('[data-calendar-prev-year]');
-    const currentYear = portal.querySelector('[data-calendar-year-label]');
-    const nextYear = portal.querySelector('[data-calendar-next-year]');
-    if (previousMonth) previousMonth.textContent = titleCaseCalendarText(calendarMonthFormatter.format(shiftCalendarMonth(date, -1)));
-    if (currentMonth) currentMonth.textContent = titleCaseCalendarText(calendarMonthFormatter.format(date));
-    if (nextMonth) nextMonth.textContent = titleCaseCalendarText(calendarMonthFormatter.format(shiftCalendarMonth(date, 1)));
-    if (previousYear) previousYear.textContent = String(date.getFullYear() - 1);
-    if (currentYear) currentYear.textContent = String(date.getFullYear());
-    if (nextYear) nextYear.textContent = String(date.getFullYear() + 1);
-  };
+  let calendarFilter = 'upcoming';
   const renderCalendar = () => {
     let visible = 0;
     calendarItems.forEach(item => {
-      const matchesType = calendarFilter === 'all'
-        || (calendarFilter === 'upcoming' && item.dataset.calendarUpcoming === '1')
-        || item.dataset.calendarType === calendarFilter;
-      const matchesMonth = !calendarMonthEnabled || !calendarMonths.length || item.dataset.calendarMonth === calendarMonths[calendarMonthIndex]?.key;
-      item.hidden = !(matchesType && matchesMonth);
+      item.hidden = (item.dataset.calendarUpcoming === '1') !== (calendarFilter === 'upcoming');
       if (!item.hidden) visible++;
     });
-    updateCalendarPicker();
+    const panel = portal.querySelector('#patient-calendar-appointments');
+    panel?.setAttribute('aria-labelledby', 'patient-calendar-' + calendarFilter + '-tab');
     const empty = portal.querySelector('[data-calendar-filter-empty]');
     if (empty) empty.hidden = visible > 0 || calendarItems.length === 0;
+    const emptyLabel = portal.querySelector('[data-calendar-empty-label]');
+    if (emptyLabel) emptyLabel.textContent = calendarFilter === 'upcoming' ? 'No tienes próximas citas.' : 'No tienes citas anteriores.';
   };
-  if (calendarFilterCarousel) {
-    let isCalendarFilterPanning = false;
-    let calendarFilterPanStart = 0;
-    let calendarFilterPanScroll = 0;
-
-    calendarFilterCarousel.addEventListener('pointerdown', event => {
-      if (event.button !== undefined && event.button !== 0) return;
-      calendarFilterPanMoved = false;
-      if (calendarFilterCarousel.scrollWidth <= calendarFilterCarousel.clientWidth) return;
-      isCalendarFilterPanning = true;
-      calendarFilterPanStart = event.clientX;
-      calendarFilterPanScroll = calendarFilterCarousel.scrollLeft;
-      calendarFilterPanMoved = false;
-      calendarFilterCarousel.setPointerCapture?.(event.pointerId);
-    });
-
-    calendarFilterCarousel.addEventListener('pointermove', event => {
-      if (!isCalendarFilterPanning) return;
-      const movement = event.clientX - calendarFilterPanStart;
-      calendarFilterCarousel.scrollLeft = calendarFilterPanScroll - movement;
-      if (Math.abs(movement) > 8) {
-        calendarFilterPanMoved = true;
-        calendarFilterCarousel.classList.add('is-panning');
-        event.preventDefault();
-      }
-    });
-
-    ['pointerup', 'pointercancel', 'pointerleave'].forEach(type => {
-      calendarFilterCarousel.addEventListener(type, event => {
-        isCalendarFilterPanning = false;
-        calendarFilterCarousel.classList.remove('is-panning');
-        if (calendarFilterCarousel.hasPointerCapture?.(event.pointerId)) {
-          calendarFilterCarousel.releasePointerCapture(event.pointerId);
-        }
-        if (type === 'pointerup' && calendarFilterPanMoved) {
-          window.setTimeout(() => {
-            calendarFilterPanMoved = false;
-          }, 180);
-        } else if (type !== 'pointerup') {
-          calendarFilterPanMoved = false;
-        }
+  calendarFilters.forEach((button, index) => {
+    button.addEventListener('click', () => {
+      calendarFilter = button.dataset.calendarFilter;
+      calendarFilters.forEach(item => {
+        const selected = item === button;
+        item.setAttribute('aria-selected', String(selected));
+        item.tabIndex = selected ? 0 : -1;
       });
+      renderCalendar();
     });
-  }
-  calendarFilters.forEach(button => button.addEventListener('click', event => {
-    if (calendarFilterPanMoved) {
+    button.addEventListener('keydown', event => {
+      let next;
+      if (event.key === 'ArrowRight') next = (index + 1) % calendarFilters.length;
+      if (event.key === 'ArrowLeft') next = (index - 1 + calendarFilters.length) % calendarFilters.length;
+      if (event.key === 'Home') next = 0;
+      if (event.key === 'End') next = calendarFilters.length - 1;
+      if (next === undefined) return;
       event.preventDefault();
-      return;
-    }
-    calendarFilter = button.dataset.calendarFilter;
-    calendarFilters.forEach(item => {
-      const isSelected = item === button;
-      item.classList.toggle('is-active', isSelected);
-      item.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
+      calendarFilters[next].click();
+      calendarFilters[next].focus();
     });
-    renderCalendar();
-  }));
-  portal.querySelectorAll('[data-calendar-month-step]').forEach(button => button.addEventListener('click', () => {
-    if (!calendarMonths.length) return;
-    calendarMonthEnabled = true;
-    calendarMonthIndex = (calendarMonthIndex + Number(button.dataset.calendarMonthStep) + calendarMonths.length) % calendarMonths.length;
-    renderCalendar();
-  }));
+  });
+  renderCalendar();
   portal.querySelectorAll('[data-calendar-detail-open]').forEach(button => button.addEventListener('click', () => {
     document.getElementById(button.dataset.calendarDetailOpen)?.showModal();
   }));

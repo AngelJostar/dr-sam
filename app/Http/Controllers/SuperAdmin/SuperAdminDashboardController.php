@@ -39,7 +39,7 @@ class SuperAdminDashboardController extends Controller
         $totalModules = PlatformModule::query()->count();
 
         return view('superadmin.dashboard', [
-            'modules' => PlatformModule::query()->orderBy('label')->get(),
+            'modules' => PlatformModule::query()->orderBy('label')->paginate(9)->withQueryString(),
             'users' => User::query()->latest()->limit(20)->get(),
             'auditLogs' => AuditLog::query()->with('user')->latest()->limit(12)->get(),
             'roleLabels' => collect(UserRole::cases())->mapWithKeys(fn (UserRole $role) => [$role->value => $role->label()]),
@@ -49,11 +49,11 @@ class SuperAdminDashboardController extends Controller
                 'Modulos activos' => $activeModules,
                 'Unidades' => MedicalUnit::query()->count(),
                 'Medicos' => Doctor::query()->count(),
-                'Usuarios plataforma' => User::query()->whereIn('role', ['doctor', 'patient'])->count(),
+                'Usuarios plataforma' => User::query()->where('account_category', User::CATEGORY_KLINI)->count(),
                 'Vendedores' => Provider::query()->count(),
                 'Hosp. privados' => Hospital::query()->count(),
                 'Pacientes' => Patient::query()->count(),
-                'Usuarios de acceso' => count(config('drsam.demo_users', [])),
+                'Usuarios de acceso' => User::query()->where('account_category', User::CATEGORY_OPERATIONAL)->count(),
                 'Servicios' => Service::query()->count(),
                 'Medicamentos' => Medication::query()->count() + MedicationCatalogItem::query()->count() + PharmacyProduct::query()->count(),
             ],
@@ -62,6 +62,9 @@ class SuperAdminDashboardController extends Controller
 
     public function catalog(Request $request, string $section): View
     {
+        if ($section === 'insurance-carriers' && in_array($request->input('view'), ['gmm', 'life'], true)) {
+            return app(InsurancePlanController::class)->index($request);
+        }
         $catalog = $this->catalogDefinition($section);
         abort_if(! $catalog, 404);
 
@@ -103,12 +106,16 @@ class SuperAdminDashboardController extends Controller
                 'q' => $request->string('q')->toString(),
                 'status' => $request->string('status')->toString(),
                 'module' => $request->string('module')->toString(),
+                'category' => $request->string('category')->toString(),
             ],
         ]);
     }
 
     public function exportCatalog(Request $request, string $section): StreamedResponse
     {
+        if ($section === 'insurance-carriers' && in_array($request->input('view'), ['gmm', 'life'], true)) {
+            return app(InsurancePlanController::class)->export($request);
+        }
         $catalog = $this->catalogDefinition($section);
         abort_if(! $catalog, 404);
 
@@ -532,12 +539,14 @@ class SuperAdminDashboardController extends Controller
 
     public function storeProvider(Request $request): RedirectResponse
     {
-        $data = $request->validate([
+        $isImportUser = $request->boolean('import_user_form');
+        $data = $request->validateWithBag($isImportUser ? 'importUser' : 'default', [
             'name' => ['required', 'string', 'max:180'],
-            'username' => ['nullable', 'string', 'max:80', 'unique:users,username'],
-            'email' => ['nullable', 'email', 'max:180', 'unique:users,email'],
-            'password' => ['nullable', 'string', 'min:6', 'max:80'],
+            'username' => [$isImportUser ? 'required' : 'nullable', 'string', 'max:80', 'unique:users,username'],
+            'email' => [$isImportUser ? 'required' : 'nullable', 'email', 'max:180', 'unique:users,email'],
+            'password' => [$isImportUser ? 'required' : 'nullable', 'string', 'min:6', 'max:80'],
             'provider_type' => ['required', Rule::in(['npt', 'chemotherapy', 'import', 'vendor'])],
+            'import_area' => [$isImportUser ? 'required' : 'nullable', Rule::in(array_keys(\App\Services\Platform\ImportUserDirectory::AREAS))],
             'status' => ['required', Rule::in(['active', 'inactive'])],
             'last_name' => ['nullable', 'string', 'max:180'],
             'phone' => ['nullable', 'string', 'max:50'],
@@ -565,7 +574,8 @@ class SuperAdminDashboardController extends Controller
             'module' => $module,
             'status' => $data['status'],
             'email_verified_at' => now(),
-            'metadata' => ['created_from' => 'superadmin_provider_catalog', 'phone' => $data['phone'] ?? null],
+            'metadata' => ['created_from' => 'superadmin_provider_catalog', 'phone' => $data['phone'] ?? null,
+                'import_area' => $data['provider_type'] === 'import' ? ($data['import_area'] ?? 'providers') : null],
         ]);
 
         $provider = Provider::query()->create([
@@ -585,7 +595,7 @@ class SuperAdminDashboardController extends Controller
 
         $this->writeAudit($request, 'superadmin.provider.created', Provider::class, $provider->id, ['name' => $provider->name]);
 
-        return back()->with('status', "Proveedor {$provider->name} creado.");
+        return back()->with('status', $isImportUser ? "Usuario {$user->name} creado." : "Proveedor {$provider->name} creado.");
     }
 
     public function updateProvider(Request $request, Provider $provider): RedirectResponse
@@ -940,17 +950,22 @@ class SuperAdminDashboardController extends Controller
                 'eyebrow' => 'Modulo superadministrador',
                 'description' => User::query()->count().' usuarios visibles en la plataforma',
                 'search_placeholder' => 'Buscar usuario, correo, tipo, cedula o CURP',
-                'columns' => ['No.', 'No. usuario de la plataforma', 'Tipo de usuario', 'Nombre', 'Correo electronico', 'Usuario', 'Validacion correo', 'Fecha validacion', 'Telefono', 'CURP', 'Cedula profesional', 'Especialidad', 'Estatus', 'Fuente / perfil', 'Acciones'],
+                'columns' => ['No.', 'Usuario Klini', 'No. usuario operativo', 'Usuario del sistema', 'Contraseña', 'Categoría', 'Tipo de usuario', 'Nombre', 'Correo electronico', 'Validacion correo', 'Fecha validacion', 'Telefono', 'CURP', 'Cedula profesional', 'Especialidad', 'Estatus', 'Fuente / perfil', 'Acciones'],
                 'query' => fn () => User::query()->with(['patient', 'doctor'])->latest(),
-                'search' => ['name', 'username', 'email', 'role', 'module'],
+                'search' => ['name', 'username', 'email', 'role', 'module', 'klini_member_id'],
                 'status_filter' => true,
+                'category_filter' => true,
+                'operational_number_search' => true,
                 'map' => fn (User $record) => [
                     $record->id,
-                    $record->patient?->platform_number ?? $record->doctor?->external_id ?? (string) (100000000 + $record->id),
+                    $record->klini_member_id ?? '—',
+                    $record->operational_user_number ?? '—',
+                    $record->username ?? $record->email ?? 'Sin usuario',
+                    filled($record->password) ? 'Protegida' : 'Sin contraseña',
+                    $record->account_category === User::CATEGORY_KLINI ? 'Klini' : 'Operativo',
                     UserRole::tryFrom($record->role)?->label() ?? ucfirst($record->role),
                     $record->name,
                     $record->email ?? 'Sin correo',
-                    $record->username,
                     $record->email_verified_at ? 'Validado' : 'Pendiente',
                     $record->email_verified_at?->format('d/m/Y') ?? 'Sin validar',
                     $record->patient?->phone ?? data_get($record->metadata, 'phone', 'Sin telefono'),
@@ -963,17 +978,18 @@ class SuperAdminDashboardController extends Controller
                 ],
             ],
             'institutions' => [
-                'title' => 'Catalogo de instituciones',
+                'title' => 'Catálogo de instituciones',
                 'eyebrow' => 'Modulo superadministrador',
                 'description' => 'Las instituciones pueden ser publicas o privadas. Cada institucion tiene a su cargo unidades que llevan la gestion administrativa.',
                 'search_placeholder' => 'Buscar institucion, usuario o alcance',
-                'columns' => ['Institucion', 'Tipo', 'Estatus', 'Unidades', 'Servicios', 'Usuarios', 'Modulos', 'Acciones'],
+                'columns' => ['Institución', 'Tipo', 'Estatus', 'Unidades', 'Servicios', 'Usuarios', 'Módulos', 'Hospitales', 'Bloquear', 'Reporte', 'Editar', 'Eliminar'],
                 'query' => fn () => Institution::query()->with('owner')->withCount(['medicalUnits', 'services'])->latest(),
                 'search' => ['name', 'legal_name', 'type', 'external_id'],
                 'status_filter' => true,
-                'primary_action' => ['label' => 'Alta de institucion', 'route' => 'institution.dashboard'],
+                'primary_action' => ['label' => 'Alta de institución', 'route' => 'institution.dashboard'],
                 'open_route' => 'institution.dashboard',
-                'map' => fn (Institution $record) => [$record->name, ucfirst($record->type ?? 'Publica'), $record->status, $record->medical_units_count ?? 0, $record->services_count ?? 0, $record->owner ? 1 : 0, PlatformModule::query()->where('enabled', true)->count().' activos', 'Ver / Editar'],
+                'module_count' => $activeModuleCount,
+                'map' => fn (Institution $record) => [$record->name, ['publica' => 'Pública', 'privada' => 'Privada', 'institution' => 'Institución', 'institucion' => 'Institución'][$record->type] ?? ucfirst($record->type ?? 'Pública'), $record->status, $record->medical_units_count ?? 0, $record->services_count ?? 0, $record->owner ? 1 : 0, $activeModuleCount.' activos', $record->medical_units_count ?? 0, $record->status === 'active' ? 'Bloquear' : 'Desbloquear', 'Reporte', 'Editar', 'Eliminar'],
             ],
             'doctors' => [
                 'title' => 'Catalogo de medicos',
@@ -1000,23 +1016,29 @@ class SuperAdminDashboardController extends Controller
                 'map' => fn (Provider $record) => [$record->name, data_get($record->metadata, 'related_doctors', 0), data_get($record->metadata, 'first_name', $record->name), data_get($record->metadata, 'last_name', ''), data_get($record->metadata, 'professional_license', 'Sin cedula'), data_get($record->metadata, 'specialty', 'Sin especialidad'), data_get($record->metadata, 'institution', 'Particular'), $record->user_id ? 100000000 + $record->user_id : 'Sin usuario', $record->status, 'Editar'],
             ],
             'insurance-carriers' => [
-                'title' => 'Catalogo de Aseguradoras',
+                'title' => 'Catálogo de aseguradoras',
                 'eyebrow' => 'Modulo superadministrador',
-                'description' => 'Catalogo base de aseguradoras para futuras relaciones con pacientes, polizas, hospitales y servicios de la plataforma.',
+                'description' => 'Aseguradoras y sus planes de gastos médicos mayores y vida.',
                 'search_placeholder' => 'Buscar aseguradora, tipo, contacto o alcance',
-                'columns' => ['Aseguradora', 'Tipo', 'Contacto', 'Telefono', 'Correo', 'Alcance', 'Estatus', 'Acciones'],
-                'query' => fn () => InsuranceCarrier::query()->orderBy('name'),
+                'columns' => ['Aseguradora', 'Tipo de seguro', 'Contacto', 'Teléfono', 'Correo', 'Alcance', 'GMM', 'Vida', 'Estado', 'Acciones'],
+                'query' => fn () => InsuranceCarrier::query()->withCount([
+                    'plans as gmm_plans_count' => fn ($query) => $query->where('category', 'gmm'),
+                    'plans as life_plans_count' => fn ($query) => $query->where('category', 'life'),
+                ])->orderBy('name'),
+                'primary_action' => ['label' => 'Alta de aseguradora', 'route' => 'superadmin.catalog'],
                 'search' => ['name', 'slug', 'type', 'contact', 'phone', 'email', 'scope'],
                 'status_filter' => true,
                 'map' => fn (InsuranceCarrier $record) => [
                     $record->name,
-                    $record->type,
-                    $record->contact ?? 'Sin contacto',
-                    $record->phone ?? 'Sin telefono',
-                    $record->email ?? 'Sin correo',
-                    $record->scope ?? 'Sin alcance',
-                    $record->status,
-                    'Editar',
+                    $record->coverageLabel(),
+                    $record->contact ?: 'Por registrar',
+                    $record->phone ?: 'Por registrar',
+                    $record->email ?: 'Por registrar',
+                    $record->scope ?: 'Por definir',
+                    $record->gmm_plans_count,
+                    $record->life_plans_count,
+                    $record->status === 'active' ? 'Activo' : 'Inactivo',
+                    'Ver planes / Editar',
                 ],
             ],
             'insurance-advisors' => [
@@ -1065,15 +1087,26 @@ class SuperAdminDashboardController extends Controller
                 'map' => fn (Service $record) => [$record->id, $record->specialty ?? $record->name, $record->status],
             ],
             'medications' => [
-                'title' => 'Catalogo Universal de Medicamentos',
+                'title' => 'Catálogo Universal de Medicamentos',
                 'eyebrow' => 'Modulo superadministrador',
                 'description' => $moduleActivityDescription,
                 'search_placeholder' => 'Buscar clave, medicamento, grupo o institucion',
-                'columns' => ['Clave CNIS', 'Grupo', 'Medicamento', 'Descripcion', 'Unidades moviles', 'Nucleos basicos', 'CESSA', 'Catalogo institucional de', 'Estatus'],
+                'columns' => ['Clave CNIS', 'Grupo', 'Medicamento', 'Descripción', 'Denominación distintiva', 'Unidades móviles', 'Núcleos básicos', 'CESSA', 'Catálogo institucional de', 'Estatus'],
                 'query' => fn () => MedicationCatalogItem::query()->orderBy('cnis'),
                 'search' => ['name', 'generic_name', 'presentation', 'cnis'],
                 'status_filter' => true,
-                'map' => fn (MedicationCatalogItem $record) => [$record->cnis ?? 'Sin CNIS', data_get($record->metadata, 'group', $record->therapeutic_group ?? 'Grupo no clasificado'), $record->name.' '.($record->external_id ?? ''), $record->description ?? $record->presentation ?? $record->generic_name ?? 'Sin descripcion', data_get($record->metadata, 'mobile_units', 'No'), data_get($record->metadata, 'basic_units', 'Si'), data_get($record->metadata, 'cessa', 'Si'), data_get($record->metadata, 'catalog', 'Imss Bienestar'), $record->status],
+                'map' => fn (MedicationCatalogItem $record) => [
+                    $record->cnis ?? 'Sin CNIS',
+                    data_get($record->metadata, 'group', $record->therapeutic_group ?? 'Grupo no clasificado'),
+                    trim($record->name.' '.($record->external_id ?? '')),
+                    $record->description ?? $record->presentation ?? $record->generic_name ?? 'Sin descripción',
+                    data_get($record->metadata, 'distinctive_name') ?: 'Por registrar',
+                    data_get($record->metadata, 'mobile_units', 'No'),
+                    data_get($record->metadata, 'basic_units', 'Si'),
+                    data_get($record->metadata, 'cessa', 'Si'),
+                    data_get($record->metadata, 'catalog', 'Imss Bienestar'),
+                    $record->status,
+                ],
             ],
             'medical-devices' => [
                 'title' => 'Catalogo de dispositivos medicos',
@@ -1083,6 +1116,7 @@ class SuperAdminDashboardController extends Controller
                 'columns' => ['Dispositivo', 'Categoria', 'Fabricante / Proveedor', 'Modelo', 'Conectividad', 'Modulo vinculado', 'Dato que registra', 'Compatibilidad', 'Estatus'],
                 'query' => fn () => MedicalDevice::query()->orderBy('name'),
                 'search' => ['name', 'code', 'category', 'manufacturer', 'model', 'connectivity', 'linked_module', 'recorded_data', 'compatibility'],
+                'status_filter' => true,
                 'map' => fn (MedicalDevice $record) => [
                     $record->name,
                     $record->category,
@@ -1339,6 +1373,12 @@ class SuperAdminDashboardController extends Controller
                 foreach ($catalog['metadata_search'] ?? [] as $key) {
                     $subQuery->orWhere('metadata->'.$key, 'like', '%'.$search.'%');
                 }
+
+                if (! empty($catalog['operational_number_search']) && preg_match('/^OP(\d+)$/i', $search, $matches)) {
+                    $subQuery->orWhere(fn ($userQuery) => $userQuery
+                        ->where('account_category', User::CATEGORY_OPERATIONAL)
+                        ->where('id', ltrim($matches[1], '0') ?: '0'));
+                }
             });
         }
 
@@ -1354,6 +1394,11 @@ class SuperAdminDashboardController extends Controller
         $module = $request->string('module')->toString();
         if ($module !== '' && $module !== 'all' && ! empty($catalog['module_filter'])) {
             $query->where('module', $module);
+        }
+
+        $category = $request->string('category')->toString();
+        if (! empty($catalog['category_filter']) && in_array($category, [User::CATEGORY_KLINI, User::CATEGORY_OPERATIONAL], true)) {
+            $query->where('account_category', $category);
         }
     }
 }

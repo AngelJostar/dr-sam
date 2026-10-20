@@ -37,6 +37,19 @@
 .field-hint{font-size:.75rem;color:var(--gray);margin:6px 0 0}
 #signup-form .login-submit{margin-top:22px}
 #signup-form .login-feedback{margin-top:18px;margin-bottom:0}
+.signup-dialog{width:540px;max-width:min(540px,calc(100% - 32px));padding:24px 30px}
+.signup-dialog .login-emblem{width:38px;height:38px;margin:10px auto}
+.signup-dialog .login-brand img{width:96px;height:44px}
+.signup-dialog form label{font-size:13px;line-height:1.4;margin:10px 0 6px}
+.signup-dialog h2{font-size:1.5rem}.signup-dialog #signup-intro{font-size:.875rem;margin-bottom:12px}
+.signup-dialog input,.signup-dialog select{height:42px;font-size:.875rem}.signup-dialog label{margin-top:12px}
+.signup-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+#signup-doctor-fields{border:1px solid #d3e8e6;border-radius:10px;padding:10px 12px;margin:18px 0 0}
+#signup-doctor-fields[hidden]{display:none}#signup-doctor-fields legend{font-size:.8rem;color:var(--teal-dark);padding:0 5px}
+.signup-confirmation{padding:18px;border-radius:12px;background:#eaf7f4;text-align:center;font-size:.875rem}
+.signup-confirmation strong{display:block;color:var(--teal-dark);font-size:1.35rem;margin:8px 0}.signup-confirmation p{line-height:1.5;margin-bottom:0}
+.signup-dialog .login-feedback ul{padding-left:16px;margin:0}
+@media(max-width:420px){.signup-fields{grid-template-columns:1fr;gap:0}.signup-dialog{padding:22px}}
 .signup-mode .login-emblem{margin:15px auto 13px;width:45px;height:45px}
 .signup-mode h2{font-size:1.5rem}
 .signup-mode #login-intro{margin-bottom:18px}
@@ -121,5 +134,56 @@
 .klini-editorial h2{font-size:clamp(28px,3.1vw,46px);line-height:1.2;letter-spacing:-1.8px;margin:14px 0 20px}
 .klini-editorial p:not(.eyebrow){color:var(--gray);max-width:470px;margin-bottom:24px}
 .login-dialog .login-submit{display:inline-flex;text-decoration:none;justify-content:center}
+.mobile-login{display:none}
 @media(max-width:850px){.klini-editorial{grid-template-columns:1fr;gap:28px;padding-top:40px;padding-bottom:50px}.klini-editorial>img{max-height:360px}}
 /* Reference composition: signup integrated into header and hero. */ .header-signup{display:inline-flex;align-items:center;justify-content:center;gap:10px;border:0;border-radius:999px;background:#00aaa5;color:white;padding:12px 22px;font-weight:700;white-space:nowrap}.header-signup .icon{width:24px;height:24px}.nav-actions{gap:22px}.login-trigger .user-circle{display:none}.wellness-hero .hero-copy>.eyebrow{display:none}.wellness-hero{padding-top:65px}.wellness-hero .hero-signup{border-radius:999px;padding:17px 26px;font-size:1rem;gap:14px}.hero-signup>span{font-size:24px;line-height:1}.header{background:#f5f9f8f5}body{background:#f5f9f8}.header-signup:hover{background:#007d79}@media(max-width:850px){.nav-actions{gap:12px}.header-signup{padding:10px 14px;font-size:.8rem}.nav-links{gap:12px}}@media(max-width:620px){.nav-shell{flex-wrap:wrap}.nav-actions{margin-left:auto;gap:10px}.header-signup{padding:9px 12px;font-size:.75rem}.header-signup .icon{width:18px;height:18px}.wellness-hero{padding-top:35px}}
+
+/* A single mobile header row, with the account action available in the menu. */
+@media (max-width: 620px) {
+  .header .nav-shell { flex-wrap: nowrap; gap: 8px; }
+  .header .brand { flex: 0 0 auto; }
+  .header .brand img { width: 94px; height: auto; }
+  .header .nav-actions { flex: 0 0 auto; min-width: 0; gap: 6px; }
+  .header .mobile-menu { flex: 0 0 44px; }
+  .header .nav-actions .login-trigger { display: none; }
+  .header .header-signup { min-height: 44px; padding: 9px; gap: 6px; }
+  .header .nav-links { top: 100%; }
+  .header .mobile-login {
+    display: block;
+    align-self: flex-start;
+    border: 0;
+    background: transparent;
+    padding: 12px 0;
+    color: var(--navy);
+    font: inherit;
+    font-size: .875rem;
+    font-weight: 700;
+    text-align: left;
+  }
+}
+@media (max-width: 374px) {
+  .header .header-signup .icon { display: none; }
+}
+@media (max-width: 359px) {
+  .header .brand img { width: 72px; }
+  .header .nav-shell, .header .nav-actions { gap: 4px; }
+  .header .header-signup { padding-inline: 8px; }
+}
+
+.header .mobile-menu.icon-button { width:44px; height:44px; min-height:44px; padding:9px; border:1px solid #dce5e7; border-radius:50%; background:#f5f9f8; color:#082441; box-shadow:0 1px 2px #08244110; }
+.header .mobile-menu.icon-button .icon { width:25px; height:25px; stroke-width:1.8; }
+
+/* Compact sign-in strip from the supplied landing reference. */
+.landing-inline-access {display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;align-items:center;gap:8px;box-sizing:border-box;width:calc(100% - 32px);max-width:700px;margin:10px auto 0;padding:8px;background:#f7fcfb;border:1px solid #d9e7e9;border-radius:20px;box-shadow:0 2px 5px #08244112;}
+.landing-access-field {display:flex;align-items:center;gap:6px;min-width:0;margin:0;padding:0 10px;border:1px solid #dde6ea;border-radius:20px;background:white;height:36px;}
+.landing-access-field .icon {width:16px;height:16px;flex:none;color:#536d8e;}
+.landing-access-field input {display:block;box-sizing:border-box;width:100%;min-width:0;margin:0;padding:0;border:0;outline-offset:2px;background:transparent;font:inherit;font-size:12px;color:#082441;}
+.landing-access-field input::placeholder {color:#8190a5;}
+.landing-inline-access>button {display:flex;align-items:center;justify-content:center;gap:8px;height:36px;padding:0 15px;border:0;border-radius:20px;background:#00aaa5;color:white;font:inherit;font-size:12px;font-weight:700;cursor:pointer;}
+.landing-inline-access>button:focus-visible {outline:2px solid #082441;outline-offset:3px;}
+@media(max-width:620px){.header .mobile-menu.icon-button{display:none;}.landing-inline-access{width:calc(100% - 24px);gap:6px;padding:6px;margin-top:8px;border-radius:18px;}.landing-access-field{padding-inline:8px;height:32px;gap:4px;}.landing-access-field input{font-size:10px;}.landing-inline-access>button{height:32px;padding-inline:12px;font-size:11px;}.wellness-hero{padding-top:24px;}}
+@media(max-width:359px){.landing-inline-access{gap:4px;}.landing-access-field{padding-inline:6px;}.landing-inline-access>button{padding-inline:9px;}.landing-access-field .icon{width:13px;height:13px;}}
+
+.landing-inline-access > button.landing-access-submit { width:36px; height:36px; min-height:36px; padding:0; border-radius:50%; gap:0; }
+.landing-access-submit svg { width:19px; height:19px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+@media(max-width:620px) { .landing-inline-access > button.landing-access-submit { width:32px; height:32px; min-height:32px; padding:0; } }

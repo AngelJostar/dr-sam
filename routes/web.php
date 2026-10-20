@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Auth\DemoAccessController;
+use App\Http\Controllers\Auth\KliniRegistrationController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Provider\ImportExpedientController;
 use App\Http\Controllers\Community\CommunityDashboardController;
 use App\Http\Controllers\Doctor\DoctorPortalController;
 use App\Http\Controllers\ExternalPharmacy\ExternalPharmacyController;
@@ -24,13 +26,18 @@ use App\Http\Controllers\Operational\OperationalDashboardController;
 use App\Http\Controllers\Operational\OutpatientDashboardController;
 use App\Http\Controllers\Orders\PatientOrderController;
 use App\Http\Controllers\Patient\PatientPortalController;
+use App\Http\Controllers\Patient\PatientStoryController;
 use App\Http\Controllers\Pharmacy\DigitalPharmacyController;
 use App\Http\Controllers\Provider\ProviderPortalController;
 use App\Http\Controllers\SuperAdmin\SuperAdminDashboardController;
+use App\Http\Controllers\SuperAdmin\InstitutionActionController;
 use App\Http\Controllers\Unit\UnitDashboardController;
+use App\Http\Controllers\Unit\RequestInteractionController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'marketing.klini')->name('home');
+Route::post('/registro', [KliniRegistrationController::class, 'store'])
+    ->middleware(['guest', 'throttle:6,1'])->name('klini.register');
 Route::get('/acceso', [DemoAccessController::class, 'index'])->name('login');
 Route::post('/demo-login', [DemoAccessController::class, 'store'])->name('demo-login.store');
 Route::post('/logout', [DemoAccessController::class, 'destroy'])->name('logout');
@@ -66,6 +73,14 @@ Route::middleware('auth')->group(function (): void {
     Route::get('/patient', PatientPortalController::class)
         ->middleware('role:superadmin,admin,patient')
         ->name('patient.dashboard');
+    Route::middleware('role:superadmin,admin,patient')->prefix('patient/stories')->name('patient.stories.')->group(function () {
+        Route::get('/', [PatientStoryController::class, 'index'])->name('index');
+        Route::post('/', [PatientStoryController::class, 'store'])->middleware('throttle:30,1')->name('store');
+        Route::get('/{story}/photo', [PatientStoryController::class, 'photo'])->name('photo');
+        Route::get('/{story}/avatar', [PatientStoryController::class, 'avatar'])->name('avatar');
+        Route::delete('/{story}', [PatientStoryController::class, 'destroy'])->name('destroy');
+        Route::post('/{story}/seen', [PatientStoryController::class, 'seen'])->name('seen');
+    });
     Route::post('/patient/register-attachments', [PatientPortalController::class, 'storeRegisterAttachment'])
         ->middleware('role:superadmin,admin,patient')
         ->name('patient.register_attachments.store');
@@ -75,6 +90,7 @@ Route::middleware('auth')->group(function (): void {
     Route::patch('/patient/profile', [PatientPortalController::class, 'updateProfile'])
         ->middleware('role:superadmin,admin,patient')
         ->name('patient.profile.update');
+    Route::post('/patient/insurance/requests', [PatientPortalController::class, 'storeInsuranceRequest'])->middleware(['role:superadmin,admin,patient', 'throttle:10,1'])->name('patient.insurance.requests.store');
     Route::post('/patient/insurance', [PatientPortalController::class, 'saveInsurance'])
         ->middleware('role:superadmin,admin,patient')
         ->name('patient.insurance.save');
@@ -199,11 +215,22 @@ Route::middleware('auth')->group(function (): void {
         ->middleware('role:superadmin,admin,provider')->name('provider.import.patient_details.store');
     Route::post('/providers/import/patient-documents', [ProviderPortalController::class, 'storeImportPatientDocuments'])
         ->middleware('role:superadmin,admin,provider')->name('provider.import.patient_documents.store');
+    Route::post('/providers/import/expedient-documents', [ProviderPortalController::class, 'storeImportDocuments'])
+        ->middleware(['role:superadmin,admin,provider', 'permission:provider.requests.update'])->name('provider.import.documents.store');
     Route::get('/providers/import/documents/{document}', [ProviderPortalController::class, 'viewImportDocument'])
         ->middleware('role:superadmin,admin,provider')->name('provider.import.documents.view');
     Route::post('/providers/import/suppliers', [ProviderPortalController::class, 'storeImportSupplier'])
         ->middleware(['role:superadmin,admin,provider', 'permission:provider.requests.update'])
         ->name('provider.import.suppliers.store');
+    Route::post('/providers/import/expedients', [ImportExpedientController::class, 'store'])
+        ->middleware(['role:superadmin,admin,provider', 'permission:provider.requests.update'])
+        ->name('provider.import.expedients.store');
+    Route::post('/providers/import/expedients/matches', [ImportExpedientController::class, 'matches'])
+        ->middleware(['role:superadmin,admin,provider', 'permission:provider.requests.update'])
+        ->name('provider.import.expedients.matches');
+    Route::get('/providers/import/expedients/{expedient}/draft', [ImportExpedientController::class, 'draft'])
+        ->middleware(['role:superadmin,admin,provider', 'permission:provider.requests.update'])
+        ->name('provider.import.expedients.draft');
     Route::get('/providers/medicines', [ProviderPortalController::class, 'index'])
         ->defaults('type', 'medicines')
         ->middleware('role:superadmin,admin,provider')
@@ -227,6 +254,15 @@ Route::middleware('auth')->group(function (): void {
     Route::post('/unit/nutrition-requests', [UnitDashboardController::class, 'storeNutritionRequest'])
         ->middleware(['role:superadmin,admin,institution,unit', 'permission:operational.service_requests.create'])
         ->name('unit.nutrition-requests.store');
+    Route::get('/unit/requests/{providerRequest}/interactions', [RequestInteractionController::class, 'index'])
+        ->middleware('role:superadmin,admin,institution,unit')
+        ->name('unit.requests.interactions.index');
+    Route::post('/unit/requests/{providerRequest}/interactions', [RequestInteractionController::class, 'store'])
+        ->middleware(['role:superadmin,admin,institution,unit', 'permission:unit.requests.interact'])
+        ->name('unit.requests.interactions.store');
+    Route::patch('/unit/requests/{providerRequest}/interactions/{interaction}', [RequestInteractionController::class, 'resolve'])
+        ->middleware(['role:superadmin,admin,institution,unit', 'permission:unit.requests.interact'])
+        ->name('unit.requests.interactions.resolve');
     Route::post('/unit/appointments', [UnitDashboardController::class, 'storeAppointment'])
         ->middleware(['role:superadmin,admin,institution,unit', 'permission:outpatient.appointments.create'])
         ->name('unit.appointments.store');
@@ -321,6 +357,15 @@ Route::middleware('auth')->group(function (): void {
     Route::patch('/superadmin/institutions/{institution}', [SuperAdminDashboardController::class, 'updateInstitution'])
         ->middleware(['role:superadmin', 'permission:superadmin.catalogs.manage'])
         ->name('superadmin.institutions.update');
+    Route::patch('/superadmin/institutions/{institution}/status', [InstitutionActionController::class, 'status'])
+        ->middleware(['role:superadmin', 'permission:superadmin.catalogs.manage'])
+        ->name('superadmin.institutions.status');
+    Route::get('/superadmin/institutions/{institution}/report', [InstitutionActionController::class, 'report'])
+        ->middleware('role:superadmin')
+        ->name('superadmin.institutions.report');
+    Route::delete('/superadmin/institutions/{institution}', [InstitutionActionController::class, 'destroy'])
+        ->middleware(['role:superadmin', 'permission:superadmin.catalogs.manage'])
+        ->name('superadmin.institutions.destroy');
     Route::post('/superadmin/hospitals', [SuperAdminDashboardController::class, 'storeHospital'])
         ->middleware(['role:superadmin', 'permission:superadmin.catalogs.manage'])
         ->name('superadmin.hospitals.store');
@@ -348,6 +393,13 @@ Route::middleware('auth')->group(function (): void {
     Route::post('/superadmin/insurance-carriers', [SuperAdminDashboardController::class, 'storeInsuranceCarrier'])
         ->middleware(['role:superadmin', 'permission:superadmin.catalogs.manage'])
         ->name('superadmin.insurance-carriers.store');
+    Route::post('/superadmin/insurance-plans', [\App\Http\Controllers\SuperAdmin\InsurancePlanController::class, 'store'])->middleware(['role:superadmin', 'permission:superadmin.catalogs.manage'])->name('superadmin.insurance-plans.store');
+    Route::patch('/superadmin/insurance-plans/{plan}', [\App\Http\Controllers\SuperAdmin\InsurancePlanController::class, 'update'])->middleware(['role:superadmin', 'permission:superadmin.catalogs.manage'])->name('superadmin.insurance-plans.update');
+    Route::patch('/superadmin/insurance-plans/{plan}/link', [\App\Http\Controllers\SuperAdmin\InsurancePlanController::class, 'link'])->middleware(['role:superadmin', 'permission:superadmin.catalogs.manage'])->name('superadmin.insurance-plans.link');
+    Route::post('/superadmin/insurance-plans/{plan}/documents', [\App\Http\Controllers\SuperAdmin\InsurancePlanController::class, 'upload'])->middleware(['role:superadmin', 'permission:superadmin.catalogs.manage'])->name('superadmin.insurance-plans.documents.store');
+    Route::delete('/superadmin/insurance-plan-documents/{document}', [\App\Http\Controllers\SuperAdmin\InsurancePlanController::class, 'deleteDocument'])->middleware(['role:superadmin', 'permission:superadmin.catalogs.manage'])->name('superadmin.insurance-plans.documents.destroy');
+    Route::get('/patient/insurance-plans', [\App\Http\Controllers\Patient\InsurancePlanFeedController::class, 'index'])->middleware('role:superadmin,patient')->name('patient.insurance-plans.index');
+    Route::get('/patient/insurance-plan-documents/{document}', [\App\Http\Controllers\Patient\InsurancePlanFeedController::class, 'document'])->middleware('role:superadmin,patient')->name('patient.insurance-plans.documents');
     Route::patch('/superadmin/insurance-carriers/{carrier}', [SuperAdminDashboardController::class, 'updateInsuranceCarrier'])
         ->middleware(['role:superadmin', 'permission:superadmin.catalogs.manage'])
         ->name('superadmin.insurance-carriers.update');

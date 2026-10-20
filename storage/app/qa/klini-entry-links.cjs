@@ -1,0 +1,15 @@
+const assert=require('node:assert/strict');
+const {createRequire}=require('node:module');
+const rr=createRequire('C:/Users/Guillermo/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/package.json');
+(async()=>{const browser=await rr('playwright').chromium.launch({channel:'msedge',headless:true});
+try{const page=await browser.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
+await page.goto('http://127.0.0.1:8000/acceso');
+await page.getByRole('link',{name:'Ingresar con mi cuenta Klini'}).click();
+assert(await page.locator('#login-dialog').isVisible());
+await page.goto('http://127.0.0.1:8000/acceso');
+await page.getByRole('link',{name:'Registrarme, soy médico'}).click();
+assert(await page.locator('#signup-dialog').isVisible());
+assert.equal(await page.locator('#signup-type').inputValue(),'doctor');
+assert(await page.locator('#signup-license').isEnabled());
+assert.deepEqual(errors,[]);console.log('Public entry links passed; no browser errors.');
+}finally{await browser.close();}})().catch(e=>{console.error(e);process.exitCode=1;});

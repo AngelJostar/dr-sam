@@ -8,6 +8,8 @@ use App\Models\AppointmentStatusEvent;
 use App\Models\Document;
 use App\Models\Doctor;
 use App\Models\InsurancePolicy;
+use App\Models\InsurancePlan;
+use App\Services\Insurance\InsurancePlanCatalog;
 use App\Models\Patient;
 use App\Services\AppointmentSchedulingService;
 use App\Services\Platform\PlatformAuditService;
@@ -28,6 +30,7 @@ class PatientPortalController extends Controller
     public function __invoke(Request $request, AppointmentSchedulingService $scheduling): View
     {
         $patient = $this->resolvePatient($request);
+
 
         $patient->load([
             'user',
@@ -110,6 +113,7 @@ class PatientPortalController extends Controller
         ] : null;
 
         return view('patient.dashboard', [
+            'insurancePlanOptions' => InsurancePlanCatalog::published(),
             'patient' => $patient,
             'doctors' => $doctors,
             'doctorBookingOptions' => $doctorBookingOptions,
@@ -310,6 +314,45 @@ class PatientPortalController extends Controller
         return back()->with('patient_notice', 'Póliza guardada correctamente.');
     }
 
+    public function storeInsuranceRequest(Request $request): JsonResponse
+    {
+        $patient = $this->resolvePatient($request);
+        $data = $request->validate([
+            'type' => ['required', Rule::in(['quote', 'refund'])],
+            'email' => ['required_if:type,quote', 'nullable', 'email', 'max:180'],
+            'phone' => ['required_if:type,quote', 'nullable', 'string', 'max:40'],
+            'notes' => ['required_if:type,quote', 'nullable', 'string', 'max:2000'],
+            'consent' => ['exclude_unless:type,quote', 'required', 'accepted'],
+            'insurance_plan_id' => ['exclude_unless:type,quote', 'nullable', 'integer'],
+            'attention_date' => ['required_if:type,refund', 'nullable', 'date', 'before_or_equal:today'],
+            'provider' => ['required_if:type,refund', 'nullable', 'string', 'max:180'],
+            'concept' => ['required_if:type,refund', 'nullable', 'string', 'max:500'],
+            'amount' => ['required_if:type,refund', 'nullable', 'numeric', 'min:0.01', 'max:999999999'],
+            'documents' => ['required_if:type,refund', 'array', 'size:3'],
+            'documents.*' => ['integer', 'distinct'],
+        ]);
+        if ($data['type'] === 'quote' && ! empty($data['insurance_plan_id'])) {
+            $plan = InsurancePlan::query()->published()->find($data['insurance_plan_id']);
+            if (! $plan) throw ValidationException::withMessages(['insurance_plan_id' => 'El seguro seleccionado ya no está disponible. Actualiza la página.']);
+            $data['insurance_plan_name'] = $plan->name;
+            $data['insurance_category'] = $plan->category;
+        }
+        if ($data['type'] === 'refund') {
+            abort_unless($patient->insurancePolicies()->exists(), 422, 'Registra tu póliza antes de solicitar un reembolso.');
+            $ids = $data['documents'] ?? [];
+            $documents = $patient->documents()->whereIn('id', $ids)->where('document_type', 'patient_quick_register')->get();
+            abort_unless($documents->count() === 3 && $documents->every(fn($d) => data_get($d->metadata, 'category') === 'insurance_refund'), 422, 'Adjunta los tres documentos de tu solicitud.');
+        }
+        $item = DB::transaction(function () use ($patient, $data) {
+            $locked = Patient::query()->lockForUpdate()->findOrFail($patient->id);
+            $metadata = $locked->metadata ?? [];
+            $item = $data + ['id' => 'SEG-'.strtoupper((string) \Illuminate\Support\Str::ulid()), 'status' => 'received', 'created_at' => now()->toIso8601String()];
+            $metadata['insurance_requests'][] = $item;
+            $locked->update(['metadata' => $metadata]);
+            return $item;
+        });
+        return response()->json(['id' => $item['id'], 'message' => 'Solicitud recibida en Klini. Pendiente de revisión.'], 201);
+    }
     private function resolvePatient(Request $request): Patient
     {
         $user = $request->user();

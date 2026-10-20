@@ -1,0 +1,176 @@
+/* Match Unit's workspace scale, typography and control dimensions. */
+html body.native-shell.institution-native-body[class] { --platform-ui-scale: .8; }
+body.native-shell.institution-native-body {
+  --institution-sidebar-width: 256px;
+  --institution-menu-height: 60px;
+  --institution-carousel-width: 140px;
+  --institution-carousel-height: 80px;
+  --institution-control-height: 40px;
+  --institution-tab-width: 144px;
+  --institution-border: #dfe6ef;
+  --institution-text: #10244c;
+  --institution-muted: #526b93;
+  --institution-accent: #008f98;
+  background: #f7f9fb;
+  color: var(--institution-text);
+}
+body.native-shell.institution-native-body,
+body.native-shell.institution-native-body :where(h1,h2,h3,h4,p,span,strong,small,label,button,input,select,textarea,a,th,td,dt,dd,li,summary) {
+  font-family: "Segoe UI", Arial, sans-serif !important;
+  letter-spacing: normal;
+}
+body.native-shell.institution-native-body .institution-native-screen {
+  display: grid;
+  grid-template-columns: var(--institution-sidebar-width) minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  background: #f7f9fb;
+  color: var(--institution-text);
+}
+body.native-shell.institution-native-body .institution-native-topbar { display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 76px; padding: 6px 28px; border-bottom: 1px solid var(--institution-border); background: #fff; box-shadow: none; z-index: 25; }
+body.native-shell.institution-native-body .institution-native-topbar .klini-brand { padding: 0; gap: 2px; }
+body.native-shell.institution-native-body .institution-native-topbar .klini-brand img { width: 84px; min-width: 84px; }
+body.native-shell.institution-native-body .institution-native-topbar .klini-brand-label { font-size: 12px; line-height: 1.2; }
+body.native-shell.institution-native-body .institution-workspace-context { display: grid; flex: 1; min-width: 0; gap: 2px; margin-left: 30px; }
+body.native-shell.institution-native-body .institution-workspace-context strong { font-size: 13px; font-weight: 600; }
+body.native-shell.institution-native-body .institution-workspace-context small { font-size: 12px; color: var(--institution-muted); }
+body.native-shell.institution-native-body .institution-workspace-session { display: flex; align-items: center; gap: 16px; }
+body.native-shell.institution-native-body .institution-workspace-session summary { color: var(--institution-text); background: transparent; border-color: transparent; box-shadow: none; }
+body.native-shell.institution-native-body .institution-workspace-session summary:hover { background: #f0f7f8; }
+body.native-shell.institution-native-body .institution-workspace-session .klini-session-user { display: none; }
+body.native-shell.institution-native-body .institution-workspace-session .klini-session-avatar { width: 38px; height: 38px; background: #eff5f7; color: var(--institution-accent); border: 1px solid #e1ebee; }
+body.native-shell.institution-native-body .institution-workspace-session .klini-session-dropdown { right: 0; left: auto; max-height: calc(100dvh - 130px); overflow: auto; }
+body.native-shell.institution-native-body .institution-workspace-session .klini-session-logout button { border-color: #f0d2d5; border-radius: 6px; background: #fff; box-shadow: none; }
+
+/* The sidebar and content scroll independently, as in Unit. */
+body.native-shell.institution-native-body .institution-native-sidebar { padding: 26px 14px 14px; background: #fff; border-right: 1px solid var(--institution-border); }
+body.native-shell.institution-native-body .institution-native-menu { align-content: start; gap: 7px; }
+body.native-shell.institution-native-body .institution-native-menu a { grid-template-columns: 20px minmax(0, 1fr); gap: 18px; height: var(--institution-menu-height); min-height: var(--institution-menu-height); padding: 8px 20px; border: 1px solid transparent; border-radius: 5px; color: #304e78; background: transparent; font-size: 14px; font-weight: 400; line-height: 1.4; }
+body.native-shell.institution-native-body .institution-native-menu a:is(:hover, :focus-visible) { background: #f2f6f8; color: var(--institution-text); }
+body.native-shell.institution-native-body .institution-native-menu a.is-active { background: #f1f4f7; color: var(--institution-text); border-color: transparent; box-shadow: inset 4px 0 #00a1ad; font-weight: 600; }
+body.native-shell.institution-native-body .institution-native-menu a span { width: 22px; height: 22px; color: inherit; background: transparent; }
+body.native-shell.institution-native-body .institution-native-menu a.is-active span { color: #00a1ad; background: transparent; }
+body.native-shell.institution-native-body .institution-native-menu a span svg { width: 22px; height: 22px; stroke-width: 1.6; }
+body.native-shell.institution-native-body .institution-native-menu a i { display: none; }
+body.native-shell.institution-native-body .institution-native-menu-divider { margin: 12px 0; background: var(--institution-border); }
+body.native-shell.institution-native-body .institution-native-workspace { grid-column: 2; grid-row: 2; min-width: 0; padding: 0; background: #f7f9fb; }
+body.native-shell.institution-native-body :is(.institution-catalog-workspace-header, .institution-service-catalog, .institution-service-panels, .institution-catalog-section-panel) { gap: 0; min-width: 0; margin: 0; }
+body.native-shell.institution-native-body .institution-service-panel.institution-catalog-section-panel { grid-template-rows: auto auto auto; align-content: start; min-height: 0; border: 0; border-radius: 0; box-shadow: none; }
+
+/* Compact carousel: the same tile, icon, label and rail dimensions as Unit. */
+body.native-shell.institution-native-body .institution-service-carousel-card { position: relative; display: flex; align-items: center; gap: 8px; height: 111px; min-height: 111px; margin: 0; padding: 8px 10px 16px; border: 0; border-bottom: 1px solid var(--institution-border); border-radius: 0; background: transparent; box-shadow: none; }
+body.native-shell.institution-native-body .institution-service-carousel { display: flex; flex: 1; align-items: stretch; min-width: 0; gap: 14px; padding: 3px; overflow-x: auto; scrollbar-width: none; }
+body.native-shell.institution-native-body .institution-service-carousel .institution-service-carousel-button { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 0 0 var(--institution-carousel-width); width: var(--institution-carousel-width); min-width: var(--institution-carousel-width); height: var(--institution-carousel-height); min-height: var(--institution-carousel-height); gap: 5px; padding: 8px 4px; border: 1px solid var(--institution-border); border-radius: 6px; background: #fff; color: var(--institution-text); box-shadow: 0 1px 3px #14254803; }
+body.native-shell.institution-native-body .institution-service-carousel .institution-service-carousel-button:is(:hover, :focus-visible) { color: var(--institution-accent); border-color: #439c91; background: #f7fcfc; }
+body.native-shell.institution-native-body .institution-service-carousel .institution-service-carousel-button.is-active { color: #008f91; border-color: #00a3a4; background: #fff; box-shadow: none; }
+body.native-shell.institution-native-body .institution-service-carousel .institution-service-carousel-button strong { display: grid; place-items: center; height: 2.4em; min-height: 2.4em; flex-shrink: 0; overflow: visible; color: inherit; font-size: 12px; font-weight: 600; line-height: 1.2; white-space: normal; }
+body.native-shell.institution-native-body .institution-service-carousel .institution-service-carousel-icon { display: grid; place-items: center; width: 26px; height: 26px; flex: 0 0 26px; padding: 0; color: inherit; background: transparent; box-shadow: none; }
+body.native-shell.institution-native-body .institution-service-carousel-icon svg { width: 20px; height: 20px; stroke-width: 1.6; }
+body.native-shell.institution-native-body button.institution-service-carousel-arrow { display: grid; place-items: center; flex: 0 0 26px; width: 26px; min-width: 26px; height: 30px; min-height: 30px; padding: 0; border: 1px solid var(--institution-border); border-radius: 6px; background: #fff; color: var(--institution-muted); box-shadow: none; font: 22px/1 Arial, sans-serif; }
+body.native-shell.institution-native-body .institution-service-carousel-arrow:disabled { opacity: .35; cursor: default; }
+body.native-shell.institution-native-body .workspace-carousel-selected { display: none; position: absolute; top: 3px; right: 4px; font-size: 10px; line-height: 1; }
+body.native-shell.institution-native-body .is-active > .workspace-carousel-selected { display: block; }
+body.native-shell.institution-native-body .workspace-carousel-indicators { position: absolute; bottom: 5px; left: 50%; display: flex; gap: 4px; transform: translateX(-50%); }
+body.native-shell.institution-native-body .workspace-carousel-indicator { width: 10px; min-width: 10px; height: 3px; min-height: 3px; padding: 0; border: 0; border-radius: 3px; background: #c2dcd7; box-shadow: none; }
+body.native-shell.institution-native-body .workspace-carousel-indicator[aria-current=true] { background: #168e80; }
+
+/* A continuous white heading / toolbar / table surface in every catalog. */
+body.native-shell.institution-native-body .institution-native-workspace :is(.institution-native-header, .institution-catalog-summary-card, .institution-service-panel-header, .institution-native-table-heading) { min-height: 76px; margin: 0; padding: 16px 20px; gap: 16px; border: 0; border-bottom: 1px solid var(--institution-border); border-radius: 0; color: var(--institution-text); background: #fff; box-shadow: none; }
+body.native-shell.institution-native-body .institution-native-workspace :is(.institution-native-header, .institution-catalog-summary-card, .institution-service-panel-header, .institution-native-table-heading)::before { display: none; }
+body.native-shell.institution-native-body .institution-native-title { flex-direction: row; align-items: center; gap: 0; }
+body.native-shell.institution-native-body .institution-native-title > span { display: none; }
+body.native-shell.institution-native-body .institution-native-workspace :is(.institution-native-header, .institution-catalog-summary-card, .institution-service-panel-header, .institution-native-table-heading) :is(h1,h2,h3) { margin: 0; color: var(--institution-text); font-size: 18px; font-weight: 700; line-height: 1.3; }
+body.native-shell.institution-native-body .institution-native-workspace :is(.institution-native-header, .institution-catalog-summary-card, .institution-service-panel-header, .institution-native-table-heading) :is(p,small,time,label) { margin: 4px 0 0; color: var(--institution-muted); font-size: 12px; font-weight: 400; line-height: 1.4; }
+body.native-shell.institution-native-body :is(.institution-catalog-summary-copy, .institution-service-panel .institution-service-copy) { gap: 0; }
+body.native-shell.institution-native-body :is(.institution-catalog-summary-meta, .institution-service-panel .institution-service-copy > div) { display: flex; align-items: center; gap: 12px; margin-top: 8px; color: var(--institution-muted); font-size: 12px; font-weight: 400; }
+body.native-shell.institution-native-body .institution-native-status { min-width: 0; min-height: 0; padding: 4px 10px; gap: 5px; border: 0; border-radius: 999px; background: #dff4ef; color: #00877e; font-size: 11px; font-weight: 600; line-height: 1.4; }
+body.native-shell.institution-native-body .institution-native-status.is-inactive { color: #be4055; background: #fbecef; }
+body.native-shell.institution-native-body .institution-native-workspace .institution-catalog-toolbar { flex-direction: row; flex-wrap: wrap; gap: 12px; min-height: 0; padding: 14px 20px; border-bottom: 1px solid var(--institution-border); background: #fff; }
+body.native-shell.institution-native-body .institution-catalog-filter-buttons { flex: 1 1 400px; flex-wrap: nowrap; gap: 8px; overflow-x: auto; }
+body.native-shell.institution-native-body .institution-catalog-toolbar-actions { flex: 0 1 auto; gap: 8px; flex-wrap: wrap; }
+body.native-shell.institution-native-body .institution-catalog-search { width: 280px; max-width: 100%; min-width: 0; margin: 0; }
+body.native-shell.institution-native-body .institution-native-workspace :is(.institution-catalog-filter-buttons button, .institution-native-tabs a, .institution-service-actions button, .institution-catalog-primary-action) { display: inline-flex; align-items: center; justify-content: center; height: var(--institution-control-height); min-height: var(--institution-control-height); gap: 8px; padding: 4px 12px; border: 1px solid var(--institution-border); border-radius: 6px; color: var(--institution-text); background: #fff; box-shadow: none; font-size: 12px; font-weight: 600; line-height: 1.2; text-align: center; white-space: normal; }
+body.native-shell.institution-native-body .institution-native-workspace :is(.institution-catalog-filter-buttons button, .institution-native-tabs a) { flex: 0 0 var(--institution-tab-width); width: var(--institution-tab-width); min-width: var(--institution-tab-width); }
+body.native-shell.institution-native-body .institution-native-workspace :is(.institution-catalog-filter-buttons button.is-active, .institution-native-tabs a.is-active) { color: var(--institution-accent); border-color: #00a3a4; background: #f0f7f8; box-shadow: none; }
+body.native-shell.institution-native-body .institution-catalog-filter-buttons button b { flex: 0 0 20px; width: 20px; min-width: 20px; height: 20px; color: inherit; background: #f0f7f8; font-size: 11px; font-weight: 600; }
+body.native-shell.institution-native-body .institution-native-workspace :is(.institution-service-actions button, .institution-catalog-primary-action) { flex: 0 0 180px; width: 180px; min-width: 180px; }
+body.native-shell.institution-native-body .institution-native-workspace :is(a.institution-catalog-primary-action, button.institution-catalog-primary-action, button[data-service-units-toggle]) { color: #fff; background: var(--institution-text); border-color: var(--institution-text); }
+body.native-shell.institution-native-body .institution-native-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 14px 20px; background: #fff; border-bottom: 1px solid var(--institution-border); }
+body.native-shell.institution-native-body .institution-service-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+body.native-shell.institution-native-body .institution-native-workspace :is(input:not([type=checkbox]):not([type=radio]):not([type=hidden]):not([type=file]), select) { height: 40px; min-height: 40px; border-color: var(--institution-border); border-radius: 8px; background: #fff; color: var(--institution-text); font-size: 12px; font-weight: 400; }
+body.native-shell.institution-native-body textarea { border-color: var(--institution-border); color: var(--institution-text); font-size: 12px; }
+
+body.native-shell.institution-native-body .institution-native-table-card { min-height: 0; margin: 0; border: 1px solid var(--institution-border); border-inline: 0; border-radius: 0; background: #fff; box-shadow: none; }
+body.native-shell.institution-native-body .institution-native-workspace .institution-native-table-scroll { min-height: 0; border: 0; border-radius: 0; overflow-x: auto; background: #fff; scrollbar-color: #8dafac #f2f7f6; }
+body.native-shell.institution-native-body .institution-native-table { width: max-content; min-width: 100%; border-collapse: collapse; }
+body.native-shell.institution-native-body .institution-native-table :is(th,td) { max-width: 26ch; padding: 8px; border-color: var(--institution-border); line-height: 1.4; vertical-align: middle; }
+body.native-shell.institution-native-body .institution-native-table th { height: 38px; color: var(--institution-text); background: #f0f6f8; font-size: 10px; font-weight: 700; }
+body.native-shell.institution-native-body .institution-native-table td { height: 44px; color: var(--institution-text); font-size: 12px; }
+body.native-shell.institution-native-body .institution-native-table td strong { font-weight: 600; }
+body.native-shell.institution-native-body .institution-native-table td small { color: var(--institution-muted); font-size: 11px; }
+body.native-shell.institution-native-body .institution-native-table tbody tr:not([hidden]) { background: #fff; }
+body.native-shell.institution-native-body .institution-native-table tbody tr:hover { background: #f0f7f8; }
+body.native-shell.institution-native-body .institution-native-table .institution-native-empty { height: 78px; padding: 24px; text-align: center; color: var(--institution-muted); }
+body.native-shell.institution-native-body .institution-native-table td :is(button, .institution-native-actions a, .institution-unit-enter) { min-height: 28px; padding: 4px 10px; border: 1px solid var(--institution-border); border-radius: 6px; color: var(--institution-accent); background: #fff; box-shadow: none; font-size: 11px; font-weight: 600; }
+body.native-shell.institution-native-body .institution-native-table-footer { min-height: 40px; padding: 12px 20px; color: var(--institution-muted); background: #fff; border-color: var(--institution-border); font-size: 12px; }
+
+/* Forms and detail screens retain the same visual language. */
+body.native-shell.institution-native-body .institution-native-workspace :is(.institution-unit-create-card, .institution-service-create-dialog, .institution-medication-form-card, .institution-specialty-form-card, .institution-service-editor, .institution-contract-summary, .institution-contract-preview) { border-color: var(--institution-border); border-radius: 12px; background: #fff; color: var(--institution-text); box-shadow: none; }
+body.native-shell.institution-native-body .institution-native-workspace :is(.institution-unit-create-card, .institution-service-create-dialog, .institution-service-editor, .institution-contract-preview) > header { background: #fff; border-color: var(--institution-border); }
+body.native-shell.institution-native-body .institution-native-workspace :is(.institution-unit-create-card, .institution-service-create-dialog, .institution-service-detail-title, .institution-contract-summary) h2 { color: var(--institution-text); font-size: 18px; font-weight: 700; }
+body.native-shell.institution-native-body .institution-native-workspace form label { color: var(--institution-muted); font-size: 12px; font-weight: 600; }
+body.native-shell.institution-native-body .institution-native-workspace form button[type=submit] { min-height: 40px; padding: 8px 16px; border: 1px solid var(--institution-text); border-radius: 6px; color: #fff; background: var(--institution-text); font-size: 12px; font-weight: 600; box-shadow: none; }
+body.native-shell.institution-native-body .institution-native-workspace .institution-native-table form button[type=submit] { min-height: 28px; padding: 4px 10px; color: var(--institution-accent); border-color: var(--institution-border); background: #fff; font-size: 11px; }
+body.native-shell.institution-native-body .institution-native-workspace > :is(.institution-unit-create-card, .institution-edit-unit-page) { width: calc(100% - 40px); margin: 20px; }
+body.native-shell.institution-native-body .institution-unit-form-section-header { background: #f0f6f8; border-color: var(--institution-border); color: var(--institution-text); }
+body.native-shell.institution-native-body .institution-unit-form-section-header h3 { color: var(--institution-text); font-size: 14px; font-weight: 600; }
+body.native-shell.institution-native-body .institution-native-workspace dialog { border-color: var(--institution-border); border-radius: 12px; background: #fff; color: var(--institution-text); }
+body.native-shell.institution-native-body .institution-native-workspace dialog > header { padding: 16px 20px; border-bottom: 1px solid var(--institution-border); background: #fff; color: var(--institution-text); }
+body.native-shell.institution-native-body .institution-native-workspace dialog > header :is(h2,strong) { color: var(--institution-text); font-size: 18px; font-weight: 700; }
+body.native-shell.institution-native-body .institution-native-workspace dialog > header p { color: var(--institution-muted); font-size: 12px; font-weight: 400; }
+body.native-shell.institution-native-body .institution-native-workspace dialog > header button { box-shadow: none; }
+body.native-shell.institution-native-body .institution-service-detail { padding: 20px; color: var(--institution-text); }
+body.native-shell.institution-native-body .institution-service-detail > nav { gap: 8px; }
+body.native-shell.institution-native-body .institution-service-detail > nav button { width: var(--institution-tab-width); min-width: var(--institution-tab-width); min-height: 40px; padding: 4px 12px; border-color: var(--institution-border) !important; border-radius: 6px; background: #fff !important; color: var(--institution-text) !important; font-size: 12px; font-weight: 600; }
+body.native-shell.institution-native-body .institution-service-detail > nav button.is-active { border-color: #00a3a4 !important; background: #f0f7f8 !important; color: var(--institution-accent) !important; }
+body.native-shell.institution-native-body .institution-service-detail :is(p,small) { color: var(--institution-muted); font-size: 12px; }
+body.native-shell.institution-native-body .institution-service-detail :is(.institution-service-detail-title > button, .institution-service-editor > header > button, .institution-contract-preview > header button) { min-height: 40px; padding: 4px 12px; border-color: var(--institution-border); border-radius: 6px; font-size: 12px; font-weight: 600; color: var(--institution-text); background: #fff; }
+body.native-shell.institution-native-body .institution-unit-services-dialog { border-color: var(--institution-border); border-radius: 12px; background: #fff; color: var(--institution-text); }
+body.native-shell.institution-native-body .institution-unit-services-dialog > header { padding: 16px 20px; background: #fff; color: var(--institution-text); border-color: var(--institution-border); }
+body.native-shell.institution-native-body .institution-unit-services-dialog > header h2 { font-size: 18px; color: var(--institution-text); }
+body.native-shell.institution-native-body .institution-unit-services-dialog > header p { font-size: 12px; color: var(--institution-muted); }
+body.native-shell.institution-native-body .institution-unit-services-dialog-body { padding: 0; }
+body.native-shell.institution-native-body .institution-unit-service-mirror,
+body.native-shell.institution-native-body .institution-unit-service-mirror :is(.unit-service-panels, .unit-service-panel) { gap: 0; min-height: 0; border-radius: 0; }
+body.native-shell.institution-native-body .institution-unit-service-mirror .unit-service-panel-header { background-image: none; }
+body.native-shell.institution-native-body .institution-unit-service-mirror .unit-service-panel-badges { margin-top: 8px; gap: 12px; color: var(--institution-muted); font-size: 12px; }
+body.native-shell.institution-native-body .institution-unit-service-mirror .unit-service-panel-actions a { display: inline-flex; align-items: center; justify-content: center; width: 180px; min-height: 40px; padding: 4px 12px; border: 1px solid var(--institution-text); border-radius: 6px; color: #fff; background: var(--institution-text); font-size: 12px; font-weight: 600; }
+body.native-shell.institution-native-body .institution-native-workspace :is(button,a,input,select,textarea):focus-visible { outline: 2px solid #00a1ad; outline-offset: 2px; }
+body.native-shell.institution-native-body [hidden] { display: none !important; }
+
+@media (min-width: 641px) {
+  html body.native-shell.institution-native-body[class] { height: var(--platform-viewport-height); overflow: hidden; }
+  html body.native-shell.institution-native-body[class] > .shell > .institution-native-screen { height: var(--platform-viewport-height); min-height: 0; }
+  body.native-shell.institution-native-body .institution-native-sidebar { display: flex; position: relative; top: auto; flex-direction: column; height: 100%; min-height: 0; overflow: hidden; }
+  body.native-shell.institution-native-body .institution-native-menu { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior-y: contain; scrollbar-width: thin; scrollbar-color: #7babb5 transparent; scrollbar-gutter: stable; }
+  body.native-shell.institution-native-body .institution-native-workspace { height: 100%; min-height: 0; overflow: auto; overscroll-behavior: contain; scrollbar-color: #8dafac #f2f7f6; scrollbar-gutter: stable; }
+}
+@media (max-width: 1100px) {
+  body.native-shell.institution-native-body { --institution-sidebar-width: 210px; }
+  body.native-shell.institution-native-body .institution-workspace-context { margin-left: 0; }
+}
+@media (max-width: 640px) {
+  body.native-shell.institution-native-body .institution-native-screen { display: flex; flex-direction: column; }
+  body.native-shell.institution-native-body .institution-native-topbar { order: -1; flex-wrap: wrap; gap: 8px; padding: 6px 12px; }
+  body.native-shell.institution-native-body .institution-workspace-context { text-align: right; }
+  body.native-shell.institution-native-body .institution-workspace-session { width: 100%; justify-content: space-between; gap: 8px; }
+  body.native-shell.institution-native-body .institution-workspace-session summary { padding: 7px 9px; font-size: 11px; }
+  body.native-shell.institution-native-body .institution-workspace-session .klini-session-dropdown { left: 0; right: auto; }
+  body.native-shell.institution-native-body .institution-native-sidebar { display: block; position: static; width: 100%; min-width: 0; max-width: 100%; min-height: 0; padding: 10px; border-right: 0; border-bottom: 1px solid var(--institution-border); }
+  body.native-shell.institution-native-body .institution-native-menu { display: flex; overflow-x: auto; }
+  body.native-shell.institution-native-body .institution-native-menu a { flex: 0 0 auto; padding: 8px 12px; white-space: nowrap; }
+  body.native-shell.institution-native-body .institution-native-menu-divider { display: none; }
+  body.native-shell.institution-native-body .institution-native-workspace { width: 100%; }
+  body.native-shell.institution-native-body .institution-catalog-toolbar-actions { width: 100%; display: flex; justify-content: flex-start; }
+  body.native-shell.institution-native-body .institution-native-workspace .institution-catalog-toolbar { flex-direction: column; align-items: stretch; }
+  body.native-shell.institution-native-body .institution-catalog-filter-buttons { flex: 0 0 auto; width: 100%; max-width: 100%; }
+}

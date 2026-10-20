@@ -112,3 +112,8 @@
     box-sizing: border-box;
   }
 }
+
+/* Hidden health tabs must not contribute overflow to the page scroll area. */
+.native-shell .patient-health-view-stage > [data-health-view-panel]:not(.is-active) {
+  display: none;
+}

@@ -1,4 +1,4 @@
-<section class="unit-service-carousel-card unit-catalog-carousel-card" data-unit-catalog-navigation data-unit-carousel-menu="{{ $carouselMenu }}" data-unit-carousel-filter-kind="{{ $carouselFilter }}">
+<section class="unit-service-carousel-card unit-catalog-carousel-card" data-carousel-style="compact" data-unit-catalog-navigation data-unit-carousel-menu="{{ $carouselMenu }}" data-unit-carousel-filter-kind="{{ $carouselFilter }}">
   <button type="button" class="unit-service-carousel-arrow" data-unit-catalog-carousel-prev aria-label="Catalogo anterior">&lsaquo;</button>
   <div class="unit-service-carousel unit-catalog-carousel" data-unit-catalog-carousel role="group" aria-label="Filtros del menú">
     @foreach ($catalogCarouselItems as $filterValue => [$catalogLabel, $catalogIcon])
@@ -25,6 +25,12 @@
               @break
             @case('patients')
               <svg viewBox="0 0 24 24"><path d="M19 21a7 7 0 0 0-14 0"/><circle cx="12" cy="8" r="4"/><path d="M12 14v4M10 16h4"/></svg>
+              @break
+            @case('transfer')
+              <svg viewBox="0 0 24 24"><path d="M4 7h16m-4-4 4 4-4 4M20 17H4m4-4-4 4 4 4"/></svg>
+              @break
+            @case('record')
+              <svg viewBox="0 0 24 24"><path d="M14 3H5v18h14V8zM14 3v5h5M8 12h8M8 16h8"/></svg>
               @break
             @case('doctors')
               <svg viewBox="0 0 24 24"><path d="M6 4v5a4 4 0 0 0 8 0V4"/><path d="M10 13v2a5 5 0 0 0 10 0v-2"/><circle cx="20" cy="10" r="2"/><path d="M4 4h4M12 4h4"/></svg>
@@ -62,12 +68,19 @@
         procedure: '[data-procedure-category]',
       }[navigation.dataset.unitCarouselFilterKind];
       const lowerButtons = [...document.querySelectorAll(lowerSelector)];
+      const patientPanels = navigation.dataset.unitCarouselMenu === 'patients'
+        ? [...document.querySelectorAll('[data-unit-patient-panel]')]
+        : [];
       const valueOf = (button) => button.dataset.unitCatalogStatus ?? button.dataset.unitCatalogGroup ?? button.dataset.procedureCategory;
-      const sync = (value) => upperButtons.forEach((button) => {
-        const active = button.dataset.unitCarouselFilter === value;
-        button.classList.toggle('is-active', active);
-        button.setAttribute('aria-pressed', active ? 'true' : 'false');
-      });
+      const sync = (value) => {
+        const panel = patientPanels.some((element) => element.dataset.unitPatientPanel === value) ? value : 'catalog';
+        patientPanels.forEach((element) => { element.hidden = element.dataset.unitPatientPanel !== panel; });
+        upperButtons.forEach((button) => {
+          const active = button.dataset.unitCarouselFilter === value;
+          button.classList.toggle('is-active', active);
+          button.setAttribute('aria-pressed', active ? 'true' : 'false');
+        });
+      };
 
       upperButtons.forEach((button) => button.addEventListener('click', () => {
         const lower = lowerButtons.find((candidate) => valueOf(candidate) === button.dataset.unitCarouselFilter);

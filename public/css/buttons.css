@@ -3,7 +3,7 @@
   --action-width: 120px;
   --action-height: 40px;
 }
-.native-shell button:not([data-import-navigate]):not(.import-carousel-arrow):not(.klini-carousel-indicator):not(.drsam-table-filter-button),
+.native-shell button:not([data-import-navigate]):not(.import-carousel-arrow):not(.klini-carousel-indicator):not(.drsam-table-filter-button):not(:where(.expedient-wizard *, .import-user-dialog header button, .import-expedient-documents-dialog [hidden], .import-expedient-documents-dialog header button)),
 .native-shell input[type="submit"],
 .native-shell input[type="button"],
 .native-shell a.button,

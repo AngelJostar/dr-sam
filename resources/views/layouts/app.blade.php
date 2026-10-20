@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="{{ asset('css/klini-system.css') }}?v={{ filemtime(public_path('css/klini-system.css')) }}">
     <link rel="stylesheet" href="{{ asset('css/klini-carousels.css') }}?v={{ filemtime(public_path('css/klini-carousels.css')) }}">
     @endunless
+    <link rel="stylesheet" href="{{ asset('css/platform-density.css') }}?v={{ filemtime(public_path('css/platform-density.css')) }}">
   </head>
   <body class="native-shell @yield('body_class')">
     <main class="shell">

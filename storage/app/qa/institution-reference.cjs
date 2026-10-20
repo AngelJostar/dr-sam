@@ -1,0 +1,50 @@
+const assert = require('node:assert/strict');
+const {createRequire} = require('node:module');
+const rr = createRequire('C:/Users/Guillermo/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/package.json');
+(async () => {
+  const browser = await rr('playwright').chromium.launch({channel:'msedge', headless:true, ignoreDefaultArgs:['--hide-scrollbars']});
+  try {
+    const page = await browser.newPage({viewport:{width:1536,height:1024}, reducedMotion:'reduce'});
+    const errors = [];
+    page.on('pageerror', e => errors.push(e.message));
+    await page.goto('http://127.0.0.1:8000/acceso');
+    await page.locator('#demo-username').selectOption('superadmin');
+    await Promise.all([page.waitForURL('**/superadmin'),page.getByRole('button',{name:'Ingresar',exact:true}).click()]);
+    await page.goto('http://127.0.0.1:8000/superadmin/catalogo/institutions?status=all');
+    await page.waitForLoadState('networkidle');
+    assert.equal(await page.locator('.superadmin-institution-stats article').count(),4);
+    assert.equal(await page.locator('.is-selected-institution').count(),1);
+    const selectedName = (await page.locator('.is-selected-institution td').first().innerText()).trim();
+    assert.equal((await page.locator('#institution-detail-title').innerText()).trim(), selectedName);
+    await page.screenshot({path:'storage/app/qa/institution-reference-desktop.png'});
+    const metrics = await page.evaluate(() => {
+      const table=document.querySelector('.superadmin-native-catalog-table');
+      const card=document.querySelector('.superadmin-institution-catalog');
+      return {table:table.getBoundingClientRect().width,card:card.getBoundingClientRect().width,body:document.body.scrollWidth,viewport:innerWidth,rows:[...table.querySelectorAll('tbody tr')].map(tr=>tr.getBoundingClientRect().height)};
+    });
+    const second = page.locator('.superadmin-native-catalog-table tbody tr').nth(1);
+    const secondName = (await second.locator('td').first().innerText()).trim();
+    await second.getByRole('link',{name:'Ver',exact:true}).click();
+    await page.waitForLoadState('networkidle');
+    assert.equal((await page.locator('#institution-detail-title').innerText()).trim(),secondName);
+    assert(new URL(page.url()).searchParams.get('status')==='all');
+    await page.locator('.is-selected-institution').getByRole('link',{name:'Editar',exact:true}).click();
+    await page.locator('.superadmin-user-modal:target').waitFor({state:'visible'});
+    await page.locator('.superadmin-user-modal:target').getByRole('link',{name:'Cancelar',exact:true}).click();
+    await page.getByRole('link',{name:'+ Alta de institución',exact:true}).click();
+    await page.locator('#create-institution').waitFor({state:'visible'});
+    await page.locator('#create-institution').getByRole('link',{name:'Cancelar',exact:true}).click();
+    await page.getByRole('link',{name:'Ver servicios',exact:true}).click();
+    await page.waitForLoadState('networkidle');
+    assert.equal(new URL(page.url()).searchParams.get('section'),'services');
+    assert(await page.locator('[data-service-catalog]').isVisible());
+    await page.setViewportSize({width:390,height:844});
+    await page.goto('http://127.0.0.1:8000/superadmin/catalogo/institutions?status=all');
+    await page.waitForLoadState('networkidle');
+    const mobileWidth=await page.evaluate(()=>({body:document.body.scrollWidth,viewport:innerWidth}));
+    assert(mobileWidth.body<=mobileWidth.viewport+1);
+    await page.screenshot({path:'storage/app/qa/institution-reference-mobile.png',fullPage:true});
+    assert.deepEqual(errors,[]);
+    console.log(JSON.stringify({metrics,mobileWidth,errors,checks:['selected row','edit/create dialogs','services destination','mobile width']}));
+  } finally { await browser.close(); }
+})().catch(e=>{console.error(e);process.exitCode=1;});

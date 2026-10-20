@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="{{ asset('css/klini-brand.css') }}">
   <link rel="stylesheet" href="{{ asset('css/klini-workspace.css') }}">
   <link rel="stylesheet" href="{{ asset('css/klini-community.css') }}?v={{ filemtime(public_path('css/klini-community.css')) }}">
+  <link rel="stylesheet" href="{{ asset('css/platform-density.css') }}?v={{ filemtime(public_path('css/platform-density.css')) }}">
 </head>
 <body class="native-shell klini-community-body" data-patient-view="wellnessView" data-community-mode="{{ $adminMode ? 'admin' : 'explore' }}" data-community-storage="{{ auth()->id() }}" data-community-name="{{ auth()->user()->name }}" data-community-admin-url="{{ route('community.dashboard') }}" data-community-explore-url="{{ route('community.explore') }}">
   <header class="klini-community-header">

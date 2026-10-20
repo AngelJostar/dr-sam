@@ -1,6 +1,6 @@
 @extends('layouts.app', ['title' => 'Superadministrador'])
 
-@section('body_class', 'superadmin-native-body')
+@section('body_class', 'superadmin-native-body superadmin-dashboard-body')
 
 @php
   $statusLabels = [
@@ -25,18 +25,20 @@
   ];
 
   $moduleDescriptions = [
-    'community_admin' => 'Comunidades de bienestar, miembros, eventos, publicaciones y participación.',
+    'community_admin' => 'Comunidades, miembros, eventos y publicaciones.',
     'institution' => 'Catalogo institucional, unidades, servicios, contratos y cobertura.',
-    'operational' => 'Solicitudes, autorizaciones, historial operativo y reportes por area.',
+    'operational' => 'Solicitudes, autorizaciones y seguimiento operativo.',
+    'operational_outpatient' => 'Administración de la consulta externa.',
+    'provider_medicines' => 'Administración de la distribución de medicamentos.',
     'provider_npt' => 'Catalogos de productos, solicitudes NPT y quimioterapias, estatus de central y reportes.',
     'provider_import' => 'Expedientes de importacion, documentos del paciente, permiso Cofepris, aduana y entrega en almacen.',
-    'external_pharmacy' => 'Operacion de farmacia externa, estatus de pedidos y rutas de entrega.',
-    'digital_pharmacy' => 'Catalogo de farmacia, pedidos, surtido y trazabilidad de despacho.',
+    'external_pharmacy' => 'Farmacia externa, pedidos y rutas de entrega.',
+    'digital_pharmacy' => 'Catálogo, pedidos, surtido y trazabilidad.',
     'doctor' => 'Consulta medica, recetas, expediente clinico y seguimiento de pacientes.',
     'patient' => 'Portal de pacientes, pedidos, recetas y seguimiento personal.',
-    'messenger' => 'Rutas de entrega, evidencia, confirmaciones y cierre de pedidos.',
-    'insurance_health' => 'Aseguradora, pacientes, autorizaciones, facturacion, documentos y reportes.',
-    'insurance_advisor' => 'Polizas GMM, alertas, entregas y seguimiento por asesor.',
+    'messenger' => 'Rutas, evidencias y confirmaciones de entrega.',
+    'insurance_health' => 'Pacientes, autorizaciones, documentos y reportes.',
+    'insurance_advisor' => 'Pólizas, carteras, entregas y seguimiento.',
     'orders' => 'Pedidos de paciente, carrito y solicitudes de farmacia.',
     'unit' => 'Agenda, inventario, solicitudes y administracion por unidad medica.',
     'superadmin' => 'Gobierno modular, catalogos globales, usuarios y permisos.',
@@ -53,51 +55,31 @@
 
 @section('content')
   <div class="superadmin-native-screen">
+    @include('superadmin._topbar')
     @include('superadmin._sidebar', ['active' => 'dashboard'])
 
-    <section class="superadmin-native-workspace">
-      @if (session('status'))
-        <div class="notice success">{{ session('status') }}</div>
-      @endif
-
-      @if ($errors->any())
-        <div class="notice danger">
-          <strong>No se pudo actualizar.</strong>
-          <ul>
-            @foreach ($errors->all() as $error)
-              <li>{{ $error }}</li>
-            @endforeach
-          </ul>
-        </div>
-      @endif
-
-      <header class="superadmin-native-header">
-        <div>
-          <p class="eyebrow">Modulo superadministrador</p>
-          <h1>Gobierno de modulos</h1>
-          <p>{{ $activeModules }} de {{ $totalModules }} modulos activos</p>
-        </div>
-        <div class="superadmin-native-actions">
-          <a href="{{ route('superadmin.dashboard') }}">↻ Restablecer</a>
-          <x-klini-session-menu />
-        </div>
-      </header>
-
-      <section class="superadmin-native-metrics" aria-label="Indicadores superadministrador">
+    <section class="superadmin-native-workspace" tabindex="0" aria-label="Contenido del Superadministrador">
+      <div class="superadmin-dashboard-intro">
+        <h1>Panel de administración</h1>
+        <p>Vista general de la plataforma</p>
+      </div>
+      @include('superadmin._filter-carousel', [
+        'carouselOptions' => ['all' => 'Todos', 'metrics' => 'Indicadores', 'modules' => 'Módulos', 'activity' => 'Actividad'],
+      ])
+      <section class="superadmin-native-metrics" aria-label="Indicadores superadministrador" data-admin-filter-panel="metrics">
         @foreach ($metrics as $label => $value)
-          <article>
-            <span>{{ $label }}</span>
+          <article title="{{ $metricDescriptions[$label] ?? $label }}">
+            <span>{{ ['Modulos activos' => 'Módulos activos', 'Medicos' => 'Médicos', 'Usuarios plataforma' => 'Usuarios de la plataforma', 'Hosp. privados' => 'Hospitales privados'][$label] ?? $label }}</span>
             <strong>{{ number_format($value) }}</strong>
-            <small>{{ $metricDescriptions[$label] ?? 'Administrable' }}</small>
           </article>
         @endforeach
       </section>
 
-      <section class="superadmin-native-modules">
+      <section class="superadmin-native-modules" data-admin-filter-panel="modules">
         <div class="superadmin-native-section-heading">
           <div>
-            <h2>Estado de modulos</h2>
-            <p>{{ $activeModules }} de {{ $totalModules }} modulos activos</p>
+            <h2>Estado de módulos</h2>
+            <p>{{ $activeModules }} de {{ $totalModules }} módulos activos</p>
           </div>
           <a href="{{ route('superadmin.catalog', 'modules') }}">→ Administrar</a>
         </div>
@@ -124,16 +106,28 @@
               <div class="superadmin-native-module-footer">
                 <strong>{{ count($module->roles ?? []) }} perfiles</strong>
                 @if($panelRoute && \Illuminate\Support\Facades\Route::has($panelRoute))
-                  <a class="klini-module-access" href="{{ route($panelRoute) }}" aria-label="Acceder a {{ $module->label }}">Acceder ↗</a>
+                  <a class="klini-module-access" href="{{ route($panelRoute) }}" aria-label="Acceder a {{ $module->label }}">Acceder <span aria-hidden="true">→</span></a>
                 @endif
-                <a href="{{ route('superadmin.catalog', ['section' => 'modules', 'selected_module' => $module->key]) }}#module-config">âŒ Editar</a>
+                <a class="superadmin-module-edit" href="{{ route('superadmin.catalog', ['section' => 'modules', 'selected_module' => $module->key]) }}#module-config" aria-label="Editar {{ $module->label }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m15 4 5 5M4 16 16 4a2 2 0 0 1 4 4L8 20H4z"/></svg>Editar</a>
               </div>
             </article>
           @endforeach
         </div>
+        <div class="superadmin-module-pagination">
+          <span>Mostrando {{ $modules->count() }} de {{ $modules->total() }} módulos</span>
+          @if($modules->hasPages())
+            <nav aria-label="Páginas de módulos">
+              @if($modules->onFirstPage())<span class="is-disabled" aria-disabled="true">‹</span>@else<a href="{{ $modules->previousPageUrl() }}" rel="prev" aria-label="Página anterior">‹</a>@endif
+              @foreach($modules->getUrlRange(1, $modules->lastPage()) as $page => $url)
+                <a href="{{ $url }}" @if($page === $modules->currentPage()) aria-current="page" @endif aria-label="Página {{ $page }}">{{ $page }}</a>
+              @endforeach
+              @if($modules->hasMorePages())<a href="{{ $modules->nextPageUrl() }}" rel="next" aria-label="Página siguiente">›</a>@else<span class="is-disabled" aria-disabled="true">›</span>@endif
+            </nav>
+          @endif
+        </div>
       </section>
 
-      <section class="superadmin-native-bottom">
+      <section class="superadmin-native-bottom" data-admin-filter-panel="activity">
         <article>
           <div class="section-title compact-title">
             <div>

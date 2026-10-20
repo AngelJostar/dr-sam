@@ -1,0 +1,191 @@
+/* Operational screens use the Superadmin workspace's palette and proportions. */
+body.native-shell.operational-native-body {
+  --operational-sidebar-width: 256px;
+  --operational-border: #dfe6ef;
+  --operational-ink: #10244c;
+  --operational-muted: #526b93;
+  --operational-accent: #008f98;
+  background: #f7f9fb;
+  color: var(--operational-ink);
+}
+
+html body.native-shell.operational-native-body[class] { --platform-ui-scale: .8; }
+body.native-shell.operational-native-body,
+body.native-shell.operational-native-body :where(h1,h2,h3,h4,p,span,strong,small,label,button,input,select,textarea,a,th,td,dt,dd,li,summary) {
+  font-family: "Segoe UI", Arial, sans-serif !important;
+  letter-spacing: normal;
+}
+
+body.native-shell.operational-native-body .operational-native-screen {
+  grid-template-columns: var(--operational-sidebar-width) minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  background: #f7f9fb;
+  color: var(--operational-ink);
+}
+body.native-shell.operational-native-body .operational-native-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: 76px;
+  padding: 6px 28px;
+  border-bottom: 1px solid var(--operational-border);
+  background: #fff;
+  box-shadow: none;
+  z-index: 25;
+}
+body.native-shell.operational-native-body .operational-native-topbar .klini-brand { padding: 0; gap: 2px; }
+body.native-shell.operational-native-body .operational-native-topbar .klini-brand img { width: 84px; min-width: 84px; }
+body.native-shell.operational-native-body .operational-native-topbar .klini-brand-label { font-size: 12px; line-height: 1.2; }
+body.native-shell.operational-native-body .operational-workspace-context { flex: 1; min-width: 0; display: grid; gap: 2px; margin-left: 30px; }
+body.native-shell.operational-native-body .operational-workspace-context strong { font-size: 13px; font-weight: 600; }
+body.native-shell.operational-native-body .operational-workspace-context small { color: var(--operational-muted); font-size: 12px; }
+body.native-shell.operational-native-body .operational-workspace-session { display: flex; align-items: center; gap: 16px; }
+body.native-shell.operational-native-body .operational-workspace-session summary { background: transparent; border-color: transparent; box-shadow: none; color: var(--operational-ink); }
+body.native-shell.operational-native-body .operational-workspace-session summary:hover { background: #f0f7f8; }
+body.native-shell.operational-native-body .operational-workspace-session .klini-session-user { display: none; }
+body.native-shell.operational-native-body .operational-workspace-session .klini-session-avatar { width: 38px; height: 38px; background: #eff5f7; color: var(--operational-accent); border: 1px solid #e1ebee; }
+body.native-shell.operational-native-body .operational-workspace-session .klini-session-dropdown { right: 0; left: auto; max-height: calc(100dvh - 130px); overflow: auto; }
+body.native-shell.operational-native-body .operational-workspace-session .klini-session-logout button { border-color: #f0d2d5; border-radius: 6px; background: #fff; box-shadow: none; }
+
+body.native-shell.operational-native-body .operational-native-sidebar { padding: 26px 14px 14px; background: #fff; color: var(--operational-ink); border-right: 1px solid var(--operational-border); border-bottom: 0; }
+body.native-shell.operational-native-body .operational-native-menu { display: grid; align-content: start; gap: 7px; }
+body.native-shell.operational-native-body .operational-native-menu a {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  align-items: center;
+  gap: 18px;
+  min-height: 51px;
+  padding: 8px 20px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  background: transparent;
+  color: #304e78;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.4;
+}
+body.native-shell.operational-native-body .operational-native-menu a:is(:hover, :focus-visible) { color: var(--operational-ink); background: #f2f6f8; }
+body.native-shell.operational-native-body .operational-native-menu a.is-active { color: var(--operational-ink); background: #f1f4f7; border-color: transparent; box-shadow: inset 4px 0 #00a1ad; font-weight: 600; }
+body.native-shell.operational-native-body .operational-native-menu a > span { width: 22px; height: 22px; background: transparent; color: inherit; }
+body.native-shell.operational-native-body .operational-native-menu a.is-active > span { color: #00a1ad; }
+body.native-shell.operational-native-body .operational-native-menu svg { width: 22px; height: 22px; stroke-width: 1.6; }
+body.native-shell.operational-native-body .operational-native-menu i { display: none; }
+body.native-shell.operational-native-body .operational-native-workspace { grid-row: 2; min-width: 0; padding: 0; background: #f7f9fb; }
+
+body.native-shell.operational-native-body .operational-oncology-carousel {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 0;
+  margin: 0;
+  padding: 8px 10px 16px;
+  border: 0;
+  border-bottom: 1px solid var(--operational-border);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+body.native-shell.operational-native-body .operational-oncology-carousel-track { flex: 1; align-items: stretch; gap: 14px; padding: 3px; scroll-snap-type: x proximity; }
+body.native-shell.operational-native-body .operational-oncology-filter {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 140px;
+  width: 140px;
+  min-width: 140px;
+  height: 80px;
+  min-height: 80px;
+  gap: 5px;
+  padding: 8px 4px;
+  border: 1px solid var(--operational-border);
+  border-radius: 6px;
+  color: var(--operational-ink);
+  background: #fff;
+  box-shadow: 0 1px 3px #14254803;
+  text-align: center;
+  scroll-snap-align: start;
+}
+body.native-shell.operational-native-body .operational-oncology-filter:is(:hover, :focus-visible) { color: var(--operational-accent); border-color: #439c91; background: #f7fcfc; }
+body.native-shell.operational-native-body .operational-oncology-filter.is-active { color: #008f91; border-color: #00a3a4; background: #fff; box-shadow: none; }
+body.native-shell.operational-native-body .operational-oncology-filter-initial { width: 26px; height: 26px; flex: 0 0 26px; background: transparent; color: inherit; }
+body.native-shell.operational-native-body .operational-oncology-filter-initial svg { width: 20px; height: 20px; stroke-width: 1.6; }
+body.native-shell.operational-native-body .operational-oncology-filter-copy strong { color: inherit; font-size: 12px; font-weight: 600; line-height: 1.2; }
+body.native-shell.operational-native-body .operational-oncology-filter-copy small { position: absolute; top: 3px; right: 4px; color: inherit; font-size: 10px; line-height: 1; }
+body.native-shell.operational-native-body button.operational-oncology-carousel-arrow { flex: 0 0 26px; width: 26px; min-width: 26px; height: 30px; min-height: 30px; border: 1px solid var(--operational-border) !important; border-radius: 6px; color: var(--operational-muted) !important; box-shadow: none !important; font: 22px/1 Arial, sans-serif; }
+body.native-shell.operational-native-body .operational-oncology-carousel-arrow:disabled { opacity: .35; cursor: default; }
+body.native-shell.operational-native-body .operational-carousel-indicators { position: absolute; bottom: 5px; left: 50%; display: flex; gap: 4px; transform: translateX(-50%); }
+body.native-shell.operational-native-body .operational-carousel-indicators span { width: 10px; height: 3px; border-radius: 3px; background: #c2dcd7; }
+body.native-shell.operational-native-body .operational-carousel-indicators .is-active { background: #168e80; }
+
+body.native-shell.operational-native-body .operational-section-tabs { gap: 8px; margin: 0; padding: 12px 20px; border: 0; border-bottom: 1px solid var(--operational-border); border-radius: 0; background: #fff; }
+body.native-shell.operational-native-body .operational-section-tabs a { min-height: 40px; padding: 8px 16px; border-color: var(--operational-border); border-radius: 6px; color: var(--operational-ink); font-size: 12px; font-weight: 600; box-shadow: none; }
+body.native-shell.operational-native-body .operational-section-tabs a:is(.is-active, :hover) { color: var(--operational-accent); border-color: #00a3a4; background: #f0f7f8; box-shadow: none; }
+body.native-shell.operational-native-body .operational-native-table-card { margin-top: 0; border: 1px solid var(--operational-border); border-inline: 0; border-radius: 0; background: #fff; box-shadow: none; }
+body.native-shell.operational-native-body .operational-native-table-heading { min-height: 76px; padding: 16px 20px; gap: 16px; background: #fff; border-color: var(--operational-border); border-radius: 0; color: var(--operational-ink); }
+body.native-shell.operational-native-body .operational-native-table-heading h2 { margin: 0; color: var(--operational-ink); font-size: 18px; line-height: 1.3; font-weight: 700; }
+body.native-shell.operational-native-body .operational-native-table-heading :is(p, span, small) { color: var(--operational-muted); font-size: 12px; line-height: 1.4; }
+body.native-shell.operational-native-body .operational-native-table-heading .eyebrow { margin: 0 0 4px; font-size: 10px; font-weight: 600; }
+body.native-shell.operational-native-body .operational-native-table-heading strong { color: var(--operational-accent); background: #e0f4ef; border-color: transparent; padding: 5px 10px; font-size: 12px; font-weight: 600; }
+body.native-shell.operational-native-body .operational-native-filter { grid-template-columns: minmax(0, 1fr) 180px; gap: 12px; padding: 14px 20px; }
+body.native-shell.operational-native-body .operational-native-filter label { color: var(--operational-muted); font-size: 11px; font-weight: 600; }
+body.native-shell.operational-native-body .operational-native-filter input { padding-left: 12px; }
+body.native-shell.operational-native-body :is(.operational-native-workspace, .operational-modal, .doctor-oncology-modal) :is(input:not([type=checkbox]):not([type=radio]):not([type=hidden]):not([type=file]), select) { height: 40px; min-height: 40px; border-color: var(--operational-border); border-radius: 8px; color: var(--operational-ink); background: #fff; font-size: 12px; font-weight: 400; }
+body.native-shell.operational-native-body textarea { border-color: var(--operational-border); color: var(--operational-ink); font-size: 12px; }
+
+body.native-shell.operational-native-body .operational-native-table-scroll { border-color: var(--operational-border); scrollbar-color: #8dafac #f2f7f6; }
+body.native-shell.operational-native-body .operational-native-table { width: max-content; min-width: 100%; border-collapse: collapse; }
+body.native-shell.operational-native-body .operational-native-table :is(th, td) { max-width: 26ch; padding: 8px; border-color: var(--operational-border); line-height: 1.4; text-align: left; }
+body.native-shell.operational-native-body .operational-native-table th { height: 38px; color: var(--operational-ink); background: #f0f6f8; font-size: 10px; font-weight: 700; }
+body.native-shell.operational-native-body .operational-native-table td { height: 44px; color: var(--operational-ink); font-size: 12px; }
+body.native-shell.operational-native-body .operational-native-table td strong { color: inherit; font-weight: 600; }
+body.native-shell.operational-native-body .operational-native-table tbody tr:hover { background: #f0f7f8; }
+body.native-shell.operational-native-body :is(.operational-mini-form button, .operational-view-button, .operational-disabled-action) { min-height: 28px; padding: 4px 10px; border-radius: 6px; border-color: var(--operational-border); background: #fff; color: var(--operational-accent); font-size: 11px; font-weight: 600; box-shadow: none; }
+body.native-shell.operational-native-body .operational-disabled-action:disabled { color: #8392a7; background: #f5f7fa; }
+body.native-shell.operational-native-body :is(.authorization-pill, .operational-chip) { min-height: 24px; padding: 4px 10px; border-radius: 999px; border-color: transparent; font-size: 11px; line-height: 1.3; font-weight: 600; }
+body.native-shell.operational-native-body :is(.auth-approved, .operational-chip.success) { color: #00877e; background: #dff4ef; border-color: transparent; }
+body.native-shell.operational-native-body :is(.auth-pending, .operational-chip.warning) { color: #966200; background: #fff5dc; border-color: transparent; }
+body.native-shell.operational-native-body .auth-rejected { color: #b83d55; background: #fce9ed; border-color: transparent; }
+body.native-shell.operational-native-body .operational-authorization-list { gap: 4px; }
+body.native-shell.operational-native-body .operational-chip { color: var(--operational-muted); background: #f0f6f8; }
+body.native-shell.operational-native-body .operational-chip.oncology { color: #675398; background: #f2eef9; }
+
+body.native-shell.operational-native-body :is(.operational-primary-button, .operational-secondary-button, .operational-modal-card header a, .operational-modal-card footer a, .operational-modal-card footer button) { min-height: 40px; padding: 8px 16px; border: 1px solid var(--operational-border); border-radius: 6px; background: #fff; color: var(--operational-ink); font-size: 12px; font-weight: 600; box-shadow: none; }
+body.native-shell.operational-native-body :is(.operational-primary-button, .operational-modal-card footer button) { background: var(--operational-ink); border-color: var(--operational-ink); color: #fff; }
+body.native-shell.operational-native-body .operational-primary-button span { color: inherit; }
+body.native-shell.operational-native-body .operational-modal-card { border-color: var(--operational-border); border-radius: 12px; }
+body.native-shell.operational-native-body .operational-modal-card header { background: #fff; border-color: var(--operational-border); }
+body.native-shell.operational-native-body .operational-modal-card h2 { font-size: 18px; color: var(--operational-ink); }
+body.native-shell.operational-native-body .operational-modal-card :is(p, label) { font-size: 12px; color: var(--operational-muted); }
+body.native-shell.operational-native-body .operational-service-calendar-navigation :is(button, select) { border-color: var(--operational-border); border-radius: 6px; color: var(--operational-ink); font-size: 12px; }
+body.native-shell.operational-native-body .operational-service-calendar-navigation button { flex: 0 0 auto; min-width: 36px; min-height: 40px; box-shadow: none; }
+body.native-shell.operational-native-body .operational-service-calendar-navigation select { width: auto; flex: 0 0 auto; }
+
+@media (min-width: 641px) {
+  html body.native-shell.operational-native-body[class] { height: var(--platform-viewport-height); overflow: hidden; }
+  html body.native-shell.operational-native-body[class] > .shell > .operational-native-screen { height: var(--platform-viewport-height); min-height: 0; }
+  body.native-shell.operational-native-body .operational-native-sidebar { position: relative; top: auto; grid-row: 2; display: flex; flex-direction: column; height: 100%; min-height: 0; overflow: hidden; }
+  body.native-shell.operational-native-body .operational-native-menu { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior-y: contain; scrollbar-width: thin; scrollbar-color: #7babb5 transparent; scrollbar-gutter: stable; }
+  body.native-shell.operational-native-body .operational-native-workspace { height: 100%; min-height: 0; overflow: auto; overscroll-behavior: contain; scrollbar-color: #8dafac #f2f7f6; }
+}
+@media (max-width: 1100px) {
+  body.native-shell.operational-native-body { --operational-sidebar-width: 210px; }
+  body.native-shell.operational-native-body .operational-workspace-context { margin-left: 0; }
+}
+@media (max-width: 640px) {
+  body.native-shell.operational-native-body .operational-native-screen { display: flex; flex-direction: column; }
+  body.native-shell.operational-native-body .operational-native-topbar { flex-wrap: wrap; gap: 8px; padding: 6px 12px; }
+  body.native-shell.operational-native-body .operational-workspace-context { text-align: right; }
+  body.native-shell.operational-native-body .operational-workspace-session { width: 100%; justify-content: space-between; gap: 8px; }
+  body.native-shell.operational-native-body .operational-workspace-session summary { padding: 7px 9px; font-size: 11px; }
+  body.native-shell.operational-native-body .operational-workspace-session .klini-session-dropdown { left: 0; right: auto; }
+  body.native-shell.operational-native-body .operational-native-sidebar { position: static; min-height: 0; padding: 10px; border-right: 0; border-bottom: 1px solid var(--operational-border); }
+  body.native-shell.operational-native-body .operational-native-menu { display: flex; overflow-x: auto; }
+  body.native-shell.operational-native-body .operational-native-menu a { flex: 0 0 auto; white-space: nowrap; padding: 8px 12px; }
+  body.native-shell.operational-native-body .operational-native-workspace { width: 100%; }
+  body.native-shell.operational-native-body .operational-native-table-heading { flex-wrap: wrap; }
+  body.native-shell.operational-native-body .operational-native-filter { grid-template-columns: 1fr; }
+}

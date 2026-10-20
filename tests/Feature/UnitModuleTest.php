@@ -744,7 +744,7 @@ class UnitModuleTest extends TestCase
         foreach ([
             'catalog' => ['all', 'operation', 'clinical', 'pharmacy'],
             'users' => ['all', 'active', 'inactive'],
-            'patients' => ['all', 'active', 'inactive'],
+            'patients' => ['all', 'record', 'active', 'inactive', 'pre-admission', 'admissions', 'transfers-discharges'],
             'doctors' => ['all', 'active', 'pending', 'inactive'],
             'specialties' => ['all', 'active', 'inactive'],
             'external-pharmacy' => ['all', 'active', 'inactive'],

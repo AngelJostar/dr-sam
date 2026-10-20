@@ -29,21 +29,31 @@
   }
   const decorate = () => families.forEach(([wrapperSelector, trackSelector, tileSelector]) => {
     document.querySelectorAll(wrapperSelector).forEach(wrapper => {
-      if (wrapper.classList.contains('klini-carousel')) return;
+      if (wrapper.classList.contains('klini-carousel') || wrapper.classList.contains('workspace-carousel') || wrapper.dataset.carouselStyle === 'workspace') return;
       const track = wrapper.querySelector(trackSelector);
       const tiles = track ? [...track.querySelectorAll(tileSelector)] : [];
       if (!tiles.length) return;
-      document.body.classList.add('klini-carousels-enabled');
-      wrapper.classList.add('klini-carousel');
+      const compact = wrapper.dataset.carouselStyle === 'compact';
+      const stylePrefix = compact ? 'workspace-carousel' : 'klini-carousel';
+      if (!compact) document.body.classList.add('klini-carousels-enabled');
+      wrapper.classList.add(stylePrefix);
       wrapper.dataset.kliniCount = String(tiles.length);
-      track.classList.add('klini-carousel-track');
+      track.classList.add(`${stylePrefix}-track`);
       const controls = [...wrapper.querySelectorAll(':scope > button')];
-      controls.forEach(button => button.classList.add('klini-carousel-control'));
+      controls.forEach(button => button.classList.add(`${stylePrefix}-control`));
       tiles.forEach(tile => {
         const title = tile.querySelector('strong') || tile.querySelector(':scope > span:last-child');
         const label = title?.textContent.trim() || tile.textContent.trim();
-        tile.classList.add('klini-carousel-tile');
-        if (title) title.classList.add('klini-carousel-label');
+        tile.classList.add(`${stylePrefix}-tile`);
+        if (title) title.classList.add(`${stylePrefix}-label`);
+        if (compact) {
+          const selected = document.createElement('span');
+          selected.className = 'workspace-carousel-selected';
+          selected.textContent = '✓';
+          selected.setAttribute('aria-hidden', 'true');
+          tile.append(selected);
+          return;
+        }
         const art = artFor(label);
         if (art) {
           const [file, width, height, x, y, cropWidth, cropHeight] = art;
@@ -71,14 +81,14 @@
         tile.append(badge, arrow);
       });
       const indicators = document.createElement('div');
-      indicators.className = 'klini-carousel-indicators';
+      indicators.className = `${stylePrefix}-indicators`;
       indicators.setAttribute('role', 'group');
       indicators.setAttribute('aria-label', 'Opciones del carrusel');
       const dots = tiles.map((tile, index) => {
         const dot = document.createElement('button');
         dot.type = 'button';
-        dot.className = 'klini-carousel-indicator';
-        dot.setAttribute('aria-label', `Mostrar ${tile.querySelector('.klini-carousel-label')?.textContent.trim() || `opción ${index + 1}`}`);
+        dot.className = `${stylePrefix}-indicator`;
+        dot.setAttribute('aria-label', `Mostrar ${tile.querySelector(`.${stylePrefix}-label`)?.textContent.trim() || `opción ${index + 1}`}`);
         dot.addEventListener('click', () => {
           track.scrollTo({ left: tile.offsetLeft - track.offsetLeft - 8, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
           tile.focus({ preventScroll: true });

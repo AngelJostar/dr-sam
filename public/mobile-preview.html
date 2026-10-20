@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Vista movil - Portal del Paciente</title>
+  <title>Vista Android - Portal del Paciente</title>
   <style>
     * {
       box-sizing: border-box;
@@ -19,16 +19,16 @@
       display: grid;
       place-items: start center;
       min-height: 100vh;
-      padding: 24px;
+      padding: 16px;
       overflow: auto;
       background: #e8eeee;
     }
 
     .phone-preview {
       position: relative;
-      width: 414px;
-      height: 868px;
-      padding: 12px;
+      width: 386px;
+      height: 686px;
+      padding: 20px 12px 24px;
       overflow: hidden;
       border: 1px solid #26364a;
       border-radius: 34px;
@@ -39,12 +39,12 @@
     .phone-preview::before {
       position: absolute;
       z-index: 2;
-      top: 7px;
+      top: 6px;
       left: 50%;
-      width: 104px;
-      height: 20px;
-      border-radius: 0 0 14px 14px;
-      background: #132136;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #415065;
       content: "";
       transform: translateX(-50%);
       pointer-events: none;
@@ -52,11 +52,24 @@
 
     .phone-preview iframe {
       display: block;
-      width: 390px;
-      height: 844px;
+      width: 360px;
+      height: 640px;
       border: 0;
       border-radius: 23px;
       background: #ffffff;
+    }
+
+    .phone-preview::after {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      width: 72px;
+      height: 3px;
+      border-radius: 3px;
+      background: #c6d2dd;
+      content: "";
+      transform: translateX(-50%);
+      pointer-events: none;
     }
 
     @media (max-width: 440px) {
@@ -69,13 +82,15 @@
       .phone-preview {
         width: 100vw;
         height: 100vh;
+        height: 100dvh;
         padding: 0;
         border: 0;
         border-radius: 0;
         box-shadow: none;
       }
 
-      .phone-preview::before {
+      .phone-preview::before,
+      .phone-preview::after {
         display: none;
       }
 
@@ -88,7 +103,7 @@
   </style>
 </head>
 <body>
-  <main class="phone-preview" aria-label="Vista movil del portal del paciente">
+  <main class="phone-preview" aria-label="Vista Android del portal del paciente, 360 por 640 píxeles">
     <iframe src="/patient" title="Portal del Paciente"></iframe>
   </main>
 </body>

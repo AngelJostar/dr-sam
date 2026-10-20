@@ -1,4 +1,4 @@
-<?php $__env->startSection('body_class', 'superadmin-native-body'.($section === 'doctors' ? ' superadmin-doctors-catalog-body' : '').($section === 'medications' ? ' superadmin-medications-catalog-body' : '')); ?>
+<?php $__env->startSection('body_class', 'superadmin-native-body'.($section === 'doctors' ? ' superadmin-doctors-catalog-body' : '').($section === 'medications' ? ' superadmin-medications-catalog-body' : '').($section === 'institutions' ? ' superadmin-institutions-catalog-body' : '')); ?>
 
 <?php
   $statusLabels = [
@@ -11,12 +11,85 @@
   ];
 
   $badgeText = fn ($value) => $statusLabels[strtolower((string) $value)] ?? ucfirst((string) $value);
-  $searchPlaceholder = $catalog['search_placeholder'] ?? 'Buscar en '.strtolower($catalog['title']);
+  $carouselParameter = 'status';
+  $carouselOptions = ['all' => 'Todos', 'active' => 'Activos', 'inactive' => 'Inactivos'];
+  if (in_array($section, ['users', 'insurance-advisors'], true)) {
+    $carouselOptions['suspended'] = 'Suspendidos';
+  } elseif ($section === 'medical-devices') {
+    $carouselOptions['evaluation'] = 'En evaluación';
+  } elseif ($section === 'access') {
+    $carouselParameter = 'module';
+    $carouselShortLabels = [
+      'superadmin' => 'Superadmin', 'institution' => 'Instituciones', 'unit' => 'Unidades',
+      'operational' => 'Operación', 'operational_outpatient' => 'Consulta externa',
+      'external_pharmacy' => 'Farmacia externa', 'digital_pharmacy' => 'Farmacia digital',
+      'doctor' => 'Médicos', 'patient' => 'Pacientes', 'insurance_health' => 'Aseguradoras',
+      'insurance_advisor' => 'Asesores GMM', 'provider_npt' => 'Proveedor NPT',
+      'provider_import' => 'Importación', 'provider_medicines' => 'Distribuidores',
+      'provider_clinical_labs' => 'Laboratorios', 'community_admin' => 'Comunidades',
+    ];
+    $moduleLabels = \App\Models\PlatformModule::query()->pluck('label', 'key');
+    foreach (\App\Models\User::query()->whereNotNull('module')->distinct()->orderBy('module')->pluck('module') as $moduleKey) {
+      $carouselOptions[$moduleKey] = $moduleLabels[$moduleKey] ?? ucfirst(str_replace('_', ' ', $moduleKey));
+    }
+    unset($carouselOptions['active'], $carouselOptions['inactive']);
+  } elseif ($section === 'subscriptions') {
+    $carouselParameter = null;
+    $carouselOptions = ['all' => 'Todos'] + collect($subscriptionSettings['plans'])->pluck('name', 'id')->all();
+  } elseif ($section === 'prescription-format') {
+    $carouselParameter = null;
+    $carouselOptions = ['all' => 'Completo', 'patient' => 'Paciente', 'clinical' => 'Datos clínicos', 'medications' => 'Medicamentos', 'doctor' => 'Médico'];
+  } elseif ($section === 'mix-request-format') {
+    $carouselParameter = null;
+    $carouselOptions = ['all' => 'Todos', 'oncology' => 'Mezcla oncologica', 'parenteral' => 'Nutricion parenteral'];
+  } elseif ($section === 'advertising') {
+    $carouselParameter = null;
+    $carouselOptions = ['all' => 'Todos', 'primary' => 'Principal', 'secondary' => 'Secundario'];
+  }
+  $carouselSelected = $carouselParameter ? ($filters[$carouselParameter] ?: 'all') : 'all';
+  if ($section === 'users') {
+    $carouselOptions = ['all' => 'Todos', 'klini' => 'Klini', 'operational' => 'Operativos'] + $carouselOptions;
+    $carouselQueries = [];
+    foreach ($carouselOptions as $value => $label) {
+      $isCategory = in_array($value, ['klini', 'operational'], true);
+      $carouselQueries[$value] = ['category' => $isCategory ? $value : null, 'status' => $isCategory ? null : $value];
+    }
+    if (in_array($filters['category'], ['klini', 'operational'], true)) {
+      $carouselSelected = $filters['category'];
+    }
+  }
+  $doctorView = $section === 'doctors' && in_array(request('view'), ['catalog', 'commissions'], true) ? request('view') : 'all';
+  if ($section === 'insurance-carriers') {
+    $carouselOptions += ['gmm' => 'Seguros de gastos médicos mayores', 'life' => 'Seguros de vida'];
+    $carouselQueries = [
+      'all' => ['status' => 'all', 'view' => request('view', 'carriers'), 'edit_plan' => null],
+      'active' => ['status' => 'active', 'edit_plan' => null], 'inactive' => ['status' => 'inactive', 'edit_plan' => null],
+      'gmm' => ['view' => 'gmm', 'edit_plan' => null], 'life' => ['view' => 'life', 'edit_plan' => null],
+    ];
+    $carouselIcons = ['gmm' => 'insurance-medical', 'life' => 'insurance-life'];
+    $carouselSelectedValues = [in_array($filters['status'], ['active', 'inactive'], true) ? $filters['status'] : 'all'];
+    if (in_array(request('view'), ['gmm', 'life'], true)) $carouselSelectedValues[] = request('view');
+  }
+  if ($section === 'doctors') {
+    $carouselOptions += ['catalog' => 'Catálogo', 'commissions' => 'Tabla de comisiones'];
+    $carouselQueries = [
+      'all' => ['status' => 'all', 'view' => null],
+      'active' => ['status' => 'active', 'view' => null],
+      'inactive' => ['status' => 'inactive', 'view' => null],
+      'catalog' => ['view' => 'catalog'],
+      'commissions' => ['view' => 'commissions'],
+    ];
+    $carouselIcons = ['catalog' => 'admin-document', 'commissions' => 'module'];
+    if ($doctorView !== 'all') $carouselSelected = $doctorView;
+  }
   $csvUrl = route('superadmin.catalog.csv', array_filter([
     'section' => $section,
     'q' => $filters['q'] ?: null,
     'status' => $filters['status'] ?: null,
     'module' => $filters['module'] ?: null,
+    'category' => $filters['category'] ?: null,
+    'view' => $section === 'insurance-carriers' ? request('view') : null,
+    'carrier' => $section === 'insurance-carriers' ? request('carrier') : null,
   ]));
   $advertisingSettings = \App\Models\PlatformModule::query()->where('key', 'advertising')->first()?->settings['advertising_config'] ?? [];
   $prescriptionSettings = \App\Models\PlatformModule::query()->where('key', 'doctor')->first()?->settings['prescription_format'] ?? [];
@@ -24,69 +97,13 @@
 
 <?php $__env->startSection('content'); ?>
   <div class="superadmin-native-screen">
+    <?php echo $__env->make('superadmin._topbar', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
     <?php echo $__env->make('superadmin._sidebar', ['active' => $section], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
-    <section class="superadmin-native-workspace">
-      <?php if(session('status')): ?>
-        <div class="notice success"><?php echo e(session('status')); ?></div>
-      <?php endif; ?>
+    <section class="superadmin-native-workspace<?php if($section === 'insurance-carriers'): ?> superadmin-insurance-workspace<?php endif; ?>" tabindex="0" aria-label="Contenido del Superadministrador">
+      <h1 class="superadmin-native-page-title"><?php echo e($catalog['title']); ?></h1>
 
-      <?php if($errors->any()): ?>
-        <div class="notice danger">
-          <strong>No se pudo actualizar.</strong>
-          <ul>
-            <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-              <li><?php echo e($error); ?></li>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-          </ul>
-        </div>
-      <?php endif; ?>
-
-      <header class="superadmin-native-header">
-        <div>
-          <p class="eyebrow"><?php echo e($catalog['eyebrow']); ?></p>
-          <h1><?php echo e($catalog['title']); ?></h1>
-          <p><?php echo e($catalog['description']); ?></p>
-        </div>
-        <div class="superadmin-native-actions">
-          <a href="<?php echo e(route('superadmin.catalog', $section)); ?>">&larr; Restablecer</a>
-          <strong><?php echo e(auth()->user()?->name ?? 'Superadministrador'); ?> - <?php echo e(now()->format('d/m/Y')); ?></strong>
-        </div>
-      </header>
-
-      <?php if(! in_array($section, ['prescription-format', 'mix-request-format', 'advertising', 'subscriptions'], true)): ?>
-        <form class="superadmin-native-catalog-toolbar superadmin-native-catalog-filters" method="get" action="<?php echo e(route('superadmin.catalog', $section)); ?>">
-          <label class="superadmin-native-search">
-            <span>Q</span>
-            <input name="q" value="<?php echo e($filters['q']); ?>" placeholder="<?php echo e($searchPlaceholder); ?>">
-          </label>
-
-          <?php if(! empty($catalog['status_filter'])): ?>
-            <label>Estatus
-              <select name="status">
-                <option value="all">Todos</option>
-                <?php $__currentLoopData = ['active' => 'Activo', 'inactive' => 'Inactivo', 'suspended' => 'Suspendido']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                  <option value="<?php echo e($value); ?>" <?php if($filters['status'] === $value): echo 'selected'; endif; ?>><?php echo e($label); ?></option>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-              </select>
-            </label>
-          <?php endif; ?>
-
-          <?php if(! empty($catalog['module_filter'])): ?>
-            <label>Modulo
-              <select name="module">
-                <option value="all">Todos</option>
-                <?php $__currentLoopData = \App\Models\PlatformModule::query()->orderBy('label')->get(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $module): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                  <option value="<?php echo e($module->key); ?>" <?php if($filters['module'] === $module->key): echo 'selected'; endif; ?>><?php echo e($module->label); ?></option>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-              </select>
-            </label>
-          <?php endif; ?>
-
-          <button type="submit">Buscar</button>
-          <a class="superadmin-native-csv" href="<?php echo e($csvUrl); ?>">CSV</a>
-        </form>
-      <?php endif; ?>
+      <?php echo $__env->make('superadmin._filter-carousel', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
       <?php if(false && $section === 'advertising'): ?>
         <section class="superadmin-native-admin-form">
@@ -241,6 +258,7 @@
                 <h2>Pacientes usuarios de plataforma</h2>
                 <p><?php echo e($records->total()); ?> usuarios pacientes</p>
               </div>
+              <a href="<?php echo e($csvUrl); ?>">CSV</a>
             </div>
             <div class="superadmin-native-catalog-scroll">
               <table class="superadmin-native-catalog-table">
@@ -541,11 +559,6 @@
             </div>
           </header>
 
-          <div class="superadmin-native-advertising-tabs">
-            <button type="button" class="is-active">Medico <span>2 espacios</span></button>
-            <button type="button">Pacientes <span>2 espacios</span></button>
-          </div>
-
           <div class="superadmin-native-advertising-preview">
             <header>
               <div>
@@ -557,7 +570,7 @@
             </header>
 
             <div class="superadmin-native-advertising-layout">
-              <div class="superadmin-native-advertising-main">
+              <div class="superadmin-native-advertising-main" data-admin-filter-panel="primary">
                 <div class="superadmin-native-advertising-banner">
                   <div>Banner</div>
                   <article>
@@ -581,7 +594,7 @@
                 </div>
               </div>
 
-              <aside class="superadmin-native-advertising-side">
+              <aside class="superadmin-native-advertising-side" data-admin-filter-panel="secondary">
                 <button type="button" class="superadmin-native-advertising-edit">Editar banner</button>
                 <div>Banner</div>
                 <article>
@@ -622,7 +635,7 @@
             <strong><?php echo e($footerNote); ?></strong>
           </div>
 
-          <section class="superadmin-native-prescription-section">
+          <section class="superadmin-native-prescription-section" data-admin-filter-panel="patient">
             <h3>Datos del paciente</h3>
             <div class="superadmin-native-prescription-grid">
               <label>Nombre(s)<input value="Andrea Montserrat" readonly></label>
@@ -637,7 +650,7 @@
             </div>
           </section>
 
-          <section class="superadmin-native-prescription-section">
+          <section class="superadmin-native-prescription-section" data-admin-filter-panel="clinical">
             <h3>Diagnostico y resumen clinico</h3>
             <div class="superadmin-native-prescription-clinical">
               <label>Diagnostico presuntivo o definitivo
@@ -649,7 +662,7 @@
             </div>
           </section>
 
-          <section class="superadmin-native-prescription-section">
+          <section class="superadmin-native-prescription-section" data-admin-filter-panel="medications">
             <h3>Medicamentos indicados</h3>
             <div class="superadmin-native-prescription-meds">
               <table>
@@ -728,7 +741,7 @@
             })();
           </script>
 
-          <section class="superadmin-native-prescription-section">
+          <section class="superadmin-native-prescription-section" data-admin-filter-panel="doctor">
             <h3>Medico tratante</h3>
             <div class="superadmin-native-prescription-grid is-doctor">
               <label>Nombre del medico<input value="Dr. Carter Jimmy" readonly></label>
@@ -738,14 +751,22 @@
             </div>
           </section>
         </section>
+      <?php elseif(isset($insuranceCategory)): ?>
+        <?php echo $__env->make('superadmin._insurance-plans', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+      <?php elseif($section === 'insurance-carriers'): ?>
+        <?php echo $__env->make('superadmin._insurance-carriers', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
       <?php else: ?>
       <section class="superadmin-native-catalog-card">
+        <?php if($section === 'institutions'): ?><div class="superadmin-institution-catalog"><?php endif; ?>
+        <?php if($section === 'doctors'): ?><div data-admin-filter-panel="catalog"<?php if($doctorView === 'commissions'): ?> hidden<?php endif; ?>><?php endif; ?>
         <div class="superadmin-native-section-heading">
           <div>
             <h2><?php echo e($catalog['title']); ?></h2>
-            <p><?php echo e($records->total()); ?> registros visibles</p>
+            <p><?php echo e($records->total()); ?> <?php echo $section === 'medications' && $records->total() === 1 ? 'registro visible' : 'registros visibles'; ?></p>
           </div>
 
+          <div class="superadmin-native-heading-actions">
+          <a class="superadmin-native-csv" href="<?php echo e($csvUrl); ?>"><?php if(in_array($section, ['institutions', 'medications'], true)): ?><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M4 15v5h16v-5" /></svg>Exportar CSV<?php else: ?>CSV<?php endif; ?></a>
           <?php if(! empty($catalog['primary_action'])): ?>
             <?php
               $primaryRoute = $catalog['primary_action']['route'];
@@ -757,6 +778,7 @@
           <?php else: ?>
             <a href="<?php echo e(request()->fullUrl()); ?>">Actualizar</a>
           <?php endif; ?>
+          </div>
         </div>
 
         <div class="superadmin-native-catalog-scroll">
@@ -774,8 +796,9 @@
                   $values = $catalog['map']($record);
                   $isModule = $record instanceof \App\Models\PlatformModule;
                   $isUser = $record instanceof \App\Models\User;
+                  $isSelectedInstitution = $section === 'institutions' && $selectedInstitution?->id === $record->id;
                 ?>
-                <tr>
+                <tr<?php if($isSelectedInstitution): ?> class="is-selected-institution"<?php endif; ?><?php if($section === 'institutions'): ?> data-institution-row data-institution-href="<?php echo e(request()->fullUrlWithQuery(['selected_institution' => $record->id])); ?>#institution-detail"<?php endif; ?>>
                   <?php $__currentLoopData = $values; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <?php
                       $column = strtolower($catalog['columns'][$index] ?? '');
@@ -783,8 +806,17 @@
                       $isStatusColumn = str_contains($column, 'estatus') || str_contains($column, 'validacion');
                     ?>
 
-                    <td>
-                      <?php if($isActionColumn): ?>
+                    <td<?php if($column === 'fuente / perfil'): ?> class="superadmin-native-profile-cell"<?php endif; ?>>
+                      <?php if($section === 'institutions' && $index === 0): ?>
+                        <button type="button" class="superadmin-institution-select" data-institution-select aria-controls="institution-detail" aria-pressed="<?php echo $isSelectedInstitution ? 'true' : 'false'; ?>" aria-label="Ver información de <?php echo e($record->name); ?>"><?php echo e($value); ?></button>
+                      <?php elseif($section === 'institutions' && $index >= 7): ?>
+                        <?php echo $__env->make('superadmin._institution-action', ['record' => $record, 'index' => $index, 'value' => $value])->render(); ?>
+                      <?php elseif($section === 'medications' && $index === 2): ?>
+                        <strong class="superadmin-medication-name"><?php echo e($record->name); ?></strong>
+                        <?php if(filled($record->external_id)): ?><small class="superadmin-medication-code"><?php echo e($record->external_id); ?></small><?php endif; ?>
+                      <?php elseif($section === 'medications' && $index === 4 && $value === 'Por registrar'): ?>
+                        <span class="superadmin-medication-missing"><?php echo e($value); ?></span>
+                      <?php elseif($isActionColumn): ?>
                         <div class="superadmin-native-row-actions">
                           <?php if($isModule): ?>
                             <?php
@@ -843,19 +875,6 @@
                               <?php echo csrf_field(); ?>
                               <?php echo method_field('patch'); ?>
                               <input type="hidden" name="status" value="<?php echo e($record->status === 'active' ? 'inactive' : 'active'); ?>">
-                              <button type="submit"><?php echo e($record->status === 'active' ? 'Inactivar' : 'Activar'); ?></button>
-                            </form>
-                          <?php elseif($record instanceof \App\Models\Institution): ?>
-                            <a href="<?php echo e(route('superadmin.catalog', ['section' => 'institutions', 'selected_institution' => $record->id])); ?>#institution-detail">Ver</a>
-                            <a href="#edit-institution-<?php echo e($record->id); ?>">Editar</a>
-                            <form method="post" action="<?php echo e(route('superadmin.institutions.update', $record)); ?>">
-                              <?php echo csrf_field(); ?>
-                              <?php echo method_field('patch'); ?>
-                              <input type="hidden" name="name" value="<?php echo e($record->name); ?>">
-                              <input type="hidden" name="legal_name" value="<?php echo e($record->legal_name); ?>">
-                              <input type="hidden" name="type" value="<?php echo e($record->type); ?>">
-                              <input type="hidden" name="status" value="<?php echo e($record->status === 'active' ? 'inactive' : 'active'); ?>">
-                              <input type="hidden" name="username" value="<?php echo e($record->owner?->username); ?>">
                               <button type="submit"><?php echo e($record->status === 'active' ? 'Inactivar' : 'Activar'); ?></button>
                             </form>
                           <?php elseif($record instanceof \App\Models\Hospital): ?>
@@ -927,6 +946,8 @@
                             <button type="button"><?php echo e($value); ?></button>
                           <?php endif; ?>
                         </div>
+                      <?php elseif($section === 'users' && $catalog['columns'][$index] === 'Contraseña'): ?>
+                        <span title="Las contraseñas se almacenan como hashes y no se pueden recuperar."><?php echo e($value); ?></span>
                       <?php elseif($isStatusColumn): ?>
                         <span class="<?php echo \Illuminate\Support\Arr::toCssClasses(['superadmin-native-status-pill', 'is-danger' => in_array(strtolower((string) $value), ['inactive', 'inactivo', 'suspended', 'suspendido', 'deshabilitado'], true)]); ?>">
                           <?php echo e($badgeText($value)); ?>
@@ -956,6 +977,9 @@
             </tbody>
           </table>
         </div>
+
+        <?php if($section === 'institutions'): ?></div><?php endif; ?>
+        <?php if($section === 'doctors'): ?></div><?php endif; ?>
 
         <?php if($section === 'users'): ?>
           <?php $__currentLoopData = $records; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $platformUser): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -1011,19 +1035,7 @@
 
         <?php if($section === 'institutions'): ?>
           <?php if($selectedInstitution): ?>
-            <section id="institution-detail" class="superadmin-institution-detail">
-              <header>
-                <div><h3><?php echo e($selectedInstitution->name); ?></h3><p><?php echo e($selectedInstitution->owner?->username ?? $selectedInstitution->external_id); ?></p></div>
-                <a href="<?php echo e(route('institution.dashboard', ['institution' => $selectedInstitution->id])); ?>">Abrir modulo</a>
-              </header>
-              <div class="superadmin-institution-summary">
-                <div><span>Estatus</span><strong><?php echo e($selectedInstitution->status === 'active' ? 'Activo' : 'Inactivo'); ?></strong><small>Institucion</small></div>
-                <div><span>Tipo</span><strong><?php echo e(ucfirst($selectedInstitution->type)); ?></strong><small>Clasificacion</small></div>
-                <div><span>Unidades</span><strong><?php echo e($selectedInstitution->medical_units_count ?? 0); ?></strong><small>Unidades registradas</small><a href="<?php echo e(route('institution.dashboard', ['institution' => $selectedInstitution->id])); ?>#units">Ver Unidades</a></div>
-                <div><span>Servicios</span><strong><?php echo e($selectedInstitution->services_count ?? 0); ?></strong><small>Servicios habilitados</small><a href="<?php echo e(route('institution.dashboard', ['institution' => $selectedInstitution->id])); ?>#services">Ver Servicios</a></div>
-                <div><span>Modulos</span><strong><?php echo e(\App\Models\PlatformModule::query()->where('enabled', true)->count()); ?></strong><small>Modulos activos</small></div>
-              </div>
-            </section>
+            <?php echo $__env->make('superadmin._institution-detail', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
           <?php endif; ?>
 
           <?php $__currentLoopData = $records; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $institutionRecord): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -1067,9 +1079,9 @@
         <?php endif; ?>
 
         <?php if($section === 'doctors'): ?>
-          <section id="doctor-commissions" class="superadmin-doctor-commissions">
+          <section id="doctor-commissions" class="superadmin-doctor-commissions" data-admin-filter-panel="commissions"<?php if($doctorView === 'catalog'): ?> hidden<?php endif; ?>>
             <header>
-              <div><h3>Tabla de comisiones por medico</h3><p>Vista tipo Excel con un medico por renglon.</p></div>
+              <div><h3>Tabla de comisiones por médico</h3><p>Vista tipo Excel con un médico por renglón.</p></div>
               <span><?php echo e($records->count()); ?> medicos - <?php echo e($records->count() * 3); ?> operaciones - $<?php echo e(number_format($records->count() * 532.40, 2)); ?> comision estimada</span>
             </header>
             <div class="superadmin-doctor-commission-scroll">
@@ -1216,51 +1228,6 @@
           </section>
         <?php endif; ?>
 
-        <?php if($section === 'insurance-carriers'): ?>
-          <?php $__currentLoopData = $records; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $carrierRecord): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <section id="edit-insurance-carrier-<?php echo e($carrierRecord->id); ?>" class="superadmin-user-modal" role="dialog" aria-modal="true">
-              <a class="superadmin-user-modal-backdrop" href="#"></a>
-              <div class="superadmin-user-modal-card">
-                  <a href="#" aria-label="Cerrar">x</a>
-                <form method="post" action="<?php echo e(route('superadmin.insurance-carriers.update', $carrierRecord)); ?>">
-                  <?php echo csrf_field(); ?>
-                  <?php echo method_field('patch'); ?>
-                  <div class="superadmin-user-modal-grid">
-                    <label>Nombre<input name="name" value="<?php echo e($carrierRecord->name); ?>" required></label>
-                    <label>Identificador<input name="slug" value="<?php echo e($carrierRecord->slug); ?>" required></label>
-                    <label>Tipo<input name="type" value="<?php echo e($carrierRecord->type); ?>" placeholder="GMM, salud, convenio"></label>
-                    <label>Contacto<input name="contact" value="<?php echo e($carrierRecord->contact); ?>"></label>
-                    <label>Telefono<input name="phone" placeholder="Ej. 5551234567"></label>
-                    <label>Correo<input name="email" type="email" value="<?php echo e($carrierRecord->email); ?>"></label>
-                    <label>Estatus<select name="status"><option value="active" <?php if($carrierRecord->status === 'active'): echo 'selected'; endif; ?>>Activo</option><option value="inactive" <?php if($carrierRecord->status === 'inactive'): echo 'selected'; endif; ?>>Inactivo</option></select></label>
-                    <label class="span-2">Alcance<textarea name="scope" rows="3"><?php echo e($carrierRecord->scope); ?></textarea></label>
-                  </div>
-                  <footer><a href="#">Cancelar</a><button type="submit">Guardar aseguradora</button></footer>
-                </form>
-              </div>
-            </section>
-          <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-          <section id="create-insurance-carrier" class="superadmin-user-modal" role="dialog" aria-modal="true">
-            <a class="superadmin-user-modal-backdrop" href="#"></a>
-            <div class="superadmin-user-modal-card">
-                  <a href="#" aria-label="Cerrar">x</a>
-              <form method="post" action="<?php echo e(route('superadmin.insurance-carriers.store')); ?>">
-                <?php echo csrf_field(); ?>
-                <div class="superadmin-user-modal-grid">
-                  <label>Nombre<input name="name" required></label>
-                  <label>Identificador<input name="slug" placeholder="aseguradora-salud" required></label>
-                  <label>Tipo<input name="type" placeholder="GMM, salud, convenio"></label>
-                  <label>Contacto<input name="contact"></label>
-                    <label>Telefono<input name="phone" placeholder="Ej. 5551234567"></label>
-                  <label>Correo<input name="email" type="email"></label>
-                  <label>Estatus<select name="status"><option value="active">Activo</option><option value="inactive">Inactivo</option></select></label>
-                  <label class="span-2">Alcance<textarea name="scope" rows="3" placeholder="Cobertura, convenio o notas operativas"></textarea></label>
-                </div>
-                <footer><a href="#">Cancelar</a><button type="submit">Crear aseguradora</button></footer>
-              </form>
-            </div>
-          </section>
-        <?php endif; ?>
         <?php if($section === 'insurance-advisors'): ?>
           <?php $__currentLoopData = $records; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $advisorRecord): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <section id="edit-insurance-advisor-<?php echo e($advisorRecord->id); ?>" class="superadmin-user-modal" role="dialog" aria-modal="true">

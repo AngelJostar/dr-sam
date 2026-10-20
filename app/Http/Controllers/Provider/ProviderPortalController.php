@@ -11,6 +11,9 @@ use App\Models\ProviderRequest;
 use App\Models\ProviderRequestStatusEvent;
 use App\Services\Platform\PlatformAuditService;
 use App\Services\Platform\DomainStateTransitionService;
+use App\Services\Platform\ImportExpedientDocuments;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -35,36 +38,90 @@ class ProviderPortalController extends Controller
 
     public function storeImportPatientDocuments(Request $request): RedirectResponse
     {
-        $data = $request->validate([
+        $request->merge(['document_group' => 'patient']);
+
+        return $this->storeImportDocuments($request);
+    }
+
+    public function storeImportDocuments(Request $request): RedirectResponse
+    {
+        $maxFiles = collect(array_keys(ImportExpedientDocuments::GROUPS))
+            ->max(fn ($group) => count(ImportExpedientDocuments::uploadTypes($group)));
+        $data = $request->validateWithBag('importDocuments', [
             'folio' => ['required', 'string'],
-            'files' => ['required', 'array', 'min:1'],
+            'document_group' => ['required', Rule::in(array_keys(ImportExpedientDocuments::GROUPS))],
+            'return_section' => ['nullable', 'integer', Rule::in([1, 4, 5, 6])],
+            'files' => ['required', 'array', 'min:1', 'max:'.$maxFiles],
             'files.*' => ['file', 'mimes:pdf,jpg,jpeg,png', 'max:10240'],
         ]);
-        $names = ['ine' => 'INE', 'address' => 'Comprobante de domicilio', 'tax' => 'Cédula fiscal', 'curp' => 'CURP', 'prescription' => 'Receta médica', 'summary' => 'Resumen clínico'];
+        abort_unless(ImportExpedientDocuments::canUploadFromSection((int) ($data['return_section'] ?? 6), $data['document_group']), 403);
+        $names = ImportExpedientDocuments::uploadTypes($data['document_group']);
         abort_unless(count(array_diff(array_keys($data['files']), array_keys($names))) === 0, 422);
         $provider = $this->resolveProvider($request, 'import');
         $record = ProviderRequest::query()->where('external_id', $data['folio'])->where('request_type', 'import')
+            ->when($request->user()->role === 'provider' && !$provider, fn ($query) => $query->whereRaw('1 = 0'))
             ->when($provider, fn ($query) => $query->where('provider_id', $provider->id))->first();
         // Reference rows can accept private drafts without inventing a patient.
         abort_unless($record || (in_array($data['folio'], ['IMP-2026-001', 'IMP-2026-002', 'IMP-2026-003', 'IMP-2026-004', 'IMP-2026-005'], true)
             && !ProviderRequest::query()->where('external_id', $data['folio'])->exists()), 404);
-        foreach ($data['files'] as $key => $file) {
-            $path = $file->store('import-documents/'.$request->user()->id, 'local');
-            \App\Models\Document::query()->create([
-                'patient_id' => $record?->patient_id, 'name' => $file->getClientOriginalName(),
-                'document_type' => $names[$key], 'file_path' => $path, 'file_mime' => $file->getMimeType(),
-                'file_size' => $file->getSize(), 'uploaded_by' => $request->user()->id, 'loaded_at' => now(),
-                'metadata' => ['category' => $names[$key], 'provider_request_id' => $record?->id, 'folio' => $data['folio'], 'source' => 'import_administration', 'pending_patient' => !$record?->patient_id],
-            ]);
+        $paths = [];
+        try {
+            DB::transaction(function () use ($data, $record, $request, $names, &$paths) {
+                foreach ($data['files'] as $key => $file) {
+                    $path = $file->store('import-documents/'.$request->user()->id, 'local');
+                    if (! $path) {
+                        throw new \RuntimeException('No fue posible guardar el archivo.');
+                    }
+                    $paths[] = $path;
+                    \App\Models\Document::query()->create([
+                        'patient_id' => $record?->patient_id,
+                        'name' => $file->getClientOriginalName(),
+                        'document_type' => $names[$key],
+                        'file_path' => $path,
+                        'file_mime' => $file->getMimeType(),
+                        'file_size' => $file->getSize(),
+                        'uploaded_by' => $request->user()->id,
+                        'loaded_at' => now(),
+                        'metadata' => [
+                            'category' => $names[$key],
+                            'document_group' => $data['document_group'],
+                            'document_key' => $key,
+                            'provider_request_id' => $record?->id,
+                            'folio' => $data['folio'],
+                            'source' => 'import_administration',
+                            'pending_patient' => ! $record?->patient_id,
+                        ],
+                    ]);
+                }
+            });
+        } catch (\Throwable $exception) {
+            Storage::disk('local')->delete($paths);
+            throw $exception;
         }
-        return redirect()->route('provider.import.dashboard', ['section' => 6, 'action' => 0])->with('status', 'Documentos del paciente guardados.');
+
+        return redirect()->route('provider.import.dashboard', ['section' => $data['return_section'] ?? 6, 'action' => 0])
+            ->with('status', ImportExpedientDocuments::GROUPS[$data['document_group']]['title'].' guardados.');
     }
 
     public function viewImportDocument(Request $request, \App\Models\Document $document)
     {
         $provider = $this->resolveProvider($request, 'import');
-        $ownsDraft = !$document->patient_id && $document->uploaded_by === $request->user()->id && data_get($document->metadata, 'source') === 'import_administration';
-        abort_unless($ownsDraft || ($document->patient_id && ProviderRequest::query()->where('patient_id', $document->patient_id)
+        if (in_array(data_get($document->metadata, 'source'), ['import_expedient', 'import_administration'], true)) {
+            $recordId = data_get($document->metadata, 'provider_request_id');
+            if ($recordId) {
+                abort_if($request->user()->role === 'provider' && !$provider, 403);
+                abort_unless(ProviderRequest::query()->whereKey($recordId)
+                    ->where('request_type', 'import')->when($provider, fn ($query) => $query->where('provider_id', $provider->id))->exists(), 403);
+            } else {
+                abort_unless(data_get($document->metadata, 'source') === 'import_administration' && $document->uploaded_by === $request->user()->id, 403);
+            }
+            abort_unless($document->file_path && \Illuminate\Support\Facades\Storage::disk('local')->exists($document->file_path), 404);
+            return $request->boolean('download')
+                ? \Illuminate\Support\Facades\Storage::disk('local')->download($document->file_path, $document->name)
+                : response()->file(\Illuminate\Support\Facades\Storage::disk('local')->path($document->file_path));
+        }
+        abort_if($request->user()->role === 'provider' && !$provider, 403);
+        abort_unless(($document->patient_id && ProviderRequest::query()->where('patient_id', $document->patient_id)
             ->where('request_type', 'import')->when($provider, fn ($query) => $query->where('provider_id', $provider->id))->exists()), 403);
         abort_unless($document->file_path && \Illuminate\Support\Facades\Storage::disk('local')->exists($document->file_path), 404);
         if ($request->boolean('download')) {
@@ -131,6 +188,7 @@ class ProviderPortalController extends Controller
                 }
             })
             ->when($provider, fn ($query) => $query->where('provider_id', $provider->id))
+            ->when($type === 'import' && $request->user()->role === 'provider' && !$provider, fn ($query) => $query->whereRaw('1 = 0'))
             ->latest('requested_at')
             ->latest();
 
@@ -172,6 +230,15 @@ class ProviderPortalController extends Controller
             'deliveryRoutes' => $deliveryRoutes,
             'messengers' => $messengers,
             'importRecords' => $type === 'import' ? (clone $requestsQuery)->get() : collect(),
+            'importProviders' => $type === 'import' ? Provider::query()->where('provider_type', 'import')->where('status', 'active')
+                ->when($request->user()->role === 'provider', fn ($query) => $query->where('user_id', $request->user()->id))
+                ->orderBy('name')->get(['id', 'name']) : collect(),
+            'importInstitutions' => $type === 'import' ? \App\Models\Institution::where('status', 'active')->orderBy('name')->get(['id', 'name']) : collect(),
+            'importUnits' => $type === 'import' ? \App\Models\MedicalUnit::where('status', 'active')->orderBy('name')->get(['id', 'name', 'institution_id']) : collect(),
+            'importDoctors' => $type === 'import' ? \App\Models\Doctor::where('status', 'active')->orderBy('full_name')->get(['id', 'full_name', 'medical_unit_id', 'specialty', 'service_name']) : collect(),
+            'importUsers' => $type === 'import' ? \App\Models\User::query()
+                ->when($request->user()->role === 'provider', fn ($query) => $query->whereKey($request->user()->id))
+                ->orderBy('name')->get(['id', 'name', 'username', 'email', 'role', 'module', 'status', 'metadata']) : collect(),
             'importSuppliers' => $type === 'import' ? Provider::query()->where('provider_type', 'import')
                 ->where('metadata->source', 'international_supplier')
                 ->when($request->user()->role === 'provider', fn ($query) => $query->where('metadata->created_by', $request->user()->id))

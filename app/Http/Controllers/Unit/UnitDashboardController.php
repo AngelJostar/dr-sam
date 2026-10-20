@@ -179,6 +179,10 @@ class UnitDashboardController extends Controller
 
         $providerRequests = ProviderRequest::query()
             ->with(['provider', 'patient', 'medicalUnit'])
+            ->withCount([
+                'interactions as message_count' => fn ($query) => $query->where('type', 'message'),
+                'interactions as open_adjustment_count' => fn ($query) => $query->where('type', 'adjustment')->where('status', 'open'),
+            ])
             ->where('medical_unit_id', $unit->id)
             ->latest('requested_at')
             ->get();

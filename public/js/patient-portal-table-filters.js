@@ -171,9 +171,10 @@
 
   function positionMenu(menu, button) {
     var rect = button.getBoundingClientRect();
+    var scale = Number(window.getComputedStyle(document.body).zoom) || 1;
     var width = Math.min(260, Math.max(220, menu.offsetWidth || 236));
-    var left = Math.min(Math.max(8, rect.left), window.innerWidth - width - 8);
-    var top = Math.min(rect.bottom + 6, window.innerHeight - Math.min(menu.offsetHeight || 320, 320) - 8);
+    var left = Math.min(Math.max(8, rect.left / scale), window.innerWidth / scale - width - 8);
+    var top = Math.min(rect.bottom / scale + 6, window.innerHeight / scale - Math.min(menu.offsetHeight || 320, 320) - 8);
 
     menu.style.width = width + "px";
     menu.style.left = left + "px";

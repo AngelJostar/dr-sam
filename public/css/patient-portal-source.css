@@ -3759,11 +3759,9 @@ html:has(> body.patient-portal-body) { scrollbar-gutter: stable; }
 .native-shell .patient-portal-bottom-nav .patient-bottom-register > span { font-size: 24px; line-height: 1; }
 
 .native-shell .patient-health-panel {
-  overflow: hidden;
-  border: 1px solid #dce8ed;
-  border-radius: 22px;
-  background: #fff;
-  box-shadow: 0 22px 50px rgba(16,42,60,.07);
+  border: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
 .native-shell .patient-health-hero {
@@ -5158,7 +5156,6 @@ body.is-register-modal-open {
   .native-shell .patient-portal-content { padding: 18px 12px 95px; }
   .native-shell .patient-portal-intro { min-height: 420px; }
   .native-shell .patient-portal-bottom-nav { left: 5px; bottom: 4px; grid-template-columns: repeat(5,1fr); width: calc(100% - 10px); min-height: 68px; }
-  .native-shell .patient-health-panel { border-radius: 18px; }
   .native-shell .patient-health-hero { gap: 15px; min-height: 116px; padding: 18px; }
   .native-shell .patient-health-hero-icon { flex-basis: 62px; width: 62px; height: 62px; border-radius: 16px; }
   .native-shell .patient-health-hero-icon svg { width: 35px; height: 35px; }
@@ -36203,7 +36200,7 @@ body.is-register-modal-open {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 5px;
   min-height: 62px;
-  margin: 18px 28px 0;
+  margin: 0;
   padding: 5px;
   border: 1px solid #bfe8e4;
   border-radius: 999px;
@@ -36356,8 +36353,8 @@ body.is-register-modal-open {
 }
 
 .native-shell .patient-health-clinical-history {
-  padding: 24px 28px calc(var(--patient-bottom-nav-space, 106px) + 26px);
-  background: #fff;
+  padding: 24px 0 calc(var(--patient-bottom-nav-space, 106px) + 26px);
+  background: transparent;
 }
 
 .native-shell .patient-health-clinical-history .patient-history-body {
@@ -36392,8 +36389,8 @@ body.is-register-modal-open {
 .native-shell .patient-health-dashboard {
   display: grid;
   gap: 18px;
-  padding: 24px 28px calc(var(--patient-bottom-nav-space, 106px) + 26px);
-  background: #fff;
+  padding: 24px 0 calc(var(--patient-bottom-nav-space, 106px) + 26px);
+  background: transparent;
 }
 
 .native-shell .patient-health-parameter-head {
@@ -36480,7 +36477,7 @@ body.is-register-modal-open {
   margin: 0 -2px;
   padding: 2px 2px 18px;
   overflow-x: auto;
-  background: #fff;
+  background: transparent;
   scroll-behavior: auto;
   scroll-snap-type: none;
   scrollbar-width: none;
@@ -36919,7 +36916,7 @@ body.is-register-modal-open {
 @media (max-width: 1000px) {
   .native-shell .patient-health-view-switch {
     min-height: 56px;
-    margin: 16px 14px 0;
+    margin: 0;
   }
 
   .native-shell .patient-health-view-switch button {
@@ -36940,11 +36937,11 @@ body.is-register-modal-open {
   }
 
   .native-shell .patient-health-dashboard {
-    padding: 18px 14px calc(var(--patient-bottom-nav-space, 106px) + 18px);
+    padding: 18px 0 calc(var(--patient-bottom-nav-space, 106px) + 18px);
   }
 
   .native-shell .patient-health-clinical-history {
-    padding: 18px 14px calc(var(--patient-bottom-nav-space, 106px) + 18px);
+    padding: 18px 0 calc(var(--patient-bottom-nav-space, 106px) + 18px);
   }
 
   .native-shell .patient-health-clinical-history .patient-history-filters {

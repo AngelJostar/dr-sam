@@ -2,6 +2,10 @@
 
 @section('body_class', 'institution-native-body')
 
+@push('styles')
+  <link rel="stylesheet" href="{{ asset('css/institution-workspace.css') }}?v={{ filemtime(public_path('css/institution-workspace.css')) }}">
+@endpush
+
 @php
   $statusLabels = [
     'active' => 'Activo',
@@ -230,22 +234,12 @@
   <div class="institution-native-screen">
     <header class="institution-native-topbar" aria-label="Barra superior institucional">
       <x-klini-brand label="Institución" />
-      <span>{{ strtoupper($institutionLabel) }}</span>
-      <div class="institution-native-user">
-        <button type="button" aria-label="Notificaciones">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z"/><path d="M10 21h4"/></svg>
-        </button>
-        <div>
-          <strong>Usuario activo</strong>
-          <small>{{ $institution->state ?? data_get($institution->metadata, 'state', 'Estado de Mexico') }}</small>
-        </div>
-        <form method="post" action="{{ route('logout') }}" class="institution-native-logout">
-          @csrf
-          <button type="submit">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/><path d="M15 4h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4"/></svg>
-            Cerrar sesion
-          </button>
-        </form>
+      <div class="institution-workspace-context">
+        <strong>{{ $institutionLabel }}</strong>
+        <small>{{ $institution->state ?? data_get($institution->metadata, 'state', 'Estado de Mexico') }}</small>
+      </div>
+      <div class="institution-workspace-session">
+        <x-klini-session-menu :show-profile="true" />
       </div>
     </header>
 
@@ -769,7 +763,7 @@
       @elseif ($activeSection === 'services')
         <div class="institution-service-catalog" data-service-catalog>
           @if ($servicesCatalog->isNotEmpty())
-            <section class="institution-service-carousel-card institution-catalog-carousel-card">
+            <section class="institution-service-carousel-card institution-catalog-carousel-card" data-carousel-style="compact">
               <button type="button" class="institution-service-carousel-arrow" data-service-carousel-prev aria-label="Servicio anterior">&lsaquo;</button>
               <div class="institution-service-carousel institution-catalog-carousel" data-service-carousel aria-label="Servicios institucionales">
                 <button type="button" class="institution-service-carousel-button"
