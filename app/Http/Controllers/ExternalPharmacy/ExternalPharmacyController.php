@@ -37,7 +37,9 @@ class ExternalPharmacyController extends Controller
             ->where('user_id', $request->user()?->id)
             ->first();
 
-        $unitId = $profile?->medical_unit_id;
+        $contextUnit = \App\Support\OperationalUnitContext::resolve($request);
+        abort_unless($contextUnit || in_array($request->user()?->role, ['superadmin', 'admin'], true), 403);
+        $unitId = $contextUnit?->id;
         $pharmacySearch = trim($request->string('search')->toString());
         $pharmacyStatus = $request->string('status')->toString();
 
@@ -79,7 +81,7 @@ class ExternalPharmacyController extends Controller
             ->get();
 
         $products = PharmacyProduct::query()
-            ->withSum(['inventories as available_stock' => fn ($query) => $query->where('status', 'available')], 'quantity')
+            ->withSum(['inventories as available_stock' => fn ($query) => $query->where('status', 'available')->when($unitId, fn ($inventory) => $inventory->where('medical_unit_id', $unitId))], 'quantity')
             ->orderBy('name')
             ->limit(14)
             ->get();
@@ -100,6 +102,7 @@ class ExternalPharmacyController extends Controller
         return view('external_pharmacy.dashboard', [
             'section' => $section,
             'profile' => $profile,
+            'contextUnit' => $contextUnit,
             'orders' => $orders,
             'pendingOrders' => $pendingOrders,
             'filledOrders' => $filledOrders,
@@ -108,9 +111,9 @@ class ExternalPharmacyController extends Controller
             'warehouses' => $warehouses,
             'products' => $products,
             'metrics' => [
-                'Pedidos abiertos' => PatientOrder::query()->whereNotIn('status', ['delivered', 'cancelled'])->count(),
-                'Pedidos en ruta' => PatientOrder::query()->where('status', 'in_route')->count(),
-                'Pedidos entregados' => PatientOrder::query()->where('status', 'delivered')->count(),
+                'Pedidos abiertos' => PatientOrder::query()->whereNotIn('status', ['delivered', 'cancelled'])->when($unitId, fn ($query) => $query->where('metadata->medical_unit_id', $unitId))->count(),
+                'Pedidos en ruta' => PatientOrder::query()->where('status', 'in_route')->when($unitId, fn ($query) => $query->where('metadata->medical_unit_id', $unitId))->count(),
+                'Pedidos entregados' => PatientOrder::query()->where('status', 'delivered')->when($unitId, fn ($query) => $query->where('metadata->medical_unit_id', $unitId))->count(),
                 'Inventario disponible' => InventoryItem::query()
                     ->when($unitId, fn ($query) => $query->where('medical_unit_id', $unitId))
                     ->where('status', 'available')

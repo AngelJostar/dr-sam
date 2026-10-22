@@ -311,7 +311,7 @@ class UnitModuleTest extends TestCase
             ->assertOk()
             ->assertSee('unit-native-screen')
             ->assertSee('unit-native-sidebar')
-            ->assertSeeInOrder(['Servicios integrales', 'Usuarios', 'Pacientes', 'Medicos', 'Especialidades', 'Farmacia Externa', 'Areas de Procedimiento', 'Medicamentos'])
+            ->assertSeeInOrder(['Servicios integrales', 'Usuarios', 'Pacientes', 'Médicos y Especialidades', 'Áreas operativas y equipamiento', 'Medicamentos'])
             ->assertSee('unit-native-table')
             ->assertSee('data-unit-service-catalog-link', false)
             ->assertSee('Catalogo')
@@ -498,9 +498,9 @@ class UnitModuleTest extends TestCase
             ->assertOk()
             ->assertSee('Perfil de la unidad')
             ->assertSee('Vista previa')
-            ->assertSee('Nombre pÃºblico de la unidad')
+            ->assertSee('Nombre público de la unidad')
             ->assertSee('Texto para redes sociales')
-            ->assertSee('Nota para papelerÃ­a')
+            ->assertSee('Nota para papelería')
             ->assertSee('Guardar perfil');
 
         $this->actingAs($user)
@@ -526,7 +526,7 @@ class UnitModuleTest extends TestCase
             ->assertSee('data-unit-catalog-content', false)
             ->assertSee('Catalogo de la unidad')
             ->assertSee('>Usuarios</strong>', false)
-            ->assertSee('Areas de Procedimiento');
+            ->assertSee('Áreas operativas y equipamiento');
 
         $this->actingAs($user)
             ->get(route('unit.dashboard', ['section' => 'users']))
@@ -538,9 +538,10 @@ class UnitModuleTest extends TestCase
             ->assertSee('data-unit-catalog-content', false)
             ->assertSee('<h2>Usuarios</h2>', false)
             ->assertSee('Alta de usuario operativo')
-            ->assertSee('Editar usuario operativo')
             ->assertSee('Usuarios de la unidad')
-            ->assertSee('Guardar cambios')
+            ->assertSee('Guardar y cerrar')
+            ->assertSee('data-operational-user-dialog', false)
+            ->assertSee('data-operational-users-table', false)
             ->assertSee('data-edit-operational-user', false)
             ->assertSee('Descargar catalogo')
             ->assertSee('Farmacia');
@@ -658,12 +659,13 @@ class UnitModuleTest extends TestCase
             ->assertSee('data-unit-catalog-info', false)
             ->assertSee('data-unit-catalog-controls', false)
             ->assertSee('data-unit-catalog-content', false)
-            ->assertSee('<h2>Areas de Procedimiento</h2>', false)
-            ->assertSee('data-procedure-category="all"', false)
+            ->assertSee('<h2>Áreas operativas y equipamiento</h2>', false)
+            ->assertDontSee('data-procedure-category=', false)
+            ->assertDontSee('data-procedure-search', false)
             ->assertSee('data-procedure-catalog="all"', false)
             ->assertSee('Catalogo de subunidades')
-            ->assertSee('Todos')
-            ->assertSee('Catalogo de consultorios')
+            ->assertSee('Catálogo')
+            ->assertSee('Consulta Externa y Consultorios')
             ->assertSee('Catalogo de salas de infusion')
             ->assertSee('Catalogo de quirofanos')
             ->assertSee('Catalogo de salas de recuperacion')
@@ -748,7 +750,7 @@ class UnitModuleTest extends TestCase
             'doctors' => ['all', 'active', 'pending', 'inactive'],
             'specialties' => ['all', 'active', 'inactive'],
             'external-pharmacy' => ['all', 'active', 'inactive'],
-            'procedure-areas' => ['all', 'consulting', 'infusion', 'operating', 'uci', 'uti', 'recovery'],
+            'procedure-areas' => ['all', 'consulting', 'operating', 'uci', 'pediatric-icu', 'uti', 'recovery', 'inpatient-pharmacy', 'external-pharmacy', 'hospitalization', 'oncology'],
             'medications' => ['all', 'active', 'inactive'],
         ] as $section => $filters) {
             $html = $this->actingAs($user)

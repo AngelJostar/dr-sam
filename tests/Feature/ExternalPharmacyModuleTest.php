@@ -40,7 +40,9 @@ class ExternalPharmacyModuleTest extends TestCase
             'label' => 'Farmacia Externa',
         ]);
 
+        $unit = MedicalUnit::query()->create(['name' => 'Unidad Farmacia Externa']);
         OperationalProfile::query()->create([
+            'medical_unit_id' => $unit->id,
             'user_id' => $user->id,
             'operational_area_id' => $area->id,
             'status' => 'active',
@@ -61,6 +63,7 @@ class ExternalPharmacyModuleTest extends TestCase
         ]);
 
         InventoryItem::query()->create([
+            'medical_unit_id' => $unit->id,
             'pharmacy_product_id' => $product->id,
             'warehouse' => 'Externo',
             'lot' => 'L-83084',
@@ -70,6 +73,7 @@ class ExternalPharmacyModuleTest extends TestCase
         ]);
 
         $order = PatientOrder::query()->create([
+            'metadata' => ['medical_unit_id' => $unit->id],
             'patient_id' => $patient->id,
             'order_number' => 'PED-EXT-001',
             'status' => 'received',
@@ -87,6 +91,7 @@ class ExternalPharmacyModuleTest extends TestCase
         ]);
 
         $filledOrder = PatientOrder::query()->create([
+            'metadata' => ['medical_unit_id' => $unit->id],
             'patient_id' => $patient->id,
             'order_number' => 'RX-EXT-002',
             'status' => 'delivered',
@@ -115,12 +120,12 @@ class ExternalPharmacyModuleTest extends TestCase
             ->assertSee('class="operational-oncology-carousel operational-compact-carousel external-pharmacy-module-carousel"', false)
             ->assertSee('operational-section-tabs')
             ->assertSee('operational-native-table')
-            ->assertSee('Hospitalizacion')
-            ->assertSee('Centro Oncologico')
+            ->assertSee('Hospitalización')
+            ->assertSee('Centro Oncológico')
             ->assertSee('Farmacia intrahospitalaria')
             ->assertSee('Consulta Externa')
             ->assertSee('Farmacia Externa')
-            ->assertSee('Catalogo de pacientes')
+            ->assertSee('Catálogo de pacientes')
             ->assertSee('Inventario')
             ->assertSee('Movimientos')
             ->assertSee('Almacenes')

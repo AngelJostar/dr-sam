@@ -63,18 +63,8 @@ class OperationalDashboardController extends Controller
             ->where('user_id', $request->user()?->id)
             ->first();
 
-        $contextUnit = $profile?->medicalUnit;
-        if ($request->filled('unit')) {
-            $requestedUnit = MedicalUnit::query()->with('institution')->findOrFail($request->integer('unit'));
-            $user = $request->user();
-            $canUseUnit = in_array($user?->role, ['superadmin', 'admin'], true)
-                || ($user?->role === 'unit' && $requestedUnit->unit_username === $user->username)
-                || ($user?->role === 'institution' && (int) $requestedUnit->institution_id === (int) $user->institution?->id)
-                || ($user?->role === 'operational' && (int) $profile?->medical_unit_id === (int) $requestedUnit->id);
-            abort_unless($canUseUnit, 403, 'No puedes operar otra unidad.');
-            $contextUnit = $requestedUnit;
-        }
-
+        $contextUnit = \App\Support\OperationalUnitContext::resolve($request);
+        abort_unless($contextUnit || in_array($request->user()?->role, ['superadmin', 'admin'], true), 403, 'Selecciona una unidad autorizada.');
         $unitId = $contextUnit?->id;
         $areaRequestTypes = [
             'nursing' => ['npt', 'nutrition', 'import'],
@@ -83,7 +73,11 @@ class OperationalDashboardController extends Controller
         ];
 
         $providerRequests = ProviderRequest::query()
-            ->with(['provider', 'patient', 'medicalUnit', 'mixtureIntegration', 'statusEvents' => fn ($query) => $query->latest('occurred_at')->latest()])
+            ->with(['provider', 'patient', 'medicalUnit.institution', 'mixtureIntegration', 'statusEvents' => fn ($query) => $query->latest('occurred_at')->latest()])
+            ->withCount([
+                'interactions as message_count' => fn ($query) => $query->where('type', 'message'),
+                'interactions as open_adjustment_count' => fn ($query) => $query->where('type', 'adjustment')->where('status', 'open'),
+            ])
             ->when($unitId, fn ($query) => $query->where('medical_unit_id', $unitId))
             ->when($areaRequestTypes[$areaKey] ?? null, fn ($query, $types) => $query->whereIn('request_type', $types))
             ->when($request->filled('status'), fn ($query) => $query->where('status', $request->string('status')->toString()))
@@ -158,8 +152,10 @@ class OperationalDashboardController extends Controller
 
         $outpatientPrescriptionPatientIds = $outpatientPrescriptions->pluck('patient_id')->filter();
 
-        $patients = Patient::query()
-            ->when($unitId, function ($query) use ($unitId, $providerPatientIds, $outpatientPrescriptionPatientIds): void {
+        $patientQuery = $isPatientCatalog ? \App\Support\UnitPatientCatalog::query($contextUnit) : Patient::query();
+        $patients = $patientQuery
+            ->when($isPatientCatalog && in_array($request->input('patient_status'), ['active', 'inactive'], true), fn ($query) => $query->where('status', $request->input('patient_status')))
+            ->when(! $isPatientCatalog && $unitId, function ($query) use ($unitId, $providerPatientIds, $outpatientPrescriptionPatientIds): void {
                 $query->where(function ($subQuery) use ($unitId, $providerPatientIds, $outpatientPrescriptionPatientIds): void {
                     $subQuery->where('metadata->medical_unit_id', $unitId)
                         ->orWhereHas('appointments', fn ($appointmentQuery) => $appointmentQuery->where('medical_unit_id', $unitId))
@@ -168,8 +164,12 @@ class OperationalDashboardController extends Controller
                 });
             })
             ->orderBy('full_name')
-            ->limit(30)
+            ->when(! $isPatientCatalog, fn ($query) => $query->limit(30))
             ->get();
+
+        $editingPatient = $isPatientCatalog && $request->filled('edit_patient')
+            ? \App\Support\UnitPatientCatalog::query($contextUnit)->findOrFail($request->integer('edit_patient'))
+            : null;
 
         $inventory = InventoryItem::query()
             ->with(['product', 'medicalUnit'])
@@ -265,6 +265,7 @@ class OperationalDashboardController extends Controller
             'preparationProviderRequests' => $preparationProviderRequests,
             'scheduledProviderRequests' => $scheduledProviderRequests,
             'patients' => $patients,
+            'editingPatient' => $editingPatient,
             'inventory' => $inventory,
             'services' => $services,
             'orders' => $orders,
@@ -294,24 +295,26 @@ class OperationalDashboardController extends Controller
 
     public function storePatient(Request $request, PlatformAuditService $audit): RedirectResponse
     {
-        $data = $this->validatePatientData($request);
         $unit = $this->contextUnitFor($request);
+        abort_unless($unit, 403, 'Selecciona una unidad autorizada.');
+        $data = $this->validatePatientData($request);
         $patient = Patient::query()->create($this->patientDataPayload($data, medicalUnitId: $unit?->id));
 
         $audit->record($request, 'operational.patient.created', $patient, 'operational');
 
-        return redirect()->route('operational.patients.index', $unit ? ['unit' => $unit->id] : [])
+        return $this->patientCatalogRedirect($request, $unit)
             ->with('status', 'Paciente registrado correctamente.');
     }
 
     public function updatePatient(Request $request, Patient $patient, PlatformAuditService $audit): RedirectResponse
     {
-        $data = $this->validatePatientData($request, $patient);
         $unit = $this->contextUnitFor($request);
+        abort_unless($unit && \App\Support\UnitPatientCatalog::query($unit)->whereKey($patient->id)->exists(), 404);
+        $data = $this->validatePatientData($request, $patient);
         $patient->update($this->patientDataPayload($data, $patient, $unit?->id));
         $audit->record($request, 'operational.patient.updated', $patient, 'operational');
 
-        return redirect()->route('operational.patients.index', $unit ? ['unit' => $unit->id] : [])
+        return $this->patientCatalogRedirect($request, $unit)
             ->with('status', 'Paciente actualizado correctamente.');
     }
 
@@ -1210,24 +1213,7 @@ class OperationalDashboardController extends Controller
 
     private function contextUnitFor(Request $request): ?MedicalUnit
     {
-        $profile = OperationalProfile::query()
-            ->where('user_id', $request->user()?->id)
-            ->first();
-
-        if (! $request->filled('unit')) {
-            return $profile?->medicalUnit;
-        }
-
-        $unit = MedicalUnit::query()->with('institution')->findOrFail($request->integer('unit'));
-        $user = $request->user();
-        $canUseUnit = in_array($user?->role, ['superadmin', 'admin'], true)
-            || ($user?->role === 'unit' && $unit->unit_username === $user->username)
-            || ($user?->role === 'institution' && (int) $unit->institution_id === (int) $user->institution?->id)
-            || ($user?->role === 'operational' && (int) $profile?->medical_unit_id === (int) $unit->id);
-
-        abort_unless($canUseUnit, 403, 'No puedes operar otra unidad.');
-
-        return $unit;
+        return \App\Support\OperationalUnitContext::resolve($request);
     }
 
     private function validateInfusionRoom(Request $request, MedicalUnit $unit, ?ProcedureArea $room = null): array
@@ -1268,31 +1254,40 @@ class OperationalDashboardController extends Controller
             'nss_federal' => ['nullable', 'string', 'max:40'],
             'nss_estatal' => ['nullable', 'string', 'max:40'],
             'state' => ['nullable', 'string', 'max:100'],
+            'status' => ['sometimes', 'required', Rule::in(['active', 'inactive'])],
         ]);
     }
 
     private function patientDataPayload(array $data, ?Patient $patient = null, ?int $medicalUnitId = null): array
     {
-        return [
+        $payload = [
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
             'full_name' => trim($data['first_name'].' '.$data['last_name']),
-            'birth_date' => $data['birth_date'] ?? null,
-            'sex' => $data['sex'] ?? null,
-            'curp' => $data['curp'] ?? null,
-            'platform_number' => $data['platform_number'] ?? null,
-            'phone' => $data['phone'] ?? null,
-            'email' => $data['email'] ?? null,
-            'status' => $patient?->status ?? 'active',
+            'status' => $data['status'] ?? $patient?->status ?? 'active',
             'metadata' => [
                 ...($patient?->metadata ?? []),
-                'nss_federal' => $data['nss_federal'] ?? null,
-                'nss_estatal' => $data['nss_estatal'] ?? null,
-                'state' => $data['state'] ?? 'Mexico',
-                'medical_unit_id' => $medicalUnitId ?? data_get($patient?->metadata, 'medical_unit_id'),
-                'source' => 'operational_module',
+                'medical_unit_id' => data_get($patient?->metadata, 'medical_unit_id') ?? $medicalUnitId,
+                'source' => data_get($patient?->metadata, 'source') ?? 'operational_module',
             ],
         ];
+        foreach (['birth_date', 'sex', 'curp', 'platform_number', 'phone', 'email'] as $field) {
+            if (array_key_exists($field, $data)) $payload[$field] = $data[$field];
+        }
+        foreach (['nss_federal', 'nss_estatal', 'state'] as $field) {
+            if (array_key_exists($field, $data)) $payload['metadata'][$field] = $data[$field];
+        }
+
+        return $payload;
+    }
+
+    private function patientCatalogRedirect(Request $request, MedicalUnit $unit): RedirectResponse
+    {
+        if ($request->input('_patient_return') === 'unit' && in_array($request->user()->role, ['superadmin', 'admin', 'institution', 'unit'], true)) {
+            return redirect()->route('unit.dashboard', ['unit' => $unit->id, 'section' => 'patients']);
+        }
+
+        return redirect()->route('operational.patients.index', ['unit' => $unit->id]);
     }
 
     private function infusionRoomPayload(array $data, ?ProcedureArea $room = null): array

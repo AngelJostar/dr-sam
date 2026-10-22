@@ -138,7 +138,7 @@ class OutpatientDashboardController extends Controller
 
         $audit->record($request, 'outpatient.appointment.created', $appointment, 'operational');
 
-        return redirect()->route('outpatient.dashboard')->with('status', 'Consulta agregada a la agenda.');
+        return redirect()->route('outpatient.dashboard', ['unit' => $unit?->id])->with('status', 'Consulta agregada a la agenda.');
     }
 
     public function updateAppointment(Request $request, Appointment $appointment, PlatformAuditService $audit, DomainStateTransitionService $transitions): RedirectResponse
@@ -174,8 +174,9 @@ class OutpatientDashboardController extends Controller
 
     public function updatePatient(Request $request, Patient $patient, PlatformAuditService $audit): RedirectResponse
     {
-        $data = $this->validatePatient($request, $patient);
         $unit = $this->contextUnit($request);
+        abort_unless($unit && \App\Support\UnitPatientCatalog::query($unit)->whereKey($patient->id)->exists(), 404);
+        $data = $this->validatePatient($request, $patient);
         $patient->update($this->patientPayload($data, $patient, $unit?->id));
         $audit->record($request, 'outpatient.patient.updated', $patient, 'operational');
 
@@ -196,7 +197,7 @@ class OutpatientDashboardController extends Controller
         });
         $audit->record($request, 'outpatient.room.created', $room, 'operational');
 
-        return redirect()->route('outpatient.dashboard', ['section' => 'rooms'])->with('status', 'Consultorio registrado correctamente.');
+        return redirect()->route('outpatient.dashboard', ['unit' => $unit?->id, 'section' => 'rooms'])->with('status', 'Consultorio registrado correctamente.');
     }
 
     public function updateRoom(Request $request, ProcedureArea $room, PlatformAuditService $audit): RedirectResponse
@@ -211,7 +212,7 @@ class OutpatientDashboardController extends Controller
         });
         $audit->record($request, 'outpatient.room.updated', $room, 'operational');
 
-        return redirect()->route('outpatient.dashboard', ['section' => 'rooms'])->with('status', 'Consultorio actualizado correctamente.');
+        return redirect()->route('outpatient.dashboard', ['unit' => $unit?->id, 'section' => 'rooms'])->with('status', 'Consultorio actualizado correctamente.');
     }
 
     public function destroyRoom(Request $request, ProcedureArea $room, PlatformAuditService $audit): RedirectResponse
@@ -221,7 +222,7 @@ class OutpatientDashboardController extends Controller
 
         if ($room->appointments()->exists()) {
             return redirect()
-                ->route('outpatient.dashboard', ['section' => 'rooms'])
+                ->route('outpatient.dashboard', ['unit' => $unit?->id, 'section' => 'rooms'])
                 ->withErrors(['room' => 'El consultorio tiene consultas asociadas. EdÃ­talo o inactÃ­valo para conservar el historial.']);
         }
 
@@ -229,7 +230,7 @@ class OutpatientDashboardController extends Controller
         $room->delete();
 
         return redirect()
-            ->route('outpatient.dashboard', ['section' => 'rooms'])
+            ->route('outpatient.dashboard', ['unit' => $unit?->id, 'section' => 'rooms'])
             ->with('status', 'Consultorio eliminado correctamente.');
     }
 
@@ -255,7 +256,7 @@ class OutpatientDashboardController extends Controller
         });
         $audit->record($request, 'outpatient.calendar.updated', $room, 'operational', $data);
 
-        return redirect()->route('outpatient.dashboard', ['admin' => 1])->with('status', 'Calendario del consultorio actualizado.');
+        return redirect()->route('outpatient.dashboard', ['unit' => $unit?->id, 'admin' => 1])->with('status', 'Calendario del consultorio actualizado.');
     }
 
     public function storePrescription(Request $request, PlatformAuditService $audit, PrescriptionPharmacyService $pharmacy): RedirectResponse
@@ -274,7 +275,7 @@ class OutpatientDashboardController extends Controller
         $pharmacy->sync($prescription);
         $audit->record($request, 'outpatient.prescription.created', $prescription, 'operational');
 
-        return redirect()->route('outpatient.dashboard', ['section' => 'prescriptions'])->with('status', 'Receta emitida correctamente.');
+        return redirect()->route('outpatient.dashboard', ['unit' => $unit?->id, 'section' => 'prescriptions'])->with('status', 'Receta emitida correctamente.');
     }
 
     public function updatePrescription(Request $request, Prescription $prescription, PlatformAuditService $audit, PrescriptionPharmacyService $pharmacy): RedirectResponse
@@ -294,7 +295,7 @@ class OutpatientDashboardController extends Controller
         $pharmacy->sync($prescription->fresh('items'));
         $audit->record($request, 'outpatient.prescription.updated', $prescription, 'operational');
 
-        return redirect()->route('outpatient.dashboard', ['section' => 'prescriptions'])->with('status', 'Receta actualizada correctamente.');
+        return redirect()->route('outpatient.dashboard', ['unit' => $unit?->id, 'section' => 'prescriptions'])->with('status', 'Receta actualizada correctamente.');
     }
 
     private function validatePrescription(Request $request, ?Prescription $prescription = null): array
@@ -469,7 +470,7 @@ class OutpatientDashboardController extends Controller
                 'nss_federal' => $data['nss_federal'] ?? null,
                 'nss_estatal' => $data['nss_estatal'] ?? null,
                 'state' => $data['state'],
-                'medical_unit_id' => $medicalUnitId ?? data_get($patient?->metadata, 'medical_unit_id'),
+                'medical_unit_id' => data_get($patient?->metadata, 'medical_unit_id') ?? $medicalUnitId,
                 'source' => 'outpatient_module',
             ],
         ];
@@ -477,9 +478,6 @@ class OutpatientDashboardController extends Controller
 
     private function contextUnit(Request $request): ?MedicalUnit
     {
-        $profile = OperationalProfile::query()->where('user_id', $request->user()?->id)->first();
-
-        return $profile?->medicalUnit
-            ?? MedicalUnit::query()->when($request->filled('unit'), fn ($query) => $query->whereKey($request->integer('unit')))->first();
+        return \App\Support\OperationalUnitContext::resolve($request);
     }
 }

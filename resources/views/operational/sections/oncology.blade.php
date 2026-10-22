@@ -68,7 +68,7 @@
                   @endif
                 </span>
               </td>
-              <td><a class="operational-view-button" href="{{ route('operational.dashboard', ['area' => 'oncology', 'section' => 'support', 'oncology_track' => 'infusions', 'unit' => $contextUnit?->id, 'request' => $item->id]) }}">Ver solicitud</a></td>
+              <td>@include('operational._request-detail-button', ['requestViewLabel' => 'Ver solicitud'])</td>
             </tr>
           @empty
             <tr>
@@ -155,7 +155,7 @@
                 @endif
               </td>
               <td><span class="operational-chip">{{ $statusText($item->status) }}</span></td>
-              <td><a class="operational-view-button" href="{{ route('operational.dashboard', ['area' => 'oncology', 'section' => 'support', 'oncology_track' => 'infusions', 'unit' => $contextUnit?->id, 'request' => $item->id]) }}">Ver</a></td>
+              <td>@include('operational._request-detail-button')</td>
               @if ($isPendingServices)
                 <td>
                   <a class="operational-primary-button" href="{{ route('operational.dashboard', [
@@ -232,7 +232,7 @@
               <td>{{ data_get($item->payload, 'service', 'Oncologia medica') }}</td>
               <td>{{ data_get($item->payload, 'doctor', 'Sin medico') }}</td>
               <td><span class="operational-chip">{{ $statusText($item->status) }}</span></td>
-              <td><a class="operational-view-button" href="{{ route('operational.dashboard', ['area' => 'oncology', 'section' => 'support', 'oncology_track' => 'infusions', 'unit' => $contextUnit?->id, 'request' => $item->id]) }}">Abrir solicitud</a></td>
+              <td>@include('operational._request-detail-button', ['requestViewLabel' => 'Abrir solicitud'])</td>
             </tr>
           @empty
             <tr><td colspan="6">No hay solicitudes disponibles para asistencia.</td></tr>
@@ -342,23 +342,17 @@
                 </div>
               </td>
               <td>
-                <a class="operational-view-button" href="{{ route('operational.dashboard', [
+                <x-operational-detail :id="'room-calendar-'.$room->id" :title="'Calendario de '.$room->unit_number" :context="$unitName" label="Ver calendario" :url="route('operational.dashboard', [
                   'area' => 'oncology',
                   'section' => 'infusion-room-calendar',
                   'oncology_track' => 'infusions',
                   'unit' => $contextUnit?->id,
                   'room' => $room->id,
                   'calendar_month' => now()->format('Y-m'),
-                ]) }}">Ver calendario</a>
+                ])" />
               </td>
               <td>
-                <a class="operational-view-button" href="{{ route('operational.dashboard', [
-                  'area' => 'oncology',
-                  'section' => 'infusion-room-catalog',
-                  'oncology_track' => 'infusions',
-                  'unit' => $contextUnit?->id,
-                  'room' => $room->id,
-                ]) }}">Ver informaci&oacute;n</a>
+                @include('operational._room-detail-button', ['roomViewLabel' => 'Ver información'])
               </td>
             </tr>
           @empty
@@ -410,7 +404,7 @@
             <td><span class="operational-chip">{{ $room->status === 'active' ? 'Activo' : 'Inactivo' }}</span></td>
             <td>
               <div class="operational-room-actions">
-                <a class="operational-view-button" href="{{ route('operational.dashboard', ['area' => 'oncology', 'section' => 'infusion-room-catalog', 'oncology_track' => 'infusions', 'unit' => $contextUnit?->id, 'room' => $room->id]) }}">Ver</a>
+                @include('operational._room-detail-button')
                 <a class="operational-secondary-button" href="{{ route('operational.dashboard', ['area' => 'oncology', 'section' => 'infusion-room-catalog', 'oncology_track' => 'infusions', 'unit' => $contextUnit?->id, 'edit_room' => $room->id]) }}">Editar</a>
               </div>
             </td>

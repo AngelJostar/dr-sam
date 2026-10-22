@@ -1,0 +1,17 @@
+
+   PASS  Tests\Feature\UnitAgentCenterTest
+  ✓ center has twelve inactive agents with complete instructions and is last in menu                             6.20s  
+  ✓ edit persists only this agent and unit and prevents stale overwrites                                         0.09s  
+  ✓ create and validation keep configuration safe and render text as text                                        0.07s  
+  ✓ other units and non administrative roles cannot access or modify agents                                      0.05s  
+
+   PASS  Tests\Feature\UnitModuleTest
+  ✓ unit status message uses a dismissible dialog                                                                0.09s  
+  ✓ unit user can open native dashboard                                                                          0.82s  
+  ✓ unit user can update appointment status                                                                      0.03s  
+  ✓ unit user can create edit and cancel a consultation appointment                                              0.06s  
+  ✓ unit books public consultation without private doctor availability                                           0.07s  
+
+  Tests:    9 passed (503 assertions)
+  Duration: 7.65s
+

@@ -1,0 +1,9 @@
+
+   PASS  Tests\Feature\UnitAdministrationDemoTest
+  ✓ demo covers all tabs and payments update balances without touching other metadata                            6.76s  
+  ✓ accounts invoices insurers and authorization responses are linked                                            0.06s  
+  ✓ private documents and demo changes are scoped to the unit                                                    0.07s  
+
+  Tests:    3 passed (52 assertions)
+  Duration: 7.06s
+

@@ -1,0 +1,20 @@
+
+   PASS  Tests\Feature\UnitAdministrationDemoTest
+  ✓ demo covers all tabs and payments update balances without touching other metadata                            7.23s  
+  ✓ accounts invoices insurers and authorization responses are linked                                            0.10s  
+  ✓ private documents and demo changes are scoped to the unit                                                    0.07s  
+
+   PASS  Tests\Feature\UnitModuleTest
+  ✓ unit status message uses a dismissible dialog                                                                0.09s  
+  ✓ unit user can open native dashboard                                                                          0.95s  
+  ✓ unit user can update appointment status                                                                      0.05s  
+  ✓ unit user can create edit and cancel a consultation appointment                                              0.07s  
+  ✓ unit books public consultation without private doctor availability                                           0.09s  
+
+   PASS  Tests\Feature\UnitOperationalUserDialogTest
+  ✓ save redirects to the selected unit and shows the success dialog and table actions                           0.39s  
+  ✓ validation errors restore the form without a success message or password                                     0.07s  
+
+  Tests:    10 passed (480 assertions)
+  Duration: 9.32s
+

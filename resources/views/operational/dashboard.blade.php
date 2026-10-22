@@ -59,7 +59,7 @@
     'all' => ['label' => 'Calendario de Hospitalización', 'initial' => 'H'],
   ];
   $oncologyTrack = request('oncology_track');
-  if (in_array($section, ['mixes', 'mix-history'], true)) {
+  if (in_array($section, ['mixes', 'mix-history', 'services-pending', 'services-history', 'services-preparation', 'services-scheduled'], true)) {
     $oncologyTrack = 'mixes';
   } elseif (in_array($section, ['services-pending', 'services-history', 'services-preparation', 'services-scheduled', 'service-create', 'service-format', 'infusion-rooms', 'infusion-room-calendar', 'infusion-room-catalog', 'support', 'support-ai', 'support-analytics'], true)) {
     $oncologyTrack = 'infusions';
@@ -80,15 +80,17 @@
   $oncologyTrackNavigation = [
         'infusions' => [
             ['section' => 'calendar', 'label' => 'Inicio'],
-            ['section' => 'services-scheduled', 'label' => 'Programadas'],
-            ['section' => 'services-pending', 'label' => 'Pendientes'],
-            ['section' => 'services-history', 'label' => 'Historial'],
-      ['section' => 'services-preparation', 'label' => 'En preparación'],
     ],
     'mixes' => [
-            ['section' => 'calendar', 'label' => 'Inicio'],
-      ['section' => 'mixes', 'label' => 'Mezclas programadas'],
-      ['section' => 'mix-history', 'label' => 'Historial de mezclas'],
+      ['section' => 'calendar', 'label' => 'Inicio', 'filter' => 'all'],
+      ['section' => 'mixes', 'label' => 'Programadas', 'filter' => 'scheduled'],
+      ['section' => 'calendar', 'label' => 'Pendientes', 'filter' => 'pending'],
+      ['section' => 'calendar', 'label' => 'Mensajería', 'filter' => 'messages'],
+      ['section' => 'calendar', 'label' => 'En ajuste', 'filter' => 'adjustments'],
+      ['section' => 'calendar', 'label' => 'En preparación', 'filter' => 'preparing'],
+      ['section' => 'calendar', 'label' => 'En ruta', 'filter' => 'route'],
+      ['section' => 'calendar', 'label' => 'Entregadas', 'filter' => 'delivered'],
+      ['section' => 'mix-history', 'label' => 'Historial', 'filter' => 'history'],
     ],
     'rooms' => [
       ['section' => 'infusion-rooms', 'label' => 'Inicio', 'active_sections' => ['infusion-rooms', 'infusion-room-calendar']],
@@ -118,7 +120,22 @@
       'support' => 'support',
       default => $oncologyTrack,
     }] : ($sectionNavigation[$areaKey] ?? $sectionNavigation['nursing']));
-  $patientRows = $patients->take(12);
+  $selectedMixFilter = match ($section) {
+    'mixes', 'services-scheduled' => 'scheduled',
+    'mix-history', 'services-history' => 'history',
+    'services-pending' => 'pending',
+    'services-preparation' => 'preparing',
+    default => in_array(request('mix_filter'), ['pending', 'messages', 'adjustments', 'preparing', 'route', 'delivered'], true) ? request('mix_filter') : 'all',
+  };
+  $mixFilterCounts = collect($oncologyTrackNavigation['mixes'])->mapWithKeys(fn ($tab) => [$tab['filter'] => $providerRequests->filter(fn ($row) => match ($tab['filter']) {
+    'all' => true,
+    'scheduled' => $row->required_at && !in_array($row->status, \App\Support\OncologyMixtureBoard::CLOSED, true),
+    'messages' => $row->message_count > 0,
+    'adjustments' => $row->open_adjustment_count > 0,
+    'history' => in_array($row->status, \App\Support\OncologyMixtureBoard::CLOSED, true),
+    default => \App\Support\OncologyMixtureBoard::category($row) === $tab['filter'],
+  })->count()]);
+  $patientRows = $patients;
   $patientCatalogRouteParameters = $contextUnit ? ['unit' => $contextUnit->id] : [];
 @endphp
 
@@ -136,47 +153,7 @@
     </header>
 
     <aside class="operational-native-sidebar" aria-label="Navegacion operativa">
-      <nav class="operational-native-menu operational-area-menu">
-        @foreach ($moduleGroups as $groupKey => $group)
-          @php $isActiveGroup = ! $isPatientCatalog && $groupKey === $areaKey; @endphp
-          <a @class(['is-active' => $isActiveGroup]) href="{{ route('operational.dashboard', $areaDefaultRoutes[$groupKey] ?? ['area' => $groupKey, 'section' => 'pending']) }}">
-            <span aria-hidden="true">
-              @if ($group['icon'] === 'hospital')
-                <svg viewBox="0 0 24 24"><path d="M4 21V5a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v16"/><path d="M16 9h3a1 1 0 0 1 1 1v11"/><path d="M8 8h4M10 6v4M8 14h4M8 18h4"/></svg>
-              @elseif ($group['icon'] === 'oncology')
-                <svg viewBox="0 0 24 24"><path d="M4 6h16v15H4z"/><path d="M9 3h6v3H9z"/><path d="M12 10v7M8.5 13.5h7"/></svg>
-              @else
-                <svg viewBox="0 0 24 24"><path d="m7 16 9-9a3 3 0 0 1 4 4l-9 9a3 3 0 0 1-4-4Z"/><path d="m12 11 4 4"/></svg>
-              @endif
-            </span>
-            {{ $group['label'] }}
-            <i aria-hidden="true">›</i>
-          </a>
-        @endforeach
-        <a href="{{ route('outpatient.dashboard') }}">
-          <span aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M6 4v5a5 5 0 0 0 10 0V4"/><path d="M9 4H5"/><path d="M17 4h-4"/><path d="M11 14v2a4 4 0 0 0 8 0v-3"/><circle cx="19" cy="10" r="2"/></svg>
-          </span>
-          Consulta Externa
-          <i aria-hidden="true">›</i>
-        </a>
-
-        <a href="{{ route('external-pharmacy.dashboard') }}">
-          <span aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 9v11h16V9"/><path d="M3 9h18l-2-5H5L3 9Z"/><path d="M12 12v5M9.5 14.5h5"/></svg>
-          </span>
-          Farmacia Externa
-          <i aria-hidden="true">›</i>
-        </a>
-
-        <a @class(['is-active' => $isPatientCatalog]) href="{{ route('operational.patients.index', $patientCatalogRouteParameters) }}">
-          <span aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="9.5" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          </span>
-          Catalogo de pacientes
-          <i aria-hidden="true">›</i>
-        </a>
-      </nav>
+      @include('operational._area-menu', ['menuUnit' => $contextUnit, 'activeArea' => $isPatientCatalog ? 'patients' : ($areaKey === 'nursing' ? 'hospitalization' : $areaKey)])
     </aside>
 
     <section class="operational-native-workspace">
@@ -238,7 +215,7 @@
             <a class="operational-oncology-filter is-active" href="{{ route('operational.dashboard', ['area' => 'inpatient-pharmacy', 'section' => 'pending'] + ($contextUnit ? ['unit' => $contextUnit->id] : [])) }}">
               <span class="operational-oncology-filter-initial" aria-hidden="true"><x-klini-icon name="admin-medication" /></span>
               <span class="operational-oncology-filter-copy">
-                <strong>Farmacia intrahospitalaria</strong>
+                <strong>Central de Mezclas</strong>
                 <small aria-label="Seleccionada">✓</small>
               </span>
             </a>
@@ -250,12 +227,16 @@
       @unless ($isPatientCatalog)
         <nav class="operational-section-tabs" aria-label="Secciones de {{ $areaLabel }}">
           @foreach ($currentSectionNavigation as $navigationItem)
-            <a @class(['is-active' => in_array($section, $navigationItem['active_sections'] ?? [$navigationItem['section']], true)]) href="{{ route('operational.dashboard', ['area' => $areaKey, 'section' => $navigationItem['section']] + ($isOncology ? ['oncology_track' => $oncologyTrack] : []) + ($isHospitalization ? ['hospitalization_track' => $hospitalizationTrack] : []) + ($contextUnit ? ['unit' => $contextUnit->id] : [])) }}">
+            <a @class(['is-active' => isset($navigationItem['filter']) ? $selectedMixFilter === $navigationItem['filter'] : in_array($section, $navigationItem['active_sections'] ?? [$navigationItem['section']], true)]) href="{{ route('operational.dashboard', ['area' => $areaKey, 'section' => $navigationItem['section']] + (isset($navigationItem['filter']) ? ['mix_filter' => $navigationItem['filter']] : []) + ($isOncology ? ['oncology_track' => $oncologyTrack] : []) + ($isHospitalization ? ['hospitalization_track' => $hospitalizationTrack] : []) + ($contextUnit ? ['unit' => $contextUnit->id] : [])) }}">
               {{ $navigationItem['label'] }}
+              @isset($navigationItem['filter'])<span class="operational-mixture-nav-count" data-mixtures-count="{{ $navigationItem['filter'] }}">{{ $mixFilterCounts[$navigationItem['filter']] }}</span>@endisset
             </a>
           @endforeach
         </nav>
       @endunless
+      @if ($isPatientCatalog)
+        @include('operational._catalog-navigation', ['catalogLabel' => 'Catálogo de pacientes', 'catalogUrl' => route('operational.patients.index', $patientCatalogRouteParameters), 'catalogStatus' => in_array(request('patient_status'), ['active', 'inactive'], true) ? request('patient_status') : 'all', 'catalogStatusParameter' => 'patient_status'])
+      @endif
 
       @if (in_array($section, ['pending', 'history'], true))
         <section class="operational-native-table-card">
@@ -272,8 +253,6 @@
               @endunless
             </div>
             <strong>{{ $section === 'history' ? $visibleRequests->count().' solicitudes' : $pendingRequests.' pendiente'.($pendingRequests === 1 ? '' : 's') }}</strong>
-          </div>
-
           <form class="operational-native-filter" method="get">
             <input type="hidden" name="section" value="{{ $section }}">
             <input type="hidden" name="area" value="{{ $areaKey }}">
@@ -291,6 +270,9 @@
               </select>
             </label>
           </form>
+          </div>
+
+
 
           <div class="operational-native-table-scroll">
             <table class="operational-native-table">
@@ -462,7 +444,7 @@
                         @endif
                       </td>
                     @endunless
-                    <td><a class="operational-view-button" href="{{ route('operational.dashboard', ['area' => $areaKey, 'section' => $section, 'detail_request' => $providerRequest->id]) }}#solicitud-detalle">Ver</a></td>
+                    <td><a class="operational-view-button" aria-haspopup="dialog" href="{{ route('operational.dashboard', array_merge(request()->query(), ['area' => $areaKey, 'section' => $section, 'unit' => $contextUnit?->id, 'detail_request' => $providerRequest->id])) }}#solicitud-detalle">Ver</a></td>
                     <td><span class="operational-chip">{{ $centralStatus }}</span></td>
                     <td>{{ $latestAuthorizationEvent?->notes ?: ($providerRequest->statusEvents->first()?->notes ?? ($isOncology ? 'Primera validacion pendiente por Centro Oncologico.' : 'Sin observaciones')) }}</td>
                     @if ($isInpatientPharmacy)
@@ -491,6 +473,7 @@
         @php
           $detailRequestId = (int) request('detail_request');
           $detailRequest = $visibleRequests->firstWhere('id', $detailRequestId);
+          $detailCloseUrl = route('operational.dashboard', array_merge(request()->except('detail_request'), ['area' => $areaKey, 'section' => $section, 'unit' => $contextUnit?->id]));
         @endphp
         @if ($detailRequest)
           @php
@@ -509,7 +492,7 @@
               ->unique(fn ($event) => implode('|', [$event->status, $event->occurred_at?->toIso8601String(), $event->notes]));
           @endphp
           <div id="solicitud-detalle" class="operational-modal is-open" role="dialog" aria-modal="true" aria-labelledby="solicitud-detalle-title">
-            <a class="operational-modal-backdrop" href="{{ route('operational.dashboard', ['area' => $areaKey, 'section' => $section]) }}" aria-label="Cerrar"></a>
+            <a class="operational-modal-backdrop" href="{{ $detailCloseUrl }}" aria-label="Cerrar"></a>
             <article class="operational-modal-card operational-request-detail-card">
               <header>
                 <div>
@@ -517,7 +500,7 @@
                   <h2 id="solicitud-detalle-title">{{ $detailRequest->external_id ?? 'Solicitud '.$detailRequest->id }}</h2>
                   <p>{{ data_get($detailPayload, 'service', 'Servicio de mezclas') }} · {{ $detailRequest->patient?->full_name ?? 'Sin paciente' }}</p>
                 </div>
-                <a href="{{ route('operational.dashboard', ['area' => $areaKey, 'section' => $section]) }}">Cerrar</a>
+                <a href="{{ $detailCloseUrl }}">Cerrar <span aria-hidden="true">×</span></a>
               </header>
               <div class="operational-modal-body operational-request-detail-body">
                 <dl class="operational-request-detail-grid">
@@ -590,102 +573,38 @@
                   @endif
                 </section>
               </div>
-              <footer><a href="{{ route('operational.dashboard', ['area' => $areaKey, 'section' => $section]) }}">Cerrar</a></footer>
+              <footer><a href="{{ $detailCloseUrl }}">Cerrar</a></footer>
             </article>
           </div>
         @endif
       @elseif ($section === 'calendar' && $isHospitalization)
         @php $calendarMode = 'hospitalization'; @endphp
         @include('operational.sections.service-calendar')
+      @elseif ($isOncology && $oncologyTrack === 'mixes' && in_array($section, ['calendar', 'mixes', 'mix-history'], true))
+        @include('operational.sections.mixtures')
       @elseif (in_array($section, ['services-pending', 'services-history', 'services-preparation', 'services-scheduled', 'service-create', 'service-format', 'mixes', 'mix-history', 'calendar', 'infusion-rooms', 'infusion-room-calendar', 'infusion-room-catalog', 'support', 'support-ai', 'support-analytics'], true))
         @include('operational.sections.oncology')
+        @if ($isOncology && $oncologyTrack === 'mixes')
+          @include('operational.sections.mixtures')
+        @endif
       @else
-        @php $editingPatient = $patientRows->firstWhere('id', (int) request('edit_patient')); @endphp
+        @php $patientCatalogUrl = route('operational.patients.index', $patientCatalogRouteParameters); @endphp
         <section class="operational-native-table-card operational-patients-card" data-operational-patient-catalog>
           <div class="operational-native-table-heading">
-            <div>
-              <p class="eyebrow">Catalogo compartido</p>
-              <h2>Catalogo de pacientes</h2>
-              <span>{{ $unitName }} - Pacientes vinculados a todas las areas operativas</span>
-            </div>
+            <div><p class="eyebrow">Catálogo compartido</p><h2>Catalogo de pacientes</h2><span>{{ $unitName }} · Pacientes vinculados a Unidad y todas las áreas operativas</span></div>
             <div class="operational-heading-actions">
-              <strong>{{ $patientRows->count() }} pacientes</strong>
-              <a class="operational-primary-button" href="{{ route('operational.patients.index', array_merge($patientCatalogRouteParameters, ['modal' => 'patient'])) }}"><span aria-hidden="true">+</span> Nuevo paciente</a>
+              <strong data-patient-count>{{ $patients->count() }} pacientes</strong>
+              <input type="search" class="shared-patient-search" data-patient-search aria-label="Buscar paciente" placeholder="Buscar paciente">
+              <a class="operational-primary-button" href="{{ $patientCatalogUrl }}&modal=patient"><span aria-hidden="true">+</span> Nuevo paciente</a>
             </div>
           </div>
-
           <div class="operational-native-table-scroll">
-            <table class="operational-native-table operational-patients-table">
-              <thead>
-                <tr>
-                  <th>Nombre</th>
-                  <th>Apellidos</th>
-                  <th>Edad</th>
-                  <th>CURP</th>
-                  <th>NSS federal</th>
-                  <th>NSS estatal</th>
-                  <th>Usuario plataforma</th>
-                  <th>Entidad federativa</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                @forelse ($patientRows as $patient)
-                  <tr>
-                    <td><strong>{{ $patient->first_name ?: str($patient->full_name)->before(' ') }}</strong></td>
-                    <td><strong>{{ $patient->last_name ?: str($patient->full_name)->after(' ') }}</strong></td>
-                    <td>{{ $patient->birth_date ? (int) $patient->birth_date->age : data_get($patient->metadata, 'age', 'N/A') }}</td>
-                    <td><strong>{{ $patient->curp ?? data_get($patient->metadata, 'curp', 'Sin CURP') }}</strong></td>
-                    <td>{{ data_get($patient->metadata, 'nss_federal', 'Sin NSS') }}</td>
-                    <td>{{ data_get($patient->metadata, 'nss_estatal', 'Sin NSS') }}</td>
-                    <td>{{ $patient->platform_number ?? 'USR-'.str_pad((string) $patient->id, 6, '0', STR_PAD_LEFT) }}</td>
-                    <td>{{ data_get($patient->metadata, 'state', 'Mexico') }}</td>
-                    <td><a class="operational-secondary-button" href="{{ route('operational.patients.index', array_merge($patientCatalogRouteParameters, ['edit_patient' => $patient->id])) }}">Editar</a></td>
-                  </tr>
-                @empty
-                  <tr>
-                    <td colspan="9">Sin pacientes registrados para esta unidad.</td>
-                  </tr>
-                @endforelse
-              </tbody>
-            </table>
+            @include('patients._catalog-table', ['patientWorkspace' => 'operational'])
           </div>
         </section>
-
-        <div id="alta-paciente" @class(['operational-modal', 'is-open' => $section === 'patient-create' || request('modal') === 'patient' || (bool) $editingPatient]) role="dialog" aria-modal="true" aria-labelledby="alta-paciente-title">
-          <a class="operational-modal-backdrop" href="{{ route('operational.patients.index', $patientCatalogRouteParameters) }}" aria-label="Cerrar"></a>
-          <form class="operational-modal-card" method="post" action="{{ $editingPatient ? route('operational.patients.update', $editingPatient) : route('operational.patients.store') }}">
-            @csrf
-            @if($editingPatient) @method('patch') @endif
-            @if ($contextUnit)<input type="hidden" name="unit" value="{{ $contextUnit->id }}">@endif
-            <header>
-              <div>
-                <h2 id="alta-paciente-title">{{ $editingPatient ? 'Editar paciente' : 'Alta de paciente' }}</h2>
-                <p>{{ $institutionName }} - Catalogo de pacientes</p>
-              </div>
-              <a href="{{ route('operational.patients.index', $patientCatalogRouteParameters) }}">Cerrar</a>
-            </header>
-
-            <div class="operational-modal-body">
-              <label>Nombre<input name="first_name" type="text" required value="{{ old('first_name', $editingPatient?->first_name) }}"></label>
-              <label>Apellidos<input name="last_name" type="text" required value="{{ old('last_name', $editingPatient?->last_name) }}"></label>
-              <label>Fecha de nacimiento<input name="birth_date" type="date" value="{{ old('birth_date', $editingPatient?->birth_date?->format('Y-m-d')) }}"></label>
-              <label>Sexo<select name="sex"><option value="">Sin especificar</option><option value="female" @selected(old('sex', $editingPatient?->sex) === 'female')>Femenino</option><option value="male" @selected(old('sex', $editingPatient?->sex) === 'male')>Masculino</option><option value="other" @selected(old('sex', $editingPatient?->sex) === 'other')>Otro</option></select></label>
-              <label>CURP<input name="curp" type="text" maxlength="18" value="{{ old('curp', $editingPatient?->curp) }}"></label>
-              <label>Numero de seguridad social federal<input name="nss_federal" type="text" value="{{ old('nss_federal', data_get($editingPatient?->metadata, 'nss_federal')) }}"></label>
-              <label>Numero de seguridad social estatal<input name="nss_estatal" type="text" value="{{ old('nss_estatal', data_get($editingPatient?->metadata, 'nss_estatal')) }}"></label>
-              <label>Numero de usuario de la plataforma<input name="platform_number" type="text" value="{{ old('platform_number', $editingPatient?->platform_number) }}"></label>
-              <label>Telefono<input name="phone" type="text" value="{{ old('phone', $editingPatient?->phone) }}"></label>
-              <label>Correo<input name="email" type="email" value="{{ old('email', $editingPatient?->email) }}"></label>
-              <label>Entidad Federativa<input name="state" type="text" value="{{ old('state', data_get($editingPatient?->metadata, 'state', 'MEXICO')) }}"></label>
-            </div>
-
-            <footer>
-              <a href="{{ route('operational.patients.index', $patientCatalogRouteParameters) }}">Cancelar</a>
-              <button type="submit">{{ $editingPatient ? 'Guardar cambios' : 'Guardar paciente' }}</button>
-            </footer>
-          </form>
-        </div>
+        @if($contextUnit)
+          @include('patients._editor', ['patientWorkspace' => 'operational', 'patientUnit' => $contextUnit])
+        @endif
       @endif
     </section>
   </div>
@@ -729,7 +648,7 @@
     ])
   @endif
   <script>
-    document.querySelectorAll('[data-carousel-style="workspace"]').forEach((carousel) => {
+    document.querySelectorAll('[data-carousel-style="workspace"]:not([data-operational-catalog-carousel])').forEach((carousel) => {
       const track = carousel.querySelector('.operational-oncology-carousel-track');
       const tiles = [...track.querySelectorAll('.operational-oncology-filter')];
       const previous = carousel.querySelector('[data-operational-carousel-prev]');

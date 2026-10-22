@@ -1,0 +1,16 @@
+body.unit-native-body .unit-users-table { min-width: 1080px; }
+body.unit-native-body .unit-users-table td { white-space: normal; overflow-wrap: anywhere; vertical-align: middle; }
+body.unit-native-body .unit-users-table td:first-child { min-width: 170px; }
+body.unit-native-body .unit-users-table td:nth-child(5) { max-width: 250px; }
+body.unit-native-body .unit-users-table td small { display: block; margin-top: 5px; color: #60718b; }
+body.unit-native-body .unit-users-table .is-inactive { color: #9d3a4b; background: #fdecef; }
+body.unit-native-body .unit-users-actions { display: flex; align-items: center; gap: 8px; }
+body.unit-native-body .unit-users-actions form { display: inline-flex; margin: 0; }
+body.unit-native-body .unit-users-actions button { min-height: 30px; padding: 5px 12px; border: 1px solid #d5dfeb; border-radius: 5px; box-shadow: none; background: #fff; color: #10244c; font-size: 12px; white-space: nowrap; }
+body.unit-native-body .unit-user-dialog .unit-native-choice-grid input { width: 16px; height: 16px; min-height: 16px; padding: 0; margin: 0; accent-color: #00a1ad; }
+body.unit-native-body .unit-user-dialog { overflow: hidden; }
+body.unit-native-body .unit-user-dialog form { margin: 0; }
+body.unit-native-body .unit-user-dialog .unit-doctor-dialog-header,
+body.unit-native-body .unit-user-dialog .unit-doctor-dialog-actions { flex-shrink: 0; }
+body.unit-native-body .unit-user-dialog .unit-doctor-dialog-actions .is-primary { background: #1b2152; border-color: #1b2152; }
+body.unit-native-body .unit-user-dialog [hidden] { display: none; }

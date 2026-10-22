@@ -1,0 +1,34 @@
+
+   PASS  Tests\Feature\OncologyMixtureBoardTest
+  ✓ all three sections render scoped oncology status tables                                                      6.58s  
+  ✓ operational interactions are internal and limited to own oncology requests                                   0.08s  
+  ✓ mixture status navigation has one upper row and infusion calendar only home                                  0.07s  
+  ✓ demo is additive idempotent and preserves progress                                                           0.06s  
+  ✓ process and approval are independent                                                                         0.03s  
+
+   PASS  Tests\Feature\OperationalAreaEntryDemoTest
+  ✓ demo entries are persistent repeatable and linked to both patient catalogs                                   0.21s  
+  ✓ entry lists scope records to unit and area and keep empty states                                             0.05s  
+
+   PASS  Tests\Feature\OperationalModuleTest
+  ✓ operational user can open native dashboard                                                                   0.57s  
+  ✓ operational service request can link outpatient prescription                                                 0.06s  
+  ✓ operational user can update provider request status                                                          0.04s  
+  ✓ inspected mixture cannot be sent to provider again                                                           0.82s  
+  ✓ authorizations are independent and restricted to the operational area                                        0.07s  
+  ✓ spanish oncology operator can approve oncology authorization                                                 0.09s  
+  ✓ rejected authorization cancels and locks the request with traceability                                       0.36s  
+  ✓ unit user can operate only the current area authorization                                                    0.07s  
+  ✓ inpatient pharmacy can cancel only after both authorizations are approved                                    0.04s  
+  ✓ superadmin can create and edit an infusion room                                                              0.09s  
+  ✓ operational patient edit button opens and updates the patient                                                0.06s  
+  ✓ oncology calendar assigns available infusion room and blocks capacity overlap                                0.09s  
+
+   PASS  Tests\Feature\UnitOperationalAreasTest
+  ✓ surgery calendar and pediatric navigation keep the selected unit                                             0.09s  
+  ✓ native area edits are shared and other units are protected                                                   0.25s  
+  ✓ new area types can be created edited and browsed                                                             0.21s  
+
+  Tests:    22 passed (470 assertions)
+  Duration: 10.13s
+

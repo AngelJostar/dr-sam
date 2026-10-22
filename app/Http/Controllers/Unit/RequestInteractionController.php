@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Unit;
 
 use App\Http\Controllers\Controller;
 use App\Models\ProviderRequest;
+use App\Models\OperationalProfile;
 use App\Models\ProviderRequestInteraction;
 use App\Services\Platform\PlatformAuditService;
 use Illuminate\Http\JsonResponse;
@@ -18,7 +19,7 @@ class RequestInteractionController extends Controller
     {
         $this->authorizeRequest($request, $providerRequest);
 
-        return $this->response($providerRequest);
+        return $this->response($providerRequest, $request);
     }
 
     public function store(Request $request, ProviderRequest $providerRequest, PlatformAuditService $audit): JsonResponse
@@ -48,7 +49,7 @@ class RequestInteractionController extends Controller
             ]);
         });
 
-        return $this->response($providerRequest, 201);
+        return $this->response($providerRequest, $request, 201);
     }
 
     public function resolve(Request $request, ProviderRequest $providerRequest, ProviderRequestInteraction $interaction, PlatformAuditService $audit): JsonResponse
@@ -76,18 +77,24 @@ class RequestInteractionController extends Controller
             ]);
         });
 
-        return $this->response($providerRequest);
+        return $this->response($providerRequest, $request);
     }
 
     private function authorizeRequest(Request $request, ProviderRequest $record): void
     {
         abort_unless(in_array($record->request_type, ['npt', 'nutrition', 'chemo', 'chemotherapy'], true), 404);
+        $operational = $request->routeIs('operational.mixtures.interactions.*');
+        if ($operational) {
+            abort_unless(in_array($record->request_type, ['chemo', 'chemotherapy'], true), 404);
+        }
         $unit = $record->medicalUnit;
         $user = $request->user();
         $allowed = $unit && (
             in_array($user?->role, ['superadmin', 'admin'], true)
             || ($user?->role === 'unit' && $unit->unit_username === $user->username)
             || ($user?->role === 'institution' && $user->institution && (int) $unit->institution_id === (int) $user->institution->id)
+            || ($operational && $user?->role === 'operational' && OperationalProfile::query()
+                ->where('user_id', $user->id)->where('medical_unit_id', $unit->id)->where('status', 'active')->exists())
         );
         abort_unless($allowed, 403, 'No puedes consultar solicitudes de otra unidad.');
     }
@@ -97,7 +104,7 @@ class RequestInteractionController extends Controller
         return ! in_array($record->status, ['delivered', 'completed', 'cancelled', 'rejected'], true);
     }
 
-    private function response(ProviderRequest $record, int $status = 200): JsonResponse
+    private function response(ProviderRequest $record, Request $request, int $status = 200): JsonResponse
     {
         $record->refresh();
         $interactions = $record->interactions()->with(['author:id,name', 'resolver:id,name'])->orderBy('id')->get();
@@ -117,7 +124,7 @@ class RequestInteractionController extends Controller
                 'resolved_by' => $entry->resolver?->name,
                 'resolved_at' => $entry->resolved_at?->format('d/m/Y H:i'),
                 'resolve_url' => $entry->type === 'adjustment' && $entry->status === 'open'
-                    ? route('unit.requests.interactions.resolve', [$record, $entry]) : null,
+                    ? route($request->routeIs('operational.mixtures.interactions.*') ? 'operational.mixtures.interactions.resolve' : 'unit.requests.interactions.resolve', [$record, $entry]) : null,
             ]),
         ], $status)->header('Cache-Control', 'no-store, private');
     }

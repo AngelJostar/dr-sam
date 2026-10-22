@@ -1,0 +1,11 @@
+
+   PASS  Tests\Feature\UnitModuleTest
+  ✓ unit status message uses a dismissible dialog                                                                6.31s  
+  ✓ unit user can open native dashboard                                                                          0.94s  
+  ✓ unit user can update appointment status                                                                      0.03s  
+  ✓ unit user can create edit and cancel a consultation appointment                                              0.05s  
+  ✓ unit books public consultation without private doctor availability                                           0.07s  
+
+  Tests:    5 passed (390 assertions)
+  Duration: 7.54s
+

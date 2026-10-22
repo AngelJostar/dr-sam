@@ -1,0 +1,16 @@
+<?php
+
+// The Unit catalog owns the names used in every operational navigation.
+return [
+    'consulting' => ['label' => 'Consulta Externa y Consultorios', 'icon' => 'doctors', 'title' => 'Consulta Externa y Consultorios', 'create' => 'Nuevo consultorio', 'singular' => 'consultorio', 'empty' => 'Sin consultorios registrados.', 'route' => 'outpatient.dashboard', 'parameters' => ['section' => 'agenda']],
+    'infusion' => ['label' => 'Salas de infusión', 'icon' => 'areas', 'title' => 'Catalogo de salas de infusion', 'create' => 'Nueva sala de infusion', 'singular' => 'sala de infusion', 'empty' => 'Sin salas de infusion registradas.', 'route' => 'operational.dashboard', 'parameters' => ['area' => 'oncology', 'section' => 'infusion-rooms', 'oncology_track' => 'infusions']],
+    'operating' => ['label' => 'Quirófanos', 'icon' => 'areas', 'title' => 'Catalogo de quirofanos', 'create' => 'Nuevo quirofano', 'singular' => 'quirofano', 'empty' => 'Sin quirofanos registrados.'],
+    'uci' => ['label' => 'UCI', 'icon' => 'areas', 'title' => 'Catalogo de UCI', 'create' => 'Nueva UCI', 'singular' => 'UCI', 'empty' => 'Sin UCI registradas.'],
+    'pediatric-icu' => ['label' => 'UCI Pediátrico', 'icon' => 'areas', 'title' => 'Catálogo de UCI Pediátrico', 'create' => 'Nueva UCI Pediátrico', 'singular' => 'UCI Pediátrico', 'empty' => 'Sin UCI pediátricas registradas.'],
+    'uti' => ['label' => 'UTI', 'icon' => 'areas', 'title' => 'Catalogo de UTI', 'create' => 'Nueva UTI', 'singular' => 'UTI', 'empty' => 'Sin UTI registradas.'],
+    'recovery' => ['label' => 'Recuperación', 'icon' => 'areas', 'title' => 'Catalogo de salas de recuperacion', 'create' => 'Nueva sala de recuperacion', 'singular' => 'sala de recuperacion', 'empty' => 'Sin salas de recuperacion registradas.'],
+    'inpatient-pharmacy' => ['label' => 'Farmacia intrahospitalaria', 'icon' => 'pharmacy', 'title' => 'Farmacia intrahospitalaria', 'create' => 'Nueva farmacia intrahospitalaria', 'singular' => 'farmacia intrahospitalaria', 'empty' => 'Sin farmacias intrahospitalarias registradas.', 'route' => 'operational.dashboard', 'parameters' => ['area' => 'inpatient-pharmacy', 'section' => 'pending']],
+    'external-pharmacy' => ['label' => 'Farmacia Externa', 'icon' => 'pharmacy', 'title' => 'Farmacia Externa', 'create' => 'Nueva farmacia externa', 'singular' => 'farmacia externa', 'empty' => 'Sin farmacias externas registradas.', 'route' => 'external-pharmacy.dashboard', 'parameters' => []],
+    'hospitalization' => ['label' => 'Hospitalización', 'icon' => 'areas', 'title' => 'Hospitalización', 'create' => 'Nueva área de hospitalización', 'singular' => 'área de hospitalización', 'empty' => 'Sin áreas de hospitalización registradas.', 'route' => 'operational.dashboard', 'parameters' => ['area' => 'nursing', 'section' => 'calendar', 'hospitalization_track' => 'all']],
+    'oncology' => ['label' => 'Centro Oncológico', 'icon' => 'areas', 'title' => 'Centro Oncológico', 'create' => 'Nueva área oncológica', 'singular' => 'área oncológica', 'empty' => 'Sin áreas oncológicas registradas.', 'route' => 'operational.dashboard', 'parameters' => ['area' => 'oncology', 'section' => 'calendar', 'oncology_track' => 'infusions']],
+];

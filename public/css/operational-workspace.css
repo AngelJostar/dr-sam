@@ -114,6 +114,7 @@ body.native-shell.operational-native-body .operational-oncology-filter.is-active
 body.native-shell.operational-native-body .operational-oncology-filter-initial { width: 26px; height: 26px; flex: 0 0 26px; background: transparent; color: inherit; }
 body.native-shell.operational-native-body .operational-oncology-filter-initial svg { width: 20px; height: 20px; stroke-width: 1.6; }
 body.native-shell.operational-native-body .operational-oncology-filter-copy strong { color: inherit; font-size: 12px; font-weight: 600; line-height: 1.2; }
+body.native-shell.operational-native-body [data-operational-catalog-carousel] .operational-oncology-filter-copy strong { white-space: normal; overflow: visible; text-overflow: clip; }
 body.native-shell.operational-native-body .operational-oncology-filter-copy small { position: absolute; top: 3px; right: 4px; color: inherit; font-size: 10px; line-height: 1; }
 body.native-shell.operational-native-body button.operational-oncology-carousel-arrow { flex: 0 0 26px; width: 26px; min-width: 26px; height: 30px; min-height: 30px; border: 1px solid var(--operational-border) !important; border-radius: 6px; color: var(--operational-muted) !important; box-shadow: none !important; font: 22px/1 Arial, sans-serif; }
 body.native-shell.operational-native-body .operational-oncology-carousel-arrow:disabled { opacity: .35; cursor: default; }
@@ -188,4 +189,61 @@ body.native-shell.operational-native-body .operational-service-calendar-navigati
   body.native-shell.operational-native-body .operational-native-workspace { width: 100%; }
   body.native-shell.operational-native-body .operational-native-table-heading { flex-wrap: wrap; }
   body.native-shell.operational-native-body .operational-native-filter { grid-template-columns: 1fr; }
+}
+
+/* Shared workspace for outpatient care and external pharmacy. */
+body.native-shell.operational-native-body :is(.outpatient-module-main, .external-pharmacy-module-main) { padding: 0; gap: 0; background: #f7f9fb; }
+body.native-shell.operational-native-body :is(.outpatient-module-card, .external-pharmacy-native-card, .external-pharmacy-module-card) { margin: 0; padding: 0; border: 0; border-bottom: 1px solid var(--operational-border); border-radius: 0; background: #fff; box-shadow: none; }
+body.native-shell.operational-native-body :is(.outpatient-module-tabs, .external-pharmacy-module-tabs) { display: flex; flex-wrap: wrap; }
+body.native-shell.operational-native-body :is(.outpatient-module-carousel, .external-pharmacy-module-carousel) { margin: 0; border-radius: 0; }
+body.native-shell.operational-native-body :is(.external-pharmacy-native-table, .outpatient-module-card table) { width: 100%; border-collapse: collapse; }
+body.native-shell.operational-native-body :is(.external-pharmacy-native-table, .outpatient-module-card table) :is(th, td) { padding: 8px; border-bottom: 1px solid var(--operational-border); color: var(--operational-ink); font-size: 12px; line-height: 1.4; }
+body.native-shell.operational-native-body :is(.external-pharmacy-native-table, .outpatient-module-card table) th { height: 38px; background: #f0f6f8; font-size: 10px; font-weight: 700; }
+body.native-shell.operational-native-body :is(.outpatient-appointment-form, .outpatient-calendar-admin, .external-pharmacy-native-filters, .external-pharmacy-section-heading) { padding: 16px 20px; }
+body.native-shell.operational-native-body :is(.outpatient-module-card, .external-pharmacy-module-card) :is(button, .external-warehouse-button) { min-height: 32px; border: 1px solid var(--operational-border); border-radius: 6px; font-family: inherit; font-size: 12px; box-shadow: none; }
+
+body.native-shell.operational-native-body .operational-native-menu a { height: auto; }
+body.native-shell.operational-native-body .operational-native-menu .operational-area-label { width: auto; height: auto; min-width: 0; color: inherit; }
+
+/* Keep navigation and content boundaries at the same position in every area. */
+body.native-shell.operational-native-body .operational-surgery-calendar { width: 100%; table-layout: fixed; min-width: 700px; }
+body.native-shell.operational-native-body .operational-surgery-calendar td { height: 110px; vertical-align: top; border: 1px solid var(--operational-border); }
+body.native-shell.operational-native-body .operational-surgery-calendar time { display: inline-block; padding: 4px; }
+body.native-shell.operational-native-body .operational-surgery-calendar .is-outside-month { background: #f7f9fb; color: #8999a7; }
+body.native-shell.operational-native-body .operational-surgery-calendar .is-today time { border-radius: 50%; background: #10ada5; color: #fff; }
+body.native-shell.operational-native-body .operational-surgery-event { margin-top: 5px; padding: 5px; border-left: 3px solid #10ada5; background: #effafa; overflow-wrap: anywhere; }
+body.native-shell.operational-native-body .operational-surgery-event summary { cursor: pointer; }
+body.native-shell.operational-native-body .operational-area-empty { padding: 12px 20px; font-size: 12px; }
+body.native-shell.operational-native-body .operational-entry-table { min-width: 2000px; width: 100%; table-layout: fixed; }
+body.native-shell.operational-native-body .operational-entry-table th { white-space: normal; }
+body.native-shell.operational-native-body .operational-entry-table td { white-space: normal; overflow-wrap: anywhere; vertical-align: top; }
+body.native-shell.operational-native-body .operational-entry-note { display: block; margin-top: 4px; color: #6b7b93; font-size: 10px; }
+body.native-shell.operational-native-body {
+  --operational-carousel-height: 112px;
+  --operational-tabs-height: 66px;
+  --operational-heading-height: 96px;
+  --operational-table-heading-height: 50px;
+}
+body.native-shell.operational-native-body .operational-native-menu a { text-align: left; font-weight: 400; }
+body.native-shell.operational-native-body .operational-native-menu .operational-area-label { display: block; justify-self: stretch; text-align: left; line-height: 1.4; }
+body.native-shell.operational-native-body .operational-native-workspace { scrollbar-gutter: stable; }
+body.native-shell.operational-native-body .operational-oncology-carousel { box-sizing: border-box; height: var(--operational-carousel-height); min-height: var(--operational-carousel-height); }
+body.native-shell.operational-native-body .operational-section-tabs { box-sizing: border-box; display: flex; align-items: center; flex-wrap: nowrap; height: var(--operational-tabs-height); min-height: var(--operational-tabs-height); overflow-x: auto; overflow-y: hidden; scrollbar-width: thin; }
+body.native-shell.operational-native-body .operational-section-tabs a { flex: 0 0 auto; white-space: nowrap; }
+body.native-shell.operational-native-body .operational-native-table-card { border-top: 0; }
+body.native-shell.operational-native-body .operational-native-table-heading { box-sizing: border-box; display: flex; align-items: center; flex-wrap: nowrap; height: var(--operational-heading-height); min-height: var(--operational-heading-height); margin: 0; padding: 12px 20px; overflow: visible; border-bottom: 1px solid var(--operational-border); }
+body.native-shell.operational-native-body .operational-native-table-heading > div:first-child { min-width: 0; flex: 1 1 auto; }
+body.native-shell.operational-native-body .operational-native-table-heading :is(h2, p, span:not(.sr-only)) { margin-top: 0; margin-bottom: 3px; }
+body.native-shell.operational-native-body .operational-native-table-heading > div:first-child :is(p, span:not(.sr-only)) { display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+body.native-shell.operational-native-body .operational-native-table-heading :is(.operational-heading-actions, .outpatient-module-card-head > div:last-child) { flex: 0 0 auto; display: flex; align-items: center; gap: 8px; flex-wrap: nowrap; }
+body.native-shell.operational-native-body .operational-native-table-heading :is(.external-pharmacy-native-filters, .operational-native-filter) { display: grid; grid-template-columns: minmax(160px, 1fr) 130px; gap: 12px; flex: 0 1 400px; min-width: 300px; padding: 0; margin: 0; border: 0; background: transparent; }
+body.native-shell.operational-native-body .operational-native-table-heading label { min-width: 0; font-size: 11px; }
+body.native-shell.operational-native-body .operational-native-table-heading .operational-mixtures-search { width: 190px; min-width: 150px; flex: 0 1 190px; }
+body.native-shell.operational-native-body .operational-native-table-scroll { border-top: 0; }
+body.native-shell.operational-native-body :is(.operational-native-table, .external-pharmacy-native-table, .outpatient-module-card table) thead tr { height: var(--operational-table-heading-height); }
+body.native-shell.operational-native-body :is(.operational-native-table, .external-pharmacy-native-table, .outpatient-module-card table) th { box-sizing: border-box; height: var(--operational-table-heading-height); padding-block: 6px; }
+@media (max-width: 640px) {
+  body.native-shell.operational-native-body .operational-native-table-heading { height: auto; min-height: var(--operational-heading-height); flex-wrap: wrap; }
+  body.native-shell.operational-native-body .operational-native-table-heading :is(.external-pharmacy-native-filters, .operational-native-filter) { flex-basis: 100%; min-width: 0; }
+  body.native-shell.operational-native-body .operational-native-table-heading .operational-heading-actions { flex-wrap: wrap; }
 }

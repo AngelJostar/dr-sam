@@ -1,13 +1,6 @@
 @php
-  $catalogCarouselItems = [
-    'all' => ['Catálogo', 'catalog'],
-    'consulting' => ['Consultorios', 'doctors'],
-    'infusion' => ['Salas de infusión', 'areas'],
-    'operating' => ['Quirófanos', 'areas'],
-    'uci' => ['UCI', 'areas'],
-    'uti' => ['UTI', 'areas'],
-    'recovery' => ['Recuperación', 'areas'],
-  ];
+  $catalogCarouselItems = ['all' => ['Catálogo', 'catalog']]
+      + collect(\App\Support\UnitAreaCatalog::navigation())->map(fn ($area) => [$area['label'], $area['icon']])->all();
 @endphp
 
 @include('unit._catalog_carousel', ['carouselMenu' => 'procedure-areas', 'carouselFilter' => 'procedure', 'catalogCarouselItems' => $catalogCarouselItems])

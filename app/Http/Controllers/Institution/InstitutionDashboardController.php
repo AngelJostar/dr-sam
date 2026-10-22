@@ -735,6 +735,10 @@ class InstitutionDashboardController extends Controller
 
     private function resolveInstitution(Request $request): Institution
     {
+        if ($request->input('section') === 'agents') {
+            return \App\Support\InstitutionAgentCenter::resolve($request);
+        }
+
         $user = $request->user();
 
         if ($user?->institution) {

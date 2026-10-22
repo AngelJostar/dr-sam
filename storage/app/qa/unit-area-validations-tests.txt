@@ -1,0 +1,10 @@
+
+   PASS  Tests\Feature\UnitAreaValidationsTest
+  ✓ unit can save edit and audit rules without losing other metadata                                             7.54s  
+  ✓ rules are scoped to the unit and only unit roles can change them                                             0.08s  
+  ✓ invalid or incomplete active requirements cannot be saved                                                    0.05s  
+  ✓ all unit areas have an unconfigured row and validation navigation                                            0.07s  
+
+  Tests:    4 passed (63 assertions)
+  Duration: 7.92s
+

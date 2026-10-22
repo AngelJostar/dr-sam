@@ -1,4 +1,16 @@
 /* Light surfaces throughout the unit workspace. */
+body.native-shell.unit-native-body .unit-native-workspace .unit-medication-catalog-table .unit-medication-switch {
+  display: inline-flex; align-items: center; justify-content: flex-start; width: 38px; height: 22px; min-height: 22px; padding: 2px; box-sizing: border-box;
+  border: 0; border-radius: 999px; background: #dc3545; box-shadow: none;
+}
+body.native-shell.unit-native-body .unit-native-workspace .unit-medication-catalog-table .unit-medication-switch.is-on { background: #19994b; }
+body.native-shell.unit-native-body .unit-native-workspace .unit-medication-catalog-table .unit-medication-switch > span { flex: none; width: 18px; height: 18px; border-radius: 50%; background: #fff; }
+body.native-shell.unit-native-body .unit-native-workspace .unit-medication-catalog-table .unit-medication-switch.is-on > span { transform: translateX(16px); }
+body.native-shell.unit-native-body .unit-native-workspace .unit-medication-catalog-table .unit-medication-switch.is-disabled { opacity: 1; cursor: not-allowed; }
+body.native-shell.unit-native-body .unit-native-workspace .unit-medication-catalog-table .unit-medication-switch:focus-visible { outline: 2px solid #10244c; outline-offset: 3px; }
+body.native-shell.unit-native-body .unit-clinical-catalog-tabs { display: flex; gap: 8px; padding: 14px 20px; border-bottom: 1px solid #dfe6ef; background: #fff; }
+body.native-shell.unit-native-body .unit-clinical-catalog-tabs a { display: inline-flex; align-items: center; justify-content: center; min-width: 144px; height: 40px; padding: 8px 14px; box-sizing: border-box; border: 1px solid #dfe6ef; border-radius: 6px; color: #10244c; background: #fff; font-size: 12px; text-decoration: none; }
+body.native-shell.unit-native-body .unit-clinical-catalog-tabs a.is-active { color: #008f98; background: #eef8f8; border-color: #00a1ad; }
 .native-shell.unit-native-body {
   --unit-light-border: #cfe3e0;
   --unit-light-text: #244c58;
@@ -150,8 +162,8 @@ body.native-shell.unit-native-body .unit-consultation-mini-days button.is-select
 }
 
 .native-shell.unit-native-body :is(.unit-catalog-info-card, .unit-service-panel.is-unified-service > .unit-service-panel-header) {
-  min-height: 126px;
-  border-radius: 8px;
+  min-height: var(--unit-heading-height, 112px);
+  border-radius: 0;
 }
 
 .native-shell.unit-native-body .unit-users-screen .unit-catalog-toolbar {
@@ -221,7 +233,7 @@ body.native-shell.unit-native-body .unit-consultation-mini-days button.is-select
     min-height: 196px;
   }
   .native-shell.unit-native-body :is(.unit-catalog-info-card, .unit-service-panel.is-unified-service > .unit-service-panel-header) {
-    min-height: 225px;
+    min-height: var(--unit-heading-height, 112px);
   }
 }
 
@@ -284,6 +296,7 @@ body.native-shell.unit-native-body .unit-native-menu a:is(:hover, :focus-visible
 body.native-shell.unit-native-body .unit-native-menu a.is-active { background: #f1f4f7; color: var(--unit-light-text); border-color: transparent; box-shadow: inset 4px 0 #00a1ad; font-weight: 600; }
 body.native-shell.unit-native-body .unit-native-menu a span { width: 22px; height: 22px; color: inherit; background: transparent; }
 body.native-shell.unit-native-body .unit-native-menu a.is-active span { color: #00a1ad; background: transparent; }
+body.native-shell.unit-native-body .unit-native-menu .unit-agent-menu-link { margin-top: 16px; border-top-color: var(--unit-light-border); }
 body.native-shell.unit-native-body .unit-native-menu a span svg { width: 22px; height: 22px; stroke-width: 1.6; }
 body.native-shell.unit-native-body .unit-native-workspace { --unit-carousel-gap: 0px; --unit-section-gap: 0px; grid-column: 2; grid-row: 2; min-width: 0; padding: 0; background: #f7f9fb; }
 body.native-shell.unit-native-body :is(.unit-catalog-screen, .unit-service-dashboard, .unit-service-panels, .unit-service-panel.is-unified-service) { gap: 0; min-width: 0; }
@@ -328,6 +341,13 @@ body.native-shell.unit-native-body .unit-native-workspace :is(.unit-consultation
 body.native-shell.unit-native-body :is(.unit-native-workspace, .unit-modal, .unit-procedure-dialog) :is(input:not([type=checkbox]):not([type=radio]):not([type=hidden]):not([type=file]), select) { height: 40px; min-height: 40px; border-color: var(--unit-light-border); border-radius: 8px; background: #fff; color: var(--unit-light-text); font-size: 12px; font-weight: 400; }
 body.native-shell.unit-native-body textarea { border-color: var(--unit-light-border); color: var(--unit-light-text); font-size: 12px; }
 
+/* Keep the patient search and catalog actions together on one line. */
+body.native-shell.unit-native-body [data-unit-patient-panel="catalog"] .unit-catalog-toolbar { flex-direction: row; align-items: center; }
+body.native-shell.unit-native-body [data-unit-patient-panel="catalog"] .unit-catalog-toolbar > .unit-nutrition-request-tabs { flex: 0 1 auto; }
+body.native-shell.unit-native-body [data-unit-patient-panel="catalog"] .unit-catalog-toolbar-actions { flex: 0 1 auto; flex-wrap: nowrap; width: auto; max-width: 100%; overflow-x: auto; padding-block: 2px; }
+body.native-shell.unit-native-body [data-unit-patient-panel="catalog"] .unit-catalog-search { flex: 1 1 280px; min-width: 180px; margin: 0; }
+body.native-shell.unit-native-body [data-unit-patient-panel="catalog"] .unit-catalog-primary-action { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; height: var(--unit-control-height); min-height: var(--unit-control-height); padding: 8px 16px; box-sizing: border-box; white-space: nowrap; text-decoration: none; }
+
 body.native-shell.unit-native-body .unit-native-table-card { min-height: 0; margin: 0; border: 1px solid var(--unit-light-border); border-inline: 0; border-radius: 0; box-shadow: none; }
 body.native-shell.unit-native-body .unit-native-table-scroll { scrollbar-color: #8dafac #f2f7f6; }
 body.native-shell.unit-native-body .unit-native-table { width: max-content; min-width: 100%; border-collapse: collapse; }
@@ -340,6 +360,8 @@ body.native-shell.unit-native-body .unit-native-table tbody tr:hover { backgroun
 body.native-shell.unit-native-body .unit-native-table .unit-native-empty { height: 78px; padding: 24px; text-align: center; color: var(--unit-light-muted); }
 body.native-shell.unit-native-body .unit-native-table td :is(button, .unit-native-button, .unit-native-download, .unit-service-operation) { min-height: 28px; padding: 4px 10px; border: 1px solid var(--unit-light-border); border-radius: 6px; color: var(--unit-accent); background: #fff; box-shadow: none; font-size: 11px; font-weight: 600; }
 body.native-shell.unit-native-body .unit-profile-layout { gap: 16px; padding: 20px; }
+body.native-shell.unit-native-body [data-unit-profile] [hidden] { display: none !important; }
+body.native-shell.unit-native-body .unit-profile-layout.is-preview-only { grid-template-columns: minmax(0, 1fr); }
 body.native-shell.unit-native-body .unit-profile-card { border-color: var(--unit-light-border); border-radius: 12px; box-shadow: none; }
 body.native-shell.unit-native-body .unit-profile-card h2 { color: var(--unit-light-text); font-size: 18px; }
 body.native-shell.unit-native-body :is(.unit-profile-form label, .unit-procedure-dialog-body > label) { color: var(--unit-light-muted); font-size: 12px; font-weight: 600; }
@@ -375,6 +397,67 @@ body.native-shell.unit-native-body :is(.unit-procedure-dialog-actions button.is-
   body.native-shell.unit-native-body .unit-catalog-toolbar { flex-direction: column; align-items: stretch; }
   body.native-shell.unit-native-body .unit-catalog-toolbar > .unit-nutrition-request-tabs { flex: 0 0 auto; width: 100%; max-width: 100%; }
   body.native-shell.unit-native-body .unit-profile-layout { grid-template-columns: 1fr; }
+}
+
+/* One set of bands for every Unit menu: carousel, heading, filters and actions. */
+body.native-shell.unit-native-body {
+  --unit-heading-height: 112px;
+  --unit-filter-height: 65px;
+  --unit-toolbar-height: 69px;
+  --unit-content-inset: 20px;
+}
+body.native-shell.unit-native-body .unit-native-workspace :is(.unit-native-header, .unit-service-panel-header) {
+  display: flex; flex-direction: row; align-items: center; justify-content: space-between;
+  flex-wrap: nowrap; box-sizing: border-box; min-height: var(--unit-heading-height);
+  padding: 16px var(--unit-content-inset); text-align: left;
+}
+body.native-shell.unit-native-body .unit-native-workspace .unit-service-panel-header.unit-catalog-info-card { min-height: var(--unit-heading-height); }
+body.native-shell.unit-native-body .unit-native-workspace .unit-service-panel-badges { min-height: 24px; align-items: center; }
+body.native-shell.unit-native-body .unit-native-workspace :is(.unit-native-header, .unit-service-panel-header) > :first-child { min-width: 0; flex: 1 1 auto; }
+body.native-shell.unit-native-body .unit-native-workspace :is(.unit-native-header, .unit-service-panel-header) .eyebrow { margin: 0 0 4px; }
+body.native-shell.unit-native-body .unit-native-workspace .unit-native-selector { display: flex; align-items: end; flex: 0 1 48%; min-width: 240px; gap: 10px; }
+body.native-shell.unit-native-body .unit-native-workspace .unit-native-selector label { flex: 1; min-width: 0; }
+body.native-shell.unit-native-body .unit-native-workspace .unit-native-selector time { flex: none; white-space: nowrap; padding-bottom: 12px; }
+body.native-shell.unit-native-body .unit-native-workspace .unit-catalog-toolbar {
+  display: flex; flex-direction: column; align-items: stretch; gap: 0; padding: 0; margin: 0; border: 0;
+}
+body.native-shell.unit-native-body .unit-native-workspace :is(.unit-catalog-toolbar > .unit-nutrition-request-tabs, .unit-catalog-filter-row, .unit-area-workspace-switch, .admin-filter-buttons, [data-unit-consultation-submenu]) {
+  display: flex; align-items: center; flex: none; flex-wrap: nowrap; gap: 8px;
+  width: 100%; min-width: 0; height: var(--unit-filter-height); min-height: var(--unit-filter-height); box-sizing: border-box;
+  margin: 0; padding: 6px var(--unit-content-inset); overflow-x: auto;
+  border: 0; border-bottom: 1px solid var(--unit-light-border); border-radius: 0;
+  background: #fff; scrollbar-width: thin; scrollbar-color: #8dafac #f2f7f6;
+}
+body.native-shell.unit-native-body .unit-native-workspace .unit-catalog-filter-row :is(.unit-clinical-catalog-tabs, .unit-nutrition-request-tabs) { display: flex; flex: none; flex-wrap: nowrap; margin: 0; padding: 0; border: 0; }
+body.native-shell.unit-native-body .unit-native-workspace [data-unit-consultation-submenu] > .unit-consultation-submenu { display: flex; flex: none; flex-wrap: nowrap; overflow: visible; }
+body.native-shell.unit-native-body .unit-native-workspace .unit-catalog-filter-row .unit-clinical-catalog-tabs { padding-right: 16px; margin-right: 8px; border-right: 1px solid var(--unit-light-border); }
+body.native-shell.unit-native-body .unit-native-workspace :is(.unit-catalog-toolbar > .unit-catalog-toolbar-actions, .admin-toolbar, .unit-service-tools) {
+  display: flex; flex: none; flex-direction: row; flex-wrap: nowrap; align-items: center; justify-content: safe flex-end;
+  width: 100%; max-width: 100%; min-width: 0; height: var(--unit-toolbar-height); min-height: var(--unit-toolbar-height); box-sizing: border-box;
+  margin: 0; padding: 6px var(--unit-content-inset); gap: 8px; overflow-x: auto;
+  border: 0; border-bottom: 1px solid var(--unit-light-border); background: #fff;
+  scrollbar-width: thin; scrollbar-color: #8dafac #f2f7f6;
+}
+body.native-shell.unit-native-body .unit-native-workspace .unit-catalog-toolbar-actions .unit-catalog-search { flex: 0 1 280px; min-width: 180px; margin: 0; }
+body.native-shell.unit-native-body .unit-native-workspace :is(.unit-catalog-toolbar-actions, .admin-toolbar) > * { flex-shrink: 0; }
+body.native-shell.unit-native-body .unit-native-workspace .admin-toolbar .admin-filters { flex: 1 0 360px; min-width: max-content; flex-wrap: nowrap; gap: 8px; align-items: center; }
+body.native-shell.unit-native-body .unit-native-workspace .admin-toolbar .admin-filters .admin-search { min-width: 180px; }
+body.native-shell.unit-native-body .unit-native-workspace .admin-toolbar .admin-filters > label { margin: 0; min-width: 160px; }
+body.native-shell.unit-native-body .unit-native-workspace .admin-toolbar .admin-filters .admin-date { min-width: 140px; }
+body.native-shell.unit-native-body .unit-native-workspace .admin-toolbar .admin-date > span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+body.native-shell.unit-native-body .unit-native-workspace .admin-toolbar .admin-actions button { width: 180px; height: var(--unit-control-height); border-color: var(--unit-light-border); border-radius: 6px; font-weight: 600; }
+body.native-shell.unit-native-body .unit-native-workspace .admin-toolbar .admin-actions button.is-primary { color: #fff; border-color: var(--unit-light-text); background: var(--unit-light-text); }
+body.native-shell.unit-native-body .unit-native-workspace :is(.unit-nutrition-request-tabs button, .unit-area-workspace-switch button, .unit-clinical-catalog-tabs a, .admin-filter-buttons button) { flex-shrink: 0; height: 40px; min-height: 40px; box-sizing: border-box; font-weight: 400; box-shadow: none; }
+body.native-shell.unit-native-body .unit-native-workspace :is(.unit-catalog-content-card, .unit-procedure-card) { margin: 0; border-top: 0; }
+body.native-shell.unit-native-body .unit-native-workspace [data-admin-content] > .admin-section:first-child { padding: 0 0 24px; }
+body.native-shell.unit-native-body .unit-native-workspace [data-admin-content] > .admin-section:first-child h3 { padding-inline: var(--unit-content-inset); }
+body.native-shell.unit-native-body .unit-native-workspace [data-admin-content] > .admin-section:first-child .admin-table-scroll { border: 0; border-bottom: 1px solid var(--unit-light-border); border-radius: 0; }
+body.native-shell.unit-native-body .unit-native-workspace :is(.unit-native-table, .unit-administration table) th { height: 50px; padding: 8px; box-sizing: border-box; font-size: 10px; background: #f0f6f8; }
+body.native-shell.unit-native-body .unit-native-workspace .unit-administration td { padding: 8px; font-size: 12px; }
+@media (max-width: 640px) {
+  body.native-shell.unit-native-body .unit-native-workspace :is(.unit-native-header, .unit-service-panel-header) { flex-wrap: wrap; }
+  body.native-shell.unit-native-body .unit-native-workspace .unit-native-selector { flex: 1 1 100%; }
+  body.native-shell.unit-native-body .unit-native-workspace :is(.unit-catalog-toolbar > .unit-catalog-toolbar-actions, .admin-toolbar) { justify-content: flex-start; }
 }
 
 /* Shared follow-up for nutrition and chemotherapy requests. */

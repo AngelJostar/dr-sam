@@ -153,7 +153,7 @@ class UnitDashboardController extends Controller
     {
         $unit = $this->resolveUnit($request);
         $section = $request->string('section')->toString() ?: 'services';
-        if (! in_array($section, ['profile', 'services', 'catalog', 'users', 'patients', 'doctors', 'specialties', 'external-pharmacy', 'procedure-areas', 'medications'], true)) {
+        if (! in_array($section, ['profile', 'services', 'catalog', 'users', 'patients', 'doctors', 'specialties', 'external-pharmacy', 'procedure-areas', 'medications', 'administration', 'personnel-services', 'agents'], true)) {
             $section = 'services';
         }
 
@@ -194,11 +194,13 @@ class UnitDashboardController extends Controller
             ->limit(10)
             ->get();
 
-        $patients = Patient::query()
-            ->whereHas('appointments', fn ($query) => $query->where('medical_unit_id', $unit->id))
-            ->with(['appointments' => fn ($query) => $query->where('medical_unit_id', $unit->id)->latest('starts_at')])
+        $patients = \App\Support\UnitPatientCatalog::query($unit)
             ->orderBy('full_name')
             ->get();
+
+        $editingPatient = $section === 'patients' && $request->filled('edit_patient')
+            ? \App\Support\UnitPatientCatalog::query($unit)->findOrFail($request->integer('edit_patient'))
+            : null;
 
         $consultationPatientCatalog = Patient::query()
             ->where('status', 'active')
@@ -254,6 +256,7 @@ class UnitDashboardController extends Controller
             'providerRequests' => $providerRequests,
             'inventory' => $inventory,
             'patients' => $patients,
+            'editingPatient' => $editingPatient,
             'consultationPatientCatalog' => $consultationPatientCatalog,
             'specialties' => $specialties,
             'consultationRooms' => $consultationRooms,
@@ -604,7 +607,7 @@ class UnitDashboardController extends Controller
         $user = User::query()->create(['name' => $data['name'], 'username' => $data['username'], 'email' => filter_var($data['username'], FILTER_VALIDATE_EMAIL) ? $data['username'] : null, 'password' => Hash::make($data['password']), 'role' => 'operational', 'module' => 'operational', 'status' => 'active']);
         $profile = OperationalProfile::query()->create(['user_id' => $user->id, 'medical_unit_id' => $unit->id, 'operational_area_id' => $data['operational_area_id'], 'role_label' => $data['role_label'], 'permissions' => $data['permissions'] ?? [], 'status' => 'active', 'metadata' => ['authority' => $data['authority'], 'service' => $data['service'], 'demo_password' => $data['password']]]);
         $audit->record($request, 'unit.operational_user.created', $profile, 'unit', ['unit_id' => $unit->id]);
-        return redirect()->route('unit.dashboard', ['section' => 'users'])->with('status', 'Usuario operativo creado.');
+        return redirect()->route('unit.dashboard', array_filter(['section' => 'users', 'unit' => $request->filled('unit') ? $unit->id : null]))->with('status', 'Guardado correctamente');
     }
 
     public function updateOperationalUser(Request $request, OperationalProfile $profile, PlatformAuditService $audit): RedirectResponse
@@ -618,7 +621,7 @@ class UnitDashboardController extends Controller
         if (filled($data['password'] ?? null)) $metadata['demo_password'] = $data['password'];
         $profile->update(['operational_area_id' => $data['operational_area_id'], 'role_label' => $data['role_label'], 'permissions' => $data['permissions'] ?? [], 'metadata' => $metadata]);
         $audit->record($request, 'unit.operational_user.updated', $profile, 'unit');
-        return redirect()->route('unit.dashboard', ['section' => 'users'])->with('status', 'Usuario operativo actualizado.');
+        return redirect()->route('unit.dashboard', array_filter(['section' => 'users', 'unit' => $request->filled('unit') ? $unit->id : null]))->with('status', 'Guardado correctamente');
     }
 
     public function destroyOperationalUser(Request $request, OperationalProfile $profile, PlatformAuditService $audit): RedirectResponse
@@ -627,7 +630,7 @@ class UnitDashboardController extends Controller
         abort_unless((int) $profile->medical_unit_id === (int) $unit->id, 403);
         $audit->record($request, 'unit.operational_user.deleted', $profile, 'unit');
         $profile->delete();
-        return redirect()->route('unit.dashboard', ['section' => 'users'])->with('status', 'Perfil operativo eliminado.');
+        return redirect()->route('unit.dashboard', array_filter(['section' => 'users', 'unit' => $request->filled('unit') ? $unit->id : null]))->with('status', 'Perfil operativo eliminado.');
     }
 
     public function storeDoctor(Request $request, PlatformAuditService $audit): RedirectResponse
@@ -696,7 +699,7 @@ class UnitDashboardController extends Controller
     {
         $unit = $this->resolveUnit($request);
         $data = $request->validate([
-            'type' => ['required', Rule::in(['consulting', 'infusion', 'operating', 'uci', 'uti', 'recovery'])],
+            'type' => ['required', Rule::in(array_keys(config('unit_areas')))],
             'location' => ['required', 'string', 'max:180'],
             'floor' => ['required', 'string', 'max:40'],
             'unit_number' => ['required', 'string', 'max:80'],
@@ -728,7 +731,7 @@ class UnitDashboardController extends Controller
     {
         $unit = $this->resolveUnit($request);
         $data = $request->validate([
-            'type' => ['required', Rule::in(['consulting', 'infusion', 'operating', 'uci', 'uti', 'recovery'])],
+            'type' => ['required', Rule::in(array_keys(config('unit_areas')))],
             'location' => ['required', 'string', 'max:180'], 'floor' => ['required', 'string', 'max:40'],
             'unit_number' => ['required', 'string', 'max:80'], 'capacity' => ['required', 'integer', 'min:1', 'max:999'],
             'responsible' => ['nullable', 'string', 'max:180'], 'schedule' => ['nullable', 'array'],
@@ -737,6 +740,7 @@ class UnitDashboardController extends Controller
         ]);
         $metadata = $unit->metadata ?? [];
         $areas = $metadata['procedure_areas'] ?? [];
+        $areas = \App\Support\UnitAreaCatalog::records($unit)->all();
         $index = collect($areas)->search(fn (array $area): bool => ($area['id'] ?? null) === $areaId);
         abort_if($index === false, 404);
         $areas[$index] = array_merge($areas[$index], [
@@ -755,18 +759,22 @@ class UnitDashboardController extends Controller
 
     private function persistProcedureArea(MedicalUnit $unit, string $sourceId, array $data): void
     {
-        $area = ProcedureArea::query()->updateOrCreate(
-            ['medical_unit_id' => $unit->id, 'external_id' => $sourceId],
-            [
+        $attributes = [
                 'type' => $data['type'],
                 'location' => $data['location'],
                 'floor' => $data['floor'],
                 'unit_number' => $data['unit_number'],
                 'simultaneous_capacity' => $data['capacity'],
                 'responsible_name' => $data['responsible'] ?: 'Sin responsable',
-                'status' => 'active',
-            ],
-        );
+            ];
+        if (preg_match('/^native-(\d+)$/', $sourceId, $matches)) {
+            $area = $unit->procedureAreas()->findOrFail((int) $matches[1]);
+            $area->update($attributes);
+        } else {
+            $area = ProcedureArea::query()->updateOrCreate(
+                ['medical_unit_id' => $unit->id, 'external_id' => $sourceId], $attributes,
+            );
+        }
 
         $days = ['sunday' => 0, 'monday' => 1, 'tuesday' => 2, 'wednesday' => 3, 'thursday' => 4, 'friday' => 5, 'saturday' => 6];
         $area->schedules()->delete();
@@ -899,6 +907,61 @@ class UnitDashboardController extends Controller
         );
     }
 
+    public function saveAreaValidation(Request $request, PlatformAuditService $audit, ?string $ruleId = null): RedirectResponse
+    {
+        $unit = $this->resolveUnit($request);
+        $areas = array_keys(\App\Support\UnitAreaCatalog::navigation());
+        $data = $request->validate([
+            'requester_area' => ['required', Rule::in($areas)],
+            'scope' => ['required', Rule::in(['all', 'service', 'product'])],
+            'service_id' => ['nullable', 'required_if:scope,service', 'integer', 'exists:services,id'],
+            'product_id' => ['nullable', 'required_if:scope,product', 'integer', Rule::exists('medication_catalog_items', 'id')->where(fn ($query) => $query->where(fn ($scope) => $scope->whereNull('institution_id')->orWhere('institution_id', $unit->institution_id)))],
+            'review_areas' => ['nullable', 'array', 'max:20'],
+            'review_areas.*' => ['required', 'distinct', Rule::in($areas), 'different:requester_area'],
+            'authorize_areas' => ['nullable', 'array', 'max:20'],
+            'authorize_areas.*' => ['required', 'distinct', Rule::in($areas), 'different:requester_area'],
+            'status' => ['required', Rule::in(['draft', 'active', 'inactive'])],
+            'notes' => ['nullable', 'string', 'max:1000'],
+            'version' => [$ruleId ? 'required' : 'nullable', 'integer', 'min:1'],
+        ]);
+        $data['review_areas'] = $data['review_areas'] ?? [];
+        $data['authorize_areas'] = $data['authorize_areas'] ?? [];
+        if ($data['status'] === 'active' && !$data['review_areas'] && !$data['authorize_areas']) {
+            throw ValidationException::withMessages(['review_areas' => 'Selecciona al menos un área de visto bueno o autorización para activar la regla.']);
+        }
+        $data['service_id'] = $data['scope'] === 'service' ? (int) $data['service_id'] : null;
+        $data['product_id'] = $data['scope'] === 'product' ? (int) $data['product_id'] : null;
+        $data['scope_label'] = match ($data['scope']) {
+            'service' => Service::query()->findOrFail($data['service_id'])->name,
+            'product' => MedicationCatalogItem::query()->findOrFail($data['product_id'])->name,
+            default => 'Todos los productos y servicios',
+        };
+
+        DB::transaction(function () use ($request, $audit, $unit, $ruleId, $data): void {
+            $lockedUnit = MedicalUnit::query()->lockForUpdate()->findOrFail($unit->id);
+            $metadata = $lockedUnit->metadata ?? [];
+            $rules = collect($metadata['area_validation_rules'] ?? [])->keyBy('id');
+            $previous = $ruleId ? $rules->get($ruleId) : null;
+            abort_if($ruleId && !$previous, 404);
+            if ($previous && (int) $data['version'] !== (int) $previous['version']) {
+                throw ValidationException::withMessages(['version' => 'Otra persona modificó esta regla. Recarga la página antes de volver a guardarla.']);
+            }
+            $id = $ruleId ?: (string) \Illuminate\Support\Str::uuid();
+            $saved = array_merge($data, [
+                'id' => $id, 'version' => ($previous['version'] ?? 0) + 1,
+                'created_at' => $previous['created_at'] ?? now()->toISOString(),
+                'updated_at' => now()->toISOString(), 'updated_by' => $request->user()->id,
+            ]);
+            $rules->put($id, $saved);
+            $metadata['area_validation_rules'] = $rules->values()->all();
+            $lockedUnit->update(['metadata' => $metadata]);
+            $audit->record($request, 'unit.area_validation.saved', $lockedUnit, 'unit', ['rule_id' => $id, 'before' => $previous, 'after' => $saved]);
+        });
+
+        return redirect()->route('unit.dashboard', ['unit' => $unit->id, 'section' => 'procedure-areas', 'catalog' => $data['requester_area'], 'workspace' => 'validations'])
+            ->with('status', 'Regla de validación guardada.');
+    }
+
     private function resolveUnit(Request $request): MedicalUnit
     {
         $user = $request->user();
@@ -910,7 +973,7 @@ class UnitDashboardController extends Controller
 
             $canUseUnit = in_array($user?->role, ['superadmin', 'admin'], true)
                 || ($user?->role === 'unit' && $requestedUnit->unit_username === $user->username)
-                || ($user?->role === 'institution' && (int) $requestedUnit->institution_id === (int) $user->institution?->id);
+                || ($user?->role === 'institution' && $user->institution && (int) $requestedUnit->institution_id === (int) $user->institution->id);
 
             abort_unless($canUseUnit, 403, 'No puedes consultar otra unidad.');
 
@@ -934,7 +997,7 @@ class UnitDashboardController extends Controller
 
         return MedicalUnit::query()
             ->with('institution')
-            ->orderBy('name')
+            ->orderBy('id')
             ->firstOrFail();
     }
 }

@@ -32,6 +32,8 @@ use App\Http\Controllers\Provider\ProviderPortalController;
 use App\Http\Controllers\SuperAdmin\SuperAdminDashboardController;
 use App\Http\Controllers\SuperAdmin\InstitutionActionController;
 use App\Http\Controllers\Unit\UnitDashboardController;
+use App\Http\Controllers\Unit\AdministrationDemoController;
+use App\Http\Controllers\Unit\AgentCenterController;
 use App\Http\Controllers\Unit\RequestInteractionController;
 use Illuminate\Support\Facades\Route;
 
@@ -110,7 +112,7 @@ Route::middleware('auth')->group(function (): void {
         ->middleware(['role:superadmin,admin,operational', 'permission:pharmacy.orders.update'])
         ->name('pharmacy.orders.status');
     Route::get('/external-pharmacy', [ExternalPharmacyController::class, 'index'])
-        ->middleware('role:superadmin,admin,operational')
+        ->middleware('role:superadmin,admin,institution,unit,operational')
         ->name('external-pharmacy.dashboard');
     Route::patch('/external-pharmacy/orders/{order}/status', [ExternalPharmacyController::class, 'updateOrderStatus'])
         ->middleware(['role:superadmin,admin,operational', 'permission:external_pharmacy.orders.update'])
@@ -136,6 +138,17 @@ Route::middleware('auth')->group(function (): void {
     Route::get('/operational', [OperationalDashboardController::class, 'index'])
         ->middleware('role:superadmin,admin,institution,unit,operational')
         ->name('operational.dashboard');
+    Route::get('/operational/areas/{type}', [\App\Http\Controllers\Operational\OperationalAreaController::class, 'show'])
+        ->middleware('role:superadmin,admin,institution,unit,operational')->name('operational.areas.show');
+    Route::get('/operational/mixtures/{providerRequest}/interactions', [RequestInteractionController::class, 'index'])
+        ->middleware('role:superadmin,admin,institution,unit,operational')
+        ->name('operational.mixtures.interactions.index');
+    Route::post('/operational/mixtures/{providerRequest}/interactions', [RequestInteractionController::class, 'store'])
+        ->middleware(['role:superadmin,admin,institution,unit,operational', 'permission:operational.provider_requests.update'])
+        ->name('operational.mixtures.interactions.store');
+    Route::patch('/operational/mixtures/{providerRequest}/interactions/{interaction}', [RequestInteractionController::class, 'resolve'])
+        ->middleware(['role:superadmin,admin,institution,unit,operational', 'permission:operational.provider_requests.update'])
+        ->name('operational.mixtures.interactions.resolve');
     Route::get('/operational/patients', [OperationalDashboardController::class, 'patientCatalog'])
         ->middleware('role:superadmin,admin,institution,unit,operational')
         ->name('operational.patients.index');
@@ -275,6 +288,16 @@ Route::middleware('auth')->group(function (): void {
     Route::patch('/unit/profile', [UnitDashboardController::class, 'updateProfile'])
         ->middleware(['role:superadmin,admin,institution,unit', 'permission:unit.profile.update'])
         ->name('unit.profile.update');
+    Route::prefix('unit/administration-demo')->name('unit.administration-demo.')->middleware(['role:superadmin,admin,institution,unit', 'permission:unit.administration.manage'])->group(function (): void {
+        Route::get('/', [AdministrationDemoController::class, 'show'])->name('show');
+        Route::post('/', [AdministrationDemoController::class, 'store'])->name('store');
+        Route::get('/documents/{document}', [AdministrationDemoController::class, 'document'])->name('document');
+        Route::get('/invoices/{invoice}/{format}', [AdministrationDemoController::class, 'invoice'])->name('invoice');
+    });
+    Route::prefix('unit/agents')->name('unit.agents.')->middleware(['role:superadmin,admin,institution,unit', 'permission:unit.agents.manage'])->group(function (): void {
+        Route::post('/', [AgentCenterController::class, 'store'])->name('store');
+        Route::patch('/{agent}', [AgentCenterController::class, 'update'])->name('update');
+    });
     Route::post('/unit/operational-users', [UnitDashboardController::class, 'storeOperationalUser'])->middleware(['role:superadmin,admin,institution,unit', 'permission:unit.operational_users.manage'])->name('unit.operational-users.store');
     Route::patch('/unit/operational-users/{profile}', [UnitDashboardController::class, 'updateOperationalUser'])->middleware(['role:superadmin,admin,institution,unit', 'permission:unit.operational_users.manage'])->name('unit.operational-users.update');
     Route::delete('/unit/operational-users/{profile}', [UnitDashboardController::class, 'destroyOperationalUser'])->middleware(['role:superadmin,admin,institution,unit', 'permission:unit.operational_users.manage'])->name('unit.operational-users.destroy');
@@ -284,10 +307,16 @@ Route::middleware('auth')->group(function (): void {
     Route::patch('/unit/external-pharmacy/{medication}/status', [UnitDashboardController::class, 'updateExternalPharmacyStatus'])->middleware(['role:superadmin,admin,institution,unit', 'permission:unit.external_pharmacy.update'])->name('unit.external-pharmacy.status');
     Route::patch('/unit/medications/{medication}/status', [UnitDashboardController::class, 'updateMedicationStatus'])->middleware(['role:superadmin,admin,institution,unit', 'permission:unit.medications.update'])->name('unit.medications.status');
     Route::post('/unit/procedure-areas', [UnitDashboardController::class, 'storeProcedureArea'])->middleware(['role:superadmin,admin,institution,unit', 'permission:unit.procedure_areas.manage'])->name('unit.procedure-areas.store');
+    Route::post('/unit/area-validations', [UnitDashboardController::class, 'saveAreaValidation'])->middleware(['role:superadmin,admin,institution,unit', 'permission:unit.procedure_areas.manage'])->name('unit.area-validations.store');
+    Route::put('/unit/area-validations/{ruleId}', [UnitDashboardController::class, 'saveAreaValidation'])->middleware(['role:superadmin,admin,institution,unit', 'permission:unit.procedure_areas.manage'])->name('unit.area-validations.update');
     Route::put('/unit/procedure-areas/{areaId}', [UnitDashboardController::class, 'updateProcedureArea'])->middleware(['role:superadmin,admin,institution,unit', 'permission:unit.procedure_areas.manage'])->name('unit.procedure-areas.update');
     Route::get('/institution', [InstitutionDashboardController::class, 'index'])
         ->middleware('role:superadmin,admin,institution')
         ->name('institution.dashboard');
+    Route::prefix('institution/agents')->name('institution.agents.')->middleware(['role:superadmin,admin,institution', 'permission:institution.agents.manage'])->group(function (): void {
+        Route::post('/', [\App\Http\Controllers\Institution\AgentCenterController::class, 'store'])->name('store');
+        Route::patch('/{agent}', [\App\Http\Controllers\Institution\AgentCenterController::class, 'update'])->name('update');
+    });
     Route::patch('/institution/units/{unit}/status', [InstitutionDashboardController::class, 'updateUnitStatus'])
         ->middleware(['role:superadmin,admin,institution', 'permission:institution.units.update'])
         ->name('institution.units.status');

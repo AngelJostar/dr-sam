@@ -1,0 +1,13 @@
+
+   PASS  Tests\Feature\OperationalAreaEntryDemoTest
+  ✓ demo entries are persistent repeatable and linked to both patient catalogs                                   6.51s  
+  ✓ entry lists scope records to unit and area and keep empty states                                             0.07s  
+
+   PASS  Tests\Feature\UnitOperationalAreasTest
+  ✓ surgery calendar and pediatric navigation keep the selected unit                                             0.08s  
+  ✓ native area edits are shared and other units are protected                                                   0.22s  
+  ✓ new area types can be created edited and browsed                                                             0.21s  
+
+  Tests:    5 passed (199 assertions)
+  Duration: 7.27s
+

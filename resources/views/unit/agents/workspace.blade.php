@@ -1,0 +1,17 @@
+@include('agents.workspace', [
+    'agents' => \App\Support\UnitAgentCenter::agents($unit),
+    'agentSources' => config('unit_agents.sources'),
+    'agentUiPrefix' => 'unit',
+    'agentFilterClass' => 'unit-nutrition-request-tabs',
+    'agentCreateClass' => 'unit-nutrition-new-request',
+    'agentCarouselLabel' => 'Agentes de la unidad',
+    'agentDescription' => 'Asistentes para la administración del hospital',
+    'agentOwnerName' => $unit->name,
+    'agentScope' => $unit->name,
+    'agentSourcesHelp' => 'Referencias previstas para el agente dentro de esta unidad.',
+    'agentSavedMessage' => 'Las instrucciones quedaron guardadas para esta unidad.',
+    'agentCreateLabel' => 'Asistente de la unidad',
+    'agentStoreUrl' => route('unit.agents.store', ['unit' => $unit->id]),
+    'agentUpdateBase' => url('unit/agents'),
+    'agentContext' => ['unit' => $unit->id],
+])

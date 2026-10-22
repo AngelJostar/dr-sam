@@ -981,7 +981,7 @@ class OperationalModuleTest extends TestCase
                 'nss_estatal' => 'MEX-248391',
                 'state' => 'Mexico',
             ])
-            ->assertRedirect(route('operational.patients.index'));
+            ->assertRedirect(route('operational.patients.index', ['unit' => $unit->id]));
 
         $patient->refresh();
         $this->assertSame('Arturo Javier Hernandez', $patient->full_name);

@@ -78,7 +78,7 @@ class OutpatientModuleTest extends TestCase
             'starts_at' => now()->next('Monday')->setTime(9, 0)->format('Y-m-d H:i:s'),
             'duration' => 30,
             'reason' => 'Primera Vez',
-        ])->assertRedirect(route('outpatient.dashboard'));
+        ])->assertRedirect(route('outpatient.dashboard', ['unit' => $unit->id]));
 
         $appointment = Appointment::query()->firstOrFail();
         $this->assertSame('scheduled', $appointment->status);
@@ -141,7 +141,7 @@ class OutpatientModuleTest extends TestCase
 
         $payload = ['name' => 'Consultorio 5', 'code' => 'C-05', 'location' => 'Consulta externa', 'specialty' => 'Medicina interna', 'modality' => 'Presencial', 'status' => 'active', 'capacity' => 2, 'schedule' => ['monday' => ['enabled' => 1, 'start' => '08:00', 'end' => '16:00']]];
         $this->actingAs($user)->post(route('outpatient.rooms.store'), $payload)
-            ->assertRedirect(route('outpatient.dashboard', ['section' => 'rooms']));
+            ->assertRedirect(route('outpatient.dashboard', ['unit' => $unit->id, 'section' => 'rooms']));
 
         $room = ProcedureArea::query()->where('unit_number', 'C-05')->firstOrFail();
         $this->assertSame('Medicina interna', data_get($room->metadata, 'specialty'));
@@ -156,7 +156,7 @@ class OutpatientModuleTest extends TestCase
             ->assertDontSee('&amp;quot;', false);
 
         $this->actingAs($user)->patch(route('outpatient.rooms.update', $room), [...$payload, 'name' => 'Consultorio Integral', 'status' => 'inactive'])
-            ->assertRedirect(route('outpatient.dashboard', ['section' => 'rooms']));
+            ->assertRedirect(route('outpatient.dashboard', ['unit' => $unit->id, 'section' => 'rooms']));
         $this->assertSame('inactive', $room->fresh()->status);
         $this->assertSame('Consultorio Integral', data_get($room->fresh()->metadata, 'name'));
     }
@@ -169,7 +169,7 @@ class OutpatientModuleTest extends TestCase
 
         $availableRoom = ProcedureArea::query()->create(['medical_unit_id' => $unit->id, 'type' => 'consulting', 'unit_number' => 'C-DELETE', 'status' => 'active']);
         $this->actingAs($user)->delete(route('outpatient.rooms.destroy', $availableRoom))
-            ->assertRedirect(route('outpatient.dashboard', ['section' => 'rooms']));
+            ->assertRedirect(route('outpatient.dashboard', ['unit' => $unit->id, 'section' => 'rooms']));
         $this->assertDatabaseMissing('procedure_areas', ['id' => $availableRoom->id]);
 
         $occupiedRoom = ProcedureArea::query()->create(['medical_unit_id' => $unit->id, 'type' => 'consulting', 'unit_number' => 'C-HISTORY', 'status' => 'active']);
@@ -189,7 +189,7 @@ class OutpatientModuleTest extends TestCase
         ]);
 
         $this->actingAs($user)->delete(route('outpatient.rooms.destroy', $occupiedRoom))
-            ->assertRedirect(route('outpatient.dashboard', ['section' => 'rooms']))
+            ->assertRedirect(route('outpatient.dashboard', ['unit' => $unit->id, 'section' => 'rooms']))
             ->assertSessionHasErrors('room');
         $this->assertDatabaseHas('procedure_areas', ['id' => $occupiedRoom->id]);
     }
@@ -206,7 +206,7 @@ class OutpatientModuleTest extends TestCase
         $this->actingAs($user)->get(route('outpatient.dashboard', ['new' => 1]))
             ->assertOk()->assertSee('Número de seguridad social Federal');
         $this->actingAs($user)->patch(route('outpatient.calendar.update', $room), ['day_of_week' => 2, 'specialty' => 'Cardiología', 'starts_at' => '09:00', 'ends_at' => '13:00', 'duration' => 45])
-            ->assertRedirect(route('outpatient.dashboard', ['admin' => 1]));
+            ->assertRedirect(route('outpatient.dashboard', ['unit' => $unit->id, 'admin' => 1]));
 
         $this->assertDatabaseHas('procedure_area_schedules', ['procedure_area_id' => $room->id, 'day_of_week' => 2, 'starts_at' => '09:00', 'ends_at' => '13:00']);
         $this->assertSame('Cardiología', data_get($room->fresh()->metadata, 'specialty'));
@@ -228,7 +228,7 @@ class OutpatientModuleTest extends TestCase
         $this->actingAs($user)->get(route('outpatient.dashboard', ['section' => 'prescriptions', 'new' => 1]))
             ->assertOk()->assertSee('Medicamentos indicados')->assertSee('data-add-prescription-item', false);
         $this->actingAs($user)->post(route('outpatient.prescriptions.store'), $payload)
-            ->assertRedirect(route('outpatient.dashboard', ['section' => 'prescriptions']));
+            ->assertRedirect(route('outpatient.dashboard', ['unit' => $unit->id, 'section' => 'prescriptions']));
 
         $prescription = Prescription::query()->with('items')->firstOrFail();
         $this->assertCount(2, $prescription->items);
@@ -237,7 +237,7 @@ class OutpatientModuleTest extends TestCase
             ->assertOk()->assertSee('Paracetamol')->assertSee('010.000.0104.00')->assertDontSee('>Editar</a>', false);
 
         $this->actingAs($user)->patch(route('outpatient.prescriptions.update', $prescription), [...$payload, 'diagnosis' => 'DiagnÃ³stico actualizado', 'items' => [$payload['items'][0]]])
-            ->assertRedirect(route('outpatient.dashboard', ['section' => 'prescriptions']));
+            ->assertRedirect(route('outpatient.dashboard', ['unit' => $unit->id, 'section' => 'prescriptions']));
         $this->assertSame('DiagnÃ³stico actualizado', data_get($prescription->fresh()->metadata, 'diagnosis'));
         $this->assertSame(1, $prescription->items()->count());
     }

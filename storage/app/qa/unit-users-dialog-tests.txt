@@ -1,0 +1,8 @@
+
+   PASS  Tests\Feature\UnitOperationalUserDialogTest
+  ✓ save redirects to the selected unit and shows the success dialog and table actions                           5.00s  
+  ✓ validation errors restore the form without a success message or password                                     0.06s  
+
+  Tests:    2 passed (37 assertions)
+  Duration: 5.22s
+

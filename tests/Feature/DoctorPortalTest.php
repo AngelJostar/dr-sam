@@ -835,6 +835,7 @@ class DoctorPortalTest extends TestCase
 
     public function test_doctor_can_submit_multiple_oncology_mixtures_with_multiple_medications(): void
     {
+        $this->travelTo(\Illuminate\Support\Carbon::parse('2026-10-19 08:00:00'));
         [$user, $doctor] = $this->createDoctor();
         $patient = Patient::query()->create([
             'platform_number' => 'PAC-ONC-MULTI', 'full_name' => 'Paciente Mezclas',

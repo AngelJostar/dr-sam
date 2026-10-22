@@ -1,0 +1,17 @@
+@include('agents.workspace', [
+    'agents' => \App\Support\InstitutionAgentCenter::agents($institution),
+    'agentSources' => config('institution_agents.sources'),
+    'agentUiPrefix' => 'institution',
+    'agentFilterClass' => 'institution-catalog-filter-buttons',
+    'agentCreateClass' => 'institution-catalog-primary-action',
+    'agentCarouselLabel' => 'Agentes de la institución',
+    'agentDescription' => 'Asistentes para la coordinación de las unidades adscritas',
+    'agentOwnerName' => $institution->name,
+    'agentScope' => $institution->name.' · Todas las unidades adscritas',
+    'agentSourcesHelp' => 'Referencias previstas para el agente dentro de esta institución y sus unidades adscritas.',
+    'agentSavedMessage' => 'Las instrucciones quedaron guardadas para esta institución.',
+    'agentCreateLabel' => 'Asistente de la institución',
+    'agentStoreUrl' => route('institution.agents.store', ['institution' => $institution->id]),
+    'agentUpdateBase' => url('institution/agents'),
+    'agentContext' => ['institution' => $institution->id],
+])

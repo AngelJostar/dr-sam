@@ -36,8 +36,11 @@
     'doctors' => 'Medicos',
     'specialties' => 'Especialidades',
     'external-pharmacy' => 'Farmacia Externa',
-    'procedure-areas' => 'Areas de Procedimiento',
+    'procedure-areas' => 'Áreas operativas y equipamiento',
     'medications' => 'Medicamentos',
+    'administration' => 'Administración',
+    'personnel-services' => 'Personal, mantenimientos y servicios',
+    'agents' => 'Centro de agentes',
   ];
   $sectionEyebrow = strtoupper($sectionLabels[$section] ?? 'Servicios integrales');
   $menu = [
@@ -45,15 +48,16 @@
     'services' => ['minus', 'Servicios integrales'],
     'users' => ['users', 'Usuarios'],
     'patients' => ['patient', 'Pacientes'],
-    'doctors' => ['stethoscope', 'Medicos'],
-    'specialties' => ['star', 'Especialidades'],
-    'external-pharmacy' => ['rx', 'Farmacia Externa'],
-    'procedure-areas' => ['areas', 'Areas de Procedimiento'],
+    'doctors' => ['stethoscope', 'Médicos y Especialidades'],
+    'procedure-areas' => ['areas', 'Áreas operativas y equipamiento'],
     'medications' => ['pill', 'Medicamentos'],
+    'administration' => ['administration', 'Administración'],
+    'personnel-services' => ['users', 'Personal, mantenimientos y servicios'],
+    'agents' => ['agent', 'Centro de agentes'],
   ];
   $catalogSections = ['catalog', 'users', 'patients', 'doctors', 'specialties', 'external-pharmacy', 'procedure-areas', 'medications'];
   $unitFeedbackStatus = $section !== 'medications' ? session('status') : null;
-  $unitFeedbackErrors = $section !== 'medications' && !($section === 'doctors' && old('_doctor_form')) && $errors->any();
+  $unitFeedbackErrors = $section !== 'medications' && !($section === 'patients' && old('_patient_form')) && !($section === 'doctors' && old('_doctor_form')) && !old('_validation_form') && !($section === 'users' && old('_operational_user_form')) && $errors->any();
   $serviceChoices = ['Nutricion enteral', 'Nutricion parenteral', 'Quimioterapias', 'Hemodinamia', 'Analisis Clinicos', 'Histopatologia', 'Tomografia y resonancia', 'Hemodialisis', 'Mantenimiento', 'RPBI', 'Limpieza', 'Lavanderia', 'Dietas', 'Traslado terrestre y aereo'];
   $areaChoices = [
     'Enfermeria' => 'Seguimiento clinico y operativo del servicio.',
@@ -69,7 +73,7 @@
     <aside class="unit-native-sidebar" aria-label="Navegacion unidad">
       <nav class="unit-native-menu">
         @foreach ($menu as $key => [$icon, $label])
-          <a class="{{ $section === $key ? 'is-active' : '' }}" href="{{ route('unit.dashboard', ['section' => $key]) }}">
+          <a @class(['is-active' => $section === $key || ($key === 'doctors' && $section === 'specialties'), 'unit-agent-menu-link' => $key === 'agents']) href="{{ route('unit.dashboard', ['unit' => $unit->id, 'section' => $key]) }}">
             <span aria-hidden="true">
               @switch($icon)
                 @case('user')
@@ -96,6 +100,12 @@
                 @case('pill')
                   <svg viewBox="0 0 24 24"><path d="m10.5 20.5-7-7a5 5 0 0 1 7-7l7 7a5 5 0 0 1-7 7Z"/><path d="m8.5 11.5 7-7a5 5 0 0 1 7 7l-7 7"/><path d="m7 17 10-10"/></svg>
                   @break
+                @case('administration')
+                  <svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 11h8M8 15h3M14 15h2M8 18h3M14 18h2"/></svg>
+                  @break
+                @case('agent')
+                  <svg viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="13" rx="3"/><path d="M12 3v4M1 12v4M23 12v4M8 16h8"/><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/></svg>
+                  @break
                 @default
                   <svg viewBox="0 0 24 24"><path d="M4 20h16"/><path d="M7 20V8h4v12M13 20V4h4v16"/><path d="M9 12h.01M15 8h.01"/></svg>
               @endswitch
@@ -117,13 +127,27 @@
       </div>
     </header>
 
-    <section class="unit-native-workspace">
+    <section class="unit-native-workspace" data-unit-section="{{ $section }}">
+      @if ($section === 'agents')
+        @include('unit.agents.workspace')
+      @endif
       @if ($section === 'profile')
+        @php
+          $profileSections = [
+            'general' => ['Información general', 'M5 3h14v18H5ZM8 7h8M8 11h8M8 15h5'],
+            'image' => ['Imagen y papelería', 'M3 3h18v18H3ZM3 17l5-5 4 4 3-3 6 6M7 7h2'],
+            'services' => ['Servicios', 'M3 3h7v7H3ZM14 3h7v7h-7ZM3 14h7v7H3ZM14 14h7v7h-7Z'],
+            'news' => ['Novedades', 'M4 6h16v15H4ZM7 3v6M17 3v6M4 11h16M8 15h3M8 18h6'],
+            'social' => ['Redes sociales', 'M9 7a3 3 0 1 0-6 0 3 3 0 0 0 6 0ZM21 4a3 3 0 1 0-6 0 3 3 0 0 0 6 0ZM21 19a3 3 0 1 0-6 0 3 3 0 0 0 6 0ZM9 6l6-2M8 9l8 8'],
+            'preview' => ['Vista previa', 'M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12ZM15 12a3 3 0 1 0-6 0 3 3 0 0 0 6 0Z'],
+          ];
+        @endphp
+        @include('unit.carousels.profile')
         <header class="unit-native-header">
           <div>
-            <p class="eyebrow">{{ $sectionEyebrow }}</p>
             <h1>{{ $unit->name }}</h1>
             <p>{{ $unitCode }} - {{ $unitLocation }}</p>
+            <div class="unit-service-panel-badges"><span>{{ $sectionLabels[$section] }}</span></div>
           </div>
           <div class="unit-native-selector">
             <label>
@@ -135,10 +159,20 @@
             <time>{{ now()->format('d M Y') }}</time>
           </div>
         </header>
+        <div class="unit-catalog-toolbar" data-unit-profile-navigation>
+          <div class="unit-nutrition-request-tabs" role="group" aria-label="Accesos del perfil">
+            @foreach ($profileSections as $key => [$label, $icon])
+              <button type="button" @class(['is-active' => $key === 'general']) data-profile-section="{{ $key }}" aria-pressed="{{ $key === 'general' ? 'true' : 'false' }}">{{ $label }}</button>
+            @endforeach
+          </div>
+        </div>
       @endif
 
       @if (in_array($section, $catalogSections, true))
         @include('unit.carousels.'.$section)
+      @endif
+      @if (in_array($section, ['administration', 'personnel-services'], true))
+        @include('unit._management-workspace')
       @endif
 
       @if ($section === 'profile')
@@ -154,36 +188,37 @@
           $initials = str($profileName)->explode(' ')->filter()->take(2)->map(fn ($word) => str($word)->substr(0, 1))->implode('');
         @endphp
         <div class="unit-profile-layout" data-unit-profile>
-          <section class="unit-profile-card">
+          <section class="unit-profile-card" data-profile-editor>
             <header><h2>Perfil de la unidad</h2><p>Imagen, servicios y novedades</p></header>
             <form method="post" action="{{ route('unit.profile.update') }}" enctype="multipart/form-data" class="unit-profile-form">
               @csrf
               @method('patch')
-              <label>Imagen de perfil y papelerÃ­a</label>
-              <div class="unit-profile-image-row">
+              <input type="hidden" name="unit" value="{{ $unit->id }}">
+              <label data-profile-panel="image">Imagen de perfil y papelería</label>
+              <div class="unit-profile-image-row" data-profile-panel="image">
                 <div class="unit-profile-image-box" data-profile-image-preview>@if ($profileImage)<img src="{{ asset('storage/'.$profileImage) }}" alt="Imagen de {{ $profileName }}">@else<span>Sin imagen</span>@endif</div>
                 <div><input type="file" name="profile_image" accept="image/png,image/jpeg,image/webp" data-profile-image-input><label class="unit-profile-remove"><input type="checkbox" name="remove_image" value="1"> Quitar imagen</label></div>
               </div>
-              <label>Nombre pÃºblico de la unidad<input name="public_name" value="{{ old('public_name', $profileName) }}" data-profile-name required></label>
-              <label>InformaciÃ³n general<textarea name="general_info" data-profile-info>{{ old('general_info', $profileInfo) }}</textarea></label>
-              <label>Servicios de la unidad<textarea name="services" data-profile-services>{{ old('services', $profileServices) }}</textarea></label>
-              <label>Novedades<textarea name="news" data-profile-news>{{ old('news', $profileNews) }}</textarea></label>
-              <label>Texto para redes sociales<textarea name="social_text" data-profile-social>{{ old('social_text', $profileSocial) }}</textarea></label>
-              <label>Nota para papelerÃ­a<textarea name="stationery_note" data-profile-stationery>{{ old('stationery_note', $profileStationery) }}</textarea></label>
+              <label data-profile-panel="general">Nombre público de la unidad<input name="public_name" value="{{ old('public_name', $profileName) }}" data-profile-name required></label>
+              <label data-profile-panel="general">Información general<textarea name="general_info" data-profile-info>{{ old('general_info', $profileInfo) }}</textarea></label>
+              <label data-profile-panel="services">Servicios de la unidad<textarea name="services" data-profile-services>{{ old('services', $profileServices) }}</textarea></label>
+              <label data-profile-panel="news">Novedades<textarea name="news" data-profile-news>{{ old('news', $profileNews) }}</textarea></label>
+              <label data-profile-panel="social">Texto para redes sociales<textarea name="social_text" data-profile-social>{{ old('social_text', $profileSocial) }}</textarea></label>
+              <label data-profile-panel="image">Nota para papelería<textarea name="stationery_note" data-profile-stationery>{{ old('stationery_note', $profileStationery) }}</textarea></label>
               <button type="submit">Guardar perfil</button>
             </form>
           </section>
           <section class="unit-profile-card unit-profile-preview-card">
-            <header><h2>Vista previa</h2><p>Redes sociales y papelerÃ­a</p></header>
+            <header><h2>Vista previa</h2><p>Redes sociales y papelería</p></header>
             <div class="unit-profile-preview">
               <div class="unit-profile-cover"><strong data-profile-initials>{{ strtoupper($initials) }}</strong></div>
               <div class="unit-profile-preview-copy">
                 <small>{{ $unitCode }} - {{ strtoupper($unitLocation) }}</small><h2 data-profile-preview-name>{{ $profileName }}</h2>
-                <p data-profile-preview-info>{{ $profileInfo ?: 'InformaciÃ³n general pendiente.' }}</p>
+                <p data-profile-preview-info>{{ $profileInfo ?: 'Información general pendiente.' }}</p>
                 <strong>SERVICIOS</strong><p data-profile-preview-services>{{ $profileServices ?: 'Sin servicios registrados.' }}</p>
                 <strong>NOVEDADES</strong><p data-profile-preview-news>{{ $profileNews ?: 'Sin novedades registradas.' }}</p>
-                <article><strong>REDES SOCIALES</strong><p data-profile-preview-social>{{ $profileSocial ?: 'InformaciÃ³n general pendiente.' }}</p></article>
-                <article><strong>PAPELERÃA</strong><p data-profile-preview-stationery>{{ $profileStationery ?: 'PapelerÃ­a institucional de la unidad.' }}</p></article>
+                <article><strong>REDES SOCIALES</strong><p data-profile-preview-social>{{ $profileSocial ?: 'Información general pendiente.' }}</p></article>
+                <article><strong>PAPELERÍA</strong><p data-profile-preview-stationery>{{ $profileStationery ?: 'Papelería institucional de la unidad.' }}</p></article>
               </div>
             </div>
           </section>
@@ -194,11 +229,11 @@
             const bind = (input, output, fallback) => input.addEventListener('input', () => output.textContent = input.value.trim() || fallback);
             const name = root.querySelector('[data-profile-name]');
             bind(name, root.querySelector('[data-profile-preview-name]'), @json($unit->name));
-            bind(root.querySelector('[data-profile-info]'), root.querySelector('[data-profile-preview-info]'), 'InformaciÃ³n general pendiente.');
+            bind(root.querySelector('[data-profile-info]'), root.querySelector('[data-profile-preview-info]'), 'Información general pendiente.');
             bind(root.querySelector('[data-profile-services]'), root.querySelector('[data-profile-preview-services]'), 'Sin servicios registrados.');
             bind(root.querySelector('[data-profile-news]'), root.querySelector('[data-profile-preview-news]'), 'Sin novedades registradas.');
-            bind(root.querySelector('[data-profile-social]'), root.querySelector('[data-profile-preview-social]'), 'InformaciÃ³n general pendiente.');
-            bind(root.querySelector('[data-profile-stationery]'), root.querySelector('[data-profile-preview-stationery]'), 'PapelerÃ­a institucional de la unidad.');
+            bind(root.querySelector('[data-profile-social]'), root.querySelector('[data-profile-preview-social]'), 'Información general pendiente.');
+            bind(root.querySelector('[data-profile-stationery]'), root.querySelector('[data-profile-preview-stationery]'), 'Papelería institucional de la unidad.');
             name.addEventListener('input', () => root.querySelector('[data-profile-initials]').textContent = name.value.trim().split(/\s+/).slice(0, 2).map(word => word[0] || '').join('').toUpperCase());
             root.querySelector('[data-profile-image-input]').addEventListener('change', (event) => { const file = event.target.files[0]; if (!file) return; root.querySelector('[data-profile-image-preview]').innerHTML = `<img src="${URL.createObjectURL(file)}" alt="Vista previa">`; });
           })();
@@ -652,11 +687,18 @@
                   </div>
                 </header>
                 <div class="unit-catalog-toolbar">
+                  <div class="unit-nutrition-request-tabs" role="group" aria-label="Filtrar servicios">
+                    @foreach (['all' => 'Todos', 'active' => 'Activos', 'inactive' => 'Inactivos'] as $serviceStatus => $serviceStatusLabel)
+                      <button type="button" @class(['is-active' => $serviceStatus === 'all']) data-unit-service-catalog-status="{{ $serviceStatus }}" aria-pressed="{{ $serviceStatus === 'all' ? 'true' : 'false' }}">{{ $serviceStatusLabel }}</button>
+                    @endforeach
+                  </div>
+                  <div class="unit-catalog-toolbar-actions">
                   <label class="unit-catalog-search">
                     <span class="sr-only">Buscar servicio</span>
                     <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
                     <input type="search" placeholder="Buscar servicio" data-unit-service-catalog-search>
                   </label>
+                  </div>
                 </div>
                 <section class="unit-native-table-card unit-catalog-content-card">
                   <div class="unit-native-table-scroll">
@@ -664,7 +706,7 @@
                       <thead><tr><th>Servicio</th><th>Categoría</th><th>Especialidad</th><th>Estatus</th><th>Acciones</th></tr></thead>
                       <tbody>
                         @foreach ($unitServiceContracts as $contract)
-                          <tr data-unit-service-catalog-row>
+                          <tr data-unit-service-catalog-row data-status="{{ $contract->status }}">
                             <td><strong>{{ $contract->service?->name ?? 'Servicio sin nombre' }}</strong></td>
                             <td>{{ $contract->service?->category ?? 'Sin categoría' }}</td>
                             <td>{{ $contract->service?->specialty ?? 'Servicio general' }}</td>
@@ -786,14 +828,6 @@
                         <span>1 hospital habilitado</span>
                       </div>
                     </div>
-                    <div class="unit-service-panel-actions">
-                      <button type="button"
-                              class="unit-service-operation-toggle"
-                              data-unit-service-operation-toggle
-                              aria-expanded="false">Ver Operacion</button>
-                      <a href="{{ route('unit.services.report', $contract) }}">Descargar reporte</a>
-                      <button type="button" data-open-service-catalog="{{ $contract->id }}">Informacion del contrato</button>
-                    </div>
                   </header>
 
                   @if ($isConsultationService)
@@ -838,14 +872,20 @@
                           </button>
                         @endforeach
                       </div>
-                      <button type="button"
-                              class="unit-nutrition-new-request unit-consultation-submenu-action"
-                              data-unit-calendar-new>
+                    </section>
+                  @endif
+
+                  <div class="unit-service-panel-actions unit-service-tools">
+                    <button type="button" class="unit-service-operation-toggle" data-unit-service-operation-toggle aria-expanded="false">Ver Operacion</button>
+                    <a href="{{ route('unit.services.report', $contract) }}">Descargar reporte</a>
+                    <button type="button" data-open-service-catalog="{{ $contract->id }}">Informacion del contrato</button>
+                    @if ($isConsultationService)
+                      <button type="button" class="unit-nutrition-new-request unit-consultation-submenu-action" data-unit-calendar-new>
                         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
                         Agendar nueva cita
                       </button>
-                    </section>
-                  @endif
+                    @endif
+                  </div>
 
                   <div data-unit-service-overview @if ($isConsultationService) data-unit-consultation-view="home" @endif>
                     @if ($isConsultationService)
@@ -3510,16 +3550,28 @@
                 window.history.replaceState({}, '', url);
                 tab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
               }));
-              serviceCatalogSearch?.addEventListener('input', () => {
-                const query = serviceCatalogSearch.value.trim().toLocaleLowerCase('es');
+              const serviceCatalogFilters = [...root.querySelectorAll('[data-unit-service-catalog-status]')];
+              let serviceCatalogStatus = 'all';
+              const filterServiceCatalog = () => {
+                const query = (serviceCatalogSearch?.value ?? '').trim().toLocaleLowerCase('es');
                 let visible = 0;
                 serviceCatalogRows.forEach((row) => {
-                  row.hidden = query !== '' && !row.innerText.toLocaleLowerCase('es').includes(query);
+                  row.hidden = (query !== '' && !row.textContent.toLocaleLowerCase('es').includes(query))
+                    || (serviceCatalogStatus !== 'all' && row.dataset.status !== serviceCatalogStatus);
                   if (!row.hidden) visible++;
                 });
                 const empty = root.querySelector('[data-unit-service-catalog-empty]');
                 if (empty) empty.hidden = visible !== 0;
-              });
+              };
+              serviceCatalogSearch?.addEventListener('input', filterServiceCatalog);
+              serviceCatalogFilters.forEach(button => button.addEventListener('click', () => {
+                serviceCatalogStatus = button.dataset.unitServiceCatalogStatus;
+                serviceCatalogFilters.forEach(filter => {
+                  filter.classList.toggle('is-active', filter === button);
+                  filter.setAttribute('aria-pressed', String(filter === button));
+                });
+                filterServiceCatalog();
+              }));
               root.querySelectorAll('[data-unit-open-service]').forEach((button) => button.addEventListener('click', () => {
                 tabs.find((tab) => tab.dataset.unitServiceTab === button.dataset.unitOpenService)?.click();
               }));
@@ -3547,7 +3599,7 @@
             ['section' => 'doctors', 'name' => 'Medicos', 'description' => 'Personal medico adscrito y sus autorizaciones.', 'group' => 'clinical', 'group_label' => 'Clinico', 'count' => $unit->doctors->count()],
             ['section' => 'specialties', 'name' => 'Especialidades', 'description' => 'Especialidades disponibles desde el catalogo institucional.', 'group' => 'clinical', 'group_label' => 'Clinico', 'count' => $specialties->count()],
             ['section' => 'external-pharmacy', 'name' => 'Farmacia Externa', 'description' => 'Insumos institucionales habilitados para consulta.', 'group' => 'pharmacy', 'group_label' => 'Farmacia', 'count' => $externalPharmacyCatalog->count()],
-            ['section' => 'procedure-areas', 'name' => 'Areas de Procedimiento', 'description' => 'Consultorios, salas y subunidades asistenciales.', 'group' => 'operation', 'group_label' => 'Operacion', 'count' => $procedureAreaCount],
+            ['section' => 'procedure-areas', 'name' => 'Áreas operativas y equipamiento', 'description' => 'Consultorios, salas y subunidades asistenciales.', 'group' => 'operation', 'group_label' => 'Operacion', 'count' => $procedureAreaCount],
             ['section' => 'medications', 'name' => 'Medicamentos', 'description' => 'Catalogo farmacologico institucional y universal.', 'group' => 'pharmacy', 'group_label' => 'Farmacia', 'count' => $medicationCatalog->count()],
           ]);
         @endphp
@@ -3603,123 +3655,16 @@
       @endif
 
       @if ($section === 'users')
-        <div class="unit-catalog-screen unit-users-screen" data-unit-catalog-screen>
-          <section class="unit-service-panel-header unit-catalog-info-card" data-unit-catalog-info>
-            <div class="unit-service-panel-copy">
-              <h2>Usuarios</h2>
-              <p>Gestion de perfiles, areas de trabajo y autorizaciones de la unidad</p>
-              <div class="unit-service-panel-badges">
-                <span class="unit-native-status">Activo</span>
-                <span>{{ $unit->operationalProfiles->count() }} usuarios registrados</span>
-              </div>
-            </div>
-            <div class="unit-service-panel-actions">
-              <button type="button" data-operational-export>Descargar catalogo</button>
-            </div>
-          </section>
-
-          <div class="unit-catalog-toolbar unit-consultation-submenu-card" data-unit-catalog-controls>
-            <div class="unit-nutrition-request-tabs unit-consultation-submenu" role="tablist" aria-label="Filtrar usuarios operativos">
-              <button type="button" class="unit-consultation-submenu-button is-active" data-unit-catalog-status="all" role="tab" aria-selected="true">Todos</button>
-              <button type="button" class="unit-consultation-submenu-button" data-unit-catalog-status="active" role="tab" aria-selected="false">Activos <span>{{ $unit->operationalProfiles->where('status', 'active')->count() }}</span></button>
-              <button type="button" class="unit-consultation-submenu-button" data-unit-catalog-status="inactive" role="tab" aria-selected="false">Inactivos <span>{{ $unit->operationalProfiles->where('status', 'inactive')->count() }}</span></button>
-            </div>
-            <div class="unit-catalog-toolbar-actions">
-              <label class="unit-catalog-search">
-                <span class="sr-only">Buscar usuario</span>
-                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
-                <input type="search" placeholder="Buscar usuario" data-unit-catalog-search>
-              </label>
-              <button type="button" class="unit-nutrition-new-request unit-consultation-submenu-action" data-unit-scroll-target="unit-operational-form"><span aria-hidden="true">+</span>Nuevo usuario</button>
-            </div>
-          </div>
-
-          <div class="unit-native-two-column" data-unit-catalog-content>
-          <section class="unit-native-form-card" id="unit-operational-form">
-            <header>
-              <h2 data-operational-form-title>Alta de usuario operativo</h2>
-              <p>Actualiza informacion, rol, asignacion de area operativa y autorizaciones del usuario</p>
-            </header>
-            <form method="post" action="{{ route('unit.operational-users.store') }}" data-operational-user-form>
-              @csrf
-              <input type="hidden" name="_method" value="patch" disabled data-operational-method>
-              <label class="wide">Nombre completo<input name="name" required></label>
-              <label>Usuario o correo<input name="username" required></label>
-              <label>Contrasena<input name="password" type="password"></label>
-              <label>Rol operativo<select name="role_label"><option>Responsable de Area</option><option>Operador</option></select></label>
-              <label>Area autorizadora<select name="authority"><option>Direccion General</option><option>Direccion Administrativa</option></select></label>
-              <label>Servicio asignado<select name="service">@foreach ($unit->contractedServices as $contract)<option>{{ $contract->service?->name }}</option>@endforeach<option>Nutricion parenteral</option></select></label>
-
-              <fieldset class="wide">
-                <legend>Asignacion de Area Operativa</legend>
-                <div class="unit-native-choice-grid">
-                  @foreach ($operationalAreas as $area)
-                    <label>
-                      <input type="radio" name="operational_area_id" value="{{ $area->id }}" @checked($loop->first) required>
-                      <span><strong>{{ $area->label }}</strong><small>{{ $areaChoices[$area->label] ?? 'Operacion y seguimiento del area.' }}</small></span>
-                    </label>
-                  @endforeach
-                </div>
-              </fieldset>
-
-              <fieldset class="wide">
-                <legend>Acciones en Area Operativa</legend>
-                <div class="unit-native-choice-grid">
-                  @foreach (['history' => ['Visualizar historial', 'Consultar solicitudes del modulo Area Operativa.'], 'detail' => ['Visualizar detalle', 'Abrir una solicitud y revisar su informacion.'], 'manage' => ['Administrar area operativa', 'Operar inventario, recetas, movimientos y almacenes.'], 'reports' => ['Descargar reportes', 'Exportar reportes del area operativa.']] as $permission => [$action, $copy])
-                    <label>
-                      <input type="checkbox" name="permissions[]" value="{{ $permission }}" @checked($loop->index < 2)>
-                      <span><strong>{{ $action }}</strong><small>{{ $copy }}</small></span>
-                    </label>
-                  @endforeach
-                </div>
-              </fieldset>
-
-              <button type="submit" data-operational-submit>Crear usuario</button><button type="button" data-operational-reset>Regresar</button>
-            </form>
-          </section>
-
-          <section class="unit-native-table-card">
-            <div class="unit-native-table-heading">
-              <div><h2>Usuarios de la unidad</h2><p>{{ $unit->operationalProfiles->count() }} usuarios</p></div>
-            </div>
-            <div class="unit-native-user-list">
-              @forelse ($unit->operationalProfiles as $profile)
-                <article data-operational-user-row data-unit-catalog-row data-status="{{ $profile->status }}">
-                  <div>
-                    <h3>{{ $profile->area?->label ?? 'Area Operativa' }} - {{ $unit->name }}</h3>
-                    <p>{{ $profile->role_label ?? 'Responsable de Area' }} - {{ $profile->user?->username ?? 'sin-usuario' }}</p>
-                    <p>Asignacion Area Operativa: {{ $profile->area?->label ?? 'Sin area' }}</p>
-                    <p>Acciones Area Operativa: {{ collect($profile->permissions)->map(fn ($permission) => ['history' => 'Visualizar historial', 'detail' => 'Visualizar detalle', 'manage' => 'Administrar area', 'reports' => 'Descargar reportes'][$permission] ?? $permission)->implode(', ') }}</p>
-                  </div>
-                  <span class="unit-native-status">{{ $statusText($profile->status) }}</span>
-                  <button type="button" data-edit-operational-user data-url="{{ route('unit.operational-users.update', $profile) }}" data-name="{{ $profile->user?->name }}" data-username="{{ $profile->user?->username }}" data-password="" data-role="{{ $profile->role_label }}" data-authority="{{ data_get($profile->metadata, 'authority', 'Direccion Administrativa') }}" data-service="{{ data_get($profile->metadata, 'service', 'Nutricion parenteral') }}" data-area="{{ $profile->operational_area_id }}" data-permissions='@json($profile->permissions ?? [])'>Editar</button>
-                  <form method="post" action="{{ route('unit.operational-users.destroy', $profile) }}" onsubmit="return confirm('Â¿Eliminar este perfil operativo?')">@csrf @method('delete')<button type="submit">Eliminar</button></form>
-                </article>
-              @empty
-                <p class="unit-native-empty">Sin usuarios operativos registrados.</p>
-              @endforelse
-              <p class="unit-native-empty unit-catalog-inline-empty" data-unit-catalog-empty hidden>No se encontraron usuarios.</p>
-            </div>
-          </section>
-        </div>
-        </div>
-        <script>
-          (() => {
-            const form = document.querySelector('[data-operational-user-form]'); const method = form.querySelector('[data-operational-method]'); const title = document.querySelector('[data-operational-form-title]'); const submit = form.querySelector('[data-operational-submit]');
-            const reset = () => { form.reset(); form.action = @json(route('unit.operational-users.store')); method.disabled = true; title.textContent = 'Alta de usuario operativo'; submit.textContent = 'Crear usuario'; form.elements.password.value = ''; };
-            document.querySelectorAll('[data-edit-operational-user]').forEach((button) => button.addEventListener('click', () => { const data = button.dataset; form.action = data.url; method.disabled = false; title.textContent = 'Editar usuario operativo'; submit.textContent = 'Guardar cambios'; ['name','username','password'].forEach(key => form.elements[key].value = data[key] || ''); form.elements.role_label.value = data.role; form.elements.authority.value = data.authority; form.elements.service.value = data.service; form.querySelectorAll('[name="operational_area_id"]').forEach(input => input.checked = input.value === data.area); const permissions = JSON.parse(data.permissions || '[]'); form.querySelectorAll('[name="permissions[]"]').forEach(input => input.checked = permissions.includes(input.value)); window.scrollTo({top: 0, behavior: 'smooth'}); }));
-            document.querySelector('[data-operational-reset]').addEventListener('click', reset);
-            document.querySelector('[data-operational-export]').addEventListener('click', () => { const rows = [['Usuario operativo']]; document.querySelectorAll('[data-operational-user-row]').forEach(row => rows.push([row.innerText.replace(/\s+/g, ' ').trim()])); const blob = new Blob([rows.map(row => row.map(value => `"${value.replaceAll('"','""')}"`).join(',')).join('\n')], {type:'text/csv;charset=utf-8'}); const link=document.createElement('a'); link.href=URL.createObjectURL(blob); link.download='usuarios-operativos.csv'; link.click(); URL.revokeObjectURL(link.href); });
-          })();
-        </script>
+        @include('unit._users')
       @endif
 
       @if ($section === 'patients')
+        @php $patientCatalogUrl = route('unit.dashboard', ['unit' => $unit->id, 'section' => 'patients']); @endphp
         <div class="unit-catalog-screen" data-unit-catalog-screen data-unit-patient-panel="catalog">
           <section class="unit-service-panel-header unit-catalog-info-card" data-unit-catalog-info>
             <div class="unit-service-panel-copy">
               <h2>Pacientes</h2>
-              <p>Pacientes atendidos y vinculados con los servicios de la unidad</p>
+              <p>Catálogo compartido con todas las áreas operativas de la unidad</p>
               <div class="unit-service-panel-badges">
                 <span class="unit-native-status">Activo</span>
                 <span>{{ $patients->count() }} pacientes registrados</span>
@@ -3740,32 +3685,17 @@
                 <input type="search" placeholder="Buscar paciente" data-unit-catalog-search>
               </label>
               <button type="button" class="unit-catalog-secondary-action" data-unit-catalog-export>Descargar catalogo</button>
+              <a class="unit-catalog-primary-action" href="{{ $patientCatalogUrl }}&modal=patient">+ Nuevo paciente</a>
             </div>
           </div>
 
           <section class="unit-native-table-card unit-catalog-content-card" data-unit-catalog-content>
             <div class="unit-native-table-scroll">
-              <table class="unit-native-table" data-unit-catalog-table>
-                <thead><tr><th>Paciente</th><th>Servicio</th><th>Medico / Area</th><th>Estatus</th><th>Actualizacion</th></tr></thead>
-                <tbody>
-                  @forelse ($patients as $patient)
-                    @php $lastAppointment = $patient->appointments->first(); @endphp
-                    <tr data-unit-catalog-row data-status="{{ $patient->status }}">
-                      <td><strong>{{ $patient->full_name }}</strong><span>{{ $patient->record_number ?? $patient->platform_number ?? 'Sin expediente' }}</span></td>
-                      <td>{{ $lastAppointment?->specialty ?? 'Sin servicio' }}</td>
-                      <td>{{ $lastAppointment?->doctor?->full_name ?? 'Sin medico' }}</td>
-                      <td><span class="unit-native-status">{{ $statusText($patient->status) }}</span></td>
-                      <td>{{ $patient->updated_at?->format('d/m/Y') }}</td>
-                    </tr>
-                  @empty
-                    <tr><td colspan="5" class="unit-native-empty">Sin pacientes dados de alta por el area operativa.</td></tr>
-                  @endforelse
-                  <tr data-unit-catalog-empty hidden><td colspan="5" class="unit-native-empty">No se encontraron pacientes.</td></tr>
-                </tbody>
-              </table>
+              @include('patients._catalog-table', ['patientWorkspace' => 'unit'])
             </div>
           </section>
         </div>
+        @include('patients._editor', ['patientWorkspace' => 'unit', 'patientUnit' => $unit])
       @endif
 
       @if ($section === 'patients')
@@ -3786,11 +3716,14 @@
           </section>
 
           <div class="unit-catalog-toolbar" data-unit-catalog-controls>
+            <div class="unit-catalog-filter-row">
+            @include('unit._clinical-tabs')
             <div class="unit-nutrition-request-tabs" role="tablist" aria-label="Filtrar medicos">
               <button type="button" class="is-active" data-unit-catalog-status="all" role="tab" aria-selected="true">Todos</button>
               <button type="button" data-unit-catalog-status="active" role="tab" aria-selected="false">Activos <span>{{ $unit->doctors->where('status', 'active')->count() }}</span></button>
               <button type="button" data-unit-catalog-status="pending" role="tab" aria-selected="false">Pendientes <span>{{ $unit->doctors->where('status', 'pending')->count() }}</span></button>
               <button type="button" data-unit-catalog-status="inactive" role="tab" aria-selected="false">Inactivos <span>{{ $unit->doctors->where('status', 'inactive')->count() }}</span></button>
+            </div>
             </div>
             <div class="unit-catalog-toolbar-actions">
               <label class="unit-catalog-search">
@@ -3914,10 +3847,13 @@
           </section>
 
           <div class="unit-catalog-toolbar" data-unit-catalog-controls>
+            <div class="unit-catalog-filter-row">
+            @include('unit._clinical-tabs')
             <div class="unit-nutrition-request-tabs" role="tablist" aria-label="Filtrar especialidades">
               <button type="button" class="is-active" data-unit-catalog-status="all" role="tab" aria-selected="true">Todas</button>
               <button type="button" data-unit-catalog-status="active" role="tab" aria-selected="false">Activas <span>{{ $specialties->where('status', 'active')->count() }}</span></button>
               <button type="button" data-unit-catalog-status="inactive" role="tab" aria-selected="false">Inactivas <span>{{ $specialties->where('status', 'inactive')->count() }}</span></button>
+            </div>
             </div>
             <div class="unit-catalog-toolbar-actions">
               <label class="unit-catalog-search">
@@ -3953,15 +3889,8 @@
 
       @if ($section === 'procedure-areas')
         @php
-          $procedureCatalogs = [
-            'consulting' => ['title' => 'Catalogo de consultorios', 'create' => 'Nuevo consultorio', 'singular' => 'consultorio', 'button' => 'Consultorios', 'empty' => 'Sin consultorios registrados.'],
-            'infusion' => ['title' => 'Catalogo de salas de infusion', 'create' => 'Nueva sala de infusion', 'singular' => 'sala de infusion', 'button' => 'Salas de infusion', 'empty' => 'Sin salas de infusion registradas.'],
-            'operating' => ['title' => 'Catalogo de quirofanos', 'create' => 'Nuevo quirofano', 'singular' => 'quirofano', 'button' => 'Quirofanos', 'empty' => 'Sin quirofanos registrados.'],
-            'uci' => ['title' => 'Catalogo de UCI', 'create' => 'Nueva UCI', 'singular' => 'UCI', 'button' => 'UCI', 'empty' => 'Sin UCI registradas.'],
-            'uti' => ['title' => 'Catalogo de UTI', 'create' => 'Nueva UTI', 'singular' => 'UTI', 'button' => 'UTI', 'empty' => 'Sin UTI registradas.'],
-            'recovery' => ['title' => 'Catalogo de salas de recuperacion', 'create' => 'Nueva sala de recuperacion', 'singular' => 'sala de recuperacion', 'button' => 'Sala de recuperacion', 'empty' => 'Sin salas de recuperacion registradas.'],
-          ];
-          $procedureAreas = collect(data_get($unit->metadata, 'procedure_areas', []));
+          $procedureCatalogs = \App\Support\UnitAreaCatalog::definitions();
+          $procedureAreas = \App\Support\UnitAreaCatalog::records($unit);
           $allProcedureAreas = $procedureAreas
               ->filter(fn ($area) => array_key_exists((string) data_get($area, 'type'), $procedureCatalogs))
               ->values();
@@ -3990,7 +3919,7 @@
         <div class="unit-catalog-screen unit-procedure-screen" data-unit-catalog-screen>
           <section class="unit-service-panel-header unit-catalog-info-card" data-unit-catalog-info>
             <div class="unit-service-panel-copy">
-              <h2>Areas de Procedimiento</h2>
+              <h2>Áreas operativas y equipamiento</h2>
               <p>Consultorios, salas y subunidades asistenciales de la unidad</p>
               <div class="unit-service-panel-badges">
                 <span class="unit-native-status">Activo</span>
@@ -3999,27 +3928,18 @@
             </div>
           </section>
 
-          <div class="unit-catalog-toolbar unit-procedure-toolbar" data-unit-catalog-controls>
-            <div class="unit-nutrition-request-tabs" data-procedure-carousel role="tablist" aria-label="Filtrar areas de procedimiento">
-              <button type="button"
-                      @class(['is-active' => $activeProcedureCatalog === 'all'])
-                      data-procedure-category="all"
-                      role="tab"
-                      aria-selected="{{ $activeProcedureCatalog === 'all' ? 'true' : 'false' }}">Todos</button>
-              @foreach ($procedureCatalogs as $catalogKey => $catalog)
-                <button type="button"
-                        @class(['is-active' => $catalogKey === $activeProcedureCatalog])
-                        data-procedure-category="{{ $catalogKey }}"
-                        role="tab"
-                        aria-selected="{{ $catalogKey === $activeProcedureCatalog ? 'true' : 'false' }}">{{ $catalog['button'] }}</button>
-              @endforeach
-            </div>
+          <div class="unit-area-workspace-switch" role="tablist" aria-label="Vista del área">
+            <button type="button" role="tab" aria-selected="true" data-area-workspace="catalog">Catálogo</button>
+            <button type="button" role="tab" aria-selected="false" data-area-workspace="operation">Operación</button>
+            <button type="button" role="tab" aria-selected="false" data-area-workspace="validations">Validaciones</button>
+          </div>
+          @include('unit._area-validations')
+          <section class="unit-area-operation-pane" data-area-pane="operation" hidden>
+            <p class="unit-area-operation-placeholder" data-area-operation-placeholder>Selecciona un área del carrusel para consultar su operación.</p>
+            <iframe title="Operación del área seleccionada" data-unit-operation-frame hidden></iframe>
+          </section>
+          <div class="unit-catalog-toolbar unit-procedure-toolbar" data-unit-catalog-controls data-area-pane="catalog">
             <div class="unit-catalog-toolbar-actions">
-              <label class="unit-catalog-search">
-                <span class="sr-only">Buscar subunidad</span>
-                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
-                <input type="search" placeholder="Buscar subunidad" data-procedure-search>
-              </label>
               <button type="button" class="unit-catalog-secondary-action" data-procedure-toolbar-export>Descargar catalogo</button>
               @foreach ($procedureCatalogs as $catalogKey => $catalog)
                 <a class="unit-nutrition-new-request"
@@ -4033,7 +3953,7 @@
             </div>
           </div>
 
-        <div class="unit-procedure-catalogs" data-unit-catalog-content>
+        <div class="unit-procedure-catalogs" data-unit-catalog-content data-area-pane="catalog">
           <section class="unit-native-table-card unit-procedure-card" data-procedure-catalog="all" @if ($activeProcedureCatalog !== 'all') hidden @endif>
             <div class="unit-native-table-scroll">
               <table class="unit-native-table unit-procedure-table">
@@ -4192,11 +4112,8 @@
         </dialog>
         <script>
           (() => {
-            const carousel = document.querySelector('[data-procedure-carousel]');
-            const categoryButtons = [...document.querySelectorAll('[data-procedure-category]')];
             const catalogCards = [...document.querySelectorAll('[data-procedure-catalog]')];
             const createToolbarActions = [...document.querySelectorAll('[data-procedure-create-toolbar]')];
-            const procedureSearch = document.querySelector('[data-procedure-search]');
             const exportButton = document.querySelector('[data-procedure-toolbar-export]');
             const createDialog = document.querySelector('[data-procedure-create-dialog]');
             const createForm = createDialog?.querySelector('[data-procedure-create-form]');
@@ -4207,18 +4124,37 @@
             const editType = editDialog?.querySelector('[data-procedure-edit-type]');
             const editTitle = editDialog?.querySelector('[data-procedure-edit-title]');
             const procedureAreaData = {{ Illuminate\Support\Js::from($procedureAreaPayload) }};
-            const applyProcedureSearch = () => {
-              const query = procedureSearch?.value.trim().toLocaleLowerCase('es') || '';
-              catalogCards.forEach((card) => card.querySelectorAll('[data-procedure-row]').forEach((row) => {
-                row.hidden = query !== '' && !row.innerText.toLocaleLowerCase('es').includes(query);
-              }));
+            const operationUrls = {{ Illuminate\Support\Js::from(collect($procedureCatalogs)->mapWithKeys(fn ($definition, $key) => [$key => \App\Support\UnitAreaCatalog::operationUrl($key, $unit->id)])->all()) }};
+            const operationFrame = document.querySelector('[data-unit-operation-frame]');
+            let selectedArea = @json($activeProcedureCatalog);
+            let workspace = {{ Illuminate\Support\Js::from(in_array(request('workspace'), ['catalog', 'operation', 'validations'], true) ? request('workspace') : 'catalog') }};
+            const selectWorkspace = (value) => {
+              workspace = value;
+              document.querySelectorAll('[data-area-workspace]').forEach(button => button.setAttribute('aria-selected', String(button.dataset.areaWorkspace === value)));
+              document.querySelectorAll('[data-area-pane]').forEach(pane => { pane.hidden = pane.dataset.areaPane !== value; });
+              const url = operationUrls[selectedArea];
+              document.querySelector('[data-area-operation-placeholder]').hidden = Boolean(url);
+              operationFrame.hidden = !url;
+              if (value === 'operation' && url && operationFrame.getAttribute('src') !== url) operationFrame.src = url;
+              const pageUrl = new URL(location.href);
+              pageUrl.searchParams.set('workspace', value);
+              pageUrl.searchParams.set('catalog', selectedArea);
+              history.replaceState({}, '', pageUrl);
             };
+            document.querySelectorAll('[data-area-workspace]').forEach(button => button.addEventListener('click', () => {
+              if (workspace === 'operation' && button.dataset.areaWorkspace === 'catalog' && operationFrame.getAttribute('src')) {
+                const url = new URL(location.href);
+                url.searchParams.set('catalog', selectedArea);
+                url.searchParams.set('workspace', 'catalog');
+                location.assign(url.href);
+                return;
+              }
+              selectWorkspace(button.dataset.areaWorkspace);
+            }));
             const setActiveCatalog = (key) => {
-              categoryButtons.forEach((button) => {
-                const active = button.dataset.procedureCategory === key;
-                button.classList.toggle('is-active', active);
-                button.setAttribute('aria-selected', active ? 'true' : 'false');
-              });
+              selectedArea = key;
+              selectWorkspace(workspace);
+              document.dispatchEvent(new CustomEvent('unit-area-selected', { detail: key }));
               document.querySelectorAll('[data-unit-carousel-menu="procedure-areas"] [data-unit-carousel-filter]').forEach((button) => {
                 const active = button.dataset.unitCarouselFilter === key;
                 button.classList.toggle('is-active', active);
@@ -4227,8 +4163,10 @@
               catalogCards.forEach((card) => { card.hidden = card.dataset.procedureCatalog !== key; });
               const actionKey = key === 'all' ? @json(array_key_first($procedureCatalogs)) : key;
               createToolbarActions.forEach((action) => { action.hidden = action.dataset.procedureCreateToolbar !== actionKey; });
-              applyProcedureSearch();
             };
+            document.querySelectorAll('[data-unit-carousel-menu="procedure-areas"] [data-unit-carousel-filter]').forEach(button => {
+              button.addEventListener('click', () => setActiveCatalog(button.dataset.unitCarouselFilter));
+            });
 
             const syncScheduleRows = (dialog, toggleSelector, rowSelector) => {
               dialog?.querySelectorAll(toggleSelector).forEach((checkbox) => {
@@ -4281,10 +4219,6 @@
               return true;
             };
 
-            categoryButtons.forEach((button) => button.addEventListener('click', () => setActiveCatalog(button.dataset.procedureCategory)));
-            document.querySelector('[data-procedure-carousel-prev]')?.addEventListener('click', () => carousel?.scrollBy({ left: -260, behavior: 'smooth' }));
-            document.querySelector('[data-procedure-carousel-next]')?.addEventListener('click', () => carousel?.scrollBy({ left: 260, behavior: 'smooth' }));
-            procedureSearch?.addEventListener('input', applyProcedureSearch);
 
             document.querySelectorAll('[data-procedure-create]').forEach((button) => {
               button.addEventListener('click', (event) => {
@@ -4360,6 +4294,7 @@
               link.click();
               URL.revokeObjectURL(link.href);
             });
+            setActiveCatalog(selectedArea);
           })();
         </script>
       @endif

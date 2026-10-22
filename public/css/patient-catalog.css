@@ -1,0 +1,15 @@
+body.native-shell .shared-patient-table { min-width: 1900px; width: 100%; border-collapse: collapse; }
+body.native-shell .shared-patient-table small { display: block; margin-top: 3px; color: #526b93; font-size: 11px; }
+body.native-shell .shared-patient-status { display: inline-block; padding: 4px 10px; border-radius: 20px; background: #f0f3f6; color: #526b93; font-size: 11px; }
+body.native-shell .shared-patient-status.is-active { color: #008b83; background: #e0f5f1; }
+body.native-shell .shared-patient-edit { display: inline-block; padding: 5px 12px; border: 1px solid #dfe6ef; border-radius: 5px; color: #008f98; background: #fff; }
+body.native-shell .shared-patient-editor .operational-modal-card { color: #10244c; border-color: #dfe6ef; box-shadow: 0 12px 40px #10244c26; font-family: 'Segoe UI', Arial, sans-serif; }
+body.native-shell .shared-patient-editor .operational-modal-body :is(input, select) { width: 100%; min-height: 40px; padding: 8px; border: 1px solid #dfe6ef; border-radius: 6px; color: #10244c; background: white; font: inherit; font-size: 12px; font-weight: 400; }
+body.native-shell .shared-patient-editor .operational-modal-body label { color: #10244c; font-weight: 600; }
+body.native-shell .shared-patient-editor :is(header, footer) { border-color: #dfe6ef; }
+body.native-shell .shared-patient-editor footer button { color: #fff; background: #191c49; border-color: #191c49; box-shadow: none; }
+body.native-shell .shared-patient-errors { margin: 12px 20px 0; padding: 12px; color: #9f2942; background: #fff0f3; border-radius: 6px; font-size: 12px; }
+body.native-shell .shared-patient-search { width: 190px; min-height: 40px; padding: 8px 12px; border: 1px solid #dfe6ef; border-radius: 6px; background: white; color: #10244c; font-size: 12px; }
+body.native-shell.unit-native-body [data-unit-patient-panel="catalog"] .unit-catalog-toolbar > .unit-nutrition-request-tabs { flex: 0 1 auto; min-height: 40px; }
+body.native-shell.unit-native-body [data-unit-patient-panel="catalog"] .unit-catalog-primary-action { display: inline-flex; align-items: center; justify-content: center; min-height: 40px; padding: 8px 16px; border: 1px solid #191c49; border-radius: 6px; color: #fff; background: #191c49; font-size: 12px; white-space: nowrap; }
+@media (max-width: 640px) { body.native-shell .shared-patient-editor .operational-modal-body { grid-template-columns: 1fr; } }

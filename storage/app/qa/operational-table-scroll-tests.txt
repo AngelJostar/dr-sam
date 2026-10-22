@@ -1,0 +1,38 @@
+
+   PASS  Tests\Feature\ExternalPharmacyModuleTest
+  ✓ operational user can open native external pharmacy dashboard                                                 6.73s  
+  ✓ external pharmacy can mark order in route and create delivery route                                          0.05s  
+  ✓ outpatient prescription is received and can be dispensed partially from inventory                            0.10s  
+  ✓ external pharmacy persists warehouses and manual inventory movements                                         0.08s  
+
+   PASS  Tests\Feature\OperationalModuleTest
+  ✓ operational user can open native dashboard                                                                   0.59s  
+  ✓ operational service request can link outpatient prescription                                                 0.06s  
+  ✓ operational user can update provider request status                                                          0.04s  
+  ✓ inspected mixture cannot be sent to provider again                                                           0.71s  
+  ✓ authorizations are independent and restricted to the operational area                                        0.08s  
+  ✓ spanish oncology operator can approve oncology authorization                                                 0.08s  
+  ✓ rejected authorization cancels and locks the request with traceability                                       0.34s  
+  ✓ unit user can operate only the current area authorization                                                    0.07s  
+  ✓ inpatient pharmacy can cancel only after both authorizations are approved                                    0.05s  
+  ✓ superadmin can create and edit an infusion room                                                              0.09s  
+  ✓ operational patient edit button opens and updates the patient                                                0.08s  
+  ✓ oncology calendar assigns available infusion room and blocks capacity overlap                                0.08s  
+
+   PASS  Tests\Feature\OutpatientModuleTest
+  ✓ operational user can use outpatient module                                                                   0.14s  
+  ✓ outpatient respects published doctor schedule and rejects overlaps                                           0.05s  
+  ✓ outpatient patient catalog supports create and edit like native                                              0.07s  
+  ✓ outpatient room catalog supports create edit and weekly availability                                         0.06s  
+  ✓ outpatient room can be deleted only when it has no appointments                                              0.04s  
+  ✓ outpatient calendar admin updates room slots used by agenda                                                  0.07s  
+  ✓ outpatient prescriptions support create view dynamic items and edit                                          0.10s  
+
+   PASS  Tests\Feature\UnitOperationalAreasTest
+  ✓ surgery calendar and pediatric navigation keep the selected unit                                             0.08s  
+  ✓ native area edits are shared and other units are protected                                                   0.22s  
+  ✓ new area types can be created edited and browsed                                                             0.18s  
+
+  Tests:    26 passed (543 assertions)
+  Duration: 10.43s
+

@@ -1,0 +1,58 @@
+body.unit-native-body .unit-administration { color: #10244c; }
+body.unit-native-body .unit-administration [hidden] { display: none !important; }
+body.unit-native-body .unit-administration .admin-heading { display: flex; flex-direction: row; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; text-align: left; }
+body.unit-native-body .unit-administration .admin-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+body.unit-native-body .unit-administration :is(button, .admin-button) { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 34px; padding: 7px 14px; border: 1px solid #cfdeeb; border-radius: 5px; box-shadow: none; color: #10244c; background: #fff; font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; }
+body.unit-native-body .unit-administration :is(button, .admin-button):hover { border-color: #00a1ad; background: #f0faf9; }
+body.unit-native-body .unit-administration button.is-primary { color: white; border-color: #0098a5; background: #0098a5; }
+body.unit-native-body .unit-administration button:disabled { opacity: .55; cursor: wait; }
+body.unit-native-body .unit-administration .admin-demo { display: inline-block; border-radius: 12px; padding: 3px 8px; margin-left: 6px; background: #e1f3ef; color: #007d7b; font-size: 10px; font-weight: 700; vertical-align: middle; }
+body.unit-native-body .unit-administration .admin-filter-buttons { display: flex; flex-wrap: nowrap; gap: 8px; padding: 12px 20px; overflow-x: auto; border-bottom: 1px solid #dfe6ef; background: #fff; scrollbar-width: thin; }
+body.unit-native-body .unit-administration .admin-filter-buttons button { flex: 0 0 var(--unit-tab-width, 144px); width: var(--unit-tab-width, 144px); height: var(--unit-control-height, 40px); min-height: var(--unit-control-height, 40px); box-sizing: border-box; padding: 4px 12px; border: 1px solid #dfe6ef; border-radius: 6px; color: #10244c; background: #fff; font-size: 12px; font-weight: 400; line-height: 1.2; }
+body.unit-native-body .unit-administration .admin-filter-buttons button.is-active { color: #008f98; background: #eef8f8; border-color: #00a1ad; }
+body.unit-native-body .unit-administration .admin-toolbar { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px 20px; padding: 14px 20px; background: #fff; }
+body.unit-native-body .unit-administration .admin-toolbar > .admin-actions { margin-left: auto; flex-wrap: nowrap; }
+body.unit-native-body .unit-administration .admin-toolbar > .admin-actions button { min-height: var(--unit-control-height, 40px); white-space: nowrap; }
+body.unit-native-body .unit-administration .admin-filters { display: flex; flex: 1 1 420px; flex-wrap: wrap; gap: 12px; align-items: end; min-width: 0; background: white; }
+body.unit-native-body .unit-administration .admin-filters > label { min-width: 180px; }
+body.unit-native-body .unit-administration .admin-filters .admin-search { flex: 1; min-width: 240px; }
+body.unit-native-body .unit-administration .admin-filters .admin-date { min-width: 140px; }
+body.unit-native-body .unit-administration label { display: grid; gap: 6px; color: #38547b; font-size: 12px; }
+body.unit-native-body .unit-administration :is(input, select, textarea) { box-sizing: border-box; min-width: 0; width: 100%; min-height: 38px; padding: 8px 10px; border: 1px solid #d5dfeb; border-radius: 5px; box-shadow: none; background: white; color: #10244c; font: inherit; font-size: 12px; }
+body.unit-native-body .unit-administration :is(button, a, input, select, textarea):focus-visible { outline: 2px solid #00a1ad; outline-offset: 2px; }
+body.unit-native-body .unit-administration .admin-section { padding: 0 20px 24px; background: white; }
+body.unit-native-body .unit-administration .admin-section h3 { margin: 0; padding: 12px 0; font-size: 16px; }
+body.unit-native-body .unit-administration .admin-table-scroll { overflow-x: auto; border: 1px solid #dbe4ef; border-radius: 5px; }
+body.unit-native-body .unit-administration table { width: 100%; min-width: 940px; border-collapse: collapse; font-size: 12px; }
+body.unit-native-body .unit-administration :is(th, td) { border-right: 1px solid #e4ebf3; border-bottom: 1px solid #dbe4ef; padding: 10px 12px; text-align: left; vertical-align: middle; }
+body.unit-native-body .unit-administration th { color: #10244c; background: #eff5f8; font-size: 11px; font-weight: 700; }
+body.unit-native-body .unit-administration td { background: #fff; }
+body.unit-native-body .unit-administration tr.is-selected td { background: #e7f8f5; }
+body.unit-native-body .unit-administration .admin-money { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+body.unit-native-body .unit-administration td button, body.unit-native-body .unit-administration td .admin-button { color: #008b99; border-color: #56bfca; min-height: 29px; padding: 5px 12px; white-space: nowrap; }
+body.unit-native-body .unit-administration tfoot td { background: #f3f7fa; font-weight: 700; }
+body.unit-native-body .unit-administration .admin-badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 10px; white-space: nowrap; background: #eaf0f7; color: #466185; }
+body.unit-native-body .unit-administration .admin-badge:is(.is-paid,.is-active,.is-authorized,.is-registered) { background: #dcf5e4; color: #187039; }
+body.unit-native-body .unit-administration .admin-badge:is(.is-open,.is-issued) { background: #dfedff; color: #1b5290; }
+body.unit-native-body .unit-administration .admin-badge:is(.is-pending,.is-draft,.is-review) { background: #fff0c4; color: #805800; }
+body.unit-native-body .unit-administration .admin-badge.is-documents { background: #ffe7d7; color: #944b13; }
+body.unit-native-body .unit-administration .admin-badge:is(.is-rejected,.is-inactive) { background: #ffe6e7; color: #ad2f43; }
+body.unit-native-body .unit-administration .admin-footnote { margin: 0; padding: 14px 20px; color: #607b9a; background: white; font-size: 11px; }
+body.unit-native-body .unit-administration .admin-empty { padding: 28px; text-align: center; color: #607b9a; }
+body.unit-native-body .unit-administration .admin-notice { margin: 12px 20px; padding: 12px; border: 1px solid #abd7cc; border-radius: 5px; background: #e9f8ef; }
+body.unit-native-body .admin-dialog { width: 800px; max-width: calc(100vw - 32px); max-height: calc(100dvh - 32px); padding: 0; margin: auto; border: 1px solid #dbe4ef; border-radius: 9px; background: #fff; }
+body.unit-native-body .admin-dialog::backdrop { background: #10244c77; }
+body.unit-native-body .admin-dialog > header { position: sticky; top: 0; z-index: 2; display: flex; justify-content: space-between; align-items: center; gap: 15px; padding: 20px 24px; background: #fff; border-bottom: 1px solid #dbe4ef; }
+body.unit-native-body .admin-dialog > header h2 { margin: 7px 0 0; font-size: 20px; }
+body.unit-native-body .admin-dialog > header button { width: 34px; padding: 0; font-size: 24px; }
+body.unit-native-body .admin-dialog [data-admin-dialog-content] { padding: 22px 24px; }
+body.unit-native-body .admin-dialog .admin-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+body.unit-native-body .admin-dialog .admin-wide { grid-column: 1 / -1; }
+body.unit-native-body .admin-dialog footer { display: flex; justify-content: flex-end; gap: 10px; padding-top: 22px; }
+body.unit-native-body .admin-dialog .admin-errors { padding: 12px; margin-bottom: 15px; border: 1px solid #edb9bf; background: #fff0f2; color: #a82e42; border-radius: 5px; }
+body.unit-native-body .admin-dialog dl { display: grid; grid-template-columns: 170px 1fr; gap: 12px; font-size: 13px; }
+body.unit-native-body .admin-dialog dd { margin: 0; overflow-wrap: anywhere; }
+body.unit-native-body .admin-dialog dt { color: #587190; }
+body.unit-native-body .admin-dialog table { min-width: 560px; }
+body.unit-native-body .admin-dialog .admin-help { color: #587190; font-size: 12px; }
+@media (max-width: 620px) { body.unit-native-body .admin-dialog .admin-form-grid { grid-template-columns: 1fr; } body.unit-native-body .unit-administration .admin-filters > label { flex: 1; } }

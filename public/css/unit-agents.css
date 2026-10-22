@@ -1,0 +1,72 @@
+body.native-shell:is(.unit-native-body, .institution-native-body) .unit-native-workspace .unit-agent-center { min-width: 0; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .unit-agent-center [hidden], body.native-shell:is(.unit-native-body, .institution-native-body) .unit-agent-dialog [hidden] { display: none !important; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .unit-agent-table { width: 100%; min-width: 840px; table-layout: fixed; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .unit-agent-table th:first-child { width: 23%; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .unit-agent-table th:nth-child(2) { width: 47%; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .unit-agent-table th:nth-child(3) { width: 11%; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .unit-agent-table th:last-child { width: 19%; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .unit-agent-table td { max-width: none; white-space: normal; overflow-wrap: anywhere; padding: 12px 16px; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .unit-agent-table small { display: block; margin-top: 4px; font-size: 10px; color: #657b99; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .agent-name { display: flex; align-items: center; gap: 12px; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .agent-name > span { flex: none; width: 22px; height: 22px; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .unit-agent-table svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .unit-agent-table button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; white-space: nowrap; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .unit-agent-table button svg { width: 15px; height: 15px; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .agent-status { display: inline-flex; align-items: center; gap: 6px; color: #748197; background: #f2f5f8; padding: 5px 9px; border-radius: 5px; font-size: 12px; white-space: nowrap; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .agent-count { margin-right: auto; color: #526b93; font-size: 12px; white-space: nowrap; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .unit-agent-center .agent-state-filter { margin: 0; width: 180px; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .unit-agent-center .agent-state-filter select { width: 100%; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .unit-agent-dialog { box-sizing: border-box; width: 880px; max-width: calc(100vw - 32px); max-height: calc(100dvh - 32px); padding: 0; margin: auto; border: 1px solid #dfe6ef; border-radius: 12px; color: #10244c; background: #fff; box-shadow: 0 24px 70px #10244c30; overflow: auto; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .unit-agent-dialog::backdrop { background: #10244c66; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .unit-agent-dialog form { margin: 0; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .unit-agent-dialog header { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; gap: 16px; padding: 20px 24px; border-bottom: 1px solid #dfe6ef; background: #fff; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .unit-agent-dialog header > :first-child { flex: 1; min-width: 0; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .unit-agent-dialog h2 { margin: 0; font-size: 22px; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .unit-agent-dialog header p { margin: 6px 0 0; font-size: 13px; color: #526b93; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .agent-dialog-body { display: grid; gap: 18px; padding: 22px 24px; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .unit-agent-dialog label { display: grid; gap: 7px; font-size: 13px; font-weight: 600; color: #334b71; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .unit-agent-dialog :is(input:not([type=checkbox]), textarea) { box-sizing: border-box; width: 100%; min-width: 0; min-height: 40px; padding: 9px 12px; border: 1px solid #d5dfeb; border-radius: 6px; color: #10244c; background: #fff; font: inherit; font-size: 13px; line-height: 1.6; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .unit-agent-dialog input[readonly] { background: #f5f8fb; color: #526b93; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .unit-agent-dialog textarea { resize: vertical; min-height: 150px; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .agent-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .agent-sources { margin: 0; padding: 0; border: 0; min-width: 0; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .agent-sources legend { padding: 0; margin-bottom: 8px; font-size: 13px; font-weight: 600; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .agent-source-options { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .agent-source-options label { display: flex; align-items: center; gap: 8px; padding: 10px; border: 1px solid #dfe6ef; border-radius: 6px; font-size: 12px; font-weight: 400; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .agent-source-options label:has(:checked) { background: #edf9f6; border-color: #c4e6df; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .agent-source-options input { flex: none; width: 16px; height: 16px; min-height: 16px; margin: 0; padding: 0; accent-color: #009a9e; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .unit-agent-dialog button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 38px; padding: 8px 16px; border: 1px solid #cfdbea; border-radius: 6px; background: #fff; color: #10244c; box-shadow: none; font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .unit-agent-dialog .agent-source-toggle { margin-top: 8px; min-height: 30px; padding: 4px 8px; color: #008f98; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .unit-agent-dialog button.is-primary { color: #fff; background: #10244c; border-color: #10244c; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .unit-agent-dialog button:disabled { opacity: .55; cursor: wait; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .unit-agent-dialog .agent-close { flex: none; width: 34px; min-height: 34px; padding: 0; border: 0; background: transparent; font-size: 25px; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .unit-agent-dialog footer { position: sticky; bottom: 0; display: flex; align-items: center; justify-content: flex-end; gap: 10px; padding: 16px 24px; background: #fff; border-top: 1px solid #dfe6ef; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .unit-agent-dialog footer > :first-child { margin-right: auto; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .agent-save-state, body.native-shell:is(.unit-native-body, .institution-native-body) .agent-help { color: #637892; font-size: 12px; font-weight: 400; margin: 0; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .agent-help { margin-bottom: 8px; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .agent-errors { padding: 12px; color: #9b283e; background: #fff0f2; border: 1px solid #e9bac4; border-radius: 6px; font-size: 13px; white-space: pre-line; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .agent-preview { padding: 16px; border: 1px solid #dfe6ef; border-radius: 6px; background: #f7fafc; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .agent-preview h3 { margin: 0 0 8px; font-size: 15px; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .agent-preview p { font-size: 12px; color: #637892; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .agent-preview table { width: 100%; border-collapse: collapse; font-size: 12px; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .agent-preview :is(th,td) { padding: 8px; border: 1px solid #dfe6ef; text-align: left; white-space: nowrap; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .agent-success-dialog { width: 520px; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .agent-success-dialog > p { padding: 12px 24px 24px; font-size: 14px; }
+body.native-shell:is(.unit-native-body, .institution-native-body) .unit-agent-dialog :is(button,input,textarea):focus-visible { outline: 2px solid #00a1ad; outline-offset: 2px; }
+body.native-shell.institution-native-body .unit-agent-center { min-width: 0; }
+body.native-shell.institution-native-body .unit-agent-center [data-agent-filter] strong { width: 100%; max-width: 100%; }
+body.native-shell.institution-native-body .unit-agent-center .institution-service-panel-header { display: flex; align-items: center; min-height: 112px; box-sizing: border-box; }
+body.native-shell.institution-native-body .unit-agent-center .institution-service-panel-badges { display: flex; align-items: center; gap: 12px; margin-top: 10px; font-size: 12px; }
+body.native-shell.institution-native-body .unit-agent-center .institution-catalog-toolbar { display: flex; flex-direction: column; align-items: stretch; gap: 0; padding: 0; border: 0; }
+body.native-shell.institution-native-body .unit-agent-center .institution-catalog-filter-buttons { display: flex; align-items: center; flex: none; gap: 8px; height: 65px; box-sizing: border-box; padding: 6px 20px; margin: 0; border-bottom: 1px solid var(--institution-border); scrollbar-width: thin; }
+body.native-shell.institution-native-body .unit-agent-center .institution-catalog-toolbar-actions { display: flex; align-items: center; justify-content: flex-end; flex-wrap: nowrap; gap: 8px; min-height: 69px; box-sizing: border-box; padding: 12px 20px; overflow-x: auto; border-bottom: 1px solid var(--institution-border); }
+body.native-shell.institution-native-body .unit-agent-center .institution-catalog-toolbar-actions > * { flex-shrink: 0; }
+body.native-shell.institution-native-body .unit-agent-center .institution-catalog-toolbar-actions :is(input,select) { min-height: 40px; font-size: 12px; }
+body.native-shell.institution-native-body .unit-agent-center .institution-catalog-primary-action { color: #fff; background: #1b224d; border-color: #1b224d; width: 180px; }
+body.native-shell.institution-native-body .unit-agent-center .institution-catalog-primary-action:hover { background: #283363; }
+body.native-shell.institution-native-body .unit-agent-table th { height: 50px; box-sizing: border-box; }
+@media (max-width: 640px) {
+  body.native-shell:is(.unit-native-body, .institution-native-body) .agent-form-grid { grid-template-columns: 1fr; }
+  body.native-shell:is(.unit-native-body, .institution-native-body) .agent-source-options { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  body.native-shell:is(.unit-native-body, .institution-native-body) .unit-agent-dialog footer { flex-wrap: wrap; }
+}

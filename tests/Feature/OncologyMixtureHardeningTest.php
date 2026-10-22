@@ -89,6 +89,7 @@ class OncologyMixtureHardeningTest extends TestCase
 
     private function oncologyContext(): array
     {
+        $this->travelTo(\Illuminate\Support\Carbon::parse('2026-10-19 08:00:00'));
         config(['cbta.base_url' => 'http://cbta.test', 'cbta.token' => 'test-token']);
         $unit = MedicalUnit::query()->create([
             'name' => 'Hospital Oncologia Hardening',

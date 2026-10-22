@@ -63,7 +63,7 @@
 
           return [$unit->id => $contracts];
       });
-  $activeSection = in_array(request('section'), ['subunits', 'pharmacies', 'services', 'medications', 'doctors', 'specialties', 'create-unit', 'create-service', 'edit-unit'], true) ? request('section') : 'units';
+  $activeSection = in_array(request('section'), ['subunits', 'pharmacies', 'services', 'medications', 'doctors', 'specialties', 'create-unit', 'create-service', 'edit-unit', 'agents'], true) ? request('section') : 'units';
   $activeSectionTitle = match ($activeSection) {
     'pharmacies' => 'Catalogo de farmacias institucionales',
     'subunits' => 'Catalogo de subunidades',
@@ -281,6 +281,11 @@
           Centro de ayuda
           <i aria-hidden="true">›</i>
         </a>
+        <a @class(['institution-agent-menu-link', 'is-active' => $activeSection === 'agents']) href="{{ route('institution.dashboard', ['institution' => $institution->id, 'section' => 'agents']) }}">
+          <span aria-hidden="true">@include('unit.agents.icon')</span>
+          Centro de agentes
+          <i aria-hidden="true">›</i>
+        </a>
       </nav>
     </aside>
 
@@ -300,7 +305,9 @@
         </div>
       @endif
 
-      @if ($institutionCatalogUi)
+      @if ($activeSection === 'agents')
+        @include('institution.agents')
+      @elseif ($institutionCatalogUi)
         @include('institution._catalog_workspace_header', ['institutionCatalogUi' => $institutionCatalogUi])
       @elseif ($activeSection !== 'services')
         <header class="institution-native-header">
@@ -1814,7 +1821,7 @@
           })();
         </script>
 
-      @else
+      @elseif ($activeSection === 'create-service')
         <section class="institution-unit-create-card institution-service-create-card">
           <header><h2>Nuevo servicio</h2></header>
           @include('institution._service_create_form')

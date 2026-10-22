@@ -2,6 +2,10 @@
 
 @section('body_class', 'operational-native-body external-pharmacy-native-body external-pharmacy-module-body')
 
+@push('styles')
+  <link rel="stylesheet" href="{{ asset('css/operational-workspace.css') }}?v={{ filemtime(public_path('css/operational-workspace.css')) }}">
+@endpush
+
 @php
   $statusLabels = [
     'active' => 'Activo',
@@ -16,9 +20,9 @@
   ];
 
   $statusText = fn (?string $value) => $statusLabels[$value ?? ''] ?? ($value ? ucfirst(str_replace('_', ' ', $value)) : 'Sin estatus');
-  $unitName = $profile?->medicalUnit?->name ?? 'B. Hospital General con Especialidades Juan Maria de Salvatierra';
-  $unitCode = $profile?->medicalUnit?->code ?? $profile?->medicalUnit?->clues ?? 'BSIMB000672';
-  $institutionName = $profile?->medicalUnit?->institution?->name ?? 'IMSS BIENESTAR ESTADO DE MEXICO';
+  $unitName = $contextUnit?->name ?? 'B. Hospital General con Especialidades Juan Maria de Salvatierra';
+  $unitCode = $contextUnit?->code ?? $contextUnit?->clues ?? 'BSIMB000672';
+  $institutionName = $contextUnit?->institution?->name ?? 'IMSS BIENESTAR ESTADO DE MEXICO';
   $areaName = $profile?->area?->label ?? 'Area Operativa Farmacia';
   $menu = [
     'pending' => ['R', 'Recetas pendientes'],
@@ -43,71 +47,13 @@
 @section('content')
   <div class="operational-native-screen external-pharmacy-operational-screen">
     <header class="operational-native-topbar" aria-label="Barra superior operativa">
-      <x-klini-brand label="Farmacia externa" />
-      <span>{{ strtoupper($institutionName) }}</span>
-      <div class="operational-native-user">
-        <button type="button" aria-label="Notificaciones">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z"/><path d="M10 21h4"/></svg>
-        </button>
-        <div>
-          <strong>Usuario activo</strong>
-          <small>{{ $unitName }}</small>
-        </div>
-        <form method="post" action="{{ route('logout') }}" class="operational-native-logout">
-          @csrf
-          <button type="submit">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/><path d="M15 4h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4"/></svg>
-            Cerrar sesion
-          </button>
-        </form>
-      </div>
+      <x-klini-brand label="MODULO OPERATIVO" />
+      <div class="operational-workspace-context"><strong>{{ $institutionName }}</strong>@if($unitName !== $institutionName)<small>{{ $unitName }}</small>@endif</div>
+      <div class="operational-workspace-session"><x-klini-session-menu :show-profile="true" /></div>
     </header>
 
     <aside class="operational-native-sidebar" aria-label="Navegacion operativa">
-      <nav class="operational-native-menu operational-area-menu">
-        <a href="{{ route('operational.dashboard', $areaDefaultRoutes['nursing']) }}">
-          <span aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 21V5a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v16"/><path d="M16 9h3a1 1 0 0 1 1 1v11"/><path d="M8 8h4M10 6v4M8 14h4M8 18h4"/></svg>
-          </span>
-          Hospitalizacion
-          <i aria-hidden="true">›</i>
-        </a>
-        <a href="{{ route('operational.dashboard', $areaDefaultRoutes['oncology']) }}">
-          <span aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 6h16v15H4z"/><path d="M9 3h6v3H9z"/><path d="M12 10v7M8.5 13.5h7"/></svg>
-          </span>
-          Centro Oncologico
-          <i aria-hidden="true">›</i>
-        </a>
-        <a href="{{ route('operational.dashboard', $areaDefaultRoutes['inpatient-pharmacy']) }}">
-          <span aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="m7 16 9-9a3 3 0 0 1 4 4l-9 9a3 3 0 0 1-4-4Z"/><path d="m12 11 4 4"/></svg>
-          </span>
-          Farmacia intrahospitalaria
-          <i aria-hidden="true">›</i>
-        </a>
-        <a href="{{ route('outpatient.dashboard') }}">
-          <span aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M6 4v5a5 5 0 0 0 10 0V4"/><path d="M9 4H5"/><path d="M17 4h-4"/><path d="M11 14v2a4 4 0 0 0 8 0v-3"/><circle cx="19" cy="10" r="2"/></svg>
-          </span>
-          Consulta Externa
-          <i aria-hidden="true">›</i>
-        </a>
-        <a class="is-active" href="{{ route('external-pharmacy.dashboard') }}">
-          <span aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 9v11h16V9"/><path d="M3 9h18l-2-5H5L3 9Z"/><path d="M12 12v5M9.5 14.5h5"/></svg>
-          </span>
-          Farmacia Externa
-          <i aria-hidden="true">›</i>
-        </a>
-        <a href="{{ route('operational.patients.index', $patientCatalogRouteParameters) }}">
-          <span aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="9.5" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          </span>
-          Catalogo de pacientes
-          <i aria-hidden="true">›</i>
-        </a>
-      </nav>
+      @include('operational._area-menu', ['menuUnit' => $contextUnit ?? $profile?->medicalUnit, 'activeArea' => 'external-pharmacy'])
     </aside>
 
     <section class="operational-native-workspace external-pharmacy-module-main">
@@ -126,14 +72,14 @@
         </div>
       @endif
 
-      <section class="operational-oncology-carousel operational-compact-carousel external-pharmacy-module-carousel" aria-label="Modulo de Farmacia Externa" data-external-pharmacy-carousel>
+      <section class="operational-oncology-carousel operational-compact-carousel external-pharmacy-module-carousel" data-carousel-style="workspace" aria-label="Modulo de Farmacia Externa" data-external-pharmacy-carousel>
         <button class="operational-oncology-carousel-arrow" type="button" data-operational-carousel-prev aria-label="Anterior">‹</button>
         <div class="operational-oncology-carousel-track">
-          <a class="operational-oncology-filter is-active" href="{{ route('external-pharmacy.dashboard', ['section' => 'pending']) }}">
-            <span class="operational-oncology-filter-initial" aria-hidden="true">F</span>
+          <a class="operational-oncology-filter is-active" href="{{ route('external-pharmacy.dashboard', ['unit' => $contextUnit?->id, 'section' => 'pending']) }}">
+            <span class="operational-oncology-filter-initial" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 5h18v16H3ZM9 5V2h6v3M12 9v8M8 13h8"/></svg></span>
             <span class="operational-oncology-filter-copy">
-              <strong>Farmacia Externa</strong>
-              <small>✓ Seleccionada</small>
+              <strong>Farmacia Externa</strong><small aria-label="Seleccionada">✓</small>
+
             </span>
           </a>
         </div>
@@ -142,7 +88,7 @@
 
       <nav class="operational-section-tabs external-pharmacy-module-tabs" aria-label="Secciones de Farmacia Externa">
         @foreach ($menu as $key => [$icon, $label])
-          <a @class(['is-active' => $section === $key]) href="{{ route('external-pharmacy.dashboard', ['section' => $key]) }}">{{ $label }}</a>
+          <a @class(['is-active' => $section === $key]) href="{{ route('external-pharmacy.dashboard', ['unit' => $contextUnit?->id, 'section' => $key]) }}">{{ $label }}</a>
         @endforeach
       </nav>
 
@@ -159,8 +105,6 @@
                 @endphp
               <p>{{ $orderRows->count() }} recetas - {{ $visibleMedicationCount }} medicamentos {{ $section === 'filled' ? 'surtidos' : 'visibles de '.$visibleMedicationCount }}</p>
             </div>
-          </div>
-
           @if ($section === 'pending')
             <form class="external-pharmacy-native-filters" method="get">
               <input type="hidden" name="section" value="pending">
@@ -178,6 +122,7 @@
               </label>
             </form>
           @endif
+          </div>
 
           <div class="external-pharmacy-native-table-scroll operational-native-table-scroll">
             <table class="external-pharmacy-native-table operational-native-table">
@@ -330,11 +275,12 @@
               <p>{{ $inventory->count() }} registros visibles - {{ $products->count() }} medicamentos</p>
             </div>
             <button type="button">Descargar</button>
-          </div>
           <form class="external-pharmacy-native-filters">
             <label class="search">Buscar<input placeholder="CNIS, insumo, descripcion, almacen o lote"></label>
             <label>Estado<select><option>Todos</option></select></label>
           </form>
+          </div>
+
           <div class="external-pharmacy-native-table-scroll operational-native-table-scroll">
             <table class="external-pharmacy-native-table operational-native-table external-inventory-table">
               <thead><tr><th>Clave CNIS</th><th>Insumo</th><th>Existencia</th><th>Almacen</th><th>Lote / caducidad</th><th>Cobertura</th><th>Estado</th><th>Actualizado</th><th>Acciones</th></tr></thead>
@@ -350,8 +296,8 @@
                     <td><span class="external-pharmacy-native-status">Bajo</span></td>
                     <td>{{ $item->updated_at?->format('d/m/Y') }}</td>
                     <td>
-                      <a class="external-table-action" href="{{ route('external-pharmacy.dashboard', ['section' => 'inventory', 'movement_item' => $item->id, 'movement_type' => 'entry']) }}">Entrada</a>
-                      <a class="external-table-action" href="{{ route('external-pharmacy.dashboard', ['section' => 'inventory', 'movement_item' => $item->id, 'movement_type' => 'exit']) }}">Salida</a>
+                      <a class="external-table-action" href="{{ route('external-pharmacy.dashboard', ['unit' => $contextUnit?->id, 'section' => 'inventory', 'movement_item' => $item->id, 'movement_type' => 'entry']) }}">Entrada</a>
+                      <a class="external-table-action" href="{{ route('external-pharmacy.dashboard', ['unit' => $contextUnit?->id, 'section' => 'inventory', 'movement_item' => $item->id, 'movement_type' => 'exit']) }}">Salida</a>
                     </td>
                   </tr>
                 @empty
@@ -367,7 +313,7 @@
                   <h2>Registrar movimiento</h2>
                   <p>{{ $selectedMovementItem->product?->name }} Â· existencia actual {{ $selectedMovementItem->quantity }}</p>
                 </div>
-                <a class="external-table-action" href="{{ route('external-pharmacy.dashboard', ['section' => 'inventory']) }}">Cerrar</a>
+                <a class="external-table-action" href="{{ route('external-pharmacy.dashboard', ['unit' => $contextUnit?->id, 'section' => 'inventory']) }}">Cerrar</a>
               </div>
               <form method="post" action="{{ route('external-pharmacy.inventory.movements.store', $selectedMovementItem) }}" class="external-warehouse-form">
                 @csrf
@@ -396,11 +342,12 @@
               <p>{{ $movements->count() }} movimientos visibles</p>
             </div>
             <button type="button">Descargar</button>
-          </div>
           <form class="external-pharmacy-native-filters">
             <label class="search">Buscar<input placeholder="CNIS, insumo, usuario, almacen o nota"></label>
             <label>Tipo<select><option>Todos</option></select></label>
           </form>
+          </div>
+
           <div class="external-pharmacy-native-table-scroll operational-native-table-scroll">
             <table class="external-pharmacy-native-table operational-native-table">
               <thead><tr><th>Fecha</th><th>Tipo</th><th>Clave CNIS</th><th>Insumo</th><th>Cantidad</th><th>Almacen</th><th>Usuario / origen</th><th>Notas</th></tr></thead>
@@ -492,11 +439,12 @@
               <h2>Catalogo de farmacia</h2>
               <p>{{ $products->count() }} visibles - {{ $products->count() }} medicamentos - {{ $products->where('status', 'active')->count() }} activos / {{ $products->where('status', '!=', 'active')->count() }} inactivos</p>
             </div>
-          </div>
           <form class="external-pharmacy-native-filters">
             <label class="search">Buscar<input placeholder="CNIS, medicamento, descripcion o grupo"></label>
             <label>Estado<select><option>Todos</option></select></label>
           </form>
+          </div>
+
           <div class="external-pharmacy-native-table-scroll operational-native-table-scroll">
             <table class="external-pharmacy-native-table operational-native-table">
               <thead><tr><th>Clave CNIS</th><th>Medicamento</th><th>Descripcion</th><th>Grupo</th><th>Cobertura</th><th>Estado</th><th>Actualizado</th></tr></thead>

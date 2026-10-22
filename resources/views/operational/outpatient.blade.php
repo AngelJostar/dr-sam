@@ -2,13 +2,17 @@
 
 @section('body_class', 'operational-native-body outpatient-module-body')
 
+@push('styles')
+  <link rel="stylesheet" href="{{ asset('css/operational-workspace.css') }}?v={{ filemtime(public_path('css/operational-workspace.css')) }}">
+@endpush
+
 @php
   $unitName = $unit?->name ?? 'H.G. CHIMALHUACAN';
   $unitCode = $unit?->code ?? $unit?->clues ?? 'MCIMB001841';
   $institutionName = $unit?->institution?->name ?? 'IMSS BIENESTAR ESTADO DE MEXICO';
   $statusLabels = ['scheduled' => 'Agendada', 'in_progress' => 'En consulta', 'completed' => 'Atendida', 'cancelled' => 'Cancelada'];
   $sectionNavigation = [
-    ['section' => 'agenda', 'label' => 'Consulta externa'],
+    ['section' => 'agenda', 'label' => 'Inicio'],
     ['section' => 'prescriptions', 'label' => 'Recetas'],
     ['section' => 'rooms', 'label' => 'Catalogo de consultorios'],
   ];
@@ -24,84 +28,26 @@
   <div class="operational-native-screen outpatient-operational-screen">
     <header class="operational-native-topbar" aria-label="Barra superior operativa">
       <x-klini-brand label="MODULO OPERATIVO" />
-      <span>{{ strtoupper($institutionName) }}</span>
-      <div class="operational-native-user">
-        <button type="button" aria-label="Notificaciones">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z"/><path d="M10 21h4"/></svg>
-        </button>
-        <div>
-          <strong>Usuario activo</strong>
-          <small>{{ $unitName }}</small>
-        </div>
-        <form method="post" action="{{ route('logout') }}" class="operational-native-logout">
-          @csrf
-          <button type="submit">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/><path d="M15 4h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4"/></svg>
-            Cerrar sesion
-          </button>
-        </form>
-      </div>
+      <div class="operational-workspace-context"><strong>{{ $institutionName }}</strong>@if($unitName !== $institutionName)<small>{{ $unitName }}</small>@endif</div>
+      <div class="operational-workspace-session"><x-klini-session-menu :show-profile="true" /></div>
     </header>
 
     <aside class="operational-native-sidebar" aria-label="Navegacion operativa">
-      <nav class="operational-native-menu operational-area-menu">
-        <a href="{{ route('operational.dashboard', $areaDefaultRoutes['nursing']) }}">
-          <span aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 21V5a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v16"/><path d="M16 9h3a1 1 0 0 1 1 1v11"/><path d="M8 8h4M10 6v4M8 14h4M8 18h4"/></svg>
-          </span>
-          Hospitalizacion
-          <i aria-hidden="true">›</i>
-        </a>
-        <a href="{{ route('operational.dashboard', $areaDefaultRoutes['oncology']) }}">
-          <span aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 6h16v15H4z"/><path d="M9 3h6v3H9z"/><path d="M12 10v7M8.5 13.5h7"/></svg>
-          </span>
-          Centro Oncologico
-          <i aria-hidden="true">›</i>
-        </a>
-        <a href="{{ route('operational.dashboard', $areaDefaultRoutes['inpatient-pharmacy']) }}">
-          <span aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="m7 16 9-9a3 3 0 0 1 4 4l-9 9a3 3 0 0 1-4-4Z"/><path d="m12 11 4 4"/></svg>
-          </span>
-          Farmacia intrahospitalaria
-          <i aria-hidden="true">›</i>
-        </a>
-        <a class="is-active" href="{{ route('outpatient.dashboard') }}">
-          <span aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M6 4v5a5 5 0 0 0 10 0V4"/><path d="M9 4H5"/><path d="M17 4h-4"/><path d="M11 14v2a4 4 0 0 0 8 0v-3"/><circle cx="19" cy="10" r="2"/></svg>
-          </span>
-          Consulta Externa
-          <i aria-hidden="true">›</i>
-        </a>
-        <a href="{{ route('external-pharmacy.dashboard') }}">
-          <span aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 9v11h16V9"/><path d="M3 9h18l-2-5H5L3 9Z"/><path d="M12 12v5M9.5 14.5h5"/></svg>
-          </span>
-          Farmacia Externa
-          <i aria-hidden="true">›</i>
-        </a>
-        <a href="{{ route('operational.patients.index', $patientCatalogRouteParameters) }}">
-          <span aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="9.5" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          </span>
-          Catalogo de pacientes
-          <i aria-hidden="true">›</i>
-        </a>
-      </nav>
+      @include('operational._area-menu', ['menuUnit' => $unit, 'activeArea' => 'consulting'])
     </aside>
 
     <section class="operational-native-workspace outpatient-module-main">
       @if(session('status'))<div class="notice success">{{ session('status') }}</div>@endif
       @if($errors->any())<div class="notice danger">{{ $errors->first() }}</div>@endif
 
-      <section class="operational-oncology-carousel operational-compact-carousel outpatient-module-carousel" aria-label="Filtros de Consulta Externa" data-outpatient-carousel>
+      <section class="operational-oncology-carousel operational-compact-carousel outpatient-module-carousel" data-carousel-style="workspace" aria-label="Filtros de Consulta Externa" data-outpatient-carousel>
         <button class="operational-oncology-carousel-arrow" type="button" data-operational-carousel-prev aria-label="Anterior">‹</button>
         <div class="operational-oncology-carousel-track">
-          <a class="operational-oncology-filter is-active" href="{{ route('outpatient.dashboard', ['section' => 'agenda']) }}">
-            <span class="operational-oncology-filter-initial" aria-hidden="true">C</span>
+          <a class="operational-oncology-filter is-active" href="{{ route('outpatient.dashboard', ['unit' => $unit?->id, 'section' => 'agenda']) }}">
+            <span class="operational-oncology-filter-initial" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 2v4M16 2v4M3 9h18M4 4h16v18H4Z"/></svg></span>
             <span class="operational-oncology-filter-copy">
-              <strong>Calendario</strong>
-              <small>✓ Seleccionada</small>
+              <strong>Calendario</strong><small aria-label="Seleccionada">✓</small>
+
             </span>
           </a>
         </div>
@@ -110,7 +56,7 @@
 
       <nav class="operational-section-tabs outpatient-module-tabs" aria-label="Secciones de Consulta Externa">
         @foreach ($sectionNavigation as $navigationItem)
-          <a @class(['is-active' => $section === $navigationItem['section']]) href="{{ route('outpatient.dashboard', ['section' => $navigationItem['section']]) }}">
+          <a @class(['is-active' => $section === $navigationItem['section']]) href="{{ route('outpatient.dashboard', ['unit' => $unit?->id, 'section' => $navigationItem['section']]) }}">
             {{ $navigationItem['label'] }}
           </a>
         @endforeach
@@ -118,7 +64,7 @@
 
       @if($section === 'agenda')
         <section class="outpatient-module-card operational-native-table-card operational-section-card">
-          <div class="outpatient-module-card-head operational-native-table-heading"><div><p class="eyebrow">CONSULTA EXTERNA</p><h2>Agenda institucional generada</h2><p>Citas sincronizadas con agenda institucional del médico.</p></div><div><strong>{{ $appointments->count() }} {{ $appointments->count() === 1 ? 'cita' : 'citas' }}</strong><a class="operational-secondary-button is-secondary" href="{{ route('outpatient.dashboard', ['admin' => 1]) }}">Administrar Calendario</a><a class="operational-primary-button" href="{{ route('outpatient.dashboard', ['new' => 1]) }}">+ Nueva consulta</a></div></div>
+          <div class="outpatient-module-card-head operational-native-table-heading"><div><p class="eyebrow">CONSULTA EXTERNA</p><h2>Agenda institucional generada</h2><p>Citas sincronizadas con agenda institucional del médico.</p></div><div><strong>{{ $appointments->count() }} {{ $appointments->count() === 1 ? 'cita' : 'citas' }}</strong><a class="operational-secondary-button is-secondary" href="{{ route('outpatient.dashboard', ['unit' => $unit?->id, 'admin' => 1]) }}">Administrar Calendario</a><a class="operational-primary-button" href="{{ route('outpatient.dashboard', ['unit' => $unit?->id, 'new' => 1]) }}">+ Nueva consulta</a></div></div>
           @if(request('admin'))
             <section class="outpatient-calendar-admin">
               <form method="post" data-calendar-admin-form>
@@ -129,7 +75,7 @@
                 <label>Fin<input name="ends_at" type="time" value="14:00" required></label>
                 <label>Duración<select name="duration"><option>20</option><option selected>30</option><option>45</option><option>60</option></select></label>
                 <label>Consultorio<select data-calendar-room required><option value="">Seleccionar consultorio</option>@foreach($rooms as $room) @if(data_get($room, 'database_id'))<option value="{{ data_get($room, 'database_id') }}" data-specialty="{{ data_get($room, 'specialty') }}">{{ data_get($room, 'name', data_get($room, 'number')) }}</option>@endif @endforeach</select></label>
-                <div class="span-2 outpatient-form-actions"><a href="{{ route('outpatient.dashboard') }}">Cancelar</a><button type="submit">Guardar slots</button></div>
+                <div class="span-2 outpatient-form-actions"><a href="{{ route('outpatient.dashboard', ['unit' => $unit?->id]) }}">Cancelar</a><button type="submit">Guardar slots</button></div>
               </form>
             </section>
           @endif
@@ -150,10 +96,10 @@
               <label>Duración<select name="duration"><option value="20">20 minutos</option><option value="30" selected>30 minutos</option><option value="45">45 minutos</option><option value="60">1 hora</option></select></label>
               <label>Motivo<select name="reason"><option>Primera Vez</option><option>Seguimiento</option></select></label>
               <p class="span-2 outpatient-schedule-help">La fecha se valida contra la agenda del médico y la capacidad del consultorio.</p>
-              <div class="span-2 outpatient-form-actions"><a href="{{ route('outpatient.dashboard') }}">Cancelar</a><button type="submit">Agregar consulta</button></div>
+              <div class="span-2 outpatient-form-actions"><a href="{{ route('outpatient.dashboard', ['unit' => $unit?->id]) }}">Cancelar</a><button type="submit">Agregar consulta</button></div>
             </form>
           @endif
-          <div class="outpatient-table-wrap"><table><thead><tr><th>Fecha</th><th>Hora</th><th>Paciente</th><th>Usuario plataforma</th><th>Médico</th><th>Especialidad</th><th>Consultorio</th><th>Modalidad</th><th>Estado</th></tr></thead><tbody>
+          <div class="outpatient-table-wrap operational-native-table-scroll"><table class="operational-native-table"><thead><tr><th>Fecha</th><th>Hora</th><th>Paciente</th><th>Usuario plataforma</th><th>Médico</th><th>Especialidad</th><th>Consultorio</th><th>Modalidad</th><th>Estado</th></tr></thead><tbody>
             @forelse($appointments as $appointment)<tr><td>{{ $appointment->starts_at?->format('d/m/Y') }}</td><td><strong>{{ $appointment->starts_at?->format('H:i') }}</strong></td><td><strong>{{ $appointment->patient?->full_name }}</strong></td><td>{{ $appointment->patient?->platform_number ?? 'Sin usuario' }}</td><td>{{ $appointment->doctor?->full_name }}</td><td>{{ $appointment->specialty }}</td><td>{{ $appointment->location }}</td><td>{{ $appointment->modality }}</td><td><span class="outpatient-status">{{ $statusLabels[$appointment->status] ?? $appointment->status }}</span></td></tr>@empty<tr><td colspan="9">Sin consultas registradas.</td></tr>@endforelse
           </tbody></table></div>
         </section>
@@ -164,20 +110,20 @@
           $formItems = old('items', $editingPrescription?->items?->map(fn($item) => ['medication_catalog_item_id' => $item->medication_catalog_item_id, 'medication_name' => $item->medication_name, 'cnis' => data_get($item->metadata, 'cnis'), 'dose' => $item->dose, 'presentation' => data_get($item->metadata, 'presentation'), 'route' => data_get($item->metadata, 'route'), 'frequency' => $item->frequency, 'duration' => $item->duration, 'quantity' => data_get($item->metadata, 'quantity'), 'instructions' => $item->instructions])->all() ?? [['medication_name' => '']]);
         @endphp
         <section class="outpatient-module-card operational-native-table-card operational-section-card">
-          <div class="outpatient-module-card-head operational-native-table-heading"><div><p class="eyebrow">CONSULTA EXTERNA</p><h2>Recetas emitidas</h2><p>Formatos asociados a las consultas de la unidad.</p></div><div><strong>{{ $prescriptions->count() }} recetas</strong><a class="operational-primary-button" href="{{ route('outpatient.dashboard', ['section' => 'prescriptions', 'new' => 1]) }}">+ Nueva receta</a></div></div>
-          <div class="outpatient-table-wrap"><table><thead><tr><th>Fecha</th><th>Paciente</th><th>Usuario plataforma</th><th>Médico</th><th>Especialidad</th><th>Receta</th><th>Estado</th></tr></thead><tbody>
+          <div class="outpatient-module-card-head operational-native-table-heading"><div><p class="eyebrow">CONSULTA EXTERNA</p><h2>Recetas emitidas</h2><p>Formatos asociados a las consultas de la unidad.</p></div><div><strong>{{ $prescriptions->count() }} recetas</strong><a class="operational-primary-button" href="{{ route('outpatient.dashboard', ['unit' => $unit?->id, 'section' => 'prescriptions', 'new' => 1]) }}">+ Nueva receta</a></div></div>
+          <div class="outpatient-table-wrap operational-native-table-scroll"><table class="operational-native-table"><thead><tr><th>Fecha</th><th>Paciente</th><th>Usuario plataforma</th><th>Médico</th><th>Especialidad</th><th>Receta</th><th>Estado</th></tr></thead><tbody>
           @forelse($prescriptions as $prescription)<tr><td>{{ $prescription->issued_at?->format('d/m/Y') }}</td><td><strong>{{ $prescription->patient?->full_name }}</strong></td><td>{{ $prescription->patient?->platform_number ?? 'Sin usuario' }}</td><td>{{ $prescription->doctor?->full_name }}</td><td>{{ $prescription->doctor?->specialty }}</td><td><strong>{{ $prescription->code ?? 'REC-'.$prescription->id }}</strong><small>{{ $prescription->items->count() }} medicamento(s)</small></td><td><span class="outpatient-status">{{ ucfirst($prescription->status) }}</span></td></tr>@empty<tr><td colspan="7">Sin recetas registradas.</td></tr>@endforelse
           </tbody></table></div>
         </section>
         @if($viewingPrescription)
-          <section class="outpatient-module-card operational-native-table-card operational-section-card outpatient-prescription-detail"><div class="outpatient-module-card-head operational-native-table-heading"><div><h2>Receta {{ $viewingPrescription->code }}</h2><p>{{ $viewingPrescription->patient?->full_name }} · Diagnóstico: {{ data_get($viewingPrescription->metadata, 'diagnosis') }}</p></div><a class="operational-secondary-button is-secondary" href="{{ route('outpatient.dashboard', ['section' => 'prescriptions']) }}">Cerrar</a></div><div class="outpatient-table-wrap"><table><thead><tr><th>No.</th><th>Clave CNIS</th><th>Medicamento</th><th>Dosis</th><th>Presentación</th><th>Vía</th><th>Frecuencia</th><th>Duración</th><th>Cantidad</th><th>Indicaciones</th></tr></thead><tbody>@foreach($viewingPrescription->items as $item)<tr><td>{{ $loop->iteration }}</td><td>{{ data_get($item->metadata, 'cnis') }}</td><td><strong>{{ $item->medication_name }}</strong></td><td>{{ $item->dose }}</td><td>{{ data_get($item->metadata, 'presentation') }}</td><td>{{ data_get($item->metadata, 'route') }}</td><td>{{ $item->frequency }}</td><td>{{ $item->duration }}</td><td>{{ data_get($item->metadata, 'quantity') }}</td><td>{{ $item->instructions }}</td></tr>@endforeach</tbody></table></div></section>
+          <section class="outpatient-module-card operational-native-table-card operational-section-card outpatient-prescription-detail"><div class="outpatient-module-card-head operational-native-table-heading"><div><h2>Receta {{ $viewingPrescription->code }}</h2><p>{{ $viewingPrescription->patient?->full_name }} · Diagnóstico: {{ data_get($viewingPrescription->metadata, 'diagnosis') }}</p></div><a class="operational-secondary-button is-secondary" href="{{ route('outpatient.dashboard', ['unit' => $unit?->id, 'section' => 'prescriptions']) }}">Cerrar</a></div><div class="outpatient-table-wrap operational-native-table-scroll"><table class="operational-native-table"><thead><tr><th>No.</th><th>Clave CNIS</th><th>Medicamento</th><th>Dosis</th><th>Presentación</th><th>Vía</th><th>Frecuencia</th><th>Duración</th><th>Cantidad</th><th>Indicaciones</th></tr></thead><tbody>@foreach($viewingPrescription->items as $item)<tr><td>{{ $loop->iteration }}</td><td>{{ data_get($item->metadata, 'cnis') }}</td><td><strong>{{ $item->medication_name }}</strong></td><td>{{ $item->dose }}</td><td>{{ data_get($item->metadata, 'presentation') }}</td><td>{{ data_get($item->metadata, 'route') }}</td><td>{{ $item->frequency }}</td><td>{{ $item->duration }}</td><td>{{ data_get($item->metadata, 'quantity') }}</td><td>{{ $item->instructions }}</td></tr>@endforeach</tbody></table></div></section>
         @endif
         @if(request('new') || $editingPrescription)
-          <section class="outpatient-module-card operational-native-table-card operational-section-card outpatient-prescription-form-card"><div class="outpatient-module-card-head operational-native-table-heading"><div><h2>{{ $editingPrescription ? 'Editar receta médica' : 'Nueva receta médica' }}</h2><p>Formato para Consulta Externa y Farmacia Externa.</p></div><a class="operational-secondary-button is-secondary" href="{{ route('outpatient.dashboard', ['section' => 'prescriptions']) }}">Regresar</a></div>
+          <section class="outpatient-module-card operational-native-table-card operational-section-card outpatient-prescription-form-card"><div class="outpatient-module-card-head operational-native-table-heading"><div><h2>{{ $editingPrescription ? 'Editar receta médica' : 'Nueva receta médica' }}</h2><p>Formato para Consulta Externa y Farmacia Externa.</p></div><a class="operational-secondary-button is-secondary" href="{{ route('outpatient.dashboard', ['unit' => $unit?->id, 'section' => 'prescriptions']) }}">Regresar</a></div>
             <form method="post" action="{{ $editingPrescription ? route('outpatient.prescriptions.update', $editingPrescription) : route('outpatient.prescriptions.store') }}" data-outpatient-prescription>@csrf @if($editingPrescription) @method('PATCH') @endif
               <div class="outpatient-prescription-fields"><label>Folio<input name="code" value="{{ old('code', $editingPrescription?->code) }}" placeholder="Se genera automáticamente"></label><label>Fecha<input type="date" name="issued_at" required value="{{ old('issued_at', $editingPrescription?->issued_at?->format('Y-m-d') ?? now()->format('Y-m-d')) }}"></label><label>Paciente<select name="patient_id" required><option value="">Seleccionar paciente</option>@foreach($patients as $patient)<option value="{{ $patient->id }}" @selected((int) old('patient_id', $editingPrescription?->patient_id) === $patient->id)>{{ $patient->full_name }} · {{ $patient->platform_number }}</option>@endforeach</select></label><label>Médico tratante<select name="doctor_id" required><option value="">Seleccionar médico</option>@foreach($doctors as $doctor)<option value="{{ $doctor->id }}" @selected((int) old('doctor_id', $editingPrescription?->doctor_id) === $doctor->id)>{{ $doctor->full_name }} · {{ $doctor->specialty }}</option>@endforeach</select></label><label class="span-2">Diagnóstico<textarea name="diagnosis" required>{{ old('diagnosis', data_get($editingPrescription?->metadata, 'diagnosis')) }}</textarea></label><label>Estado<select name="status">@foreach(['active'=>'Activa','pending'=>'Pendiente','filled'=>'Surtida','cancelled'=>'Cancelada'] as $value=>$label)<option value="{{ $value }}" @selected(old('status', $editingPrescription?->status ?? 'active') === $value)>{{ $label }}</option>@endforeach</select></label><label>Notas<textarea name="notes">{{ old('notes', $editingPrescription?->notes) }}</textarea></label></div>
-              <div class="outpatient-prescription-items"><h3>Medicamentos indicados</h3><div class="outpatient-table-wrap"><table><thead><tr><th>No.</th><th>Clave CNIS</th><th>Medicamento</th><th>Dosis</th><th>Presentación</th><th>Vía</th><th>Frecuencia</th><th>Duración</th><th>Cantidad</th><th>Indicaciones</th></tr></thead><tbody data-prescription-items>@foreach($formItems as $item)<tr data-prescription-item><td><span data-item-number>{{ $loop->iteration }}</span><button type="button" data-remove-prescription-item>−</button></td><td><input name="items[{{ $loop->index }}][cnis]" value="{{ data_get($item, 'cnis') }}"></td><td><input type="hidden" name="items[{{ $loop->index }}][medication_catalog_item_id]" value="{{ data_get($item, 'medication_catalog_item_id') }}"><input name="items[{{ $loop->index }}][medication_name]" list="outpatient-medications" required value="{{ data_get($item, 'medication_name') }}"></td><td><input name="items[{{ $loop->index }}][dose]" value="{{ data_get($item, 'dose') }}"></td><td><input name="items[{{ $loop->index }}][presentation]" value="{{ data_get($item, 'presentation') }}"></td><td><input name="items[{{ $loop->index }}][route]" value="{{ data_get($item, 'route') }}"></td><td><input name="items[{{ $loop->index }}][frequency]" value="{{ data_get($item, 'frequency') }}"></td><td><input name="items[{{ $loop->index }}][duration]" value="{{ data_get($item, 'duration') }}"></td><td><input name="items[{{ $loop->index }}][quantity]" value="{{ data_get($item, 'quantity') }}"></td><td><textarea name="items[{{ $loop->index }}][instructions]">{{ data_get($item, 'instructions') }}</textarea></td></tr>@endforeach</tbody></table></div><button type="button" class="outpatient-add-prescription-item" data-add-prescription-item>+</button></div>
-              <datalist id="outpatient-medications">@foreach($medications as $medication)<option value="{{ $medication->generic_name ?? $medication->name }}">{{ $medication->code }}</option>@endforeach</datalist><div class="outpatient-form-actions"><a href="{{ route('outpatient.dashboard', ['section' => 'prescriptions']) }}">Cancelar</a><button type="submit">Guardar receta</button></div>
+              <div class="outpatient-prescription-items"><h3>Medicamentos indicados</h3><div class="outpatient-table-wrap operational-native-table-scroll"><table class="operational-native-table"><thead><tr><th>No.</th><th>Clave CNIS</th><th>Medicamento</th><th>Dosis</th><th>Presentación</th><th>Vía</th><th>Frecuencia</th><th>Duración</th><th>Cantidad</th><th>Indicaciones</th></tr></thead><tbody data-prescription-items>@foreach($formItems as $item)<tr data-prescription-item><td><span data-item-number>{{ $loop->iteration }}</span><button type="button" data-remove-prescription-item>−</button></td><td><input name="items[{{ $loop->index }}][cnis]" value="{{ data_get($item, 'cnis') }}"></td><td><input type="hidden" name="items[{{ $loop->index }}][medication_catalog_item_id]" value="{{ data_get($item, 'medication_catalog_item_id') }}"><input name="items[{{ $loop->index }}][medication_name]" list="outpatient-medications" required value="{{ data_get($item, 'medication_name') }}"></td><td><input name="items[{{ $loop->index }}][dose]" value="{{ data_get($item, 'dose') }}"></td><td><input name="items[{{ $loop->index }}][presentation]" value="{{ data_get($item, 'presentation') }}"></td><td><input name="items[{{ $loop->index }}][route]" value="{{ data_get($item, 'route') }}"></td><td><input name="items[{{ $loop->index }}][frequency]" value="{{ data_get($item, 'frequency') }}"></td><td><input name="items[{{ $loop->index }}][duration]" value="{{ data_get($item, 'duration') }}"></td><td><input name="items[{{ $loop->index }}][quantity]" value="{{ data_get($item, 'quantity') }}"></td><td><textarea name="items[{{ $loop->index }}][instructions]">{{ data_get($item, 'instructions') }}</textarea></td></tr>@endforeach</tbody></table></div><button type="button" class="outpatient-add-prescription-item" data-add-prescription-item>+</button></div>
+              <datalist id="outpatient-medications">@foreach($medications as $medication)<option value="{{ $medication->generic_name ?? $medication->name }}">{{ $medication->code }}</option>@endforeach</datalist><div class="outpatient-form-actions"><a href="{{ route('outpatient.dashboard', ['unit' => $unit?->id, 'section' => 'prescriptions']) }}">Cancelar</a><button type="submit">Guardar receta</button></div>
             </form>
           </section>
         @endif
@@ -188,7 +134,7 @@
           $dayLabels = collect($roomDays)->mapWithKeys(fn ($value) => [$value[0] => $value[1]]);
         @endphp
         <section class="outpatient-module-card operational-native-table-card operational-section-card">
-          <div class="outpatient-module-card-head operational-native-table-heading"><div><p class="eyebrow">CONSULTA EXTERNA</p><h2>Catálogo de consultorios</h2><p>Consultorios registrados en la unidad</p></div><a class="operational-primary-button" href="{{ route('outpatient.dashboard', ['section' => 'rooms', 'new' => 1]) }}">+ Nuevo consultorio</a></div>
+          <div class="outpatient-module-card-head operational-native-table-heading"><div><p class="eyebrow">CONSULTA EXTERNA</p><h2>Catálogo de consultorios</h2><p>Consultorios registrados en la unidad</p></div><a class="operational-primary-button" href="{{ route('outpatient.dashboard', ['unit' => $unit?->id, 'section' => 'rooms', 'new' => 1]) }}">+ Nuevo consultorio</a></div>
           <div class="outpatient-table-wrap"><table class="outpatient-room-catalog-table"><thead><tr><th>Consultorio</th><th>Clave</th><th>Ubicación</th><th>Especialidad</th><th>Tipo</th><th>Disponibilidad</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>
           @forelse($rooms as $room)
             @php
@@ -196,7 +142,7 @@
               $scheduleCount = $dateRanges->isNotEmpty() ? $dateRanges->count() : collect(data_get($room, 'schedule', []))->count();
               $availability = $scheduleCount ? $scheduleCount.' días / '.$scheduleCount.' rangos' : 'Sin rangos';
             @endphp
-            <tr><td><strong>{{ data_get($room, 'name', data_get($room, 'number', 'Consultorio')) }}</strong></td><td>{{ data_get($room, 'id', data_get($room, 'number', 'N/A')) }}</td><td>{{ data_get($room, 'location', 'Consulta externa') }}</td><td>{{ data_get($room, 'specialty', 'Consulta externa') }}</td><td>{{ data_get($room, 'modality', 'Presencial') }}</td><td>{{ $availability ?: 'Sin disponibilidad' }}</td><td><span class="outpatient-status">{{ data_get($room, 'status') === 'inactive' ? 'Inactivo' : 'Activo' }}</span></td><td><div class="outpatient-row-actions"><a class="outpatient-row-action" href="{{ route('outpatient.dashboard', ['section' => 'rooms', 'edit' => data_get($room, 'database_id')]) }}">Editar</a>@if(data_get($room, 'database_id'))<form method="post" action="{{ route('outpatient.rooms.destroy', data_get($room, 'database_id')) }}" onsubmit="return confirm('¿Eliminar este consultorio?');">@csrf @method('DELETE')<button class="outpatient-row-action outpatient-row-danger" type="submit">Eliminar</button></form>@endif</div></td></tr>
+            <tr><td><strong>{{ data_get($room, 'name', data_get($room, 'number', 'Consultorio')) }}</strong></td><td>{{ data_get($room, 'id', data_get($room, 'number', 'N/A')) }}</td><td>{{ data_get($room, 'location', 'Consulta externa') }}</td><td>{{ data_get($room, 'specialty', 'Consulta externa') }}</td><td>{{ data_get($room, 'modality', 'Presencial') }}</td><td>{{ $availability ?: 'Sin disponibilidad' }}</td><td><span class="outpatient-status">{{ data_get($room, 'status') === 'inactive' ? 'Inactivo' : 'Activo' }}</span></td><td><div class="outpatient-row-actions"><a class="outpatient-row-action" href="{{ route('outpatient.dashboard', ['unit' => $unit?->id, 'section' => 'rooms', 'edit' => data_get($room, 'database_id')]) }}">Editar</a>@if(data_get($room, 'database_id'))<form method="post" action="{{ route('outpatient.rooms.destroy', data_get($room, 'database_id')) }}" onsubmit="return confirm('¿Eliminar este consultorio?');">@csrf @method('DELETE')<button class="outpatient-row-action outpatient-row-danger" type="submit">Eliminar</button></form>@endif</div></td></tr>
           @empty<tr><td colspan="8">Sin consultorios registrados.</td></tr>@endforelse
           </tbody></table></div>
         </section>
@@ -243,7 +189,7 @@
                   <button type="button" class="outpatient-add-range" data-add-range>+ Agregar rango</button>
                 </div>
               </section>
-              <div class="outpatient-form-actions"><a href="{{ route('outpatient.dashboard', ['section' => 'rooms']) }}">Cancelar</a><button type="submit">Guardar consultorio</button></div>
+              <div class="outpatient-form-actions"><a href="{{ route('outpatient.dashboard', ['unit' => $unit?->id, 'section' => 'rooms']) }}">Cancelar</a><button type="submit">Guardar consultorio</button></div>
             </form>
           </section>
         @endif
