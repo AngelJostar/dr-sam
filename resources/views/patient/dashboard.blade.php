@@ -3,6 +3,7 @@
 @section('body_class', 'patient-assistant-native-body patient-portal-body')
 
 @push('styles')
+  <link rel="stylesheet" href="{{ asset('css/community-activities.css') }}?v={{ filemtime(public_path('css/community-activities.css')) }}">
   <link rel="stylesheet" href="{{ asset('css/patient-health-icons.css') }}?v={{ filemtime(public_path('css/patient-health-icons.css')) }}">
   <link rel="stylesheet" href="{{ asset('css/patient-profile-panel.css') }}?v={{ filemtime(public_path('css/patient-profile-panel.css')) }}">
   <link rel="stylesheet" href="{{ asset('css/communities.css') }}?v={{ filemtime(public_path('css/communities.css')) }}">
@@ -1501,13 +1502,6 @@
                 <button id="patient-register-tab-history" type="button" data-register-view-mode="history" role="tab" aria-selected="false" aria-controls="patient-register-panel-history" tabindex="-1">Historial cl&iacute;nico</button>
               </nav>
 
-              <div class="patient-register-segmented patient-health-parameter-switch" data-register-filter-switch role="tablist" aria-label="Vista de Registro r&aacute;pido">
-                <button class="is-active" type="button" data-register-filter-view="favorites" role="tab" aria-selected="true">
-                  <span aria-hidden="true">&#9733;</span>
-                  Favoritos
-                </button>
-                <button type="button" data-register-filter-view="all" role="tab" aria-selected="false">Todos</button>
-              </div>
 
               <div class="patient-register-view-stage" data-register-view-stage>
               <section class="patient-register-view-panel" id="patient-register-panel-history" data-register-view-panel="history" role="tabpanel" aria-labelledby="patient-register-tab-history" aria-hidden="true" inert>
@@ -1609,6 +1603,14 @@
                 <section class="patient-register-option-block patient-register-option-block-all" data-register-metric-section="all" aria-hidden="true">
                   <div class="patient-register-options" data-register-options data-register-carousel aria-label="Tipo de parametro"></div>
                 </section>
+              </div>
+
+              <div class="patient-register-segmented patient-health-parameter-switch" data-register-filter-switch role="tablist" aria-label="Vista de Registro r&aacute;pido">
+                <button class="is-active" type="button" data-register-filter-view="favorites" role="tab" aria-selected="true">
+                  <span aria-hidden="true">&#9733;</span>
+                  Favoritos
+                </button>
+                <button type="button" data-register-filter-view="all" role="tab" aria-selected="false">Todos</button>
               </div>
 
               <form class="patient-register-form" data-register-form aria-live="polite" hidden>
@@ -1837,6 +1839,7 @@
 <script src="{{ asset('js/klini-profiles.js') }}?v={{ filemtime(public_path('js/klini-profiles.js')) }}"></script>
 <script src="{{ asset('js/patient-profile-panel.js') }}?v={{ filemtime(public_path('js/patient-profile-panel.js')) }}"></script>
 <script src="{{ asset('js/patient-social.js') }}?v={{ filemtime(public_path('js/patient-social.js')) }}"></script>
+<script src="{{ asset('js/community-activities.js') }}?v={{ filemtime(public_path('js/community-activities.js')) }}"></script>
 <script src="{{ asset('js/communities.js') }}?v={{ filemtime(public_path('js/communities.js')) }}"></script>
 <script src="{{ asset('js/patient-stories.js') }}?v={{ filemtime(public_path('js/patient-stories.js')) }}"></script>
 <script src="{{ asset('js/insurance-enrollment.js') }}?v={{ filemtime(public_path('js/insurance-enrollment.js')) }}"></script>
@@ -1975,7 +1978,12 @@
   const mountCommunities = () => {
     const root = communitiesRoot;
     if (!root || !window.KliniCommunities) return;
-    if (communitiesApp) { communitiesApp.load(); communitiesApp.render(); return; }
+    if (communitiesApp) {
+      communitiesApp.load();
+      communitiesApp.render();
+      window.KliniCommunityActivities?.load().then(() => communitiesApp.render()).catch(() => {});
+      return;
+    }
     const activeProfile = getActivePatientProfile();
     communitiesApp = window.KliniCommunities.mount(root, {
       patient: {
@@ -3372,6 +3380,12 @@
   const setRegisterSection = (section = 'parameters') => {
     const activeSection = section === 'history' ? 'history' : 'parameters';
     activeRegisterSection = activeSection;
+    const filterAnchor = activeSection === 'history'
+      ? portal.querySelector('[data-register-history-carousel]')
+      : portal.querySelector('[data-register-metric-stage]');
+    if (registerFilterSwitch && filterAnchor) {
+      filterAnchor.after(registerFilterSwitch);
+    }
     if (registerViewSwitch) registerViewSwitch.dataset.activeView = activeSection;
     registerViewButtons.forEach(button => {
       const active = button.dataset.registerViewMode === activeSection;

@@ -1,0 +1,11 @@
+/* Device viewport only. Feed cards and navigation use the public app styles. */
+html { height:100%; background:#fff; }
+body.native-shell { margin:0; padding:0; min-width:0; min-height:100%; background:#fff; }
+.native-shell .patient-portal-topbar { position:sticky; top:0; left:0; right:0; width:100%; transform:none; margin:0; border-radius:0; box-sizing:border-box; }
+.patient-portal-communities-view { display:block!important; margin:0!important; padding:0!important; width:100%!important; }
+.patient-portal-communities-view .klini-communities { min-height:0; padding:0 0 90px; }
+.patient-portal-communities-view .kc-feed-wrap { padding:0; }
+.patient-portal-communities-view .kc-community-feed-card { margin:0; }
+.patient-portal-bottom-nav { pointer-events:none; }
+[data-preview-content] { pointer-events:none; }
+body { scrollbar-width:thin; }

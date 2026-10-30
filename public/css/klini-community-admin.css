@@ -1,0 +1,594 @@
+/* White and turquoise theme for the community administrator only.
+   Layout and interactions remain in the shared community styles and scripts. */
+.klini-community-body #wellnessView .wellness-admin-seats-button {display:grid;gap:5px;min-width:116px;padding:9px 11px;border:1px solid var(--community-accent-line);border-radius:11px;background:#f5fcfd;color:var(--community-accent-dark);font:inherit;text-align:left;cursor:pointer;}
+.klini-community-body #wellnessView .wellness-admin-seats-button:hover {background:var(--community-accent-soft);}
+.klini-community-body #wellnessView .wellness-admin-seats-button>span {display:flex;align-items:center;gap:8px;white-space:nowrap;}
+.klini-community-body #wellnessView .wellness-admin-seats-button svg {width:16px;height:16px;flex-shrink:0;}
+.klini-community-body #wellnessView .wellness-admin-seats-button small {margin:0;font-size:10px;}
+.klini-community-body #wellnessView .wellness-admin-seats-button:focus-visible {outline:2px solid var(--community-accent);outline-offset:3px;}
+body:has(.kc-attendees-dialog[open]) {overflow:hidden;}
+dialog.kc-attendees-dialog {box-sizing:border-box;width:min(480px,calc(100% - 32px));max-height:calc(100dvh - 40px);margin:auto;padding:22px;border:1px solid #d9e7ee;border-radius:22px;background:#fff;color:#17294c;box-shadow:0 24px 80px #16334d33;font-family:inherit;}
+dialog.kc-attendees-dialog[open] {display:flex;flex-direction:column;gap:16px;}
+.kc-attendees-dialog::backdrop {background:#172e4c66;backdrop-filter:blur(3px);}
+.kc-attendees-dialog header {display:flex;align-items:center;gap:12px;}
+.kc-attendees-dialog header>div {flex:1;min-width:0;}
+.kc-attendees-dialog h2 {margin:0;font-size:21px;line-height:1.3;}
+.kc-attendees-dialog header p {margin:5px 0 0;font-size:13px;line-height:1.5;color:#687e9b;overflow-wrap:anywhere;}
+.kc-attendees-symbol {display:grid;place-items:center;width:44px;height:44px;flex-shrink:0;border-radius:14px;background:#e4f9fc;color:#128aa4;}
+.kc-attendees-symbol svg {width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;}
+.kc-attendees-dialog button {min-height:36px;padding:8px 14px;border:1px solid #b8e6ef;border-radius:10px;background:white;color:#1286a2;font:inherit;font-size:13px;font-weight:700;cursor:pointer;}
+.kc-attendees-dialog button:hover {background:#ecfbfd;}
+.kc-attendees-dialog button:focus-visible {outline:2px solid #159fbd;outline-offset:3px;}
+.kc-attendees-dialog button:disabled {opacity:.4;cursor:default;}
+.kc-attendees-dialog header button {align-self:flex-start;width:34px;min-height:34px;padding:0;border-color:#e0e9ef;color:#60738f;font-size:24px;}
+.kc-attendees-count {margin:0;color:#16869d;font-size:12px;font-weight:700;}
+.kc-attendees-body {min-height:100px;overflow:auto;scrollbar-width:thin;}
+.kc-attendee-list {display:grid;gap:9px;list-style:none;margin:0;padding:0;}
+.kc-attendee-list li {display:flex;align-items:center;gap:12px;padding:12px;border:1px solid #e1eaf2;border-radius:13px;}
+.kc-attendee-avatar {display:grid;place-items:center;width:40px;height:40px;flex-shrink:0;border-radius:50%;background:#e5faf8;color:#078d91;font-size:12px;font-weight:700;}
+.kc-attendee-list li>div {min-width:0;overflow-wrap:anywhere;}
+.kc-attendee-list strong {display:block;font-size:14px;}
+.kc-attendee-list small {display:block;margin-top:4px;font-size:11px;line-height:1.5;color:#6a7d99;}
+.kc-attendee-empty {padding:28px 10px;text-align:center;}
+.kc-attendee-empty strong {font-size:15px;}
+.kc-attendee-empty p {color:#6a7d99;font-size:13px;line-height:1.5;}
+.kc-attendees-dialog footer {display:flex;justify-content:space-between;align-items:center;gap:12px;border-top:1px solid #e1eaf2;padding-top:14px;}
+.kc-attendees-dialog footer>button {margin-left:auto;background:#1988a3;color:#fff;border-color:#1988a3;}
+.kc-attendees-dialog nav {display:flex;align-items:center;gap:8px;font-size:11px;color:#6a7d99;}
+.kc-attendees-dialog nav[hidden] {display:none;}
+body:has(.wellness-invite-modal, .wellness-event-success) {overflow:hidden;}
+.klini-community-body #wellnessView .wellness-event-success {place-items:center;padding:18px;}
+.klini-community-body #wellnessView .wellness-event-success-sheet {width:min(100%,560px);max-height:calc(var(--platform-viewport-height,100dvh) - 36px);padding:38px 34px 26px;text-align:center;border-radius:26px;box-sizing:border-box;}
+.klini-community-body #wellnessView .wellness-event-success-mark {display:flex;align-items:center;justify-content:center;gap:20px;margin:15px 0 24px;color:#74dae7;font-size:29px;}
+.klini-community-body #wellnessView .wellness-event-success-mark>span:first-child {transform:translateY(15px);font-size:19px;}
+.klini-community-body #wellnessView .wellness-event-success-mark>span:last-child {transform:translateY(-25px);}
+.klini-community-body #wellnessView .wellness-event-success-mark i {display:grid;place-items:center;width:90px;height:90px;border-radius:50%;color:#fff;background:linear-gradient(135deg,#30cbd2,#08a6bf);box-shadow:0 0 0 12px #eafbfd;animation:community-reward-pop .4s ease-out;}
+.klini-community-body #wellnessView .wellness-event-success-mark svg {width:48px;height:48px;fill:none;stroke:currentColor;stroke-width:3;}
+.klini-community-body #wellnessView .wellness-event-success-sheet h3 {margin:0 0 10px;font-size:29px;color:var(--community-navy);}
+.klini-community-body #wellnessView .wellness-event-success-sheet>p {margin:0;color:var(--community-muted);font-size:16px;line-height:1.5;}
+.klini-community-body #wellnessView .wellness-event-success-name {display:block;margin:10px 0 22px;color:var(--community-navy);font-size:14px;overflow-wrap:anywhere;}
+.klini-community-body #wellnessView .wellness-event-reward {display:flex;align-items:center;justify-content:center;gap:18px;padding:16px;border-radius:18px;background:linear-gradient(110deg,#effcfc,#e4fafb);text-align:left;}
+.klini-community-body #wellnessView .wellness-event-reward>span {display:grid;place-items:center;width:64px;height:64px;border-radius:50%;background:#cff4f7;color:var(--community-accent-dark);}
+.klini-community-body #wellnessView .wellness-event-reward svg {width:36px;height:36px;}
+.klini-community-body #wellnessView .wellness-event-reward strong {font-size:25px;color:var(--community-navy);}
+.klini-community-body #wellnessView .wellness-event-reward p {margin:4px 0 0;color:var(--community-muted);font-size:15px;}
+.klini-community-body #wellnessView .wellness-event-success-sheet .wellness-event-reward-help {margin:19px 0 6px;font-size:13px;}
+.klini-community-body #wellnessView .wellness-event-reward-balance {color:var(--community-accent-dark);font-size:13px;font-weight:700;}
+.klini-community-body #wellnessView .wellness-event-success-actions {display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:28px;}
+.klini-community-body #wellnessView .wellness-event-success-actions button {min-height:48px;border:0;border-radius:13px;background:#fff;color:var(--community-accent-dark);font:inherit;font-weight:700;cursor:pointer;}
+.klini-community-body #wellnessView .wellness-event-success-actions button:last-child {background:linear-gradient(135deg,#129db8,#007e9a);color:white;}
+.klini-community-body #wellnessView .wellness-event-success button:focus-visible {outline:2px solid var(--community-accent);outline-offset:3px;}
+.klini-community-body #wellnessView .community-event-save-status:empty {display:none;}
+.klini-community-body #wellnessView .community-event-save-status {color:#b42336;background:#fff3f3;padding:12px;border-radius:10px;font-size:13px;}
+@keyframes community-reward-pop {from {transform:scale(.8);opacity:0;} to {transform:scale(1);opacity:1;}}
+@media(prefers-reduced-motion:reduce) {.klini-community-body #wellnessView .wellness-event-success-mark i {animation:none;}}
+@media(max-width:540px) {.klini-community-body #wellnessView .wellness-event-success-sheet {padding:30px 20px 20px;} .klini-community-body #wellnessView .wellness-event-success-sheet h3 {font-size:25px;}}
+.klini-community-body #wellnessView .wellness-invite-modal {place-items:center;padding:20px;}
+.klini-community-body #wellnessView .wellness-invite-sheet {display:flex;flex-direction:column;gap:18px;width:min(100%,680px);height:640px;max-height:calc(var(--platform-viewport-height,100dvh) - 40px);padding:26px;overflow:hidden;border-radius:22px;box-sizing:border-box;}
+.klini-community-body #wellnessView .wellness-invite-heading {display:flex;align-items:center;gap:14px;padding-right:34px;flex-shrink:0;}
+.klini-community-body #wellnessView .wellness-invite-heading>span {display:grid;place-items:center;width:48px;height:48px;border-radius:15px;background:var(--community-accent-soft);color:var(--community-accent-dark);flex-shrink:0;}
+.klini-community-body #wellnessView .wellness-invite-heading h3 {margin:0 0 5px;font-size:23px;color:var(--community-navy);}
+.klini-community-body #wellnessView .wellness-invite-heading p {margin:0;color:var(--community-muted);font-size:13px;}
+.klini-community-body #wellnessView .wellness-invite-sheet svg {width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;flex-shrink:0;}
+.klini-community-body #wellnessView .wellness-invite-search {display:flex;align-items:center;gap:10px;border:1px solid var(--community-line);border-radius:12px;padding:0 14px;color:var(--community-accent-dark);flex-shrink:0;}
+.klini-community-body #wellnessView .wellness-invite-search:focus-within {border-color:var(--community-accent);box-shadow:0 0 0 3px var(--community-accent-soft);}
+.klini-community-body #wellnessView .wellness-invite-search input {width:100%;min-width:0;min-height:48px;margin:0;padding:12px 0;border:0;outline:0;box-shadow:none;background:transparent;color:var(--community-navy);font:inherit;font-size:14px;}
+.klini-community-body #wellnessView [data-admin-invite-results] {min-height:0;flex:1;overflow:auto;scrollbar-width:thin;}
+.klini-community-body #wellnessView .wellness-invite-count {margin:0 0 10px;color:var(--community-muted);font-size:12px;}
+.klini-community-body #wellnessView .wellness-invite-list {display:grid;gap:9px;}
+.klini-community-body #wellnessView .wellness-invite-profile {display:flex;align-items:center;gap:12px;padding:12px;border:1px solid var(--community-line);border-radius:14px;background:white;}
+.klini-community-body #wellnessView .wellness-invite-avatar {display:grid;place-items:center;width:44px;height:44px;overflow:hidden;flex-shrink:0;border-radius:50%;background:var(--community-accent-soft);color:var(--community-accent-dark);font-weight:700;}
+.klini-community-body #wellnessView .wellness-invite-avatar img {width:100%;height:100%;object-fit:cover;}
+.klini-community-body #wellnessView .wellness-invite-profile>div {flex:1;min-width:0;overflow-wrap:anywhere;}
+.klini-community-body #wellnessView .wellness-invite-profile strong {display:block;color:var(--community-navy);font-size:14px;}
+.klini-community-body #wellnessView .wellness-invite-profile small {display:block;margin-top:4px;color:var(--community-muted);font-size:12px;}
+.klini-community-body #wellnessView .wellness-invite-profile button,
+.klini-community-body #wellnessView .wellness-invite-footer button {display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:9px 12px;min-height:38px;border:1px solid var(--community-accent-line);border-radius:10px;background:#fff;color:var(--community-accent-dark);font:inherit;font-size:12px;font-weight:700;cursor:pointer;flex-shrink:0;}
+.klini-community-body #wellnessView .wellness-invite-profile button:hover {background:var(--community-accent-soft);}
+.klini-community-body #wellnessView .wellness-invite-profile button:disabled {background:var(--community-canvas);color:var(--community-muted);border-color:var(--community-line);cursor:default;}
+.klini-community-body #wellnessView .wellness-invite-sheet button:focus-visible {outline:2px solid var(--community-accent);outline-offset:3px;}
+.klini-community-body #wellnessView .wellness-invite-footer {display:flex;align-items:center;gap:20px;justify-content:space-between;padding-top:16px;border-top:1px solid var(--community-line);flex-shrink:0;}
+.klini-community-body #wellnessView .wellness-invite-footer small {color:var(--community-muted);font-size:11px;line-height:1.5;}
+.klini-community-body #wellnessView .wellness-invite-empty {display:grid;justify-items:center;align-content:center;gap:12px;min-height:200px;padding:20px;text-align:center;color:var(--community-muted);}
+.klini-community-body #wellnessView .wellness-invite-empty strong {color:var(--community-navy);}
+.klini-community-body #wellnessView .wellness-invite-empty p {margin:0;font-size:13px;}
+@media(max-width:540px) {
+  .klini-community-body #wellnessView .wellness-invite-modal {padding:12px;}
+  .klini-community-body #wellnessView .wellness-invite-sheet {padding:18px;gap:14px;max-height:calc(var(--platform-viewport-height,100dvh) - 24px);}
+  .klini-community-body #wellnessView .wellness-invite-heading h3 {font-size:20px;}
+  .klini-community-body #wellnessView .wellness-invite-profile {gap:9px;padding:10px;}
+  .klini-community-body #wellnessView .wellness-invite-profile button {padding:8px;font-size:11px;}
+  .klini-community-body #wellnessView .wellness-invite-profile button svg {display:none;}
+}
+
+.klini-community-body {
+  --community-navy: #0c244b;
+  --community-muted: #617797;
+  --community-line: #dfe7f0;
+  --community-accent: #009fc3;
+  --community-accent-dark: #007f9b;
+  --community-accent-soft: #e6faff;
+  --community-accent-line: #bdebf6;
+  --community-canvas: #f6f9fc;
+  --community-shadow: 0 4px 14px rgba(22, 52, 86, .06);
+  color: var(--community-navy);
+  background: var(--community-canvas);
+}
+
+.klini-community-header {
+  background: #fff;
+  border-color: var(--community-line);
+}
+.klini-community-header-label {color:var(--community-muted);border-color:var(--community-line);}
+.klini-community-body .klini-session-menu summary {
+  background: #fff;
+  color: var(--community-navy);
+  border-color: var(--community-line);
+}
+.klini-community-body .klini-session-user {color:var(--community-muted);}
+.klini-community-body .klini-session-avatar {background:var(--community-accent-soft);color:var(--community-accent-dark);}
+.klini-community-body .klini-session-dropdown {border-color:var(--community-line);box-shadow:var(--community-shadow);}
+.klini-community-body .klini-session-dropdown nav a:is(:hover,[aria-current]) {background:var(--community-accent-soft);color:var(--community-accent-dark);}
+
+.klini-community-body #wellnessView {
+  --wellness-ink: var(--community-navy);
+  --wellness-muted: var(--community-muted);
+  --wellness-line: var(--community-line);
+  --wellness-soft: var(--community-canvas);
+  --wellness-teal: var(--community-accent-dark);
+  --wellness-teal-dark: var(--community-accent-dark);
+  --wellness-blue: #3375ff;
+  --wellness-purple: #8052e8;
+  color: var(--wellness-ink);
+}
+
+/* The sidebar and compact community header share the same white surface. */
+.klini-community-body #wellnessView .wellness-admin-sidebar {
+  background: #fff;
+  border-color: var(--community-line);
+  border-radius: 22px;
+}
+.klini-community-body #wellnessView .wellness-admin-brand {color:var(--community-navy);border-color:var(--community-line);}
+.klini-community-body #wellnessView .wellness-admin-brand>span {background:var(--community-accent-soft);color:var(--community-accent);}
+.klini-community-body #wellnessView .wellness-admin-brand strong {font-weight:700;}
+.klini-community-body #wellnessView .wellness-admin-community-switch select {
+  color: var(--community-navy);
+  background: #fff;
+  border-color: var(--community-line);
+}
+.klini-community-body #wellnessView .wellness-admin-module-nav button {
+  color: var(--community-muted);
+  border-left: 3px solid transparent;
+  border-radius: 12px;
+  font-weight: 700;
+}
+.klini-community-body #wellnessView .wellness-admin-module-nav button:hover {color:var(--community-accent-dark);background:#f2fbfe;box-shadow:none;}
+.klini-community-body #wellnessView .wellness-admin-module-nav button.active {
+  color: var(--community-accent-dark);
+  border-left-color: var(--community-accent);
+  background: #fff;
+  box-shadow: var(--community-shadow);
+}
+.klini-community-body #wellnessView .wellness-admin-console-hero {
+  background: #fff;
+  color: var(--community-navy);
+  border-color: var(--community-line);
+  border-radius: 22px;
+  overflow: visible;
+  z-index: 10;
+}
+.klini-community-body #wellnessView .wellness-admin-console-hero p {color:var(--community-muted);}
+.klini-community-body #wellnessView .wellness-admin-community-meta {color:var(--community-navy);}
+.klini-community-body #wellnessView .wellness-admin-community-meta svg {color:var(--community-muted);}
+.klini-community-body #wellnessView .wellness-admin-community-mark {background:#fff;box-shadow:0 8px 22px rgba(22,52,86,.1);}
+.klini-community-body #wellnessView .wellness-admin-community-mark:not(.has-image) svg {color:var(--community-accent);opacity:1;}
+@media(min-width:761px) {
+  .klini-community-body #wellnessView .wellness-admin-console-hero {grid-template-columns:72px minmax(0,1fr) auto;}
+}
+
+.klini-community-body #wellnessView .wellness-admin-community-actions {display:flex;align-items:center;justify-content:flex-end;gap:8px;align-self:start;justify-self:end;padding-top:6px;}
+.klini-community-body #wellnessView .wellness-admin-community-actions>button,
+.klini-community-body #wellnessView .wellness-admin-community-actions .wellness-admin-notification-button {display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:38px;padding:9px 12px;border:1px solid var(--community-accent-line);border-radius:10px;background:#fff;color:var(--community-accent-dark);font:inherit;font-size:12px;cursor:pointer;white-space:nowrap;box-shadow:none;}
+.klini-community-body #wellnessView .wellness-admin-community-actions>button svg {width:16px;height:16px;}
+.klini-community-body #wellnessView .wellness-admin-community-actions .wellness-admin-notification-button strong {font-size:12px;}
+.klini-community-body #wellnessView .wellness-admin-community-actions>button:hover {background:var(--community-accent-soft);}
+.klini-community-body #wellnessView .wellness-admin-community-actions .wellness-admin-notification-wrap {width:auto;}
+@media(max-width:1100px) {
+  .klini-community-body #wellnessView .wellness-admin-console-hero {grid-template-columns:72px minmax(0,1fr);}
+  .klini-community-body #wellnessView .wellness-admin-community-actions {grid-column:1/-1;position:relative;width:100%;padding-top:0;}
+  .klini-community-body #wellnessView .wellness-admin-community-actions .wellness-admin-notification-wrap {position:static;}
+  .klini-community-body #wellnessView .wellness-admin-community-actions .wellness-admin-notification-dropdown {left:auto;right:0;width:min(392px,100%);box-sizing:border-box;}
+}
+@media(max-width:760px) {
+  .klini-community-body #wellnessView .wellness-admin-community-actions {gap:6px;}
+  .klini-community-body #wellnessView .wellness-admin-community-actions>button,
+  .klini-community-body #wellnessView .wellness-admin-community-actions .wellness-admin-notification-button {padding:8px;font-size:11px;}
+  .klini-community-body #wellnessView .wellness-admin-community-actions .wellness-admin-notification-button strong {font-size:11px;}
+}
+
+/* Controls keep their existing actions, states and notification badges. */
+.klini-community-body #wellnessView .wellness-admin-top-actions>button {
+  background: #fff;
+  border-color: var(--community-line);
+  color: var(--community-navy);
+}
+.klini-community-body #wellnessView .wellness-admin-top-actions>button:first-child,
+.klini-community-body #wellnessView .wellness-primary-action {
+  background: linear-gradient(180deg, #008ba5, #007b94);
+  border-color: var(--community-accent-dark);
+  color: #fff;
+  box-shadow: none;
+}
+.klini-community-body #wellnessView :is(.wellness-primary-soft,.wellness-secondary-action,.wellness-admin-notification-button) {
+  background: #fff;
+  color: var(--community-accent-dark);
+  border-color: var(--community-accent-line);
+  box-shadow: none;
+}
+.klini-community-body #wellnessView :is(.wellness-primary-soft,.wellness-secondary-action,.wellness-admin-notification-button):hover {background:#f2fbfe;}
+.klini-community-body #wellnessView :is(.wellness-admin-panel-heading button,.wellness-admin-panel-link,.wellness-event-upload-button) {background:#fff;color:var(--community-accent-dark);border-color:var(--community-accent-line);}
+.klini-community-body #wellnessView .wellness-admin-notification-button.active,
+.klini-community-body #wellnessView .wellness-admin-filter-row button.active {background:var(--community-accent-soft);border-color:var(--community-accent);}
+.klini-community-body #wellnessView :is(.wellness-admin-profile-avatar,.wellness-admin-notification-avatar,.wellness-admin-chip-row span) {
+  background: var(--community-accent-soft);
+  color: var(--community-accent-dark);
+}
+.klini-community-body #wellnessView :is(.wellness-admin-console,.wellness-form) :is(input,select,textarea) {border-color:var(--community-line);background:#fff;}
+.klini-community-body #wellnessView :is(.wellness-event-create-header>span,.wellness-event-control i,.wellness-event-image-copy>span) {background:var(--community-accent-soft);border-color:var(--community-accent-line);}
+.klini-community-body #wellnessView .wellness-event-control {background:#fff;border-color:var(--community-line);}
+.klini-community-body #wellnessView :is(.wellness-event-image-editor,.wellness-event-location-panel) {background:#f5fbfe;border-color:var(--community-accent-line);}
+.klini-community-body #wellnessView :is(button,input,select,textarea) {accent-color:var(--community-accent-dark);}
+.klini-community-body :is(button,a,summary,select,input,textarea):focus-visible {outline-color:var(--community-accent);}
+
+/* Use one surface treatment throughout the administrative sections. */
+.klini-community-body #wellnessView :is(
+  .wellness-admin-kpi,.wellness-admin-chart-card,.wellness-admin-panel,
+  .wellness-admin-event-card,.wellness-admin-event-manager,.wellness-admin-request-card,
+  .wellness-admin-heatmap,.wellness-admin-funnel,.wellness-admin-setting-row,
+  .wellness-admin-settings-grid>article,.wellness-admin-automation-grid>article,
+  .wellness-admin-game-grid>article,.wellness-admin-mission-list>article,
+  .wellness-admin-calendar-grid>article,.wellness-sheet
+) {
+  background: #fff;
+  border-color: var(--community-line);
+  border-radius: 20px;
+  box-shadow: none;
+}
+.klini-community-body #wellnessView :is(.wellness-admin-member-row,.wellness-admin-member-table-head,.wellness-admin-content-item,.wellness-admin-notification-dropdown) {border-color:var(--community-line);}
+.klini-community-body #wellnessView .wellness-admin-member-table-head {background:var(--community-canvas);color:var(--community-muted);}
+.klini-community-body #wellnessView .wellness-admin-kpi strong {color:var(--community-navy);font-weight:700;font-size:26px;}
+.klini-community-body #wellnessView .wellness-admin-kpi small {color:var(--community-muted);font-weight:700;}
+.klini-community-body #wellnessView .wellness-admin-kpi>span {background:var(--community-accent-soft);color:var(--community-accent);}
+.klini-community-body #wellnessView .wellness-admin-kpi-blue>span {background:#edf2ff;color:#3375ff;}
+.klini-community-body #wellnessView .wellness-admin-kpi-purple>span {background:#f1eaff;color:#8052e8;}
+.klini-community-body #wellnessView .wellness-admin-kpi-orange>span {background:#fff1ed;color:#f36c41;}
+.klini-community-body #wellnessView .wellness-admin-kpi-red>span {background:#fff0f2;color:#f04459;}
+.klini-community-body #wellnessView .wellness-admin-chart-bars i {background:linear-gradient(180deg,#48badd,#b5e2ee);border-radius:6px 6px 0 0;}
+.klini-community-body #wellnessView .wellness-admin-funnel i {background:linear-gradient(90deg,var(--community-accent),#a5ddec);}
+.klini-community-body #wellnessView .wellness-admin-chart-card small {color:var(--community-muted);}
+.klini-community-body #wellnessView .wellness-admin-meter {background:#e8f3f8;}
+.klini-community-body #wellnessView .wellness-admin-meter b {background:var(--community-accent);}
+.klini-community-toast {background:var(--community-navy);}
+
+/* One membership request per horizontal row in the Requests menu. */
+.klini-community-body #wellnessView .wellness-admin-request-grid.wellness-admin-request-list {display:grid;grid-template-columns:minmax(0,1fr);gap:12px;}
+.klini-community-body #wellnessView .wellness-admin-request-list .wellness-admin-request-card {display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:18px;align-items:center;padding:20px;border:1px solid var(--community-line);border-radius:16px;}
+.klini-community-body #wellnessView .wellness-admin-request-list .wellness-community-avatar {width:44px;height:44px;align-self:start;background:var(--community-accent-soft);color:var(--community-accent-dark);}
+.klini-community-body #wellnessView .wellness-admin-request-list .wellness-admin-request-card>div {display:grid;grid-template-columns:minmax(160px,1fr) minmax(190px,.8fr);column-gap:22px;row-gap:5px;align-items:center;}
+.klini-community-body #wellnessView .wellness-admin-request-list .wellness-admin-request-card>div>:not(dl) {grid-column:1;}
+.klini-community-body #wellnessView .wellness-admin-request-list .wellness-admin-request-card h4 {font-size:15px;margin:0;}
+.klini-community-body #wellnessView .wellness-admin-request-list .wellness-admin-request-card p {font-size:12px;margin:0;color:var(--community-muted);}
+.klini-community-body #wellnessView .wellness-admin-request-list .wellness-admin-request-card small {font-size:11px;color:var(--community-muted);}
+.klini-community-body #wellnessView .wellness-admin-request-list .wellness-admin-chip-row {margin-top:3px;flex-wrap:wrap;}
+.klini-community-body #wellnessView .wellness-admin-request-list .wellness-admin-request-card dl {grid-column:2;grid-row:1/5;display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:0;padding-left:20px;border-left:1px solid var(--community-line);}
+.klini-community-body #wellnessView .wellness-admin-request-list .wellness-admin-request-card dt {color:var(--community-muted);font-size:11px;line-height:1.4;}
+.klini-community-body #wellnessView .wellness-admin-request-list .wellness-admin-request-card dd {margin:5px 0 0;font-weight:700;font-size:16px;color:var(--community-navy);}
+.klini-community-body #wellnessView .wellness-admin-request-list .wellness-admin-request-card footer {display:flex;gap:8px;grid-column:auto;}
+.klini-community-body #wellnessView .wellness-admin-request-list .wellness-admin-request-card footer button {display:inline-flex;justify-content:center;align-items:center;gap:5px;white-space:nowrap;min-height:36px;padding:8px 12px;border:1px solid var(--community-line);border-radius:9px;background:#fff;color:var(--community-navy);font-size:12px;}
+.klini-community-body #wellnessView .wellness-admin-request-list .wellness-admin-request-card footer button:first-child {background:var(--community-accent-dark);border-color:var(--community-accent-dark);color:#fff;}
+.klini-community-body #wellnessView .wellness-admin-request-list .wellness-admin-request-card footer svg {width:14px;height:14px;}
+@media(max-width:1100px) {
+  .klini-community-body #wellnessView .wellness-admin-request-list .wellness-admin-request-card {grid-template-columns:40px minmax(0,1fr);gap:12px;}
+  .klini-community-body #wellnessView .wellness-admin-request-list .wellness-admin-request-card footer {grid-column:2;justify-content:flex-end;}
+}
+@media(max-width:600px) {
+  .klini-community-body #wellnessView .wellness-admin-request-list .wellness-admin-request-card {padding:14px;}
+  .klini-community-body #wellnessView .wellness-admin-request-list .wellness-admin-request-card>div {grid-template-columns:1fr;}
+  .klini-community-body #wellnessView .wellness-admin-request-list .wellness-admin-request-card dl {grid-column:1;grid-row:auto;padding:12px 0 0;border-left:0;border-top:1px solid var(--community-line);margin-top:8px;}
+  .klini-community-body #wellnessView .wellness-admin-request-list .wellness-admin-request-card footer {grid-column:1/-1;flex-wrap:wrap;}
+  .klini-community-body #wellnessView .wellness-admin-request-list .wellness-admin-request-card footer button {flex:1;padding:8px;}
+}
+
+/* Each content menu owns its heading, actions and data surface. */
+.klini-community-body #wellnessView .wellness-admin-module-workspace {
+  min-width:0;padding:22px;border:1px solid var(--community-line);border-radius:20px;background:#fff;
+}
+.klini-community-body #wellnessView .wellness-admin-module-header {display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:22px;}
+.klini-community-body #wellnessView .wellness-admin-module-title {display:flex;align-items:center;gap:18px;min-width:0;}
+.klini-community-body #wellnessView .wellness-admin-module-title>span {display:grid;place-items:center;flex:0 0 54px;height:54px;background:var(--community-accent-soft);border-radius:16px;color:var(--community-accent);}
+.klini-community-body #wellnessView .wellness-admin-module-title svg {width:26px;height:26px;}
+.klini-community-body #wellnessView .wellness-admin-module-title h2 {margin:0 0 5px;font-size:26px;line-height:1.2;color:var(--community-navy);letter-spacing:normal;}
+.klini-community-body #wellnessView .wellness-admin-module-title p {margin:0;color:var(--community-muted);font-size:14px;line-height:1.4;}
+.klini-community-body #wellnessView .wellness-admin-module-header .wellness-admin-creator-button {flex-shrink:0;padding:7px 12px;gap:9px;border:1px solid var(--community-line);background:#fff;border-radius:12px;box-shadow:none;}
+.klini-community-body #wellnessView .wellness-admin-creator-button>span:nth-child(2) {display:grid;gap:2px;text-align:left;}
+.klini-community-body #wellnessView .wellness-admin-creator-button>svg {width:14px;height:14px;}
+.klini-community-body #wellnessView .wellness-admin-module-toolbar {padding:0 0 20px;margin:0 0 20px;border:0;border-bottom:1px solid var(--community-line);background:transparent;}
+.klini-community-body #wellnessView .wellness-admin-module-toolbar .wellness-admin-top-actions {display:flex;align-items:center;justify-content:flex-start;flex-wrap:wrap;gap:9px;width:100%;}
+.klini-community-body #wellnessView .wellness-admin-module-toolbar .wellness-admin-top-actions>button,
+.klini-community-body #wellnessView .wellness-admin-module-toolbar .wellness-admin-notification-button {min-height:40px;border-radius:10px;padding:9px 15px;font-size:13px;box-shadow:none;}
+.klini-community-body #wellnessView .wellness-admin-module-toolbar .wellness-admin-message-wrap {margin-left:auto;}
+.klini-community-body #wellnessView .wellness-admin-module-toolbar .wellness-admin-notification-wrap {position:relative;}
+.klini-community-body #wellnessView .wellness-admin-module-toolbar .wellness-admin-notification-dropdown {z-index:30;}
+.klini-community-body #wellnessView .wellness-admin-module-content>.wellness-admin-panel {padding:0;margin:0;border:0;border-radius:0;box-shadow:none;min-width:0;}
+.klini-community-body #wellnessView .wellness-admin-event-tools {display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;margin-bottom:18px;}
+.klini-community-body #wellnessView .wellness-admin-event-tools .wellness-admin-filter-row {display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;}
+.klini-community-body #wellnessView .wellness-admin-event-tools button {min-height:36px;padding:7px 15px;border-radius:9px;border:1px solid var(--community-line);background:#fff;color:var(--community-accent-dark);font-size:12px;}
+.klini-community-body #wellnessView .wellness-admin-event-tools button.active {border-color:var(--community-accent);background:var(--community-accent-soft);}
+.klini-community-body #wellnessView .wellness-admin-event-search-tools {display:flex;gap:8px;align-items:center;min-width:0;margin-left:auto;}
+.klini-community-body #wellnessView .wellness-admin-event-search {display:flex;gap:8px;align-items:center;width:240px;max-width:100%;padding:0 12px;border:1px solid var(--community-line);border-radius:9px;color:var(--community-accent);}
+.klini-community-body #wellnessView .wellness-admin-event-search svg {width:17px;height:17px;flex-shrink:0;}
+.klini-community-body #wellnessView .wellness-admin-event-search input {min-width:0;width:100%;border:0;background:transparent;padding:9px 0;font-size:12px;color:var(--community-navy);}
+.klini-community-body #wellnessView .wellness-admin-event-filters {position:relative;}
+.klini-community-body #wellnessView .wellness-admin-event-filters>summary,
+.klini-community-body #wellnessView .wellness-admin-row-actions>summary {display:flex;align-items:center;gap:6px;list-style:none;padding:9px 12px;border:1px solid var(--community-line);border-radius:9px;font-size:12px;font-weight:600;color:var(--community-accent-dark);cursor:pointer;white-space:nowrap;}
+.klini-community-body #wellnessView :is(.wellness-admin-event-filters,.wellness-admin-row-actions)>summary::-webkit-details-marker {display:none;}
+.klini-community-body #wellnessView :is(.wellness-admin-event-filters,.wellness-admin-row-actions)>summary svg {width:16px;height:16px;}
+.klini-community-body #wellnessView .wellness-admin-event-filters[open]>summary {background:var(--community-accent-soft);border-color:var(--community-accent);}
+.klini-community-body #wellnessView .wellness-admin-event-filters>div {position:absolute;z-index:20;top:calc(100% + 8px);right:0;display:grid;gap:12px;width:245px;padding:16px;border:1px solid var(--community-line);border-radius:12px;background:#fff;box-shadow:0 8px 30px #0c244b1a;}
+.klini-community-body #wellnessView .wellness-admin-event-filters label {display:grid;gap:6px;color:var(--community-muted);font-size:12px;}
+.klini-community-body #wellnessView .wellness-admin-event-filters select {width:100%;padding:8px;border-radius:8px;color:var(--community-navy);font-size:12px;}
+.klini-community-body #wellnessView .wellness-admin-table-scroll {overflow-x:auto;border:1px solid var(--community-line);border-bottom:0;border-radius:12px 12px 0 0;}
+.klini-community-body #wellnessView .wellness-admin-module-table {width:100%;border-collapse:collapse;text-align:left;font-size:12px;}
+.klini-community-body #wellnessView .wellness-admin-module-table th {background:#f0f5f9;color:var(--community-muted);font-weight:700;padding:13px 16px;white-space:nowrap;text-transform:none;letter-spacing:normal;}
+.klini-community-body #wellnessView .wellness-admin-module-table td {padding:14px 16px;border-bottom:1px solid var(--community-line);vertical-align:top;}
+.klini-community-body #wellnessView .wellness-admin-module-table td>small {display:block;margin-top:5px;color:var(--community-muted);font-size:11px;}
+.klini-community-body #wellnessView .wellness-admin-module-table td>strong {display:block;min-width:140px;}
+.klini-community-body #wellnessView .wellness-admin-module-table td>select {max-width:150px;padding:7px;border-radius:8px;font-size:11px;}
+.klini-community-body #wellnessView .wellness-admin-module-table td>button {padding:7px 10px;border:1px solid var(--community-line);border-radius:8px;background:white;color:var(--community-accent-dark);cursor:pointer;}
+.klini-community-body #wellnessView .wellness-admin-module-table td[colspan] {padding:0;border-bottom:0;}
+.klini-community-body #wellnessView .wellness-admin-table-empty {min-height:260px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:14px;padding:32px;text-align:center;}
+.klini-community-body #wellnessView .wellness-admin-table-empty>span {display:grid;place-items:center;width:66px;height:66px;border-radius:50%;background:#f0f5fa;color:var(--community-muted);}
+.klini-community-body #wellnessView .wellness-admin-table-empty svg {width:28px;height:28px;}
+.klini-community-body #wellnessView .wellness-admin-table-empty strong {font-size:16px;color:var(--community-navy);}
+.klini-community-body #wellnessView .wellness-admin-table-empty p {margin:0;color:var(--community-muted);font-size:13px;}
+.klini-community-body #wellnessView .wellness-admin-table-footer {padding:14px 18px;border:1px solid var(--community-line);border-radius:0 0 12px 12px;font-size:12px;color:var(--community-muted);}
+.klini-community-body #wellnessView .wellness-admin-row-actions>div {display:grid;gap:4px;padding-top:8px;min-width:115px;}
+.klini-community-body #wellnessView .wellness-admin-row-actions button {text-align:left;padding:7px 9px;border:0;border-radius:6px;background:var(--community-canvas);color:var(--community-navy);font-size:11px;cursor:pointer;}
+.klini-community-body #wellnessView .wellness-admin-row-actions button:hover {background:var(--community-accent-soft);}
+.klini-community-body #wellnessView .wellness-admin-publication-status {display:inline-block;padding:5px 9px;border-radius:20px;background:var(--community-accent-soft);color:var(--community-accent-dark);white-space:nowrap;}
+
+/* Reuse the activity creation and publication form inside a native dialog. */
+.klini-community-body .kc-activity-dialog {width:min(900px,94vw);max-width:94vw;max-height:calc(var(--platform-viewport-height,100dvh) - 40px);padding:0;border:1px solid var(--community-line);border-radius:20px;background:#fff;color:var(--community-navy);}
+.klini-community-body .kc-activity-dialog::backdrop {background:#0c244b55;backdrop-filter:blur(4px);}
+.klini-community-body .kc-activity-dialog .kc-activity-admin {position:relative;margin:0;border:0;border-radius:0;padding:28px;}
+.klini-community-body .kc-activity-dialog header {padding-right:42px;}
+.klini-community-body .kc-activity-dialog h2 {font-size:24px;}
+.klini-community-body .kc-activity-dialog .kc-activity-admin .kc-activity-dialog-close {position:absolute;top:14px;right:14px;padding:4px;width:38px;min-height:38px;background:white;border:1px solid var(--community-line);color:var(--community-navy);font-size:24px;}
+.klini-community-body .kc-activity-dialog .kc-activity-admin button {background:var(--community-accent-dark);}
+.klini-community-body .kc-activity-dialog .kc-activity-admin :is(input,select,textarea) {border-color:var(--community-line);color:var(--community-navy);}
+@media(max-width:1100px) {
+  .klini-community-body #wellnessView .wellness-admin-module-header {align-items:flex-start;}
+  .klini-community-body #wellnessView .wellness-admin-module-title h2 {font-size:23px;}
+  .klini-community-body #wellnessView .wellness-admin-module-toolbar .wellness-admin-message-wrap {margin-left:0;}
+}
+@media(max-width:760px) {
+  .klini-community-body #wellnessView .wellness-admin-module-workspace {padding:16px;}
+  .klini-community-body #wellnessView .wellness-admin-module-header {flex-wrap:wrap;gap:12px;}
+  .klini-community-body #wellnessView .wellness-admin-module-title {gap:12px;}
+  .klini-community-body #wellnessView .wellness-admin-module-title>span {flex-basis:44px;height:44px;border-radius:12px;}
+  .klini-community-body #wellnessView .wellness-admin-module-toolbar .wellness-admin-top-actions>button,
+  .klini-community-body #wellnessView .wellness-admin-module-toolbar .wellness-admin-notification-button {padding:8px 10px;font-size:12px;}
+  .klini-community-body #wellnessView .wellness-admin-event-search-tools {width:100%;margin-left:0;}
+  .klini-community-body #wellnessView .wellness-admin-event-search {flex:1;}
+  .klini-community-body #wellnessView .wellness-admin-module-table {min-width:620px;}
+  .klini-community-body #wellnessView .wellness-admin-table-empty {min-height:210px;}
+}
+.klini-community-body #wellnessView .wellness-admin-nav-divider {
+  width: 100%;
+  height: 0;
+  margin: 4px 0;
+  border: 0;
+  border-top: 1px solid var(--community-line);
+}
+
+/* Preserve the vertical sidebar while the content column becomes narrower. */
+@media(min-width:761px) {
+  .klini-community-body #wellnessView .wellness-admin-sidebar {
+    min-height: 0;
+    max-height: calc(var(--platform-viewport-height, 100dvh) - 36px);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #c2d2e1 transparent;
+  }
+  .klini-community-body #wellnessView .wellness-admin-module-nav {display:grid;overflow:visible;padding-bottom:0;}
+  .klini-community-body #wellnessView .wellness-admin-module-nav button {min-width:0;}
+}
+@media(min-width:761px) and (max-width:1100px) {
+  .klini-community-body #wellnessView .wellness-admin-console-layout {grid-template-columns:190px minmax(0,1fr);}
+}
+
+/* Compact overview, keeping full labels and the existing dashboard palette. */
+.klini-community-body #wellnessView .wellness-admin-dashboard-content {gap:10px;}
+.klini-community-body #wellnessView .wellness-admin-dashboard-content .wellness-admin-kpi-grid-large {grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;}
+.klini-community-body #wellnessView .wellness-admin-dashboard-content .wellness-admin-kpi {min-height:78px;padding:10px;gap:8px;grid-template-columns:32px minmax(0,1fr);border-radius:14px;}
+.klini-community-body #wellnessView .wellness-admin-dashboard-content .wellness-admin-kpi>span {width:32px;height:32px;border-radius:10px;}
+.klini-community-body #wellnessView .wellness-admin-dashboard-content .wellness-admin-kpi>span svg {width:16px;height:16px;}
+.klini-community-body #wellnessView .wellness-admin-dashboard-content .wellness-admin-kpi small {display:block;font-size:11px;line-height:1.3;letter-spacing:0;}
+.klini-community-body #wellnessView .wellness-admin-dashboard-content .wellness-admin-kpi strong {font-size:22px;line-height:1.1;margin:2px 0;}
+.klini-community-body #wellnessView .wellness-admin-dashboard-content .wellness-admin-kpi p {font-size:10px;line-height:1.3;letter-spacing:0;overflow-wrap:anywhere;}
+.klini-community-body #wellnessView .wellness-admin-dashboard-content .wellness-admin-chart-grid {grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;}
+.klini-community-body #wellnessView .wellness-admin-dashboard-content .wellness-admin-chart-card {min-height:76px;padding:8px;border-radius:14px;gap:4px;}
+.klini-community-body #wellnessView .wellness-admin-dashboard-content .wellness-admin-chart-bars {min-height:30px;}
+.klini-community-body #wellnessView .wellness-admin-dashboard-content .wellness-admin-dashboard-panels {gap:10px;}
+.klini-community-body #wellnessView .wellness-admin-dashboard-content .wellness-admin-panel {padding:12px;border-radius:16px;}
+@media(min-width:761px) and (max-width:959px) {
+  .klini-community-body #wellnessView .wellness-admin-dashboard-content .wellness-admin-kpi-grid-large,
+  .klini-community-body #wellnessView .wellness-admin-dashboard-content .wellness-admin-chart-grid {grid-template-columns:repeat(3,minmax(0,1fr));}
+}
+@media(max-width:760px) {
+  .klini-community-body #wellnessView .wellness-admin-dashboard-content .wellness-admin-kpi-grid-large,
+  .klini-community-body #wellnessView .wellness-admin-dashboard-content .wellness-admin-chart-grid {grid-template-columns:repeat(2,minmax(0,1fr));}
+}
+@media(max-width:359px) {
+  .klini-community-body #wellnessView .wellness-admin-dashboard-content .wellness-admin-kpi-grid-large {grid-template-columns:minmax(0,1fr);}
+}
+
+/* Event editor occupies the content workspace, with independently scrolling panes. */
+html.community-composer-open {overflow:hidden;}
+.klini-community-body #wellnessView .community-composer-backdrop {display:block;padding:0;inset:0 auto auto 0;}
+.klini-community-body #wellnessView .community-composer {
+  position:absolute;display:grid;grid-template-rows:auto minmax(0,1fr) auto;
+  width:auto;max-width:none;max-height:none;margin:0;padding:0;overflow:hidden;
+  border-radius:18px;box-shadow:0 20px 65px #0c244b26;
+}
+.klini-community-body #wellnessView .community-composer .wellness-event-create-header {
+  margin:0;padding:16px 76px 16px 24px;border-bottom:1px solid var(--community-line);gap:16px;
+}
+.klini-community-body #wellnessView .community-composer .wellness-event-create-header>span {width:58px;height:58px;}
+.klini-community-body #wellnessView .community-composer .wellness-event-create-header h3 {margin:3px 0 6px;font-size:24px;}
+.klini-community-body #wellnessView .community-composer .wellness-event-create-header p {font-weight:400;}
+.klini-community-body #wellnessView .community-composer .wellness-modal-close {top:16px;right:18px;width:42px;height:42px;border-radius:12px;z-index:2;}
+.klini-community-body #wellnessView .community-composer-body {display:grid;grid-template-columns:minmax(250px,31%) minmax(0,1fr);min-height:0;overflow:hidden;}
+.klini-community-body #wellnessView .community-composer-preview {
+  display:flex;flex-direction:column;align-items:center;gap:10px;min-height:0;padding:16px 20px;
+  border-right:1px solid var(--community-line);background:#fbfdff;overflow-y:auto;scrollbar-width:thin;
+}
+.klini-community-body #wellnessView .community-preview-heading {align-self:stretch;display:grid;gap:4px;color:var(--community-navy);}
+.klini-community-body #wellnessView .community-preview-heading strong {font-size:16px;}
+.klini-community-body #wellnessView .community-preview-heading small,.community-preview-caption {color:var(--community-muted);font-size:12px;}
+.klini-community-body #wellnessView .community-preview-phone {
+  display:flex;flex-direction:column;flex:1 0 auto;min-height:360px;height:calc(100% - 74px);max-height:670px;width:100%;max-width:310px;
+  border:7px solid #142c3f;outline:2px solid #43829a;border-radius:34px;background:#fff;
+  overflow:hidden;box-shadow:0 10px 20px #1634561c;color:var(--community-navy);font-family:Arial,sans-serif;
+}
+.klini-community-body #wellnessView .community-phone-status {display:flex;justify-content:space-between;align-items:center;padding:6px 16px 0;font-size:10px;flex-shrink:0;}
+.klini-community-body #wellnessView .community-phone-status i {width:72px;height:18px;border-radius:20px;background:#101923;}
+.klini-community-body #wellnessView .community-phone-brand {display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-bottom:1px solid var(--community-line);font-size:25px;font-weight:700;letter-spacing:-1px;}
+.klini-community-body #wellnessView .community-phone-brand>span {font-size:10px;letter-spacing:0;color:var(--community-muted);font-weight:400;}
+.klini-community-body #wellnessView .community-phone-feed {overflow-y:auto;min-height:0;flex:1;scrollbar-width:thin;overflow-wrap:anywhere;}
+.klini-community-body #wellnessView .community-phone-author {display:flex;align-items:center;gap:8px;padding:12px 10px;}
+.klini-community-body #wellnessView .community-phone-author>span {display:grid;place-items:center;flex:0 0 34px;height:34px;background:var(--community-accent-soft);border-radius:50%;font-size:13px;font-weight:700;color:var(--community-accent-dark);}
+.klini-community-body #wellnessView .community-phone-author>div {display:grid;gap:3px;min-width:0;font-size:12px;}
+.klini-community-body #wellnessView .community-phone-author small {font-size:10px;color:var(--community-muted);}
+.klini-community-body #wellnessView .community-phone-cover {margin:0 9px;border-radius:10px;overflow:hidden;}
+.klini-community-body #wellnessView .community-phone-cover img {width:100%;aspect-ratio:4/3;object-fit:cover;display:block;}
+.klini-community-body #wellnessView .community-phone-image-placeholder {display:flex;flex-direction:column;justify-content:center;align-items:center;gap:8px;aspect-ratio:4/3;background:linear-gradient(135deg,#e9faff,#c8edf6);color:var(--community-accent-dark);}
+.klini-community-body #wellnessView .community-phone-image-placeholder>span {font-size:34px;}
+.klini-community-body #wellnessView .community-phone-image-placeholder small {font-size:12px;}
+.klini-community-body #wellnessView .community-phone-cover [hidden] {display:none;}
+.klini-community-body #wellnessView .community-phone-post {padding:12px;font-size:12px;line-height:1.5;}
+.klini-community-body #wellnessView .community-phone-category {color:var(--community-accent-dark);font-size:11px;font-weight:700;}
+.klini-community-body #wellnessView .community-phone-post h4 {margin:5px 0;font-size:16px;line-height:1.3;}
+.klini-community-body #wellnessView .community-phone-post p {margin:8px 0;white-space:pre-wrap;color:var(--community-muted);}
+.klini-community-body #wellnessView .community-phone-post p:empty {display:none;}
+.klini-community-body #wellnessView .community-phone-post dl {display:grid;gap:7px;margin:14px 0;}
+.klini-community-body #wellnessView .community-phone-post dl>div {display:grid;grid-template-columns:65px 1fr;gap:8px;}
+.klini-community-body #wellnessView .community-phone-post dt {font-weight:700;}
+.klini-community-body #wellnessView .community-phone-post dd {margin:0;color:var(--community-muted);}
+.klini-community-body #wellnessView .community-phone-post dd small {display:block;font-size:9px;}
+.klini-community-body #wellnessView .community-phone-detail {display:block;padding:8px;text-align:center;border:1px solid var(--community-accent-line);border-radius:8px;color:var(--community-accent-dark);font-weight:700;}
+.klini-community-body #wellnessView .community-phone-nav {display:flex;justify-content:space-around;border-top:1px solid var(--community-line);padding:7px 4px 10px;color:var(--community-muted);flex-shrink:0;}
+.klini-community-body #wellnessView .community-phone-nav>span {display:grid;gap:2px;text-align:center;font-size:18px;}
+.klini-community-body #wellnessView .community-phone-nav small {font-size:8px;}
+.klini-community-body #wellnessView .community-phone-nav .active {color:var(--community-accent);}
+.klini-community-body #wellnessView .community-preview-phone,
+.klini-community-body #wellnessView .community-preview-phone * {letter-spacing:normal;}
+.klini-community-body #wellnessView .community-preview-phone small {font-weight:400;}
+.klini-community-body #wellnessView .community-preview-phone {flex:1 1 600px;height:auto;min-height:300px;max-height:670px;}
+.klini-community-body #wellnessView .community-phone-screen {position:relative;flex:1;min-height:0;overflow:hidden;}
+.klini-community-body #wellnessView .community-phone-screen iframe {position:absolute;inset:0;border:0;max-width:none;transform-origin:top left;background:#fff;}
+.klini-community-body #wellnessView .community-share-trigger {
+  display:flex;align-items:center;justify-content:space-between;gap:7px;flex-shrink:0;
+  min-height:44px;width:100%;max-width:310px;padding:7px 12px;
+  border:1px solid var(--community-accent-line);border-radius:999px;
+  background:#fff;color:var(--community-navy);font:inherit;cursor:pointer;
+  box-shadow:0 2px 6px #008ba608;transition:background .15s,border-color .15s;
+}
+.klini-community-body #wellnessView .community-share-trigger:hover {background:#f4fcff;border-color:var(--community-accent);}
+.klini-community-body #wellnessView .community-share-trigger:focus-visible {outline:2px solid var(--community-accent);outline-offset:3px;}
+.klini-community-body #wellnessView .community-share-trigger:disabled {opacity:.55;cursor:wait;}
+.klini-community-body #wellnessView .community-share-label {font-size:11px;font-weight:750;white-space:nowrap;letter-spacing:normal;}
+.klini-community-body #wellnessView .community-share-symbol {width:17px;height:17px;flex:none;color:var(--community-accent);}
+.klini-community-body #wellnessView .community-share-chevron {width:15px;height:15px;flex:none;}
+.klini-community-body #wellnessView .community-share-brands {display:flex;align-items:center;gap:8px;}
+.klini-community-body #wellnessView .community-share-brand {display:grid;place-items:center;width:26px;height:26px;flex:none;border-radius:50%;color:#fff;}
+.klini-community-body #wellnessView .community-share-brand svg {width:22px;height:22px;}
+.klini-community-body #wellnessView .community-share-brand.instagram {background:radial-gradient(circle at 28% 100%,#ffdc80 0%,#fcaf45 20%,#f77737 33%,#e1306c 55%,#c13584 70%,#833ab4 90%);}
+.klini-community-body #wellnessView .community-share-brand.facebook {background:#087bff;}
+.klini-community-body #wellnessView .community-share-brand.facebook svg {width:26px;height:26px;}
+.klini-community-body #wellnessView .community-share-brand.tiktok {background:#f9fbfc;border:1px solid #e5ecf2;color:#111827;}
+.klini-community-body #wellnessView .community-share-brand.tiktok svg {width:20px;height:20px;filter:drop-shadow(-1px -1px 0 #25f4ee) drop-shadow(1px 1px 0 #fe2c55);}
+.klini-community-body #wellnessView .community-share-brand.x {background:#fff;border:1px solid #dce5ec;color:#172235;}
+.community-social-dialog {width:min(500px,calc(100vw - 32px));padding:28px 24px;border:1px solid #dce6ef;border-radius:20px;color:#14294b;background:#fff;box-shadow:0 20px 70px #14294b33;box-sizing:border-box;}
+.community-social-dialog::backdrop {background:#14294b66;backdrop-filter:blur(3px);}
+.community-social-dialog h3 {font-size:20px;margin:0 30px 24px 0;}
+.community-social-close {position:absolute;right:15px;top:12px;border:0;background:transparent;color:#14294b;font-size:26px;cursor:pointer;}
+.community-social-options {display:flex;justify-content:space-between;gap:16px;overflow-x:auto;padding:4px 2px 12px;}
+.community-social-options button {display:flex;flex-direction:column;align-items:center;gap:9px;min-width:70px;padding:0;border:0;background:transparent;color:#14294b;font:inherit;cursor:pointer;}
+.community-social-options strong {font-size:12px;}
+.community-social-icon {display:grid;place-items:center;width:60px;height:60px;border-radius:50%;font:bold 28px Arial,sans-serif;color:#fff;background:#008ba6;}
+.community-social-icon.klini {background:#e5faff;color:#009aba;font-size:39px;}
+.community-social-icon.whatsapp {background:#159d65;}
+.community-social-icon.x {background:#172235;}
+.community-social-icon.telegram {background:#168dc1;}
+.community-social-options button:hover .community-social-icon {box-shadow:0 0 0 4px #dff6fa;}
+.community-social-dialog button:focus-visible {outline:2px solid #009aba;outline-offset:4px;border-radius:8px;}
+.community-social-dialog button:disabled {opacity:.5;cursor:wait;}
+.community-social-status {font-size:13px;line-height:1.5;margin:12px 0 0;}
+.community-social-status:empty {display:none;}
+.klini-community-body #wellnessView .community-composer .wellness-event-create-form {display:block;overflow-y:auto;overflow-x:hidden;min-width:0;min-height:0;padding:20px 24px;scrollbar-width:thin;}
+.klini-community-body #wellnessView .community-composer .wellness-event-create-grid {gap:16px 20px;}
+.klini-community-body #wellnessView .community-composer .wellness-event-control {min-height:48px;padding:8px;gap:10px;}
+.klini-community-body #wellnessView .community-composer .wellness-event-control>i {width:34px;height:34px;flex-basis:34px;}
+.klini-community-body #wellnessView .community-composer .wellness-event-textarea-control {min-height:96px;}
+.klini-community-body #wellnessView .community-composer .wellness-event-image-editor {grid-template-columns:100px minmax(0,1fr);padding:12px;gap:12px;}
+.klini-community-body #wellnessView .community-composer .wellness-event-image-preview {width:100%;height:80px;min-height:0;grid-row:span 2;}
+.klini-community-body #wellnessView .community-composer .wellness-event-image-actions {grid-column:2;display:flex;flex-wrap:wrap;gap:8px;min-width:0;}
+.klini-community-body #wellnessView .community-composer .wellness-event-image-actions>input {flex:1 1 120px;width:120px;min-width:0;}
+.klini-community-body #wellnessView .community-composer .wellness-event-image-note {grid-column:1/-1;}
+.klini-community-body #wellnessView .wellness-event-upload-zone {position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:142px;padding:18px;border:1px dashed var(--community-accent-line);border-radius:16px;background:#f5fbfd;cursor:pointer;text-align:center;overflow:hidden;}
+.klini-community-body #wellnessView .wellness-event-upload-zone:hover {background:var(--community-accent-soft);}
+.klini-community-body #wellnessView .wellness-event-upload-zone:focus-within {outline:2px solid var(--community-accent);outline-offset:3px;}
+.klini-community-body #wellnessView .wellness-event-upload-zone>input {position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;z-index:1;}
+.klini-community-body #wellnessView .wellness-event-upload-thumbnail {display:grid;place-items:center;width:44px;height:44px;background:var(--community-accent-soft);color:var(--community-accent-dark);border-radius:12px;background-size:cover;background-position:center;}
+.klini-community-body #wellnessView .wellness-event-upload-thumbnail svg {width:24px;height:24px;}
+.klini-community-body #wellnessView .wellness-event-upload-thumbnail.has-image {width:112px;height:64px;}
+.klini-community-body #wellnessView .wellness-event-upload-zone small {max-width:100%;overflow-wrap:anywhere;color:var(--community-muted);font-size:11px;}
+.klini-community-body #wellnessView .community-composer .wellness-event-form-actions {position:static;display:flex;justify-content:flex-end;gap:12px;margin:0;padding:12px 24px;border-color:var(--community-line);background:#fff;}
+.klini-community-body #wellnessView .community-composer .wellness-event-form-actions button {min-height:42px;min-width:140px;font-size:14px;border-radius:12px;}
+.klini-community-body #wellnessView .community-composer .wellness-event-form-actions .wellness-primary-action {background:var(--community-accent-dark);box-shadow:none;}
+.klini-community-body #wellnessView .community-composer .community-composer-toggle {display:none;}
+@media(min-width:761px) and (max-width:1100px) {
+  .klini-community-body #wellnessView .community-composer-body {grid-template-columns:230px minmax(0,1fr);}
+  .klini-community-body #wellnessView .community-composer-preview {padding:12px;}
+  .klini-community-body #wellnessView .community-share-trigger {padding:6px 7px;gap:4px;}
+  .klini-community-body #wellnessView .community-share-label {font-size:10px;}
+  .klini-community-body #wellnessView .community-share-brands {gap:4px;}
+  .klini-community-body #wellnessView .community-share-brand {width:20px;height:20px;}
+  .klini-community-body #wellnessView .community-share-brand svg {width:18px;height:18px;}
+  .klini-community-body #wellnessView .community-share-symbol {width:14px;height:14px;}
+  .klini-community-body #wellnessView .community-share-chevron {width:12px;height:12px;}
+  .klini-community-body #wellnessView .community-composer .wellness-event-create-grid,
+  .klini-community-body #wellnessView .community-composer .wellness-event-location-panel {grid-template-columns:1fr;}
+}
+@media(max-width:760px) {
+  .klini-community-body #wellnessView .wellness-admin-nav-divider {align-self:stretch;width:1px;height:auto;border-top:0;border-left:1px solid var(--community-line);margin:4px;}
+  .klini-community-body #wellnessView .community-composer-body {display:block;}
+  .klini-community-body #wellnessView .community-composer .wellness-event-create-form {height:100%;padding:16px;}
+  .klini-community-body #wellnessView .community-composer-preview {display:none;height:100%;box-sizing:border-box;}
+  .klini-community-body #wellnessView .community-composer.show-mobile-preview .community-composer-preview {display:flex;}
+  .klini-community-body #wellnessView .community-composer.show-mobile-preview .wellness-event-create-form {display:none;}
+  .klini-community-body #wellnessView .community-composer .wellness-event-form-actions {gap:8px;padding:10px;flex-wrap:wrap;}
+  .klini-community-body #wellnessView .community-composer .wellness-event-form-actions button {min-width:0;flex:1;font-size:12px;}
+  .klini-community-body #wellnessView .community-composer .community-composer-toggle {display:block;}
+  .klini-community-body #wellnessView .community-composer .wellness-event-create-header {padding:12px 62px 12px 16px;gap:10px;}
+  .klini-community-body #wellnessView .community-composer .wellness-event-create-header>span {width:40px;height:40px;}
+  .klini-community-body #wellnessView .community-composer .wellness-event-create-header h3 {font-size:20px;}
+  .klini-community-body #wellnessView .community-composer .wellness-event-create-header p {font-size:12px;}
+}
+@media(max-height:650px) {
+  .klini-community-body #wellnessView .community-preview-caption {display:none;}
+  .klini-community-body #wellnessView .community-composer .wellness-event-create-header {padding-top:10px;padding-bottom:10px;}
+  .klini-community-body #wellnessView .community-composer .wellness-event-create-header>span {width:42px;height:42px;}
+  .klini-community-body #wellnessView .community-composer .wellness-event-create-header h3 {font-size:21px;}
+}

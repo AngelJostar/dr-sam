@@ -10096,7 +10096,7 @@ body.native-shell .patient-portal-communities-view :is(.kc-calendar-open,.kc-cal
 .patient-portal-communities-view .kc-community-feed .kc-story-thumb em svg {width:12px;height:12px;}
 .patient-portal-communities-view .kc-community-feed .kc-story-thumb em::before {display:none;}
 
-.patient-portal-home-view .kc-community-toolbar-slot, .patient-portal-communities-view .kc-community-feed .kc-community-toolbar-slot { height: 54px; box-sizing: border-box; }
+.patient-portal-communities-view .kc-community-feed .kc-community-toolbar-slot { height: 54px; box-sizing: border-box; }
 .patient-portal-bottom-nav { z-index: 20; }
 .patient-portal-bottom-nav > button { transition: background-color 1100ms ease, color 1100ms ease; }
 @media (prefers-reduced-motion: reduce) { .patient-portal-bottom-nav > button { transition: none; } }

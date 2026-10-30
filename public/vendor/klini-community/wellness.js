@@ -33,6 +33,11 @@
     adminCommunityId: "",
     adminModule: "dashboard",
     adminEventFilter: "Proximos",
+    adminEventQuery: "",
+    adminEventModality: "all",
+    adminEventCost: "all",
+    adminInviteQuery: "",
+    eventCreated: null,
     notificationsOpen: false,
     messagesOpen: false,
     activeAdminMessageId: "",
@@ -187,6 +192,9 @@
 
   function icon(name) {
     const paths = {
+      book: '<path d="M12 5v16M12 5C8 2 3 3 3 3v16s5-1 9 2c4-3 9-2 9-2V3s-5-1-9 2z"></path>',
+      tools: '<path d="m14 5 5-3-1 5-4 2-8 11-3-3 9-10zM3 3l5 5M16 16l5 5"></path>',
+      robot: '<rect x="4" y="7" width="16" height="14" rx="4"></rect><path d="M12 3v4M9 16h6M1 12v5M23 12v5"></path><circle cx="8" cy="12" r="1"></circle><circle cx="16" cy="12" r="1"></circle>',
       spark: '<path d="M12 2l1.6 5.1L19 9l-5.4 1.9L12 16l-1.6-5.1L5 9l5.4-1.9L12 2z"></path><path d="M19 14l.8 2.4L22 17l-2.2.8L19 20l-.8-2.2L16 17l2.2-.6L19 14z"></path>',
       home: '<path d="M3 11.5 12 4l9 7.5"></path><path d="M5.5 10.5V20h13v-9.5"></path><path d="M9.5 20v-5h5v5"></path>',
       heart: '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8z"></path>',
@@ -227,6 +235,8 @@
       mic: '<path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><path d="M12 19v3"></path><path d="M8 22h8"></path>',
       image: '<rect x="3" y="5" width="18" height="14" rx="2"></rect><circle cx="8.5" cy="10" r="1.5"></circle><path d="M21 15l-5-5L5 19"></path>',
       search: '<circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path>',
+      filter: '<path d="M3 4h18l-7 8v7l-4 2v-9z"></path>',
+      "chevron-down": '<path d="m6 9 6 6 6-6"></path>',
       ticket: '<path d="M4 5h16v5a2 2 0 0 0 0 4v5H4v-5a2 2 0 0 0 0-4V5z"></path><path d="M13 5v14"></path>',
       globe: '<circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3a14 14 0 0 1 0 18"></path><path d="M12 3a14 14 0 0 0 0 18"></path>',
       clock: '<circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path>',
@@ -1500,6 +1510,7 @@
   function renderPatientWellness() {
     const root = document.getElementById("patientWellnessRoot");
     if (!root) return;
+    const sidebarScroll = root.querySelector(".wellness-admin-sidebar")?.scrollTop || 0;
     const state = loadState();
     document.getElementById("wellnessView")?.classList.toggle("wellness-admin-mode", wellnessUi.section === "communities" && wellnessUi.communityView === "admin");
     updateWellnessHeroCopy();
@@ -1508,8 +1519,13 @@
       ${renderWellnessBottomNav()}
       ${renderWellnessModal(state)}
     `;
+    const sidebar = root.querySelector(".wellness-admin-sidebar");
+    if (sidebar) sidebar.scrollTop = sidebarScroll;
     if (typeof setupPatientMenuResponsiveCriteria === "function") setupPatientMenuResponsiveCriteria(root);
     setupWellnessShareCarousel(root);
+    window.KliniEventComposer?.mount(root);
+    root.querySelector("[data-admin-invite-search]")?.focus();
+    root.querySelector("[data-event-created-done]")?.focus();
   }
 
   function renderWellnessTabs() {
@@ -1959,6 +1975,11 @@
   }
 
   function eventSeats(state, event) {
+    if (COMMUNITY_ADMIN_MODE && event.publicActivityId) {
+      const activity = window.KliniCommunityActivities?.adminItems?.find(item => String(item.id) === String(event.publicActivityId));
+      const confirmed = activity ? Number(activity.reservations || 0) : null;
+      return { confirmed, waitlisted: 0, available: activity ? Math.max(0, Number(activity.capacity ?? event.capacity ?? 0) - confirmed) : 0 };
+    }
     const confirmed = state.eventReservations.filter((reservation) => reservation.eventId === event.id && reservation.status === "confirmed").length;
     const waitlisted = state.eventReservations.filter((reservation) => reservation.eventId === event.id && reservation.status === "waitlisted").length;
     return {
@@ -2443,7 +2464,7 @@
         <div class="wellness-admin-event-copy">
           <h5>${safeText(event.title)}</h5>
           <p>${safeText(start.toLocaleTimeString("es-MX", { hour: "2-digit", minute: "2-digit" }))} - ${safeText(new Date(event.endAt).toLocaleTimeString("es-MX", { hour: "2-digit", minute: "2-digit" }))} · ${event.modality === "remote" ? "Online" : "Presencial"}</p>
-          <small>Cupo: ${safeText(event.capacity)} · Reservados: ${seats.confirmed}</small>
+          <small>Cupo: ${safeText(event.capacity)} · Reservados: ${seats.confirmed ?? "…"}</small>
           <div class="wellness-admin-progress"><span style="width:${percent}%"></span></div>
         </div>
         <div class="wellness-admin-event-actions">
@@ -2723,13 +2744,18 @@
       { id: "dashboard", label: "Inicio", icon: "spark" },
       { id: "members", label: "Miembros", icon: "users" },
       { id: "requests", label: "Solicitudes", icon: "user-plus" },
+      { id: "classes", label: "Clases", icon: "book", divider: true },
       { id: "events", label: "Eventos", icon: "calendar" },
+      { id: "workshops", label: "Taller", icon: "tools" },
+      { id: "podcasts", label: "Podcasts", icon: "mic" },
+      { id: "live", label: "Live", icon: "video" },
       { id: "posts", label: "Publicaciones", icon: "chat" },
       { id: "calendar", label: "Calendario", icon: "clock" },
-      { id: "analytics", label: "Analytics", icon: "target" },
+      { id: "analytics", label: "Analytics", icon: "target", divider: true },
       { id: "settings", label: "Configuracion", icon: "shield" },
       { id: "automations", label: "Automatizaciones", icon: "bolt" },
-      { id: "gamification", label: "Gamificacion", icon: "medal" }
+      { id: "gamification", label: "Gamificacion", icon: "medal" },
+      { id: "agents", label: "Centro de agentes", icon: "robot" }
     ];
   }
 
@@ -2824,11 +2850,10 @@
     const modules = adminModuleItems();
     return `
       <aside class="wellness-admin-sidebar">
-        <button type="button" class="wellness-admin-back" data-wellness-community-view="home">${icon("chevron-left")} Comunidades</button>
         <div class="wellness-admin-brand">
           <span>${icon("shield")}</span>
           <div>
-            <strong>Klini Wellness</strong>
+            <strong>${safeText(community.name)}</strong>
             <small>Admin de comunidad</small>
           </div>
         </div>
@@ -2840,6 +2865,7 @@
         </label>
         <nav class="wellness-admin-module-nav" aria-label="Modulos administrativos">
           ${modules.map((item) => `
+            ${item.divider ? '<hr class="wellness-admin-nav-divider">' : ''}
             <button class="${wellnessUi.adminModule === item.id ? "active" : ""}" type="button" data-wellness-admin-module="${safeText(item.id)}">
               ${icon(item.icon)}
               <span>${safeText(item.label)}</span>
@@ -3146,14 +3172,28 @@
     `;
   }
 
-  function renderAdminTopbar(admin, community, ctx) {
+  function adminModulePresentation(id = wellnessUi.adminModule) {
+    return {
+      classes: { title: "Clases", icon: "book", description: "Organiza clases y sesiones de aprendizaje para tu comunidad.", kind: "class", create: "Crear clase" },
+      events: { title: "Eventos", icon: "calendar", description: "Organiza eventos presenciales, virtuales y mixtos." },
+      workshops: { title: "Taller", icon: "tools", description: "Organiza talleres y actividades prácticas para tu comunidad.", kind: "workshop", create: "Crear taller" },
+      podcasts: { title: "Podcasts", icon: "mic", description: "Comparte episodios y contenidos de audio con tu comunidad.", kind: "podcast", create: "Crear podcast" },
+      live: { title: "Live", icon: "video", description: "Organiza transmisiones en vivo para tu comunidad.", kind: "live", create: "Crear live" },
+      posts: { title: "Publicaciones", icon: "chat", description: "Comparte avisos, imágenes y novedades con tu comunidad.", create: "Crear Publicacion" },
+      calendar: { title: "Calendario", icon: "calendar", description: "Consulta y organiza la agenda de tu comunidad." }
+    }[id];
+  }
+
+  function renderAdminCreator(admin, community) {
+    return `<button type="button" class="wellness-admin-creator-button" data-wellness-community-action="creator-profile" data-community-id="${safeText(community.id)}" aria-label="Perfil del creador de la comunidad">
+      ${renderAdminProfileAvatar(admin)}<span><strong>${safeText(admin.fullName)}</strong><small>${safeText(admin.title || admin.role)}</small></span>${icon("chevron-down")}
+    </button>`;
+  }
+
+  function renderAdminCommunityActions(community, ctx) {
     const adminMessages = adminCommunityMessages(community);
     const unreadMessages = adminMessages.filter((message) => message.unread).length;
-    return `
-      <div class="wellness-admin-console-topbar wellness-admin-console-topbar-actions-only">
-        <div class="wellness-admin-top-actions">
-          <button type="button" data-wellness-modal="create-event">${icon("calendar")} Crear evento</button>
-          <button type="button" data-wellness-admin-focus-post>${icon("edit")} Publicar</button>
+    return `<div class="wellness-admin-community-actions" role="group" aria-label="Acciones de la comunidad">
           <button type="button" data-wellness-community-action="admin-invite-members" data-community-id="${safeText(community.id)}">${icon("user-plus")} Invitar</button>
           <div class="wellness-admin-notification-wrap wellness-admin-message-wrap">
             <button type="button" class="wellness-admin-notification-button wellness-admin-message-button ${wellnessUi.messagesOpen ? "active" : ""}" data-wellness-community-action="toggle-admin-messages" aria-label="Mensajes recibidos" aria-expanded="${wellnessUi.messagesOpen ? "true" : "false"}">
@@ -3171,29 +3211,43 @@
             </button>
             ${wellnessUi.notificationsOpen ? renderAdminNotificationDropdown(community, ctx) : ""}
           </div>
-          <button type="button" class="wellness-admin-creator-button" data-wellness-community-action="creator-profile" data-community-id="${safeText(community.id)}" aria-label="Perfil del creador de la comunidad">
-            ${renderAdminProfileAvatar(admin)}
-            <span>
-              <strong>${safeText(admin.fullName)}</strong>
-              <small>${safeText(admin.title || admin.role)}</small>
-            </span>
-          </button>
+        </div>`;
+  }
+
+  function renderAdminTopbar(admin, community, ctx, embedded = false) {
+    const config = embedded ? adminModulePresentation() : null;
+    const createAction = config?.kind
+      ? `data-activity-create="${config.kind}" data-community-name="${safeText(community.name)}"`
+      : 'data-wellness-modal="create-event"';
+    return `
+      <div class="wellness-admin-console-topbar wellness-admin-console-topbar-actions-only ${embedded ? "wellness-admin-module-toolbar" : ""}">
+        <div class="wellness-admin-top-actions">
+          <button type="button" ${createAction}>${icon("plus")} ${safeText(config?.create || "Crear evento")}</button>
+          <button type="button" data-wellness-admin-focus-post>${icon("edit")} Publicar</button>
+          ${embedded ? "" : renderAdminCreator(admin, community)}
         </div>
       </div>
     `;
   }
 
+  function renderAdminModuleWorkspace(state, admin, community, ctx) {
+    const config = adminModulePresentation();
+    return `<section class="wellness-admin-module-workspace" data-community-module="${safeText(wellnessUi.adminModule)}" aria-labelledby="communityModuleTitle">
+      <header class="wellness-admin-module-header">
+        <div class="wellness-admin-module-title"><span>${icon(config.icon)}</span><div><h2 id="communityModuleTitle">${safeText(config.title)}</h2><p>${safeText(config.description)}</p></div></div>
+        ${renderAdminCreator(admin, community)}
+      </header>
+      ${renderAdminTopbar(admin, community, ctx, true)}
+      <div class="wellness-admin-module-content">${renderAdminSelectedModule(state, community, ctx)}</div>
+    </section>`;
+  }
+
   function renderAdminCommunityHero(state, community, ctx) {
     return `
       <section class="wellness-admin-console-hero wellness-community-cover-${safeText(community.coverTone || "mint")}" ${communityBackgroundStyle(community)}>
-        <div class="wellness-admin-media-actions">
-          <button type="button" data-wellness-community-action="admin-edit-community" data-community-id="${safeText(community.id)}">${icon("camera")} Fondo</button>
-          <button type="button" data-wellness-community-action="admin-edit-community" data-community-id="${safeText(community.id)}">${icon("edit")} Logotipo</button>
-        </div>
         ${renderCommunityLogo(community)}
         <div>
           <small>${safeText(community.category)} - ${community.accessType === "open" ? "Abierta" : "Privada"} - ${safeText(community.city || "Online")}</small>
-          <h4>${safeText(community.name)}</h4>
           <p>${safeText(community.shortDescription || community.description)}</p>
           <div class="wellness-admin-community-meta">
             <span>${icon("users")} ${safeText(community.memberCount || ctx.activeMembers.length)} miembros</span>
@@ -3201,11 +3255,7 @@
             <span>${icon("calendar")} ${ctx.upcomingEvents.length} eventos proximos</span>
           </div>
         </div>
-        <div class="wellness-admin-health-score">
-          <span>Salud de comunidad</span>
-          <strong>${Math.min(99, ctx.participation + 8)}</strong>
-          <small>Crecimiento, retencion y actividad</small>
-        </div>
+        ${renderAdminCommunityActions(community, ctx)}
       </section>
     `;
   }
@@ -3248,8 +3298,7 @@
   function renderAdminDashboard(state, community, ctx) {
     const nextEvents = ctx.upcomingEvents.slice(0, 2);
     return `
-      <div class="wellness-admin-module-content">
-        ${renderAdminCommunityHero(state, community, ctx)}
+      <div class="wellness-admin-module-content wellness-admin-dashboard-content">
         ${renderAdminKpiGrid(ctx, community)}
         <div class="wellness-admin-chart-grid">
           ${renderAdminChart("Crecimiento de miembros", "Altas por semana", [34, 44, 51, 49, 62, 71, 86], "teal")}
@@ -3379,7 +3428,7 @@
           </div>
           <button type="button" data-wellness-community-action="accept-all-requests" data-community-id="${safeText(community.id)}">Aceptar varias</button>
         </div>
-        <div class="wellness-admin-request-grid">
+        <div class="wellness-admin-request-grid wellness-admin-request-list" aria-label="Solicitudes pendientes de la comunidad">
           ${ctx.requests.length ? ctx.requests.map((request, index) => renderAdminRequestCard(request, index)).join("") : renderEmptyState("Sin solicitudes pendientes", "Cuando alguien solicite acceso, aparecera aqui.")}
         </div>
       </section>
@@ -3405,7 +3454,7 @@
           <p>${safeText(start.toLocaleDateString("es-MX", { weekday: "short", day: "2-digit", month: "short" }))} ${safeText(start.toLocaleTimeString("es-MX", { hour: "2-digit", minute: "2-digit" }))} - ${safeText(event.locationName || event.remoteUrl || "Por definir")}</p>
           <div class="wellness-admin-event-meta">
             <span>Cupo ${safeText(event.capacity)}</span>
-            <span>Reservados ${seats.confirmed}</span>
+            <span>Reservados ${seats.confirmed ?? "…"}</span>
             <span>Espera ${seats.waitlisted}</span>
             <span>${safeText(communityStatusLabel(event.status))}</span>
           </div>
@@ -3425,30 +3474,120 @@
     `;
   }
 
-  function renderAdminEvents(state, community, ctx) {
-    const visibleEvents = ctx.events.filter(event => {
-      if (wellnessUi.adminEventFilter === "Cancelados") return event.status === "cancelled";
-      if (wellnessUi.adminEventFilter === "Borradores") return event.status === "draft";
-      if (event.status !== "published") return false;
-      return wellnessUi.adminEventFilter === "Finalizados" ? new Date(event.endAt) < new Date() : new Date(event.endAt) >= new Date();
+  function normalizeAdminSearch(value) {
+    return String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+  }
+
+  function filteredAdminEvents(events, filters = wellnessUi, now = new Date()) {
+    const query = normalizeAdminSearch(filters.adminEventQuery);
+    return events.filter(event => {
+      const stateMatches = filters.adminEventFilter === "Cancelados" ? event.status === "cancelled"
+        : filters.adminEventFilter === "Borradores" ? event.status === "draft"
+        : event.status === "published" && (filters.adminEventFilter === "Finalizados" ? new Date(event.endAt) < now : new Date(event.endAt) >= now);
+      return stateMatches
+        && (!filters.adminEventModality || filters.adminEventModality === "all" || event.modality === filters.adminEventModality)
+        && (!filters.adminEventCost || filters.adminEventCost === "all" || (filters.adminEventCost === "free" ? Number(event.cost || 0) === 0 : Number(event.cost) > 0))
+        && (!query || normalizeAdminSearch([event.title, event.category, event.locationName].join(" ")).includes(query));
     });
-    return `
-      <section class="wellness-admin-panel">
-        <div class="wellness-admin-panel-heading">
-          <div>
-            <h4>Eventos</h4>
-            <p>Gestor completo para presenciales, virtuales y mixtos.</p>
-          </div>
-          <button type="button" data-wellness-modal="create-event">${icon("plus")} Crear evento</button>
+  }
+
+  function renderAdminEventRows(state, events) {
+    if (!events.length) {
+      const filtered = wellnessUi.adminEventQuery || wellnessUi.adminEventModality !== "all" || wellnessUi.adminEventCost !== "all";
+      const titles = { Proximos: "Aún no tienes eventos próximos", Finalizados: "No hay eventos finalizados", Cancelados: "No hay eventos cancelados", Borradores: "No hay borradores de eventos" };
+      return `<tr><td colspan="6"><div class="wellness-admin-table-empty"><span>${icon("calendar")}</span><strong>${filtered ? "No hay eventos que coincidan" : titles[wellnessUi.adminEventFilter]}</strong><p>${filtered ? "Prueba otra búsqueda o ajusta los filtros." : "Crea un evento para compartirlo con tu comunidad."}</p></div></td></tr>`;
+    }
+    return events.map(event => {
+      const start = new Date(event.startAt);
+      return `<tr>
+        <td><strong>${safeText(event.title)}</strong><small>${safeText(event.category)} · ${safeText(event.locationName || "Ubicación por definir")}</small></td>
+        <td>${safeText(start.toLocaleDateString("es-MX", {day:"numeric",month:"short",year:"numeric"}))}<small>${safeText(start.toLocaleTimeString("es-MX", {hour:"2-digit",minute:"2-digit"}))}</small></td>
+        <td>${safeText(adminEventModalityLabel(event))}</td>
+        <td><button type="button" class="wellness-admin-seats-button" data-admin-event-seats="${safeText(event.id)}" data-wellness-community-action="admin-event-attendees" data-event-id="${safeText(event.id)}" aria-label="Ver personas inscritas en ${safeText(event.title)}" aria-haspopup="dialog">${renderAdminEventSeats(state, event)}</button></td>
+        <td><select aria-label="Publicación de ${safeText(event.title)}" data-wellness-admin-event-status="${safeText(event.id)}">${renderStatusOptions([["published", "Publicado"], ["draft", "Borrador"], ["cancelled", "Cancelado"]], event.status)}</select></td>
+        <td><details class="wellness-admin-row-actions"><summary>Acciones ${icon("chevron-down")}</summary><div>
+          <button type="button" data-wellness-event-open="${safeText(event.id)}">Editar</button>
+          ${[["duplicate-event","Duplicar"],["cancel-event","Cancelar"],["delete-event","Eliminar"],["admin-event-attendees","Asistentes"],["send-event-reminder","Recordatorio"],["close-reservations","Cerrar reservas"]].map(([action,label]) => `<button type="button" data-wellness-community-action="${action}" data-event-id="${safeText(event.id)}">${label}</button>`).join("")}
+        </div></details></td>
+      </tr>`;
+    }).join("");
+  }
+
+  function renderAdminEventSeats(state, event) {
+    const seats = eventSeats(state, event);
+    return `<span>${icon("users")}<strong>${seats.confirmed ?? "…"} / ${safeText(event.capacity)}</strong>${icon("chevron-right")}</span><small>${seats.waitlisted} en espera</small>`;
+  }
+
+  function updateAdminReservationCounts() {
+    const buttons = document.querySelectorAll("[data-admin-event-seats]");
+    if (!buttons.length) return;
+    const state = loadState();
+    buttons.forEach(button => {
+      const event = eventById(state, button.dataset.adminEventSeats);
+      if (!event) return;
+      const content = renderAdminEventSeats(state, event);
+      if (button.innerHTML !== content) button.innerHTML = content;
+    });
+  }
+
+  function renderAdminContentFilters(label = "eventos", withModality = true) {
+    return `<div class="wellness-admin-event-tools">
+        <div class="wellness-admin-filter-row" aria-label="Estado del contenido">
+          ${["Proximos", "Finalizados", "Cancelados", "Borradores"].map(filter => `<button class="${wellnessUi.adminEventFilter === filter ? "active" : ""}" aria-pressed="${wellnessUi.adminEventFilter === filter}" type="button" data-klini-event-filter="${filter}">${filter === "Proximos" ? "Próximos" : filter}</button>`).join("")}
         </div>
-        <div class="wellness-admin-filter-row">
-          ${["Proximos", "Finalizados", "Cancelados", "Borradores"].map(filter => `<button class="${wellnessUi.adminEventFilter === filter ? "active" : ""}" type="button" data-klini-event-filter="${filter}">${safeText(filter)}</button>`).join("")}
+        <div class="wellness-admin-event-search-tools">
+          <label class="wellness-admin-event-search">${icon("search")}<input type="search" data-admin-event-search aria-label="Buscar ${safeText(label)}" placeholder="Buscar ${safeText(label)}" value="${safeText(wellnessUi.adminEventQuery)}"></label>
+          <details class="wellness-admin-event-filters"><summary>${icon("filter")} Filtros</summary><div>
+            ${withModality ? `<label>Modalidad<select data-admin-event-modality>${renderStatusOptions([["all","Todas las modalidades"],["in_person","Presencial"],["remote","Virtual"],["mixed","Mixto"]], wellnessUi.adminEventModality)}</select></label>` : ""}
+            <label>Costo<select data-admin-event-cost>${renderStatusOptions([["all","Todos los costos"],["free","Gratuitos"],["paid","Con costo"]], wellnessUi.adminEventCost)}</select></label>
+          </div></details>
         </div>
-        <div class="wellness-admin-event-manager-list">
-          ${visibleEvents.length ? visibleEvents.map((event) => renderAdminEventManagerCard(state, event)).join("") : renderEmptyState("Sin eventos en esta vista", "Selecciona otro filtro o crea un evento.")}
-        </div>
-      </section>
-    `;
+      </div>`;
+  }
+
+  function renderAdminEvents(state, community, ctx) {
+    const visible = filteredAdminEvents(ctx.events);
+    return `<section class="wellness-admin-panel">
+      ${renderAdminContentFilters()}
+      <div class="wellness-admin-table-scroll"><table class="wellness-admin-module-table" aria-label="Eventos de la comunidad"><thead><tr>${["Evento","Fecha y hora","Modalidad","Cupo","Publicación","Acciones"].map(label=>`<th scope="col">${label}</th>`).join("")}</tr></thead><tbody data-admin-event-rows>${renderAdminEventRows(state, visible)}</tbody></table></div>
+      <footer class="wellness-admin-table-footer" data-admin-event-count role="status">${visible.length} ${visible.length === 1 ? "evento" : "eventos"}</footer>
+    </section>`;
+  }
+
+  function updateAdminEventResults() {
+    const state = loadState(), community = selectedAdminCommunity(state);
+    if (!community) return;
+    const config = adminModulePresentation();
+    if (config?.kind) {
+      const visible = filteredAdminActivities(community, config);
+      const rows = document.querySelector("[data-admin-activity-rows]"), count = document.querySelector("[data-admin-activity-count]");
+      if (rows) rows.innerHTML = renderAdminActivityRows(community, config, visible);
+      if (count) count.textContent = `${visible.length} ${visible.length === 1 ? "registro" : "registros"}`;
+      return;
+    }
+    const visible = filteredAdminEvents(adminCommunityContext(state, community).events);
+    const rows = document.querySelector("[data-admin-event-rows]"), count = document.querySelector("[data-admin-event-count]");
+    if (rows) rows.innerHTML = renderAdminEventRows(state, visible);
+    if (count) count.textContent = `${visible.length} ${visible.length === 1 ? "evento" : "eventos"}`;
+  }
+
+  function filteredAdminActivities(community, config, filters = wellnessUi, now = new Date()) {
+    const items = (window.KliniCommunityActivities?.adminItems || [])
+      .filter(item => item.kind === config.kind && normalizeAdminSearch(item.community_name) === normalizeAdminSearch(community.name))
+      .map(item => ({...item, status:item.status || (item.published ? "published" : "draft"), endAt:item.ends_at_utc || item.starts_at_utc || item.starts_at, category:config.title, locationName:item.community_name}));
+    return filteredAdminEvents(items, {...filters, adminEventModality:"all"}, now);
+  }
+
+  function renderAdminActivityRows(community, config, items) {
+    const api = window.KliniCommunityActivities;
+    const labels = {Proximos:"No hay contenido próximo", Finalizados:"No hay contenido finalizado", Cancelados:"No hay contenido cancelado", Borradores:"No hay borradores"};
+    const filtered = wellnessUi.adminEventQuery || wellnessUi.adminEventCost !== "all";
+    return items.length ? items.map(item => `<tr><td><strong>${safeText(item.title)}</strong><small>${safeText(item.community_name)}</small></td><td>${safeText(api.date(item))}</td><td>${safeText(api.cost(item.cost))}</td><td>${safeText(item.reservations)} / ${safeText(item.capacity || "Sin límite")}</td><td><span class="wellness-admin-publication-status">${item.status === "cancelled" ? "Cancelado" : item.published ? "Publicado" : "Borrador"}</span></td><td><button type="button" data-activity-create="${config.kind}" data-community-name="${safeText(community.name)}">Gestionar</button></td></tr>`).join("") : `<tr><td colspan="6"><div class="wellness-admin-table-empty"><span>${icon(config.icon)}</span><strong>${api?.adminError ? "No se pudieron cargar las actividades" : !api?.adminLoaded ? "Cargando actividades…" : filtered ? "No hay resultados que coincidan" : labels[wellnessUi.adminEventFilter]}</strong><p>${api?.adminError ? safeText(api.adminError) : filtered ? "Prueba otra búsqueda o ajusta los filtros." : "Crea contenido para compartirlo con tu comunidad."}</p></div></td></tr>`;
+  }
+
+  function renderAdminActivities(community, config) {
+    const items = filteredAdminActivities(community, config);
+    return `<section class="wellness-admin-panel">${renderAdminContentFilters(config.title.toLowerCase(), false)}<div class="wellness-admin-table-scroll"><table class="wellness-admin-module-table" aria-label="${safeText(config.title)} de la comunidad"><thead><tr>${["Título","Fecha y hora","Costo","Cupo","Publicación","Acciones"].map(label=>`<th scope="col">${label}</th>`).join("")}</tr></thead><tbody data-admin-activity-rows>${renderAdminActivityRows(community, config, items)}</tbody></table></div><footer class="wellness-admin-table-footer" data-admin-activity-count role="status">${items.length} ${items.length === 1 ? "registro" : "registros"}</footer></section>`;
   }
 
   function renderAdminPosts(community, ctx) {
@@ -3456,7 +3595,7 @@
       <section class="wellness-admin-panel">
         <div class="wellness-admin-panel-heading">
           <div>
-            <h4>Publicaciones</h4>
+            <h4>Redactar publicación</h4>
             <p>Contenido tipo grupo social: texto, media, encuestas, documentos y enlaces.</p>
           </div>
           <button type="button" data-wellness-community-action="admin-ai">Generar con IA</button>
@@ -3502,13 +3641,6 @@
     ];
     return `
       <section class="wellness-admin-panel">
-        <div class="wellness-admin-panel-heading">
-          <div>
-            <h4>Calendario</h4>
-            <p>Vista tipo agenda para eventos, publicaciones, cumpleanos, retos, encuestas y sesiones.</p>
-          </div>
-          <button type="button" data-wellness-modal="create-event">Nuevo</button>
-        </div>
         <div class="wellness-admin-calendar-grid">
           ${labels.map((label, day) => `
             <article>
@@ -3702,6 +3834,20 @@
   }
 
   function renderAdminSelectedModule(state, community, ctx) {
+    const presentation = adminModulePresentation();
+    if (presentation?.kind) return renderAdminActivities(community, presentation);
+    if (wellnessUi.adminModule === "agents") {
+      const module = adminModuleItems().find(item => item.id === wellnessUi.adminModule);
+      const descriptions = {
+        classes: ["Clases y sesiones de aprendizaje de la comunidad.", "No hay clases registradas."],
+        workshops: ["Talleres y actividades prácticas de la comunidad.", "No hay talleres registrados."],
+        podcasts: ["Episodios y contenidos de audio de la comunidad.", "No hay podcasts registrados."],
+        live: ["Transmisiones en vivo de la comunidad.", "No hay transmisiones registradas."],
+        agents: ["Asistentes para la administración de la comunidad.", "No hay agentes configurados."]
+      };
+      const [description, empty] = descriptions[module.id];
+      return `<section class="wellness-admin-panel"><div class="wellness-admin-panel-heading"><div><h4>${safeText(module.label)}</h4><p>${safeText(description)}</p></div></div>${renderEmptyState(empty, community.name)}</section>`;
+    }
     if (wellnessUi.adminModule === "members") return renderAdminMembers(state, community, ctx);
     if (wellnessUi.adminModule === "requests") return renderAdminRequests(community, ctx);
     if (wellnessUi.adminModule === "events") return renderAdminEvents(state, community, ctx);
@@ -3733,8 +3879,8 @@
         <div class="wellness-admin-console-layout">
           ${renderAdminSidebar(state, community, managed)}
           <main class="wellness-admin-console-main">
-            ${renderAdminTopbar(admin, community, ctx)}
-            ${renderAdminSelectedModule(state, community, ctx)}
+            ${renderAdminCommunityHero(state, community, ctx)}
+            ${adminModulePresentation() ? renderAdminModuleWorkspace(state, admin, community, ctx) : `${["dashboard", "members", "requests"].includes(wellnessUi.adminModule) ? "" : renderAdminTopbar(admin, community, ctx)}${renderAdminSelectedModule(state, community, ctx)}`}
           </main>
           ${renderAdminRealtimePanel(state, community, ctx)}
         </div>
@@ -3948,6 +4094,8 @@
     if (wellnessUi.modal === "edit-community") return renderEditCommunityModal(state);
     if (wellnessUi.modal === "creator-profile") return renderCreatorProfileModal(state);
     if (wellnessUi.modal === "admin-request-profile") return renderAdminRequestProfileModal(state);
+    if (wellnessUi.modal === "invite-members") return renderAdminInviteModal(state);
+    if (wellnessUi.modal === "event-created") return renderEventCreatedModal();
     if (wellnessUi.modal === "create-event") return renderCreateEventModal(state);
     return "";
   }
@@ -3960,6 +4108,72 @@
       .replace(/[^a-z0-9]+/g, ".")
       .replace(/(^\.|\.$)/g, "")
       .slice(0, 28) || "usuario";
+  }
+
+  function renderEventCreatedModal() {
+    const created = wellnessUi.eventCreated;
+    if (!created) return "";
+    const rewarded = Number(created.reward?.tokens) === 1;
+    return `<div class="wellness-modal-backdrop wellness-event-success" role="dialog" aria-modal="true" aria-labelledby="eventCreatedTitle" aria-describedby="eventCreatedDescription">
+      <section class="wellness-sheet wellness-event-success-sheet">
+        <button type="button" class="wellness-modal-close" data-wellness-close-modal aria-label="Cerrar confirmación">×</button>
+        <div class="wellness-event-success-mark" aria-hidden="true"><span>✦</span><i>${icon("check")}</i><span>✦</span></div>
+        <h3 id="eventCreatedTitle">¡Evento creado!</h3>
+        <p id="eventCreatedDescription">Tu evento se publicó correctamente.</p>
+        <strong class="wellness-event-success-name">${safeText(created.title)}</strong>
+        ${rewarded ? `<div class="wellness-event-reward"><span aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="16" cy="9" rx="10" ry="4"/><path d="M6 9v12c0 5 20 5 20 0V9M6 15c0 5 20 5 20 0M6 21c0 5 20 5 20 0"/><ellipse cx="16" cy="9" rx="5" ry="1.5"/></svg></span><div><strong>+1 Token</strong><p>Agregado a tu billetera</p></div></div><p class="wellness-event-reward-help">Recibirás 1 Token cada vez que crees un evento.</p><small class="wellness-event-reward-balance">Saldo actual: ${safeText(created.reward.balance)} ${Number(created.reward.balance) === 1 ? "Token" : "Tokens"}</small>` : ""}
+        <div class="wellness-event-success-actions"><button type="button" data-wellness-close-modal data-event-created-done>Listo</button><button type="button" data-wellness-event-open="${safeText(created.eventId)}">Ver evento</button></div>
+      </section>
+    </div>`;
+  }
+
+  function adminInviteProfiles(state, communityId, query = "") {
+    const terms = normalizeAdminSearch(query).replace(/^@/, "").split(/\s+/).filter(Boolean);
+    return (window.KliniCommunities?.profiles?.() || []).map(profile => ({
+      ...profile,
+      username: adminProfileUsername(profile.name),
+      invited: (state.communityProfileInvitations || []).some(invitation => invitation.communityId === communityId && invitation.profileId === profile.id)
+    })).filter(profile => terms.every(term => normalizeAdminSearch(`${profile.name} ${profile.username}`).includes(term)));
+  }
+
+  function addAdminProfileInvitation(state, communityId, profileId) {
+    if (!canManageCommunity(state, communityId)) return false;
+    const profile = adminInviteProfiles(state, communityId).find(item => item.id === profileId);
+    if (!profile || profile.invited) return false;
+    state.communityProfileInvitations ||= [];
+    state.communityProfileInvitations.push({ communityId, profileId, status: "invited", createdAt: new Date().toISOString() });
+    return true;
+  }
+
+  function renderAdminInviteResults(state, communityId) {
+    const profiles = adminInviteProfiles(state, communityId, wellnessUi.adminInviteQuery);
+    return `<p class="wellness-invite-count" role="status">${profiles.length} ${profiles.length === 1 ? "perfil encontrado" : "perfiles encontrados"}</p>
+      <div class="wellness-invite-list" role="list" aria-label="Perfiles encontrados">
+        ${profiles.length ? profiles.map(profile => `<article class="wellness-invite-profile" role="listitem">
+          <span class="wellness-invite-avatar">${safeCssUrl(profile.avatar) ? `<img src="${safeText(safeCssUrl(profile.avatar))}" alt="" loading="lazy">` : safeText(initialsText(profile.name))}</span>
+          <div><strong>${safeText(profile.name)}</strong><small>@${safeText(profile.username)}</small></div>
+          <button type="button" data-wellness-community-action="admin-invite-profile" data-community-id="${safeText(communityId)}" data-profile-id="${safeText(profile.id)}" aria-label="${profile.invited ? "Invitación guardada para" : "Invitar a"} ${safeText(profile.name)}" ${profile.invited ? "disabled" : ""}>${icon(profile.invited ? "check" : "user-plus")} ${profile.invited ? "Invitado" : "Invitar"}</button>
+        </article>`).join("") : `<div class="wellness-invite-empty">${icon("search")}<strong>No encontramos perfiles</strong><p>Prueba con otro nombre o usuario.</p></div>`}
+      </div>`;
+  }
+
+  function renderAdminInviteModal(state) {
+    const community = communityById(state, wellnessUi.adminCommunityId);
+    if (!community || !canManageCommunity(state, community.id)) return "";
+    return `<div class="wellness-modal-backdrop wellness-invite-modal" role="dialog" aria-modal="true" aria-labelledby="wellnessInviteTitle" aria-describedby="wellnessInviteDescription">
+      <section class="wellness-sheet wellness-invite-sheet">
+        <header class="wellness-invite-heading"><span>${icon("user-plus")}</span><div><h3 id="wellnessInviteTitle">Invitar perfiles</h3><p id="wellnessInviteDescription">Invita a personas a ${safeText(community.name)}.</p></div></header>
+        <button class="wellness-modal-close" type="button" data-wellness-close-modal aria-label="Cerrar buscador de perfiles">×</button>
+        <label class="wellness-invite-search">${icon("search")}<input type="search" data-admin-invite-search aria-label="Buscar perfiles" placeholder="Buscar por nombre o usuario" autocomplete="off" value="${safeText(wellnessUi.adminInviteQuery)}"></label>
+        <div data-admin-invite-results>${renderAdminInviteResults(state, community.id)}</div>
+        <footer class="wellness-invite-footer"><small>Perfiles de demostración. Las invitaciones son simuladas y se guardan en este navegador.</small><button type="button" data-wellness-close-modal>Cerrar</button></footer>
+      </section>
+    </div>`;
+  }
+
+  function updateAdminInviteResults(state = loadState()) {
+    const results = document.querySelector("[data-admin-invite-results]");
+    if (results) results.innerHTML = renderAdminInviteResults(state, wellnessUi.adminCommunityId);
   }
 
   function adminRequestProfileData(state, request) {
@@ -4263,8 +4477,6 @@
 
   function renderCreateEventModal(state) {
     const manageable = state.communities.filter((community) => canManageCommunity(state, community.id));
-    const selectedCommunity = manageable.find((community) => community.id === wellnessUi.adminCommunityId) || manageable[0] || {};
-    const previewDate = new Date();
     return `
       <div class="wellness-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="wellnessCreateEventTitle">
         <section class="wellness-sheet wellness-sheet-wide wellness-event-create-sheet">
@@ -4272,15 +4484,13 @@
           <header class="wellness-event-create-header">
             <span>${icon("calendar")}</span>
             <div>
-              <small>Nuevo evento</small>
               <h3 id="wellnessCreateEventTitle">Crear evento</h3>
-              <p>Completa la informacion para crear tu evento.</p>
             </div>
           </header>
           <form class="wellness-event-create-form" data-wellness-event-form>
             <div class="wellness-event-create-grid">
               <label class="wellness-event-field">
-                <span>Comunidad organizadora</span>
+                <span>Comunidad</span>
                 <div class="wellness-event-control">
                   <i aria-hidden="true">${icon("users")}</i>
                   <select name="communityId">${manageable.map((community) => `<option value="${safeText(community.id)}" ${community.id === wellnessUi.adminCommunityId ? "selected" : ""}>${safeText(community.name)}</option>`).join("")}</select>
@@ -4296,40 +4506,22 @@
 
               <div class="wellness-event-image-field wellness-event-field-full">
                 <span>Imagen del evento</span>
-                <div class="wellness-event-image-editor">
-                  <div class="wellness-event-image-preview wellness-event-cover wellness-community-cover-${safeText(selectedCommunity.coverTone || "mint")}" data-wellness-event-image-preview>
-                    ${renderEventCoverContent({}, previewDate)}
-                  </div>
-                  <div class="wellness-event-image-copy">
-                    <strong>Sube una imagen o pega una URL</strong>
-                    <small>Formatos recomendados: JPG, PNG. Tamano max. 5MB.</small>
-                  </div>
-                  <div class="wellness-event-image-actions">
-                    <input name="imageUrl" data-wellness-event-image-url placeholder="URL o referencia de imagen">
-                    <label class="wellness-event-upload-button">
-                      ${icon("camera")} Subir imagen
-                      <input type="file" accept="image/*" data-wellness-event-image-file>
-                    </label>
-                  </div>
-                  <small class="wellness-event-image-note">Previsualizacion con la misma proporcion de la tarjeta del evento.</small>
-                </div>
+                <input type="hidden" name="imageUrl" data-wellness-event-image-url>
+                <label class="wellness-event-upload-zone">
+                  <input type="file" accept="image/jpeg,image/png,image/webp,image/gif" data-wellness-event-image-file aria-label="Subir imagen del evento">
+                  <span class="wellness-event-upload-thumbnail" data-wellness-event-image-preview aria-hidden="true">${icon("camera")}</span>
+                  <strong data-wellness-event-upload-title>Subir imagen</strong>
+                  <small data-wellness-event-upload-name>JPG, PNG, WebP o GIF · Máx. 5 MB</small>
+                </label>
               </div>
 
-              <label class="wellness-event-field">
+              <label class="wellness-event-field wellness-event-field-full">
                 <span>Descripcion corta</span>
                 <div class="wellness-event-control wellness-event-textarea-control">
                   <i aria-hidden="true">${icon("chat")}</i>
                   <textarea name="shortDescription" rows="3" maxlength="120" required placeholder="Describe tu evento en pocas palabras..."></textarea>
                 </div>
                 <small>Max. 120 caracteres</small>
-              </label>
-              <label class="wellness-event-field">
-                <span>Descripcion completa</span>
-                <div class="wellness-event-control wellness-event-textarea-control">
-                  <i aria-hidden="true">${icon("edit")}</i>
-                  <textarea name="description" rows="3" maxlength="1000" required placeholder="Cuenta mas detalles sobre tu evento..."></textarea>
-                </div>
-                <small>Max. 1000 caracteres</small>
               </label>
               <label class="wellness-event-field">
                 <span>Categoria</span>
@@ -4936,18 +5128,32 @@
       return;
     }
     if (action === "admin-invite-members" && communityId) {
+      if (!canManageCommunity(state, communityId)) return;
+      wellnessUi.adminCommunityId = communityId;
+      wellnessUi.adminInviteQuery = "";
+      wellnessUi.modal = "invite-members";
       wellnessUi.messagesOpen = false;
       wellnessUi.notificationsOpen = false;
       wellnessUi.activeAdminMessageId = "";
       wellnessUi.activeAdminRequestId = "";
-      notify("Se prepararia una invitacion para nuevos miembros de la comunidad.");
       renderPatientWellness();
+      return;
+    }
+    if (action === "admin-invite-profile" && communityId) {
+      if (addAdminProfileInvitation(state, communityId, button.dataset.profileId)) {
+        saveState(state);
+        updateAdminInviteResults(state);
+        notify("Invitación simulada guardada.");
+      }
       return;
     }
     if (action === "admin-event-attendees" && eventId) {
       const eventItem = eventById(state, eventId);
-      const seats = eventItem ? eventSeats(state, eventItem) : { confirmed: 0 };
-      notify(`Asistentes confirmados: ${seats.confirmed}.`);
+      if (!eventItem || !canManageCommunity(state, eventItem.communityId)) return;
+      const localPeople = eventItem.publicActivityId ? [] : state.eventReservations
+        .filter(reservation => reservation.eventId === eventId && reservation.status === "confirmed")
+        .map(reservation => ({ name: memberDisplayName(state, reservation), reserved_at: reservation.reservedAt }));
+      window.KliniCommunityActivities?.openAttendees(eventItem.publicActivityId, eventItem.title, button, localPeople);
       return;
     }
     if (action === "admin-tool-info" && communityId) {
@@ -5348,6 +5554,11 @@
     const adminModuleButton = event.target.closest("[data-wellness-admin-module]");
     if (adminModuleButton) {
       wellnessUi.communityView = "admin";
+      if (wellnessUi.adminModule !== adminModuleButton.dataset.wellnessAdminModule) {
+        wellnessUi.adminEventFilter = "Proximos";
+        wellnessUi.adminEventQuery = "";
+        wellnessUi.adminEventModality = wellnessUi.adminEventCost = "all";
+      }
       wellnessUi.adminModule = adminModuleButton.dataset.wellnessAdminModule || "dashboard";
       wellnessUi.notificationsOpen = false;
       wellnessUi.messagesOpen = false;
@@ -5459,6 +5670,7 @@
 
     const adminPostFocus = event.target.closest("[data-wellness-admin-focus-post]");
     if (adminPostFocus) {
+      wellnessUi.adminModule = "posts";
       wellnessUi.notificationsOpen = false;
       wellnessUi.messagesOpen = false;
       wellnessUi.activeAdminMessageId = "";
@@ -5633,6 +5845,12 @@
   }
 
   function handlePatientWellnessChange(event) {
+    if (event.target.matches("[data-admin-event-modality],[data-admin-event-cost]")) {
+      if (event.target.matches("[data-admin-event-modality]")) wellnessUi.adminEventModality = event.target.value;
+      else wellnessUi.adminEventCost = event.target.value;
+      updateAdminEventResults();
+      return;
+    }
     const adminCommunitySelect = event.target.closest("[data-wellness-admin-community-select]");
     if (adminCommunitySelect) {
       wellnessUi.adminCommunityId = adminCommunitySelect.value;
@@ -5691,8 +5909,16 @@
       const form = eventImageFileInput.closest("[data-wellness-event-form]");
       const urlInput = form?.querySelector("[data-wellness-event-image-url]");
       if (!file || !urlInput || typeof FileReader !== "function") return;
+      if (!/^image\/(jpeg|png|webp|gif)$/.test(file.type) || file.size > 5 * 1024 * 1024) {
+        notify("Selecciona una imagen JPG, PNG, WebP o GIF de hasta 5 MB.");
+        eventImageFileInput.value = "";
+        urlInput.value = "";
+        updateEventImagePreview(form);
+        return;
+      }
       const reader = new FileReader();
       reader.addEventListener("load", () => {
+        if (!form.isConnected || eventImageFileInput.files?.[0] !== file) return;
         urlInput.value = String(reader.result || "");
         updateEventImagePreview(form);
         notify("Imagen del evento lista para publicar.");
@@ -5710,6 +5936,16 @@
   }
 
   function handlePatientWellnessInput(event) {
+    if (event.target.matches("[data-admin-invite-search]")) {
+      wellnessUi.adminInviteQuery = event.target.value;
+      updateAdminInviteResults();
+      return;
+    }
+    if (event.target.matches("[data-admin-event-search]")) {
+      wellnessUi.adminEventQuery = event.target.value;
+      updateAdminEventResults();
+      return;
+    }
     const eventImageUrl = event?.target?.closest?.("[data-wellness-event-image-url]");
     if (eventImageUrl) {
       updateEventImagePreview(eventImageUrl.closest("[data-wellness-event-form]"));
@@ -5729,8 +5965,13 @@
       preview.innerHTML = "";
     } else {
       preview.style.backgroundImage = "";
-      preview.innerHTML = renderEventCoverContent({}, new Date());
+      preview.innerHTML = icon("camera");
     }
+    const uploadTitle = form.querySelector("[data-wellness-event-upload-title]");
+    const uploadName = form.querySelector("[data-wellness-event-upload-name]");
+    if (uploadTitle) uploadTitle.textContent = image ? "Cambiar imagen" : "Subir imagen";
+    if (uploadName) uploadName.textContent = image ? form.querySelector("[data-wellness-event-image-file]")?.files?.[0]?.name || "Imagen seleccionada" : "JPG, PNG, WebP o GIF · Máx. 5 MB";
+    form.dispatchEvent(new CustomEvent("klini:event-image-change", { bubbles: true }));
   }
 
   function saveQuickMetric(formData) {
@@ -5940,6 +6181,7 @@
     eventItem.status = ["published", "draft", "cancelled"].includes(status) ? status : "draft";
     eventItem.updatedAt = new Date().toISOString();
     saveState(state);
+    window.dispatchEvent(new Event('klini:legacy-events'));
     notify("Estado del evento actualizado.");
     renderPatientWellness();
   }
@@ -6002,7 +6244,7 @@
     renderPatientWellness();
   }
 
-  function saveNewCommunityEvent(formData) {
+  function saveNewCommunityEvent(formData, publication = null) {
     const state = loadState();
     const admin = currentCommunityAdmin();
     const communityId = String(formData.get("communityId") || "");
@@ -6021,13 +6263,15 @@
     const teamsUrl = String(formData.get("teamsUrl") || "");
     const remoteUrl = zoomUrl || meetUrl || teamsUrl || (modality !== "in_person" ? location : "");
     const eventItem = {
-      id: wellnessId("event"),
+      id: String(formData.get("sourceKey") || wellnessId("event")),
       communityId,
       creatorId: admin.id,
       title: String(formData.get("title") || "Evento Wellness"),
       imageUrl: String(formData.get("imageUrl") || ""),
       shortDescription: String(formData.get("shortDescription") || ""),
-      description: String(formData.get("description") || ""),
+      description: String(formData.get("description") || formData.get("shortDescription") || ""),
+      publicActivityId: formData.get("publicActivityId") || null,
+      publicActivityStatus: formData.get("publicActivityId") ? "published" : null,
       category: String(formData.get("category") || community?.category || "Wellbeing"),
       coverTone: community?.coverTone || "mint",
       modality,
@@ -6050,7 +6294,7 @@
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
-    state.communityEvents.unshift(eventItem);
+    if (!state.communityEvents.some(item => item.id === eventItem.id || (eventItem.publicActivityId && String(item.publicActivityId) === String(eventItem.publicActivityId)))) state.communityEvents.unshift(eventItem);
     const inviteMode = String(formData.get("inviteMode") || "all");
     state.communityInvitations.push({
       id: wellnessId("invite"),
@@ -6060,15 +6304,24 @@
       sentAt: new Date().toISOString()
     });
     saveState(state);
+    window.dispatchEvent(new Event('klini:legacy-events'));
     closePatientWellnessModal(false);
     wellnessUi.section = "communities";
     wellnessUi.communityView = "admin";
     wellnessUi.adminCommunityId = communityId;
-    notify("Evento guardado en la demostración. Invitaciones simuladas.");
+    if (publication) {
+      wellnessUi.eventCreated = { eventId: eventItem.id, title: eventItem.title, reward: publication.reward };
+      wellnessUi.modal = "event-created";
+      wellnessUi.adminModule = "events";
+      wellnessUi.adminEventFilter = "Proximos";
+    } else {
+      notify(eventItem.publicActivityId ? "Evento publicado en Comunidades de Klini." : "Evento guardado en la demostración. Invitaciones simuladas.");
+    }
     renderPatientWellness();
   }
 
   function closePatientWellnessModal(shouldRender = true) {
+    const wasInviteModal = wellnessUi.modal === "invite-members";
     wellnessUi.modal = "";
     wellnessUi.detailMetric = "";
     wellnessUi.goalId = "";
@@ -6081,6 +6334,7 @@
     wellnessUi.activeAdminRequestId = "";
     wellnessUi.adminProfileRequestId = "";
     if (shouldRender) renderPatientWellness();
+    if (wasInviteModal && shouldRender) document.querySelector('.wellness-admin-community-actions [data-wellness-community-action="admin-invite-members"]')?.focus();
   }
 
   function openPatientWellnessSection(section = "today") {
@@ -6384,7 +6638,27 @@
     renderPatientWellness();
   });
 
+  document.addEventListener?.("keydown", event => {
+    if (!["invite-members", "event-created"].includes(wellnessUi.modal)) return;
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closePatientWellnessModal();
+    } else if (event.key === "Tab") {
+      const dialog = document.querySelector(".wellness-invite-modal, .wellness-event-success");
+      const controls = dialog?.querySelectorAll("button:not(:disabled), input");
+      if (!controls?.length) return;
+      const first = controls[0], last = controls[controls.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    }
+  });
+
   window.renderPatientWellness = renderPatientWellness;
+  window.addEventListener?.("klini:admin-activities", () => {
+    updateAdminReservationCounts();
+    if (wellnessUi.adminModule === "dashboard" && !wellnessUi.modal && !wellnessUi.messagesOpen && !wellnessUi.notificationsOpen && !document.querySelector(".kc-attendees-dialog[open]")) renderPatientWellness();
+    if (adminModulePresentation()?.kind && !wellnessUi.modal) renderPatientWellness();
+  });
   window.handlePatientWellnessAction = handlePatientWellnessAction;
   window.handlePatientWellnessSubmit = handlePatientWellnessSubmit;
   window.handlePatientWellnessChange = handlePatientWellnessChange;
@@ -6394,7 +6668,22 @@
   window.openPatientWellnessQuickEntry = openPatientWellnessQuickEntry;
   window.openCommunityAdminPanel = openCommunityAdminPanel;
   window.KliniWellnessCommunity = {
+    completeEventCreation: saveNewCommunityEvent,
     defaultCommunityId: COMMUNITY_ADMIN_DEFAULT_COMMUNITY_ID,
+    getCreatedEventPublications: function () {
+      if (!COMMUNITY_ADMIN_MODE) return [];
+      const state = parseStored(localStorage.getItem(storageKey()), null);
+      if (!state) return [];
+      return (state.communityEvents || []).filter(item => /^event-[0-9]+-[a-zA-Z0-9]+$/.test(item.id) && canManageCommunity(state, item.communityId)).map(item => ({event:item, community:communityById(state,item.communityId)}));
+    },
+    linkPublicEvent: function (eventId, activityId, status) {
+      const state = parseStored(localStorage.getItem(storageKey()), null);
+      const event = state && eventById(state,eventId);
+      if (!event) return;
+      event.publicActivityId = activityId;
+      event.publicActivityStatus = status;
+      localStorage.setItem(storageKey(),JSON.stringify(state));
+    },
     getPublicPayload: publicCommunityPayload,
     performPublicAction: publicCommunityAction
   };

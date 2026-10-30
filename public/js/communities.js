@@ -506,6 +506,14 @@
     this.bind();
     this.render();
     this.handleHashRoute();
+    if (this.options.startView !== "posts" && window.KliniCommunityActivities) {
+      var app = this;
+      window.addEventListener("klini:activities", function () { app.render(); });
+      window.KliniCommunityActivities.load().then(function () { app.render(); }).catch(function () {
+        var status = app.root.querySelector('[data-community-search-status]');
+        if (status) { status.hidden = false; status.textContent = 'No se pudieron cargar las actividades. Reabre Comunidades para intentar de nuevo.'; }
+      });
+    }
     if (this.stories) this.stories.refresh();
   }
 
@@ -930,6 +938,12 @@
       }
       if (!preserveScroll && (action === "open-detail" || action === "open-community-panel" || action === "open-admin-panel" || action === "open-directory" || action === "open-directory-filter" || action === "filter" || action === "back-directory" || action === "back-feed" || action === "home" || action === "reserve" || action === "reservation-submit" || action === "reservation-view-reservations" || action === "reservation-open-community" || action === "admin-create-event" || action === "admin-event-next" || action === "admin-event-prev" || action === "admin-event-submit" || action === "admin-event-cancel" || action === "admin-create-class" || action === "admin-class-next" || action === "admin-class-prev" || action === "admin-class-submit" || action === "admin-class-cancel")) {
         self.scrollToScreenTop(action === "filter" ? "smooth" : "auto");
+      }
+    });
+    this.root.addEventListener("change", function (event) {
+      if (event.target.hasAttribute('data-community-search-scope')) {
+        self.state.communitySearchScope = event.target.value;
+        self.applyCommunitySearch();
       }
     });
     this.root.addEventListener("input", function (event) {
@@ -2255,12 +2269,24 @@
 
   CommunityApp.prototype.renderFeed = function () {
     var allCommunities = this.catalogCommunities();
+    var api = window.KliniCommunityActivities;
+    var activities = api ? api.items.filter(function (item) { return item.published; }).sort(function (a, b) {
+      var createdA = Date.parse(a.created_at) || 0;
+      var createdB = Date.parse(b.created_at) || 0;
+      return createdB - createdA || Number(b.id) - Number(a.id);
+    }) : [];
+    var activityCards = activities.map(function (activity) {
+      var community = this.findCommunity(activity.community_key) || allCommunities.find(function (item) { return normalizeSearch(item.name) === normalizeSearch(activity.community_name); });
+      return this.renderActivityCard(activity, community);
+    }, this).join('');
+    var searchExtras = '<div data-community-search-extra="posts">' + posts.map(function (post) { return '<div data-community-result="posts" data-search-text="' + escapeHtml(post.text + ' ' + post.author.name) + '">' + this.renderPost(post) + '</div>'; }, this).join('') + '</div>' +
+      '<div data-community-search-extra="profiles">' + people.map(function (person) { return '<article class="kc-search-profile" data-community-result="profiles" data-search-text="' + escapeHtml(person.name) + '"><img src="' + escapeHtml(person.avatar) + '" alt=""><div><strong>' + escapeHtml(person.name) + '</strong><p>Perfil de la comunidad</p></div></article>'; }).join('') + '</div>';
     return '<div class="kc-feed-wrap kc-community-feed">' +
       '<section id="kc-community-feed-panel"' + (this.options.separateCalendar ? ' aria-label="Comunidades"' : ' role="tabpanel" aria-labelledby="kc-community-feed-tab"') + '>' +
-      this.renderStories() + '<div class="kc-community-toolbar-slot">' + this.renderCommunityHeader("feed") + '</div>' +
+      this.renderStories() + (this.options.separateCalendar ? '' : '<div class="kc-community-toolbar-slot">' + this.renderCommunityHeader("feed") + '</div>') +
       '<p class="kc-community-search-status" data-community-search-status role="status" hidden></p>' +
       '<div class="kc-community-feed-list" aria-label="Todas las comunidades">' +
-      (allCommunities.length ? allCommunities.map(this.renderFeedCommunity.bind(this)).join("") : '<p class="kc-empty">No hay comunidades disponibles.</p>') +
+      activityCards + searchExtras + (allCommunities.length ? allCommunities.map(this.renderFeedCommunity.bind(this)).join("") : '<p class="kc-empty">No hay comunidades disponibles.</p>') +
       '<p class="kc-empty" data-community-search-empty hidden>No encontramos comunidades con esa búsqueda. Prueba con otro nombre, tema o ciudad.</p>' +
       '</div></section></div>';
   };
@@ -2268,7 +2294,7 @@
   CommunityApp.prototype.renderCommunityHeader = function (section) {
     if (this.options.separateCalendar) {
       if (section === "calendar") return "";
-      return '<header class="kc-community-workspace-heading"><label class="kc-community-search">' + icon("search") + '<input type="search" data-community-search value="' + escapeHtml(this.state.communitySearch) + '" placeholder="Buscar comunidades" aria-label="Buscar comunidades" autocomplete="off" enterkeyhint="search"></label><div class="kc-community-heading-actions"><button type="button" data-action="open-directory-filter" data-id="explore" aria-label="Explorar comunidades" title="Explorar comunidades">' + icon("compass") + '</button><button type="button" data-action="create-open" aria-label="Crear comunidad" title="Crear comunidad">' + icon("plus") + '</button></div></header>';
+      return '<header class="kc-community-workspace-heading"><label class="kc-community-search">' + icon("search") + '<input type="search" data-community-search value="' + escapeHtml(this.state.communitySearch) + '" placeholder="Buscar publicaciones, perfiles y comunidades" aria-label="Buscar publicaciones, perfiles y comunidades" autocomplete="off" enterkeyhint="search"></label><div class="kc-community-heading-actions"><button type="button" data-action="open-directory-filter" data-id="explore" aria-label="Explorar comunidades" title="Explorar comunidades">' + icon("compass") + '</button><button type="button" data-action="create-open" aria-label="Crear comunidad" title="Crear comunidad">' + icon("plus") + '</button></div></header>';
     }
     return '<header class="kc-community-workspace-heading"><div class="kc-community-switch" role="tablist" aria-label="Comunidades y calendario" data-calendar-tabs>' +
       [{ id: "feed", label: "Comunidades", icon: "users" }, { id: "calendar", label: "Calendario", icon: "calendar" }].map(function (tab) {
@@ -2310,6 +2336,11 @@
 
   CommunityApp.prototype.calendarReservations = function (now) {
     now = now || new Date();
+    var api = window.KliniCommunityActivities;
+    var shared = api ? api.items.filter(function (item) { return item.reserved; }).map(function (item) {
+      var start = new Date(item.starts_at_utc || item.starts_at);
+      return { id: 'activity-' + item.id, item: { title: item.title, image: item.image, dateKey: item.starts_at.slice(0,10), time: item.starts_at.slice(11,16), description: item.description, price: api.cost(item.cost) }, community: { name: item.community_name }, date: new Date(item.starts_at), endsAt: start, past: start.getTime() < now.getTime(), activity: item };
+    }) : [];
     return Object.keys(this.state.reservations).filter(function (id) { return !!this.state.reservations[id]; }, this).map(function (id) {
       var reservation = this.findReservableItem(id);
       if (!reservation.item.title) return null;
@@ -2318,7 +2349,7 @@
       reservation.endsAt = this.calendarItemTime(reservation.item, reservation.date);
       reservation.past = !!reservation.endsAt && reservation.endsAt.getTime() < now.getTime();
       return reservation;
-    }, this).filter(Boolean).sort(function (a, b) {
+    }, this).filter(Boolean).concat(shared).sort(function (a, b) {
       return (a.endsAt ? a.endsAt.getTime() : Infinity) - (b.endsAt ? b.endsAt.getTime() : Infinity) || a.id.localeCompare(b.id);
     });
   };
@@ -2378,6 +2409,7 @@
       (item.instructor ? '<li>' + icon("person") + '<span>Instructor: ' + escapeHtml(item.instructor) + '</span></li>' : '') +
       '<li>' + icon("users") + '<span>' + escapeHtml(places) + '</span></li></ul>' +
       (detail ? '<p class="kc-calendar-description">' + escapeHtml(item.description || community.description || "") + '</p>' + (item.modality ? '<p class="kc-calendar-modality">Modalidad: ' + escapeHtml(item.modality) + '</p>' : '') : '<button type="button" class="kc-calendar-open" data-action="calendar-detail" data-id="' + escapeHtml(reservation.id) + '" aria-label="Ver reservación: ' + escapeHtml(item.title) + '">Ver reservación</button>') +
+      (reservation.activity ? '<button type="button" class="kc-calendar-community-link" data-activity-reserve="' + reservation.activity.id + '">Cancelar reserva</button>' : '') +
       (community.id ? '<button type="button" class="kc-calendar-community-link" data-action="open-community-panel" data-id="' + escapeHtml(community.id) + '">Ver comunidad</button>' : '') + '</article>';
   };
 
@@ -2402,24 +2434,34 @@
 
   CommunityApp.prototype.renderPostsFeed = function () {
     return '<div class="kc-feed-wrap kc-posts-home">' +
-      this.renderStories() + '<div class="kc-community-toolbar-slot" aria-hidden="true"></div>' +
+      this.renderStories() +
       '<div class="kc-post-list" aria-label="Publicaciones de usuarios">' + posts.map(this.renderPost.bind(this)).join("") + '</div></div>';
+  };
+
+  CommunityApp.prototype.renderActivityCard = function (activity, community) {
+    return this.renderFeedCommunity(merge(community || { id: activity.community_key, name: activity.community_name, access: 'open', members: 0 }, { activity: activity, heroImage: activity.image || (community && this.communityHeroImage(community)) || '/images/communities/create-cover.png', description: activity.description || '' }));
   };
 
   CommunityApp.prototype.renderFeedCommunity = function (community) {
     var id = escapeHtml(community.id);
+    var activity = community.activity;
+    var api = window.KliniCommunityActivities;
+    var post = { id: activity ? 'activity-' + activity.id : 'community-feed-' + community.id, communityId: community.id, author: {id: 'community-' + community.id, name: community.name, avatar: this.communityHeroImage(community)}, time: activity ? api.date(activity) : community.category || 'Comunidad', text: community.description || '', image: this.communityHeroImage(community), likes: 0, comments: 0, shares: 0 };
+    var rendered = this.renderPost(post);
+    var footer = rendered.slice(rendered.indexOf('<div class="kc-post-actions">'), rendered.lastIndexOf('</article>'));
+    var activityDetails = activity ? '<section class="kc-activity-details"><div class="kc-activity-title"><h3>' + escapeHtml(activity.title) + '</h3><span>' + escapeHtml(api.kinds[activity.kind]) + '</span></div><div class="kc-activity-schedule"><div><p>' + icon('calendar') + escapeHtml(api.date(activity)) + '</p><p>' + icon('tag') + escapeHtml(api.cost(activity.cost)) + '</p></div><button type="button" data-activity-reserve="' + activity.id + '" aria-pressed="' + activity.reserved + '" aria-label="' + (activity.reserved ? 'Cancelar reserva de ' : 'Reservar ') + escapeHtml(activity.title) + '" title="' + (activity.reserved ? 'Cancelar reserva' : 'Reservar lugar') + '"' + (!activity.reserved && activity.capacity && activity.reservations >= activity.capacity ? ' disabled' : '') + '>' + icon('calendar') + '</button></div><small>' + (activity.reserved ? 'Tu lugar está reservado' : activity.capacity && activity.reservations >= activity.capacity ? 'Cupo completo' : 'Reserva de lugar · sin cobro en la app') + '</small></section>' : '';
     var name = escapeHtml(community.name);
     var image = escapeHtml(this.communityHeroImage(community));
     var fallback = "/images/communities/category-wellness.png";
     var initials = escapeHtml(community.logoInitials || community.initials || initialsFromName(community.name));
-    return '<article class="kc-community-feed-card" data-community-feed-card data-community-id="' + id + '">' +
+    return '<article class="kc-community-feed-card" data-community-feed-card data-community-result="' + (activity ? 'activities' : 'communities') + '" data-activity-kind="' + (activity ? activity.kind : '') + '" data-search-text="' + escapeHtml([community.name, community.category, community.city, community.description, activity && activity.title, activity && api.kinds[activity.kind]].join(' ')) + '" data-community-id="' + id + '">' +
       '<header><span class="kc-community-feed-avatar ' + escapeHtml(community.tone || "mint") + '">' + initials + '</span>' +
       '<div><strong>' + name + '</strong><small>' + escapeHtml(community.category || "Bienestar") + ' · ' + escapeHtml(community.city || "En linea") + '</small></div>' +
       '<span class="kc-community-feed-access">' + (community.access === "open" ? "Abierta" : "Con solicitud") + '</span></header>' +
       '<p class="kc-community-feed-description">' + escapeHtml(community.description || "") + '</p>' +
       '<button class="kc-community-feed-cover" type="button" data-action="open-community-panel" data-id="' + id + '" aria-label="Ver comunidad ' + name + '">' +
       '<img src="' + image + '" data-community-feed-image data-fallback-src="' + fallback + '" alt="Portada de ' + name + '" loading="lazy"></button>' +
-      '<div class="kc-community-feed-body"><span>' + icon("users") + ' ' + escapeHtml(community.members || 0) + (Number(community.members) === 1 ? ' miembro</span>' : ' miembros</span>') +
+      footer + activityDetails + '<div class="kc-community-feed-body"><span>' + icon("users") + ' ' + escapeHtml(community.members || 0) + (Number(community.members) === 1 ? ' miembro</span>' : ' miembros</span>') +
       '<button type="button" data-action="open-community-panel" data-id="' + id + '">Ver comunidad ' + icon("arrow") + '</button></div></article>';
   };
 
@@ -2430,21 +2472,24 @@
   };
 
   CommunityApp.prototype.applyCommunitySearch = function () {
-    var self = this;
-    var query = this.state.communitySearch || "";
+    var query = this.state.communitySearch || '';
+    var scope = this.state.communitySearchScope || 'all';
+    var words = normalizeSearch(query).trim().split(/\s+/).filter(Boolean);
     var count = 0;
-    this.root.querySelectorAll("[data-community-feed-card]").forEach(function (card) {
-      var community = self.findCommunity(card.getAttribute("data-community-id"));
-      card.hidden = !community || !self.communityMatchesSearch(community, query);
+    var selector = this.root.querySelector('[data-community-search-scope]');
+    if (selector) selector.value = scope;
+    this.root.querySelectorAll('[data-community-result]').forEach(function (card) {
+      var type = card.dataset.communityResult;
+      var matchesScope = scope === 'all' || scope === type || card.dataset.activityKind === scope;
+      var showExtra = type !== 'posts' && type !== 'profiles' || scope === type || words.length > 0;
+      var text = normalizeSearch(card.dataset.searchText || '');
+      card.hidden = !matchesScope || !showExtra || !words.every(function (word) { return text.indexOf(word) !== -1; });
       if (!card.hidden) count++;
     });
-    var status = this.root.querySelector("[data-community-search-status]");
-    if (status) {
-      status.hidden = !query.trim();
-      status.textContent = count + (count === 1 ? " comunidad encontrada" : " comunidades encontradas");
-    }
-    var empty = this.root.querySelector("[data-community-search-empty]");
-    if (empty) empty.hidden = !query.trim() || count > 0;
+    var status = this.root.querySelector('[data-community-search-status]');
+    if (status) { status.hidden = !query.trim() && scope === 'all'; status.textContent = count + (count === 1 ? ' resultado encontrado' : ' resultados encontrados'); }
+    var empty = this.root.querySelector('[data-community-search-empty]');
+    if (empty) { empty.hidden = count > 0; empty.textContent = 'No hay resultados para esta búsqueda o filtro.'; }
   };
 
   CommunityApp.prototype.renderStories = function () {
@@ -2602,7 +2647,7 @@
       (reposted ? '<p class="kc-social-notice" role="status">Repost guardado en tu actividad.</p>' : "") +
       (messagesOpen ? this.renderPostMessages(post) : "") +
       (shareOpen ? this.renderPostShare(post) : "") +
-      '<div class="kc-liked-by"><span class="kc-mini-avatars">' + people.slice(0, 3).map(function (p) { return '<img src="' + p.avatar + '" alt="">'; }).join("") + '</span>A ' + escapeHtml(people[1].short) + ', ' + escapeHtml(people[2].short) + ' y ' + (post.likes - 3) + ' personas más les gusta esto</div></article>';
+      (post.likes >= 3 ? '<div class="kc-liked-by"><span class="kc-mini-avatars">' + people.slice(0, 3).map(function (p) { return '<img src="' + p.avatar + '" alt="">'; }).join("") + '</span>A ' + escapeHtml(people[1].short) + ', ' + escapeHtml(people[2].short) + ' y ' + (post.likes - 3) + ' personas más les gusta esto</div>' : '') + '</article>';
   };
 
   CommunityApp.prototype.renderPostMessages = function (post) {
@@ -3988,6 +4033,19 @@
   };
 
   window.KliniCommunities = {
+    // Share the same demonstration profiles with the community administrator.
+    profiles: function () { return people.map(function (person) { return Object.assign({}, person); }); },
+    // Reuse the public renderer without mounting an app, loading data or binding actions.
+    renderEventPreview: function (activity) {
+      var preview = Object.create(CommunityApp.prototype);
+      preview.options = { startView: 'feed' };
+      preview.state = { likes: {}, reposts: {}, followRequests: {}, postComments: {}, commentsOpen: {}, sharesOpen: {}, storyUploads: {} };
+      preview.storyItems = function () { return [{id:'preview-own', name:'Tu historia', short:'Tu historia', avatar:'/brand/klini/favicon.svg', canUploadStory:true, isPatient:true}].concat(people.slice(0, 5)); };
+      var community = communities.find(function (item) {
+        return item.id === activity.community_key || normalizeSearch(item.name) === normalizeSearch(activity.community_name);
+      });
+      return { stories: preview.renderStories(), card: preview.renderActivityCard(activity, community) };
+    },
     mount: function (root, options) {
       if (!root) throw new Error("KliniCommunities.mount requiere un elemento raiz.");
       return new CommunityApp(root, options || {});

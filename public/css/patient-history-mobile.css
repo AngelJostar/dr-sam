@@ -117,3 +117,8 @@
 .native-shell .patient-health-view-stage > [data-health-view-panel]:not(.is-active) {
   display: none;
 }
+/* Quick register: browse cards first, then choose Favorites or All. */
+.native-shell .patient-register-view-panel [data-register-filter-switch] {
+  margin-top: 16px;
+  margin-bottom: 8px;
+}

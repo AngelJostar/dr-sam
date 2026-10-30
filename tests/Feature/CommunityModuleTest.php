@@ -35,14 +35,16 @@ class CommunityModuleTest extends TestCase
         $this->assertDatabaseHas('platform_modules', ['key' => 'community_admin', 'enabled' => true]);
         $this->get(route('community.dashboard'))->assertOk()
             ->assertSee('data-community-mode="admin"', false)
-            ->assertSee('Espacio de demostración')->assertSee(route('logout'))->assertDontSee('<iframe', false);
+            ->assertDontSee('klini-community-intro', false)->assertDontSee('Espacio de demostración')
+            ->assertSee('id="patientWellnessRoot"', false)->assertSee(route('logout'))->assertDontSee('<iframe', false);
     }
 
     public function test_patient_can_explore_but_cannot_open_admin_module(): void
     {
         $patient = $this->user('patient');
         $this->actingAs($patient)->get(route('community.explore'))->assertOk()
-            ->assertSee('data-community-mode="explore"', false);
+            ->assertSee('data-community-mode="explore"', false)
+            ->assertSee('El bienestar se vive en compañía.')->assertSee('Espacio de demostración');
         $this->get(route('community.dashboard'))->assertForbidden();
         $this->assertFalse(app(DashboardRegistry::class)->modulesFor($patient)->contains('key', 'community_admin'));
     }

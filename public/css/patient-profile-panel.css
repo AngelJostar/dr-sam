@@ -897,6 +897,21 @@ klini-profiles {
   gap: 24px;
 }
 
+.patient-wallet-tokens {padding:22px;border:1px solid #c7edf3;border-radius:20px;background:linear-gradient(120deg,#effcfd,#fff);color:#15354d;}
+.patient-wallet-token-heading {display:flex;align-items:center;gap:16px;}
+.patient-wallet-token-heading>span {display:grid;place-items:center;background:#d7f5f8;color:#008ca7;width:62px;height:62px;border-radius:18px;}
+.patient-wallet-token-heading svg {width:30px;height:30px;stroke:currentColor;fill:none;stroke-width:1.7;}
+.patient-wallet-token-heading small,.patient-wallet-token-heading strong {display:block;}
+.patient-wallet-token-heading strong {font-size:28px;margin:5px 0;}
+.patient-wallet-tokens p {margin:7px 0 0;color:#617797;font-size:13px;}
+.patient-wallet-tokens details {margin-top:18px;}
+.patient-wallet-tokens summary {cursor:pointer;font-weight:700;color:#00829b;}
+.patient-wallet-tokens ul {padding:0;margin:12px 0 0;list-style:none;}
+.patient-wallet-tokens li {display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0;border-top:1px solid #d8edf2;font-size:13px;}
+.patient-wallet-tokens li span {min-width:0;overflow-wrap:anywhere;}
+.patient-wallet-tokens li small {display:block;margin-top:4px;color:#617797;}
+.patient-wallet-tokens li b {white-space:nowrap;color:#00829b;}
+
 .patient-wallet-hero {
   position: relative;
   display: grid;

@@ -45,6 +45,16 @@ Route::post('/demo-login', [DemoAccessController::class, 'store'])->name('demo-l
 Route::post('/logout', [DemoAccessController::class, 'destroy'])->name('logout');
 
 Route::middleware('auth')->group(function (): void {
+    Route::get('/wallet/tokens', [\App\Http\Controllers\Wallet\TokenWalletController::class, 'show'])->name('wallet.tokens');
+    Route::middleware('role:superadmin,admin,patient')->prefix('communities/activities')->group(function (): void {
+        Route::get('/', [\App\Http\Controllers\Community\CommunityActivityController::class, 'index']);
+        Route::get('/{activity}/image', [\App\Http\Controllers\Community\CommunityActivityController::class, 'image'])->name('community.activities.image');
+        Route::get('/{activity}/attendees', [\App\Http\Controllers\Community\CommunityActivityController::class, 'attendees'])->middleware('role:superadmin,admin');
+        Route::post('/', [\App\Http\Controllers\Community\CommunityActivityController::class, 'store'])->middleware('role:superadmin,admin');
+        Route::patch('/{activity}', [\App\Http\Controllers\Community\CommunityActivityController::class, 'publish'])->middleware('role:superadmin,admin');
+        Route::post('/{activity}/reservation', [\App\Http\Controllers\Community\CommunityActivityController::class, 'reserve']);
+        Route::delete('/{activity}/reservation', [\App\Http\Controllers\Community\CommunityActivityController::class, 'cancel']);
+    });
     Route::get('/communities/admin', [CommunityDashboardController::class, 'admin'])
         ->middleware('role:superadmin,admin')->name('community.dashboard');
     Route::get('/communities', [CommunityDashboardController::class, 'explore'])

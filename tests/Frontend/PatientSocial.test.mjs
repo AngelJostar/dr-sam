@@ -137,7 +137,7 @@ test('mensajes vacíos se ignoran y el texto se escapa en la publicación',()=>{
 
 test('el buscador encuentra nombre, tema y ciudad sin distinguir acentos o mayúsculas',()=>{
   const {mount}=environment();const {app,root}=mount({startView:'feed',separateCalendar:true});
-  assert.match(root.innerHTML,/type="search" data-community-search/);
+  assert.doesNotMatch(root.innerHTML,/type="search" data-community-search/);
   assert.doesNotMatch(root.innerHTML,/kc-community-workspace-title/);
   const community={name:'Respira y Avanza',category:'Yoga',description:'Respiración consciente',city:'Ciudad de México'};
   for(const query of ['respira','YOGA','respiracion','MEXICO','yoga mexico','']) assert.equal(app.communityMatchesSearch(community,query),true,query);
@@ -147,13 +147,13 @@ test('el buscador encuentra nombre, tema y ciudad sin distinguir acentos o mayú
 test('buscar oculta tarjetas sin reconstruir el input y limpiar recupera los resultados',()=>{
   const {mount}=environment();const {app,root,input}=mount({startView:'feed',separateCalendar:true});
   const communities=app.catalogCommunities();
-  const cards=communities.map(item=>({hidden:false,getAttribute:()=>item.id}));
+  const cards=communities.map(item=>({hidden:false,dataset:{communityResult:"communities",searchText:[item.name,item.category,item.city,item.description].join(" ")},getAttribute:()=>item.id}));
   const status={};const empty={};
-  root.querySelectorAll=selector=>selector==='[data-community-feed-card]'?cards:[];
+  root.querySelectorAll=selector=>selector==='[data-community-result]'?cards:[];
   root.querySelector=selector=>selector==='[data-community-search-status]'?status:selector==='[data-community-search-empty]'?empty:null;
   const html=root.innerHTML;
   input('data-community-search','inexistente-000');
-  assert.ok(cards.every(card=>card.hidden));assert.equal(empty.hidden,false);assert.equal(status.textContent,'0 comunidades encontradas');
+  assert.ok(cards.every(card=>card.hidden));assert.equal(empty.hidden,false);assert.equal(status.textContent,'0 resultados encontrados');
   assert.equal(root.innerHTML,html);
   input('data-community-search','respira');assert.ok(cards.some(card=>!card.hidden));
   input('data-community-search','');assert.ok(cards.every(card=>!card.hidden));assert.equal(status.hidden,true);assert.equal(empty.hidden,true);
