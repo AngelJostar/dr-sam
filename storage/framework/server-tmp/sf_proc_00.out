@@ -1,0 +1,4 @@
+[Fri Oct 30 17:55:14 2026] 127.0.0.1:61501 [GET] URI: /superadmin
+[Fri Oct 30 17:55:15 2026] 127.0.0.1:51493 [GET] URI: /acceso
+[Fri Oct 30 17:55:35 2026] 127.0.0.1:62412 [POST] URI: /demo-login
+[Fri Oct 30 17:55:36 2026] 127.0.0.1:62360 [GET] URI: /superadmin
