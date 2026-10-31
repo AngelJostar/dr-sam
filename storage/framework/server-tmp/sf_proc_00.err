@@ -1,0 +1,90 @@
+[Fri Oct 30 11:55:02 2026] PHP 8.3.13 Development Server (http://127.0.0.1:8000) started
+[Fri Oct 30 11:55:14 2026] 127.0.0.1:61501 Accepted
+[Fri Oct 30 11:55:15 2026] 127.0.0.1:61501 Closing
+[Fri Oct 30 11:55:15 2026] 127.0.0.1:51493 Accepted
+[Fri Oct 30 11:55:15 2026] 127.0.0.1:51493 Closing
+[Fri Oct 30 11:55:15 2026] 127.0.0.1:60677 Accepted
+[Fri Oct 30 11:55:15 2026] 127.0.0.1:60677 [200]: GET /brand/klini/dejavu.woff
+[Fri Oct 30 11:55:15 2026] 127.0.0.1:60677 Closing
+[Fri Oct 30 11:55:15 2026] 127.0.0.1:61227 Accepted
+[Fri Oct 30 11:55:15 2026] 127.0.0.1:61687 Accepted
+[Fri Oct 30 11:55:15 2026] 127.0.0.1:65285 Accepted
+[Fri Oct 30 11:55:15 2026] 127.0.0.1:62925 Accepted
+[Fri Oct 30 11:55:15 2026] 127.0.0.1:61227 [200]: GET /css/drsam.css?v=1791388824
+[Fri Oct 30 11:55:15 2026] 127.0.0.1:61687 [200]: GET /css/klini-brand.css?v=1791388824
+[Fri Oct 30 11:55:15 2026] 127.0.0.1:65285 [200]: GET /css/klini-workspace.css?v=1791388824
+[Fri Oct 30 11:55:15 2026] 127.0.0.1:51663 Accepted
+[Fri Oct 30 11:55:15 2026] 127.0.0.1:62925 [200]: GET /css/klini-system.css?v=1791388824
+[Fri Oct 30 11:55:15 2026] 127.0.0.1:60619 Accepted
+[Fri Oct 30 11:55:15 2026] 127.0.0.1:51663 [200]: GET /css/klini-carousels.css?v=1791388824
+[Fri Oct 30 11:55:15 2026] 127.0.0.1:60619 [200]: GET /css/platform-density.css?v=1792597167
+[Fri Oct 30 11:55:15 2026] 127.0.0.1:61687 Closing
+[Fri Oct 30 11:55:15 2026] 127.0.0.1:65285 Closing
+[Fri Oct 30 11:55:15 2026] 127.0.0.1:50394 Accepted
+[Fri Oct 30 11:55:15 2026] 127.0.0.1:62925 Closing
+[Fri Oct 30 11:55:15 2026] 127.0.0.1:50394 [200]: GET /css/unit-operation-embed.css?v=1792718009
+[Fri Oct 30 11:55:15 2026] 127.0.0.1:51663 Closing
+[Fri Oct 30 11:55:15 2026] 127.0.0.1:60619 Closing
+[Fri Oct 30 11:55:15 2026] 127.0.0.1:50394 Closing
+[Fri Oct 30 11:55:15 2026] 127.0.0.1:55477 Accepted
+[Fri Oct 30 11:55:15 2026] 127.0.0.1:55477 [200]: GET /brand/klini/klini.svg
+[Fri Oct 30 11:55:15 2026] 127.0.0.1:61227 Closing
+[Fri Oct 30 11:55:15 2026] 127.0.0.1:55477 Closing
+[Fri Oct 30 11:55:15 2026] 127.0.0.1:59829 Accepted
+[Fri Oct 30 11:55:15 2026] 127.0.0.1:59829 [200]: GET /js/unit-operation-embed.js?v=1792718009
+[Fri Oct 30 11:55:15 2026] 127.0.0.1:59829 Closing
+[Fri Oct 30 11:55:15 2026] 127.0.0.1:60817 Accepted
+[Fri Oct 30 11:55:15 2026] 127.0.0.1:52456 Accepted
+[Fri Oct 30 11:55:15 2026] 127.0.0.1:60817 [200]: GET /js/drsam-table-filters.js?v=1792597167
+[Fri Oct 30 11:55:15 2026] 127.0.0.1:52456 [200]: GET /js/klini-carousels.js?v=1792597167
+[Fri Oct 30 11:55:15 2026] 127.0.0.1:60817 Closing
+[Fri Oct 30 11:55:15 2026] 127.0.0.1:52456 Closing
+[Fri Oct 30 11:55:15 2026] 127.0.0.1:49794 Accepted
+[Fri Oct 30 11:55:15 2026] 127.0.0.1:49794 [200]: GET /brand/klini/dejavu-bold.woff
+[Fri Oct 30 11:55:15 2026] 127.0.0.1:49794 Closing
+[Fri Oct 30 11:55:35 2026] 127.0.0.1:62412 Accepted
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:62412 Closing
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:62360 Accepted
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:62360 Closing
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:63013 Accepted
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:64453 Accepted
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:57576 Accepted
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:63013 [200]: GET /css/superadmin-workspace.css?v=1792597167
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:57898 Accepted
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:64453 [200]: GET /css/drsam.css?v=1791388824
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:57576 [200]: GET /brand/klini/dejavu.woff
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:62372 Accepted
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:57898 [200]: GET /css/klini-brand.css?v=1791388824
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:51447 Accepted
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:62372 [200]: GET /css/klini-workspace.css?v=1791388824
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:63013 Closing
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:62536 Accepted
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:51447 [200]: GET /css/klini-system.css?v=1791388824
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:57576 Closing
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:62536 [200]: GET /css/klini-carousels.css?v=1791388824
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:57898 Closing
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:62372 Closing
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:51447 Closing
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:62536 Closing
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:57041 Accepted
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:57041 [200]: GET /css/platform-density.css?v=1792597167
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:57041 Closing
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:63553 Accepted
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:63553 [200]: GET /css/unit-operation-embed.css?v=1792718009
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:63553 Closing
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:64453 Closing
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:58123 Accepted
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:54670 Accepted
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:58123 [200]: GET /js/superadmin-workspace.js?v=1792597167
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:62470 Accepted
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:54670 [200]: GET /brand/klini/klini.svg
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:52150 Accepted
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:62470 [200]: GET /js/unit-operation-embed.js?v=1792718009
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:58246 Accepted
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:52150 [200]: GET /js/drsam-table-filters.js?v=1792597167
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:58123 Closing
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:58246 [200]: GET /js/klini-carousels.js?v=1792597167
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:54670 Closing
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:62470 Closing
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:52150 Closing
+[Fri Oct 30 11:55:36 2026] 127.0.0.1:58246 Closing
