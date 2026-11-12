@@ -1,0 +1,64 @@
+
+   PASS  Tests\Feature\DistributorWorkspaceTest
+  ✓ catalog groups complete presentations and filters only own products                                          8.60s  
+  ✓ menu sections are available and reject other profiles and foreign editors                                    0.12s  
+  ✓ inventory changes are owned validated and detect stale stock                                                 0.05s  
+  ✓ store visibility respects both authorizations and product rules                                              0.07s  
+  ✓ reports and delivery followup never expose other suppliers or patient data                                   0.06s  
+  ✓ configuration cannot modify publication or account permissions                                               0.04s  
+  ✓ validation reopens the correct editor and restores input                                                     0.06s  
+  ✓ column filters cover all pages combine columns and keep provider scope                                       0.10s  
+  ✓ column filters apply to presentations before grouping and store visibility                                   0.08s  
+  ✓ order column filters use only owned lines in all order tables                                                0.11s  
+  ✓ empty tables keep column buttons and reject invalid filter payloads                                          0.14s  
+  ✓ store switch persists only own product status and updates mobile visibility                                  0.09s  
+  ✓ activating a product does not bypass store or provider publication rules                                     0.06s  
+  ✓ sku is editable unique per distributor and filterable in first store column                                  0.10s  
+
+   PASS  Tests\Feature\PharmacyStoreAdminTest
+  ✓ admin pages render and distributor cannot change publication                                                 0.13s  
+  ✓ missing profile denies and products are isolated                                                             0.05s  
+  ✓ admin distributor creation is unpublished and password is hashed                                             0.36s  
+  ✓ settings persist shipping and reject credentials in urls                                                     0.04s  
+  ✓ product featured persists and credential url is rejected                                                     0.05s  
+  ✓ secondary admin is denied every administration action                                                        0.05s  
+  ✓ order transitions are administrative and cancelled is terminal                                               1.67s  
+  ✓ prescription download requires superadmin and exact owner patient link                                       0.08s  
+  ✓ order contact and address are visible only to superadmin                                                     0.05s  
+  ✓ provider order view exposes only own lines and subtotal                                                      0.06s  
+
+   PASS  Tests\Feature\PharmacyStoreApiTest
+  ✓ public catalog is disabled by default and excludes unapproved or unowned products                            0.06s  
+  ✓ disabling provider or owner immediately hides products even direct urls                                      0.05s  
+  ✓ orders require patient authentication and server recalculates idempotently without payment or stock reserva… 0.07s  
+  ✓ submission rechecks publication and stock and requires prescription                                          0.05s  
+  ✓ prescription must belong to patient and is never automatically approved                                      0.06s  
+  ✓ controlled and cold chain are not public without supported fulfilment                                        0.04s  
+  ✓ inactive or wrong role tokens cannot submit and consent is required                                          0.05s  
+  ✓ uploaded prescription must match account and patient and stays pending                                       0.06s  
+  ✓ large but valid lines cannot overflow order decimal columns                                                  0.07s  
+  ✓ amount limit accepts exact boundary and rejects one cent more                                                0.05s  
+
+   PASS  Tests\Feature\UniversalMedicationAdministrationTest
+  ✓ demo import adds 203 official presentations without overwriting existing data or publishing products         0.50s  
+  ✓ both menus share the same catalog and search all pages by identifiers                                        0.59s  
+  ✓ identifier changes preserve leading zeroes and update both views without modifying distributor products      0.08s  
+  ✓ invalid and duplicate identifiers are rejected and non admins have no access                                 0.09s  
+
+   PASS  Tests\Feature\UniversalMedicationCreationTest
+  ✓ modal is present in both menus and creation assigns the next sku after the highest number                    0.08s  
+  ✓ validation and rollback do not consume skus and unauthorized accounts cannot create                          0.04s  
+  ✓ demo skus get one prefix and reimport does not add it again                                                  0.51s  
+  ✓ sku edition requires the prefix and creation respects manually changed skus                                  0.05s  
+
+   PASS  Tests\Feature\UniversalPharmacyPublicationTest
+  ✓ all four statuses are saved and filterable without changing identifiers or offers                            0.19s  
+  ✓ switch publication is idempotent and hides all offers direct urls and new orders                             0.06s  
+  ✓ distributor selection creates only own linked offer and retries update instead of duplicate                  0.09s  
+  ✓ nearest available supplier is computed from real coordinates and missing locations are not zero distance     0.05s  
+  ✓ catalog without offers is visible but unavailable and filters cover all pages                                0.05s  
+  ✓ only active superadmin changes publication and status and location changes are owned and validated           0.06s  
+
+  Tests:    48 passed (645 assertions)
+  Duration: 15.52s
+

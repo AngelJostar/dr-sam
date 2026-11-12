@@ -24,14 +24,7 @@
   $statusText = fn (?string $value) => $statusLabels[$value ?? ''] ?? ($value ? ucfirst(str_replace('_', ' ', $value)) : 'Sin estatus');
   $initials = collect(explode(' ', $patient->full_name))->filter()->take(2)->map(fn ($part) => mb_substr($part, 0, 1))->implode('');
   $storyDemo = app()->isLocal() && (auth()->user()->is_demo || in_array(auth()->user()->role, ['admin', 'superadmin'], true));
-  $supportViews = [
-    'insurance' => ['Mi Seguro', 'shield'],
-    'analyses' => ['Análisis Clínicos', 'flask'],
-    'prescriptions' => ['Recetas', 'file'],
-    'doctors' => ['Médicos y terapeutas', 'people'],
-    'devices' => ['Dispositivos médicos', 'device'],
-    'communities' => ['Comunidad', 'people'],
-  ];
+  $supportViews = collect($mobileSupportNavigation)->mapWithKeys(fn ($item) => [$item['view'] => [$item['label'], $item['icon']]])->all();
 @endphp
 
 @section('content')
@@ -77,14 +70,14 @@
           <span class="patient-profile-coin patient-profile-coin-one"></span>
           <span class="patient-profile-coin patient-profile-coin-two"></span>
         </span>
-        <span class="patient-profile-row-copy"><strong>Billetera y Suscripción</strong><small>Pagos, saldo y plan de acceso</small></span>
+        <span class="patient-profile-row-copy"><strong>{{ $mobileUi['texts']['wallet_title'] }}</strong><small>{{ $mobileUi['texts']['wallet_description'] }}</small></span>
         <span class="patient-profile-row-action" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></span>
       </button>
 
       <section class="patient-profile-support-group" data-profile-support-group>
         <button class="patient-profile-row" type="button" data-profile-support-toggle aria-expanded="false">
           <span class="patient-profile-row-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="2.7"/><circle cx="6.3" cy="9.4" r="2"/><circle cx="17.7" cy="9.4" r="2"/><path d="M7.7 18.8c.7-2.9 2.2-4.4 4.3-4.4s3.6 1.5 4.3 4.4"/><path d="M2.8 18.7c.5-2.2 1.7-3.4 3.6-3.4.7 0 1.3.1 1.8.4"/><path d="M21.2 18.7c-.5-2.2-1.7-3.4-3.6-3.4-.7 0-1.3.1-1.8.4"/></svg></span>
-          <span class="patient-profile-row-copy"><strong>Interacciones</strong><small>Solicitudes, mensajes, alertas y enlaces</small></span>
+          <span class="patient-profile-row-copy"><strong>{{ $mobileUi['texts']['interactions_title'] }}</strong><small>{{ $mobileUi['texts']['interactions_description'] }}</small></span>
           <span class="patient-profile-row-action patient-profile-support-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></span>
         </button>
         <div class="patient-profile-support-menu" data-profile-support-menu hidden>
@@ -111,10 +104,8 @@
         </div>
       </section>
 
+      <h2 class="patient-support-medical-heading">{{ $mobileUi['texts']['medical_support'] }}</h2>
       @foreach ($supportViews as $key => [$label, $icon])
-        @if ($key === 'analyses')
-          <h2 class="patient-support-medical-heading">Soporte médico</h2>
-        @endif
         @if ($key === 'insurance')
           <button class="patient-support-insurance-card" type="button" data-open-view="{{ $key }}">
             <span class="patient-support-insurance-icon">@include('patient.partials.insurance-icon', ['icon'=>'shield'])</span>
@@ -272,7 +263,7 @@
           </div>
           <form class="patient-insurance-edit-form patient-portal-form" method="post" action="{{ route('patient.insurance.save') }}" data-insurance-form hidden>
             @csrf
-            <div class="patient-insurance-form-heading"><div><h2>{{ $policy ? 'Actualizar póliza' : 'Registrar póliza' }}</h2><p>Completa los datos disponibles de tu seguro médico.</p></div><button type="button" data-insurance-form-close>×</button></div>
+            <div class="patient-insurance-form-heading"><div><h2>{{ $policy ? 'Actualizar póliza' : 'Registrar póliza' }}</h2><p>{{ $mobileUi['forms']['policy_description'] }}</p></div><button type="button" data-insurance-form-close>×</button></div>
             <div class="patient-portal-form-grid">
               <label>Número de póliza<input required name="policy_number" value="{{ old('policy_number', $policy?->policy_number) }}"></label>
               <label>Aseguradora<input required name="insurer_name" value="{{ old('insurer_name', $policy?->insurer_name) }}"></label>
@@ -282,7 +273,7 @@
               <label>Fin<input type="date" name="ends_at" value="{{ old('ends_at', $policy?->ends_at?->format('Y-m-d')) }}"></label>
               <label>Estatus<select name="status"><option value="active">Activa</option><option value="pending" @selected($policy?->status === 'pending')>Pendiente</option><option value="inactive" @selected($policy?->status === 'inactive')>Inactiva</option><option value="expired" @selected($policy?->status === 'expired')>Vencida</option></select></label>
             </div>
-            <button class="patient-portal-primary" type="submit">Guardar póliza</button>
+            <button class="patient-portal-primary" type="submit">{{ $mobileUi['texts']['save_policy'] }}</button>
           </form>
         </article>
       </section>
@@ -1027,7 +1018,7 @@
           <script type="application/json" data-doctor-booking-data>{!! json_encode($doctorBookingOptions, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) !!}</script>
           <script type="application/json" data-doctor-booking-confirmation>{!! json_encode($bookingConfirmation, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) !!}</script>
 
-          <div class="patient-doctor-booking" data-doctor-booking data-booking-old-doctor="{{ old('doctor_id') }}" data-booking-old-start="{{ old('starts_at') }}" data-booking-old-reason="{{ old('reason_type') }}" data-booking-old-notes="{{ old('reason_notes') }}" hidden>
+          <div class="patient-doctor-booking" data-doctor-booking data-booking-schedule-label="{{ $mobileUi['texts']['view_slots'] }}" data-booking-old-doctor="{{ old('doctor_id') }}" data-booking-old-start="{{ old('starts_at') }}" data-booking-old-reason="{{ old('reason_type') }}" data-booking-old-notes="{{ old('reason_notes') }}" hidden>
             @if ($errors->hasAny(['doctor_id', 'starts_at', 'reason_type', 'reason_notes']))
               <div class="patient-doctor-booking-error" role="alert" data-booking-error>{{ $errors->first() }}</div>
             @endif
@@ -1060,7 +1051,7 @@
                 <p>Consulta los próximos horarios disponibles para agendar tu cita.</p>
                 <div class="patient-doctor-availability-preview" data-booking-profile-dates></div>
               </section>
-              <button class="patient-doctor-booking-primary" type="button" data-booking-next="schedule">Ver horarios disponibles</button>
+              <button class="patient-doctor-booking-primary" type="button" data-booking-next="schedule">{{ $mobileUi['texts']['view_slots'] }}</button>
             </section>
 
             <section class="patient-doctor-booking-step" data-doctor-booking-step="schedule" hidden>
@@ -1068,7 +1059,7 @@
                 <button type="button" data-booking-back="profile" aria-label="Volver al perfil">
                   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
                 </button>
-                <h2>Selecciona fecha y hora</h2>
+                <h2>{{ $mobileUi['forms']['booking_schedule_title'] }}</h2>
               </header>
               <section class="patient-doctor-date-picker">
                 <h3 data-booking-month>Próximas fechas</h3>
@@ -1079,7 +1070,7 @@
                 <div class="patient-doctor-time-options" data-booking-time-options></div>
                 <div class="patient-doctor-booking-empty" data-booking-no-slots hidden>No hay horarios disponibles para esta fecha.</div>
               </section>
-              <button class="patient-doctor-booking-primary" type="button" data-booking-next="reason" disabled>Continuar</button>
+              <button class="patient-doctor-booking-primary" type="button" data-booking-next="reason" disabled>{{ $mobileUi['texts']['continue_booking'] }}</button>
             </section>
 
             <section class="patient-doctor-booking-step" data-doctor-booking-step="reason" hidden>
@@ -1087,19 +1078,19 @@
                 <button type="button" data-booking-back="schedule" aria-label="Volver a fecha y hora">
                   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
                 </button>
-                <h2>Motivo de consulta</h2>
+                <h2>{{ $mobileUi['forms']['booking_reason_title'] }}</h2>
               </header>
               <fieldset class="patient-doctor-reason-options">
-                <legend>Selecciona el motivo de tu consulta</legend>
+                <legend>{{ $mobileUi['forms']['booking_reason_hint'] }}</legend>
                 @foreach (['Chequeo general', 'Hipertensión arterial', 'Diabetes', 'Colesterol alto', 'Enfermedades respiratorias', 'Dolor de cabeza / Migraña', 'Otro motivo'] as $bookingReason)
                   <label><input type="radio" name="booking_reason_preview" value="{{ $bookingReason }}" data-booking-reason><span></span>{{ $bookingReason }}</label>
                 @endforeach
               </fieldset>
               <label class="patient-doctor-reason-notes">Describe brevemente tu motivo <small>(opcional)</small>
-                <textarea maxlength="200" placeholder="Cuéntanos más sobre tu consulta..." data-booking-notes></textarea>
+                <textarea maxlength="200" placeholder="{{ $mobileUi['forms']['booking_notes_placeholder'] }}" data-booking-notes></textarea>
                 <span><b data-booking-notes-count>0</b>/200</span>
               </label>
-              <button class="patient-doctor-booking-primary" type="button" data-booking-next="summary" disabled>Continuar</button>
+              <button class="patient-doctor-booking-primary" type="button" data-booking-next="summary" disabled>{{ $mobileUi['texts']['continue_booking'] }}</button>
             </section>
 
             <section class="patient-doctor-booking-step" data-doctor-booking-step="summary" hidden>
@@ -1107,7 +1098,7 @@
                 <button type="button" data-booking-back="reason" aria-label="Volver al motivo">
                   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
                 </button>
-                <h2>Resumen de tu cita</h2>
+                <h2>{{ $mobileUi['forms']['booking_summary_title'] }}</h2>
               </header>
               <div class="patient-doctor-summary-list">
                 <section><h3>Profesional</h3><div class="patient-doctor-summary-professional"><span data-booking-summary-initials></span><div><strong data-booking-summary-doctor></strong><small data-booking-summary-specialty></small><small data-booking-summary-license></small></div></div></section>
@@ -1122,22 +1113,22 @@
                 <input type="hidden" name="starts_at" data-booking-form-start>
                 <input type="hidden" name="reason_type" data-booking-form-reason>
                 <input type="hidden" name="reason_notes" data-booking-form-notes>
-                <button class="patient-doctor-booking-primary" type="submit">Confirmar cita</button>
+                <button class="patient-doctor-booking-primary" type="submit">{{ $mobileUi['texts']['confirm_booking'] }}</button>
               </form>
             </section>
 
             <section class="patient-doctor-booking-step patient-doctor-booking-success" data-doctor-booking-step="success" hidden>
               <span class="patient-doctor-success-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"></path></svg></span>
-              <h2>¡Cita agendada con éxito!</h2>
-              <p>Los detalles de tu cita ya están disponibles en tu calendario.</p>
+              <h2>{{ $mobileUi['forms']['booking_success_title'] }}</h2>
+              <p>{{ $mobileUi['forms']['booking_success_message'] }}</p>
               <section class="patient-doctor-success-card">
                 <div class="patient-doctor-success-professional"><span data-booking-success-initials></span><div><strong data-booking-success-doctor></strong><small data-booking-success-specialty></small></div></div>
                 <div><span aria-hidden="true">▣</span><p><strong data-booking-success-date></strong><b data-booking-success-time></b></p></div>
                 <div><span aria-hidden="true">⌖</span><p><strong data-booking-success-unit></strong><small data-booking-success-location></small></p></div>
                 <div><span aria-hidden="true">▤</span><p data-booking-success-reason></p></div>
               </section>
-              <button class="patient-doctor-booking-secondary" type="button" data-booking-open-calendar>Ver mis citas</button>
-              <button class="patient-doctor-booking-primary" type="button" data-booking-download-calendar>Agregar al calendario</button>
+              <button class="patient-doctor-booking-secondary" type="button" data-booking-open-calendar>{{ $mobileUi['texts']['view_appointments'] }}</button>
+              <button class="patient-doctor-booking-primary" type="button" data-booking-download-calendar>{{ $mobileUi['texts']['add_calendar'] }}</button>
             </section>
           </div>
         </div>
@@ -1779,12 +1770,10 @@
         </article>
       </section>
 
-      <nav class="patient-portal-bottom-nav" aria-label="Navegación principal del paciente">
-        <button class="is-active" type="button" data-open-view="home" aria-label="Inicio"><span class="patient-bottom-png" aria-hidden="true"><img src="{{ asset('images/patient-bottom-nav/01_Inicio.png') }}" alt=""></span></button>
-        <button class="patient-bottom-communities" type="button" data-open-view="communities" aria-label="Comunidades"><span class="patient-bottom-png" aria-hidden="true"><img src="{{ asset('images/patient-bottom-nav/02_Comunidades.png') }}" alt=""></span></button>
-        <button class="patient-bottom-register" type="button" data-open-view="register" aria-label="Registro"><span class="patient-bottom-png" aria-hidden="true"><img src="{{ asset('images/patient-bottom-nav/03_Registro.png') }}" alt=""></span></button>
-        <button type="button" data-open-view="wellness" aria-label="Mi Salud"><span class="patient-bottom-png" aria-hidden="true"><img src="{{ asset('images/patient-bottom-nav/04_Salud.png') }}" alt=""></span></button>
-        <button type="button" data-open-view="calendar" aria-label="Calendario"><span class="patient-bottom-png" aria-hidden="true"><img src="{{ asset('images/patient-bottom-nav/05_Calendario.png') }}" alt=""></span></button>
+      <nav class="patient-portal-bottom-nav" aria-label="Navegación principal del paciente" style="--patient-nav-items: {{ count($mobileBottomNavigation) }}">
+        @foreach ($mobileBottomNavigation as $item)
+          <button @if ($item['class']) class="{{ $item['class'] }}" @endif type="button" data-open-view="{{ $item['view'] }}" aria-label="{{ $item['label'] }}" title="{{ $item['label'] }}"><span class="patient-bottom-png" aria-hidden="true"><img src="{{ asset('images/patient-bottom-nav/'.$item['image']) }}" alt=""></span></button>
+        @endforeach
       </nav>
     </main>
   </div>
@@ -4823,7 +4812,7 @@
     const profileNext = doctorBookingRoot.querySelector('[data-doctor-booking-step="profile"] [data-booking-next="schedule"]');
     if (profileNext) {
       profileNext.disabled = !doctor.slots?.length;
-      profileNext.textContent = doctor.slots?.length ? 'Ver horarios disponibles' : 'Sin horarios disponibles';
+      profileNext.textContent = doctor.slots?.length ? doctorBookingRoot.dataset.bookingScheduleLabel : 'Sin horarios disponibles';
     }
   };
   const selectBookingTime = (button, slot) => {

@@ -1,0 +1,33 @@
+
+   PASS  Tests\Feature\PatientPortalTest
+  ✓ patient user can open native blade portal                                                                    4.71s  
+  ✓ imported patient styles do not replace other modules styles                                                  0.08s  
+  ✓ patient can reach community panel from menu or direct link                                                   0.04s  
+  ✓ my health includes the clinical history switch and shared history                                            0.05s  
+  ✓ quick register has parameter and clinical history tabs                                                       0.05s  
+  ✓ patient can upload and download a quick register attachment                                                  0.06s  
+  ✓ quick register attachment rejects invalid files and other patients                                           0.05s  
+  ✓ patient can update own profile                                                                               0.03s  
+  ✓ calendar orders scheduled appointments before past appointments                                              0.05s  
+  ✓ patient can register insurance policy                                                                        0.03s  
+  ✓ patient can schedule an available doctor appointment                                                         0.06s  
+  ✓ redesigned calendar exposes only the authenticated patients appointments                                     0.05s  
+  ✓ redesigned calendar does not invent appointments for empty accounts                                          0.04s  
+  ✓ calendar periods keep ongoing and undated visits upcoming and archive finished visits                        0.05s  
+  ✓ patient can request a quote without replacing existing policy                                                0.04s  
+  ✓ refund requires a policy and cannot use another patients documents                                           0.04s  
+  ✓ quote requires consent and valid contact                                                                     0.04s  
+  ✓ refund saves owned documents and rejects foreign document                                                    0.06s  
+
+   PASS  Tests\Feature\SuperAdminMobileAppTest
+  ✓ mobile management has all reviewed sections and no phone preview                                             0.21s  
+  ✓ mobile admin workspace requires superadmin access                                                            0.03s  
+  ✓ saved labels and forms are rendered by the actual mobile portal                                              0.04s  
+  ✓ navigation saves visibility names and order without changing destinations                                    0.06s  
+  ✓ invalid settings unknown fields and hiding home are rejected                                                 0.05s  
+  ✓ stale editor cannot overwrite newer changes                                                                  0.04s  
+  ✓ user search is scoped to klini and devices do not expose push tokens                                         0.08s  
+
+  Tests:    25 passed (247 assertions)
+  Duration: 6.24s
+

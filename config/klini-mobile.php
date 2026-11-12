@@ -1,0 +1,40 @@
+<?php
+
+return [
+    'navigation' => [
+        'home' => ['label' => 'Inicio', 'group' => 'bottom', 'view' => 'home', 'image' => '01_Inicio.png', 'class' => 'is-active', 'order' => 1, 'visible' => true],
+        'communities' => ['label' => 'Comunidades', 'group' => 'bottom', 'view' => 'communities', 'image' => '02_Comunidades.png', 'class' => 'patient-bottom-communities', 'order' => 2, 'visible' => true],
+        'register' => ['label' => 'Registro', 'group' => 'bottom', 'view' => 'register', 'image' => '03_Registro.png', 'class' => 'patient-bottom-register', 'order' => 3, 'visible' => true],
+        'wellness' => ['label' => 'Mi Salud', 'group' => 'bottom', 'view' => 'wellness', 'image' => '04_Salud.png', 'class' => '', 'order' => 4, 'visible' => true],
+        'calendar' => ['label' => 'Calendario', 'group' => 'bottom', 'view' => 'calendar', 'image' => '05_Calendario.png', 'class' => '', 'order' => 5, 'visible' => true],
+        'insurance' => ['label' => 'Mi Seguro', 'group' => 'support', 'view' => 'insurance', 'icon' => 'shield', 'order' => 1, 'visible' => true],
+        'analyses' => ['label' => 'Análisis Clínicos', 'group' => 'support', 'view' => 'analyses', 'icon' => 'flask', 'order' => 2, 'visible' => true],
+        'prescriptions' => ['label' => 'Recetas', 'group' => 'support', 'view' => 'prescriptions', 'icon' => 'file', 'order' => 3, 'visible' => true],
+        'doctors' => ['label' => 'Médicos y terapeutas', 'group' => 'support', 'view' => 'doctors', 'icon' => 'people', 'order' => 4, 'visible' => true],
+        'devices' => ['label' => 'Dispositivos médicos', 'group' => 'support', 'view' => 'devices', 'icon' => 'device', 'order' => 5, 'visible' => true],
+        'support_communities' => ['label' => 'Comunidad', 'group' => 'support', 'view' => 'communities', 'icon' => 'people', 'order' => 6, 'visible' => true],
+    ],
+    'texts' => [
+        'wallet_title' => ['label' => 'Menú de billetera', 'default' => 'Billetera y Suscripción'],
+        'wallet_description' => ['label' => 'Descripción de billetera', 'default' => 'Pagos, saldo y plan de acceso'],
+        'interactions_title' => ['label' => 'Menú de interacciones', 'default' => 'Interacciones'],
+        'interactions_description' => ['label' => 'Descripción de interacciones', 'default' => 'Solicitudes, mensajes, alertas y enlaces'],
+        'medical_support' => ['label' => 'Encabezado de soporte médico', 'default' => 'Soporte médico'],
+        'view_slots' => ['label' => 'Botón para consultar horarios', 'default' => 'Ver horarios disponibles'],
+        'continue_booking' => ['label' => 'Botón para continuar una cita', 'default' => 'Continuar'],
+        'confirm_booking' => ['label' => 'Botón para confirmar una cita', 'default' => 'Confirmar cita'],
+        'view_appointments' => ['label' => 'Botón para ver citas', 'default' => 'Ver mis citas'],
+        'add_calendar' => ['label' => 'Botón para agregar al calendario', 'default' => 'Agregar al calendario'],
+        'save_policy' => ['label' => 'Botón para guardar póliza', 'default' => 'Guardar póliza'],
+    ],
+    'forms' => [
+        'booking_schedule_title' => ['label' => 'Citas · selección de horario', 'default' => 'Selecciona fecha y hora'],
+        'booking_reason_title' => ['label' => 'Citas · título del motivo', 'default' => 'Motivo de consulta'],
+        'booking_reason_hint' => ['label' => 'Citas · instrucción del motivo', 'default' => 'Selecciona el motivo de tu consulta'],
+        'booking_notes_placeholder' => ['label' => 'Citas · ayuda del campo de notas', 'default' => 'Cuéntanos más sobre tu consulta...'],
+        'booking_summary_title' => ['label' => 'Citas · resumen', 'default' => 'Resumen de tu cita'],
+        'booking_success_title' => ['label' => 'Citas · confirmación', 'default' => '¡Cita agendada con éxito!'],
+        'booking_success_message' => ['label' => 'Citas · mensaje de confirmación', 'default' => 'Los detalles de tu cita ya están disponibles en tu calendario.'],
+        'policy_description' => ['label' => 'Póliza · instrucciones del formulario', 'default' => 'Completa los datos disponibles de tu seguro médico.'],
+    ],
+];

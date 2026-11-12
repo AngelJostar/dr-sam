@@ -1,0 +1,46 @@
+[
+  {
+    "name": "orders",
+    "width": 390,
+    "scroll": 390,
+    "body": 488,
+    "headings": [
+      "Farmacia digital",
+      "Control de solicitudes"
+    ],
+    "tables": [
+      {
+        "width": 716,
+        "parent": 469,
+        "scrollLeft": 247.5
+      }
+    ],
+    "over": [
+      "A.",
+      "SPAN.klini-nav-icon",
+      "svg.[object SVGAnimatedString]",
+      "A.",
+      "SPAN.klini-nav-icon",
+      "svg.[object SVGAnimatedString]",
+      "path.[object SVGAnimatedString]",
+      "A."
+    ]
+  },
+  {
+    "name": "provider-orders",
+    "width": 390,
+    "scroll": 390,
+    "body": 488,
+    "headings": [
+      "Solicitudes de Distribuidora Ejemplo"
+    ],
+    "tables": [
+      {
+        "width": 581,
+        "parent": 469,
+        "scrollLeft": 112.5
+      }
+    ],
+    "over": []
+  }
+]

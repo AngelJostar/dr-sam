@@ -2,6 +2,7 @@
 @php
   $key = mb_strtolower($name);
   $path = match (true) {
+    $key === 'aplicacion movil' => 'M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z M10 5h4 M11 19h2',
     $key === 'insurance-medical' => 'M9 3h6v4H9z M3 7h18v14H3z M12 11v6 M9 14h6',
     $key === 'insurance-life' => 'M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8z',
     $key === 'admin-doctor' => 'M18 21v-2a6 6 0 0 0-12 0v2 M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8',

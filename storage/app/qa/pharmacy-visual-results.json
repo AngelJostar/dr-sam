@@ -1,0 +1,341 @@
+[
+  {
+    "name": "visual",
+    "width": 1380,
+    "scroll": 1380,
+    "body": 1725,
+    "headings": [
+      "Farmacia digital",
+      "Presentación de la tienda"
+    ],
+    "tables": [],
+    "over": []
+  },
+  {
+    "name": "distributors",
+    "width": 1380,
+    "scroll": 1380,
+    "body": 1725,
+    "headings": [
+      "Distribuidores",
+      "Distribuidores registrados"
+    ],
+    "tables": [
+      {
+        "width": 1450,
+        "parent": 1450
+      }
+    ],
+    "over": []
+  },
+  {
+    "name": "create",
+    "width": 1380,
+    "scroll": 1380,
+    "body": 1725,
+    "headings": [
+      "Distribuidores",
+      "Dar de alta un distribuidor"
+    ],
+    "tables": [],
+    "over": []
+  },
+  {
+    "name": "orders",
+    "width": 1380,
+    "scroll": 1380,
+    "body": 1725,
+    "headings": [
+      "Farmacia digital",
+      "Control de solicitudes"
+    ],
+    "tables": [
+      {
+        "width": 1450,
+        "parent": 1450
+      }
+    ],
+    "over": []
+  },
+  {
+    "name": "products",
+    "width": 1380,
+    "scroll": 1380,
+    "body": 1725,
+    "headings": [
+      "Distribuidora Ejemplo",
+      "Catálogo propio"
+    ],
+    "tables": [],
+    "over": []
+  },
+  {
+    "name": "product-create",
+    "width": 1380,
+    "scroll": 1380,
+    "body": 1725,
+    "headings": [
+      "Distribuidora Ejemplo",
+      "Nuevo producto"
+    ],
+    "tables": [],
+    "over": []
+  },
+  {
+    "name": "provider-orders",
+    "width": 1380,
+    "scroll": 1380,
+    "body": 1725,
+    "headings": [
+      "Solicitudes de Distribuidora Ejemplo"
+    ],
+    "tables": [
+      {
+        "width": 1450,
+        "parent": 1450
+      }
+    ],
+    "over": []
+  },
+  {
+    "name": "visual",
+    "width": 1024,
+    "scroll": 1024,
+    "body": 1280,
+    "headings": [
+      "Farmacia digital",
+      "Presentación de la tienda"
+    ],
+    "tables": [],
+    "over": []
+  },
+  {
+    "name": "distributors",
+    "width": 1024,
+    "scroll": 1024,
+    "body": 1280,
+    "headings": [
+      "Distribuidores",
+      "Distribuidores registrados"
+    ],
+    "tables": [
+      {
+        "width": 1037,
+        "parent": 1037
+      }
+    ],
+    "over": []
+  },
+  {
+    "name": "create",
+    "width": 1024,
+    "scroll": 1024,
+    "body": 1280,
+    "headings": [
+      "Distribuidores",
+      "Dar de alta un distribuidor"
+    ],
+    "tables": [],
+    "over": []
+  },
+  {
+    "name": "orders",
+    "width": 1024,
+    "scroll": 1024,
+    "body": 1280,
+    "headings": [
+      "Farmacia digital",
+      "Control de solicitudes"
+    ],
+    "tables": [
+      {
+        "width": 1037,
+        "parent": 1037
+      }
+    ],
+    "over": []
+  },
+  {
+    "name": "products",
+    "width": 1024,
+    "scroll": 1024,
+    "body": 1280,
+    "headings": [
+      "Distribuidora Ejemplo",
+      "Catálogo propio"
+    ],
+    "tables": [],
+    "over": []
+  },
+  {
+    "name": "product-create",
+    "width": 1024,
+    "scroll": 1024,
+    "body": 1280,
+    "headings": [
+      "Distribuidora Ejemplo",
+      "Nuevo producto"
+    ],
+    "tables": [],
+    "over": []
+  },
+  {
+    "name": "provider-orders",
+    "width": 1024,
+    "scroll": 1024,
+    "body": 1280,
+    "headings": [
+      "Solicitudes de Distribuidora Ejemplo"
+    ],
+    "tables": [
+      {
+        "width": 1037,
+        "parent": 1037
+      }
+    ],
+    "over": []
+  },
+  {
+    "name": "visual",
+    "width": 390,
+    "scroll": 390,
+    "body": 488,
+    "headings": [
+      "Farmacia digital",
+      "Presentación de la tienda"
+    ],
+    "tables": [],
+    "over": [
+      "A.",
+      "SPAN.klini-nav-icon",
+      "svg.[object SVGAnimatedString]",
+      "A.",
+      "SPAN.klini-nav-icon",
+      "svg.[object SVGAnimatedString]",
+      "path.[object SVGAnimatedString]",
+      "A."
+    ]
+  },
+  {
+    "name": "distributors",
+    "width": 390,
+    "scroll": 390,
+    "body": 488,
+    "headings": [
+      "Distribuidores",
+      "Distribuidores registrados"
+    ],
+    "tables": [
+      {
+        "width": 523,
+        "parent": 469
+      }
+    ],
+    "over": [
+      "A.is-active",
+      "A.",
+      "SPAN.klini-nav-icon",
+      "svg.[object SVGAnimatedString]",
+      "path.[object SVGAnimatedString]",
+      "A.",
+      "SPAN.klini-nav-icon",
+      "svg.[object SVGAnimatedString]"
+    ]
+  },
+  {
+    "name": "create",
+    "width": 390,
+    "scroll": 390,
+    "body": 488,
+    "headings": [
+      "Distribuidores",
+      "Dar de alta un distribuidor"
+    ],
+    "tables": [],
+    "over": [
+      "A.is-active",
+      "A.",
+      "SPAN.klini-nav-icon",
+      "svg.[object SVGAnimatedString]",
+      "path.[object SVGAnimatedString]",
+      "A.",
+      "SPAN.klini-nav-icon",
+      "svg.[object SVGAnimatedString]"
+    ]
+  },
+  {
+    "name": "orders",
+    "width": 390,
+    "scroll": 390,
+    "body": 488,
+    "headings": [
+      "Farmacia digital",
+      "Control de solicitudes"
+    ],
+    "tables": [
+      {
+        "width": 716,
+        "parent": 469
+      }
+    ],
+    "over": [
+      "A.",
+      "SPAN.klini-nav-icon",
+      "svg.[object SVGAnimatedString]",
+      "A.",
+      "SPAN.klini-nav-icon",
+      "svg.[object SVGAnimatedString]",
+      "path.[object SVGAnimatedString]",
+      "A."
+    ]
+  },
+  {
+    "name": "products",
+    "width": 390,
+    "scroll": 390,
+    "body": 488,
+    "headings": [
+      "Distribuidora Ejemplo",
+      "Catálogo propio"
+    ],
+    "tables": [],
+    "over": []
+  },
+  {
+    "name": "product-create",
+    "width": 390,
+    "scroll": 390,
+    "body": 488,
+    "headings": [
+      "Distribuidora Ejemplo",
+      "Nuevo producto"
+    ],
+    "tables": [],
+    "over": []
+  },
+  {
+    "name": "provider-orders",
+    "width": 390,
+    "scroll": 390,
+    "body": 488,
+    "headings": [
+      "Solicitudes de Distribuidora Ejemplo"
+    ],
+    "tables": [
+      {
+        "width": 581,
+        "parent": 469
+      }
+    ],
+    "over": [
+      "TABLE.superadmin-native-catalog-table",
+      "THEAD.",
+      "TR.",
+      "TH.drsam-table-filter-cell",
+      "DIV.drsam-table-filter-head",
+      "SPAN.drsam-table-filter-label",
+      "BUTTON.drsam-table-filter-button",
+      "TBODY."
+    ]
+  }
+]

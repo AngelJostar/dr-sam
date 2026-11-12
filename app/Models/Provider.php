@@ -10,7 +10,8 @@ class Provider extends BaseModel
     protected function casts(): array
     {
         return [
-            'metadata' => 'array',
+            'metadata' => 'array', 'digital_pharmacy_enabled' => 'boolean',
+            'pharmacy_latitude' => 'float', 'pharmacy_longitude' => 'float',
         ];
     }
 

@@ -1,0 +1,41 @@
+
+  ....................................................................................................................
+  ........⨯...........................................................................................................
+  ....................................................................................................................
+  .......................................................................................
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\DoctorConsultationTariffTest > active doctor publishes only their own exact cent tariff and…   
+  Failed asserting that two arrays are identical.
+--- Expected
++++ Actual
+@@ @@
+ Array &0 [
+-    0 => 'tariff_id',
+-    1 => 'version',
+-    2 => 'currency',
+-    3 => 'amount_cents',
+-    4 => 'modality',
++    0 => 'version',
++    1 => 'currency',
++    2 => 'modality',
++    3 => 'tariff_id',
++    4 => 'amount_cents',
+ ]
+
+  at tests\Feature\DoctorConsultationTariffTest.php:74
+     70▕         $this->assertSame('MXN', $tariff->currency);
+     71▕         $this->assertSame($user->id, $tariff->created_by);
+     72▕         $this->assertNull($other->fresh()->current_consultation_tariff_id);
+     73▕         $audit = AuditLog::query()->where('event', 'doctor.consultation_tariff.publish')->firstOrFail();
+  ➜  74▕         $this->assertSame(['tariff_id', 'version', 'currency', 'amount_cents', 'modality'], array_keys($audit->payload['context']));
+     75▕         $this->assertSame($tariff->id, $audit->payload['context']['tariff_id']);
+     76▕         $this->assertDatabaseCount('doctor_consultation_tariffs', 1);
+     77▕     }
+     78▕
+
+  1   tests\Feature\DoctorConsultationTariffTest.php:74
+
+
+  Tests:    1 failed, 434 passed (6962 assertions)
+  Duration: 76.69s
+

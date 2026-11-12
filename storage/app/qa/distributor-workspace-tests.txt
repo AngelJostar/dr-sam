@@ -1,0 +1,47 @@
+
+   PASS  Tests\Feature\DistributorWorkspaceTest
+  ✓ catalog groups complete presentations and filters only own products                                          7.93s  
+  ✓ menu sections are available and reject other profiles and foreign editors                                    0.12s  
+  ✓ inventory changes are owned validated and detect stale stock                                                 0.06s  
+  ✓ store visibility respects both authorizations and product rules                                              0.07s  
+  ✓ reports and delivery followup never expose other suppliers or patient data                                   0.08s  
+  ✓ configuration cannot modify publication or account permissions                                               0.04s  
+
+   PASS  Tests\Feature\MedicineDistributorNavigationTest
+  ✓ distributor login goes to catalog instead of an old intended panel                                           0.35s  
+  ✓ old dashboard and provider panels redirect distributor to own catalog                                        0.20s  
+  ✓ distributor module switcher only links to its catalog                                                        0.18s  
+  ✓ other provider and superadmin keep their existing panels                                                     0.08s  
+
+   PASS  Tests\Feature\PharmacyDemoImageLibraryTest
+  ✓ eligible provider can view png library and unknown key is not found                                          0.08s  
+  ✓ library access requires active enabled demo provider                                                         0.06s  
+  ✓ product form shows four demo choices only for eligible provider                                              0.07s  
+  ✓ all demo choices copy exact resources to private owned opaque paths                                          0.14s  
+  ✓ store rejects ineligible unknown or ambiguous demo selections without writes                                 0.08s  
+  ✓ owned updates preserve metadata and public images obey publication gates                                     0.10s  
+
+   PASS  Tests\Feature\PharmacyProductImageTest
+  ✓ owner upload is private and preview requires owner or active superadmin                                      0.09s  
+  ✓ upload rejects forged mime svg file size and dimensions                                                      0.06s  
+  ✓ allowed raster formats are detected from contents and ambiguous source is rejected                           0.08s  
+  ✓ public photo uses request origin and rechecks every publication gate                                         0.10s  
+  ✓ other distributor cannot replace a photo or change its product                                               0.08s  
+  ✓ replacement preserves existing files and https url compatibility                                             0.08s  
+  ✓ metadata cannot serve another products file or arbitrary paths                                               0.08s  
+
+   PASS  Tests\Feature\PharmacyStoreAdminTest
+  ✓ admin pages render and distributor cannot change publication                                                 0.12s  
+  ✓ missing profile denies and products are isolated                                                             0.06s  
+  ✓ admin distributor creation is unpublished and password is hashed                                             0.35s  
+  ✓ settings persist shipping and reject credentials in urls                                                     0.06s  
+  ✓ product featured persists and credential url is rejected                                                     0.05s  
+  ✓ secondary admin is denied every administration action                                                        0.05s  
+  ✓ order transitions are administrative and cancelled is terminal                                               1.95s  
+  ✓ prescription download requires superadmin and exact owner patient link                                       0.06s  
+  ✓ order contact and address are visible only to superadmin                                                     0.08s  
+  ✓ provider order view exposes only own lines and subtotal                                                      0.07s  
+
+  Tests:    33 passed (471 assertions)
+  Duration: 13.27s
+

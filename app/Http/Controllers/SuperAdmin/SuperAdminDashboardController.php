@@ -18,6 +18,7 @@ use App\Models\PharmacyProduct;
 use App\Models\PlatformModule;
 use App\Models\Provider;
 use App\Models\Service;
+use App\Models\ServiceFormat;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -72,7 +73,7 @@ class SuperAdminDashboardController extends Controller
         $this->applyCatalogFilters($query, $catalog, $request);
 
         $records = method_exists($query, 'paginate')
-            ? $query->paginate(20)
+            ? $query->paginate($catalog['per_page'] ?? 20)
                 ->withQueryString()
             : new LengthAwarePaginator($query, $query->count(), 20);
 
@@ -108,6 +109,19 @@ class SuperAdminDashboardController extends Controller
                 'module' => $request->string('module')->toString(),
                 'category' => $request->string('category')->toString(),
             ],
+        ]);
+    }
+
+    public function showServiceFormat(Request $request, Service $service, ServiceFormat $format): View
+    {
+        abort_unless((int) $format->service_id === (int) $service->id, 404);
+        $section = $format->catalogSection();
+        abort_unless($section, 404);
+
+        return $this->catalog($request, $section)->with([
+            'formatService' => $service,
+            'serviceFormat' => $format,
+            'mixFormatPanel' => $format->mixPanel(),
         ]);
     }
 
@@ -991,6 +1005,17 @@ class SuperAdminDashboardController extends Controller
                 'module_count' => $activeModuleCount,
                 'map' => fn (Institution $record) => [$record->name, ['publica' => 'Pública', 'privada' => 'Privada', 'institution' => 'Institución', 'institucion' => 'Institución'][$record->type] ?? ucfirst($record->type ?? 'Pública'), $record->status, $record->medical_units_count ?? 0, $record->services_count ?? 0, $record->owner ? 1 : 0, $activeModuleCount.' activos', $record->medical_units_count ?? 0, $record->status === 'active' ? 'Bloquear' : 'Desbloquear', 'Reporte', 'Editar', 'Eliminar'],
             ],
+            'services' => [
+                'title' => 'Servicios integrales',
+                'eyebrow' => 'Módulo superadministrador',
+                'description' => 'Catálogo de servicios de la plataforma.',
+                'search_placeholder' => 'Buscar servicio, código, categoría o especialidad',
+                'columns' => ['Código', 'Servicio', 'Categoría', 'Especialidad', 'Formatos', 'Estatus'],
+                'query' => fn () => Service::query()->with('formats')->orderBy('name')->orderBy('id'),
+                'search' => ['code', 'name', 'category', 'specialty'],
+                'status_filter' => true,
+                'map' => fn (Service $record) => [$record->code ?: 'Sin código', $record->name, $record->category ?: 'Sin categoría', $record->specialty ?: 'Sin especialidad', $record->formats->pluck('name')->join('; ') ?: 'Sin formatos asociados', $record->status],
+            ],
             'doctors' => [
                 'title' => 'Catalogo de medicos',
                 'eyebrow' => 'Modulo superadministrador',
@@ -1086,28 +1111,7 @@ class SuperAdminDashboardController extends Controller
                 'status_filter' => true,
                 'map' => fn (Service $record) => [$record->id, $record->specialty ?? $record->name, $record->status],
             ],
-            'medications' => [
-                'title' => 'Catálogo Universal de Medicamentos',
-                'eyebrow' => 'Modulo superadministrador',
-                'description' => $moduleActivityDescription,
-                'search_placeholder' => 'Buscar clave, medicamento, grupo o institucion',
-                'columns' => ['Clave CNIS', 'Grupo', 'Medicamento', 'Descripción', 'Denominación distintiva', 'Unidades móviles', 'Núcleos básicos', 'CESSA', 'Catálogo institucional de', 'Estatus'],
-                'query' => fn () => MedicationCatalogItem::query()->orderBy('cnis'),
-                'search' => ['name', 'generic_name', 'presentation', 'cnis'],
-                'status_filter' => true,
-                'map' => fn (MedicationCatalogItem $record) => [
-                    $record->cnis ?? 'Sin CNIS',
-                    data_get($record->metadata, 'group', $record->therapeutic_group ?? 'Grupo no clasificado'),
-                    trim($record->name.' '.($record->external_id ?? '')),
-                    $record->description ?? $record->presentation ?? $record->generic_name ?? 'Sin descripción',
-                    data_get($record->metadata, 'distinctive_name') ?: 'Por registrar',
-                    data_get($record->metadata, 'mobile_units', 'No'),
-                    data_get($record->metadata, 'basic_units', 'Si'),
-                    data_get($record->metadata, 'cessa', 'Si'),
-                    data_get($record->metadata, 'catalog', 'Imss Bienestar'),
-                    $record->status,
-                ],
-            ],
+            'medications' => app(\App\Services\UniversalMedicationCatalog::class)->definition(),
             'medical-devices' => [
                 'title' => 'Catalogo de dispositivos medicos',
                 'eyebrow' => 'Modulo superadministrador',

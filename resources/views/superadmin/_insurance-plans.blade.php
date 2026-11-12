@@ -12,7 +12,7 @@
     <div><h2>{{ $catalog['title'] }}</h2><p>Planes disponibles para Mi seguro · {{ $records->total() }} seguros @if($selectedInsuranceCarrier ?? null) · {{ $selectedInsuranceCarrier->name }} <a href="{{ request()->fullUrlWithQuery(['carrier' => null, 'page' => null, 'edit_plan' => null]) }}">Ver todas las aseguradoras</a>@endif</p></div>
     <div class="superadmin-native-heading-actions">
       <button type="button" data-plan-preview>Vista previa móvil</button>
-      <a class="superadmin-native-csv" href="{{ $csvUrl }}">↓ Exportar CSV</a>
+      <a class="superadmin-native-csv" href="{{ $csvUrl }}" aria-label="Exportar CSV" title="Exportar CSV">CSV</a>
       <a class="admin-insurance-primary" href="#create-insurance-plan">+ Nuevo seguro</a>
     </div>
   </header>

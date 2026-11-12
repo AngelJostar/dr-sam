@@ -6,7 +6,7 @@
   <header class="superadmin-native-section-heading">
     <div><h2>Catálogo de aseguradoras</h2><p>{{ $carrierStatusLabel }} · {{ $records->total() }} {{ $records->total() === 1 ? 'aseguradora' : 'aseguradoras' }}</p></div>
     <div class="superadmin-native-heading-actions">
-      <a class="superadmin-native-csv" href="{{ $csvUrl }}">↓ Exportar CSV</a>
+      <a class="superadmin-native-csv" href="{{ $csvUrl }}" aria-label="Exportar CSV" title="Exportar CSV">CSV</a>
       <a class="admin-insurance-primary" href="#create-insurance-carrier">+ Alta de aseguradora</a>
     </div>
   </header>

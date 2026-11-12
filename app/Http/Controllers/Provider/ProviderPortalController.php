@@ -163,9 +163,13 @@ class ProviderPortalController extends Controller
         ],
     ];
 
-    public function index(Request $request, string $type): View
+    public function index(Request $request, string $type): View|RedirectResponse
     {
         abort_unless(isset(self::TYPES[$type]), 404);
+
+        if ($request->user()->isMedicineDistributor()) {
+            return redirect()->route('provider.pharmacy.products');
+        }
 
         $provider = $this->resolveProvider($request, $type);
         $typeConfig = self::TYPES[$type];

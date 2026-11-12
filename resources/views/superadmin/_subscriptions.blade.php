@@ -3,20 +3,10 @@
 @endphp
 
 <div id="subscriptions" data-subscription-overview>
-<section class="superadmin-subscription-cards" aria-label="Resumen de planes">
-  @foreach ($plans as $plan)
-    <article data-admin-filter-panel="{{ $plan['id'] }}">
-      <small>{{ $plan['type'] === 'Gratis' ? 'GRATIS' : ($plan['id'] === 'complete' ? 'INDIVIDUAL' : ($plan['id'] === 'smart' ? 'CON IA' : ($plan['id'] === 'family' ? 'MULTIUSUARIO' : 'AVANZADO'))) }}</small>
-      <h2>{{ $plan['name'] }}</h2>
-      <strong>{{ $plan['price'] }}</strong>
-      <p>{{ $plan['short_description'] }}</p>
-    </article>
-  @endforeach
-</section>
-
 <section class="superadmin-native-catalog-card superadmin-subscription-table-card">
   <div class="superadmin-native-section-heading">
     <div><h2>Planes de suscripcion</h2><p>{{ count($plans) }} planes configurados para usuarios pacientes de la plataforma.</p></div>
+    <div class="superadmin-native-heading-actions"><a href="{{ request()->fullUrl() }}">Actualizar</a></div>
   </div>
   <div class="superadmin-native-catalog-scroll">
     <table class="superadmin-native-catalog-table">
@@ -52,6 +42,17 @@
       </tbody>
     </table>
   </div>
+</section>
+
+<section class="superadmin-subscription-cards" aria-label="Resumen de planes">
+  @foreach ($plans as $plan)
+    <article data-admin-filter-panel="{{ $plan['id'] }}">
+      <small>{{ $plan['type'] === 'Gratis' ? 'GRATIS' : ($plan['id'] === 'complete' ? 'INDIVIDUAL' : ($plan['id'] === 'smart' ? 'CON IA' : ($plan['id'] === 'family' ? 'MULTIUSUARIO' : 'AVANZADO'))) }}</small>
+      <h2>{{ $plan['name'] }}</h2>
+      <strong>{{ $plan['price'] }}</strong>
+      <p>{{ $plan['short_description'] }}</p>
+    </article>
+  @endforeach
 </section>
 
 @foreach ($plans as $plan)

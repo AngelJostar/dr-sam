@@ -17,5 +17,10 @@ class Service extends BaseModel
     {
         return $this->hasMany(ContractedService::class);
     }
+
+    public function formats(): HasMany
+    {
+        return $this->hasMany(ServiceFormat::class)->orderBy('name')->orderBy('id');
+    }
 }
 

@@ -1,0 +1,10 @@
+zxing_cpp-3.1.1.dist-info/INSTALLER,sha256=zuuue4knoyJ-UwPPXg8fezS7VCrXJQrAP7zeNuwvFQg,4
+zxing_cpp-3.1.1.dist-info/METADATA,sha256=HyZC-DWiDHA3blQLNIWRglNjvkaa6EWKWrad-rTBPXo,2322
+zxing_cpp-3.1.1.dist-info/RECORD,,
+zxing_cpp-3.1.1.dist-info/REQUESTED,sha256=47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU,0
+zxing_cpp-3.1.1.dist-info/WHEEL,sha256=dLsqnLqoa03X-KKRvIZetJerE-pAfZT9U_wzO7zFOgQ,105
+zxingcpp/__init__.py,sha256=HBB4r-6Pk427uBJRdI1J4rSmWC6S6yIQO1ik3q0BSN4,193
+zxingcpp/__pycache__/__init__.cpython-310.pyc,,
+zxingcpp/py.typed,sha256=47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU,0
+zxingcpp/zxingcpp.cp310-win_amd64.pyd,sha256=hV0X1evbLwFYfgH1D94e4jXaTT4kG3o6UTzmYVoH3jU,1827328
+zxingcpp/zxingcpp.pyi,sha256=1i_XMHLtYvDafop1MIZgt5bbzRTbDRjVFhkR1dErGR4,20245

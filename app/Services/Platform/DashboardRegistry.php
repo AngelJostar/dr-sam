@@ -36,6 +36,13 @@ class DashboardRegistry
             return $modules->values();
         }
 
+        if ($user->isMedicineDistributor()) {
+            $modules = $modules->where('key', 'provider_medicines')
+                ->map(fn (array $module) => array_replace($module, [
+                    'url' => route('provider.pharmacy.products'),
+                ]));
+        }
+
         return $modules
             ->filter(fn (array $module) => in_array($user->role, $module['roles'], true))
             ->values();

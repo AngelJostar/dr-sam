@@ -1,0 +1,596 @@
+
+   PASS  Tests\Feature\ActionPermissionTest
+  ✓ institution can view operational but cannot update provider request status                                   8.02s  
+  ✓ institution can view unit but cannot update appointment status                                               0.03s  
+
+   PASS  Tests\Feature\Api\Mobile\DoctorApiTest
+  ✓ doctor only lists related patients and own agenda                                                            0.40s  
+  ✓ doctor can view related patient and create audited note                                                      0.22s  
+  ✓ doctor can create prescription and laboratory request for related patient                                    0.23s  
+  ✓ patient cannot open doctor endpoints                                                                         0.19s  
+  ✓ doctor can prevalidate and create an idempotent mobile npt request                                           0.25s  
+
+   PASS  Tests\Feature\Api\Mobile\MobileAuthenticationTest
+  ✓ patient can login and read their identity                                                                    0.35s  
+  ✓ doctor can login with username                                                                               0.34s  
+  ✓ login rejects invalid credentials inactive accounts and other roles                                          0.98s  
+  ✓ mobile errors use the uniform json contract                                                                  0.05s  
+  ✓ user can list and revoke only their own sessions                                                             0.37s  
+  ✓ token without mobile ability is rejected                                                                     0.19s  
+  ✓ password recovery does not reveal if an account exists                                                       0.35s  
+  ✓ user can reset password with a valid token                                                                   0.81s  
+  ✓ authenticated user can change password and other sessions are revoked                                        0.64s  
+  ✓ roles cannot cross mobile modules and expired tokens are rejected                                            0.36s  
+  ✓ authenticated user can enable and disable only their push device                                             0.34s  
+  ✓ logout disables push devices linked to current session                                                       0.21s  
+
+   PASS  Tests\Feature\Api\Mobile\MobileWalletConsultationTest
+  ✓ consultation endpoints require real active patient bearer tokens                                             0.06s  
+  ✓ get lists only own appointments without creating quotes payments or movements                                0.06s  
+  ✓ quote uses server tariff and never changes appointment or balance                                            0.06s  
+  ✓ another patient cannot quote or pay the owners quote                                                         0.08s  
+  ✓ only future confirmed assigned in person appointments can be quoted                                          0.11s  
+  ✓ inactive patient doctor or doctor owner cannot enter payment flow                                            0.07s  
+  ✓ unpublished tariff is visible as missing and cannot create quote                                             0.05s  
+  ✓ accepted quote honors immutable price when doctor changes or withdraws tariff                                0.08s  
+  ✓ quote expires without debit after fifteen minutes                                                            0.07s  
+  ✓ material appointment changes invalidate old quotes without a charge                                          0.24s  
+  ✓ paying existing confirmed appointment creates one signed service ledger entry                                0.06s  
+  ✓ insufficient or blocked wallet cannot pay and never partially mutates state                                  0.08s  
+  ✓ payment rejects bad identifiers or client amount mode and account overrides                                  0.06s  
+  ✓ same request key returns original payment even after reversal and conflicts for other quote                  0.10s  
+  ✓ rejected second key is not consumed and can pay a different appointment                                      0.09s  
+  ✓ quote and funds are isolated by server mode and live never spends test balance                               0.06s  
+  ✓ disabling service redemption stops new debits but keeps quote readable                                       0.07s  
+  ✓ doctor web cancellation reverses the same service payment exactly once                                       0.08s  
+  ✓ doctor mobile cancellation reverses the same service payment exactly once                                    0.07s  
+  ✓ unit cancellation reverses payment even when blocked but never clears review block                           0.09s  
+  ✓ outpatient cancellation requires own active unit and reverses only own appointment                           0.10s  
+  ✓ paid or reversed history rejects material changes and reopening cancelled appointment                        0.10s  
+  ✓ cancellation and reversal roll back together and cancel before pay cannot debit                              0.13s  
+  ✓ in progress and completed consultation do not reverse a paid service                                         0.08s  
+  ✓ former doctor cannot cancel a reassigned paid appointment from a stale web or mobile read                    0.10s  
+  ✓ former unit cannot reverse payment when route binding precedes reassignment                                  0.07s  
+  ✓ live consultations exclude demo doctors before quote or payment                                              0.07s  
+  ✓ live payment missing webhook configuration never debits existing balance                                     0.08s  
+  ✓ live response snapshot failure rolls back payment and ledger and allows same key retry                       0.07s  
+  ✓ manual patient ownership change blocks cancellation without touching payment or balance                      0.06s  
+
+   PASS  Tests\Feature\Api\Mobile\MobileWalletPaymentTest
+  ✓ disabled wallet returns zero without provider access and rejects creating funds                              0.05s  
+  ✓ all private operations reject missing or expired bearer tokens                                               0.05s  
+  ✓ session only authentication and bearer without mobile ability are rejected                                   0.04s  
+  ✓ non patient roles inactive accounts and unavailable profiles are denied                                      0.07s  
+  ✓ recharge validates amount bounds integer and client uuid before stripe                                       0.04s  
+  ✓ minimum and maximum recharge amounts are accepted in cents                                                   0.07s  
+  ✓ create sends server owned stripe contract and does not credit unpaid order                                   0.05s  
+  ✓ read only recharge get neither calls stripe exposes secret nor changes balance                               0.06s  
+  ✓ same client request reuses order and stripe intent without duplicate creation                                0.07s  
+  ✓ changed amount or second pending key conflicts without provider side effect                                  0.06s  
+  ✓ other owner cannot read refresh resume or cancel an order                                                    0.07s  
+  ✓ client payment claims never credit a provider unpaid order                                                   0.07s  
+  ✓ verified success credits once and late pending snapshots do not roll it back                                 0.09s  
+  ✓ incongruent payment intents or charges cannot create a credit                                                0.16s  
+  ✓ ambiguous creation recovers same key and expired unknown orders require review                               0.07s  
+  ✓ resume only exposes secret for server verified payable state                                                 0.08s  
+  ✓ cancel distinguishes payable processing and already paid orders                                              0.08s  
+  ✓ webhook rejects bad expired future or connected account signatures without credit                            0.04s  
+  ✓ signed webhooks use provider truth and repeated events never duplicate credit                                0.07s  
+  ✓ refunds apply only new cumulative delta and ignore duplicate or older totals                                 0.10s  
+  ✓ refunding spent credit records full debt and blocks even after consultation reversal                         0.10s  
+  ✓ dispute blocks further recharges and closed event never automatically unblocks                               0.08s  
+  ✓ snapshot uses full signed ledger despite page limit and isolates owner and mode                              0.13s  
+  ✓ live requires opt in redemption secure transport and non demo patient                                        0.06s  
+  ✓ live preflight verifies stripe account country capability and balance mode before creation                   0.05s  
+  ✓ failed or canceled refunds require review without recredit or cross owner block                              0.11s  
+  ✓ live collection flags do not disable balance refunds or existing payment reconciliation                      0.10s  
+  ✓ default preflight is read only reports redemption not ready and prints no keys                               0.05s  
+  ✓ provider preflight only reads account and balance and never activates or changes funds                       0.05s  
+
+   PASS  Tests\Feature\Api\Mobile\PatientReadApiTest
+  ✓ patient reads only their paginated clinical resources                                                        0.38s  
+  ✓ patient document download is private and scoped to owner                                                     0.37s  
+  ✓ doctor cannot open patient role endpoints                                                                    0.18s  
+  ✓ patient dashboard profile update and appointment detail are scoped                                           0.37s  
+
+   PASS  Tests\Feature\Api\Mobile\PharmacyPrescriptionUploadTest
+  ✓ upload is private owned pending review and cannot overpost status                                            0.07s  
+  ✓ upload rejects unsafe files and excessive size without records                                               0.06s  
+  ✓ guest inactive wrong role and unscoped token cannot upload                                                   0.04s  
+
+   PASS  Tests\Feature\CbtaCatalogClientTest
+  ✓ it reads the npt catalog using the service token                                                             0.02s  
+  ✓ it rejects an invalid catalog contract                                                                       0.02s  
+  ✓ it prevalidates a mixture without creating it                                                                0.02s  
+  ✓ it uploads a private mixture document                                                                        0.02s  
+  ✓ it downloads a private mixture document                                                                      0.02s  
+  ✓ it downloads the official mixture remission                                                                  0.01s  
+
+   PASS  Tests\Feature\CommunityModuleTest
+  ✓ community pages require a session                                                                            0.04s  
+  ✓ admin module is registered and accessible from superadmin                                                    0.10s  
+  ✓ patient can explore but cannot open admin module                                                             0.05s  
+  ✓ disabled admin module cannot be opened directly                                                              0.04s  
+  ✓ unrelated roles cannot open either community view                                                            0.03s  
+
+   PASS  Tests\Feature\DemoAccessTest
+  ✓ superadmin login opens its module even with an intended url                                                  0.35s  
+  ✓ logout returns every web user to the home page                                                               0.04s  
+  ✓ patient logout confirms the home url for the mobile preview                                                  0.05s  
+  ✓ demo user can enter without password when review mode is enabled                                             0.04s  
+  ✓ landing login accepts email and returns errors to the popup                                                  0.49s  
+  ✓ passwordless review does not grant patient access to every module                                            0.03s  
+  ✓ superadmin can still review every module                                                                     0.06s  
+  ✓ general admin can review every module                                                                        0.03s  
+  ✓ insurance admin only sees the insurance flow                                                                 0.04s  
+  ✓ role module matrix matches the approved assignment                                                           0.03s  
+  ✓ login page is never cached by the browser                                                                    0.05s  
+
+   PASS  Tests\Feature\DigitalPharmacyModuleTest
+  ✓ operational user can open native pharmacy dashboard                                                          0.37s  
+  ✓ operational user can update order status                                                                     0.05s  
+
+   PASS  Tests\Feature\DistributorWorkspaceTest
+  ✓ catalog groups complete presentations and filters only own products                                          0.08s  
+  ✓ menu sections are available and reject other profiles and foreign editors                                    0.13s  
+  ✓ inventory changes are owned validated and detect stale stock                                                 0.06s  
+  ✓ store visibility respects both authorizations and product rules                                              0.07s  
+  ✓ reports and delivery followup never expose other suppliers or patient data                                   0.09s  
+  ✓ configuration cannot modify publication or account permissions                                               0.03s  
+  ✓ validation reopens the correct editor and restores input                                                     0.06s  
+  ✓ column filters cover all pages combine columns and keep provider scope                                       0.09s  
+  ✓ column filters apply to presentations before grouping and store visibility                                   0.11s  
+  ✓ order column filters use only owned lines in all order tables                                                0.13s  
+  ✓ empty tables keep column buttons and reject invalid filter payloads                                          0.12s  
+  ✓ store switch persists only own product status and updates mobile visibility                                  0.11s  
+  ✓ activating a product does not bypass store or provider publication rules                                     0.06s  
+  ✓ sku is editable unique per distributor and filterable in first store column                                  0.11s  
+
+   FAIL  Tests\Feature\DoctorConsultationTariffTest
+  ✓ own doctor panel has no default tariff and exposes the price form                                            0.06s  
+  ⨯ active doctor publishes only their own exact cent tariff and safe audit                                      0.04s  
+  ✓ new prices append versions and preserve the previously published amount                                      0.06s  
+  ✓ withdrawing a price removes only the pointer and republishing keeps history                                  0.05s  
+  ✓ stale forms cannot overwrite or withdraw a newer tariff                                                      0.06s  
+  ✓ client cannot choose another doctor or supply price version currency or mode                                 2.12s  
+  ✓ admins patients inactive users and missing or inactive doctor profiles cannot publish                        0.06s  
+  ✓ amount parser accepts exact cents at the bounds and rejects ambiguous values                                 0.04s  
+  ✓ published rows cannot be changed or deleted through the model                                                0.04s  
+  ✓ audit failure rolls back both publication and current pointer                                                0.05s  
+
+   PASS  Tests\Feature\DoctorPortalTest
+  ✓ doctor user can open native blade portal                                                                     0.05s  
+  ✓ unit doctors can claim a pending consultation only once                                                      0.12s  
+  ✓ claim ignores private hours but not existing doctor appointments                                             0.06s  
+  ✓ private doctor receives native operational services                                                          0.06s  
+  ✓ doctor sees important cbta mixture updates                                                                   0.05s  
+  ✓ doctor can download own cbta document through the private proxy                                              0.04s  
+  ✓ doctor can download the official cbta remission                                                              0.06s  
+  ✓ doctor can open the oncology mixture request format                                                          0.07s  
+  ✓ doctor agenda renders its calendar workspace                                                                 0.06s  
+  ✓ doctor video schedule renders the isolated patient step                                                      0.04s  
+  ✓ video schedule redirect renders the ready step                                                               0.11s  
+  ✓ video schedule creates a virtual clinic when the doctor has none                                             0.05s  
+  ✓ doctor can publish availability and overlaps are rejected                                                    0.06s  
+  ✓ doctor can manage own clinics                                                                                0.05s  
+  ✓ doctor can create and cancel an appointment from agenda                                                      0.05s  
+  ✓ doctor can create edit and open a patient record                                                             0.08s  
+  ✓ doctor cannot edit an unrelated patient                                                                      0.05s  
+  ✓ doctor can start and complete a clinical encounter                                                           0.05s  
+  ✓ doctor can schedule and open a video consultation                                                            0.05s  
+  ✓ doctor can save clinical progress and complete the encounter                                                 0.06s  
+  ✓ doctor can open an encounter from own appointment                                                            0.05s  
+  ✓ doctor can issue a prescription and send it to external pharmacy                                             0.05s  
+  ✓ doctor can edit a pending prescription and pharmacy receives the changes                                     0.07s  
+  ✓ doctor can send each clinical request type to the operational flow                                           0.06s  
+  ✓ npt create url renders the focused request form                                                              0.05s  
+  ✓ doctor can submit multiple oncology mixtures with multiple medications                                       0.06s  
+  ✓ npt rejects time and infusion rate when both are filled                                                      0.04s  
+  ✓ npt form shows medicine additives and excludes auxiliary materials                                           0.06s  
+  ✓ real npt form prevalidates with cbta and persists the integration result                                     0.07s  
+  ✓ rejected cbta prevalidation does not create request or integration                                           0.05s  
+  ✓ cbta creation failure keeps the local request ready for retry                                                0.27s  
+
+   PASS  Tests\Feature\ExternalPharmacyModuleTest
+  ✓ operational user can open native external pharmacy dashboard                                                 0.26s  
+  ✓ external pharmacy can mark order in route and create delivery route                                          0.05s  
+  ✓ outpatient prescription is received and can be dispensed partially from inventory                            0.10s  
+  ✓ external pharmacy persists warehouses and manual inventory movements                                         0.10s  
+
+   PASS  Tests\Feature\ImportExpedientDocumentsTest
+  ✓ all document groups can be saved viewed and downloaded from their expedient                                  0.14s  
+  ✓ complete regulatory checklist can be uploaded together and shared by both menus                              0.19s  
+  ✓ provider cannot upload or read files of another provider even for the same patient                           0.09s  
+  ✓ specialist tables share administration documents with section specific actions                               0.18s  
+  ✓ specialist sections reject patient and regulatory uploads but allow logistics                                0.08s  
+  ✓ reference documents are private and replacement keeps only the latest file visible                           0.09s  
+  ✓ upload validates category file type size and document slot                                                   0.87s  
+
+   PASS  Tests\Feature\ImportExpedientTest
+  ✓ full wizard creates a patient expedient and private documents                                                0.18s  
+  ✓ draft can resume remove files and finish without duplicate records                                           0.13s  
+  ✓ matches are scoped and existing patient requires a choice without overwriting identity                       0.06s  
+  ✓ optional sections can be pending but patient identity is required                                            0.05s  
+  ✓ provider permissions and hospital doctor consistency are enforced                                            0.05s  
+  ✓ invalid files are rejected without creating a patient or record                                              0.05s  
+  ✓ admin can save an empty draft and assign a provider later                                                    0.06s  
+
+   PASS  Tests\Feature\ImportUserDirectoryTest
+  ✓ directory uses real accounts and filters their assigned areas                                                0.09s  
+  ✓ provider directory keeps its account scope                                                                   0.06s  
+  ✓ superadmin can register an import account in an area with hashed password                                    0.36s  
+
+   PASS  Tests\Feature\InstitutionAgentCenterTest
+  ✓ center has institutional instructions and menu access in every section                                       0.12s  
+  ✓ edits are persistent isolated from other institutions and units and versioned                                0.10s  
+  ✓ create and validation preserve text and reject invalid configuration                                         0.11s  
+  ✓ other institutions and non institutional roles cannot access or modify agents                                0.07s  
+  ✓ administrator saves in the selected institution                                                              0.04s  
+
+   PASS  Tests\Feature\InstitutionModuleTest
+  ✓ institution user can open native dashboard                                                                   0.50s  
+  ✓ institution user can open grouped unit registration form                                                     0.07s  
+  ✓ institution user can view and update a unit password                                                         0.54s  
+  ✓ institution user can update unit status                                                                      0.06s  
+
+   PASS  Tests\Feature\InsuranceAdvisorModuleTest
+  ✓ insurance advisor can open native dashboard                                                                  0.25s  
+  ✓ insurance advisor can create claim from inline form                                                          0.08s  
+  ✓ insurance advisor can update policy status                                                                   0.04s  
+  ✓ insurance advisor can upload payment and renew policy                                                        0.05s  
+  ✓ insurance advisor can export and request policy synchronization                                              0.06s  
+  ✓ insurance advisor can manage claim documents discharge and quotations                                        0.12s  
+
+   PASS  Tests\Feature\InsuranceCarrierCatalogTest
+  ✓ all active and inactive views show real plan counts and matching actions                                     0.12s  
+  ✓ plan links filter by carrier and category including export and pagination                                    0.08s  
+  ✓ status action preserves contact information and moves carrier between filters                                0.16s  
+  ✓ empty catalog keeps all columns and create form                                                              0.07s  
+
+   PASS  Tests\Feature\InsuranceHealthModuleTest
+  ✓ insurance admin can open native dashboard                                                                    0.06s  
+  ✓ insurance internal views use native visual layer                                                             0.15s  
+  ✓ insurance admin can run core patient flow                                                                    0.13s  
+  ✓ read only user cannot create patient                                                                         0.05s  
+
+   PASS  Tests\Feature\InsurancePlanCatalogTest
+  ✓ admin has three sections and persistent editable catalog                                                     0.14s  
+  ✓ only linked active plans reach patient and mobile feed                                                       0.11s  
+  ✓ documents are private and follow plan publication                                                            0.09s  
+  ✓ patient cannot edit catalog and quote requires a published plan                                              0.07s  
+  ✓ search export and html escaping preserve plan data                                                           0.07s  
+  ✓ user catalog lists login and password state without exposing secrets                                         0.24s  
+
+   PASS  Tests\Feature\IntegratedServiceFormatsTest
+  ✓ each service lists only its formats and supports multiple and empty lists                                    0.07s  
+  ✓ import associates existing forms without duplicates or overwriting captured names                            0.06s  
+  ✓ non admin cannot read or export service formats                                                              0.03s  
+
+   PASS  Tests\Feature\KliniBrandingTest
+  ✓ public home precedes the existing access page                                                                0.03s  
+  ✓ landing assets are available locally                                                                         0.02s  
+
+   PASS  Tests\Feature\KliniMembershipTest
+  ✓ home registration creates patient membership without operational privileges                                  0.55s  
+  ✓ public doctor registration requires credentials and admin activation                                         0.38s  
+  ✓ registration rejects invalid roles passwords and duplicate credentials                                       0.21s  
+  ✓ real members cannot bypass passwords in review mode                                                          0.53s  
+  ✓ registration is atomic when profile audit fails                                                              0.85s  
+  ✓ registration is rate limited and not available to authenticated users                                        0.04s  
+  ✓ existing accounts receive stable ids without changing clinical identifiers                                   0.04s  
+  ✓ filters pagination csv and edits keep members separate from operational accounts                             0.16s  
+  ✓ operational number is stable when account and clinical details change                                        0.02s  
+
+   PASS  Tests\Feature\MedicationCatalogFlowTest
+  ✓ official catalog is visible and unit activation is independent                                               4.13s  
+
+   PASS  Tests\Feature\MedicineDistributorNavigationTest
+  ✓ distributor login goes to catalog instead of an old intended panel                                           0.35s  
+  ✓ old dashboard and provider panels redirect distributor to own catalog                                        0.23s  
+  ✓ distributor module switcher only links to its catalog                                                        0.20s  
+  ✓ other provider and superadmin keep their existing panels                                                     0.06s  
+
+   PASS  Tests\Feature\MessengerModuleTest
+  ✓ messenger user can open native dashboard                                                                     0.05s  
+  ✓ messenger can report delivery and close patient order                                                        0.05s  
+  ✓ pharmacy in route status creates delivery route                                                              0.05s  
+
+   PASS  Tests\Feature\MixtureIntegrationSyncServiceTest
+  ✓ it preserves a remote processing error for visual follow up                                                  0.04s  
+  ✓ it reconciles the remote lifecycle without duplicating status events                                         0.05s  
+  ✓ signed cbta webhook triggers an authoritative status sync                                                    0.05s  
+  ✓ cbta webhook rejects an invalid signature                                                                    0.04s  
+  ✓ a temporary sync failure uses exponential retry tracking                                                     0.27s  
+
+   PASS  Tests\Feature\NativeModuleRouteTest
+  ✓ module routes resolve to application controllers                                                             0.03s  
+
+   PASS  Tests\Feature\NptMixtureHardeningTest
+  ✓ npt rejects invalid clinical and integration payloads                                                        0.08s  
+  ✓ npt rejected stock does not leave partial records                                                            0.05s  
+  ✓ npt valid boundary creates only an authorization pending request                                             0.05s  
+
+   PASS  Tests\Feature\OncologyMixtureBoardTest
+  ✓ all three sections render scoped oncology status tables                                                      0.18s  
+  ✓ operational interactions are internal and limited to own oncology requests                                   0.08s  
+  ✓ mixture status navigation has one upper row and infusion calendar only home                                  0.09s  
+  ✓ demo is additive idempotent and preserves progress                                                           0.08s  
+  ✓ process and approval are independent                                                                         0.04s  
+
+   PASS  Tests\Feature\OncologyMixtureHardeningTest
+  ✓ oncology rejects incomplete or clinically invalid payloads                                                   0.09s  
+  ✓ oncology accepts concentration boundaries without duplicate creation                                         0.06s  
+
+   PASS  Tests\Feature\OperationalAreaEntryDemoTest
+  ✓ demo entries are persistent repeatable and linked to both patient catalogs                                   0.28s  
+  ✓ entry lists scope records to unit and area and keep empty states                                             0.07s  
+
+   PASS  Tests\Feature\OperationalModuleTest
+  ✓ operational user can open native dashboard                                                                   0.78s  
+  ✓ operational service request can link outpatient prescription                                                 0.06s  
+  ✓ operational user can update provider request status                                                          0.04s  
+  ✓ inspected mixture cannot be sent to provider again                                                           0.42s  
+  ✓ authorizations are independent and restricted to the operational area                                        0.07s  
+  ✓ spanish oncology operator can approve oncology authorization                                                 0.12s  
+  ✓ rejected authorization cancels and locks the request with traceability                                       0.41s  
+  ✓ unit user can operate only the current area authorization                                                    0.09s  
+  ✓ inpatient pharmacy can cancel only after both authorizations are approved                                    0.05s  
+  ✓ superadmin can create and edit an infusion room                                                              0.10s  
+  ✓ operational patient edit button opens and updates the patient                                                0.09s  
+  ✓ oncology calendar assigns available infusion room and blocks capacity overlap                                0.10s  
+
+   PASS  Tests\Feature\OrdersModuleTest
+  ✓ patient can open native orders module                                                                        0.05s  
+  ✓ patient can create pharmacy order                                                                            0.03s  
+
+   PASS  Tests\Feature\OutpatientModuleTest
+  ✓ operational user can use outpatient module                                                                   0.21s  
+  ✓ outpatient respects published doctor schedule and rejects overlaps                                           0.07s  
+  ✓ outpatient patient catalog supports create and edit like native                                              0.07s  
+  ✓ outpatient room catalog supports create edit and weekly availability                                         0.08s  
+  ✓ outpatient room can be deleted only when it has no appointments                                              0.04s  
+  ✓ outpatient calendar admin updates room slots used by agenda                                                  0.08s  
+  ✓ outpatient prescriptions support create view dynamic items and edit                                          0.09s  
+
+   PASS  Tests\Feature\OwnershipScopeTest
+  ✓ institution cannot update unit from another institution                                                      0.04s  
+  ✓ unit cannot update appointment from another unit                                                             0.05s  
+  ✓ messenger cannot update route assigned to another messenger                                                  0.05s  
+  ✓ operational user cannot update provider request from another unit                                            0.05s  
+
+   PASS  Tests\Feature\PatientPortalTest
+  ✓ patient user can open native blade portal                                                                    0.06s  
+  ✓ imported patient styles do not replace other modules styles                                                  0.10s  
+  ✓ patient can reach community panel from menu or direct link                                                   0.06s  
+  ✓ my health includes the clinical history switch and shared history                                            0.07s  
+  ✓ quick register has parameter and clinical history tabs                                                       0.07s  
+  ✓ patient can upload and download a quick register attachment                                                  0.07s  
+  ✓ quick register attachment rejects invalid files and other patients                                           0.07s  
+  ✓ patient can update own profile                                                                               0.05s  
+  ✓ calendar orders scheduled appointments before past appointments                                              0.07s  
+  ✓ patient can register insurance policy                                                                        0.04s  
+  ✓ patient can schedule an available doctor appointment                                                         0.03s  
+  ✓ redesigned calendar exposes only the authenticated patients appointments                                     0.06s  
+  ✓ redesigned calendar does not invent appointments for empty accounts                                          0.06s  
+  ✓ calendar periods keep ongoing and undated visits upcoming and archive finished visits                        0.07s  
+  ✓ patient can request a quote without replacing existing policy                                                0.05s  
+  ✓ refund requires a policy and cannot use another patients documents                                           0.05s  
+  ✓ quote requires consent and valid contact                                                                     0.03s  
+  ✓ refund saves owned documents and rejects foreign document                                                    0.08s  
+
+   PASS  Tests\Feature\PatientStoryTest
+  ✓ photo is shared for exactly 24 hours and never replaces the avatar                                           0.09s  
+  ✓ seen is persistent per viewer and new photos are unseen                                                      0.08s  
+  ✓ authorization prevents impersonation and deleting other stories                                              0.07s  
+  ✓ only valid photos are accepted and guests cannot view them                                                   0.08s  
+  ✓ managed profile access must be current and allow stories                                                     0.06s  
+
+   PASS  Tests\Feature\PharmacyDemoDistributorLinkTest
+  ✓ superadmin links eligible demo user without changing user or credentials                                     0.37s  
+  ✓ ineligible users cannot be linked                                                                            0.85s  
+  ✓ repeated link never duplicates or changes an existing provider                                               0.35s  
+  ✓ only superadmin can link demo distributors                                                                   0.50s  
+
+   PASS  Tests\Feature\PharmacyDemoImageLibraryTest
+  ✓ eligible provider can view png library and unknown key is not found                                          0.06s  
+  ✓ library access requires active enabled demo provider                                                         0.05s  
+  ✓ product form shows four demo choices only for eligible provider                                              0.09s  
+  ✓ all demo choices copy exact resources to private owned opaque paths                                          0.16s  
+  ✓ store rejects ineligible unknown or ambiguous demo selections without writes                                 0.08s  
+  ✓ owned updates preserve metadata and public images obey publication gates                                     0.10s  
+
+   PASS  Tests\Feature\PharmacyProductImageTest
+  ✓ owner upload is private and preview requires owner or active superadmin                                      0.08s  
+  ✓ upload rejects forged mime svg file size and dimensions                                                      0.08s  
+  ✓ allowed raster formats are detected from contents and ambiguous source is rejected                           0.08s  
+  ✓ public photo uses request origin and rechecks every publication gate                                         0.09s  
+  ✓ other distributor cannot replace a photo or change its product                                               0.06s  
+  ✓ replacement preserves existing files and https url compatibility                                             0.09s  
+  ✓ metadata cannot serve another products file or arbitrary paths                                               0.07s  
+
+   PASS  Tests\Feature\PharmacyStoreAdminTest
+  ✓ admin pages render and distributor cannot change publication                                                 0.12s  
+  ✓ missing profile denies and products are isolated                                                             0.06s  
+  ✓ admin distributor creation is unpublished and password is hashed                                             0.35s  
+  ✓ settings persist shipping and reject credentials in urls                                                     0.04s  
+  ✓ product featured persists and credential url is rejected                                                     0.06s  
+  ✓ secondary admin is denied every administration action                                                        0.06s  
+  ✓ order transitions are administrative and cancelled is terminal                                               1.69s  
+  ✓ prescription download requires superadmin and exact owner patient link                                       0.07s  
+  ✓ order contact and address are visible only to superadmin                                                     0.06s  
+  ✓ provider order view exposes only own lines and subtotal                                                      0.07s  
+
+   PASS  Tests\Feature\PharmacyStoreApiTest
+  ✓ public catalog is disabled by default and excludes unapproved or unowned products                            0.06s  
+  ✓ disabling provider or owner immediately hides products even direct urls                                      0.03s  
+  ✓ orders require patient authentication and server recalculates idempotently without payment or stock reserva… 0.05s  
+  ✓ submission rechecks publication and stock and requires prescription                                          0.05s  
+  ✓ prescription must belong to patient and is never automatically approved                                      0.04s  
+  ✓ controlled and cold chain are not public without supported fulfilment                                        0.04s  
+  ✓ inactive or wrong role tokens cannot submit and consent is required                                          0.05s  
+  ✓ uploaded prescription must match account and patient and stays pending                                       0.06s  
+  ✓ large but valid lines cannot overflow order decimal columns                                                  0.07s  
+  ✓ amount limit accepts exact boundary and rejects one cent more                                                0.05s  
+
+   PASS  Tests\Feature\ProviderModuleTest
+  ✓ reference expedient accepts private pending patient documents                                                0.07s  
+  ✓ provider user can open native npt dashboard                                                                  0.19s  
+  ✓ provider can update request and create delivery route when in route                                          0.06s  
+  ✓ import provider dashboard uses native route                                                                  0.05s  
+  ✓ import supplier form validates and stores private documents                                                  0.06s  
+  ✓ import sections show scoped records and all carousel options render                                          1.26s  
+
+   PASS  Tests\Feature\SeederStabilityTest
+  ✓ database seeder creates demo users and native module targets                                                 4.14s  
+
+   PASS  Tests\Feature\SessionConfigurationTest
+  ✓ session cookie name is php cookie safe                                                                       0.02s  
+
+   PASS  Tests\Feature\SharedUnitPatientCatalogTest
+  ✓ both catalogs share all unit links without truncation or other units                                         0.17s  
+  ✓ create and edit from either workspace update one record and preserve scope                                   0.14s  
+  ✓ carousel order is inherited by operational navigation and care buttons work                                  0.20s  
+
+   PASS  Tests\Feature\StateTransitionTest
+  ✓ terminal order cannot return to preparing                                                                    0.04s  
+  ✓ terminal provider request cannot be reopened                                                                 0.03s  
+  ✓ completed appointment cannot return to scheduled                                                             0.05s  
+  ✓ delivered route cannot return to assigned                                                                    0.05s  
+
+   PASS  Tests\Feature\SuperAdminInstitutionActionsTest
+  ✓ catalog has five separate action columns with the correct destinations                                       0.07s  
+  ✓ block and unblock only change status for the institution and its owner                                       0.05s  
+  ✓ report contains only the selected institution and escapes spreadsheet formulas                               0.05s  
+  ✓ delete requires confirmation and preserves the owner account                                                 0.06s  
+  ✓ delete preserves institutions with linked records                                                            0.08s  
+  ✓ non superadmin cannot use institution actions                                                                0.04s  
+
+   PASS  Tests\Feature\SuperAdminInstitutionPresentationTest
+  ✓ selection preserves filters and shows the selected institution counts and destinations                       0.08s  
+  ✓ update confirmation appears once inside a closable dialog                                                    0.11s  
+  ✓ validation errors use the dialog and do not update the institution                                           0.07s  
+  ✓ dashboard feedback escapes message content                                                                   0.08s  
+
+   PASS  Tests\Feature\SuperAdminMedicationPresentationTest
+  ✓ medication catalog displays and exports distinctive names with their correct columns                         0.07s  
+
+   PASS  Tests\Feature\SuperAdminMobileAppTest
+  ✓ mobile management has all reviewed sections and no phone preview                                             0.22s  
+  ✓ mobile admin workspace requires superadmin access                                                            0.05s  
+  ✓ saved labels and forms are rendered by the actual mobile portal                                              0.07s  
+  ✓ navigation saves visibility names and order without changing destinations                                    0.06s  
+  ✓ invalid settings unknown fields and hiding home are rejected                                                 0.05s  
+  ✓ stale editor cannot overwrite newer changes                                                                  0.04s  
+  ✓ user search is scoped to klini and devices do not expose push tokens                                         0.10s  
+
+   PASS  Tests\Feature\SuperAdminModuleTest
+  ✓ superadmin user can open native dashboard                                                                    0.09s  
+  ✓ superadmin catalog menu sections open native views                                                           0.46s  
+  ✓ doctor carousel switches tables and keeps the status filter                                                  0.12s  
+  ✓ dashboard paginates modules in groups of nine without losing access links                                    0.10s  
+  ✓ superadmin can disable module and dashboard registry hides it                                                0.06s  
+  ✓ carousel filters all pages and exports the selected device status                                            0.08s  
+  ✓ access carousel filters by module and lists existing module values                                           0.06s  
+  ✓ superadmin can update user status                                                                            0.05s  
+  ✓ superadmin catalog filters and csv export work                                                               0.04s  
+  ✓ superadmin can create institutions and private hospitals                                                     0.19s  
+  ✓ superadmin can update module details and section settings                                                    0.06s  
+  ✓ superadmin can create doctor patient and provider users                                                      0.52s  
+  ✓ superadmin patient catalog matches source two panel layout                                                   0.07s  
+  ✓ superadmin access catalog matches source destination actions                                                 0.06s  
+  ✓ superadmin can update people catalog statuses                                                                0.06s  
+  ✓ module edit links open the module catalog with the selected record                                           0.11s  
+  ✓ superadmin can view filter and export insurance carriers                                                     0.08s  
+  ✓ superadmin can view search and export insurance advisors                                                     0.06s  
+  ✓ superadmin can view search and export medical devices                                                        0.06s  
+  ✓ superadmin can view and update subscription settings                                                         0.12s  
+
+   PASS  Tests\Feature\UnitAdministrationDemoTest
+  ✓ demo covers all tabs and payments update balances without touching other metadata                            0.22s  
+  ✓ accounts invoices insurers and authorization responses are linked                                            0.09s  
+  ✓ private documents and demo changes are scoped to the unit                                                    0.06s  
+
+   PASS  Tests\Feature\UnitAgentCenterTest
+  ✓ center has twelve inactive agents with complete instructions and is last in menu                             0.09s  
+  ✓ edit persists only this agent and unit and prevents stale overwrites                                         0.09s  
+  ✓ create and validation keep configuration safe and render text as text                                        0.10s  
+  ✓ other units and non administrative roles cannot access or modify agents                                      0.05s  
+
+   PASS  Tests\Feature\UnitAreaValidationsTest
+  ✓ unit can save edit and audit rules without losing other metadata                                             0.10s  
+  ✓ rules are scoped to the unit and only unit roles can change them                                             0.09s  
+  ✓ invalid or incomplete active requirements cannot be saved                                                    0.06s  
+  ✓ all unit areas have an unconfigured row and validation navigation                                            0.08s  
+
+   PASS  Tests\Feature\UnitModuleTest
+  ✓ unit status message uses a dismissible dialog                                                                0.12s  
+  ✓ unit user can open native dashboard                                                                          1.57s  
+  ✓ unit user can update appointment status                                                                      0.08s  
+  ✓ unit user can create edit and cancel a consultation appointment                                              0.08s  
+  ✓ unit books public consultation without private doctor availability                                           0.09s  
+
+   PASS  Tests\Feature\UnitOperationalAreasTest
+  ✓ surgery calendar and pediatric navigation keep the selected unit                                             0.08s  
+  ✓ native area edits are shared and other units are protected                                                   0.29s  
+  ✓ new area types can be created edited and browsed                                                             0.35s  
+
+   PASS  Tests\Feature\UnitOperationalUserDialogTest
+  ✓ save redirects to the selected unit and shows the success dialog and table actions                           0.41s  
+  ✓ validation errors restore the form without a success message or password                                     0.09s  
+
+   PASS  Tests\Feature\UnitRequestInteractionsTest
+  ✓ nutrition and chemotherapy have message and adjustment columns                                               0.11s  
+  ✓ messages persist per request with the authenticated author                                                   0.05s  
+  ✓ adjustment can be requested and resolved without changing clinical data                                      0.15s  
+  ✓ requests from another unit and cross request adjustments are protected                                       0.05s  
+  ✓ institution can only access its own units and patient access is denied                                       0.08s  
+  ✓ closed requests preserve history and reject new adjustments                                                  0.12s  
+  ✓ validation rejects empty or oversized notes and unknown types                                                0.07s  
+
+   PASS  Tests\Feature\UniversalMedicationAdministrationTest
+  ✓ demo import adds 203 official presentations without overwriting existing data or publishing products         0.69s  
+  ✓ both menus share the same catalog and search all pages by identifiers                                        0.62s  
+  ✓ identifier changes preserve leading zeroes and update both views without modifying distributor products      0.10s  
+  ✓ invalid and duplicate identifiers are rejected and non admins have no access                                 0.10s  
+
+   PASS  Tests\Feature\UniversalMedicationCreationTest
+  ✓ modal is present in both menus and creation assigns the next sku after the highest number                    0.09s  
+  ✓ validation and rollback do not consume skus and unauthorized accounts cannot create                          0.06s  
+  ✓ demo skus get one prefix and reimport does not add it again                                                  0.40s  
+  ✓ sku edition requires the prefix and creation respects manually changed skus                                  0.06s  
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\DoctorConsultationTariffTest > active doctor publishes only their own exact cent tariff and…   
+  Failed asserting that two arrays are identical.
+--- Expected
++++ Actual
+@@ @@
+ Array &0 [
+-    0 => 'tariff_id',
+-    1 => 'version',
+-    2 => 'currency',
+-    3 => 'amount_cents',
+-    4 => 'modality',
++    0 => 'version',
++    1 => 'currency',
++    2 => 'modality',
++    3 => 'tariff_id',
++    4 => 'amount_cents',
+ ]
+
+  at tests\Feature\DoctorConsultationTariffTest.php:74
+     70▕         $this->assertSame('MXN', $tariff->currency);
+     71▕         $this->assertSame($user->id, $tariff->created_by);
+     72▕         $this->assertNull($other->fresh()->current_consultation_tariff_id);
+     73▕         $audit = AuditLog::query()->where('event', 'doctor.consultation_tariff.publish')->firstOrFail();
+  ➜  74▕         $this->assertSame(['tariff_id', 'version', 'currency', 'amount_cents', 'modality'], array_keys($audit->payload['context']));
+     75▕         $this->assertSame($tariff->id, $audit->payload['context']['tariff_id']);
+     76▕         $this->assertDatabaseCount('doctor_consultation_tariffs', 1);
+     77▕     }
+     78▕
+
+  1   tests\Feature\DoctorConsultationTariffTest.php:74
+
+
+  Tests:    1 failed, 427 passed (6809 assertions)
+  Duration: 73.79s
+

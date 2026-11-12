@@ -12,6 +12,7 @@ class Doctor extends BaseModel
         return [
             'verified_at' => 'datetime',
             'metadata' => 'array',
+            'current_consultation_tariff_id' => 'integer',
         ];
     }
 
@@ -28,6 +29,16 @@ class Doctor extends BaseModel
     public function appointments(): HasMany
     {
         return $this->hasMany(Appointment::class);
+    }
+
+    public function currentConsultationTariff(): BelongsTo
+    {
+        return $this->belongsTo(DoctorConsultationTariff::class, 'current_consultation_tariff_id');
+    }
+
+    public function consultationTariffs(): HasMany
+    {
+        return $this->hasMany(DoctorConsultationTariff::class);
     }
 
     public function prescriptions(): HasMany

@@ -31,6 +31,7 @@ use App\Http\Controllers\Pharmacy\DigitalPharmacyController;
 use App\Http\Controllers\Provider\ProviderPortalController;
 use App\Http\Controllers\SuperAdmin\SuperAdminDashboardController;
 use App\Http\Controllers\SuperAdmin\InstitutionActionController;
+use App\Http\Controllers\SuperAdmin\MobileAppController;
 use App\Http\Controllers\Unit\UnitDashboardController;
 use App\Http\Controllers\Unit\AdministrationDemoController;
 use App\Http\Controllers\Unit\AgentCenterController;
@@ -54,6 +55,8 @@ Route::middleware('auth')->group(function (): void {
         ->middleware('role:superadmin,admin,doctor')
         ->name('doctor.dashboard');
     Route::post('/doctor/clinics', [DoctorPortalController::class, 'storeClinic'])->middleware('role:superadmin,admin,doctor')->name('doctor.clinics.store');
+    Route::patch('/doctor/consultation-tariff', [DoctorPortalController::class, 'updateConsultationTariff'])
+        ->middleware(['role:doctor', 'throttle:20,1'])->name('doctor.consultation_tariff.update');
     Route::patch('/doctor/clinics/{clinic}', [DoctorPortalController::class, 'updateClinic'])->middleware('role:superadmin,admin,doctor')->name('doctor.clinics.update');
     Route::delete('/doctor/clinics/{clinic}', [DoctorPortalController::class, 'destroyClinic'])->middleware('role:superadmin,admin,doctor')->name('doctor.clinics.destroy');
     Route::post('/doctor/availability', [DoctorPortalController::class, 'storeAvailability'])->middleware('role:superadmin,admin,doctor')->name('doctor.availability.store');
@@ -362,12 +365,21 @@ Route::middleware('auth')->group(function (): void {
     Route::get('/superadmin', [SuperAdminDashboardController::class, 'index'])
         ->middleware('role:superadmin')
         ->name('superadmin.dashboard');
+    Route::get('/superadmin/aplicacion-movil', [MobileAppController::class, 'index'])
+        ->middleware('role:superadmin')
+        ->name('superadmin.mobile-app');
+    Route::put('/superadmin/aplicacion-movil/{group}', [MobileAppController::class, 'update'])
+        ->middleware(['role:superadmin', 'permission:superadmin.settings.update'])
+        ->name('superadmin.mobile-app.update');
     Route::get('/superadmin/catalogo/{section}', [SuperAdminDashboardController::class, 'catalog'])
         ->middleware('role:superadmin')
         ->name('superadmin.catalog');
     Route::get('/superadmin/catalogo/{section}/csv', [SuperAdminDashboardController::class, 'exportCatalog'])
         ->middleware('role:superadmin')
         ->name('superadmin.catalog.csv');
+    Route::get('/superadmin/catalogo/services/{service}/formatos/{format}', [SuperAdminDashboardController::class, 'showServiceFormat'])
+        ->middleware('role:superadmin')
+        ->name('superadmin.services.formats.show');
     Route::get('/superadmin/suscripciones/{plan}/usuarios.csv', [SuperAdminDashboardController::class, 'exportSubscriptionUsers'])
         ->middleware('role:superadmin')
         ->name('superadmin.subscriptions.users.csv');
@@ -521,3 +533,37 @@ Route::middleware('auth')->group(function (): void {
         });
 });
 
+
+// Digital storefront administration is separate from the patient portal.
+Route::middleware(['auth', 'role:provider,superadmin'])->group(function () {
+    Route::get('/providers/medicines/products/{product}/image', [\App\Http\Controllers\Pharmacy\PharmacyStoreAdminController::class, 'productImage'])->whereNumber('product')->name('provider.pharmacy.products.image');
+});
+Route::middleware(['auth', 'role:superadmin'])->group(function () {
+    Route::get('/superadmin/digital-pharmacy', [\App\Http\Controllers\Pharmacy\PharmacyStoreAdminController::class, 'index'])->name('superadmin.digital-pharmacy');
+    Route::patch('/superadmin/medications/{medication}/status', [\App\Http\Controllers\SuperAdmin\MedicationCatalogController::class, 'updateStatus'])->whereNumber('medication')->name('superadmin.medications.status');
+    Route::patch('/superadmin/medications/{medication}/publication', [\App\Http\Controllers\SuperAdmin\MedicationCatalogController::class, 'publication'])->whereNumber('medication')->name('superadmin.medications.publication');
+    Route::patch('/superadmin/medications/{medication}/identifiers', [\App\Http\Controllers\SuperAdmin\MedicationIdentifierController::class, 'update'])->whereNumber('medication')->name('superadmin.medications.identifiers');
+    Route::post('/superadmin/medications', [\App\Http\Controllers\SuperAdmin\MedicationCatalogController::class, 'store'])->name('superadmin.medications.store');
+    Route::get('/superadmin/medications/{medication}/barcode.svg', [\App\Http\Controllers\SuperAdmin\MedicationIdentifierController::class, 'barcode'])->whereNumber('medication')->name('superadmin.medications.barcode');
+    Route::get('/superadmin/digital-pharmacy/orders/{order}/prescription', [\App\Http\Controllers\Pharmacy\PharmacyStoreAdminController::class, 'downloadPrescriptionUpload'])->name('superadmin.digital-pharmacy.orders.prescription');
+    Route::put('/superadmin/digital-pharmacy/settings', [\App\Http\Controllers\Pharmacy\PharmacyStoreAdminController::class, 'settings'])->name('superadmin.digital-pharmacy.settings');
+    Route::patch('/superadmin/digital-pharmacy/klini-offers/{product}', [\App\Http\Controllers\Pharmacy\PharmacyStoreAdminController::class, 'kliniOfferPrice'])->whereNumber('product')->name('superadmin.digital-pharmacy.klini-offers.price');
+    Route::patch('/superadmin/digital-pharmacy/orders/{order}/status', [\App\Http\Controllers\Pharmacy\PharmacyStoreAdminController::class, 'orderStatus'])->name('superadmin.digital-pharmacy.orders.status');
+    Route::get('/superadmin/distributors', [\App\Http\Controllers\Pharmacy\PharmacyStoreAdminController::class, 'distributors'])->name('superadmin.distributors');
+    Route::post('/superadmin/distributors', [\App\Http\Controllers\Pharmacy\PharmacyStoreAdminController::class, 'storeDistributor'])->name('superadmin.distributors.store');
+    Route::post('/superadmin/distributors/link-demo', [\App\Http\Controllers\Pharmacy\PharmacyStoreAdminController::class, 'linkDemoDistributor'])->name('superadmin.distributors.link-demo');
+    Route::patch('/superadmin/distributors/{provider}/publication', [\App\Http\Controllers\Pharmacy\PharmacyStoreAdminController::class, 'publication'])->name('superadmin.distributors.publication');
+});
+Route::middleware(['auth', 'role:provider'])->group(function () {
+    Route::get('/providers/medicines/panel/{section}', [\App\Http\Controllers\Pharmacy\PharmacyStoreAdminController::class, 'workspace'])->whereIn('section', ['summary', 'inventory', 'deliveries', 'store', 'reports', 'settings'])->name('provider.pharmacy.workspace');
+    Route::patch('/providers/medicines/inventory/{product}', [\App\Http\Controllers\Pharmacy\PharmacyStoreAdminController::class, 'updateStock'])->whereNumber('product')->name('provider.pharmacy.inventory.update');
+    Route::patch('/providers/medicines/products/{product}/status', [\App\Http\Controllers\Pharmacy\PharmacyStoreAdminController::class, 'updateProductStatus'])->whereNumber('product')->name('provider.pharmacy.products.status');
+    Route::patch('/providers/medicines/settings', [\App\Http\Controllers\Pharmacy\PharmacyStoreAdminController::class, 'distributorSettings'])->name('provider.pharmacy.settings');
+    Route::get('/providers/medicines/demo-images/{imageKey}', [\App\Http\Controllers\Pharmacy\PharmacyStoreAdminController::class, 'demoProductImage'])->where('imageKey', '[a-z0-9-]+')->name('provider.pharmacy.demo-images');
+    Route::get('/providers/medicines/store-orders', [\App\Http\Controllers\Pharmacy\PharmacyStoreAdminController::class, 'providerOrders'])->name('provider.pharmacy.orders');
+    Route::get('/providers/medicines/pharmacy-catalog', [\App\Http\Controllers\Pharmacy\DistributorCatalogController::class, 'index'])->name('provider.pharmacy.catalog');
+    Route::put('/providers/medicines/pharmacy-catalog/{medication}', [\App\Http\Controllers\Pharmacy\DistributorCatalogController::class, 'offer'])->whereNumber('medication')->name('provider.pharmacy.catalog.offer');
+    Route::get('/providers/medicines/products', [\App\Http\Controllers\Pharmacy\PharmacyStoreAdminController::class, 'products'])->name('provider.pharmacy.products');
+    Route::post('/providers/medicines/products', [\App\Http\Controllers\Pharmacy\PharmacyStoreAdminController::class, 'storeProduct'])->name('provider.pharmacy.products.store');
+    Route::patch('/providers/medicines/products/{product}', [\App\Http\Controllers\Pharmacy\PharmacyStoreAdminController::class, 'updateProduct'])->name('provider.pharmacy.products.update');
+});

@@ -9,7 +9,26 @@ use App\Http\Controllers\Api\Mobile\V1\MixtureRequestController;
 use App\Http\Controllers\Api\Mobile\V1\MobileDeviceController;
 use App\Http\Controllers\Api\Mobile\V1\PasswordController;
 use App\Http\Controllers\Api\Mobile\V1\PatientReadController;
+use App\Http\Controllers\Api\Mobile\V1\WalletController;
 use Illuminate\Support\Facades\Route;
+
+Route::prefix('mobile/v1/patient/wallet')->name('api.mobile.v1.patient.wallet.')
+    ->middleware(['throttle:mobile-api', 'auth:sanctum', 'mobile.role:patient'])
+    ->group(function (): void {
+        $controller = WalletController::class;
+        Route::get('/', [$controller, 'show'])->name('show');
+        Route::get('consultations', [$controller, 'consultations'])->name('consultations.index');
+        Route::post('consultations/{appointment}/quote', [$controller, 'quote'])->whereNumber('appointment')->middleware('throttle:30,1')->name('consultations.quote');
+        Route::post('consultation-payments', [$controller, 'payConsultation'])->middleware('throttle:20,1')->name('consultation-payments.store');
+        Route::post('recharges', [$controller, 'store'])->middleware('throttle:20,1')->name('recharges.store');
+        Route::get('recharges/{recharge}', [$controller, 'recharge'])->whereUuid('recharge')->name('recharges.show');
+        Route::post('recharges/{recharge}/refresh', [$controller, 'refresh'])->whereUuid('recharge')->middleware('throttle:30,1')->name('recharges.refresh');
+        Route::post('recharges/{recharge}/resume', [$controller, 'resume'])->whereUuid('recharge')->middleware('throttle:20,1')->name('recharges.resume');
+        Route::post('recharges/{recharge}/cancel', [$controller, 'cancel'])->whereUuid('recharge')->middleware('throttle:20,1')->name('recharges.cancel');
+    });
+
+Route::post('/integrations/stripe/wallet', [WalletController::class, 'webhook'])
+    ->name('api.integrations.stripe.wallet');
 
 Route::prefix('mobile/v1')
     ->name('api.mobile.v1.')
@@ -102,3 +121,21 @@ Route::middleware(['web', 'auth'])
         Route::post('authorizations', [InsuranceApiController::class, 'storeAuthorization'])->name('authorizations.store');
         Route::post('documents', [InsuranceApiController::class, 'storeDocument'])->name('documents.store');
     });
+
+Route::prefix('mobile/v1/pharmacy')->name('api.mobile.v1.pharmacy.')->middleware('throttle:mobile-api')->group(function (): void {
+    $controller = \App\Http\Controllers\Api\Mobile\V1\PharmacyStoreController::class;
+    Route::get('catalog', [$controller, 'catalog'])->name('catalog');
+    Route::get('catalog-items', [$controller, 'catalogItems'])->name('catalog-items');
+    Route::get('catalog-items/{medication}', [$controller, 'catalogItem'])->whereNumber('medication')->name('catalog-item');
+    Route::get('settings', [$controller, 'settings'])->name('settings');
+    Route::get('products', [$controller, 'products'])->name('products');
+    Route::get('products/{product}', [$controller, 'product'])->whereNumber('product')->name('product');
+    Route::get('products/{product}/image', [$controller, 'productImage'])->whereNumber('product')->name('product.image');
+    Route::middleware(['auth:sanctum', 'mobile.role:patient'])->group(function () use ($controller): void {
+        Route::post('prescription-uploads', [\App\Http\Controllers\Api\Mobile\V1\PharmacyPrescriptionUploadController::class, 'store'])->middleware('throttle:10,1')->name('prescription-uploads.store');
+        Route::get('prescription-uploads/{upload}/file', [\App\Http\Controllers\Api\Mobile\V1\PharmacyPrescriptionUploadController::class, 'download'])->whereNumber('upload')->name('prescription-uploads.download');
+        Route::get('orders', [$controller, 'orders'])->name('orders');
+        Route::post('orders', [$controller, 'storeOrder'])->name('orders.store');
+        Route::get('orders/{order}', [$controller, 'order'])->whereNumber('order')->name('order');
+    });
+});

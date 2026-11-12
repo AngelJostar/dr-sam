@@ -1,0 +1,1486 @@
+ CLAVE (CNIS)                      GRUPO          INSUMO                                                     DESCRIPCIÓN                                  UNIDADES  UNIDADES NÚCLEOS  CESSA
+010.000.0104.00                                PARACETAMOL       TABLETA CADA TABLETA CONTIENE: PARACETAMOL 500 MG. ENVASE CON 10 TABLETAS.                MÓVILES         BÁSICOS
+                               GRUPO Nº 1:
+010.000.0106.00                  ANALGESIA                                                                                                                     SÍ   SÍ                SÍ
+
+010.000.0109.00                GRUPO Nº 23:    PARACETAMOL       SOLUCIÓN ORAL CADA ML CONTIENE: PARACETAMOL 100 MG. ENVASE CON 15 ML, GOTERO CALIBRADO   NO        SÍ                SÍ
+010.000.0233.00          CUIDADOS PALIATIVOS                                           A 0.5 Y 1 ML, INTEGRADO O ADJUNTO AL ENVASE QUE SIRVE DE TAPA.
+010.000.0246.00
+010.000.0261.00                GRUPO Nº 1:     METAMIZOL SÓDICO  SOLUCIÓN INYECTABLE CADA AMPOLLETA CONTIENE: METAMIZOL SÓDICO 1 G. ENVASE CON 3          NO        SÍ                SÍ
+010.000.0270.00                  ANALGESIA                                                                  AMPOLLETAS CON 2 ML
+010.000.0291.00
+010.000.0402.00                GRUPO Nº 23:    SEVOFLURANO       LÍQUIDO O SOLUCIÓN CADA ENVASE CONTIENE: SEVOFLURANO 250 ML. ENVASE CON 250 ML DE        NO        NO                SÍ
+010.000.0406.00          CUIDADOS PALIATIVOS                                                                  LÍQUIDO O SOLUCIÓN.
+010.000.0429.00
+010.000.0431.00                GRUPO Nº 1:                       EMULSIÓN INYECTABLE CADA AMPOLLETA O FRASCO ÁMPULA CONTIENE: PROPOFOL 200 MG. EN
+010.000.0439.00                  ANALGESIA
+                                               PROPOFOL          EMULSIÓN CON EDETATO DISÓDICO (DIHIDRATADO). ENVASE CON 5 AMPOLLETAS O FRASCOS ÁMPULA    NO        NO                SÍ
+                               GRUPO Nº 23:
+                         CUIDADOS PALIATIVOS                     DE 20 ML.
+
+                               GRUPO Nº 2:     LIDOCAÍNA         SOLUCIÓN INYECTABLE AL 1% CADA FRASCO ÁMPULA CONTIENE: CLORHIDRATO DE LIDOCAÍNA 500      SÍ        SÍ                SÍ
+                                 ANESTESIA                                                      MG. ENVASE CON 5 FRASCOS ÁMPULA DE 50 ML.
+
+                               GRUPO Nº 2:                       SOLUCION INYECTABLE CADA AMPOLLETA CONTIENE: CLORHIDRATO DE ROPIVACAÍNA
+                                 ANESTESIA
+                                               ROPIVACAINA       MONOHIDRATADA EQUIVALENTE A 150 MG DE CLORHIDRATO DE ROPIVACAINA. ENVASE CON 5           NO        NO                SÍ
+                               GRUPO Nº 2:
+                                 ANESTESIA                       AMPOLLETAS CON 20 ML.
+
+                               GRUPO Nº 3:     NEOSTIGMINA       SOLUCIÓN INYECTABLE CADA AMPOLLETA CONTIENE: METILSULFATO DE NEOSTIGMINA 0.5 MG. ENVASE  NO        NO                SÍ
+                               CARDIOLOGÍA                                                                    CON 6 AMPOLLETAS CON 1 ML
+
+                               GRUPO Nº 2:     CLORFENAMINA TABLETA CADA TABLETA CONTIENE: MALEATO DE CLORFENAMINA 4.0 MG. ENVASE CON 20 TABLETAS.        NO        SÍ                SÍ
+                                 ANESTESIA
+                                               DIFENHIDRAMINA    SOLUCIÒN INYECTABLE CADA FRASCO ÁMPULA CONTIENE: CLORHIDRATO DE DIFENHIDRAMINA 100       NO        SÍ                SÍ
+                                GRUPO Nº 2:                                                       MG. ENVASE CON FRASCO ÁMPULA DE 10 ML.
+                                 ANESTESIA
+                                                                 SUSPENSIÓN EN AEROSOL CADA INHALADOR CONTIENE: SALBUTAMOL 20 MG O SULFATO DE
+                               GRUPO Nº 11:
+                             INTOXICACIONES    SALBUTAMOL SALBUTAMOL EQUIVALENTE A 20 MG DE SALBUTAMOL ENVASE CON INHALADOR CON 200 DOSIS DE 100          NO        SÍ                SÍ
+
+                               GRUPO Nº 7:                       G.
+                 ENFERMEDADES INMUNOALÉRGICAS
+                                               SALBUTAMOL        JARABE CADA 5 ML CONTIENEN: SULFATO DE SALBUTAMOL EQUIVALENTE A 2 MG DE SALBUTAMOL.      NO        SÍ                SÍ
+                               GRUPO Nº 7:                                                                      ENVASE CON 60 ML.
+                 ENFERMEDADES INMUNOALÉRGICAS
+                                               SALBUTAMOL        SOLUCIÓN PARA NEBULIZADOR CADA 100 ML CONTIENEN: SULFATO DE SALBUTAMOL 0.5 G. ENVASE     NO        NO                SÍ
+                               GRUPO Nº 13:                                                                            CON 10 ML.
+                               NEUMOLOGÍA
+
+                               GRUPO Nº 13:
+                               NEUMOLOGÍA
+                               GRUPO Nº 13:
+                               NEUMOLOGÍA
+ CLAVE (CNIS)                      GRUPO          INSUMO                                                             DESCRIPCIÓN                           UNIDADES  UNIDADES NÚCLEOS  CESSA
+010.000.0446.00                                                                                                                                             MÓVILES         BÁSICOS       SÍ
+                               GRUPO Nº 13:    BUDESONIDA-      POLVO CADA GRAMO CONTIENE: BUDESONIDA 180 MG / FUMARATO DE FORMOTEROL DIHIDRATADO 5
+010.000.0472.00                NEUMOLOGÍA      FORMOTEROL       MG. ENVASE CON FRASCO INHALADOR DOSIFICADOR CON 60 DOSIS CON 160G /4.5G CADA UNA.              NO               NO
+
+010.000.0474.00                 GRUPO Nº 5:    PREDNISONA       TABLETA CADA TABLETA CONTIENE: PREDNISONA 5 MG. ENVASE CON 20 TABLETAS.                    NO        SÍ                SÍ
+010.000.0477.00  ENDOCRINOLOGÍA Y METABOLISMO
+                                                                SOLUCIÓN INYECTABLE CADA FRASCO ÁMPULA CONTIENE: SUCCINATO SÓDICO DE HIDROCORTISONA
+010.000.0514.00                GRUPO Nº 12:
+010.000.0525.00        NEFROLOGÍA Y UROLOGÍA   HIDROCORTISONA EQUIVALENTE A 100 MG DE HIDROCORTISONA. ENVASE CON 50 FRASCOS ÁMPULA Y 50 AMPOLLETAS         NO        NO                SÍ
+010.000.0530.00
+010.000.0566.00                GRUPO Nº 20:                     CON 2 ML DE DILUYENTE.
+010.000.0570.00  REUMATOLOGÍA Y TRAUMATOLOGÍA
+010.000.0573.00                                BECLOMETASONA, SUSPENSIÓN EN AEROSOL CADA INHALACIÓN CONTIENE: DIPROPIONATO DE BECLOMETASONA 50 G.          NO        SÍ                SÍ
+010.000.0598.00                GRUPO Nº 23:
+010.000.0599.00          CUIDADOS PALIATIVOS   DIPROPIONATO DE  ENVASE CON DISPOSITIVO INHALADOR PARA 200 DOSIS.
+010.000.0612.00
+                               GRUPO Nº 7:     PARACETAMOL SUPOSITORIO CADA SUPOSITORIO CONTIENE: PARACETAMOL 100 MG. ENVASE CON 3 SUPOSITORIOS            NO        SÍ                SÍ
+                 ENFERMEDADES INMUNOALÉRGICAS
+                                               FENITOÍNA        TABLETA O CÁPSULA CADA TABLETA O CÁPSULA CONTIENE: FENITOÍNA SÓDICA 100 MG. ENVASE CON 50  NO        SÍ                SÍ
+                               GRUPO Nº 13:                                                                      TABLETAS O CÁPSULAS.
+                               NEUMOLOGÍA
+                               GRUPO N° 23:    PROPRANOLOL      TABLETA CADA TABLETA CONTIENE: CLORHIDRATO DE PROPRANOLOL 40 MG. ENVASE CON 30             NO        SÍ                SÍ
+                         CUIDADOS PALIATIVOS                                                                       TABLETAS.
+                               GRUPO Nº 1:
+                                               METILDOPA        TABLETA CADA TABLETA CONTIENE: METILDOPA 250 MG. ENVASE CON 30 TABLETAS.                   NO        SÍ                SÍ
+                                 ANALGESIA
+                                               HIDRALAZINA TABLETA CADA TABLETA CONTIENE: CLORHIDRATO DE HIDRALAZINA 10 MG. ENVASE CON 20 TABLETAS         NO        SÍ                SÍ
+                               GRUPO Nº 23:
+                         CUIDADOS PALIATIVOS   PRAZOSINA        CÁPSULA O COMPRIMIDO CADA CÁPSULA O COMPRIMIDO CONTIENE: CLORHIDRATO DE PRAZOSINA          NO        NO                SÍ
+                                                                          EQUIVALENTE A 1 MG DE PRAZOSINA. ENVASE CON 30 CÁPSULAS O COMPRIMIDOS.
+                               GRUPO Nº 14:
+                               NEUROLOGÍA      VERAPAMILO       SOLUCIÓN INYECTABLE CADA AMPOLLETA CONTIENE: CLORHIDRATO DE VERAPAMILO 5 MG. ENVASE        NO        NO                SÍ
+                                GRUPO Nº 3:                                                                    CON 2 ML (2.5 MG/ ML).
+                               CARDIOLOGÍA
+                                GRUPO Nº 3:    NIFEDIPINO       COMPRIMIDO DE LIBERACION PROLONGADA CADA COMPRIMIDO CONTIENE: NIFEDIPINO 30 MG.            NO        SÍ                SÍ
+                               CARDIOLOGÍA                                                             ENVASE CON 30 COMPRIMIDOS.
+                                GRUPO Nº 3:
+                               CARDIOLOGÍA     NOREPINEFRINA    SOLUCIÓN INYECTABLE CADA AMPOLLETA CONTIENE: BITARTRATO DE NOREPINEFRINA EQUIVALENTE A     NO        NO                SÍ
+                                                                                       4 MG DE NOREPINEFRINA. ENVASE CON 10 AMPOLLETAS DE 4 ML
+                                GRUPO Nº 3:
+                               CARDIOLOGÍA
+
+                                GRUPO Nº 3:
+                               CARDIOLOGÍA
+                                GRUPO Nº 3:
+                               CARDIOLOGÍA
+                                GRUPO Nº 3:
+                               CARDIOLOGÍA
+ CLAVE (CNIS)                     GRUPO             INSUMO                                                              DESCRIPCIÓN                       UNIDADES  UNIDADES NÚCLEOS  CESSA
+010.000.0614.00                                   DOPAMINA                                                                                                 MÓVILES         BÁSICOS       SÍ
+                               GRUPO Nº 3:                         SOLUCIÓN INYECTABLE CADA AMPOLLETA CONTIENE: CLORHIDRATO DE DOPAMINA 200 MG. ENVASE
+010.000.0615.00               CARDIOLOGÍA        DOBUTAMINA                                                   CON 5 AMPOLLETAS CON 5 ML.                      NO               NO
+
+010.000.0626.01                GRUPO Nº 3:     FITOMENADIONA            SOLUCIÓN INYECTABLE CADA FRASCO ÁMPULA O AMPOLLETA CONTIENE: CLORHIDRATO DE           NO    NO                SÍ
+010.000.0655.00               CARDIOLOGÍA        BEZAFIBRATO      DOBUTAMINA EQUIVALENTE A 250 MG DE DOBUTAMINA. ENVASE CON 5 AMPOLLETAS CON 5 ML CADA
+010.000.0801.01                                BAÑO COLOIDE                                                                                                   NO    NO                SÍ
+010.000.0804.00               GRUPO Nº 10:      ÓXIDO DE ZINC                                                                 UNA                             NO
+010.000.0811.00              HEMATOLOGÍA                           SOLUCIÓN O EMULSION INYECTABLE CADA AMPOLLETA CONTIENE: FITOMENADIONA 10 MG. ENVASE        NO    SÍ                SÍ
+010.000.0813.00                GRUPO Nº 5:                                                                                                                     SÍ
+010.000.0865.00  ENDOCRINOLOGÍA Y METABOLISMO                                                                  CON 5 AMPOLLETAS DE 1 ML                       NO    SÍ                SÍ
+010.000.0871.00                GRUPO Nº 4:                                                                                                                    NO
+010.000.0872.00              DERMATOLOGÍA                                   TABLETA CADA TABLETA CONTIENE: BEZAFIBRATO 200 MG. ENVASE CON 30 TABLETAS.        NO    SÍ                SÍ
+010.000.0891.00                GRUPO Nº 4:                                                                                                                    NO
+010.000.1007.00              DERMATOLOGÍA                         POLVO CADA GRAMO CONTIENE: HARINA DE SOYA 965 MG. (CONTENIDO PROTEICO 45%). POLIVIDONA      NO
+                               GRUPO Nº 4:                                                   20 MG. ENVASE CON DOS SOBRES INDIVIDUALES DE 90 G.                SÍ
+010.000.1051.01              DERMATOLOGÍA                                                                                                                      SÍ
+                               GRUPO Nº 4:                                         PASTA CADA 100 G CONTIENEN: ÓXIDO DE ZINC 25. 0 G. ENVASE CON 30 G.
+010.000.1098.00              DERMATOLOGÍA                                                                                                                     NO
+010.000.1206.00                GRUPO Nº 4:     FLUOCINOLONA       CREMA CADA G CONTIENE: ACETÓNIDO DE FLUOCINOLONA 0.1 MG. ENVASE CON 20 G.                         SÍ                SÍ
+010.000.1207.00              DERMATOLOGÍA                                                                                                                     NO
+010.000.1210.01                GRUPO Nº 4:     HIDROCORTISONA     CREMA CADA G CONTIENE: 17 BUTIRATO DE HIDROCORTISONA 1 MG. ENVASE CON 15 G                   SÍ   SÍ                SÍ
+010.000.1224.00              DERMATOLOGÍA                                                                                                                     NO
+010.000.1241.00                GRUPO Nº 4:     PERMETRINA                  SOLUCION CADA 100 ML CONTIENEN: PERMETRINA 1 G. ENVASE CON 110 ML                  NO    NO                SÍ
+010.000.1242.00              DERMATOLOGÍA        ALIBOUR                                                                                                      NO
+                               GRUPO Nº 4:                        POLVO CADA GRAMO CONTIENE: SULFATO DE COBRE 177.0 MG. SULFATO DE ZINC 619.5 MG.             NO    NO                SÍ
+                             DERMATOLOGÍA      CLIOQUINOL                               ALCANFOR 26.5 MG. ENVASE CON 12 SOBRES CON 2.2 G                       SÍ
+                               GRUPO Nº 5:                                                                                                                          SÍ                SÍ
+                 ENDOCRINOLOGÍA Y METABOLISMO                                    CREMA CADA G CONTIENE: CLIOQUINOL 30 MG. ENVASE CON 20 G.
+
+                               GRUPO Nº 5:     MICONAZOL          CREMA CADA GRAMO CONTIENE: NITRATO DE MICONAZOL 20 MG. ENVASE CON 20 G.                           SÍ                SÍ
+                 ENDOCRINOLOGÍA Y METABOLISMO
+                                               LEVOTIROXINA       TABLETA CADA TABLETA CONTIENE: LEVOTIROXINA SÓDICA EQUIVALENTE A 100 G DE LEVOTIROXINA            SÍ                SÍ
+                                     ND                                                            SÓDICA ANHIDRA. ENVASE CON 100 TABLETAS
+
+                               GRUPO Nº 8:                        SOLUCIÓN INYECTABLE ACCIÓN RÁPIDA REGULAR CADA ML CONTIENE: INSULINA HUMANA (ORIGEN
+                         GASTROENTEROLOGÍA
+                                               INSULINA HUMANA ADN RECOMBINANTE) 100 UI. Ó INSULINA ZINC ISÓFANA HUMANA (ORIGEN ADN RECOMBINANTE) 100               SÍ                SÍ
+                               GRUPO Nº 8:
+                         GASTROENTEROLOGÍA                        UI. ENVASE CON UN FRASCO ÁMPULA CON 10 ML.
+
+                               GRUPO Nº 8:     VITAMINAS A, C, D  VITAMINAS A.C.D SOLUCION CADA ML CONTIENE: PALMITATO DE RETINOL 7000 A 9000 UI;ACIDO              SÍ                SÍ
+                         GASTROENTEROLOGÍA                                 ASCORBICO 80 A 125 MG; COLECALCIFEROL 1400 A 1800 UI; ENVASE CON 15 ML.
+
+                               GRUPO Nº 8:     BUTILHIOSCINA O    GRAGEA O TABLETA CADA GRAGEA O TABLETA CONTIENE: BROMURO DE BUTILHIOSCINA O                       SÍ                SÍ
+                         GASTROENTEROLOGÍA
+                                               HIOSCINA           BUTILBROMURO DE HIOSCINA 10 MG. ENVASE CON 10 GRAGEAS O TABLETAS.
+                               GRUPO Nº 8:
+                         GASTROENTEROLOGÍA     BUTILHIOSCINA O SOLUCIÓN INYECTABLE CADA AMPOLLETA CONTIENE: BROMURO DE BUTILHIOSCINA O BUTILBROMURO                 NO                SÍ
+
+                               GRUPO Nº 8:     HIOSCINA           DE HIOSCINA 20 MG. ENVASE CON 3 AMPOLLETAS DE 1 ML.
+                         GASTROENTEROLOGÍA
+                                               PINAVERIO          TABLETA CADA TABLETA CONTIENE: BROMURO DE PINAVERIO 100 MG. ENVASE CON 28 TABLETAS.               SÍ                SÍ
+
+                                                   ALUMINIO Y        SUSPENSIÓN ORAL CADA 100 ML CONTIENEN: HIDRÓXIDO DE ALUMINIO 3.7 G. HIDRÓXIDO DE               SÍ                SÍ
+                                                    MAGNESIO          MAGNESIO 4.0 G. O TRISILICATO DE MAGNESIO: 8.9 G. ENVASE CON 240 ML Y DOSIFICADOR.
+                                               METOCLOPRAMIDA     SOLUCIÓN INYECTABLE CADA AMPOLLETA CONTIENE: CLORHIDRATO DE METOCLOPRAMIDA 10 MG.                 NO                SÍ
+
+                                               METOCLOPRAMIDA                                           ENVASE CON 6 AMPOLLETAS DE 2 ML.                            SÍ                SÍ
+                                                                   TABLETA CADA TABLETA CONTIENE: CLORHIDRATO DE METOCLOPRAMIDA 10 MG. ENVASE CON 20
+
+                                                                                                                        TABLETAS.
+CLAVE (CNIS)     GRUPO                                    INSUMO           DESCRIPCIÓN                                                                                 UNIDADES  UNIDADES NÚCLEOS  CESSA
+                                                                                                                                                                        MÓVILES         BÁSICOS       SÍ
+010.000.1243.00        GRUPO Nº 8:                        METOCLOPRAMIDA   SOLUCIÓN CADA ML CONTIENE: CLORHIDRATO DE METOCLOPRAMIDA 4 MG. ENVASE FRASCO GOTERO                              NO        SÍ
+010.000.1263.00  GASTROENTEROLOGÍA                                                                                                 CON 20 ML.                              NO                         SÍ
+010.000.1271.00                                                                                                                                                             SÍ              SÍ        SÍ
+010.000.1272.00        GRUPO Nº 8:                        BISMUTO          SUSPENSIÓN ORAL CADA 100 ML CONTIENEN: SUBSALICILATO DE BISMUTO 1.750 G. ENVASE CON 240          SÍ
+                 GASTROENTEROLOGÍA                                                                                                      ML                                  SÍ              SÍ
+                                                                                                                                                                           NO
+                       GRUPO Nº 8:                        PLÁNTAGO         POLVO CADA 100 G CONTIENEN: POLVO DE CÁSCARA DE SEMILLA DE PLÁNTAGO PSYLLIUM 49.7 G.                             SÍ
+                 GASTROENTEROLOGÍA                                                                                                                                         NO
+                                                          PSYLLIUM         ENVASE CON 400 G.
+                       GRUPO Nº 8:                                                                                                                                         NO
+                 GASTROENTEROLOGÍA                        SENÓSIDOS A-B    TABLETA CADA TABLETA CONTIENE: CONCENTRADOS DE SEN DESECADOS 187 MG (NORMALIZADO A 8.6
+                                                                                                           MG DE SENÓSIDOS A B). ENVASE CON 20 TABLETAS.                    SÍ
+
+010.000.1308.01                       GRUPO Nº 6:         METRONIDAZOL     TABLETA CADA TABLETA CONTIENE: METRONIDAZOL 500 MG. ENVASE CON 30 TABLETAS.                     NO    SÍ                SÍ
+                 ENFERMEDADES INFECCIOSAS Y PARASITARIAS      (Acceso)                                                                                                      SÍ
+
+010.000.1310.00                       GRUPO Nº 6:         METRONIDAZOL     SUSPENSIÓN ORAL CADA 5 ML CONTIENEN: BENZOILO DE METRONIDAZOL EQUIVALENTE A 250 MG DE           NO    SÍ                SÍ
+                 ENFERMEDADES INFECCIOSAS Y PARASITARIAS      (Acceso)                                 METRONIDAZOL. ENVASE CON 120 ML Y DOSIFICADOR.
+                                                                                                                                                                            SÍ
+010.000.1344.00                       GRUPO Nº 6:         ALBENDAZOL       TABLETA CADA TABLETA CONTIENE: ALBENDAZOL 200 MG. ENVASE CON 2 TABLETAS                         NO    SÍ                SÍ
+                 ENFERMEDADES INFECCIOSAS Y PARASITARIAS                                                                                                                    SÍ
+                                                                                                                                                                            SÍ
+010.000.1345.00                       GRUPO Nº 6:         ALBENDAZOL       SUSPENSIÓN ORAL CADA FRASCO CONTIENE: ALBENDAZOL 400 MG. ENVASE CON 20 ML                       NO    SÍ                SÍ
+                 ENFERMEDADES INFECCIOSAS Y PARASITARIAS                                                                                                                   NO
+                                                                                                                                                                           NO
+010.000.1364.00        GRUPO Nº 8:                        LIDOCAÍNA - SUPOSITORIO CADA SUPOSITORIO CONTIENE: LIDOCAÍNA 60 MG. ACETATO DE HIDROCORTISONA 5 MG.                    SÍ                SÍ
+010.000.1506.00  GASTROENTEROLOGÍA
+                                                          HIDROCORTISONA   ÓXIDO DE ZINC 400 MG. SUBACETATO DE ALUMINIO 50 MG. ENVASE CON 6 SUPOSITORIOS.
+010.000.1508.00        GRUPO Nº 9:
+                 GINECO-OBSTETRICIA                       ESTRÓGENOS       CREMA VAGINAL CADA 100 G CONTIENE: ESTRÓGENOS CONJUGADOS DE ORIGEN EQUINO 62.5 MG.                    SÍ                SÍ
+010.000.1561.00
+010.000.1566.00        GRUPO Nº 9:                        CONJUGADOS       ENVASE CON 43 G Y APLICADOR.
+010.000.1703.00  GINECO-OBSTETRICIA
+010.000.1704.00                                           ESTRÓGENOS
+010.000.1706.01        GRUPO Nº 9:
+                 GINECO-OBSTETRICIA                       CONJUGADOS Y     GRAGEA CADA GRAGEA CONTIENE: ESTRÓGENOS CONJUGADOS DE ORIGEN EQUINO 0.625 MG                          SÍ                SÍ
+
+                       GRUPO Nº 9:                        MEDROXIPROGESTE  ACETATO DE MEDROXIPROGESTERONA 2.5 MG. ENVASE CON 28 GRAGEAS.
+                 GINECO-OBSTETRICIA
+                                                          RONA
+                      GRUPO Nº 10:
+                     HEMATOLOGÍA                          METRONIDAZOL ÓVULO O TABLETA VAGINAL CADA ÓVULO O TABLETA CONTIENE: METRONIDAZOL 500 MG. ENVASE CON                    SÍ                SÍ
+                      GRUPO Nº 10:
+                     HEMATOLOGÍA                          (Acceso)         10 ÓVULOS O TABLETAS.
+
+                             ND                           NISTATINA        ÓVULO O TABLETA VAGINAL CADA ÓVULO O TABLETA CONTIENE: NISTATINA 100 000 UI. ENVASE CON 12            SÍ                SÍ
+                                                                                                                             ÓVULOS O TABLETAS
+
+                                                          SULFATO FERROSO  TABLETA CADA TABLETA CONTIENE: SULFATO FERROSO DESECADO APROXIMADAMENTE 200 MG                        SÍ                SÍ
+                                                                                     EQUIVALENTE A 60.27 MG. DE HIERRO ELEMENTAL. ENVASE CON 30 TABLETAS.
+
+                                                          SULFATO FERROSO  SOLUCIÓN CADA ML CONTIENE: SULFATO FERROSO HEPTAHIDRATADO 125 MG EQUIVALENTE A 25 MG.                 SÍ                SÍ
+                                                                                                         DE HIERRO ELEMENTAL. ENVASE GOTERO CON 15 ML.
+
+                                                          ÁCIDO FÓLICO ACIDO FOLICO. TABLETA. CADA TABLETA CONTIENE: ACIDO FOLICO 5 MG ENVASE CON 92 TABLETAS.                   SÍ                SÍ
+
+010.000.1711.00         ND                                 ÁCIDO FÓLICO    ACIDO FOLICO TABLETA CADA TABLETA CONTIENE: ACIDO FOLICO 0.4 MG ENVASE CON 90TABLETAS.                SÍ                SÍ
+010.000.1732.01                                           FITOMENADIONA
+                 GRUPO Nº 10:                                              SOLUCIÓN O EMULSION INYECTABLE CADA AMPOLLETA CONTIENE: FITOMENADIONA 2 MG. ENVASE                    NO                SÍ
+                 HEMATOLOGÍA                                                                                          CON 5 AMPOLLETAS DE 0.2 ML
+CLAVE (CNIS)     GRUPO                                    INSUMO            DESCRIPCIÓN                                                                              UNIDADES  UNIDADES NÚCLEOS  CESSA
+                                                                                                                                                                      MÓVILES         BÁSICOS       SÍ
+010.000.1903.00                       GRUPO Nº 6:          TRIMETOPRIMA-           COMPRIMIDO O TABLETA CADA COMPRIMIDO O TABLETA CONTIENE: TRIMETOPRIMA 80 MG.
+010.000.1904.00  ENFERMEDADES INFECCIOSAS Y PARASITARIAS  SULFAMETOXAZOL                      SULFAMETOXAZOL 400 MG. ENVASE CON 20 COMPRIMIDOS O TABLETAS.                SÍ              SÍ
+                                                                                                                                                                         NO
+                                                                (Acceso)    SUSPENSIÓN ORAL CADA 5 ML CONTIENEN: TRIMETOPRIMA 40 MG. SULFAMETOXAZOL 200 MG. ENVASE        SÍ
+                                                                                                                         CON 120 ML Y DOSIFICADOR.                        SÍ
+                                      GRUPO Nº 6:          TRIMETOPRIMA-                                                                                                 NO    SÍ                SÍ
+                 ENFERMEDADES INFECCIOSAS Y PARASITARIAS  SULFAMETOXAZOL                                                                                                 NO
+                                                                                                                                                                         NO
+                                                                (Acceso)                                                                                                 NO
+                                                                                                                                                                         NO
+010.000.1911.00  GRUPO Nº 6:                              NITROFURANTOÍNA   CÁPSULA CADA CÁPSULA CONTIENE: NITROFURANTOÍNA 100 MG. ENVASE CON 40 CÁPSULAS.               NO    SÍ                SÍ
+                                                                                                                                                                          SÍ
+                 ENFERMEDADES INFECCIOSAS Y PARASITARIAS  (Acceso)                                                                                                        SÍ
+                                                                                                                                                                         NO
+010.000.1925.00                       GRUPO Nº 6:             BENZATINA            SUSPENSIÓN INYECTABLE CADA FRASCO ÁMPULA CON POLVO CONTIENE: BENZATINA                NO    SÍ                SÍ
+                 ENFERMEDADES INFECCIOSAS Y PARASITARIAS  BENCILPENICILINA  BENCILPENICILINA EQUIVALENTE A 1 200 000 UI DE BENCILPENICILINA. ENVASE CON UN FRASCO        NO
+
+                                                                (Acceso)                                             ÁMPULA Y 5 ML DE DILUYENTE.
+
+010.000.1926.00                       GRUPO Nº 6:         DICLOXACILINA     CÁPSULA O COMPRIMIDO CADA CÁPSULA O COMPRIMIDO CONTIENE: DICLOXACILINA SÓDICA 500 MG.              SÍ                SÍ
+                 ENFERMEDADES INFECCIOSAS Y PARASITARIAS      (Acceso)                                         ENVASE CON 20 CÁPSULAS O COMPRIMIDOS.
+
+010.000.1927.00                       GRUPO Nº 6:         DICLOXACILINA     SUSPENSIÓN ORAL CADA 5 ML CONTIENEN: DICLOXACILINA SÓDICA 250 MG. ENVASE CON POLVO PARA            SÍ                SÍ
+                 ENFERMEDADES INFECCIOSAS Y PARASITARIAS      (Acceso)                                                       60 ML Y DOSIFICADOR.
+
+010.000.1928.00                       GRUPO Nº 6:         DICLOXACILINA     SOLUCIÓN INYECTABLE CADA FRASCO ÁMPULA CON POLVO CONTIENE: DICLOXACILINA SÓDICA                    NO                SÍ
+                 ENFERMEDADES INFECCIOSAS Y PARASITARIAS      (Acceso)        EQUIVALENTE A 250 MG. DE DICLOXACILINA. ENVASE FRASCO ÁMPULA Y 5 ML DE DILUYENTE.
+
+010.000.1937.00                       GRUPO Nº 6:         CEFTRIAXONA       SOLUCIÓN INYECTABLE CADA FRASCO ÁMPULA CON POLVO CONTIENE: CEFTRIAXONA SÓDICA                      NO                SÍ
+                 ENFERMEDADES INFECCIOSAS Y PARASITARIAS   (Vigilancia)     EQUIVALENTE A 1 G DE CEFTRIAXONA. ENVASE CON UN FRASCO ÁMPULA Y 10 ML DE DILUYENTE.
+
+010.000.1939.00                       GRUPO Nº 6:         CEFALEXINA        TABLETA O CÁPSULA CADA TABLETA O CÁPSULA CONTIENE: CEFALEXINA MONOHIDRATADA                        SÍ                SÍ
+                 ENFERMEDADES INFECCIOSAS Y PARASITARIAS    (Acceso)              EQUIVALENTE A 500 MG DE CEFALEXINA. ENVASE CON 20 TABLETAS O CÁPSULAS
+
+010.000.1940.00                       GRUPO Nº 6:         DOXICICLINA       CÁPSULA O TABLETA CADA CÁPSULA O TABLETA CONTIENE: HICLATO DE DOXICICLINA EQUIVALENTE A            SÍ                SÍ
+                 ENFERMEDADES INFECCIOSAS Y PARASITARIAS    (Acceso)                              100 MG DE DOXICILINA. ENVASE CON 10 CÁPSULAS O TABLETAS.
+
+010.000.1969.00                       GRUPO Nº 6:         AZITROMICINA            TABLETA CADA TABLETA CONTIENE: AZITROMICINA DIHIDRATADA EQUIVALENTE A 500 MG DE              SÍ                SÍ
+                 ENFERMEDADES INFECCIOSAS Y PARASITARIAS    (Vigilancia)                                         AZITROMICINA ENVASE CON 3 TABLETAS.
+
+010.000.2111.01  GRUPO Nº 3:                              AMLODIPINO          TABLETA O CAPSULA CADA TABLETA O CAPSULA CONTIENE: BESILATO O MALEATO DE AMLODIPINO              SÍ                SÍ
+                 CARDIOLOGÍA                                ACEITE DE                    EQUIVALENTE A 5 MG DE AMLODIPINO. ENVASE CON 30 TABLETAS O CÁPSULAS.
+                                                           ALMENDRAS
+010.000.2118.00    GRUPO Nº 4:                               DULCES                 CREMA ACEITE DE ALMENDRAS DULCES E HIDRÓXIDO DE CALCIO. ENVASE CON 240 ML.                 SÍ                SÍ
+                 DERMATOLOGÍA
+                                                          MUPIROCINA                     UNGÜENTO CADA 100 GRAMOS CONTIENE: MUPIROCINA 2 G. ENVASE CON 15 G.
+010.000.2123.00    GRUPO Nº 4:                                                                                                                                                 SÍ                SÍ
+                 DERMATOLOGÍA                               ACICLOVIR       COMPRIMIDO O TABLETA CADA COMPRIMIDO O TABLETA CONTIENE: ACICLOVIR 400 MG. ENVASE CON
+                                                                                                                       35 COMPRIMIDOS O TABLETAS.
+010.000.2126.00                       GRUPO Nº 6:                                                                                                                              SÍ                SÍ
+                 ENFERMEDADES INFECCIOSAS Y PARASITARIAS
+CLAVE (CNIS)     GRUPO                                    INSUMO             DESCRIPCIÓN                                                                               UNIDADES  UNIDADES NÚCLEOS  CESSA
+                                                                                                                                                                        MÓVILES         BÁSICOS
+
+010.000.2129.00                       GRUPO Nº 6:         AMOXICILINA /      SUSPENSIÓN ORAL CADA FRASCO CON POLVO CONTIENE: AMOXICILINA TRIHIDRATADA EQUIVALENTE A         SÍ   SÍ                SÍ
+                 ENFERMEDADES INFECCIOSAS Y PARASITARIAS      ÁCIDO           1.5 G DE AMOXICILINA. CLAVULANATO DE POTASIO EQUIVALENTE A 375 MG DE ÁCIDO CLAVULÁNICO.
+                                                                                                                                                                            SÍ
+                                                          CLAVULÁNICO            ENVASE CON 60 ML, CADA 5 ML CON 125 MG DE AMOXICILINA Y 31.25 MG ÁCIDO CLAVULÁNICO         SÍ
+                                                             (Acceso)                                                                                                      NO
+                                                                                                                                                                           NO
+010.000.2133.00                       GRUPO Nº 6:         CLINDAMICINA       CÁPSULA CADA CÁPSULA CONTIENE: CLORHIDRATO DE CLINDAMICINA EQUIVALENTE A 300 MG DE             SÍ   SÍ                SÍ
+                 ENFERMEDADES INFECCIOSAS Y PARASITARIAS     (Acceso)                                         CLINDAMICINA. ENVASE CON 16 CÁPSULAS.                         SÍ
+                                                                                                                                                                            SÍ
+010.000.2145.00                GRUPO Nº 7:                 LORATADINA          JARABE CADA 100 ML CONTIENEN: LORATADINA 100 MG. ENVASE CON 60 ML Y DOSIFICADOR.            NO    SÍ                SÍ
+010.000.2154.01  ENFERMEDADES INMUNOALÉRGICAS             ENOXAPARINA
+                                                                             SOLUCIÓN INYECTABLE CADA JERINGA CONTIENE: ENOXAPARINA SÓDICA 40 MG. ENVASE CON 2             NO    NO                SÍ
+                               GRUPO Nº 10:                                                           JERINGAS CON DISPOSITIVO DE SEGURIDAD DE 0.4 ML.
+                              HEMATOLOGÍA                                                                                                                                  NO
+
+010.000.2187.00  GRUPO Nº 13:                             IPRATROPIO         SOLUCIÓN CADA 100 ML CONTIENEN: BROMURO DE IPRATROPIO MONOHIDRATADO EQUIVALENTE A 25          NO    NO                SÍ
+                 NEUMOLOGÍA                                                                 MG. DE BROMURO DE IPRATROPIO. ENVASE CON FRASCO ÁMPULA CON 20 ML.              NO
+                                                                                                                                                                            SÍ
+010.000.2189.01         GRUPO Nº 15:                         TOBRAMICINA      SOLUCIÓN OFTÁLMICA CADA ML CONTIENE: SULFATO DE TOBRAMICINA EQUIVALENTE A 3.0 MG DE                SÍ                SÍ
+010.000.2242.00        OFTALMOLOGÍA                            (Vigilancia)            TOBRAMICINA Ó TOBRAMICINA 3.0 MG ENVASE CON GOTERO INTEGRAL CON 15 ML.              NO
+010.000.2301.00         GRUPO Nº 10:                                                                                                                                             SÍ                SÍ
+010.000.2304.01         HEMATOLOGÍA                       CARBÓN ACTIVADO    POLVO CADA ENVASE CONTIENE: CARBÓN ACTIVADO 1 KG. ENVASE CON UN KG (PARA USO EN SERES          SÍ
+                        GRUPO Nº 12:                                                                                               HUMANOS).                                     SÍ                SÍ
+010.000.2307.00  NEFROLOGÍA Y UROLOGÍA                    HIDROCLOROTIAZID
+                        GRUPO Nº 12:                                 A            TABLETA CADA TABLETA CONTIENE: HIDROCLOROTIAZIDA 25 MG. ENVASE CON 20 TABLETAS
+010.000.2308.00  NEFROLOGÍA Y UROLOGÍA
+                        GRUPO Nº 12:                      ESPIRONOLACTONA    TABLETA CADA TABLETA CONTIENE: ESPIRONOLACTONA 25 MG. ENVASE CON 30 TABLETAS.                       SÍ                SÍ
+010.000.2331.00  NEFROLOGÍA Y UROLOGÍA
+010.000.2433.00                                           FUROSEMIDA         TABLETA CADA TABLETA CONTIENE: FUROSEMIDA 40 MG. ENVASE CON 20 TABLETAS                             SÍ                SÍ
+010.000.2463.00         GRUPO N° 23:
+                   CUIDADOS PALIATIVOS                    FUROSEMIDA         SOLUCIÓN INYECTABLE CADA AMPOLLETA CONTIENE: FUROSEMIDA 20 MG. ENVASE CON 5                         NO                SÍ
+010.000.2471.00                                                                                                        AMPOLLETAS DE 2 ML.
+                        GRUPO Nº 12:
+010.000.2501.00  NEFROLOGÍA Y UROLOGÍA                    FENAZOPIRIDINA         TABLETA CADA TABLETA CONTIENE: CLORHIDRATO DE FENAZOPIRIDINA 100 MG. ENVASE CON 20              SÍ                SÍ
+                                                           BENZONATATO                                                                TABLETAS.
+                        GRUPO N° 23:                                                                                                                                             SÍ                SÍ
+                   CUIDADOS PALIATIVOS                       AMBROXOL        PERLA O CÁPSULA CADA PERLA O CÁPSULA CONTIENE: BENZONATATO 100 MG. ENVASE CON 20 PERLAS
+                                                                                                                                    O CÁPSULAS.                                  SÍ                SÍ
+                        GRUPO Nº 12:
+                 NEFROLOGÍA Y UROLOGÍA                                         SOLUCIÓN CADA 100 ML CONTIENEN: CLORHIDRATO DE AMBROXOL 300 MG. ENVASE CON 120 ML Y
+                                                                                                                                   DOSIFICADOR.
+                        GRUPO Nº 13:
+                        NEUMOLOGÍA                        CLORFENAMINA       TABLETA CADA TABLETA CONTIENE: PARACETAMOL 500 MG CAFEÍNA 25 MG CLORHIDRATO DE                      SÍ                SÍ
+                        GRUPO Nº 13:                        COMPUESTA               FENILEFRINA 5 MG MALEATO DE CLORFENAMINA 4 MG ENVASE CON 10 TABLETAS.
+                        NEUMOLOGÍA
+                        GRUPO Nº 17:                      ENALAPRIL          CÁPSULA O TABLETA CADA CÁPSULA O TABLETA CONTIENE: MALEATO DE ENALAPRIL 10 MG. ENVASE               SÍ                SÍ
+                 OTORRINOLARINGOLOGÍA                                                                                 CON 30 CÁPSULAS O TABLETAS.
+
+                        GRUPO N°23:
+                   CUIDADOS PALIATIVOS
+
+                         GRUPO Nº 3:
+                        CARDIOLOGÍA
+ CLAVE (CNIS)               GRUPO              INSUMO                                               DESCRIPCIÓN                                      UNIDADES  UNIDADES NÚCLEOS  CESSA
+010.000.2540.00                                                                                                                                       MÓVILES         BÁSICOS       SÍ
+010.000.2542.00          GRUPO Nº 3:        TELMISARTÁN   TABLETA CADA TABLETA CONTIENE: TELMISARTÁN 40 MG. ENVASE CON 30 TABLETAS.
+                        CARDIOLOGÍA                                                                                                                       SÍ              SÍ
+010.000.2616.00                            TELMISARTÁN/    TABLETA O CÁPSULA CADA TABLETA O CÁPSULA CONTIENE: TELMISARTÁN 80.0 MG.
+                         GRUPO Nº 3:    HIDROCLOROTIAZID         HIDROCLOROTIAZIDA 12.5 MG. ENVASE CON 14 TABLETAS O CÁPSULAS.                           NO    SÍ                SÍ
+010.000.2617.00         CARDIOLOGÍA
+                                                   A
+010.000.2622.00         GRUPO Nº 14:
+010.000.2623.00         NEUROLOGÍA      LEVETIRACETAM SOLUCIÓN ORAL CADA 100 ML CONTIENEN: LEVETIRACETAM 10 G. ENVASE CON 300 ML (100 MG / ML).      NO        SÍ                SÍ
+010.000.2624.00
+010.000.2707.00         GRUPO N° 23:    LEVETIRACETAM     TABLETA CADA TABLETA CONTIENE: LEVETIRACETAM 500 MG. ENVASE CON 60 TABLETAS.               NO        SÍ                SÍ
+010.000.2714.00    CUIDADOS PALIATIVOS
+010.000.2804.00                         VALPROATO DE      TABLETA CON CUBIERTA O CAPA ENTÉRICA O TABLETA DE LIBERACIÓN RETARDADA CADA TABLETA        NO        SÍ                SÍ
+010.000.2814.00         GRUPO Nº 14:      MAGNESIO        CONTIENE: VALPROATO DE MAGNESIO 200 MG EQUIVALENTE A 185.6 MG. DE ÁCIDO VALPROICO Ó
+010.000.2821.00         NEUROLOGÍA
+010.000.2841.00                                                                 VALPROATO DE MAGNESIO 200 MG ENVASE CON 40 TABLETAS
+010.000.3111.00         GRUPO N° 23:
+                   CUIDADOS PALIATIVOS  VALPROATO DE      SOLUCIÓN CADA ML CONTIENE: VALPROATO DE MAGNESIO EQUIVALENTE A 186 MG DE ÁCIDO             NO        SÍ                SÍ
+                                          MAGNESIO                                             VALPROICO. ENVASE CON 40 ML.
+                        GRUPO Nº 14:
+                        NEUROLOGÍA      FENITOÍNA         SOLUCIÓN INYECTABLE CADA AMPOLLETA CONTIENE: FENITOÍNA SÓDICA 250 MG. ENVASE CON UNA       NO        NO                SÍ
+                                                                                                       AMPOLLETA (250 MG/5 ML).
+                        GRUPO Nº 14:
+                        NEUROLOGÍA      ÁCIDO ASCÓRBICO   ACIDO ASCORBICO TABLETA CADA TABLETA CONTIENE: ACIDO ASCORBICO 100 MG ENVASECON 20         NO        SÍ                SÍ
+                        GRUPO Nº 14:                                                                            TABLETAS.
+                        NEUROLOGÍA
+                                                          COMPLEJO B. TABLETA, COMPRIMIDO O CAPSULA. CADA TABLETA, COMPRIMIDO O CAPSULACONTIENE:
+                        GRUPO N° 23:
+                   CUIDADOS PALIATIVOS  COMPLEJO B        MONONITRATO O CLORHIDRATO DE TIAMINA 100 MG CLORHIDRATO DE PIRIDOXINA5 MG                  NO        SÍ                SÍ
+
+                               ND                         CIANOCOBALAMINA 50 MICROGRAMOS ENVASE CON 30 TABLETAS, COMPRIMIDOS OCAPSULAS.
+
+                               ND       NAFAZOLINA        SOLUCIÓN OFTÁLMICA CADA ML CONTIENE: CLORHIDRATO DE NAFAZOLINA 1 MG ENVASE CON GOTERO      NO        SÍ                SÍ
+                                                                                                            INTEGRAL CON 15 ML.
+                        GRUPO Nº 15:
+                       OFTALMOLOGÍA     HIPROMELOSA       SOLUCIÓN OFTÁLMICA AL 0.5% CADA ML CONTIENE: HIPROMELOSA 5 MG ENVASE CON GOTERO            NO        SÍ                SÍ
+                        GRUPO Nº 15:                                                                   INTEGRAL CON 15 ML.
+                       OFTALMOLOGÍA
+                                        CLORANFENICOL SOLUCIÓN OFTÁLMICA CADA ML CONTIENE: CLORANFENICOL LEVÓGIRO 5 MG ENVASE CON GOTERO             NO        NO                SÍ
+                        GRUPO N° 23:
+                   CUIDADOS PALIATIVOS  (Acceso)          INTEGRAL CON 15 ML.
+
+                        GRUPO Nº 15:    PREDNISOLONA      SOLUCIÓN OFTÁLMICA CADA ML CONTIENE: FOSFATO SÓDICO DE PREDNISOLONA EQUIVALENTE A 5 MG     NO        SÍ                SÍ
+                       OFTALMOLOGÍA                                       DE FOSFATO DE PREDNISOLONA. ENVASE CON GOTERO INTEGRAL CON 5 ML.
+
+                        GRUPO Nº 15:    DIFENIDOL         TABLETA CADA TABLETA CONTIENE: CLORHIDRATO DE DIFENIDOL EQUIVALENTE A 25 MG DE DIFENIDOL.  NO        SÍ                SÍ
+                       OFTALMOLOGÍA                                                                      ENVASE CON 30 TABLETAS.
+
+                        GRUPO Nº 17:
+                 OTORRINOLARINGOLOGÍA
+ CLAVE (CNIS)                      GRUPO                INSUMO           DESCRIPCIÓN                                                                                  UNIDADES  UNIDADES NÚCLEOS  CESSA
+010.000.3112.00                                                                                                                                                        MÓVILES         BÁSICOS       SÍ
+010.000.3132.00                GRUPO Nº 17:                 DIFENIDOL    SOLUCIÓN INYECTABLE CADA AMPOLLETA CONTIENE: CLORHIDRATO DE DIFENIDOL EQUIVALENTE A 40
+010.000.3150.00        OTORRINOLARINGOLOGÍA                                                           MG DE DIFENIDOL. ENVASE CON 2 AMPOLLETAS DE 2 ML.                    SÍ              SÍ
+010.000.3407.00                                            NEOMICINA,
+010.000.3409.00                GRUPO Nº 17:               POLIMIXINA B,     SOLUCIÓN ÓTICA CADA 100 ML CONTIENEN: ACETÓNIDO DE FLUOCINOLONA 0.025 G SULFATO DE            NO    SÍ                SÍ
+                       OTORRINOLARINGOLOGÍA             FLUOCINOLONA Y    POLIMIXINA B EQUIVALENTE A 1 000 000 U DE POLIMIXINA B. SULFATO DE NEOMICINA EQUIVALENTE A
+010.000.3412.00                                                          0.350 G DE NEOMICINA. CLORHIDRATO DE LIDOCAÍNA 2.0 G ENVASE CON GOTERO INTEGRAL CON 5 ML.        NO    SÍ                SÍ
+                               GRUPO Nº 7:                  LIDOCAÍNA
+010.000.3413.00  ENFERMEDADES INMUNOALÉRGICAS                                 TABLETA CADA TABLETA CONTIENE: DICLORHIDRATO DE LEVOCETIRIZINA 5 MG. ENVASE CON 20
+                                                         LEVOCETIRIZINA                                                           TABLETAS.
+                               GRUPO Nº 20:
+                 REUMATOLOGÍA Y TRAUMATOLOGÍA           NAPROXENO        TABLETA CADA TABLETA CONTIENE: NAPROXENO 250 MG ENVASE CON 30 TABLETAS.                      NO        SÍ                NO
+
+                               GRUPO N° 23:             COLCHICINA       TABLETA CADA TABLETA CONTIENE: COLCHICINA 1 MG ENVASE CON 30 TABLETAS.                       NO        SÍ                SÍ
+                         CUIDADOS PALIATIVOS
+                                                        INDOMETACINA SUPOSITORIO CADA SUPOSITORIO CONTIENE: INDOMETACINA 100 MG. ENVASE CON 6 SUPOSITORIOS.           NO        NO                SÍ
+                               GRUPO Nº 20:
+                 REUMATOLOGÍA Y TRAUMATOLOGÍA           INDOMETACINA     CÁPSULA CADA CÁPSULA CONTIENE: INDOMETACINA 25 MG ENVASE CON 30 CÁPSULAS.                    NO        SÍ                SÍ
+
+                                GRUPO Nº 9:
+                          GINECO-OBSTETRICIA
+
+                               GRUPO Nº 20:
+                 REUMATOLOGÍA Y TRAUMATOLOGÍA
+
+                               GRUPO Nº 23:
+                         CUIDADOS PALIATIVOS
+
+                               GRUPO Nº 20:
+                 REUMATOLOGÍA Y TRAUMATOLOGÍA
+
+                               GRUPO Nº 23:
+                         CUIDADOS PALIATIVOS
+
+010.000.3417.00               GRUPO Nº 20:              DICLOFENACO      CÁPSULA O GRAGEA DE LIBERACIÓN PROLONGADA CADA GRAGEA CONTIENE: DICLOFENACO SÓDICO           SÍ        SÍ                SÍ
+                 REUMATOLOGÍA Y TRAUMATOLOGÍA                                                             100 MG ENVASE CON 20 CÁPSULAS O GRAGEAS.
+
+                 GRUPO Nº 1:
+
+010.000.3422.00   ANALGESIA                             KETOROLACO       SOLUCION INYECTABLE CADA FRASCO ÁMPULA O AMPOLLETA CONTIENE: KETOROLACO-TROMETAMINA          SÍ        SÍ                SÍ
+                 GRUPO Nº 23:                                                                  30 MG. ENVASE CON 3 FRASCOS ÁMPULA O 3 AMPOLLETAS DE 1 ML.
+
+                 CUIDADOS PALIATIVOS
+
+010.000.3451.00               GRUPO Nº 20:              ALOPURINOL       TABLETA CADA TABLETA CONTIENE: ALOPURINOL 300 MG ENVASE CON 20 TABLETAS.                     SÍ        SÍ                SÍ
+                 REUMATOLOGÍA Y TRAUMATOLOGÍA
+
+                 GRUPO Nº 21:                                            SOLUCIÓN INYECTABLE AL 5 % CADA 100 ML CONTIENE: GLUCOSA ANHIDRA O GLUCOSA 5 G Ó
+
+010.000.3601.00 SOLUCIONES ELECTROLÍTICAS Y SUSTITUTOS  GLUCOSA          GLUCOSA MONOHIDRATADA EQUIVALENTE A 5.0 G DE GLUCOSA. ENVASE CON 250 ML. CONTIENE:           NO        NO                SÍ
+
+                 DEL PLASMA                                              GLUCOSA 12.5 G
+
+                 GRUPO Nº 21:                                            SOLUCIÓN INYECTABLE AL 5% CADA 100 ML CONTIENEN: GLUCOSA ANHIDRA O GLUCOSA 5 G Ó
+
+010.000.3603.00 SOLUCIONES ELECTROLÍTICAS Y SUSTITUTOS  GLUCOSA          GLUCOSA MONOHIDRATADA EQUIVALENTE A 5.0 G DE GLUCOSA. ENVASE CON 1 000 ML. CONTIENE:         NO        NO                SÍ
+
+                 DEL PLASMA                                              GLUCOSA 50.0 G
+ CLAVE (CNIS)    GRUPO                                   INSUMO           DESCRIPCIÓN                                                                                 UNIDADES  UNIDADES NÚCLEOS  CESSA
+010.000.3607.00                                                                                                                                                        MÓVILES         BÁSICOS
+
+010.000.3609.00                     GRUPO Nº 21:              GLUCOSA       SOLUCIÓN INYECTABLE AL 50 % CADA 100 ML CONTIENEN: GLUCOSA ANHIDRA O GLUCOSA 50 G Ó           NO    SÍ                SÍ
+010.000.3610.00  SOLUCIONES ELECTROLÍTICAS Y SUSTITUTOS                     GLUCOSA MONOHIDRATADA EQUIVALENTE A 50.0 G DE GLUCOSA. ENVASE CON 50 ML. CONTIENE:
+010.000.3612.00                                             CLORURO DE                                                                                                    NO    NO                SÍ
+010.000.3613.00                      DEL PLASMA                 SODIO                                                         GLUCOSA 25.0 G                              NO
+010.000.3615.00                                                                                                                                                           NO    NO                SÍ
+                                    GRUPO N° 23:            CLORURO DE          SOLUCIÓN INYECTABLE AL 0.9% CADA 100 ML CONTIENEN: CLORURO DE SODIO 0.9 G AGUA            NO
+                              CUIDADOS PALIATIVOS               SODIO              INYECTABLE 100 ML ENVASE CON 500 ML. CONTIENE: SODIO 77 MEQ CLORURO 77 MEQ             NO    NO                SÍ
+
+                                    GRUPO Nº 21:            CLORURO DE         SOLUCIÓN INYECTABLE AL 0.9% CADA 100 ML CONTIENEN: CLORURO DE SODIO 0.9 G / AGUA                 NO                SÍ
+                 SOLUCIONES ELECTROLÍTICAS Y SUSTITUTOS  SODIO Y GLUCOSA        INYECTABLE 100 ML ENVASE CON 1 000 ML. CONTIENE: SODIO 154 MEQ / CLORURO 154 MEQ
+
+                                     DEL PLASMA             CLORURO DE     SOLUCIÓN INYECTABLE CADA 100 ML CONTIENEN: CLORURO DE SODIO 0.9 G GLUCOSA ANHIDRA O
+                                    GRUPO Nº 21:         SODIO Y GLUCOSA   GLUCOSA 5.0 G Ó GLUCOSA MONOHIDRATADA EQUIVALENTE A 5.0 G DE GLUCOSA. ENVASE CON 500
+                 SOLUCIONES ELECTROLÍTICAS Y SUSTITUTOS
+                                     DEL PLASMA                                                  ML. CONTIENE: SODIO 77 MEQ CLORURO 77 MEQ GLUCOSA 25 G
+                                    GRUPO Nº 21:                           SOLUCIÓN INYECTABLE CADA 100 ML CONTIENEN: CLORURO DE SODIO 0.9 G / GLUCOSA ANHIDRA O
+                 SOLUCIONES ELECTROLÍTICAS Y SUSTITUTOS                   GLUCOSA 5.0 G Ó GLUCOSA MONOHIDRATADA EQUIVALENTE A 5.0 G DE GLUCOSA. ENVASE CON 1 000
+                                     DEL PLASMA
+                                    GRUPO Nº 21:                                          ML. CONTIENE: SODIO 154.0 MEQ / CLORURO 154.0 MEQ / GLUCOSA 50.0 G
+                 SOLUCIONES ELECTROLÍTICAS Y SUSTITUTOS
+                                     DEL PLASMA
+
+                                    GRUPO Nº 21:         SOLUCIÓN         SOLUCIÓN INYECTABLE CADA 100 ML CONTIENEN: CLORURO DE SODIO 0.600 G CLORURO DE POTASIO                NO                SÍ
+                 SOLUCIONES ELECTROLÍTICAS Y SUSTITUTOS  HARTMANN         0.030 G CLORURO DE CALCIO DIHIDRATADO 0.020 G LACTATO DE SODIO 0.310 G ENVASE CON 500 ML.
+
+                                     DEL PLASMA                               MILIEQUIVALENTES POR LITRO: SODIO 130 POTASIO 4 CALCIO 2.72.-3 CLORURO 109 LACTATO 28
+
+010.000.3616.00                     GRUPO Nº 21:         SOLUCIÓN         SOLUCION INYECTABLE CADA 100 ML CONTIENEN: CLORURO DE SODIO 0.600 G CLORURO DE POTASIO      NO        SÍ                SÍ
+                 SOLUCIONES ELECTROLÍTICAS Y SUSTITUTOS  HARTMANN         0.030 G CLORURO DE CALCIO DIHIDRATADO 0.020 G LACTATO DE SODIO 0.310 G ENVASE CON 1000 ML.
+
+                                     DEL PLASMA                               MILIEQUIVALENTES POR LITRO: SODIO 130 POTASIO 4 CALCIO 2.72-3 CLORURO 109 LACTATO 28
+
+010.000.3622.00                     GRUPO Nº 21:         ELECTROLITOS     POLVO (FÓRMULA DE OSMOLARIDAD BAJA) CADA SOBRE CON POLVO CONTIENE: GLUCOSA ANHIDRA O        NO        SÍ                SÍ
+                 SOLUCIONES ELECTROLÍTICAS Y SUSTITUTOS      ORALES            GLUCOSA 13.5 G CLORURO DE POTASIO 1.5 G CLORURO DE SODIO 2.6 G CITRATO TRISÓDICO
+                                                                                                                DIHIDRATADO 2.9 G ENVASE CON 20.5 G.
+                                     DEL PLASMA
+
+010.000.3623.00                     GRUPO Nº 21:         ELECTROLITOS     SOLUCIÓN CADA SOBRE CON POLVO CONTIENE: GLUCOSA 20.0 G CLORURO DE POTASIO 1.5 G             NO        NO                SÍ
+                 SOLUCIONES ELECTROLÍTICAS Y SUSTITUTOS      ORALES           CLORURO DE SODIO 3.5 G CITRATO TRISÓDICO DIHIDRATADO 2.9 G ENVASE CON 27.9 G
+
+                                     DEL PLASMA
+
+010.000.3627.00                     GRUPO Nº 21:         CLORURO DE       SOLUCIÓN INYECTABLE AL 0.9% CADA 100 ML CONTIENEN: CLORURO DE SODIO 0.9 G / AGUA            NO        SÍ                SÍ
+                 SOLUCIONES ELECTROLÍTICAS Y SUSTITUTOS      SODIO                                       INYECTABLE 100 ML ENVASE CON 100 ML.
+
+                                     DEL PLASMA
+
+010.000.3662.00                     GRUPO Nº 21:           SEROALBÚMINA   SOLUCIÓN INYECTABLE CADA ENVASE CONTIENE: SEROALBÚMINA HUMANA O ALBÚMINA HUMANA 12.5        NO        NO                SÍ
+                 SOLUCIONES ELECTROLÍTICAS Y SUSTITUTOS       HUMANA O                                                      G ENVASE CON 50 ML.
+
+                                     DEL PLASMA          ALBÚMINA HUMANA
+
+                 GRUPO Nº 21:
+
+010.000.3675.00 SOLUCIONES ELECTROLÍTICAS Y SUSTITUTOS AGUA INYECTABLE SOLUCIÓN INYECTABLE CADA ENVASE CONTIENE: AGUA INYECTABLE 500 ML ENVASE CON 500 ML.            NO        SÍ                SÍ
+
+                 DEL PLASMA
+
+010.000.4024.04                GRUPO Nº 5:               EZETIMIBA        TABLETA CADA TABLETA CONTIENE: EZETIMIBA 10 MG. ENVASE CON 28 TABLETAS.                     NO        NO                SÍ
+                 ENDOCRINOLOGÍA Y METABOLISMO
+CLAVE (CNIS)     GRUPO                                    INSUMO             DESCRIPCIÓN                                                                                 UNIDADES  UNIDADES NÚCLEOS  CESSA
+                                                                                                                                                                          MÓVILES         BÁSICOS
+
+010.000.4028.00                GRUPO Nº 1:                CLONIXINATO DE SOLUCIÓN INYECTABLE CADA AMPOLLETA CONTIENE: CLONIXINATO DE LISINA 100 MG. ENVASE CON 5             NO    SÍ                SÍ
+                                ANALGESIA
+010.000.4107.00                                           LISINA             AMPOLLETAS DE 2 ML.                                                                             NO
+010.000.4114.00               GRUPO Nº 23:                                                                                                                                   NO
+010.000.4118.00         CUIDADOS PALIATIVOS               AMIODARONA         SOLUCIÓN INYECTABLE CADA AMPOLLETA CONTIENE: CLORHIDRATO DE AMIODARONA 150 MG. ENVASE           NO    NO                SÍ
+010.000.4126.00                                                                                                            CON 6 AMPOLLETAS DE 3 ML.                         NO
+010.000.4152.01                GRUPO Nº 3:                                                                                                                                   NO
+010.000.4158.00               CARDIOLOGÍA                 TRINITRATO DE SOLUCIÓN INYECTABLE CADA FRASCO ÁMPULA CONTIENE: TRINITRATO DE GLICERILO 50 MG. ENVASE               NO    NO                SÍ
+010.000.4162.00                GRUPO Nº 3:                                                                                                                                   NO
+010.000.4184.00               CARDIOLOGÍA                 GLICERILO          CON UN FRASCO ÁMPULA DE 10 ML.                                                                   SÍ
+010.000.4201.00                GRUPO Nº 3:                                                                                                                                   NO
+010.000.4224.00               CARDIOLOGÍA                 ISOSORBIDA,        SOLUCIÓN INYECTABLE CADA ML CONTIENE: DINITRATO DE ISOSORBIDA 1 MG. ENVASE CON 10               NO    NO                SÍ
+                               GRUPO Nº 4:
+010.000.4241.00              DERMATOLOGÍA                 DINITRATO DE       APOLLETAS CON 10 ML (10 MG/10 ML).                                                               SÍ
+                               GRUPO Nº 5:
+010.000.4246.01  ENDOCRINOLOGÍA Y METABOLISMO             SULFADIAZINA DE    CREMA CADA 100 GRAMOS CONTIENE: SULFADIAZINA DE PLATA MICRONIZADA 1 G. ENVASE CON 375 G.        NO    SÍ                SÍ
+                               GRUPO Nº 5:                       PLATA
+                 ENDOCRINOLOGÍA Y METABOLISMO                                                                                                                                NO
+                               GRUPO Nº 5:                SITAGLIPTINA       COMPRIMIDO CADA COMPRIMIDO CONTIENE: FOSFATO DE SITAGLIPTINA MONOHIDRATADA                            SÍ                SÍ
+                 ENDOCRINOLOGÍA Y METABOLISMO                                          EQUIVALENTE A 100 MG DE SITAGLIPTINA. ENVASE CON 28 COMPRIMIDOS
+                               GRUPO Nº 8:
+                         GASTROENTEROLOGÍA                INSULINA GLARGINA  SOLUCIÓN INYECTABLE CADA ML DE SOLUCIÓN CONTIENE: INSULINA GLARGINA 3.64 MG EQUIVALENTE               SÍ                SÍ
+                               GRUPO Nº 3:                                                 A 100.0 UI DE INSULINA HUMANA. ENVASE CON UN FRASCO ÁMPULA CON 10 ML.
+                              CARDIOLOGÍA
+                              GRUPO Nº 10:                INSULINA LISPRO    SOLUCIÓN INYECTABLE. CADA ML CONTIENE: INSULINA LISPRO (ORIGEN ADN RECOMBINANTE) 100 UI.              SÍ                SÍ
+                             HEMATOLOGÍA                                                                       ENVASE CON UN FRASCO ÁMPULA CON 10 ML.
+                              GRUPO Nº 10:
+                             HEMATOLOGÍA                  LOPERAMIDA         COMPRIMIDO, TABLETA O GRAGEA CADA COMPRIMIDO, TABLETAS O GRAGEA CONTIENE: CLORHIDRATO                 SÍ                SÍ
+                                                                                            DE LOPERAMIDA 2 MG. ENVASE CON 12 COMPRIMIDOS, TABLETAS O GRAGEAS.
+                              GRUPO N° 23:
+                        CUIDADOS PALIATIVOS               HIDRALAZINA        SOLUCIÓN INYECTABLE CADA AMPOLLETA O FRASCO ÁMPULA CONTIENE: CLORHIDRATO DE                           NO                SÍ
+                                                                                 HIDRALAZINA 20 MG. ENVASE CON 5 AMPOLLETAS O 5 FRASCOS ÁMPULA CON 1.0 ML.
+                               GRUPO Nº 3:
+                              CARDIOLOGÍA                 ENOXAPARINA        SOLUCIÓN INYECTABLE CADA JERINGA CONTIENE ENOXAPARINA SÓDICA 60 MG. ENVASE CON 2                      NO                SÍ
+                                                                                                                           JERINGAS DE 0.6 ML.
+
+                                                          DEXAMETASONA         SOLUCIÓN INYECTABLE CADA FRASCO ÁMPULA O AMPOLLETA CONTIENE: FOSFATO SÓDICO DE                      SÍ                SÍ
+                                                                             DEXAMETASONA EQUIVALENTE A 8 MG. DE FOSFATO DE DEXAMETASONA. ENVASE CON UN FRASCO
+
+                                                                                                                    ÁMPULA O AMPOLLETA CON 2 ML.
+
+                                                          CLOPIDOGREL        GRAGEA O TABLETA CADA GRAGEA O TABLETA CONTIENE: BISULFATO DE CLOPIDOGREL O BISULFATO DE              SÍ                SÍ
+                                                                                 CLOPIDOGREL (POLIMORFO FORMA 2) EQUIVALENTE A 75 MG DE CLOPIDOGREL. ENVASE CON 28
+                                                                                                                               GRAGEAS O TABLETAS.
+
+010.000.4249.00                       GRUPO Nº 6:         LEVOFLOXACINO      SOLUCION INYECTABLE CADA ENVASE CONTIENE: LEVOFLOXACINO HEMIHIDRATADO EQUIVALENTE A                   NO                SÍ
+                 ENFERMEDADES INFECCIOSAS Y PARASITARIAS     (Vigilancia)                                   500 MG DE LEVOFLOXACINO. ENVASE CON 100 ML.
+
+010.000.4260.00                       GRUPO Nº 6:         NISTATINA          SUSPENSIÓN ORAL CADA FRASCO CON POLVO CONTIENE: NISTATINA 2 400 000 UI. ENVASE PARA 24 ML.  NO        SÍ                SÍ
+                 ENFERMEDADES INFECCIOSAS Y PARASITARIAS
+
+010.000.4300.00                       GRUPO Nº 6:         LEVOFLOXACINO      TABLETA CADA TABLETA CONTIENE: LEVOFLOXACINO HEMIHIDRATADO EQUIVALENTE A 750 MG DE          NO        SÍ                SÍ
+                 ENFERMEDADES INFECCIOSAS Y PARASITARIAS     (Vigilancia)                                     LEVOFLOXACINO. ENVASE CON 7 TABLETAS.
+
+010.000.4307.00  GRUPO Nº 3:                              CILOSTAZOL         TABLETA CADA TABLETA CONTIENE: CILOSTAZOL 100 MG. ENVASE CON 30 TABLETAS.                   NO        SÍ                SÍ
+                 CARDIOLOGÍA
+ CLAVE (CNIS)               GRUPO                             INSUMO                                                           DESCRIPCIÓN                             UNIDADES  UNIDADES NÚCLEOS  CESSA
+010.000.4332.01                                            BUDESONIDA       SUSPENSION PARA NEBULIZAR CADA ENVASE CONTIENE: BUDESONIDA (MICRONIZADA) 0.250 MG.          MÓVILES         BÁSICOS       SÍ
+010.000.4337.00         GRUPO Nº 13:                       BUDESONIDA
+                        NEUMOLOGÍA                                                                                ENVASE CON 20 ENVASES CON 2 ML.                          NO               NO
+010.000.4356.01         GRUPO Nº 17:                       PREGABALINA                                                                                                      SÍ
+                 OTORRINOLARINGOLOGÍA                                      SUSPENSIÓN PARA INHALACIÓN CADA ML CONTIENE BUDESONIDA 1.280 MG ENVASE CON FRASCO                     SÍ                SÍ
+                                                            VITAMINAS Y                             PULVERIZADOR CON 6 ML (120 DOSIS DE 64 G CADA UNA).                     SÍ
+                        GRUPO N°23:                         MINERALES                                                                                                            SÍ                SÍ
+                   CUIDADOS PALIATIVOS                                             CÁPSULA CADA CÁPSULA CONTIENE: PREGABALINA 75 MG ENVASE CON 28 CÁPSULAS                  SÍ
+                                                          ESCITALOPRAM
+                        GRUPO Nº 14:                                       VITAMINAS (POLIVITAMINAS) Y MINERALES TABLETA, CAPSULA O GRAGEA CADA TABLETA,CAPSULA O          NO
+                        NEUROLOGÍA                          FLUOXETINA   GRAGEA CONTIENE: CLORHIDRATO DE TIAMINA (VITAMINA B1) 5.0 A 10.0 MGRIBOFLAVINA (VITAMINA B2)
+                                                           OSELTAMIVIR   2.5 A 10.0 MG CLORHIDRATO DE PIRIDOXINA (VITAMINAB6) 2.0 A 5.0 MG NICOTINAMIDA (NIACINAMIDA)       SÍ
+                        GRUPO N° 23:                        ADENOSINA                                                                                                      NO
+                   CUIDADOS PALIATIVOS                    ATORVASTATINA          10.0 A 100.0 MG CIANOCOBALAMINA(VITAMINA B12) 3.0 A 5.0 MICROGRAMOS ACETATO DE            NO
+                                                          TENECTEPLASA             ALFATOCOFEROL (VITAMINA E) 3.0A 20.0 MG RETINOL (VITAMINA A) 2000.0 A 10000.0 UI         SÍ
+010.000.4376.00  ND                                        METFORMINA                                                                                                      NO    SÍ                SÍ
+                                                                              COLECALCIFEROL (VITAMINAD3) 200.0 A 1000.0 UI ACIDO PANTOTENICO 2.0 A 7.0 MG SULFATO          SÍ
+010.000.4480.01       GRUPO Nº 19:                                          FERROSO 15.0 A60.0 MG SULFATO DE COBRE 1.0 A 4.0 MG YODURO O FOSFATO DE POTASIO 0.15 A               SÍ                SÍ
+010.000.4483.01        PSIQUIATRÍA
+                                                                                 4.0MG GLICEROFOSFATO, SULFATO O HIPOSULFITO DE MAGNESIO 1.0 A 8.00 MG FOSFATO                   SÍ                SÍ
+                      GRUPO N° 23:                                        DEMAGNESIO 5.0 A 133.0 MG CLORURO, FOSFATO O SULFATO DE ZINC 3.0 A 25.0 MGENVASE CON 30
+                 CUIDADOS PALIATIVOS
+                                                                                                                   TABLETAS, CAPSULAS O GRAGEAS.
+                      GRUPO Nº 19:
+                       PSIQUIATRÍA                                               TABLETA CADA TABLETA CONTIENE: OXALATO DE ESCITALOPRAM EQUIVALENTE A 10 MG DE
+                                                                                                              ESCITALOPRAM. ENVASE CON 28 TABLETAS.
+                      GRUPO N° 23:
+                 CUIDADOS PALIATIVOS                                             CÁPSULA O TABLETA CADA CÁPSULA O TABLETA CONTIENE: CLORHIDRATO DE FLUOXETINA
+                                                                                       EQUIVALENTE A 20 MG DE FLUOXETINA. ENVASE CON 28 CÁPSULAS O TABLETAS.
+010.000.4582.00                       GRUPO Nº 6:                                                                                                                                SÍ                SÍ
+                 ENFERMEDADES INFECCIOSAS Y PARASITARIAS                          CÁPSULA CADA CÁPSULA CONTIENE: OSELTAMIVIR 75.0 MG. ENVASE CON 10 CÁPSULAS.
+
+010.000.5099.00                GRUPO Nº 3:                               SOLUCIÓN INYECTABLE CADA FRASCO ÁMPULA CONTIENE: ADENOSINA 6 MG. ENVASE CON 6 FRASCOS                   NO                SÍ
+010.000.5106.01               CARDIOLOGÍA                                                                                    ÁMPULA CON 2 ML
+010.000.5117.00                GRUPO Nº 5:                                                                                                                                       SÍ                SÍ
+010.000.5165.00  ENDOCRINOLOGÍA Y METABOLISMO                            TABLETA CADA TABLETA CONTIENE: ATORVASTATINA CÁLCICA TRIHIDRATADA EQUIVALENTE A 20 MG DE
+                               GRUPO Nº 3:                                                                   ATORVASTATINA. ENVASE CON 30 TABLETAS.                              NO                SÍ
+                              CARDIOLOGÍA
+                               GRUPO Nº 5:                                SOLUCION INYECTABLE CADA FRASCO ÁMPULA CONTIENE: TENECTEPLASA 50 MG (10,000 U). ENVASE                 SÍ                SÍ
+                 ENDOCRINOLOGÍA Y METABOLISMO                                          CON FRASCO ÁMPULA Y JERINGA PRELLENADA CON 10 ML DE AGUA INYECTABLE.
+
+                                                                         TABLETA CADA TABLETA CONTIENE: CLORHIDRATO DE METFORMINA 850 MG. ENVASE CON 30 TABLETAS.
+CLAVE (CNIS)     GRUPO                                    INSUMO           DESCRIPCIÓN                                                                              UNIDADES  UNIDADES NÚCLEOS  CESSA
+                                                                                                                                                                     MÓVILES         BÁSICOS
+
+                 GRUPO Nº 8:                                                                                                                                            NO
+
+                 GASTROENTEROLOGÍA                                                                                                                                       SÍ
+
+010.000.5176.00                                           SUCRALFATO       TABLETA CADA TABLETA CONTIENE: SUCRALFATO 1 G. ENVASE CON 40 TABLETAS.                       NO    SÍ                SÍ
+010.000.5186.02
+010.000.5187.00  GRUPO N° 23:                                                                                                                                           NO
+010.000.5255.00                                                                                                                                                         NO
+                 CUIDADOS PALIATIVOS                                                                                                                                    NO
+                                                                                                                                                                        NO
+                       GRUPO Nº 8:                        PANTOPRAZOL O    TABLETA O GRAGEA O CÁPSULA CADA TABLETA O GRAGEA O CÁPSULA CONTIENE: PANTOPRAZOL 40 MG.      NO    SÍ                SÍ
+                 GASTROENTEROLOGÍA                         RABEPRAZOL U         O RABEPRAZOL SÓDICO 20 MG. U OMEPRAZOL 20 MG. ENVASE CON 28 TABLETAS O GRAGEAS O        NO
+                                                                                                                                   CÁPSULAS.
+                                                            OMEPRAZOL                                                                                                   NO
+
+                                                                           SOLUCIÓN INYECTABLE CADA FRASCO ÁMPULA CON LIOFILIZADO CONTIENE: OMEPRAZOL SÓDICO            NO
+                                                                                                                                                                         SÍ
+                 GRUPO Nº 8:                              OMEPRAZOL O      EQUIVALENTE A 40 MG DE OMEPRAZOL. O PANTOPRAZOL SÓDICO EQUIVALENTE A 40 MG DE                NO    NO                SÍ
+                                                                                                                                                                        NO
+                 GASTROENTEROLOGÍA                        PANTOPRAZOL      PANTOPRAZOL. ENVASE CON UN FRASCO ÁMPULA CON LIOFILIZADO Y AMPOLLETA CON 10 ML DE
+
+                                                                           DILUYENTE.
+
+                                      GRUPO Nº 6:          TRIMETOPRIMA Y  SOLUCIÓN INYECTABLE CADA AMPOLLETA CONTIENE: TRIMETOPRIMA 160 MG. SULFAMETOXAZOL 800               NO                SÍ
+                 ENFERMEDADES INFECCIOSAS Y PARASITARIAS  SULFAMETOXAZOL                                      MG. ENVASE CON 6 AMPOLLETAS CON 3 ML.
+
+                                                                (Acceso)
+
+010.000.5256.00                       GRUPO Nº 6:         CEFALOTINA       SOLUCIÓN INYECTABLE CADA FRASCO ÁMPULA CON POLVO CONTIENE: CEFALOTINA SÓDICA                       NO                SÍ
+                 ENFERMEDADES INFECCIOSAS Y PARASITARIAS    (Acceso)       EQUIVALENTE A 1 G DE CEFALOTINA. ENVASE CON UN FRASCO ÁMPULA Y 5 ML DE DILUYENTE.
+
+010.000.5267.00                       GRUPO Nº 6:         FLUCONAZOL       CÁPSULA O TABLETA CADA CÁPSULA O TABLETA CONTIENE: FLUCONAZOL 100 MG. ENVASE CON 10                SÍ                SÍ
+                 ENFERMEDADES INFECCIOSAS Y PARASITARIAS                                                                 CÁPSULAS O TABLETAS.
+
+010.000.5295.01                       GRUPO Nº 6:         CEFEPIMA            SOLUCIÓN INYECTABLE CADA FRASCO ÁMPULA CONTIENE: CLORHIDRATO MONOHIDRATADO DE                   NO                SÍ
+                 ENFERMEDADES INFECCIOSAS Y PARASITARIAS  (Vigilancia)     CEFEPIMA EQUIVALENTE A 1 G DE CEFEPIMA. ENVASE CON UN FRASCO ÁMPULA Y AMPOLLETA CON 10
+
+                                                                                                                              ML DE DILUYENTE.
+
+010.000.5302.00  GRUPO Nº 6:                              NITROFURANTOÍNA  SUSPENSIÓN ORAL CADA 100 ML CONTIENEN: NITROFURANTOINA 500 MG. ENVASE CON 120 ML (25               SÍ                SÍ
+                                                                                                                                  MG/5 ML).
+                 ENFERMEDADES INFECCIOSAS Y PARASITARIAS  (Acceso)
+
+010.000.5309.02                GRUPO Nº 12:               TAMSULOSINA       CÁPSULA O TABLETA DE LIBERACIÓN PROLONGADA CADA CÁPSULA O TABLETA DE LIBERACIÓN                   SÍ                SÍ
+                       NEFROLOGÍA Y UROLOGÍA                               PROLONGADA CONTIENE: CLORHIDRATO DE TAMSULOSINA 0.4 MG ENVASE CON 30 CÁPSULAS O
+010.000.5428.00
+                               GRUPO Nº 16:                                                                  TABLETAS DE LIBERACIÓN PROLONGADA
+010.000.5501.00                 ONCOLOGÍA
+010.000.5621.00                                           ONDANSETRÓN      SOLUCION INYECTABLE CADA AMPOLLETA O FRASCO ÁMPULA CONTIENE: CLORHIDRATO DIHIDRATADO               NO                SÍ
+010.000.5646.00                GRUPO Nº 23:                                DE ONDANSETRÓN EQUIVALENTE A 8 MG DE ONDANSETRÓN. ENVASE CON 3 AMPOLLETAS O FRASCOS
+                         CUIDADOS PALEATIVOS
+                                                                                                                              ÁMPULA CON 4 ML.
+                               GRUPO Nº 20:
+                 REUMATOLOGÍA Y TRAUMATOLOGÍA             DICLOFENACO       SOLUCIÓN INYECTABLE CADA AMPOLLETA CONTIENE: DICLOFENACO SÓDICO 75 MG ENVASE CON 2                NO                SÍ
+                                                          LINAGLIPTINA                                                     AMPOLLETAS CON 3 ML.
+                                GRUPO Nº 5:               FLUTICASONA                                                                                                         SÍ                SÍ
+                 ENDOCRINOLOGÍA Y METABOLISMO                                          TABLETA CADA TABLETA CONTIENE: LINAGLIPTINA 5 MG. ENVASE CON 30 TABLETAS
+                                                                                                                                                                              SÍ                SÍ
+                               GRUPO Nº 7:                                 SUSPENSION EN AEROSOL NASAL CADA DISPARO PROPORCIONA: FUROATO DE FLUTICASONA 27.5 G.
+                 ENFERMEDADES INMUNOALÉRGICAS                                                                            ENVASE CON 120 DISPAROS
+
+010.000.5671.02                       GRUPO Nº 6:         RIFAXIMINA       TABLETA RIFAXIMINA 550 MG. ENVASE CON 14 TABLETAS.                                                 SÍ                SÍ
+                 ENFERMEDADES INFECCIOSAS Y PARASITARIAS  (Vigilancia)
+CLAVE (CNIS)     GRUPO                                    INSUMO             DESCRIPCIÓN                                                                                UNIDADES  UNIDADES NÚCLEOS  CESSA
+                                                                                                                                                                         MÓVILES         BÁSICOS
+
+010.000.5721.02                GRUPO Nº 1:                PARACETAMOL        SOLUCIÓN INYECTABLE CADA FRASCO CONTIENE: PARACETAMOL 1 G. ENVASE CON DIEZ FRASCOS CON         NO    NO                SÍ
+010.000.5941.00                 ANALGESIA                                                                                               100 ML.
+010.000.5943.00                                                                                                                                                             NO
+010.000.6000.00               GRUPO Nº 23:                IBUPROFENO         TABLETA O CÁPSULA CADA TABLETA O CÁPSULA CONTIENE: IBUPROFENO 400 MG: ENVASE CON 10                  SÍ                SÍ
+010.000.6007.01          CUIDADOS PALIATIVOS                                                                               TABLETAS O CÁPSULAS.                             NO
+010.000.6012.04
+                               GRUPO Nº 1:                IBUPROFENO         SUSPENSIÓN ORAL CADA 100 ML CONTIENEN: IBUPROFENO 2 G. ENVASE CON 120 ML Y MEDIDA              NO    SÍ                SÍ
+                                ANALGESIA                                                                                     DOSIFICADORA.                                 NO
+                               GRUPO Nº 1:
+                                ANALGESIA                  CARBONATO DE      TABLETA CADA TABLETA CONTIENE: CARBONATO DE CALCIO 1666.670 MG EQUIVALENTE A 600 MG DE         NO    SÍ                SÍ
+                                                          CALCIO / VITAMINA  CALCIO COLECALCIFEROL 6.2 MG EQUIVALENTE A 400 UI DE VITAMINA D3 ENVASE CON 30 TABLETAS
+                              GRUPO Nº 23:                                                                                                                                  NO    SÍ                SÍ
+                        CUIDADOS PALIATIVOS                         D3          TABLETA CADA TABLETA CONTIENE: DAPAGLIFLOZINA PROPANODIOL EQUIVALENTE A 10 MG DE            NO
+                                                                                                               DAPAGLIFLOZINA ENVASE CON 28 TABLETAS.                        SÍ
+                               GRUPO Nº 5:                 DAPAGLIFLOZINA                                                                                                   NO
+                 ENDOCRINOLOGÍA Y METABOLISMO                                                                                                                               NO
+                                                          MISOPROSTOL        TABLETA CADA TABLETA CONTIENE: MISOPROSTOL 200 G ENVASE CON 12 TABLETAS                              NO                SÍ
+                               GRUPO Nº 5:
+                 ENDOCRINOLOGÍA Y METABOLISMO
+
+                               GRUPO Nº 8:
+                         GASTROENTEROLOGÍA
+
+                               GRUPO Nº 9:
+                         GINECO-OBSTETRICIA
+
+010.000.6021.00  GRUPO Nº 13:                             INDACATEROL /             CÁPSULA CADA CÁPSULA CONTIENE: MALEATO DE INDACATEROL EQUIVALENTE A 110 G DE                  SÍ                SÍ
+                 NEUMOLOGÍA                               GLICOPIRRONIO      INDACATEROL / BROMURO DE GLICOPIRRONIO EQUIVALENTE A 50 G DE GLICOPIRRONIO ENVASE CON
+                                                                              30 CÁPSULAS CON POLVO PARA INHALACIÓN (NO INGERIBLES), Y UN DISPOSITIVO PARA INHALACIÓN.
+
+010.000.6099.01        GRUPO Nº 8:                           LACTULOSA       JARABE CADA 100 ML CONTIENEN: LACTULOSA 66.70 G ENVASE CON 240 ML Y MEDIDA DOSIFICADORA              SÍ                SÍ
+010.000.6222.00  GASTROENTEROLOGÍA                                                                                                 (0.667 G/ML).
+010.000.6259.00                                                  ÁCIDO                                                                                                            SÍ                SÍ
+                       GRUPO Nº 3:                        ACETILSALICÍLICO    TABLETAS CADA TABLETA CONTIENE: ÁCIDO ACETILSALICÍLICO 100 MG CON O SIN RECUBRIMIENTO.
+                      CARDIOLOGÍA                                                                                          ENVASE CON 28 TABLETAS                                 NO                SÍ
+                       GRUPO Nº 3:                            LABETALOL
+                      CARDIOLOGÍA                                            SOLUCIÓN INYECTABLE. CADA AMPOLLETA O FRASCO ÁMPULA CONTIENE: LABETALOL 100 MG/20 ML
+                                                                                                             ENVASE CON 5 FRASCOS ÁMPULA O AMPOLLETAS.
+
+010.000.6279.00                       GRUPO Nº 6:         AZITROMICINA       SUSPENSIÓN CADA 5 ML DE SUSPENSIÓN CONTIENEN: AZITROMICINA 200 MG FRASCO CON POLVO                   SÍ                SÍ
+                 ENFERMEDADES INFECCIOSAS Y PARASITARIAS    (Vigilancia)                                                 PARA RECONSTITUIR 10 ML.
+
+010.000.6280.00                       GRUPO Nº 6:         CLARITROMICINA     TABLETA CADA TABLETA CONTIENE: CLARITROMICINA 500 MG. ENVASE CON 10 TABLETAS.              SÍ        SÍ                SÍ
+                 ENFERMEDADES INFECCIOSAS Y PARASITARIAS      (Vigilancia)
+
+010.000.6281.00                       GRUPO Nº 6:         AMOXICILINA /           TABLETA CADA TABLETA CONTIENE: AMOXICILINA TRIHIDRATADA EQUIVALENTE A 875 MG DE       SÍ        SÍ                SÍ
+                 ENFERMEDADES INFECCIOSAS Y PARASITARIAS      ÁCIDO          AMOXICILINA. CLAVULANATO DE POTASIO EQUIVALENTE A 125 MG DE ÁCIDO CLAVULÁNICO. ENVASE
+
+                                                          CLAVULÁNICO                                                          CON 10 TABLETAS
+                                                             (Acceso)
+
+010.000.6329.01                       GRUPO Nº 6:         IVERMECTINA        TABLETA CADA TABLETA CONTIENE 6 MG DE IVERMECTINA CAJA DE CARTÓN CON 4 TABLETAS            NO        SÍ                SÍ
+                 ENFERMEDADES INFECCIOSAS Y PARASITARIAS
+CLAVE (CNIS)     GRUPO                                    INSUMO            DESCRIPCIÓN                                                                               UNIDADES  UNIDADES NÚCLEOS  CESSA
+                                                                                                                                                                       MÓVILES         BÁSICOS       SÍ
+010.000.6330.00  GRUPO Nº 13:                                BROMURO DE     AEROSOL CADA ML CONTIENE: BROMURO DE IPRATROPIO EQUIVALENTE A: 0.394 MG. FENOTEROL
+                 NEUMOLOGÍA                               IPRATROPIO/FENOT     EQUIVALENTE A: 0.938 MG ENVASE CON UN FRASCO PRESURIZADO CON DISPOSITIVO PARA              NO               NO
+                                                                                                                    INHALACIÓN 10 ML = 200 DOSIS.
+                                                                  EROL                                                                                                    NO
+
+010.000.6343.01                       GRUPO Nº 6:         CEFIXIMA          CÁPSULA CADA CÁPSULA CONTIENE: CEFIXIMA TRIHIDRATADA EQUIVALENTE A CEFIXIMA 400 MG. CAJA            SÍ                SÍ
+                 ENFERMEDADES INFECCIOSAS Y PARASITARIAS                                                                DE CARTÓN CON 5 CÁPSULAS
+
+040.000.0242.00  GRUPO Nº 2:                              FENTANILO           SOLUCIÓN INYECTABLE CADA AMPOLLETA O FRASCO ÁMPULA CONTIENE: CITRATO DE FENTANILO       NO        NO                SÍ
+                  ANESTESIA                                                 EQUIVALENTE A 0.5 MG DE FENTANILO. ENVASE CON 6 AMPOLLETAS O FRASCOS ÁMPULA CON 10 ML.
+
+                 GRUPO Nº 2:
+                  ANESTESIA
+
+040.000.0302.00    GRUPO Nº 11:                           NALOXONA          SOLUCIÓN INYECTABLE CADA AMPOLLETA CONTIENE: CLORHIDRATO DE NALOXONA 0.4 MG. ENVASE       NO        NO                SÍ
+                 INTOXICACIONES                                                                                       CON 10 AMPOLLETAS CON 1 ML.
+
+040.000.2106.00       GRUPO Nº 23:                        TRAMADOL          SOLUCIÓN INYECTABLE CADA AMPOLLETA CONTIENE: CLORHIDRATO DE TRAMADOL 100 MG. ENVASE       NO        NO                SÍ
+040.000.2108.00  CUIDADOS PALIATIVOS                                                                                    CON 5 AMPOLLETAS DE 2 ML
+040.000.2613.00
+040.000.3253.00        GRUPO Nº 1:                        MIDAZOLAM         SOLUCIÓN INYECTABLE CADA AMPOLLETA CONTIENE: CLORHIDRATO DE MIDAZOLAM EQUIVALENTE A 5     NO        NO                SÍ
+040.000.4054.00         ANALGESIA                                                         MG DE MIDAZOLAM. O MIDAZOLAM 5 MG. ENVASE CON 5 AMPOLLETAS CON 5 ML
+040.000.4057.00
+                      GRUPO Nº 23:                        CLONAZEPAM        SOLUCIÓN CADA ML CONTIENE: CLONAZEPAM 2.5 MG. ENVASE CON 10 ML Y GOTERO INTEGRAL.         NO        NO                SÍ
+                 CUIDADOS PALIATIVOS
+                                                          HALOPERIDOL       SOLUCIÓN INYECTABLE CADA AMPOLLETA CONTIENE: HALOPERIDOL 5 MG. ENVASE CON 6 AMPOLLETAS    NO        NO                SÍ
+                       GRUPO Nº 2:                                                                                                   (5 MG/ ML).
+                        ANESTESIA
+                                                          FLUMAZENIL        SOLUCIÓN INYECTABLE CADA AMPOLLETA CONTIENE: FLUMAZENIL 0.5 MG. ENVASE CON UNA            NO        NO                SÍ
+                      GRUPO Nº 14:                                                                             AMPOLLETA CON 5 ML (0.1 MG/ML).
+                      NEUROLOGÍA
+                                                          MIDAZOLAM         SOLUCIÓN INYECTABLE CADA AMPOLLETA CONTIENE: CLORHIDRATO DE MIDAZOLAM EQUIVALENTE A       NO        NO                SÍ
+                      GRUPO N° 23:                                                   15 MG DE MIDAZOLAM. O MIDAZOLAM 15 MG. ENVASE CON 5 AMPOLLETAS CON 3 ML.
+                 CUIDADOS PALIATIVOS
+
+                      GRUPO Nº 19:
+                       PSIQUIATRÍA
+
+                      GRUPO N° 23:
+                 CUIDADOS PALIATIVOS
+
+                       GRUPO Nº 2:
+                        ANESTESIA
+
+                      GRUPO Nº 11:
+                    INTOXICACIONES
+
+                       GRUPO Nº 2:
+                        ANESTESIA
+ CLAVE (CNIS)             GRUPO         INSUMO                                                  DESCRIPCIÓN                         UNIDADES  UNIDADES NÚCLEOS  CESSA
+040.000.4484.00                       SERTRALINA                                                                                     MÓVILES         BÁSICOS
+040.000.6140.01       GRUPO Nº 19:                CÁPSULA O TABLETA CADA CÁPSULA O TABLETA CONTIENE: CLORHIDRATO DE SERTRALINA
+                       PSIQUIATRÍA                      EQUIVALENTE A 50 MG DE SERTRALINA. ENVASE CON 14 CÁPSULAS O TABLETAS.       NO        SÍ                SÍ
+
+                      GRUPO N° 23:    TRAMADOL    TABLETA DE LIBERACIÓN PROLONGADA CADA TABLETA DE LIBERACIÓN PROLONGADA CONTIENE:  NO        SÍ                SÍ
+                 CUIDADOS PALIATIVOS              CLORHIDRATO DE TRAMADOL 150 MG ENVASE CON 30 TABLETAS DE LIBERACIÓN PROLONGADA.
+
+                       GRUPO Nº 1:
+                        ANALGESIA
+
+                      GRUPO Nº 23:
+                 CUIDADOS PALIATIVOS
+CLAVE (CNIS)           INSUMO                                                                                     DESCRIPCIÓN                                      UNIDADES  UNIDADES  CESSA
+                                                                                                                                                                   MÓVILES   NÚCLEOS
+060.004.0109       ABATELENGUAS                                   DE MADERA, DESECHABLES. LARGO: 142.0 MM. ANCHO: 18.0 MM. ENVASE CON 500 PIEZAS.                            BÁSICOS      SÍ
+060.034.0103       ANTISÉPTICOS                                           AGUA OXIGENADA EN CONCENTRACIÓN DEL 2.5 A 3.5%. ENVASE CON 480 ML.                            SÍ                SÍ
+060.040.3711  AGUJAS HIPODÉRMICAS                                                                                                                                       SÍ        SÍ      SÍ
+                                       HIPODÉRMICAS CON PABELLÓN LUER-LOCK HEMBRA DE PLÁSTICO, DESECHABLES. LONGITUD: 32 MM. CALIBRE: 20 G. ENVASE CON 100              SÍ        SÍ
+060.040.3745  AGUJAS HIPODÉRMICAS                                                                                     PIEZAS.                                                     SÍ      SÍ
+                                                                                                                                                                       NO
+060.040.3760  AGUJAS HIPODÉRMICAS      HIPODÉRMICAS CON PABELLÓN LUER-LOCK HEMBRA DE PLÁSTICO, DESECHABLES. LONGITUD: 32 MM. CALIBRE: 21 G. ENVASE CON 100                        SÍ      SÍ
+                                                                                                                      PIEZAS.                                           SÍ
+060.040.3786  AGUJAS HIPODÉRMICAS                                                                                                                                                 SÍ      SÍ
+060.058.0153        ALGODONES          HIPODÉRMICAS CON PABELLÓN LUER-LOCK HEMBRA DE PLÁSTICO, DESECHABLES. LONGITUD: 16 MM. CALIBRE: 25 G. ENVASE CON 100              SÍ                SÍ
+060.066.0039       ANTISÉPTICOS                                                                                       PIEZAS.                                           SÍ        SÍ      SÍ
+060.066.0062           JABONES                                                                                                                                          SÍ        SÍ      SÍ
+060.066.0666       ANTISÉPTICOS        HIPODÉRMICAS CON PABELLÓN LUER-LOCK HEMBRA DE PLÁSTICO, DESECHABLES. LONGITUD: 32 MM. CALIBRE: 22 G. ENVASE CON 100             NO         SÍ      SÍ
+060.066.0773       ANTISÉPTICOS                                                                                       PIEZAS.                                          NO        NO       SÍ
+060.066.0963                                                                                                                                                           NO        NO       SÍ
+                 DESINFECTANTES                                                       EN LÁMINAS. ENROLLADO O PLISADO. ENVASE CON 300 G.                               NO        NO
+060.066.1052                                                                                ALCOHOL DESNATURALIZADO. ENVASE CON 1 LT.                                             SÍ      SÍ
+                   ANTISÉPTICOS                                                                                                                                         SÍ
+060.066.1060                                                             PARA USO PREQUIRÚRGICO. LÍQUIDO Y NEUTRO (PH 7). ENVASE CON 3.850 LTS.                                   SÍ      SÍ
+                   ANTISÉPTICOS                                                                                                                                        NO
+060.066.1250                             IODOPOVIDONA, SOLUCIÓN. CADA 100 ML CONTIENEN: IODOPOVIDONA 11 G. EQUIVALENTE A 1.1 G DE YODO. ENVASE CON 3.5 LTS.                      NO       SÍ
+                 GEL ANTISÉPTICO                                                                                                                                        SÍ
+060.066.1391                                                                               ALCOHOL DESNATURALIZADO. ENVASE CON 20 LTS.                                            SÍ      SÍ
+060.082.0054      GEL LUBRICANTE                                                                                                                                       NO                 SÍ
+060.082.0104        APLICADORES          DESINFECTANTE DE ALTO NIVEL COMPUESTO POR ORTOFTALALDEHÍDO AL 0.55%. ENVASE CON 3.785 LTS. CON 15 TIRAS REACTIVAS.            NO         SÍ      SÍ
+060.082.0278        APLICADORES                                                                                                                                        NO        NO       SÍ
+                    APLICADORES     SOLUCIÓN CON GLUCONATO DE CLORHEXIDINA AL 2% P/V EN ALCOHOL ISOPROPÍLICO AL 70%. CON TINTA NARANJA O ROSA O INCOLORO.              NO        NO
+060.088.0017                                                        CONTIENE: 3 ML. CON SOLUCIÓN ESTÉRIL Y APLICADOR ESTÉRIL Y DESECHABLE ENVASE.                                NO       SÍ
+                      APÓSITOS                                                                                                                                         NO
+060.088.0025                        SOLUCIÓN CON GLUCONATO DE CLORHEXIDINA AL 2% P/V EN ALCOHOL ISOPROPÍLICO AL 70%. CON TINTA NARANJA O ROSA O INCOLORO.                         SÍ      SÍ
+060.088.0108          APÓSITOS                                     CONTIENE: 26 ML. CON SOLUCIÓN ESTÉRIL Y APLICADOR ESTÉRIL Y DESECHABLE ENVASE.                       SÍ                SÍ
+060.088.0652          APÓSITOS                                                                                                                                          SÍ        SÍ      SÍ
+                      APÓSITOS      GEL ANTISEPTICO, PARA MANOS QUE NO REQUIERE ENJUAGUE, FORMULADO A BASE DEALCOHOL ETILICO O ISOPROPILICO MINIMO AL 70%              NO         SÍ
+060.088.0660                         W/W, ADICIONADO CON HUMECTANTES YEMOLIENTES; HIPOALERGENICO. ENVASE DE 950 ML A 1 LITRO INTEGRADO CON TAPA DESILLA DE                       NO       SÍ
+060.088.0769          APÓSITOS                                                                                                                                         NO                 SÍ
+                      APÓSITOS                                                                                       MONTAR.                                           NO        NO
+                                   GEL ANESTÉSICO Y ANTISÉPTICO, HIDROSOLUBLE, TRANSPARENTE, ESTÉRIL Y DESECHABLE. CONTIENE: HIDROCLORURO DE LIDOCAÍNA AL 2%                     NO
+
+                                                        Y DIHIDROCLORURO DE CLORHEXIDINA AL 0.05 % CAJA CON 25 TUBOS COLAPSABLES DE 12.5G CADA UNO
+                                                                                      SIN ALGODÓN. DE MADERA. ENVASE CON 150 A 750 PIEZAS.
+                                                                                     CON ALGODÓN. DE MADERA. ENVASE CON 150 A 750 PIEZAS.
+
+                                   APLICADOR DE MADERA, PLÁSTICO O MATERIAL RECICLABLE DE 15 CM DE LONGITUD, CON PUNTA DE ALGODÓN. ESTÉRILES Y DESECHABLES.
+                                                                                                 ENVASE CON DOS O TRES APLICADORES.
+
+                                      TRANSPARENTE, MICROPOROSO, AUTOADHERIBLE, ESTÉRIL Y DESECHABLE. MEDIDAS: 7.0 A 8.5 X 5.08 A 6.0 CM. . ENVASE CON 50 PIEZAS.
+
+                                   TRANSPARENTE, MICROPOROSO, AUTOADHERIBLE, ESTÉRIL Y DESECHABLE. MEDIDAS: 10.0 A 10.16 X 12.0 A 14.0 CM. ENVASE CON 50 PIEZAS.
+
+                                                             COMBINADOS. DE CELULOSA, CON TELA NO TEJIDA. MEDIDAS: 20 X 13 CM. ENVASE CON 150 PIEZAS.
+                                   HIDROCOLOIDES, PARA EL TRATAMIENTO DE HERIDAS, EXTRADELGADO, AUTOADHERIBLE. ESTÉRIL. TAMAÑO: DE 10.0 CM ±0.6 CM X 10.0 CM ±
+
+                                                                                                                  0.6 CM. PIEZA.
+                                   HIDROCOLOIDES, CON BORDES AUTOADHERIBLES, CON O SIN CAPA EXTERNA DE ESPUMA DE POLIURETANO O CLORURO DE POLIVINILO, CON
+
+                                                                 GROSOR MÍNIMO DE 2 MM. ESTÉRIL. TAMAÑO: DE 15.0 CM ± 3.0 CM X 16.0 CM ± 4.0 CM. PIEZA.
+                                                               DE HIDROGEL CON ALGINATO SÓDICO PARA GRANULACIÓN Y EPITELIZACIÓN. 15 X 20 CM. PIEZA.
+CLAVE (CNIS)  INSUMO  DESCRIPCIÓN                                                                                                                                    UNIDADES  UNIDADES  CESSA
+                                                                                                                                                                     MÓVILES   NÚCLEOS
+060.116.0021                                                                                                                                                                   BÁSICOS
+060.125.0228                                                                                                                                                              SÍ
+060.125.0236          BATA DESECHABLE PARA PACIENTE. ELABORADA EN TELA NO TEJIDA DE POLIPROPILENO DE AL MENOS 4 PINES (SMMS) DE AL MENOS 38 GR/M2,
+060.125.0244                                                                                                                                                             NO
+                      CON MANGA CORTA, CON DOS CINTAS DE AMARRE EN LA PARTE DELANTERA. RESISTENTE A LA PENETRACIÓN POR IMPACTO DE FLUIDOS,                               NO
+060.125.0582                                                                                                                                                             NO
+              BATA DESECHABLE PARA PACIENTE RESISTENTE A LA PRESIÓN HIDROSTÁTICA DE FLUIDOS, COLOR ANTIRREFLEJANTE, NO TRANSPARENTE, ANTIESTÁTICA Y RESISTENTE A LA            SÍ        SÍ
+060.125.1879                                                                                                                                                             NO
+060.125.1887          TENSIÓN. PRODUCTO DESECHABLE Y DE UN SOLO USO. NO ESTÉRIL. CON CAPA PROTECTORA ANTIBACTERIAL. MEDIDAS: UNITALLA.
+060.125.1929                                                                                                                                                              SÍ
+060.125.1960          ENVOLVENCIA DE 147 +/-3 CM X 117+/-3 CM PIEZA.
+060.125.2505                                                                                                                                                              SÍ
+060.125.2653  BOLSAS  PARA UROCULTIVO (NIÑO). ESTÉRIL, DE PLÁSTICO GRADO MÉDICO, FORMA RECTANGULAR, CON CAPACIDAD DE 50 ML Y ESCALA DE 10, 20, 30 Y                       SÍ   NO        SÍ
+060.125.2711                                               50 ML, CON ORIFICIO REDONDO DE 30 MM, ÁREA ADHESIVA. DE 45 X 60 MM. PIEZA.                                     SÍ
+060.125.2760                                                                                                                                                              SÍ
+060.125.2828          PARA ENEMA. CAPACIDAD 1500 ML CON TUBO TRANSPORTADOR DE 5.0 A 6.0 MM DE DIÁMETRO INTERNO, 128 CM DE LONGITUD Y DISPOSITIVO                          SÍ
+                                                                                                                                                                          SÍ
+              BOLSAS  OBTURADOR DE PLÁSTICO PARA CONTROL DE FLUJO. EL EXTREMO PROXIMAL DEBE TENER LA PUNTA ROMA SIN FILOS, UN ORIFICIO LATERAL                            SÍ   NO        SÍ
+                                                                                                                                                                          SÍ
+                      CERCANO A LA PUNTA LUBRICANTE Y PROTECTOR PLÁSTICO. DESECHABLE. PIEZA.
+
+              BOLSAS  PARA UROCULTIVO (NIÑA). ESTÉRIL, DE PLÁSTICO GRADO MÉDICO, FORMA RECTANGULAR, CON CAPACIDAD DE 50 ML Y ESCALA DE 10, 20, 30 Y                            NO        SÍ
+                      50 ML. CON ORIFICIO EN FORMA DE PERA, 2.5 CM EN SU LADO MÁS ANCHO Y 1 CM EN EL MÁS ANGOSTO. ÁREA ADHESIVA DE 45 X 60 MM. PIEZA.
+
+              BOLSAS   PARA ILEOSTOMÍA O COLOSTOMÍA. TAMAÑO ADULTO. AUTOADHERIBLE, DE PLÁSTICO GRADO MÉDICO, SUAVE, TRANSPARENTE, A PRUEBA DE                                  NO        SÍ
+                      OLOR, DRENABLE, EN FORMA DE BOTELLA DE 30 X 15 CM ABIERTA EN SU PARTE MÁS ANGOSTA, CON CUELLO DE 6 A 9 CM DE ANCHO Y 3.0 A 6.2
+
+                                    CM DE LARGO, CON PINZA DE SEGURIDAD O MECANISMO DE CIERRE, CON PROTECTOR DE PIEL INTEGRADO A BASE DE
+                        CARBOXIMETILCELULOSA SÓDICA, CON ADHESIVO, CON GUÍA RECORTABLE QUE PERMITA ABRIR ORIFICIO PARA EL ESTOMA A DIFERENTES
+
+                              MEDIDAS QUE VAN DE 25 A 60 MM, LA CARA INTERNA DEBERÁ TENER UN PROTECTOR QUE EVITE LA IRRITACIÓN DE LA PIEL. PIEZA.
+
+              BOLSAS      SISTEMA PARA RECOLECCIÓN DE ORINA; ESTÉRIL, RECTANGULAR O TRIANGULAR DE CLORURO DE POLIVINILO CON ESCALA GRADUADA,                                   SÍ        SÍ
+                      GRADUACIONES CADA 200 ML, EL SISTEMA DE DRENAJE DEBE SER UN CIRCUITO CERRADO CON LAS SIGUIENTES CARACTERÍSTICAS: CON SITIO
+              BOLSAS                                                                                                                                                           SÍ        NO
+                                     PARA TOMA DE MUESTRAS, DISPOSITIVO ANTIRREFLUJO Y PINZA EN EL TUBO DE VACIADO CAPACIDAD: 2000 ML. PIEZA.
+              BOLSAS                                                                                                                                                           SÍ        NO
+                             BOLSA DE PAPEL GRADO MÉDICO, CON POROSIDAD CONTROLADA, HIDRÓFUGO, PARA ESTERILIZAR CON GAS O VAPOR. CON O SIN
+              BOLSAS   TRATAMIENTO ANTIBACTERIANO, CON REACTIVO QUÍMICO IMPRESO Y PELÍCULA PLÁSTICA TRANSPARENTE, TERMOSOLDABLE DE: 10.0 X 42.0                                SÍ        NO
+              BOLSAS
+              BOLSAS                                                                       CM. ENVASE CON 1000 PIEZAS.                                                         SÍ        SÍ
+              BOLSAS         BOLSA DE PAPEL GRADO MÉDICO, CON POROSIDAD CONTROLADA, HIDRÓFUGO, PARA ESTERILIZAR CON GAS O VAPOR. CON O SIN
+              BOLSAS   TRATAMIENTO ANTIBACTERIANO, CON REACTIVO QUÍMICO IMPRESO Y PELÍCULA PLÁSTICA TRANSPARENTE, TERMOSOLDABLE DE: 40.0 X 58.0                                SÍ        SÍ
+              BOLSAS
+                                                                                           CM. ENVASE CON 250 PIEZAS.                                                          SÍ        NO
+                             BOLSA DE PAPEL GRADO MÉDICO, CON POROSIDAD CONTROLADA, HIDRÓFUGO, PARA ESTERILIZAR CON GAS O VAPOR. CON O SIN
+                       TRATAMIENTO ANTIBACTERIANO, CON REACTIVO QUÍMICO IMPRESO Y PELÍCULA PLÁSTICA TRANSPARENTE, TERMOSOLDABLE DE: 20.0 X 42.0                                SÍ        NO
+
+                                                                                           CM. ENVASE CON 1000 PIEZAS.                                                         SÍ        NO
+                      PARA USO GENERAL, DE POLIETILENO. BIODEGRADABLE CALIBRE ENTRE 150-200 PARA LA RECOLECCIÓN Y DESECHOS DE RESIDUOS NO RPBI
+
+                                                                                MEDIDAS: 30 X 20 CM. ENVASE CON 100 PIEZAS.
+                      BOLSA DE PAPEL GRADO MÉDICO. PARA ESTERILIZAR CON GAS O VAPOR. CON O SIN TRATAMIENTO ANTIBACTERIANO; CON REACTIVO QUÍMICO
+
+                                                     IMPRESO Y SISTEMA DE APERTURA. MEDIDAS: 7.5 X 23.0 X 4.0 CM. ENVASE CON 1000 PIEZAS.
+                           BOLSA DE PAPEL GRADO MÉDICO. PARA ESTERILIZAR, CON GAS O VAPOR. CON O SIN TRATAMIENTO ANTIBACTERIANO. CON REACTIVO
+
+                                               QUÍMICO IMPRESO Y SISTEMA DE APERTURA. MEDIDAS: 7.5 X 48.0 X 4.0 CM. ENVASE CON 1000 PIEZAS.
+                      BOLSA DE PAPEL GRADO MÉDICO. PARA ESTERILIZAR CON GAS O VAPOR. CON O SIN TRATAMIENTO ANTIBACTERIANO; CON REACTIVO QUÍMICO
+
+                                                     IMPRESO Y SISTEMA DE APERTURA. MEDIDAS: 6.0 X 18.0 X 3.0 CM. ENVASE CON 1000 PIEZAS.
+
+                      BOLSA DE PAPEL GRADO MÉDICO. PARA ESTERILIZAR CON GAS O VAPOR. CON O SIN TRATAMIENTO ANTIBACTERIANO; CON REACTIVO QUÍMICO
+                      IMPRESO Y SISTEMA DE APERTURA. BOLSA PARA ESTERILIZACIÓN CON GAS O VAPOR. MEDIDAS: 9.0 X 12.5 X 5.0 CM. ENVASE CON 1000 PIEZAS.
+CLAVE (CNIS)    INSUMO                                                                                   DESCRIPCIÓN                                    UNIDADES  UNIDADES  CESSA
+060.125.2844    BOLSAS                                                                                                                                  MÓVILES   NÚCLEOS
+060.125.2877    BOLSAS         BOLSA DE PAPEL GRADO MÉDICO. PARA ESTERILIZAR, CON GAS O VAPOR. CON O SIN TRATAMIENTO ANTIBACTERIANO. CON REACTIVO                 BÁSICOS      SÍ
+060.125.3230    BOLSAS                            QUÍMICO IMPRESO Y SISTEMA DE APERTURA. MEDIDAS: 32.0 X 62.0 X 12.0 CM. ENVASE CON 250 PIEZAS.              SÍ                SÍ
+060.130.0015     BOTAS                                                                                                                                      NO         SÍ      SÍ
+060.132.0054  BRAZALETES       BOLSA DE PAPEL GRADO MÉDICO. PARA ESTERILIZAR, CON GAS O VAPOR. CON O SIN TRATAMIENTO ANTIBACTERIANO. CON REACTIVO           NO                 SÍ
+060.132.0203  BRAZALETES                          QUÍMICO IMPRESO Y SISTEMA DE APERTURA. MEDIDAS: 18.0 X 33.0 X 6.0 CM. ENVASE CON 1000 PIEZAS.             NO        NO       SÍ
+060.154.0016    CARETA                                                                                                                                      NO                 SÍ
+                           PARA USO GENERAL, DE POLIETILENO. BIODEGRADABLE CALIBRE ENTRE 150-200 PARA LA RECOLECCIÓN Y DESECHOS DE RESIDUOS NO RPBI         NO        NO
+060.155.0015   CÁNULAS                                                              MEDIDAS: 60 X 80 CM. ENVASE CON 100 PIEZAS.                              SÍ
+                                                                                                                                                                      NO
+060.166.0103  CATÉTERES        BOTA QUIRÚRGICA DE TELA NO TEJIDA 100% DE POLIPROPILENO, TIPO SMS, DE 35 G/M2 MÍNIMO, IMPERMEABLE A LA PENETRACIÓN DE        NO        NO
+060.166.3339    SONDAS                                     LÍQUIDOS Y FLUIDOS, ANTIESTÁTICA, CON DOS CINTAS DE SUJECIÓN. DESECHABLE. PAR.                             NO
+060.166.3347    SONDAS                                                PARA IDENTIFICACIÓN. DE PLÁSTICO. ADULTO. ENVASE CON 100 PIEZAS                       NO
+060.166.4212                                                         PARA IDENTIFICACIÓN. DE PLÁSTICO. INFANTIL. ENVASE CON 100 PIEZAS                      NO    SÍ        SÍ
+              CATÉTERES                                                                                                                                     NO
+060.166.4238              CARETA DE PROTECCIÓN FACIAL. HECHA DE PLÁSTICO TRANSPARENTE, CON ESPACIO SUFICIENTE QUE PERMITA EL USO COMBINADO DE OTRO          NO    NO        SÍ
+              CATÉTERES   EQUIPO DE PROTECCIÓN PERSONAL, POR EJEMPLO, PROTECTOR RESPIRATORIO O ANTEOJOS GRADUADOS. QUE CUBRA COMPLETAMENTE LOS
+060.166.4261                                                                                                                                                 SÍ   SÍ        SÍ
+              CATÉTERES        LADOS Y LONGITUD DE LA CARA. BANDA CON AJUSTE PARA LA FRENTE Y CABEZA QUE PERMITA AJUSTE PERSONALIZADO Y QUE EVITE EL
+060.166.4279              DESLIZAMIENTO DE LA BANDA. QUE PERMITA SU LIMPIEZA CON SUSTANCIAS DESINFECTANTES HABITUALES SIN DAÑARSE, REUTILIZABLE PIEZA.       SÍ   NO        SÍ
+              CATÉTERES
+                               CAMPO QUIRÚRGICO DE INCISIÓN SIN IODOPOVIDONA. COMPUESTO DE UNA PELÍCULA IMPERMEABLE; DE POLIÉSTER O POLIURETANO              SÍ   NO        SÍ
+                             TRANSPARENTE, CON ADHESIVO GRADO MÉDICO, AUTOADHERIBLES, HIPOALERGÉNICO. MEDIDAS 45 A 60 CM X 50 A 90 CM SE INCLUYEN
+                            MEDIDAS INTERMEDIAS ESTÉRILES Y DESECHABLES EN EMPAQUE INDIVIDUAL. ENVASE CON 10 PIEZAS. LAS MEDIDAS LAS SELECCIONARÁ LA              NO        SÍ
+
+                                                                                  UNIDAD MÉDICA DE ACUERDO A SUS NECESIDADES.                                     SÍ        SÍ
+                          PARA VENOCLISIS. DE FLUOROPOLÍMEROS (POLITETRAFLUORETILENO, FLUORETILENPROPILENO Y ETILENTRIFLUORETILENO) O POLIURETANO,
+                                                                                                                                                                  SÍ        SÍ
+                            RADIOPACO, CON AGUJA. LONGITUD: 17-24 MM. CALIBRE: 24 G. ENVASE CON 50 PIEZAS. *PARA LA ADQUISICIÓN DE ESTAS CLAVES DEBERÁ
+                                                                      ACATARSE EL MATERIAL ESPECÍFICO QUE SOLICITE CADA INSTITUCIÓN.                              SÍ        SÍ
+
+                             PARA ASPIRACIÓN, DE PLÁSTICO TRANSPARENTE LIBRE DE PIRÓGENOS, ATÓXICO, DE 55 CM DE LONGITUD CON VÁLVULA DE CONTROL DE
+                                                                ASPIRACIÓN, CON PUNTA ROMA. ESTÉRIL Y DESECHABLE. CALIBRE: 12 FR. PIEZA.
+
+                             PARA ASPIRACIÓN, DE PLÁSTICO TRANSPARENTE LIBRE DE PIRÓGENOS, ATÓXICO, DE 55 CM DE LONGITUD CON VÁLVULA DE CONTROL DE
+                                                                ASPIRACIÓN, CON PUNTA ROMA. ESTÉRIL Y DESECHABLE. CALIBRE: 14 FR. PIEZA.
+
+                           CATÉTER PERIFÉRICO DE SEGURIDAD, PARA LA INFUSIÓN DE SOLUCIONES INTRAVENOSAS, DE POLIURETANO O FLUORETILENO-PROPILENO,
+                            RADIOPACO, CON O SIN ALETAS PARA FIJACIÓN. LA AGUJA CONTIENE UN DISPOSITIVO DE SEGURIDAD QUE LA INACTIVA CUANDO SE RETIRA
+
+                                                 DEL CATÉTER Y TAPÓN PROTECTOR. ESTÉRIL Y DESECHABLE. CALIBRE: 16 G. LONGITUD: 28-34 MM. PIEZA.
+
+                           CATÉTER PERIFÉRICO DE SEGURIDAD, PARA LA INFUSIÓN DE SOLUCIONES INTRAVENOSAS, DE POLIURETANO O FLUORETILENO-PROPILENO,
+                            RADIOPACO, CON O SIN ALETAS PARA FIJACIÓN. LA AGUJA CONTIENE UN DISPOSITIVO DE SEGURIDAD QUE LA INACTIVA CUANDO SE RETIRA
+
+                                                 DEL CATÉTER Y TAPÓN PROTECTOR. ESTÉRIL Y DESECHABLE. CALIBRE: 18 G. LONGITUD: 28-34 MM. PIEZA.
+
+                           CATÉTER PERIFÉRICO DE SEGURIDAD, PARA LA INFUSIÓN DE SOLUCIONES INTRAVENOSAS, DE POLIURETANO O FLUORETILENO-PROPILENO,
+                            RADIOPACO, CON O SIN ALETAS PARA FIJACIÓN. LA AGUJA CONTIENE UN DISPOSITIVO DE SEGURIDAD QUE LA INACTIVA CUANDO SE RETIRA
+
+                                                 DEL CATÉTER Y TAPÓN PROTECTOR. ESTÉRIL Y DESECHABLE. CALIBRE: 20 G. LONGITUD: 23-27 MM. PIEZA.
+
+                           CATÉTER PERIFÉRICO DE SEGURIDAD, PARA LA INFUSIÓN DE SOLUCIONES INTRAVENOSAS, DE POLIURETANO O FLUORETILENO-PROPILENO,
+                            RADIOPACO, CON O SIN ALETAS PARA FIJACIÓN. LA AGUJA CONTIENE UN DISPOSITIVO DE SEGURIDAD QUE LA INACTIVA CUANDO SE RETIRA
+
+                                                 DEL CATÉTER Y TAPÓN PROTECTOR. ESTÉRIL Y DESECHABLE. CALIBRE: 22 G. LONGITUD: 23-27 MM. PIEZA.
+CLAVE (CNIS)  INSUMO                     DESCRIPCIÓN                                                                                                                   UNIDADES  UNIDADES  CESSA
+060.166.4287                                                                                                                                                           MÓVILES   NÚCLEOS      SÍ
+                         CATÉTERES        CATÉTER PERIFÉRICO DE SEGURIDAD, PARA LA INFUSIÓN DE SOLUCIONES INTRAVENOSAS, DE POLIURETANO O FLUORETILENO-PROPILENO,                 BÁSICOS
+060.166.5256                               RADIOPACO, CON O SIN ALETAS PARA FIJACIÓN. LA AGUJA CONTIENE UN DISPOSITIVO DE SEGURIDAD QUE LA INACTIVA CUANDO SE RETIRA       NO
+                CATÉTER ENDOVASCULAR                                                                                                                                                 NO
+060.166.5264                                                    DEL CATÉTER Y TAPÓN PROTECTOR. ESTÉRIL Y DESECHABLE. CALIBRE: 24 G. LONGITUD: 14-24 MM. PIEZA.             NO
+                CATÉTER ENDOVASCULAR                                                                                                                                             NO        SÍ
+060.166.5272                                  CATETER ENDOVASCULAR CATETER PERIFERICO CON SISTEMA CERRADO DE MECANISMO DE SEGURIDAD PASIVO E IRREVERSIBLE QUE              NO
+                CATÉTER ENDOVASCULAR     PROTEGE LA CANULA TRAS LA INSERCION EVITANDO PUNCIONES ACCIDENTALES, HECHO DE POLIPURETANO, CON CANULA CON TECNOLOGIA                   NO        SÍ
+060.166.5280                                                                                                                                                               NO
+                CATÉTER ENDOVASCULAR      DE MUESCA EN LA AGUJA QUE FACILITA LA IDENTIFICACION AL MOMENTO DE LA INSERCION, CON ALAS, CON TUBO DE EXTENSION FLEXIBLE,             NO        SÍ
+060.166.5296                                 CON O SIN PINZA, CON UN PUERTO SENCILLO O PUERTO EN Y, CON O SIN TAPON PROTECTOR., CON O SIN DOS CONECTORES LIBRES DE         NO
+060.167.0458  CATÉTER BALÓN DE SILICONA    AGUJA. PRODUCTO ESTERIL PARA USARSE UNA SOLA VEZ Y DESECHARSE, NO TOXICO. LIBRE DE PIROGENOS Y LIBRE DE PVC. ESTERILIZADO             NO        SÍ
+060.167.0466              CÁNULAS          CON OXIDO DE ETILENO. CON LAS SIGUIENTES MEDIDAS: PUERTO Y CON CONECTOR LIBRE DE AGUJAS: CALIBRE 24 GA X LONGITUD 0.75 IN       NO
+060.167.0482              CÁNULAS                                                                                   CONTENIDO: 1 PIEZA                                     NO    NO        SÍ
+060.167.0680              CÁNULAS             CATETER ENDOVASCULAR CATETER PERIFERICO CON SISTEMA CERRADO DE MECANISMO DE SEGURIDAD PASIVO E IRREVERSIBLE QUE              NO
+060.167.3304              CÁNULAS                                                                                                                                          NO    NO        SÍ
+060.167.3312              CÁNULAS        PROTEGE LA CANULA TRAS LA INSERCION EVITANDO PUNCIONES ACCIDENTALES, HECHO DE POLIPURETANO, CON CANULA CON TECNOLOGIA             NO
+060.167.3320              CÁNULAS         DE MUESCA EN LA AGUJA QUE FACILITA LA IDENTIFICACION AL MOMENTO DE LA INSERCION, CON ALAS, CON TUBO DE EXTENSION FLEXIBLE,       NO    NO        SÍ
+060.167.3346              CÁNULAS            CON O SIN PINZA, CON UN PUERTO SENCILLO O PUERTO EN Y, CON O SIN TAPON PROTECTOR., CON O SIN DOS CONECTORES LIBRES DE         NO
+                          CÁNULAS          AGUJA. PRODUCTO ESTERIL PARA USARSE UNA SOLA VEZ Y DESECHARSE, NO TOXICO. LIBRE DE PIROGENOS Y LIBRE DE PVC. ESTERILIZADO       NO    NO        SÍ
+                                           CON OXIDO DE ETILENO. CON LAS SIGUIENTES MEDIDAS: PUERTO Y CON CONECTOR LIBRE DE AGUJAS: CALIBRE 22 GA X LONGITUD 1.00 IN       NO
+                                                                                                                    CONTENIDO: 1 PIEZA                                           NO        SÍ
+                                              CATETER ENDOVASCULAR CATETER PERIFERICO CON SISTEMA CERRADO DE MECANISMO DE SEGURIDAD PASIVO E IRREVERSIBLE QUE
+                                                                                                                                                                                 NO        SÍ
+                                         PROTEGE LA CANULA TRAS LA INSERCION EVITANDO PUNCIONES ACCIDENTALES, HECHO DE POLIPURETANO, CON CANULA CON TECNOLOGIA
+                                          DE MUESCA EN LA AGUJA QUE FACILITA LA IDENTIFICACION AL MOMENTO DE LA INSERCION, CON ALAS, CON TUBO DE EXTENSION FLEXIBLE,             NO        SÍ
+                                             CON O SIN PINZA, CON UN PUERTO SENCILLO O PUERTO EN Y, CON O SIN TAPON PROTECTOR., CON O SIN DOS CONECTORES LIBRES DE
+                                           AGUJA. PRODUCTO ESTERIL PARA USARSE UNA SOLA VEZ Y DESECHARSE, NO TOXICO. LIBRE DE PIROGENOS Y LIBRE DE PVC. ESTERILIZADO             NO        SÍ
+                                          CON OXIDO DE ETILENO. CON LAS SIGUIENTES MEDIDAS: PUERTO HFY CON CONECTOR LIBRE DE AGUJAS: CALIBRE 20 GA X LONGITUD 1.25 IN
+                                                                                                                    CONTENIDO: 1 PIEZA                                           NO        SÍ
+
+                                            CATÉTER PERIFÉRICO CON SISTEMA CERRADO DE MECANISMO DE SEGURIDAD PASIVO E IRREVERSIBLE QUE PROTEGE LA CÁNULA TRAS LA
+                                            INSERCIÓN EVITANDO PUNCIONES ACCIDENTALES, HECHO DE POLIPURETANO, CÁNULA CON TECNOLOGÍA DE MUESCA EN LA AGUJA QUE
+                                         FACILITA LA IDENTIFICACIÓN AL MOMENTO DE LA INSERCIÓN, CON ALAS, CON TUBO DE EXTENSIÓN FLEXIBLE, CON O SIN PINZA, CON PUERTO
+                                         SENCILLO O PUERTO EN Y, CON O SIN TAPÓN PROTECTOR., CON O SIN DOS CONECTORES LIBRES DE AGUJA. PRODUCTO ESTÉRIL PARA USARSE
+                                          UNA SOLA VEZ Y DESECHARSE, NO TÓXICO. LIBRE DE PIRÓGENOS Y LIBRE DE PVC. ESTERILIZADO CON ÓXIDO DE ETILENO. PUERTO HFY CON
+
+                                                                            CONECTOR LIBRE DE AGUJA: CALIBRE 18 GA X LONGITUD 1.25 IN CONTENIDO: 1 PIEZA
+
+                                             CATETER BALON DE SILICONA CATETER BALON DE TAPONAMIENTO INTRAUTERINO POSTPARTO, ESTERIL, ELABORADO DE SILICON, PARA
+                                              CONTROL PROVISIONAL DE SANGRADO UTERINO POSTPARTO. DE 24 FR, 54 CM, VOLUMEN DE BALON DE 500 ML EN EMPAQUE ESTERIL.
+
+                                                                    INCLUYE JERINGA DE LLENADO. BALON POSTPARTO CON COMPONENTES DE INSTALACION RAPIDA
+                                                       OROFARÍNGEAS. DE PLÁSTICO TRANSPARENTE O TRANSLUCIDO. TIPO: GUEDEL/BERMAN. TAMAÑO: 0 LONGITUD: 50 MM.
+                                                       OROFARÍNGEAS. DE PLÁSTICO TRANSPARENTE O TRANSLUCIDO. TIPO: GUEDEL/BERMAN. TAMAÑO: 2 LONGITUD: 70 MM.
+                                                       OROFARÍNGEAS. DE PLÁSTICO TRANSPARENTE O TRANSLUCIDO. TIPO: GUEDEL/BERMAN. TAMAÑO: 4 LONGITUD: 90 MM.
+                                                      OROFARÍNGEAS. DE PLÁSTICO TRANSPARENTE O TRANSLUCIDO. TIPO: GUEDEL/BERMAN. TAMAÑO: 6 LONGITUD: 110 MM.
+                                                      OROFARÍNGEAS. DE PLÁSTICO TRANSPARENTE O TRANSLUCIDO. TIPO: GUEDEL/BERMAN. TAMAÑO: 00 LONGITUD: 40 MM.
+                                                       OROFARÍNGEAS. DE PLÁSTICO TRANSPARENTE O TRANSLUCIDO. TIPO: GUEDEL/BERMAN. TAMAÑO: 1 LONGITUD: 60 MM.
+                                                       OROFARÍNGEAS. DE PLÁSTICO TRANSPARENTE O TRANSLUCIDO. TIPO: GUEDEL/BERMAN. TAMAÑO: 3 LONGITUD: 80 MM.
+                                                      OROFARÍNGEAS. DE PLÁSTICO TRANSPARENTE O TRANSLUCIDO. TIPO: GUEDEL/BERMAN. TAMAÑO: 5 LONGITUD: 100 MM.
+CLAVE (CNIS)   INSUMO                                                                                   DESCRIPCIÓN                                    UNIDADES  UNIDADES  CESSA
+                                                                                                                                                       MÓVILES   NÚCLEOS
+060.167.4948   SONDAS                                      DE LÁTEX, PUNTA REDONDA. TIPO: NELATON. LONGITUD: 40 CM. CALIBRE: 30 FR. PIEZA.                       BÁSICOS      SÍ
+060.167.5010  CATÉTERES   PARA SUMINISTRO DE OXÍGENO. CON TUBO DE CONEXIÓN Y CÁNULA NASAL. DE PLÁSTICO, CON DIÁMETRO INTERNO DE 2.0 MM. LONGITUD           NO                 SÍ
+                                                                                                                                                           NO        NO
+060.167.8089   SONDAS                                                                                  180 CM. PIEZA.                                                NO       SÍ
+060.168.4277   SONDAS     PARA ALIMENTACIÓN. DE PLÁSTICO TRANSPARENTE, DESECHABLE CON UN ORIFICIO EN EL EXTREMO PROXIMAL Y OTRO EN LOS PRIMEROS 2          NO                 SÍ
+060.168.4418   SONDAS                                                                                                                                      NO        NO       SÍ
+060.168.6595   SONDAS                                                   CM. INFANTIL. LONGITUD: 38.5 CM. CALIBRE: 8 FR. ESTÉRIL PIEZA.                     NO        NO       SÍ
+                                                  GASTROINTESTINALES DESECHABLES Y CON MARCA RADIOPACA. TIPO: LEVIN. CALIBRE: 12 FR. PIEZA.                NO        NO
+060.168.6603  CATÉTERES                           GASTROINTESTINALES DESECHABLES Y CON MARCA RADIOPACA. TIPO: LEVIN. CALIBRE: 18 FR. PIEZA.                          NO       SÍ
+                                                                                                                                                           NO
+060.168.6611   SONDAS                                      DE LÁTEX, PUNTA REDONDA. TIPO: NELATON. LONGITUD: 40 CM. CALIBRE:10 FR. PIEZA.                            NO       SÍ
+                         PARA VENOCLISIS. DE FLUOROPOLÍMEROS (POLITETRAFLUORETILENO, FLUORETILENPROPILENO Y ETILENTRIFLUORETILENO) O POLIURETANO,          NO
+060.168.6629  CATÉTERES                                                                                                                                              NO       SÍ
+                           RADIOPACO, CON AGUJA. LONGITUD: 46-52 MM. CALIBRE: 14 G. ENVASE CON 50 PIEZAS. *PARA LA ADQUISICIÓN DE ESTAS CLAVES DEBERÁ      NO
+060.168.6637   SONDAS                                                ACATARSE EL MATERIAL ESPECÍFICO QUE SOLICITE CADA INSTITUCIÓN.                                  NO       SÍ
+                                                                                                                                                           NO
+060.168.6645  CATÉTERES                                    DE LÁTEX, PUNTA REDONDA. TIPO: NELATON. LONGITUD: 40 CM. CALIBRE: 12 FR. PIEZA.                           NO       SÍ
+                         PARA VENOCLISIS. DE FLUOROPOLÍMEROS (POLITETRAFLUORETILENO, FLUORETILENPROPILENO Y ETILENTRIFLUORETILENO) O POLIURETANO,           SÍ
+060.168.6652   SONDAS                                                                                                                                                 SÍ      SÍ
+                           RADIOPACO, CON AGUJA. LONGITUD: 46-52 MM. CALIBRE: 16 G. ENVASE CON 50 PIEZAS. *PARA LA ADQUISICIÓN DE ESTAS CLAVES DEBERÁ      NO
+060.168.6660  CATÉTERES                                              ACATARSE EL MATERIAL ESPECÍFICO QUE SOLICITE CADA INSTITUCIÓN.                                  NO       SÍ
+                                                                                                                                                            SÍ
+060.168.6678   SONDAS                                      DE LÁTEX, PUNTA REDONDA. TIPO: NELATON. LONGITUD: 40 CM. CALIBRE: 14 FR. PIEZA.                            SÍ      SÍ
+                         PARA VENOCLISIS. DE FLUOROPOLÍMEROS (POLITETRAFLUORETILENO, FLUORETILENPROPILENO Y ETILENTRIFLUORETILENO) O POLIURETANO,          NO
+060.168.6686  CATÉTERES                                                                                                                                              NO       SÍ
+                           RADIOPACO, CON AGUJA. LONGITUD:28-34 MM. CALIBRE:18 G. ENVASE CON 50 PIEZAS. *PARA LA ADQUISICIÓN DE ESTAS CLAVES DEBERÁ         SÍ
+060.168.8302   SONDAS                                                ACATARSE EL MATERIAL ESPECÍFICO QUE SOLICITE CADA INSTITUCIÓN.                                   SÍ      SÍ
+060.168.8310   SONDAS                                                                                                                                      NO                 SÍ
+060.168.8328   SONDAS                                      DE LÁTEX, PUNTA REDONDA. TIPO: NELATON. LONGITUD: 40 CM. CALIBRE: 16 FR. PIEZA.                 NO        NO       SÍ
+060.168.9623   SONDAS    PARA VENOCLISIS. DE FLUOROPOLÍMEROS (POLITETRAFLUORETILENO, FLUORETILENPROPILENO Y ETILENTRIFLUORETILENO) O POLIURETANO,          NO        NO       SÍ
+                                                                                                                                                            SÍ       NO
+060.168.9631   SONDAS      RADIOPACO, CON AGUJA. LONGITUD: 28-34 MM. CALIBRE: 20 G. ENVASE CON 50 PIEZAS. *PARA LA ADQUISICIÓN DE ESTAS CLAVES DEBERÁ                 SÍ      SÍ
+                                                                     ACATARSE EL MATERIAL ESPECÍFICO QUE SOLICITE CADA INSTITUCIÓN.                         SÍ
+060.168.9649   SONDAS                                                                                                                                                 SÍ      SÍ
+                                                           DE LÁTEX, PUNTA REDONDA. TIPO: NELATON. LONGITUD: 40 CM. CALIBRE: 18 FR. PIEZA.                  SÍ
+060.168.9664   SONDAS    PARA VENOCLISIS. DE FLUOROPOLÍMEROS (POLITETRAFLUORETILENO, FLUORETILENPROPILENO Y ETILENTRIFLUORETILENO) O POLIURETANO,                     SÍ      SÍ
+060.168.9896   SONDAS                                                                                                                                      NO                 SÍ
+060.168.9904   SONDAS      RADIOPACO, CON AGUJA. LONGITUD: 23-27 MM. CALIBRE: 22 G. ENVASE CON 50 PIEZAS. *PARA LA ADQUISICIÓN DE ESTAS CLAVES DEBERÁ      NO        NO       SÍ
+                                                                     ACATARSE EL MATERIAL ESPECÍFICO QUE SOLICITE CADA INSTITUCIÓN.                        NO        NO
+                                                                                                                                                                     NO
+                                                           DE LÁTEX, PUNTA REDONDA. TIPO: NELATON. LONGITUD: 40 CM. CALIBRE: 20 FR. PIEZA.
+                                                           DE LÁTEX, PUNTA REDONDA. TIPO: NELATON. LONGITUD: 40 CM. CALIBRE: 22 FR. PIEZA.
+                                                           DE LÁTEX, PUNTA REDONDA. TIPO: NELATON. LONGITUD: 40 CM. CALIBRE: 24 FR. PIEZA.
+                          PARA DRENAJE URINARIO. DE LÁTEX, CON GLOBO DE AUTORRETENCIÓN DE 5 ML CON VÁLVULA PARA JERINGA. ESTÉRIL Y DESECHABLE. TIPO:
+
+                                                                                      FOLEY DE DOS VÍAS. CALIBRE: 14 FR. PIEZA.
+                          PARA DRENAJE URINARIO. DE LÁTEX, CON GLOBO DE AUTORRETENCIÓN DE 5 ML CON VÁLVULA PARA JERINGA. ESTÉRIL Y DESECHABLE. TIPO:
+
+                                                                                      FOLEY DE DOS VÍAS. CALIBRE: 16 FR. PIEZA.
+                          PARA DRENAJE URINARIO. DE LÁTEX, CON GLOBO DE AUTORRETENCIÓN DE 5 ML CON VÁLVULA PARA JERINGA. ESTÉRIL Y DESECHABLE. TIPO:
+
+                                                                                      FOLEY DE DOS VÍAS. CALIBRE: 18 FR. PIEZA.
+                          PARA DRENAJE URINARIO. DE LÁTEX, CON GLOBO DE AUTORRETENCIÓN DE 5 ML CON VÁLVULA PARA JERINGA. ESTÉRIL Y DESECHABLE. TIPO:
+
+                                                                                      FOLEY DE DOS VÍAS. CALIBRE: 22 FR. PIEZA.
+                                                  GASTROINTESTINALES DESECHABLES Y CON MARCA RADIOPACA. TIPO: LEVIN. CALIBRE: 14 FR. PIEZA.
+                                                  GASTROINTESTINALES DESECHABLES Y CON MARCA RADIOPACA. TIPO: LEVIN. CALIBRE: 16 FR. PIEZA.
+CLAVE (CNIS)         INSUMO                                                                                     DESCRIPCIÓN                                          UNIDADES  UNIDADES  CESSA
+                                                                                                                                                                     MÓVILES   NÚCLEOS
+060.172.0105          TUBOS      TUBOS ENDOTRAQUEALES DE PLÁSTICO GRADO MÉDICO, TRANSPARENTE. COMPUESTOS POR UNA VÁLVULA Y TUBO DE INFLADO, TUBO CURVA                         BÁSICOS
+                                     MARGILL, PUNTA CON ORIFICIO MURPHY Y UNA MARCA RADIO OPACA PARA SU VISUALIZACIÓN RADIOGRÁFICA. EL ACCESO AL LUMEN SE                NO
+060.172.0113          TUBOS            EJECUTA POR MEDIO DE UN CONECTOR TIPO LUER. CUENTA CON UN LUMEN ADICIONAL, CON UNA APERTURA DORSAL ARRIBA DE LA                         NO        SÍ
+                                                                                                                                                                         NO
+060.172.0121          TUBOS      BOCAMANGA, DESTINADO AL DRENAJE DEL ESPACIO SUBGLÓTICO. ESTÁN DESTINADOS A SER INTRODUCIDOS POR LA TRÁQUEA DEL PACIENTE                       NO        SÍ
+                                    A TRAVÉS DE LA BOCA O NARIZ. PRODUCTO ESTÉRIL POR ÓXIDO DE ETILENO, EN EMPAQUE INDIVIDUAL DIÁMETRO INTERNO: 7.0 MM PIEZA             NO
+060.189.0049        CEPILLOS                                                                                                                                                   NO        SÍ
+060.189.0056        CEPILLOS     TUBOS ENDOTRAQUEALES DE PLÁSTICO GRADO MÉDICO, TRANSPARENTE. COMPUESTOS POR UNA VÁLVULA Y TUBO DE INFLADO, TUBO CURVA                    SÍ
+060.189.0304        CEPILLOS         MARGILL, PUNTA CON ORIFICIO MURPHY Y UNA MARCA RADIO OPACA PARA SU VISUALIZACIÓN RADIOGRÁFICA. EL ACCESO AL LUMEN SE                NO    SÍ        SÍ
+060.203.0108                           EJECUTA POR MEDIO DE UN CONECTOR TIPO LUER. CUENTA CON UN LUMEN ADICIONAL, CON UNA APERTURA DORSAL ARRIBA DE LA                   NO
+060.203.0207          CINTAS                                                                                                                                             NO    NO        SÍ
+060.203.0298          CINTAS     BOCAMANGA, DESTINADO AL DRENAJE DEL ESPACIO SUBGLÓTICO. ESTÁN DESTINADOS A SER INTRODUCIDOS POR LA TRÁQUEA DEL PACIENTE                  SÍ
+060.203.0553          CINTAS        A TRAVÉS DE LA BOCA O NARIZ. PRODUCTO ESTÉRIL POR ÓXIDO DE ETILENO, EN EMPAQUE INDIVIDUAL DIÁMETRO INTERNO: 7.5 MM PIEZA             NO    NO        SÍ
+060.231.0104          CINTAS                                                                                                                                              SÍ
+060.231.0609       COMPRESAS     TUBOS ENDOTRAQUEALES DE PLÁSTICO GRADO MÉDICO, TRANSPARENTE. COMPUESTOS POR UNA VÁLVULA Y TUBO DE INFLADO, TUBO CURVA                   NO    NO        SÍ
+               ROPA QUIRÚRGICA       MARGILL, PUNTA CON ORIFICIO MURPHY Y UNA MARCA RADIO OPACA PARA SU VISUALIZACIÓN RADIOGRÁFICA. EL ACCESO AL LUMEN SE                NO
+060.231.0617                           EJECUTA POR MEDIO DE UN CONECTOR TIPO LUER. CUENTA CON UN LUMEN ADICIONAL, CON UNA APERTURA DORSAL ARRIBA DE LA                         SÍ        SÍ
+060.231.0641   ROPA QUIRÚRGICA                                                                                                                                           NO
+060.231.0658  BATAS QUIRÚRGICAS  BOCAMANGA, DESTINADO AL DRENAJE DEL ESPACIO SUBGLÓTICO. ESTÁN DESTINADOS A SER INTRODUCIDOS POR LA TRÁQUEA DEL PACIENTE                 NO    NO        SÍ
+              BATAS QUIRÚRGICAS     A TRAVÉS DE LA BOCA O NARIZ. PRODUCTO ESTÉRIL POR ÓXIDO DE ETILENO, EN EMPAQUE INDIVIDUAL DIÁMETRO INTERNO: 8.0 MM PIEZA             NO
+                                                                                                                                                                               SÍ        SÍ
+                                 PARA ESTUDIO CITOLÓGICO (TOMA DE MUESTRA) DEL CANAL ENDOCERVICAL A BASE DE COLECTOR CELULAR, CON CERDAS SUAVES FIJADAS A
+                                                                                        UN MANGO ARISTADO. ESTÉRIL Y DESECHABLE. PIEZA.                                        NO        SÍ
+
+                                                                  PARA LAVADO DE INSTRUMENTAL. CON CERDAS DE FIBRA VEGETAL, LECHUGUILLA. PIEZA                                 NO        SÍ
+                                    PARA USO QUIRÚRGICO. DE PLÁSTICO, DE FORMA RECTANGULAR, CON DOS AGARRADERAS LATERALES SIMÉTRICAS Y CERDAS DE NYLON.
+                                                                                                                                                                               NO        SÍ
+                                                                                                                      PIEZA
+                                                                 MÉTRICA. AHULADA, GRADUADA EN CENTÍMETROS Y MILÍMETROS. LONGITUD: 1.50 M. PIEZA                               NO        SÍ
+
+                                                                         PARA ESTERILIZACIÓN EN VAPOR A PRESIÓN. TAMAÑO: 18 MM X 50 M. ROLLO.                                  NO        SÍ
+                                                             TESTIGO PARA ESTERILIZACIÓN CON GAS DE ÓXIDO DE ETILENO. TAMAÑO: 18 MM X 50 M. ROLLO.
+                                  CINTA TRANSPARENTE PLÁSTICA, MICROPERFORADA, DE POLIETILENO; CON ADHESIVO, HIPOALERGÉNICA. LONGITUD DE 9-9.5 MTS. ANCHO:
+
+                                                                                                                2.50 CM. PIEZA.
+                                                  PARA VIENTRE. DE ALGODÓN, CON TRAMA RADIOPACA . LONGITUD: 70 CM. ANCHO: 45 CM. ENVASE CON 6 PIEZAS.
+                                          PAQUETE PARA PARTO. TELA NO TEJIDA DE POLIPROPILENO, IMPERMEABLE A LA PENETRACIÓN DE LÍQUIDOS Y FLUIDOS, COLOR
+                                  ANTIRREFLEJANTE, NO TRANSPARENTE, ANTIESTÁTICA Y RESISTENTE A LA TENSIÓN EN USO NORMAL. ESTÉRIL Y DESECHABLE. CONTIENE: DOS
+                                 BATAS QUIRÚRGICAS PARA CIRUJANO, PUÑOS AJUSTABLES, REFUERZO EN MANGAS Y PECHO, TAMAÑO GRANDE / CUATRO CAMPOS SENCILLOS
+                                 DE 90 ±10 CM X 90 ±10 CM / DOS PIERNERAS DE 100 ±10 CM X 110 ±10 CM / UNA CUBIERTA PARA MESA DE RIÑÓN DE 240 ±10 CM X 150 ±10 CM /
+
+                                                                            DOS TOALLAS ABSORBENTES DE 40 ±5 CM X 40 ±5 CM. BULTO O PAQUETE.
+                                           CAMPO SENCILLO. DE TELA NO TEJIDA DE POLIPROPILENO, IMPERMEABLE A LA PENETRACIÓN DE LÍQUIDOS Y FLUIDOS, COLOR
+                                 ANTIRREFLEJANTE, NO TRANSPARENTE, ANTIESTÁTICA Y RESISTENTE A LA TENSIÓN EN USO NORMAL. ESTÉRIL Y DESECHABLE. MEDIDAS: 90 ±10
+
+                                                                                                           CM X 90 ±10 CM. PIEZA.
+
+                                     BATA QUIRÚRGICA CON PUÑOS AJUSTABLES Y REFUERZO EN MANGAS Y PECHO. TELA NO TEJIDA DE POLIPROPILENO, IMPERMEABLE A LA
+                                      PENETRACIÓN DE LÍQUIDOS Y FLUIDOS; ANTIESTÁTICA Y RESISTENTE A LA TENSIÓN. ESTÉRIL Y DESECHABLE. TAMAÑO: GRANDE. PIEZA.
+
+                                     BATA QUIRÚRGICA CON PUÑOS AJUSTABLES Y REFUERZO EN MANGAS Y PECHO. TELA NO TEJIDA DE POLIPROPILENO, IMPERMEABLE A LA
+                                  PENETRACIÓN DE LÍQUIDOS Y FLUIDOS; ANTIESTÁTICA Y RESISTENTE A LA TENSIÓN. ESTÉRIL Y DESECHABLE. TAMAÑO: EXTRAGRANDE. PIEZA.
+CLAVE (CNIS)         INSUMO      DESCRIPCIÓN                                                                                                                         UNIDADES  UNIDADES  CESSA
+060.231.0666  BATAS QUIRÚRGICAS                                                                                                                                      MÓVILES   NÚCLEOS      SÍ
+060.231.0674  BATAS QUIRÚRGICAS                                                                                                                                                BÁSICOS
+060.233.0011                     BATA QUIRÚRGICA CON PUÑOS AJUSTABLES Y REFUERZO EN MANGAS Y PECHO. TELA NO TEJIDA DE POLIPROPILENO, IMPERMEABLE A LA                NO
+060.233.0037      CONECTORES     PENETRACIÓN DE LÍQUIDOS Y FLUIDOS; ANTIESTÁTICA Y RESISTENTE A LA TENSIÓN. ESTÉRIL Y DESECHABLE. TAMAÑO: MEDIANO. PIEZA.                          NO
+060.233.0052      CONECTORES
+060.330.0054      CONECTORES     BATA QUIRÚRGICA CON PUÑOS AJUSTABLES Y REFUERZO EN MANGAS Y PECHO. TELA NO TEJIDA DE POLIPROPILENO, IMPERMEABLE A LA                NO        NO        SÍ
+060.345.0503      ELECTRODOS       PENETRACIÓN DE LÍQUIDOS Y FLUIDOS; ANTIESTÁTICA Y RESISTENTE A LA TENSIÓN. ESTÉRIL Y DESECHABLE. TAMAÑO: CHICO. PIEZA.
+
+060.345.2211         EQUIPOS     DE UNA VÍA. DE PLÁSTICO, DESECHABLES. TIPO: SIMS. DELGADO. PIEZA.                                                                   NO        NO        SÍ
+
+060.345.4067        APÓSITOS     DE DOS VÍAS EN (Y) DE PLÁSTICO, DESECHABLE. PIEZA.                                                                                  NO        NO        SÍ
+
+060.354.0014   BAÑO DE ESPONJA   DE UNA VÍA. DE PLÁSTICO, DESECHABLES. TIPO: SIMS. GRUESO. PIEZA.                                                                    NO        NO        SÍ
+060.360.0032
+060.436.0057        ESPÁTULA     ELECTRODO DE BROCHE PARA MONITOREO, CONTINUO, DESECHABLE, CON PASTA CONDUCTIVA. PIEZA.                                              NO        NO        SÍ
+060.436.0107         ESPEJOS
+060.436.0693          GASAS      PARA APLICACIÓN DE VOLÚMENES MEDIDOS. DE PLÁSTICO GRADO MÉDICO, ESTÉRIL, DESECHABLE. CONSTA DE: BAYONETA, FILTRO DE AIRE,
+                      GASAS
+                      GASAS             CÁMARA BURETA FLEXIBLE CON UNA CAPACIDAD DE 100 ML Y ESCALA GRADUADA EN MILILITROS, CÁMARA DE GOTEO FLEXIBLE,                NO        NO        SÍ
+                                 MICROGOTERO, TUBO TRANSPORTADOR, MECANISMO REGULADOR DE FLUJO, DISPOSITIVO PARA LA ADMINISTRACIÓN DE MEDICAMENTOS,
+
+                                 OBTURADOR DEL TUBO TRANSPORTADOR, ADAPTADOR DE AGUJA, PROTECTOR DE LA BAYONETA Y PROTECTOR DEL ADAPTADOR. EQUIPO.
+
+                                 APÓSITO SUAVE, ESTÉRIL, NO TEJIDO, COMPUESTO DE DOS CAPAS DE CARBOXIMETILCELULOSA SÓDICA IMPREGNADAS DE PLATA IÓNICA AL
+
+                                 1.2% Y REFORZADA CON UN HILADO A PARTIR DE FIBRA (CELULOSA REGENERADA). CONTIENE DOS EXCIPIENTES: SAL DISÓDICA DE ÁCIDO
+
+                                 ETILENDIAMINOTETRACÉTICO (EDTA) Y CLORURO DE BENCETONIO. LA ADICIÓN DE ESTOS EXCIPIENTES OPTIMIZA LA EFICACIA DE LA PLATA           SÍ        SÍ        SÍ
+                                 IÓNICA, MEDIANTE LA ALTERACIÓN DE LA SUPERFICIE DE LA BIOPELÍCULA DE LA HERIDA, FACILITANDO LA ACCIÓN ANTIMICROBIANA DE LA
+
+                                 PLATA IÓNICA SOBRE LAS BACTERIAS, EN LOS EXUDADOS DE LA HERIDA EN LA INTERFAZ Y EN LA ABSORCIÓN DEL APÓSITO. CAJA. 15CM X
+
+                                 15CM. 5 APÓSITOS.
+
+                                 EQUIPO PARA BAÑO DE ESPONJA. CONSTA DE: -MANOPLA PARA LAVADO, DE TELA NO TEJIDA, RESISTENTE HASTA 400C DE TEMPERATURA;
+
+                                 HIPOALERGÉNICA, SUAVE, NO IRRITANTE A LA PIEL; FORMA Y AJUSTE ANATÓMICO E IMPREGNADA DE SUBSTANCIAS TENSIOACTIVAS Y
+
+                                 ANTISÉPTICAS O MANOPLA PRE-ENJABONADA: ES SUFICIENTE HUMEDECER CON AGUA LA SUPERFICIE DE LA PALMA DE LA MANO DONDE SE
+
+                                 ENCUENTRA LA ESPONJACON EL JABÓN Y MASAJEAR LA PARTE DEL CUERPO A TRATAR. DICHO JABÓN ES HIPOALERGÉNICO Y CONTIENE UN               NO        NO        SÍ
+
+                                 MÁXIMO DEL 0.3% DE CHLOREXIDINA CON ALTO PODER ANTISÉPTICO MANOPLA PARA SECADO, DE TELA NO TEJIDA, ABSORBENTE,
+
+                                 HIPOALERGÉNICA, SUAVE, NO IRRITANTE A LA PIEL; FORMA Y AJUSTE ANATÓMICO. DESECHABLE O MANOPLA PARA SECADO COMPLETAMENTE
+
+                                 ABSORBENTE DEJANDO LA PIEL SIN NINGÚN RESIDUO DE JABÓN O AGUA, QUEDANDO COMPLETAMENTE LIMPIA, SUAVE E HIDRATADA EQUIPO.
+
+                                 DE AYRE MODIFICADA, DE MADERA INASTILLABLE. INSTRUMENTO ALARGADO CON DOS DIFERENTES EXTREMOS. DIMENSIONES: LARGO TOTAL
+
+                                 170.0 MM. ANCHO 7.0 MM. GROSOR 1.5 MM. EXTREMO 1: FORMA BIFURCADA EN FORMA DE HUESO, DONDE LA CRESTA A ES DE MAYOR
+
+                                 TAMAÑO QUE LA CRESTA B. LARGO DE LA CRESTA A: 25 MM. LARGO DE LA CRESTA B: 22 MM. APERTURA MÁXIMA: 17 MM. EXTREMO 2 FORMA           NO        NO        SÍ
+
+                                 CÓNICA TERMINADO EN PUNTA: LARGO TOTAL 35 MM. APERTURA MÁXIMA O ANCHO 12.0 MM. LARGO DE CONO 35 MM. ANCHO DE CUELLO 6.0
+
+                                 MM. ANCHO DE VÉRTICE 3.0 MM. ENVASE CON 500 PIEZAS.
+
+                                 VAGINAL DESECHABLE, MEDIANO, VALVA SUPERIOR DE 10.7 CM, VALVA INFERIOR DE 12.0 CM, ORIFICIO CENTRAL DE 3.4 CM. PIEZA.               SÍ        SÍ        SÍ
+
+                                  SECA CORTADA, DE ALGODÓN 100%. TEJIDA. DOBLADA EN 12 CAPAS. NO ESTÉRIL. TIPO DE TEJIDO VII. DE 20 X 12 TÍTULO DE HILO DE 28 A 32   SÍ        SÍ        SÍ
+                                 M/G TANTO EN URDIMBRE COMO EN TRAMA. PESO MÍNIMO POR M2 19G/ M2 LARGO: 7.5 CM. ANCHO: 5 CM. ÁREA: 432 CM2. ENVASE CON 200.
+
+                                   SECA CORTADA, DE ALGODÓN 100%. TEJIDA. DOBLADA EN 12 CAPAS. NO ESTÉRIL. TIPO DE TEJIDO VII. DE 20 X 12 TÍTULO DE HILO DE 28 A 32  SÍ        SÍ        SÍ
+                                 M/G TANTO EN URDIMBRE COMO EN TRAMA. PESO MÍNIMO POR M2 19G/ M2 LARGO: 10 CM. ANCHO: 10 CM. ÁREA: 1152 CM2. ENVASE CON 200.
+
+                                 SECA CORTADA, DE ALGODÓN, CON MARCA RADIOPACA. ESTÉRIL. MEDIDAS: 10 X 10 CM. ENVASE CON 10 PIEZAS.                                  NO        NO        SÍ
+CLAVE (CNIS)  INSUMO                                                                                  DESCRIPCIÓN                                       UNIDADES  UNIDADES  CESSA
+                                                                                                                                                        MÓVILES   NÚCLEOS      SÍ
+060.436.0701   GASAS      SECA CORTADA, DE ALGODÓN, DE DOCE CAPAS; CON TEJIDO TIPO III. ANCHO: 10 CM. ESTÉRIL Y DESECHABLE. ENVASE CON DOS Y CINCO                BÁSICOS      SÍ
+060.439.0039  GORROS                                                                                      PIEZAS.                                           NO                 SÍ
+                                                                                                                                                            NO        NO
+060.439.0054  GORROS      GORRO DE TELA NO TEJIDA DE POLIPROPILENO, DESECHABLE. IMPERMEABLE A LA PENETRACIÓN DE LÍQUIDOS Y FLUIDOS; ANTIESTÁTICA Y
+                                          RESISTENTE A LA TENSIÓN. CINTAS DE AJUSTE EN EL EXTREMO DISTAL. TAMAÑO ESTÁNDAR. DESECHABLE PIEZA.                NO        NO
+060.439.0070  GORROS
+                       GORRO REDONDO CON ELÁSTICO AJUSTABLE AL CONTORNO DE LA CARA, DE TELA NO TEJIDA DE POLIPROPILENO, DESECHABLE. IMPERMEABLE             NO        NO
+060.439.0088  GORROS             A LA PENETRACIÓN DE LÍQUIDOS Y FLUIDOS; ANTIESTÁTICA Y RESISTENTE A LA TENSIÓN. TAMAÑO: CHICO. DESECHABLE. PIEZA
+                                                                                                                                                            NO    NO        SÍ
+060.441.0019  GOGLES   GORRO REDONDO CON ELÁSTICO AJUSTABLE AL CONTORNO DE LA CARA, DE TELA NO TEJIDA DE POLIPROPILENO, DESECHABLE. IMPERMEABLE
+                               A LA PENETRACIÓN DE LÍQUIDOS Y FLUIDOS; ANTIESTÁTICA Y RESISTENTE A LA TENSIÓN. TAMAÑO: MEDIANO DESECHABLE. PIEZA.           NO    NO        SÍ
+060.456.0300  GUANTES
+060.456.0318  GUANTES  GORRO REDONDO CON ELÁSTICO AJUSTABLE AL CONTORNO DE LA CARA, DE TELA NO TEJIDA DE POLIPROPILENO, DESECHABLE. IMPERMEABLE             NO    NO        SÍ
+060.456.0334  GUANTES           A LA PENETRACIÓN DE LÍQUIDOS Y FLUIDOS; ANTIESTÁTICA Y RESISTENTE A LA TENSIÓN. TAMAÑO: GRANDE DESECHABLE. PIEZA.           NO
+060.456.0359  GUANTES                                                                                                                                       NO    NO        SÍ
+060.456.0367  GUANTES  GAFAS, DE SEGURIDAD, CON VÁLVULAS DE VENTILACIÓN INDIRECTA PARA EVITAR EL EMPAÑAMIENTO. ERGONÓMICOS, CON SELLO PERFECTO              NO
+060.456.0383  GUANTES   CON LA PIEL DE LA CARA, CON MARCO DE PVC FLEXIBLE PARA LOGRAR AMOLDARSE FÁCILMENTE A TODOS LOS CONTORNOS DE CUALQUIER               NO    NO        SÍ
+060.456.0391  GUANTES                                                                                                                                        SÍ
+060.456.0409  GUANTES     ROSTRO O CARA, CON PRESIÓN UNIFORME, HERMÉTICO A NIVEL DE LOS OJOS Y ÁREAS CIRCUNDANTES, CON ESPACIO SUFICIENTE PARA               SÍ   NO        SÍ
+060.456.0623  GUANTES        USUARIOS QUE USAN LENTES O ANTEOJOS GRADUADOS, LENTE TRANSPARENTE DE POLICARBONATO O PLÁSTICO. RESISTENTE A LOS                 SÍ
+060.456.0631  GUANTES                                                                                                                                       NO    NO        SÍ
+060.456.0649  GUANTES   IMPACTOS (GOLPES O CAÍDAS) Y RALLADURAS. CON TRATAMIENTO ANTIEMPAÑANTE. CON CINTA SUJETADORA, CON AJUSTE QUE NO PERMITA             NO
+060.456.0680  GUANTES       DESLIZAMIENTO DE LA CORREA PARA ASEGURAR SU POSICIÓN DURANTE LA ACTIVIDAD CLÍNICA. RESISTENTE A LA DESINFECCIÓN CON             NO    NO        SÍ
+060.456.0698  GUANTES                                                SOLUCIONES DESINFECTANTES SIN DAÑARSE. REUTILIZABLE. PIEZA                             NO
+060.456.0706  GUANTES                                                                                                                                       NO    SÍ        SÍ
+060.461.0147  GUATAS                                        PARA CIRUGÍA. DE LÁTEX NATURAL, ESTÉRILES Y DESECHABLES. TALLAS: 6 1/2 PAR.                     NO
+                                                              PARA CIRUGÍA. DE LÁTEX NATURAL, ESTÉRILES Y DESECHABLES. TALLAS: 7 PAR.                       NO    SÍ        SÍ
+
+                                                            PARA CIRUGÍA. DE LÁTEX NATURAL, ESTÉRILES Y DESECHABLES. TALLAS: 7 1/2 PAR.                           SÍ        SÍ
+                                                              PARA CIRUGÍA. DE LÁTEX NATURAL, ESTÉRILES Y DESECHABLES. TALLAS: 8 PAR.
+                                                                                                                                                                  NO        SÍ
+                                                            PARA CIRUGÍA. DE LÁTEX NATURAL, ESTÉRILES Y DESECHABLES. TALLAS: 8 1/2 PAR.
+                                      PARA EXPLORACIÓN, AMBIDIESTRO, ESTÉRILES. DE LÁTEX, DESECHABLES. TAMAÑOS: CHICO. ENVASE CON 100 PIEZAS                      NO        SÍ
+                                    PARA EXPLORACIÓN, AMBIDIESTRO, ESTÉRILES. DE LÁTEX, DESECHABLES. TAMAÑOS: MEDIANO. ENVASE CON 100 PIEZAS
+                                     PARA EXPLORACIÓN, AMBIDIESTRO, ESTÉRILES. DE LÁTEX, DESECHABLES. TAMAÑOS: GRANDE. ENVASE CON 100 PIEZAS                      NO        SÍ
+
+                            GUANTES DE NITRILO O POLIBUTADINE-ACRYLONITRILO, LIBRE DE LÁTEX, AMBIDIESTRO, DESECHABLE, ESTÉRIL. TAMAÑO: CHICO. PAR.                SÍ        SÍ
+
+                          GUANTES DE NITRILO O POLIBUTADINE-ACRYLONITRILO, LIBRE DE LÁTEX, AMBIDIESTRO, DESECHABLE, ESTÉRIL. TAMAÑO: MEDIANO. PAR.                SÍ        SÍ
+
+                           GUANTES DE NITRILO O POLIBUTADINE-ACRYLONITRILO, LIBRE DE LÁTEX, AMBIDIESTRO, DESECHABLE, ESTÉRIL. TAMAÑO: GRANDE. PAR.                SÍ        SÍ
+
+                              GUANTES PARA EXPLORACIÓN, AMBIDIESTRO, NO ESTÉRILES. DE LÁTEX, DESECHABLES. TAMAÑO CHICO. ENVASE CON 200 PIEZAS.                    NO        SÍ
+
+                             GUANTES PARA EXPLORACIÓN, AMBIDIESTRO, NO ESTÉRILES. DE LÁTEX, DESECHABLES. TAMAÑO MEDIANO. ENVASE CON 200 PIEZAS.
+
+                             GUANTES PARA EXPLORACIÓN, AMBIDIESTRO, NO ESTÉRILES. DE LÁTEX, DESECHABLES. TAMAÑO GRANDE. ENVASE CON 200 PIEZAS.
+
+                       DE TELA NO TEJIDA, DE ALGODÓN 100% O MEZCLAS DE FIBRAS DE ALGODÓN Y FIBRAS ARTIFICIALES Y/O SINTÉTICAS. LONGITUD: 5 M. ANCHO: 5
+                                                                                             CM. ENVASE CON 24 PIEZAS.
+CLAVE (CNIS)         INSUMO                                                                                           DESCRIPCIÓN                                      UNIDADES  UNIDADES  CESSA
+                                                                                                                                                                       MÓVILES   NÚCLEOS
+060.461.0154         GUATAS             DE TELA NO TEJIDA, DE ALGODÓN 100% O MEZCLAS DE FIBRAS DE ALGODÓN Y FIBRAS ARTIFICIALES Y/O SINTÉTICAS. LONGITUD: 5 M. ANCHO:            BÁSICOS      SÍ
+060.461.0162         GUATAS                                                                                10 CM. ENVASE CON 24 PIEZAS.                                    NO                 SÍ
+060.470.0146    HEMOSTÁTICOS                                                                                                                                                         NO       SÍ
+060.483.0133  HOJAS PARA BISTURÍ        DE TELA NO TEJIDA, DE ALGODÓN 100% O MEZCLAS DE FIBRAS DE ALGODÓN Y FIBRAS ARTIFICIALES Y/O SINTÉTICAS. LONGITUD: 5 M. ANCHO:      NO                 SÍ
+060.483.0174                                                                                               15 CM. ENVASE CON 24 PIEZAS.                                    NO        NO       SÍ
+                                                                                                                                                                           NO        NO
+060.506.4500                                                                             SATÍN HEMOSTÁTICO ABSORBIBLE. ENVASE CON 20 SOBRES.                                         NO
+
+060.532.0084                                  HOJA PARA BISTURÍ. DE ACERO INOXIDABLE. EMPAQUE INDIVIDUAL. ESTÉRILES Y DESECHABLES. PIEZA. 20 ENVASE CON 100 PIEZAS.                   SÍ
+060.532.0167
+060.543.0115  HOJAS PARA BISTURÍ        HOJA PARA BISTURÍ. DE ACERO INOXIDABLE. EMPAQUE INDIVIDUAL. ESTÉRILES Y DESECHABLES. PIEZA. 23 ENVASE CON 100 PIEZAS.          NO
+060.550.0016
+060.550.0404                            PROTECTOR RESPIRATORIO CON EFICIENCIA DE FILTRACIÓN MÍNIMA DEL 95%, CONTRA AEROSOLES SÓLIDOS Y LÍQUIDOS QUE NO
+060.550.0446
+060.550.0453                            CONTENGAN ACEITE. ÚTIL PARA PARTÍCULAS SÓLIDAS Y NIEBLAS LÍQUIDAS EN CONCENTRACIONES QUE NO EXCEDAN LAS 10 VECES EL LÍMITE
+
+060.550.1147  PROECTORES RESPIRATORIOS  DE EXPOSICIÓN OCUPACIONAL (CMP). AJUSTE NASAL DE ALUMINIO MOLDEABLE QUE SE ADAPTA A LA CARA IMPIDIENDO EL PASO DE AIRE.        SÍ        SÍ        SÍ
+
+060.550.1279                            FILTRO Y CUBIERTA DE POLIPROPILENO. CON BANDAS DE SUJECIÓN PARA LA CABEZA DE POLIURETANO/FIBRAS DE POLIÉSTER. CERTIFICACIÓN
+060.550.2186
+060.550.2590                            NIOSH N95 O EQUIVALENTE. DESECHABLE. ESTILO PLEGADO VERTICAL PLANO CAJA CON 160 PIEZAS.
+060.550.2608
+              EQUIPOS                   PARA VENOCLISIS. SIN AGUJA, ESTÉRILES, DESECHABLES. MICROGOTERO. EQUIPO.                                                       NO        NO        SÍ
+060.550.2723  EQUIPOS
+               JALEAS                   PARA VENOCLISIS. SIN AGUJA, ESTÉRILES, DESECHABLES. NORMOGOTERO. EQUIPO.                                                       SÍ        SÍ        SÍ
+              JERINGAS
+              JERINGAS                  LUBRICANTE. ASÉPTICA. ENVASE CON 135 G.                                                                                        NO        NO        SÍ
+              JERINGAS
+                                        DE PLÁSTICO. CON PIVOTE TIPO LUER LOCK, CON AGUJA, ESTÉRILES Y DESECHABLES. CAPACIDAD 10 ML, ESCALA GRADUADA EN ML,            NO        NO        SÍ
+              JERINGAS                                     DIVISIONES DE 1.0 Y SUBDIVISIONES DE 0.2. CON AGUJA DE: LONGITUD: 38 MM. CALIBRE: 20 G. PIEZA.
+
+                                        DE PLÁSTICO, CON BULBO DE HULE, DESECHABLES. CAPACIDAD: 60 ML. PIEZA.                                                          NO        NO        SÍ
+
+                                        DE PLÁSTICO, SIN AGUJA CON PIVOTE TIPO LUER LOCK, ESTÉRILES Y DESECHABLES. CAPACIDAD: 10 ML. ESCALA GRADUADA CON DIVISIONES    SÍ        SÍ        SÍ
+                                                                                       DE 1.0 ML Y SUBDIVISIONES DE 0.2 ML. ENVASE CON 100 PIEZAS.
+
+                                        DE PLÁSTICO, SIN AGUJA CON PIVOTE TIPO LUER LOCK, ESTÉRILES Y DESECHABLES. CAPACIDAD: 20 ML. ESCALA GRADUADA CON DIVISIONES    NO        NO        SÍ
+                                                                                        DE 5.0 ML Y SUBDIVISIONES DE 1.0 ML. ENVASE CON 50 PIEZAS.
+
+              JERINGAS                  PARA TUBERCULINA, CON AGUJA. PLÁSTICO GRADO MÉDICO, CAPACIDAD 1 ML, ESCALA GRADUADA EN ML, CON DIVISIONES DE 0.05 ML Y         NO        NO        SÍ
+                                              SUBDIVISIONES DE 0.01 ML CON AGUJA LONGITUD 16 MM, CALIBRE 25 G. ESTÉRILES Y DESECHABLES. ENVASE CON 200 PIEZAS.
+
+              JERINGAS                  DE PLÁSTICO GRADO MÉDICO, CON PIVOTE TIPO LUER LOCK, CAPACIDAD DE 3 ML, ESCALA GRADUADA EN ML CON DIVISIONES DE 0.5 ML Y       SÍ        SÍ        SÍ
+              JERINGAS                                    SUBDIVISIONES DE 0.1 ML, CON AGUJA CALIBRE 22 G Y 32 MM DE LONGITUD. ESTÉRIL Y DESECHABLE. PIEZA.
+              JERINGAS
+              JERINGAS                  JERINGA PARA INSULINA, DE PLÁSTICO GRADO MÉDICO; GRADUADA DE 0 A 100 UNIDADES, CON CAPACIDAD DE 1 ML. CON AGUJA DE ACERO       SÍ        SÍ        SÍ
+                                                                              INOXIDABLE, LONGITUD 13 MM, CALIBRE 27 G. ESTÉRIL Y DESECHABLE. PIEZA.
+              JERINGAS
+                                        DE PLÁSTICO GRADO MÉDICO, DE 1 ML DE CAPACIDAD, ESCALA GRADUADA EN ML, CON DIVISIONES DE 0.1 Y SUBDIVISIONES DE 0.01 ML Y      NO        NO        SÍ
+                                                                                  AGUJA DE 22 G Y 32 MM DE LONGITUD, ESTÉRIL Y DESECHABLE. PIEZA.
+
+                                        DE PLÁSTICO GRADO MÉDICO, DE 5 ML DE CAPACIDAD, ESCALA GRADUADA EN ML, CON DIVISIONES DE 1.0 ML Y SUBDIVISIONES DE 0.2 Y       SÍ        SÍ        SÍ
+                                                                                 AGUJA DE 20 G Y 38 MM DE LONGITUD, ESTÉRIL Y DESECHABLE. PIEZA.
+
+                                        JERINGA PARA INSULINA CON AGUJA INTEGRADA Y ESPACIO MUERTO INFERIOR DE 0.005 ML, DE PLÁSTICO GRADO MÉDICO; ESCALA GRADUADA
+
+                                        DE 0 A 50 UNIDADES CON CAPACIDAD DE 0.5 ML. CON AGUJA INTEGRADA DE ACERO INOXIDABLE, LONGITUD 8 MM., CALIBRE 31G. ESTÉRIL Y    NO        SÍ        SÍ
+
+                                        DESECHABLE. PIEZA.
+CLAVE (CNIS)  INSUMO                   DESCRIPCIÓN                                                                                                                  UNIDADES  UNIDADES  CESSA
+                                                                                                                                                                    MÓVILES   NÚCLEOS
+060.598.0010                                                                                                                                                                  BÁSICOS
+
+060.598.0036                           DE 4 VÍAS CON MARCAS INDICADORAS DEL SENTIDO EN EL QUE FLUYEN LAS SOLUCIONES Y POSICIÓN DE CERRADO, ADITAMENTO DE CIERRE
+060.621.0482
+060.621.0656  LLAVES                    LUER LOCK (MÓVIL) EN EL RAMAL DE LA LLAVE, QUE SE CONECTA AL TUBO DE LA EXTENSIÓN. TUBO DE EXTENSIÓN REMOVIBLE DE PLÁSTICO  NO        NO        SÍ
+                                       GRADO MÉDICO, LONGITUD 80 CM Y DIÁMETRO INTERNO 2.7 MM MÍNIMO, CONECTOR LUER LOCK HEMBRA EN EL EXTREMO DEL TUBO QUE SE
+060.623.0878
+060.623.0886                           CONECTA CON LA LLAVE Y CONECTOR LUER MACHO EN EL EXTREMO PROXIMAL, CON ADITAMENTO DE CIERRE LUER LOCK (MÓVIL). PIEZA.
+060.626.0016
+060.626.0024  LLAVES                   DE TRES VÍAS CON TUBO DE EXTENSIÓN. DE PLÁSTICO RÍGIDO O EQUIVALENTE, CON TUBO DE EXTENSIÓN DE CLORURO DE POLIVINILO DE 80   NO        NO        SÍ
+060.626.0032                                                                                                  CM DE LONGITUD. PIEZA.
+060.626.0040
+060.626.0057  MASCARILLAS              DESECHABLE, PARA ADMINISTRACIÓN DE OXÍGENO, CON TUBO DE CONEXIÓN DE 180 CM Y ADAPTADOR. PIEZA.                               NO        NO        SÍ
+060.626.0065
+060.626.0222                           CUBREBOCA QUIRÚRGICO ELABORADO CON DOS CAPAS EXTERNAS DE TELA NO TEJIDA, UN FILTRO INTERMEDIO DE POLIPROPILENO; PLANO O
+060.626.0230
+060.681.0034  CUBREBOCAS QUIRÚRGICO    PLISADO; CON AJUSTE NASAL MOLDEABLE. RESISTENTE A FLUIDOS, ANTIESTÁTICO, HIPOALERGÉNICO. CON BANDAS O AJUSTE ELÁSTICO        SÍ        SÍ        SÍ
+060.681.0042
+060.681.0059                           ENTORCHADO A LA CABEZA O RETROAURICULAR. DESECHABLE. PIEZA.
+060.681.0067
+060.697.0267  ESPACIADORES DE VOLUMEN  DE PLÁSTICO RÍGIDO, RESISTENTE, QUE SE ADAPTE A LOS DIFERENTES MEDICAMENTOS BRONCODILATADORES EN AEROSOL. PUEDE TENER O      NO        NO        SÍ
+060.701.0360                                                     NO ENSAMBLADA UNA MASCARILLA O UNA BOQUILLA. VIDA ÚTIL: TRES MESES. PEDIÁTRICO. PIEZA.
+060.701.0378
+060.711.0046  ESPACIADORES DE VOLUMEN  DE PLÁSTICO RÍGIDO, RESISTENTE, QUE SE ADAPTE A LOS DIFERENTES MEDICAMENTOS BRONCODILATADORES EN AEROSOL. PUEDE TENER O      NO        NO        SÍ
+060.711.0145                                                        NO ENSAMBLADA UNA MASCARILLA O UNA BOQUILLA. VIDA ÚTIL: TRES MESES. ADULTO. PIEZA.
+
+              MEDIAS ANTIEMBÓLICAS     MEDIAS ANTIEMBÓLICAS ELÁSTICAS DE COMPRESIÓN MEDIANA Y/O COMPRESIÓN GRADUADA, PARA MIEMBROS INFERIORES, HASTA EL MUSLO.      NO        NO        SÍ
+                                                                                                   TALLAS: CHICA CORTA. ENVASE CON UN PAR.
+
+              MEDIAS ANTIEMBÓLICAS     MEDIAS ANTIEMBÓLICAS ELÁSTICAS DE COMPRESIÓN MEDIANA Y/O COMPRESIÓN GRADUADA, PARA MIEMBROS INFERIORES, HASTA EL MUSLO.      NO        NO        SÍ
+                                                                                                   TALLAS: CHICA LARGA. ENVASE CON UN PAR.
+
+              MEDIAS ANTIEMBÓLICAS     MEDIAS ANTIEMBÓLICAS ELÁSTICAS DE COMPRESIÓN MEDIANA Y/O COMPRESIÓN GRADUADA, PARA MIEMBROS INFERIORES, HASTA EL MUSLO.      NO        NO        SÍ
+                                                                                                 TALLAS: MEDIANA CORTA. ENVASE CON UN PAR.
+
+              MEDIAS ANTIEMBÓLICAS     MEDIAS ANTIEMBÓLICAS ELÁSTICAS DE COMPRESIÓN MEDIANA Y/O COMPRESIÓN GRADUADA, PARA MIEMBROS INFERIORES, HASTA EL MUSLO.      NO        NO        SÍ
+                                                                                                  TALLAS: MEDIANA LARGA. ENVASE CON UN PAR.
+
+              MEDIAS ANTIEMBÓLICAS     MEDIAS ANTIEMBÓLICAS ELÁSTICAS DE COMPRESIÓN MEDIANA Y/O COMPRESIÓN GRADUADA, PARA MIEMBROS INFERIORES, HASTA EL MUSLO.      NO        NO        SÍ
+                                                                                                  TALLAS: GRANDE CORTA. ENVASE CON UN PAR.
+
+              MEDIAS ANTIEMBÓLICAS     MEDIAS ANTIEMBÓLICAS ELÁSTICAS DE COMPRESIÓN MEDIANA Y/O COMPRESIÓN GRADUADA, PARA MIEMBROS INFERIORES, HASTA EL MUSLO.      NO        NO        SÍ
+                                                                                                  TALLAS: GRANDE LARGA. ENVASE CON UN PAR.
+
+              MEDIAS ANTIEMBÓLICAS     MEDIAS ANTIEMBÓLICAS ELÁSTICAS DE COMPRESIÓN MEDIANA Y/O COMPRESIÓN GRADUADA, PARA MIEMBROS INFERIORES, HASTA EL MUSLO.      NO        NO        SÍ
+                                                                                              TALLAS: EXTRA GRANDE CORTA. ENVASE CON UN PAR.
+
+              MEDIAS ANTIEMBÓLICAS     MEDIAS ANTIEMBÓLICAS ELÁSTICAS DE COMPRESIÓN MEDIANA Y/O COMPRESIÓN GRADUADA, PARA MIEMBROS INFERIORES, HASTA EL MUSLO.      NO        NO        SÍ
+                                                                                              TALLAS: EXTRA GRANDE LARGA. ENVASE CON UN PAR.
+
+              PAÑALES                  DE FORMA ANATÓMICA, DESECHABLES, PARA NIÑOS. MEDIDAS: CHICO. PIEZA.                                                          NO        NO        SÍ
+
+              PAÑALES                  DE FORMA ANATÓMICA, DESECHABLES, PARA NIÑOS. MEDIDAS: MEDIANO. PIEZA.                                                        NO        NO        SÍ
+
+              PAÑALES                  DE FORMA ANATÓMICA, DESECHABLES, PARA NIÑOS. MEDIDAS: GRANDE. PIEZA.                                                         NO        NO        SÍ
+
+              PAÑALES                  PREDOBLADOS, DESECHABLES. PARA ADULTOS. PIEZA.                                                                               NO        NO        SÍ
+
+              PASTA O GEL              CONDUCTIVA. PARA ELECTROCARDIOGRAMA. ENVASE CON 120 ML.                                                                      NO        NO        SÍ
+
+              PERILLAS                 PARA ASPIRACIÓN DE SECRECIONES. DE HULE. NO. 4. PIEZA.                                                                       NO        NO        SÍ
+
+              PERILLAS                 PARA ASPIRACIÓN DE SECRECIONES. DE HULE. NO. 2. PIEZA.                                                                       NO        NO        SÍ
+
+              TESTIGOS                 CONTROLES BIOLÓGICOS PARA MATERIAL ESTERILIZADO EN VAPOR. ENVASE CON 100 PIEZAS.                                             SÍ        SÍ        SÍ
+
+                                       INDICADOR-INTEGRADOR PARA LA ESTERILIZACIÓN POR VAPOR, CLASE V; CAPAZ DE VERIFICAR: TEMPERATURA, TIEMPO DE ESTERILIZACIÓN Y
+
+              TESTIGOS                 SATURACIÓN DE VAPOR, DURANTE EL PROCESO DE ESTERILIZACIÓN. CONSTA DE: TIRA DE PAPEL SECANTE, SUSTRATO QUÍMICO SENSIBLE A LA  NO        NO        SÍ
+
+                                       TEMPERATURA Y VAPOR; Y RECUBIERTA LAMINADA PLÁSTICA PERMEABLE AL VAPOR. PIEZA.
+CLAVE (CNIS)  INSUMO                     DESCRIPCIÓN                                                                                                                    UNIDADES  UNIDADES  CESSA
+                                                                                                                                                                        MÓVILES   NÚCLEOS
+060.771.0068             RASTRILLOS        DE CABEZA FIJA, RECTANGULAR. DE 1 A 1.5 CM DE ANCHO Y DE 3.5 A 4.5 CM DE LONGITUD. CON BORDE LISO, BANDA LUBRICANTE, DOBLE             BÁSICOS      SÍ
+                                              HOJA DE AFEITAR, SOBREPUESTAS, UNIDAS CADA 3 A 5 MM. MANGO RÍGIDO, REFORZADO, RESISTENTE DE 7.5 A 10 CM DE LONGITUD Y          SÍ
+060.833.0296  DETERGENTES O LIMPIADORES                                         CURVATURA O ANGULACIÓN A LA UNIÓN DE LA CABEZA. DESECHABLES. PIEZA.                                    SÍ      SÍ
+                                                                                                                                                                            NO
+060.841.0460               SUTURAS          SOLUCIÓN REMOVEDORA PARA ELIMINAR COSTRAS Y MANCHAS DE OXIDACIÓN DEL INSTRUMENTAL QUIRÚRGICO. ENVASE CON 1 A 5 LT.                        NO       SÍ
+                                                                                                                                                                             SÍ
+060.841.0478               SUTURAS           SINTÉTICAS NO ABSORBIBLES, MONOFILAMENTO DE NYLON, CON AGUJA. LONGITUD DE LA HEBRA: 45 CM. CALIBRE DE LA SUTURA: 4-0.                     SÍ      SÍ
+                                                              CARACTERÍSTICAS DE LA AGUJA: 3/8 DE CÍRCULO, REVERSO CORTANTE (12-13 MM). ENVASE CON 12 PIEZAS.                SÍ
+060.841.0486               SUTURAS                                                                                                                                                     SÍ      SÍ
+                                             SINTÉTICAS NO ABSORBIBLES, MONOFILAMENTO DE NYLON, CON AGUJA. LONGITUD DE LA HEBRA: 45 CM. CALIBRE DE LA SUTURA: 3-0.           SÍ
+060.841.4470               SUTURAS                                  CARACTERÍSTICAS DE LA AGUJA: 3/8 DE CÍRCULO, CORTANTE (19-26 MM). ENVASE CON 12 PIEZAS.                            SÍ      SÍ
+060.859.0097               TAPONES                                                                                                                                           SÍ                SÍ
+060.869.0103             ADHESIVAS           SINTÉTICAS NO ABSORBIBLES, MONOFILAMENTO DE NYLON, CON AGUJA. LONGITUD DE LA HEBRA: 45 CM. CALIBRE DE LA SUTURA: 2-0.          NO         SÍ      SÍ
+060.869.0152             ADHESIVAS                                  CARACTERÍSTICAS DE LA AGUJA: 3/8 DE CÍRCULO, CORTANTE (19-26 MM). ENVASE CON 12 PIEZAS.                  SÍ       NO       SÍ
+060.869.0202             ADHESIVAS                                                                                                                                           SÍ        SÍ      SÍ
+060.869.0251             ADHESIVAS       CATGUT CRÓMICO CON AGUJA. LONGITUD DE LA HEBRA: 68-75 CM. CALIBRE DE LA SUTURA: 4-0. CARACTERÍSTICAS DE LA AGUJA: 1/2 CÍRCULO       SÍ        SÍ      SÍ
+060.894.0052               TOALLAS                                                                 AHUSADA (25-27 MM). ENVASE CON 12 PIEZAS.                                 SÍ        SÍ      SÍ
+060.904.0100             ALGODONES                                                                                                                                           SÍ        SÍ      SÍ
+060.908.5113                                                                                 PARA SONDA FOLEY. DE PLÁSTICO, DESECHABLES. PIEZA.                              SÍ        SÍ      SÍ
+060.946.0035                TUBOS                        DE ACETATO CON ADHESIVO EN UNA DE SUS CARAS. LONGITUD: 10 M. ANCHO: 1.25 CM. PRESENTACIÓN: 24 PIEZAS.              NO         SÍ      SÍ
+060.953.0266                VASOS                        DE ACETATO CON ADHESIVO EN UNA DE SUS CARAS. LONGITUD: 10 M. ANCHO: 2.50 CM. PRESENTACIÓN: 12 PIEZAS.              NO        NO       SÍ
+060.953.0456               VENDAS                         DE ACETATO CON ADHESIVO EN UNA DE SUS CARAS. LONGITUD:10 M. ANCHO: 5.00 CM. PRESENTACIÓN: 6 PIEZAS.               NO        NO       SÍ
+                           VENDAS                         DE ACETATO CON ADHESIVO EN UNA DE SUS CARAS. LONGITUD:10 M. ANCHO: 7.50 CM. PRESENTACIÓN: 4 PIEZAS.               NO        NO
+060.953.0555                             PARA GINECO-OBSTETRICIA. RECTANGULARES, CONSTITUIDAS POR CUATRO CAPAS DE MATERIAL ABSORBENTE. DESECHABLES. ENVASE CON                        NO       SÍ
+                           VENDAS                                                                                                                                            SÍ
+060.953.0571                                                                                                             100 PIEZAS.                                                   SÍ      SÍ
+060.953.1603               VENDAS                                                                           TORUNDAS. ENVASE CON 500 G.                                      SÍ                SÍ
+060.953.2825               VENDAS                                                  DE EXTENSIÓN, DE POLIVINILO, CON LONGITUD DE 3 M. ESTÉRIL. ENVASE.                       NO         SÍ      SÍ
+060.953.2858               VENDAS                                                  PARA MEDICAMENTOS. DE PLÁSTICO, CAPACIDAD: 30 ML (1 ONZA). PIEZA.                         SÍ        SÍ      SÍ
+060.953.2866               VENDAS                                   DE GOMA (SMARCH). DE HULE NATURAL, GRADO MÉDICO. LONGITUD: 2.7 M. ANCHO: 6 CM. PIEZA                     SÍ        SÍ      SÍ
+060.953.2874               VENDAS          ENYESADAS, DE GASA DE ALGODÓN, RECUBIERTAS DE UNA CAPA UNIFORME DE YESO GRADO MÉDICO. LONGITUD: 2.75 M. ANCHO: 5 CM.              SÍ        SÍ      SÍ
+080.018.0101               VENDAS                                                                                                                                            SÍ        SÍ      SÍ
+080.610.2398              FIJADORES                                                                              ENVASE CON 12 PIEZAS.                                      NO         SÍ      SÍ
+                 MEDIOS DE TRANSPORTE      ENYESADAS, DE GASA DE ALGODÓN, RECUBIERTAS DE UNA CAPA UNIFORME DE YESO GRADO MÉDICO. LONGITUD: 2.75 M. ANCHO: 10 CM.            NO         SÍ
+                                                                                                                                                                                       SÍ
+                                                                                                                 ENVASE CON 12 PIEZAS.
+                                           ENYESADAS, DE GASA DE ALGODÓN, RECUBIERTAS DE UNA CAPA UNIFORME DE YESO GRADO MÉDICO. LONGITUD: 2.75 M. ANCHO: 15 CM.
+
+                                                                                                                 ENVASE CON 12 PIEZAS.
+                                                                                         DE GASA DE ALGODÓN. LONGITUD: 2.7 M. ANCHO: 5 CM. PIEZA.
+                                                  ELÁSTICAS DE TEJIDO PLANO; DE ALGODÓN CON FIBRAS SINTÉTICAS. LONGITUD: 5 M. ANCHO: 30 CM. ENVASE CON UNA PIEZA.
+                                                   ELÁSTICAS DE TEJIDO PLANO; DE ALGODÓN CON FIBRAS SINTÉTICAS. LONGITUD: 5 M. ANCHO:5 CM. ENVASE CON 12 PIEZAS.
+                                                  ELÁSTICAS DE TEJIDO PLANO; DE ALGODÓN CON FIBRAS SINTÉTICAS. LONGITUD: 5 M. ANCHO: 10 CM. ENVASE CON 12 PIEZAS.
+                                                  ELÁSTICAS DE TEJIDO PLANO; DE ALGODÓN CON FIBRAS SINTÉTICAS. LONGITUD: 5 M. ANCHO: 15 CM. ENVASE CON 12 PIEZAS.
+                                                                 FIJADOR FIJADOR HIDROSOLUBLE PARA CITOLOGÍA EXFOLIATIVA EN AEROSOL. ENVASE CON 250 G. TA.
+                                                           MEDIOS DE TRANSPORTE. MEDIO DE TRANSPORTE CARY Y BLAIR. TUBOS PREPARADOS CONHISOPO. PIEZA. RTC.
+CLAVE (CNIS)       INSUMO      DESCRIPCIÓN                                                                                                                   UNIDADES  UNIDADES  CESSA
+                                                                                                                                                             MÓVILES   NÚCLEOS
+080.760.0029      OXÍMETRO                                                                                                                                             BÁSICOS
+
+080.889.2533  TIRAS REACTIVAS  OXIMETRO DE PULSO. PORTATIL. OXIMETRO DE PULSO. PORTATIL, ULTRACOMPACTO,INTEGRADO EN UN CLIP QUE SE COLOCA EN EL DEDO DE
+080.889.2632  TIRAS REACTIVAS
+                               LA MANO O DEL PIE, PARA USO ENPACIENTES ADOLESCENTES O ADULTOS, EN AMBIENTE HOSPITALARIO Y DOMICILIARIO(AMBULATORIO).
+
+                               CUENTA CON UNA PANTALLA EN LA QUE MUESTRA DE FORMA RAPIDA YPRECISA LA FRECUENCIA CARDIACA Y EL NIVEL DE SATURACION DE
+
+                               OXIGENO, EXPRESADACOMO PORCENTAJE. SATURACION DE OXIGENO ARTERIAL (SPO2) CON UN RANGO DE MEDICIONMINIMO DE 70 A 99%,
+
+                               PRECISION DE +/- 2% EN LA ETAPA DE 70%-99%, SIN ESPECIFICAR(<=70%) RESOLUCION: +/- 1% FRECUENCIA DE PULSO; RANGO DE MEDICION
+
+                               DE 30-240 BPM,PRECISION, +/- 2 BPM, RESOLUCION, +/-1 BPM EQUIPO DE EVALUACIONESPECTROFOTOMETRICA DE LA OXIGENACION DE LA
+
+                               HEMOGLOBINA (SPO2). MIDE LA LUZTRANSMITIDA A TRAVES DEL LECHO CAPILAR, QUE RESULTAN DE LAS PULSACIONES DE LASANGRE            SÍ        NO        NO
+
+                               ARTERIAL. MODO DE FUNCIONAMIENTO CONTINUO APAGADO AUTOMATICO CUANDO ELDISPOSITIVO ESTA BAJO EL ESTADO DE LA INTERFAZ DE
+
+                               MEDICION OFF, EN 5 SEGUNDOS.INDICADOR DE BATERIA BAJA, QUE SE ACCIONA ANTES DE QUE SE PIERDA ELFUNCIONAMIENTO NORMAL DEL
+
+                               OXIMETRO FUENTE DE ALIMENTACION: PILAS, CON CONSUMO DEENERGIA DE MENOS DE 30 MA. PESO MAXIMO 50GR ESTUCHE PARA GUARDAR
+
+                               OXIMETRO YCORDON DE SUJECION LA LIMPIEZA DE LA SUPERFICIE DEL DISPOSITIVO SE HACE CONALCOHOL QUE EVITA LA CONTAMINACION
+
+                               CRUZADA Y DEBE HACERSE ANTES DE USARSE ENTRECADA PACIENTE. ALMACENAMIENTO; TEMPERATURA AMBIENTE DE -40 GRADOS
+
+                               CENTIGRADOS A60 GRADOS CENTIGRADOS Y NO SUPERIOR AL 95% DE HUMEDAD RELATIVA. PIEZA.
+
+                               TIRAS REACTIVAS TIRA REACTIVA. PARA DETERMINACIÓN DE GLUCOSA EN SANGRE CAPILAR CON LÍMITE DE MEDICIÓN EN GLUCÓMETRO HASTA
+
+                               500 O 600 MG/DL. CON MEMBRANA HIDROFÍLICA IMPREGNADA CON ACTIVANTE QUÍMICO: GLUCOSA OXIDASA CON REDUCTOR E INDICADOR O        SÍ        SÍ        SÍ
+
+                               GLUCOSA DESHIDROGENASA. PARA LA DETERMINACIÓN DE GLUCOSA. ENVASE CON 25, 50 O 100 TIRAS. TATC.
+
+                               TIRAS REACTIVAS TIRA REACTIVA PARA LA DETERMINACIÓN SEMICUANTITATIVA DE MICROALBÚMINA EN ORINA EN UN RANGO DE 10 A 100 MG/L   NO        SÍ        SÍ
+                                                          EN UN TIEMPO APROXIMADO DE UN MINUTO. TUBO CON 25, 30 O 50 TIRAS REACTIVAS. RTC Y/O TA.
+

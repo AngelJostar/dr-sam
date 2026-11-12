@@ -35,8 +35,8 @@ class SuperAdminMedicationPresentationTest extends TestCase
         $lines = array_values(array_filter(explode("\n", trim($csv))));
         $columns = str_getcsv($lines[0]);
         $values = str_getcsv($lines[1]);
-        $this->assertCount(10, $columns);
-        $this->assertCount(10, $values);
+        $this->assertCount(13, $columns);
+        $this->assertCount(13, $values);
         $row = array_combine($columns, $values);
         $this->assertSame('Marca de prueba', $row['Denominación distintiva']);
         $this->assertSame('No', $row['Unidades móviles']);

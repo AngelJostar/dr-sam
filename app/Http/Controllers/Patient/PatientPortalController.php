@@ -13,6 +13,7 @@ use App\Services\Insurance\InsurancePlanCatalog;
 use App\Models\Patient;
 use App\Services\AppointmentSchedulingService;
 use App\Services\Platform\PlatformAuditService;
+use App\Services\Platform\MobileAppConfiguration;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -27,7 +28,7 @@ use Throwable;
 
 class PatientPortalController extends Controller
 {
-    public function __invoke(Request $request, AppointmentSchedulingService $scheduling): View
+    public function __invoke(Request $request, AppointmentSchedulingService $scheduling, MobileAppConfiguration $mobileConfiguration): View
     {
         $patient = $this->resolvePatient($request);
 
@@ -112,7 +113,12 @@ class PatientPortalController extends Controller
             'ends_at' => $scheduledAppointment->ends_at?->toIso8601String(),
         ] : null;
 
+        $mobileUi = $mobileConfiguration->read();
+
         return view('patient.dashboard', [
+            'mobileUi' => $mobileUi,
+            'mobileBottomNavigation' => $mobileConfiguration->navigation($mobileUi, 'bottom'),
+            'mobileSupportNavigation' => $mobileConfiguration->navigation($mobileUi, 'support'),
             'insurancePlanOptions' => InsurancePlanCatalog::published(),
             'patient' => $patient,
             'doctors' => $doctors,
