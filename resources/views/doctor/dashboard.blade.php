@@ -198,6 +198,7 @@
               </form>
             </section>
           @else
+           @include('doctor.partials.consultation-tariff')
           @php
             $clinicRent = $clinics->sum(fn ($clinic) => (float) data_get($clinic->metadata, 'rent', 0));
             $clinicCosts = $clinics->sum(fn ($clinic) => collect(['utilities', 'fixed_phone', 'mobile_phone', 'property_tax', 'maintenance', 'staff', 'supplies'])->sum(fn ($key) => (float) data_get($clinic->metadata, $key, 0)));

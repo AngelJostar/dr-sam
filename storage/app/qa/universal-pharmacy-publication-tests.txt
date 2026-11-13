@@ -1,0 +1,245 @@
+
+  ....................................................................................................................
+  ........⨯...........................................................................................................
+  ....................................................................................................................
+  ..................................................................................⨯...
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\DoctorConsultationTariffTest > active doctor publishes only their own exact cent tariff and…   
+  Failed asserting that two arrays are identical.
+--- Expected
++++ Actual
+@@ @@
+ Array &0 [
+-    0 => 'tariff_id',
+-    1 => 'version',
+-    2 => 'currency',
+-    3 => 'amount_cents',
+-    4 => 'modality',
++    0 => 'version',
++    1 => 'currency',
++    2 => 'modality',
++    3 => 'tariff_id',
++    4 => 'amount_cents',
+ ]
+
+  at tests\Feature\DoctorConsultationTariffTest.php:74
+     70▕         $this->assertSame('MXN', $tariff->currency);
+     71▕         $this->assertSame($user->id, $tariff->created_by);
+     72▕         $this->assertNull($other->fresh()->current_consultation_tariff_id);
+     73▕         $audit = AuditLog::query()->where('event', 'doctor.consultation_tariff.publish')->firstOrFail();
+  ➜  74▕         $this->assertSame(['tariff_id', 'version', 'currency', 'amount_cents', 'modality'], array_keys($audit->payload['context']));
+     75▕         $this->assertSame($tariff->id, $audit->payload['context']['tariff_id']);
+     76▕         $this->assertDatabaseCount('doctor_consultation_tariffs', 1);
+     77▕     }
+     78▕
+
+  1   tests\Feature\DoctorConsultationTariffTest.php:74
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\UniversalPharmacyPublicationTest > distributor selection creates only own linked offer and…    
+  Expected: <!doctype html>\r\n
+<html lang="es">\r\n
+  <head>\r\n
+    <meta charset="utf-8">\r\n
+    <meta name="viewport" content="width=device-width, initial-scale=1">\r\n
+    <script>try { if (window.frameElement?.hasAttribute('data-unit-operation-frame')) document.documentElement.classList.add('unit-operation-embedded'); if (window.frameElement?.hasAttribute('data-operational-detail-frame')) document.documentElement.classList.add('operational-detail-embedded'); } catch (_) {}</script>\r\n
+    <title>Distribuidor de medicamentos | Klini</title>\r\n
+    <meta name="theme-color" content="#082441">\r\n
+    <link rel="icon" type="image/svg+xml" href="http://localhost:8000/brand/klini/favicon.svg">\r\n
+          <link rel="preload" href="http://localhost:8000/brand/klini/dejavu.woff" as="font" type="font/woff" crossorigin>\r\n
+        <link rel="stylesheet" href="http://localhost:8000/css/drsam.css?v=1791388824">\r\n
+    <link rel="stylesheet" href="http://localhost:8000/css/superadmin-workspace.css">\n
+<link rel="stylesheet" href="http://localhost:8000/css/superadmin-catalog.css">\n
+<link rel="stylesheet" href="http://localhost:8000/css/pharmacy-store-admin.css">\n
+<link rel="stylesheet" href="http://localhost:8000/css/distributor-workspace.css?v=1794502175">\n
+        <link rel="stylesheet" href="http://localhost:8000/css/klini-brand.css?v=1791388824">\r\n
+    <link rel="stylesheet" href="http://localhost:8000/css/klini-workspace.css?v=1791388824">\r\n
+    <link rel="stylesheet" href="http://localhost:8000/css/klini-system.css?v=1791388824">\r\n
+    <link rel="stylesheet" href="http://localhost:8000/css/klini-carousels.css?v=1791388824">\r\n
+        <link rel="stylesheet" href="http://localhost:8000/css/platform-density.css?v=1792597167">\r\n
+    <link rel="stylesheet" href="http://localhost:8000/css/unit-operation-embed.css?v=1792718009">\r\n
+      </head>\r\n
+  <body class="native-shell superadmin-native-body superadmin-catalog-body distributor-body">\r\n
+    <main class="shell">\r\n
+      <div class="superadmin-native-screen">\n
+    <header class="superadmin-native-topbar">\n
+        <div class="superadmin-native-brand"><span class="klini-brand">\r\n
+  <img src="http://localhost:8000/brand/klini/klini.svg" alt="Klini" width="120" height="56">\r\n
+  <span class="klini-brand-label">Distribuidor de medicamentos</span></span>\r\n
+</div>\n
+        <div class="superadmin-native-session"><details class="klini-session-menu">\r\n
+  <summary aria-label="Opciones de sesión y módulos">\r\n
+    <span class="klini-session-avatar" aria-hidden="true">P</span>\r\n
+          <span>Prueba<small class="klini-session-user">Proveedor · Sesión activa</small></span>\r\n
+        <span aria-hidden="true">⌄</span>\r\n
+  </summary>\r\n
+  <div class="klini-session-dropdown">\r\n
+    <div class="klini-session-heading">Cambiar de módulo<small>Accesos autorizados para tu sesión</small></div>\r\n
+    <nav aria-label="Módulos autorizados">\r\n
+              <a href="http://localhost:8000/providers/medicines/products" ><svg class="klini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8 M22 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75"/></svg>\r\n
+<span>Distribuidor de medicamentos</span><span aria-hidden="true">↗</span></a>\r\n
+          </nav>\r\n
+    <form method="post" action="http://localhost:8000/logout">\r\n
+      <input type="hidden" name="_token" value="2sojoA71ECEdQ1WI37hQQYAoMZPhG0nATQBgM8tw" autocomplete="off">      <button type="submit">Cerrar sesión <span aria-hidden="true">→</span></button>\r\n
+    </form>\r\n
+  </div>\r\n
+</details>\r\n
+<form class="klini-session-logout" method="post" action="http://localhost:8000/logout">\r\n
+  <input type="hidden" name="_token" value="2sojoA71ECEdQ1WI37hQQYAoMZPhG0nATQBgM8tw" autocomplete="off">  <button type="submit">Cerrar sesión <span aria-hidden="true">→</span></button>\r\n
+</form>\r\n
+</div>\n
+    </header>\n
+    <aside class="superadmin-native-sidebar">\n
+        <nav class="superadmin-native-menu" aria-label="Menú del distribuidor">\n
+                            <p class="distributor-menu-label">Operación</p>\n
+                                    <a href="http://localhost:8000/providers/medicines/panel/summary" class="" >\n
+                        <svg class="klini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z" /></svg><span>Resumen</span>\n
+                    </a>\n
+                                    <a href="http://localhost:8000/providers/medicines/products" class="" >\n
+                        <svg class="klini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h14a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1ZM8 3v18M11 8h6M11 12h6" /></svg><span>Catálogo propio</span>\n
+                    </a>\n
+                                    <a href="http://localhost:8000/providers/medicines/panel/inventory" class="" >\n
+                        <svg class="klini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 9 5v9l-9 5-9-5V8l9-5ZM3 8l9 5 9-5M12 13v9M7.5 5.5l9 5" /></svg><span>Inventario</span>\n
+                    </a>\n
+                                    <a href="http://localhost:8000/providers/medicines/store-orders" class="" >\n
+                        <svg class="klini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 5H5v16h14V5h-3M9 3h6v4H9zM8 12h8M8 16h6" /></svg><span>Solicitudes y pedidos</span>\n
+                    </a>\n
+                                    <a href="http://localhost:8000/providers/medicines/panel/deliveries" class="" >\n
+                        <svg class="klini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h11v12H3zM14 9h4l3 4v4h-7M6 17a2 2 0 1 0 0 4 2 2 0 0 0 0-4ZM18 17a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z" /></svg><span>Entregas</span>\n
+                    </a>\n
+                                            <p class="distributor-menu-label">Administración</p>\n
+                                    <a href="http://localhost:8000/providers/medicines/pharmacy-catalog" class="is-active"  aria-current="page" >\n
+                        <svg class="klini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h14a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1ZM8 3v18M11 8h6M11 12h6" /></svg><span>Catálogo de farmacia digital</span>\n
+                    </a>\n
+                                    <a href="http://localhost:8000/providers/medicines/panel/store" class="" >\n
+                        <svg class="klini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10v11h16V10M3 10l2-7h14l2 7M3 10c0 4 5 4 5 0 0 4 8 4 8 0 0 4 5 4 5 0M10 21v-6h4v6" /></svg><span>Tienda digital</span>\n
+                    </a>\n
+                                    <a href="http://localhost:8000/providers/medicines/panel/reports" class="" >\n
+                        <svg class="klini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 3v18h17M8 17v-6M13 17V6M18 17V9" /></svg><span>Reportes</span>\n
+                    </a>\n
+                                    <a href="http://localhost:8000/providers/medicines/panel/settings" class="" >\n
+                        <svg class="klini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h7M14 6h7M3 12h12M19 12h2M3 18h2M9 18h12M10 3v6M15 9v6M5 15v6" /></svg><span>Configuración</span>\n
+                    </a>\n
+                                    </nav>\n
+        <div class="distributor-account"><svg class="klini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z" /></svg><div><strong>Distribuidor de prueba</strong><small>Cuenta de distribuidor</small></div></div>\n
+    </aside>\n
+    <main class="superadmin-native-workspace" tabindex="-1">\n
+        <nav class="superadmin-filter-carousel" aria-label="Opciones del distribuidor" data-admin-carousel>\r\n
+  <button type="button" class="superadmin-filter-arrow" data-admin-carousel-prev aria-label="Filtros anteriores" disabled>&lsaquo;</button>\r\n
+  <div class="superadmin-filter-track" data-admin-carousel-track>\r\n
+                        <a href="http://localhost:8000/providers/medicines/pharmacy-catalog?columns=%7B%22sku%22%3A%5B%222cfdccb9d2354dca%22%5D%7D&amp;selection=all"\r\n
+           class="superadmin-filter-tile is-active" data-admin-filter="all"\r\n
+            aria-current="true"  title="Todos" aria-label="Todos">\r\n
+              <span class="superadmin-filter-icon"><svg class="klini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3h7v7H3z M14 3h7v7h-7z M3 14h7v7H3z M14 14h7v7h-7z"/></svg>\r\n
+</span>\r\n
+        <span class="superadmin-filter-label">Todos</span>\r\n
+        <span class="superadmin-filter-selected" aria-hidden="true">✓</span>\r\n
+       </a>                         <a href="http://localhost:8000/providers/medicines/pharmacy-catalog?columns=%7B%22sku%22%3A%5B%222cfdccb9d2354dca%22%5D%7D&amp;selection=selected"\r\n
+           class="superadmin-filter-tile" data-admin-filter="selected"\r\n
+            title="Seleccionados" aria-label="Seleccionados">\r\n
+              <span class="superadmin-filter-icon"><svg class="klini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3h7v7H3z M14 3h7v7h-7z M3 14h7v7H3z M14 14h7v7h-7z"/></svg>\r\n
+</span>\r\n
+        <span class="superadmin-filter-label">Seleccionados</span>\r\n
+        <span class="superadmin-filter-selected" aria-hidden="true">✓</span>\r\n
+       </a>                         <a href="http://localhost:8000/providers/medicines/pharmacy-catalog?columns=%7B%22sku%22%3A%5B%222cfdccb9d2354dca%22%5D%7D&amp;selection=unselected"\r\n
+           class="superadmin-filter-tile" data-admin-filter="unselected"\r\n
+            title="Por seleccionar" aria-label="Por seleccionar">\r\n
+              <span class="superadmin-filter-icon"><svg class="klini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3h7v7H3z M14 3h7v7h-7z M3 14h7v7H3z M14 14h7v7h-7z"/></svg>\r\n
+</span>\r\n
+        <span class="superadmin-filter-label">Por seleccionar</span>\r\n
+        <span class="superadmin-filter-selected" aria-hidden="true">✓</span>\r\n
+       </a>       </div>\r\n
+  <button type="button" class="superadmin-filter-arrow" data-admin-carousel-next aria-label="Filtros siguientes" disabled>&rsaquo;</button>\r\n
+  <div class="superadmin-filter-indicators" aria-hidden="true">\r\n
+          <span class="is-active" data-admin-filter-dot="all"></span>\r\n
+          <span class="" data-admin-filter-dot="selected"></span>\r\n
+          <span class="" data-admin-filter-dot="unselected"></span>\r\n
+      </div>\r\n
+</nav>\r\n
+        <div class="distributor-content" data-drsam-table-filter-skip>\n
+                                    <header class="distributor-heading"><div><p class="distributor-eyebrow">Administración / Farmacia digital</p><h1>Catálogo de farmacia digital</h1><p>Selecciona los productos publicados por Klini y registra tu precio y existencias.</p></div></header>\n
+<section class="distributor-card">\n
+    <form method="GET" class="distributor-filters"><label class="distributor-search">Buscar producto o SKU<input name="q" type="search" maxlength="160" value="" placeholder="Nombre, SKU, descripción o categoría"></label><input type="hidden" name="selection" value="all"><button class="distributor-button secondary">Buscar</button></form>\n
+    <div class="distributor-column-summary" role="status">\n
+        <span>1 columna filtrada</span>\n
+        <a class="distributor-reset" href="http://localhost:8000/providers/medicines/pharmacy-catalog">Limpiar filtros de columnas</a>\n
+    </div>\n
+    <div class="distributor-table-scroll"><table class="distributor-table"><thead><tr>\n
+        <th><div class="drsam-table-filter-head">\n
+    <span class="drsam-table-filter-label">SKU</span>\n
+    <button type="button" class="drsam-table-filter-button is-active"\n
+        data-distributor-column="sku" data-column-options="{&quot;options&quot;:[{&quot;value&quot;:&quot;e0d3b72f72183185&quot;,&quot;label&quot;:&quot;100000001&quot;}],&quot;selected&quot;:[&quot;2cfdccb9d2354dca&quot;]}"\n
+        aria-label="Filtrar SKU" aria-haspopup="dialog" aria-expanded="false"\n
+        aria-pressed="true"></button>\n
+</div>\n
+</th><th><div class="drsam-table-filter-head">\n
+    <span class="drsam-table-filter-label">Producto y descripción</span>\n
+    <button type="button" class="drsam-table-filter-button"\n
+        data-distributor-column="product" data-column-options="{&quot;options&quot;:[{&quot;value&quot;:&quot;43b739c9324c8cdb&quot;,&quot;label&quot;:&quot;Producto universal&quot;}],&quot;selected&quot;:null}"\n
+        aria-label="Filtrar Producto y descripción" aria-haspopup="dialog" aria-expanded="false"\n
+        aria-pressed="false"></button>\n
+</div>\n
+</th><th><div class="drsam-table-filter-head">\n
+    <span class="drsam-table-filter-label">Categoría</span>\n
+    <button type="button" class="drsam-table-filter-button"\n
+        data-distributor-column="category" data-column-options="{&quot;options&quot;:[{&quot;value&quot;:&quot;7281b8f571c2e958&quot;,&quot;label&quot;:&quot;Analgesia&quot;}],&quot;selected&quot;:null}"\n
+        aria-label="Filtrar Categoría" aria-haspopup="dialog" aria-expanded="false"\n
+        aria-pressed="false"></button>\n
+</div>\n
+</th><th><div class="drsam-table-filter-head">\n
+    <span class="drsam-table-filter-label">Tu precio · MXN</span>\n
+    <button type="button" class="drsam-table-filter-button"\n
+        data-distributor-column="price" data-column-options="{&quot;options&quot;:[{&quot;value&quot;:&quot;7ed7f2285a0c1416&quot;,&quot;label&quot;:&quot;$35.50&quot;}],&quot;selected&quot;:null}"\n
+        aria-label="Filtrar Tu precio · MXN" aria-haspopup="dialog" aria-expanded="false"\n
+        aria-pressed="false"></button>\n
+</div>\n
+</th><th><div class="drsam-table-filter-head">\n
+    <span class="drsam-table-filter-label">Tus existencias</span>\n
+    <button type="button" class="drsam-table-filter-button"\n
+        data-distributor-column="stock" data-column-options="{&quot;options&quot;:[{&quot;value&quot;:&quot;9ea36022eedade7f&quot;,&quot;label&quot;:&quot;7 ud.&quot;}],&quot;selected&quot;:null}"\n
+        aria-label="Filtrar Tus existencias" aria-haspopup="dialog" aria-expanded="false"\n
+        aria-pressed="false"></button>\n
+</div>\n
+</th><th><div class="drsam-table-filter-head">\n
+    <span class="drsam-table-filter-label">Tu oferta</span>\n
+    <button type="button" class="drsam-table-filter-button"\n
+        data-distributor-column="selection" data-column-options="{&quot;options&quot;:[{&quot;value&quot;:&quot;e404dffc72d87d4f&quot;,&quot;label&quot;:&quot;Seleccionado&quot;}],&quot;selected&quot;:null}"\n
+        aria-label="Filtrar Tu oferta" aria-haspopup="dialog" aria-expanded="false"\n
+        aria-pressed="false"></button>\n
+</div>\n
+</th>        <th>Seleccionar</th></tr></thead><tbody>\n
+    <tr><td colspan="7"><div class="distributor-empty"><h2>No hay productos disponibles</h2><p>Aquí aparecen los productos activos con «Mostrar en farmacia digital» en ON.</p></div></td></tr>    </tbody></table></div>\n
+    <footer class="distributor-pagination">\n
+    <span>0 productos</span>\n
+    </footer></section>\n
+        </div>\n
+    </main>\n
+</div>\n
+    </main>\r\n
+    <script src="http://localhost:8000/js/superadmin-workspace.js" defer></script>\n
+<script src="http://localhost:8000/js/distributor-workspace.js?v=1794502175" defer></script>\n
+<script src="http://localhost:8000/js/distributor-table-filters.js?v=1794501652" defer></script>\n
+    <script src="http://localhost:8000/js/unit-operation-embed.js?v=1792718009" defer></script>\r\n
+    <script src="http://localhost:8000/js/drsam-table-filters.js?v=1792597167" defer></script>\r\n
+            <script src="http://localhost:8000/js/klini-carousels.js?v=1792597167" defer></script>\r\n
+      </body>\r\n
+</html>\r\n
+
+
+  Not to contain: Producto universal
+
+  at tests\Feature\UniversalPharmacyPublicationTest.php:101
+     97▕         $this->assertSame('Descripción oficial', $own->description);
+     98▕         $this->assertSame('Analgesia', $own->category);
+     99▕         $this->assertSame('65432.10', $foreign->fresh()->price);
+    100▕         $this->get(route('provider.pharmacy.catalog', ['selection' => 'selected']))->assertSee('Producto universal');
+  ➜ 101▕         $this->get(route('provider.pharmacy.catalog', ['columns' => json_encode(['sku' => [substr(hash('sha256', 'no-existe'), 0, 16)]])]))->assertOk()->assertDontSee('Producto universal');
+    102▕         $this->patch(route('provider.pharmacy.products.update', $own), ['price' => '36.00', 'stock' => 8, 'status' => 'active', 'name' => 'Nombre falsificado', 'sku' => 'HACK', 'requires_prescription' => 0])->assertSessionHasNoErrors();
+    103▕         $this->assertSame('Producto universal', $own->fresh()->name);
+    104▕         $this->assertSame('100000001', $own->fresh()->sku);
+    105▕         $this->assertSame('36.00', $own->fresh()->price);
+
+
+  Tests:    2 failed, 432 passed (6938 assertions)
+  Duration: 82.04s
+

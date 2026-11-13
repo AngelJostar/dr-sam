@@ -54,6 +54,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return Attribute::get(fn () => UserRole::tryFrom($this->role));
     }
 
+    public function isMedicineDistributor(): bool
+    {
+        return $this->role === 'provider' && $this->module === 'provider_medicines';
+    }
+
     public function assignKliniMemberId(): void
     {
         if ($this->account_category === self::CATEGORY_KLINI && ! $this->klini_member_id) {

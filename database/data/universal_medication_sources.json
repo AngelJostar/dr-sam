@@ -1,0 +1,1636 @@
+{
+  "reviewed_at": "2026-11-12",
+  "imss_url": "https://pgsp.imssbienestar.gob.mx/rutas_de_la_salud/docs/App_RdlS_v5.1_Meds_MatCur.pdf",
+  "salud_url": "https://data.salud.cdmx.gob.mx/ssdf/portalut/archivo/Actualizaciones/4toTrimestre21/Dir_Med_Tec_Ins/CIM.pdf",
+  "salud_edition": "Catálogo Institucional de Medicamentos, edición 2020; publicado el 3 de diciembre de 2021",
+  "hashes": {
+    "imss-medicamentos-fuente.pdf": "a3b3bb5dbe6edef45ef843f7410805983d8e02bbd982b4bc3ed56310c0f552e7",
+    "salud-cdmx-medicamentos-fuente.pdf": "7dedbfde76b077cd121d55d5e131de08789e128b8f169df8c9634a7d171d9586"
+  },
+  "records": [
+    {
+      "cnis": "010.000.0104.00",
+      "imss_page": 1,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 53
+    },
+    {
+      "cnis": "010.000.0106.00",
+      "imss_page": 1,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 53
+    },
+    {
+      "cnis": "010.000.0109.00",
+      "imss_page": 1,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 44
+    },
+    {
+      "cnis": "010.000.0233.00",
+      "imss_page": 1,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 56
+    },
+    {
+      "cnis": "010.000.0246.00",
+      "imss_page": 1,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 54
+    },
+    {
+      "cnis": "010.000.0261.00",
+      "imss_page": 1,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 42
+    },
+    {
+      "cnis": "010.000.0270.00",
+      "imss_page": 1,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 55
+    },
+    {
+      "cnis": "010.000.0291.00",
+      "imss_page": 1,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 48
+    },
+    {
+      "cnis": "010.000.0402.00",
+      "imss_page": 1,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 15
+    },
+    {
+      "cnis": "010.000.0406.00",
+      "imss_page": 1,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 23
+    },
+    {
+      "cnis": "010.000.0429.00",
+      "imss_page": 1,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 55
+    },
+    {
+      "cnis": "010.000.0431.00",
+      "imss_page": 1,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 55
+    },
+    {
+      "cnis": "010.000.0439.00",
+      "imss_page": 1,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 55
+    },
+    {
+      "cnis": "010.000.0446.00",
+      "imss_page": 2,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.0472.00",
+      "imss_page": 2,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 54
+    },
+    {
+      "cnis": "010.000.0474.00",
+      "imss_page": 2,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 38
+    },
+    {
+      "cnis": "010.000.0477.00",
+      "imss_page": 2,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 9
+    },
+    {
+      "cnis": "010.000.0514.00",
+      "imss_page": 2,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.0525.00",
+      "imss_page": 2,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 26
+    },
+    {
+      "cnis": "010.000.0530.00",
+      "imss_page": 2,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 55
+    },
+    {
+      "cnis": "010.000.0566.00",
+      "imss_page": 2,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 44
+    },
+    {
+      "cnis": "010.000.0570.00",
+      "imss_page": 2,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 37
+    },
+    {
+      "cnis": "010.000.0573.00",
+      "imss_page": 2,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 54
+    },
+    {
+      "cnis": "010.000.0598.00",
+      "imss_page": 2,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 69
+    },
+    {
+      "cnis": "010.000.0599.00",
+      "imss_page": 2,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 48
+    },
+    {
+      "cnis": "010.000.0612.00",
+      "imss_page": 2,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 49
+    },
+    {
+      "cnis": "010.000.0614.00",
+      "imss_page": 3,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 23
+    },
+    {
+      "cnis": "010.000.0615.00",
+      "imss_page": 3,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 23
+    },
+    {
+      "cnis": "010.000.0626.01",
+      "imss_page": 3,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 27
+    },
+    {
+      "cnis": "010.000.0655.00",
+      "imss_page": 3,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 10
+    },
+    {
+      "cnis": "010.000.0801.01",
+      "imss_page": 3,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.0804.00",
+      "imss_page": 3,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 52
+    },
+    {
+      "cnis": "010.000.0811.00",
+      "imss_page": 3,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 27
+    },
+    {
+      "cnis": "010.000.0813.00",
+      "imss_page": 3,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 38
+    },
+    {
+      "cnis": "010.000.0865.00",
+      "imss_page": 3,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.0871.00",
+      "imss_page": 3,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.0872.00",
+      "imss_page": 3,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 15
+    },
+    {
+      "cnis": "010.000.0891.00",
+      "imss_page": 3,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 45
+    },
+    {
+      "cnis": "010.000.1007.00",
+      "imss_page": 3,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 42
+    },
+    {
+      "cnis": "010.000.1051.01",
+      "imss_page": 3,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 39
+    },
+    {
+      "cnis": "010.000.1098.00",
+      "imss_page": 3,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 70
+    },
+    {
+      "cnis": "010.000.1206.00",
+      "imss_page": 3,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 12
+    },
+    {
+      "cnis": "010.000.1207.00",
+      "imss_page": 3,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 12
+    },
+    {
+      "cnis": "010.000.1210.01",
+      "imss_page": 3,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.1224.00",
+      "imss_page": 3,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 5
+    },
+    {
+      "cnis": "010.000.1241.00",
+      "imss_page": 3,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 44
+    },
+    {
+      "cnis": "010.000.1242.00",
+      "imss_page": 3,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 44
+    },
+    {
+      "cnis": "010.000.1243.00",
+      "imss_page": 4,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 45
+    },
+    {
+      "cnis": "010.000.1263.00",
+      "imss_page": 4,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.1271.00",
+      "imss_page": 4,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 53
+    },
+    {
+      "cnis": "010.000.1272.00",
+      "imss_page": 4,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 56
+    },
+    {
+      "cnis": "010.000.1308.01",
+      "imss_page": 4,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 45
+    },
+    {
+      "cnis": "010.000.1310.00",
+      "imss_page": 4,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 45
+    },
+    {
+      "cnis": "010.000.1344.00",
+      "imss_page": 4,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 5
+    },
+    {
+      "cnis": "010.000.1345.00",
+      "imss_page": 4,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 5
+    },
+    {
+      "cnis": "010.000.1364.00",
+      "imss_page": 4,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.1506.00",
+      "imss_page": 4,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 25
+    },
+    {
+      "cnis": "010.000.1508.00",
+      "imss_page": 4,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 25
+    },
+    {
+      "cnis": "010.000.1561.00",
+      "imss_page": 4,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 45
+    },
+    {
+      "cnis": "010.000.1566.00",
+      "imss_page": 4,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 48
+    },
+    {
+      "cnis": "010.000.1703.00",
+      "imss_page": 4,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 66
+    },
+    {
+      "cnis": "010.000.1704.00",
+      "imss_page": 4,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 67
+    },
+    {
+      "cnis": "010.000.1706.01",
+      "imss_page": 4,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.1711.00",
+      "imss_page": 4,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.1732.01",
+      "imss_page": 4,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 27
+    },
+    {
+      "cnis": "010.000.1903.00",
+      "imss_page": 5,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 68
+    },
+    {
+      "cnis": "010.000.1904.00",
+      "imss_page": 5,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 68
+    },
+    {
+      "cnis": "010.000.1911.00",
+      "imss_page": 5,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 48
+    },
+    {
+      "cnis": "010.000.1925.00",
+      "imss_page": 5,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.1926.00",
+      "imss_page": 5,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 19
+    },
+    {
+      "cnis": "010.000.1927.00",
+      "imss_page": 5,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 19
+    },
+    {
+      "cnis": "010.000.1928.00",
+      "imss_page": 5,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 19
+    },
+    {
+      "cnis": "010.000.1937.00",
+      "imss_page": 5,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 13
+    },
+    {
+      "cnis": "010.000.1939.00",
+      "imss_page": 5,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 13
+    },
+    {
+      "cnis": "010.000.1940.00",
+      "imss_page": 5,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 23
+    },
+    {
+      "cnis": "010.000.1969.00",
+      "imss_page": 5,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.2111.01",
+      "imss_page": 5,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 8
+    },
+    {
+      "cnis": "010.000.2118.00",
+      "imss_page": 5,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.2123.00",
+      "imss_page": 5,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 47
+    },
+    {
+      "cnis": "010.000.2126.00",
+      "imss_page": 5,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 4
+    },
+    {
+      "cnis": "010.000.2129.00",
+      "imss_page": 6,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 8
+    },
+    {
+      "cnis": "010.000.2133.00",
+      "imss_page": 6,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 14
+    },
+    {
+      "cnis": "010.000.2145.00",
+      "imss_page": 6,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 43
+    },
+    {
+      "cnis": "010.000.2154.01",
+      "imss_page": 6,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.2187.00",
+      "imss_page": 6,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 40
+    },
+    {
+      "cnis": "010.000.2189.01",
+      "imss_page": 6,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 68
+    },
+    {
+      "cnis": "010.000.2242.00",
+      "imss_page": 6,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 12
+    },
+    {
+      "cnis": "010.000.2301.00",
+      "imss_page": 6,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 38
+    },
+    {
+      "cnis": "010.000.2304.01",
+      "imss_page": 6,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 25
+    },
+    {
+      "cnis": "010.000.2307.00",
+      "imss_page": 6,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 35
+    },
+    {
+      "cnis": "010.000.2308.00",
+      "imss_page": 6,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 35
+    },
+    {
+      "cnis": "010.000.2331.00",
+      "imss_page": 6,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 26
+    },
+    {
+      "cnis": "010.000.2433.00",
+      "imss_page": 6,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.2463.00",
+      "imss_page": 6,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 5
+    },
+    {
+      "cnis": "010.000.2471.00",
+      "imss_page": 6,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.2501.00",
+      "imss_page": 6,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 24
+    },
+    {
+      "cnis": "010.000.2540.00",
+      "imss_page": 7,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 67
+    },
+    {
+      "cnis": "010.000.2542.00",
+      "imss_page": 7,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.2616.00",
+      "imss_page": 7,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 41
+    },
+    {
+      "cnis": "010.000.2617.00",
+      "imss_page": 7,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 41
+    },
+    {
+      "cnis": "010.000.2622.00",
+      "imss_page": 7,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 69
+    },
+    {
+      "cnis": "010.000.2623.00",
+      "imss_page": 7,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 69
+    },
+    {
+      "cnis": "010.000.2624.00",
+      "imss_page": 7,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 26
+    },
+    {
+      "cnis": "010.000.2707.00",
+      "imss_page": 7,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 4
+    },
+    {
+      "cnis": "010.000.2714.00",
+      "imss_page": 7,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 16
+    },
+    {
+      "cnis": "010.000.2804.00",
+      "imss_page": 7,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.2814.00",
+      "imss_page": 7,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 38
+    },
+    {
+      "cnis": "010.000.2821.00",
+      "imss_page": 7,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 15
+    },
+    {
+      "cnis": "010.000.2841.00",
+      "imss_page": 7,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 54
+    },
+    {
+      "cnis": "010.000.3111.00",
+      "imss_page": 7,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 23
+    },
+    {
+      "cnis": "010.000.3112.00",
+      "imss_page": 8,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 23
+    },
+    {
+      "cnis": "010.000.3132.00",
+      "imss_page": 8,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.3150.00",
+      "imss_page": 8,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.3407.00",
+      "imss_page": 8,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 48
+    },
+    {
+      "cnis": "010.000.3409.00",
+      "imss_page": 8,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 16
+    },
+    {
+      "cnis": "010.000.3412.00",
+      "imss_page": 8,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 38
+    },
+    {
+      "cnis": "010.000.3413.00",
+      "imss_page": 8,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 38
+    },
+    {
+      "cnis": "010.000.3417.00",
+      "imss_page": 8,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 19
+    },
+    {
+      "cnis": "010.000.3422.00",
+      "imss_page": 8,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 41
+    },
+    {
+      "cnis": "010.000.3451.00",
+      "imss_page": 8,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 5
+    },
+    {
+      "cnis": "010.000.3601.00",
+      "imss_page": 8,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 36
+    },
+    {
+      "cnis": "010.000.3603.00",
+      "imss_page": 8,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 36
+    },
+    {
+      "cnis": "010.000.3607.00",
+      "imss_page": 9,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 36
+    },
+    {
+      "cnis": "010.000.3609.00",
+      "imss_page": 9,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 16
+    },
+    {
+      "cnis": "010.000.3610.00",
+      "imss_page": 9,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 16
+    },
+    {
+      "cnis": "010.000.3612.00",
+      "imss_page": 9,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 16
+    },
+    {
+      "cnis": "010.000.3613.00",
+      "imss_page": 9,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 16
+    },
+    {
+      "cnis": "010.000.3615.00",
+      "imss_page": 9,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 56
+    },
+    {
+      "cnis": "010.000.3616.00",
+      "imss_page": 9,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 56
+    },
+    {
+      "cnis": "010.000.3622.00",
+      "imss_page": 9,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.3623.00",
+      "imss_page": 9,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 24
+    },
+    {
+      "cnis": "010.000.3627.00",
+      "imss_page": 9,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 16
+    },
+    {
+      "cnis": "010.000.3662.00",
+      "imss_page": 9,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 56
+    },
+    {
+      "cnis": "010.000.3675.00",
+      "imss_page": 9,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 4
+    },
+    {
+      "cnis": "010.000.4024.04",
+      "imss_page": 9,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.4028.00",
+      "imss_page": 10,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 15
+    },
+    {
+      "cnis": "010.000.4107.00",
+      "imss_page": 10,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 7
+    },
+    {
+      "cnis": "010.000.4114.00",
+      "imss_page": 10,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 68
+    },
+    {
+      "cnis": "010.000.4118.00",
+      "imss_page": 10,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 40
+    },
+    {
+      "cnis": "010.000.4126.00",
+      "imss_page": 10,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 66
+    },
+    {
+      "cnis": "010.000.4152.01",
+      "imss_page": 10,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.4158.00",
+      "imss_page": 10,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 39
+    },
+    {
+      "cnis": "010.000.4162.00",
+      "imss_page": 10,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.4184.00",
+      "imss_page": 10,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 43
+    },
+    {
+      "cnis": "010.000.4201.00",
+      "imss_page": 10,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 37
+    },
+    {
+      "cnis": "010.000.4224.00",
+      "imss_page": 10,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 24
+    },
+    {
+      "cnis": "010.000.4241.00",
+      "imss_page": 10,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 18
+    },
+    {
+      "cnis": "010.000.4246.01",
+      "imss_page": 10,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 15
+    },
+    {
+      "cnis": "010.000.4249.00",
+      "imss_page": 10,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 41
+    },
+    {
+      "cnis": "010.000.4260.00",
+      "imss_page": 10,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 48
+    },
+    {
+      "cnis": "010.000.4300.00",
+      "imss_page": 10,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.4307.00",
+      "imss_page": 10,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.4332.01",
+      "imss_page": 11,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.4337.00",
+      "imss_page": 11,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.4356.01",
+      "imss_page": 11,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 54
+    },
+    {
+      "cnis": "010.000.4376.00",
+      "imss_page": 11,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 47
+    },
+    {
+      "cnis": "010.000.4480.01",
+      "imss_page": 11,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 25
+    },
+    {
+      "cnis": "010.000.4483.01",
+      "imss_page": 11,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 27
+    },
+    {
+      "cnis": "010.000.4582.00",
+      "imss_page": 11,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 52
+    },
+    {
+      "cnis": "010.000.5099.00",
+      "imss_page": 11,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 4
+    },
+    {
+      "cnis": "010.000.5106.01",
+      "imss_page": 11,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.5117.00",
+      "imss_page": 11,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 67
+    },
+    {
+      "cnis": "010.000.5165.00",
+      "imss_page": 11,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 44
+    },
+    {
+      "cnis": "010.000.5176.00",
+      "imss_page": 12,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 66
+    },
+    {
+      "cnis": "010.000.5186.02",
+      "imss_page": 12,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.5187.00",
+      "imss_page": 12,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 51
+    },
+    {
+      "cnis": "010.000.5255.00",
+      "imss_page": 12,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 68
+    },
+    {
+      "cnis": "010.000.5256.00",
+      "imss_page": 12,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 13
+    },
+    {
+      "cnis": "010.000.5267.00",
+      "imss_page": 12,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 27
+    },
+    {
+      "cnis": "010.000.5295.01",
+      "imss_page": 12,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 13
+    },
+    {
+      "cnis": "010.000.5302.00",
+      "imss_page": 12,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.5309.02",
+      "imss_page": 12,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.5428.00",
+      "imss_page": 12,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 51
+    },
+    {
+      "cnis": "010.000.5501.00",
+      "imss_page": 12,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 19
+    },
+    {
+      "cnis": "010.000.5621.00",
+      "imss_page": 12,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 42
+    },
+    {
+      "cnis": "010.000.5646.00",
+      "imss_page": 12,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.5671.02",
+      "imss_page": 12,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.5721.02",
+      "imss_page": 13,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.5941.00",
+      "imss_page": 13,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.5943.00",
+      "imss_page": 13,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.6000.00",
+      "imss_page": 13,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.6007.01",
+      "imss_page": 13,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.6012.04",
+      "imss_page": 13,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.6021.00",
+      "imss_page": 13,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.6099.01",
+      "imss_page": 13,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.6222.00",
+      "imss_page": 13,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.6259.00",
+      "imss_page": 13,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.6279.00",
+      "imss_page": 13,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.6280.00",
+      "imss_page": 13,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.6281.00",
+      "imss_page": 13,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.6329.01",
+      "imss_page": 13,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.6330.00",
+      "imss_page": 14,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "010.000.6343.01",
+      "imss_page": 14,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    },
+    {
+      "cnis": "040.000.0242.00",
+      "imss_page": 14,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 26
+    },
+    {
+      "cnis": "040.000.0302.00",
+      "imss_page": 14,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 48
+    },
+    {
+      "cnis": "040.000.2106.00",
+      "imss_page": 14,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 68
+    },
+    {
+      "cnis": "040.000.2108.00",
+      "imss_page": 14,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 45
+    },
+    {
+      "cnis": "040.000.2613.00",
+      "imss_page": 14,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 15
+    },
+    {
+      "cnis": "040.000.3253.00",
+      "imss_page": 14,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 37
+    },
+    {
+      "cnis": "040.000.4054.00",
+      "imss_page": 14,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 27
+    },
+    {
+      "cnis": "040.000.4057.00",
+      "imss_page": 14,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 45
+    },
+    {
+      "cnis": "040.000.4484.00",
+      "imss_page": 15,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": 56
+    },
+    {
+      "cnis": "040.000.6140.01",
+      "imss_page": 15,
+      "name_matches": true,
+      "description_matches": true,
+      "flags_match": true,
+      "salud_cdmx_page": null
+    }
+  ]
+}

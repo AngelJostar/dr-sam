@@ -10,7 +10,7 @@
     min-height: 70px;
     padding: 6px;
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(var(--patient-nav-items, 5), minmax(0, 1fr));
     align-items: stretch;
     column-gap: 0;
     box-sizing: border-box;

@@ -19,6 +19,7 @@ use App\Models\ProviderRequest;
 use App\Models\ProviderRequestStatusEvent;
 use App\Services\DoctorAvailabilityService;
 use App\Services\AppointmentSchedulingService;
+use App\Services\DoctorConsultationTariffService;
 use App\Services\Platform\DomainStateTransitionService;
 use App\Services\Platform\PlatformAuditService;
 use App\Services\PrescriptionPharmacyService;
@@ -47,6 +48,7 @@ class DoctorPortalController extends Controller
         }
 
         $doctor->load([
+            'currentConsultationTariff',
             'user',
             'medicalUnit.institution',
             'medicalUnit.contractedServices.service',
@@ -415,6 +417,32 @@ class DoctorPortalController extends Controller
             ->with('status', 'Nota agregada al expediente.');
     }
 
+    public function updateConsultationTariff(Request $request, DoctorConsultationTariffService $tariffs, PlatformAuditService $audit): RedirectResponse
+    {
+        abort_unless($request->user()?->role === 'doctor' && $request->user()?->status === 'active', 403);
+        abort_if(array_diff(array_keys($request->all()), ['_token', '_method', 'action', 'amount', 'expected_tariff_id']) !== [], 422);
+        $data = $request->validate([
+            'action' => ['required', Rule::in(['publish', 'withdraw'])],
+            'amount' => ['required_if:action,publish', 'nullable', 'string', 'max:16'],
+            'expected_tariff_id' => ['present', 'nullable', 'integer', 'min:1'],
+        ]);
+        $expected = isset($data['expected_tariff_id']) ? (int) $data['expected_tariff_id'] : null;
+        DB::transaction(function () use ($request, $tariffs, $audit, $data, $expected): void {
+            $tariff = $data['action'] === 'publish'
+                ? $tariffs->publish($request->user(), $data['amount'], $expected)
+                : $tariffs->withdraw($request->user(), $expected);
+            if ($tariff) {
+                $audit->record($request, 'doctor.consultation_tariff.'.$data['action'], $tariff, 'doctor', [
+                    'tariff_id' => $tariff->id, 'version' => $tariff->version, 'currency' => $tariff->currency,
+                    'amount_cents' => $tariff->amount_cents, 'modality' => $tariff->modality,
+                ]);
+            }
+        });
+
+        return redirect()->route('doctor.dashboard', ['section' => 'clinics'])
+            ->with('status', $data['action'] === 'publish' ? 'Tarifa de consulta guardada.' : 'Tarifa retirada para nuevas cotizaciones.');
+    }
+
     public function storeClinic(Request $request): RedirectResponse
     {
         $doctor = $this->resolveDoctor($request);
@@ -546,8 +574,8 @@ class DoctorPortalController extends Controller
         abort_unless($doctor->status === 'active' && $doctor->medical_unit_id && filled($doctor->specialty), 403);
 
         $claimedAppointment = DB::transaction(function () use ($appointment, $doctor, $scheduling): Appointment {
-            $doctor = Doctor::query()->whereKey($doctor->id)->lockForUpdate()->firstOrFail();
             $appointment = Appointment::query()->whereKey($appointment->id)->lockForUpdate()->firstOrFail();
+            $doctor = Doctor::query()->whereKey($doctor->id)->lockForUpdate()->firstOrFail();
             abort_unless(
                 $doctor->status === 'active'
                 && (int) $appointment->medical_unit_id === (int) $doctor->medical_unit_id
@@ -683,6 +711,11 @@ class DoctorPortalController extends Controller
         }
 
         DB::transaction(function () use ($doctor, $data, $appointment, $request): void {
+            if ($appointment) {
+                $appointment = Appointment::query()->whereKey($appointment->id)->lockForUpdate()->firstOrFail();
+                abort_unless((int) $appointment->doctor_id === (int) $doctor->id, 404);
+                abort_unless((int) $appointment->patient_id === (int) $data['patient_id'], 422);
+            }
             $encounterData = [
                 ...collect($data)->except(['appointment_id', 'modality'])->all(),
                 'appointment_id' => $appointment?->id,
@@ -702,7 +735,7 @@ class DoctorPortalController extends Controller
                 $doctor->clinicalEncounters()->create($encounterData);
             }
 
-            if ($appointment && $appointment->status === 'scheduled') {
+            if ($appointment && in_array($appointment->status, ['scheduled', 'confirmed'], true)) {
                 $this->transitionAppointment($appointment, 'in_progress', $request, 'doctor.encounter.started');
             }
         });
@@ -737,6 +770,14 @@ class DoctorPortalController extends Controller
         ]);
 
         DB::transaction(function () use ($encounter, $data, $request): void {
+            $doctor = $this->resolveDoctor($request);
+            $appointment = $encounter->appointment_id ? Appointment::query()->whereKey($encounter->appointment_id)->lockForUpdate()->firstOrFail() : null;
+            if ($appointment) {
+                abort_unless((int) $appointment->doctor_id === (int) $doctor->id, 404);
+            }
+            $encounter = ClinicalEncounter::query()->whereKey($encounter->id)->lockForUpdate()->firstOrFail();
+            abort_unless((int) $encounter->doctor_id === (int) $doctor->id, 404);
+            $encounter->setRelation('appointment', $appointment);
             $encounter->update([...$data, 'status' => 'completed', 'completed_at' => now()]);
 
             ClinicalRecord::query()->updateOrCreate(
@@ -764,7 +805,7 @@ class DoctorPortalController extends Controller
                 ]
             );
 
-            if ($encounter->appointment && in_array($encounter->appointment->status, ['scheduled', 'in_progress'], true)) {
+            if ($encounter->appointment && in_array($encounter->appointment->status, ['scheduled', 'confirmed', 'in_progress'], true)) {
                 $this->transitionAppointment($encounter->appointment, 'completed', $request, 'doctor.encounter.completed');
             }
         });
@@ -1350,21 +1391,26 @@ class DoctorPortalController extends Controller
 
     private function transitionAppointment(Appointment $appointment, string $nextStatus, Request $request, string $source): void
     {
-        $previousStatus = $appointment->status;
-
-        if ($previousStatus === $nextStatus) {
-            return;
-        }
-
-        $appointment->update(['status' => $nextStatus]);
-        AppointmentStatusEvent::query()->create([
-            'appointment_id' => $appointment->id,
-            'changed_by' => $request->user()?->id,
-            'from_status' => $previousStatus,
-            'to_status' => $nextStatus,
-            'metadata' => ['source' => $source],
-        ]);
+        DB::transaction(function () use ($appointment, $nextStatus, $request, $source): void {
+            $fresh = Appointment::query()->whereKey($appointment->id)->lockForUpdate()->firstOrFail();
+            abort_unless((int) $fresh->doctor_id === (int) $this->resolveDoctor($request)->id, 404);
+            $appointment->setRawAttributes($fresh->getAttributes(), true);
+            $previousStatus = $appointment->status;
+            if ($previousStatus === $nextStatus) {
+                return;
+            }
+            app(DomainStateTransitionService::class)->assertAllowed('appointment', $previousStatus, $nextStatus);
+            $appointment->update(['status' => $nextStatus]);
+            AppointmentStatusEvent::query()->create([
+                'appointment_id' => $appointment->id,
+                'changed_by' => $request->user()?->id,
+                'from_status' => $previousStatus,
+                'to_status' => $nextStatus,
+                'metadata' => ['source' => $source],
+            ]);
+        });
     }
+
     private function patientBelongsToDoctor(Doctor $doctor, int $patientId): bool
     {
         return Patient::query()->whereKey($patientId)->where(function ($query) use ($doctor): void {

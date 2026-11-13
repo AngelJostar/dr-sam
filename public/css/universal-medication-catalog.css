@@ -1,0 +1,69 @@
+.universal-medication-catalog { color:var(--admin-ink,#10244c); }
+.medication-catalog-search { display:flex; align-items:flex-end; gap:12px; padding:14px 20px; border-bottom:1px solid var(--admin-border,#d9e3ed); }
+.medication-catalog-search label { display:grid; gap:6px; font-size:12px; color:var(--admin-muted,#58718a); }
+.medication-catalog-search .medication-search-label { flex:1; max-width:620px; }
+.medication-catalog-search :is(input,select) { box-sizing:border-box; width:100%; height:40px; padding:8px 12px; border:1px solid var(--admin-border,#d9e3ed); border-radius:6px; color:var(--admin-ink,#10244c); background:white; font:inherit; }
+body.native-shell .universal-medication-catalog button,.medication-catalog-pagination a { border:1px solid var(--admin-border,#d9e3ed); border-radius:6px; padding:9px 14px; min-height:38px; background:white; color:var(--admin-ink,#10244c); font:inherit; font-size:12px; cursor:pointer; }
+.medication-catalog-sources { padding:12px 20px; font-size:12px; line-height:1.6; border-bottom:1px solid var(--admin-border,#d9e3ed); background:#f4faf9; color:#4f6978; }
+.medication-catalog-sources summary { cursor:pointer; color:#177b80; font-weight:600; }
+.medication-catalog-sources p { margin:8px 0; max-width:1100px; }
+.medication-catalog-sources a { text-decoration:underline; color:#087e8b; }
+body.native-shell.superadmin-native-body.superadmin-catalog-body .universal-medication-catalog .superadmin-native-catalog-scroll { max-height:none; min-height:180px; overflow:auto; }
+body.native-shell.superadmin-native-body.superadmin-catalog-body .superadmin-native-workspace .universal-medication-catalog .medication-catalog-table { min-width:2550px; width:100%; table-layout:fixed; }
+body.native-shell.superadmin-native-body.superadmin-catalog-body .superadmin-native-workspace .universal-medication-catalog .medication-catalog-table :is(th,td) { box-sizing:border-box; max-width:none; min-width:0; padding:12px; line-height:1.5; white-space:normal; overflow-wrap:anywhere; text-align:left; border-right:1px solid var(--admin-border,#d9e3ed); }
+body.native-shell.superadmin-native-body.superadmin-catalog-body .superadmin-native-workspace .universal-medication-catalog .medication-catalog-table th { width:150px; background:#f0f6f8; }
+body.native-shell.superadmin-native-body.superadmin-catalog-body .superadmin-native-workspace .universal-medication-catalog .medication-catalog-table th:nth-child(3) { width:220px; }
+body.native-shell.superadmin-native-body.superadmin-catalog-body .superadmin-native-workspace .universal-medication-catalog .medication-catalog-table th:nth-child(4) { width:350px; }
+body.native-shell.superadmin-native-body.superadmin-catalog-body .superadmin-native-workspace .universal-medication-catalog .medication-catalog-table th:nth-child(5) { width:180px; }
+body.native-shell.superadmin-native-body.superadmin-catalog-body .superadmin-native-workspace .universal-medication-catalog .medication-catalog-table th:nth-child(6) { width:220px; }
+body.native-shell.superadmin-native-body.superadmin-catalog-body .superadmin-native-workspace .universal-medication-catalog .medication-catalog-table th:nth-child(7) { width:200px; }
+body.native-shell.superadmin-native-body.superadmin-catalog-body .superadmin-native-workspace .universal-medication-catalog .medication-catalog-table th:nth-child(14) { width:180px; }
+.medication-cnis,.medication-catalog-table code { white-space:nowrap; font-size:11px; }
+.medication-catalog-table .superadmin-medication-name { display:block; font-weight:700; }
+.medication-catalog-table .superadmin-medication-code,.medication-code-origin { display:block; margin-top:5px; font-size:11px; color:#5c7089; }
+.medication-barcode { display:block; width:196px; height:82px; object-fit:contain; background:white; }
+.medication-status { display:inline-block; border-radius:12px; padding:3px 9px; background:#edf1f4; font-size:11px; white-space:nowrap; }
+.medication-status.is-active { background:#dff5f0; color:#08776f; }
+body.native-shell.superadmin-native-body.superadmin-catalog-body .superadmin-native-workspace .universal-medication-catalog button.medication-status { border-radius:20px; padding:5px 10px; min-height:30px; height:auto; white-space:nowrap; }
+body.native-shell.superadmin-native-body.superadmin-catalog-body .superadmin-native-workspace .universal-medication-catalog button.medication-status.is-active { background:#dff5f0; color:#08776f; }
+body.native-shell.superadmin-native-body.superadmin-catalog-body .superadmin-native-workspace .universal-medication-catalog button.medication-status.is-shortage { background:#fff1d6; color:#925500; }
+body.native-shell.superadmin-native-body.superadmin-catalog-body .superadmin-native-workspace .universal-medication-catalog button.medication-status.is-discontinued { background:#fbe8e8; color:#9c3333; }
+.medication-publication-form { display:grid; gap:6px; margin:0; }
+.medication-publication-form small { color:#58718a; font-size:10px; }
+body.native-shell .universal-medication-catalog button.medication-publication-switch { display:inline-flex; align-items:center; gap:6px; width:78px; min-height:30px; border:0; padding:4px 7px; background:#e4e9ee; border-radius:20px; color:#52617a; }
+.medication-publication-switch span { width:22px; height:22px; border-radius:50%; background:white; box-shadow:0 1px 3px #10244c33; }
+body.native-shell .universal-medication-catalog button.medication-publication-switch[aria-checked=true] { background:#008e95; color:white; flex-direction:row-reverse; }
+.medication-publication-switch b { flex:1; font-size:11px; }
+.medication-publication-switch:disabled { opacity:.6; }
+.medication-publication-feedback { margin:0; padding:10px 20px; color:#086b62; background:#e6f6f1; }
+.medication-publication-feedback.is-error { color:#963333; background:#fff0f0; }
+body.native-shell.superadmin-native-body.superadmin-catalog-body .superadmin-native-workspace .universal-medication-catalog .medication-catalog-table { min-width:2750px; }
+body.native-shell.superadmin-native-body.superadmin-catalog-body .superadmin-native-workspace .universal-medication-catalog .medication-catalog-table th:nth-child(15) { width:180px; }
+.medication-catalog-pagination { display:flex; justify-content:space-between; align-items:center; padding:14px 20px; font-size:12px; gap:16px; }
+.medication-catalog-pagination nav { display:flex; gap:8px; }
+.medication-catalog-notice { padding:14px 20px; background:#e6f6f1; }
+.medication-identifiers-dialog { position:fixed; inset:0; margin:auto; box-sizing:border-box; width:min(520px,calc(100vw - 32px)); max-height:calc(100dvh - 32px); border:1px solid #d9e3ed; border-radius:16px; padding:0; color:#10244c; background:white; box-shadow:0 24px 80px #10244c33; overflow:auto; }
+.medication-identifiers-dialog::backdrop { background:#10243c70; }
+.medication-identifiers-dialog header { display:flex; align-items:flex-start; justify-content:space-between; padding:22px; border-bottom:1px solid #d9e3ed; gap:16px; }
+.medication-identifiers-dialog h2 { margin:0; font-size:20px; }
+.medication-identifiers-dialog header p { margin:6px 0 0; font-size:12px; color:#58718a; }
+.medication-identifiers-dialog form { display:grid; gap:18px; padding:22px; }
+.medication-identifiers-dialog label { display:grid; gap:7px; font-size:13px; font-weight:600; }
+.medication-identifiers-dialog :is(input,select) { box-sizing:border-box; width:100%; min-height:40px; padding:10px; border:1px solid #d9e3ed; border-radius:6px; background:white; color:#10244c; }
+.medication-identifiers-dialog small,.medication-editor-hint { color:#58718a; font-size:12px; font-weight:400; line-height:1.5; }
+body.native-shell .medication-identifiers-dialog button { min-height:40px; padding:9px 14px; border:1px solid #d9e3ed; border-radius:6px; background:white; color:#10244c; cursor:pointer; font-size:13px; }
+body.native-shell .medication-identifiers-dialog header button { font-size:24px; padding:0; width:40px; flex-shrink:0; }
+body.native-shell .medication-identifiers-dialog button[type=submit] { background:#078e95; border-color:#078e95; color:white; }
+.medication-identifiers-dialog footer { display:flex; justify-content:flex-end; gap:8px; }
+.medication-identifiers-dialog [role=alert] { color:#9d3030; background:#fff1f1; padding:10px; }
+body.native-shell .universal-medication-catalog .medication-add-product { margin-left:auto; background:#078e95; border-color:#078e95; color:white; white-space:nowrap; }
+.medication-create-dialog { width:min(760px,calc(100vw - 32px)); }
+.medication-create-dialog[open] { display:flex; flex-direction:column; overflow:hidden; }
+.medication-create-dialog header { flex-shrink:0; }
+.medication-create-dialog form { grid-template-columns:repeat(2,minmax(0,1fr)); overflow:auto; min-height:0; }
+.medication-create-dialog textarea { box-sizing:border-box; width:100%; padding:10px; border:1px solid #d9e3ed; border-radius:6px; color:#10244c; background:white; font:inherit; resize:vertical; }
+.medication-field-wide { grid-column:1/-1; }
+.medication-auto-sku { display:grid; gap:6px; padding:12px; background:#edf8f6; border-radius:8px; color:#176b65; font-size:12px; }
+@media(max-width:600px) { .medication-create-dialog form { grid-template-columns:1fr; } }
+.universal-medication-catalog :is(button,a,input,select):focus-visible,.medication-identifiers-dialog :focus-visible { outline:2px solid #009c9b; outline-offset:3px; }
+@media(max-width:700px) { .medication-catalog-search { flex-wrap:wrap; padding:12px; } .medication-catalog-search .medication-search-label { flex-basis:100%; } .medication-catalog-pagination { flex-wrap:wrap; } }

@@ -11,13 +11,18 @@ use App\Models\Patient;
 use App\Models\PatientOrder;
 use App\Models\ProviderRequest;
 use App\Services\Platform\DashboardRegistry;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
-    public function __invoke(Request $request, DashboardRegistry $registry): View
+    public function __invoke(Request $request, DashboardRegistry $registry): View|RedirectResponse
     {
+        if ($request->user()->isMedicineDistributor()) {
+            return redirect()->route('provider.pharmacy.products');
+        }
+
         return view('dashboard', [
             'user' => $request->user(),
             'modules' => $registry->modulesFor($request->user()),

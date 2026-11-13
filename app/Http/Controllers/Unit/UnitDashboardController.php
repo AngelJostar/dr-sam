@@ -484,7 +484,11 @@ class UnitDashboardController extends Controller
             ];
         }
 
-        DB::transaction(function () use ($appointment, $data, $doctor, $room, $startsAt, $endsAt, $metadata, $previousStatus, $request): void {
+        DB::transaction(function () use (&$appointment, $data, $doctor, $room, $startsAt, $endsAt, $metadata, &$previousStatus, $request, $transitions): void {
+            $appointment = Appointment::query()->whereKey($appointment->id)->lockForUpdate()->firstOrFail();
+            $this->authorizeAppointmentOwnership($request, $appointment);
+            $previousStatus = $appointment->status;
+            $transitions->assertAllowed('appointment', $previousStatus, $data['status']);
             $appointment->update([
                 'doctor_id' => $doctor?->id,
                 'procedure_area_id' => $room->id,
@@ -538,7 +542,11 @@ class UnitDashboardController extends Controller
         $metadata['last_status_changed_by'] = $request->user()?->id;
         $metadata['last_status_changed_at'] = now()->toISOString();
 
-        DB::transaction(function () use ($appointment, $data, $metadata, $previousStatus, $request): void {
+        DB::transaction(function () use (&$appointment, $data, $metadata, &$previousStatus, $request, $transitions): void {
+            $appointment = Appointment::query()->whereKey($appointment->id)->lockForUpdate()->firstOrFail();
+            $this->authorizeAppointmentOwnership($request, $appointment);
+            $previousStatus = $appointment->status;
+            $transitions->assertAllowed('appointment', $previousStatus, $data['status']);
             $appointment->update([
                 'status' => $data['status'],
                 'metadata' => $metadata,

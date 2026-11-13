@@ -4,7 +4,9 @@ namespace Tests\Feature;
 
 use App\Models\Appointment;
 use App\Models\DeliveryRoute;
+use App\Models\MedicalUnit;
 use App\Models\MessengerProfile;
+use App\Models\OperationalProfile;
 use App\Models\PatientOrder;
 use App\Models\Provider;
 use App\Models\ProviderRequest;
@@ -64,7 +66,10 @@ class StateTransitionTest extends TestCase
     public function test_completed_appointment_cannot_return_to_scheduled(): void
     {
         $user = $this->user('operational', 'operational_outpatient');
+        $unit = MedicalUnit::create(['name' => 'Unidad de transición', 'status' => 'active']);
+        OperationalProfile::create(['user_id' => $user->id, 'medical_unit_id' => $unit->id, 'status' => 'active']);
         $appointment = Appointment::query()->create([
+            'medical_unit_id' => $unit->id,
             'status' => 'completed',
             'starts_at' => now()->subHour(),
         ]);

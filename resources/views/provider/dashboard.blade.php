@@ -82,6 +82,9 @@
 @endphp
 
 @section('content')
+@if ($type === 'medicines' && auth()->user()->role === 'provider')
+<div class="pharmacy-notice"><a href="{{ route('provider.pharmacy.products') }}">Administrar mis productos de Farmacia digital</a></div>
+@endif
   @if ($type === 'import')
     <div class="provider-import-native-screen">
       <header class="import-account-header">

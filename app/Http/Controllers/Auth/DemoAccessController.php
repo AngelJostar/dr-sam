@@ -68,6 +68,12 @@ class DemoAccessController extends Controller
         Auth::login($user);
         $request->session()->regenerate();
 
+        if ($user->isMedicineDistributor()) {
+            $request->session()->forget('url.intended');
+
+            return redirect()->route('provider.pharmacy.products');
+        }
+
         if ($user->role === 'superadmin') {
             $request->session()->forget('url.intended');
 

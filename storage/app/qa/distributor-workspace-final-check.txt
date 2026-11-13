@@ -1,0 +1,27 @@
+
+   PASS  Tests\Feature\DistributorWorkspaceTest
+  ✓ catalog groups complete presentations and filters only own products                                          7.20s  
+  ✓ menu sections are available and reject other profiles and foreign editors                                    0.11s  
+  ✓ inventory changes are owned validated and detect stale stock                                                 0.06s  
+  ✓ store visibility respects both authorizations and product rules                                              0.08s  
+  ✓ reports and delivery followup never expose other suppliers or patient data                                   0.07s  
+  ✓ configuration cannot modify publication or account permissions                                               0.03s  
+  ✓ validation reopens the correct editor and restores input                                                     0.06s  
+
+   PASS  Tests\Feature\MedicineDistributorNavigationTest
+  ✓ distributor login goes to catalog instead of an old intended panel                                           0.36s  
+  ✓ old dashboard and provider panels redirect distributor to own catalog                                        0.22s  
+  ✓ distributor module switcher only links to its catalog                                                        0.19s  
+  ✓ other provider and superadmin keep their existing panels                                                     0.08s  
+
+   PASS  Tests\Feature\PharmacyDemoImageLibraryTest
+  ✓ eligible provider can view png library and unknown key is not found                                          0.07s  
+  ✓ library access requires active enabled demo provider                                                         0.03s  
+  ✓ product form shows four demo choices only for eligible provider                                              0.07s  
+  ✓ all demo choices copy exact resources to private owned opaque paths                                          0.14s  
+  ✓ store rejects ineligible unknown or ambiguous demo selections without writes                                 0.07s  
+  ✓ owned updates preserve metadata and public images obey publication gates                                     0.09s  
+
+  Tests:    17 passed (270 assertions)
+  Duration: 9.12s
+

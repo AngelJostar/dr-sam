@@ -11,5 +11,6 @@ class DatabaseSeeder extends Seeder
         $this->call(DrSamDemoSeeder::class);
         $this->call(OncologyInfusionDemoSeeder::class);
         $this->call(InsuranceHealthSeeder::class);
+        $this->call(IntegratedServiceFormatsSeeder::class);
     }
 }

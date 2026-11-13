@@ -91,7 +91,11 @@ class DoctorController extends Controller
         $previous = $model->status;
         $transitions->assertAllowed('appointment', $previous, $data['status']);
 
-        DB::transaction(function () use ($model, $data, $request, $previous): void {
+        DB::transaction(function () use (&$model, $data, $request, &$previous, $doctor, $transitions): void {
+            $model = Appointment::query()->whereKey($model->id)->lockForUpdate()->firstOrFail();
+            abort_unless((int) $model->doctor_id === (int) $doctor->id, 404);
+            $previous = $model->status;
+            $transitions->assertAllowed('appointment', $previous, $data['status']);
             $model->update(['status' => $data['status']]);
             AppointmentStatusEvent::query()->create([
                 'appointment_id' => $model->id,

@@ -1,4 +1,4 @@
-<?php $__env->startSection('body_class', 'superadmin-native-body'.($section === 'doctors' ? ' superadmin-doctors-catalog-body' : '').($section === 'medications' ? ' superadmin-medications-catalog-body' : '').($section === 'institutions' ? ' superadmin-institutions-catalog-body' : '')); ?>
+<?php $__env->startSection('body_class', 'superadmin-native-body superadmin-catalog-body'.($section === 'doctors' ? ' superadmin-doctors-catalog-body' : '').($section === 'medications' ? ' superadmin-medications-catalog-body' : '').($section === 'institutions' ? ' superadmin-institutions-catalog-body' : '')); ?>
 
 <?php
   $statusLabels = [
@@ -15,6 +15,8 @@
   $carouselOptions = ['all' => 'Todos', 'active' => 'Activos', 'inactive' => 'Inactivos'];
   if (in_array($section, ['users', 'insurance-advisors'], true)) {
     $carouselOptions['suspended'] = 'Suspendidos';
+  } elseif ($section === 'medications') {
+    $carouselOptions += ['shortage' => 'Desabasto', 'discontinued' => 'Descontinuado'];
   } elseif ($section === 'medical-devices') {
     $carouselOptions['evaluation'] = 'En evaluación';
   } elseif ($section === 'access') {
@@ -47,6 +49,10 @@
     $carouselOptions = ['all' => 'Todos', 'primary' => 'Principal', 'secondary' => 'Secundario'];
   }
   $carouselSelected = $carouselParameter ? ($filters[$carouselParameter] ?: 'all') : 'all';
+  if ($section === 'mix-request-format' && isset($mixFormatPanel)) {
+    $carouselOptions = [$mixFormatPanel => $carouselOptions[$mixFormatPanel]];
+    $carouselSelected = $mixFormatPanel;
+  }
   if ($section === 'users') {
     $carouselOptions = ['all' => 'Todos', 'klini' => 'Klini', 'operational' => 'Operativos'] + $carouselOptions;
     $carouselQueries = [];
@@ -60,6 +66,7 @@
   }
   $doctorView = $section === 'doctors' && in_array(request('view'), ['catalog', 'commissions'], true) ? request('view') : 'all';
   if ($section === 'insurance-carriers') {
+    $carouselShortLabels = ['gmm' => 'Gastos médicos', 'life' => 'Seguros de vida'];
     $carouselOptions += ['gmm' => 'Seguros de gastos médicos mayores', 'life' => 'Seguros de vida'];
     $carouselQueries = [
       'all' => ['status' => 'all', 'view' => request('view', 'carriers'), 'edit_plan' => null],
@@ -533,6 +540,11 @@
           $secondaryCta = $advertisingSettings['secondary_cta'] ?? 'Abrir receta';
         ?>
 
+        @include('superadmin._catalog-heading', [
+          'headingTitle' => 'Gestion de banners publicitarios',
+          'headingDescription' => '2 banners en Medico - sin cambios pendientes',
+          'headingActions' => [['label' => 'Actualizar', 'href' => request()->fullUrl()]],
+        ])
         <form class="superadmin-native-advertising-controls" method="post" action="<?php echo e(route('superadmin.settings.update', 'advertising')); ?>">
           <?php echo csrf_field(); ?>
           <label>Modulo con espacios publicitarios
@@ -552,13 +564,6 @@
         </form>
 
         <section class="superadmin-native-advertising-card">
-          <header>
-            <div>
-              <h2>Gestion de banners publicitarios</h2>
-              <p>2 banners en Medico - sin cambios pendientes</p>
-            </div>
-          </header>
-
           <div class="superadmin-native-advertising-preview">
             <header>
               <div>
@@ -608,153 +613,13 @@
           </div>
         </section>
       <?php elseif($section === 'prescription-format'): ?>
-        <?php
-          $folioPrefix = $prescriptionSettings['folio_prefix'] ?? 'RX-SA';
-          $footerNote = $prescriptionSettings['footer_note'] ?? 'Formato base copiado del modulo Area Operativa de Farmacia Externa.';
-        ?>
-
-        <section class="superadmin-native-prescription-paper">
-          <header class="superadmin-native-prescription-head">
-            <div>
-              <p>Formato de receta medica de plataforma</p>
-              <h2>Formato de Receta Medica</h2>
-            </div>
-            <div>
-              <span>Folio</span>
-              <strong><?php echo e($folioPrefix); ?>-20260714</strong>
-              <span>Fecha 14/07/2026</span>
-            </div>
-          </header>
-
-          <div class="superadmin-native-prescription-intake">
-            <label>Paciente agendado en Consulta Externa
-              <select>
-                <option>Andrea Montserrat Pineda Lopez - 14/07/2026 - Dr. Carter Jimmy</option>
-              </select>
-            </label>
-            <strong><?php echo e($footerNote); ?></strong>
-          </div>
-
-          <section class="superadmin-native-prescription-section" data-admin-filter-panel="patient">
-            <h3>Datos del paciente</h3>
-            <div class="superadmin-native-prescription-grid">
-              <label>Nombre(s)<input value="Andrea Montserrat" readonly></label>
-              <label>Apellidos<input value="Pineda Lopez" readonly></label>
-              <label>CURP<input value="Sin CURP" readonly></label>
-              <label>NSS / registro<input value="EXP-44007" readonly></label>
-              <label>Edad<input value="36" readonly></label>
-              <label>Sexo<input value="Femenino" readonly></label>
-              <label>Servicio<input value="Hemodialisis" readonly></label>
-              <label>Consultorio<input value="Consultorio asignado" readonly></label>
-              <label>Fecha de atencion<input value="14/07/2026" readonly></label>
-            </div>
-          </section>
-
-          <section class="superadmin-native-prescription-section" data-admin-filter-panel="clinical">
-            <h3>Diagnostico y resumen clinico</h3>
-            <div class="superadmin-native-prescription-clinical">
-              <label>Diagnostico presuntivo o definitivo
-                <input placeholder="Escribir diagnostico">
-              </label>
-              <label>Resumen clinico, exploracion, evolucion e indicaciones generales
-                <textarea placeholder="Escribir resumen clinico" rows="7"></textarea>
-              </label>
-            </div>
-          </section>
-
-          <section class="superadmin-native-prescription-section" data-admin-filter-panel="medications">
-            <h3>Medicamentos indicados</h3>
-            <div class="superadmin-native-prescription-meds">
-              <table>
-                <thead>
-                  <tr>
-                    <th>No.</th>
-                    <th>Clave CNIS</th>
-                    <th>Medicamento</th>
-                    <th>Dosis</th>
-                    <th>Presentacion</th>
-                    <th>Via</th>
-                    <th>Frecuencia<br>(x veces por dia)</th>
-                    <th>Duracion</th>
-                    <th>Cantidad</th>
-                    <th>Indicaciones</th>
-                  </tr>
-                </thead>
-                <tbody data-prescription-medications>
-                  <tr data-prescription-medication>
-                    <td class="superadmin-prescription-row-control">
-                      <span data-medication-number>1</span>
-                      <button type="button" class="superadmin-native-prescription-remove" data-remove-medication aria-label="Quitar medicamento">-</button>
-                    </td>
-                    <td><input name="medications[0][cnis]" data-medication-field="cnis" placeholder="CNIS"></td>
-                    <td><input name="medications[0][medication]" data-medication-field="medication" placeholder="Escribir medicamento libre"></td>
-                    <td><input name="medications[0][dose]" data-medication-field="dose" placeholder="Dosis"></td>
-                    <td><input name="medications[0][presentation]" data-medication-field="presentation" placeholder="Presentacion"></td>
-                    <td><input name="medications[0][route]" data-medication-field="route" placeholder="Via"></td>
-                    <td><input name="medications[0][frequency]" data-medication-field="frequency" placeholder="Frecuencia (x veces)"></td>
-                    <td><input name="medications[0][duration]" data-medication-field="duration" placeholder="Duracion"></td>
-                    <td><input name="medications[0][quantity]" data-medication-field="quantity" placeholder="Piezas"></td>
-                    <td><textarea name="medications[0][instructions]" data-medication-field="instructions" placeholder="Indicaciones" rows="2"></textarea></td>
-                  </tr>
-                </tbody>
-              </table>
-              <button type="button" class="superadmin-native-prescription-add" data-add-medication aria-label="Agregar medicamento">+</button>
-            </div>
-          </section>
-
-          <script>
-            (() => {
-              const medications = document.querySelector('[data-prescription-medications]');
-              const addButton = document.querySelector('[data-add-medication]');
-
-              if (!medications || !addButton) return;
-              const medicationTemplate = medications.querySelector('[data-prescription-medication]')?.cloneNode(true);
-
-              const renumberRows = () => {
-                medications.querySelectorAll('[data-prescription-medication]').forEach((row, index) => {
-                  row.querySelector('[data-medication-number]').textContent = index + 1;
-                  row.querySelectorAll('[data-medication-field]').forEach((field) => {
-                    field.name = `medications[${index}][${field.dataset.medicationField}]`;
-                  });
-                });
-              };
-
-              const bindRemoveButton = (button) => {
-                button.addEventListener('click', () => {
-                  button.closest('[data-prescription-medication]').remove();
-                  renumberRows();
-                });
-              };
-
-              medications.querySelectorAll('[data-remove-medication]').forEach(bindRemoveButton);
-
-              addButton.addEventListener('click', () => {
-                if (!medicationTemplate) return;
-
-                const newRow = medicationTemplate.cloneNode(true);
-                newRow.querySelectorAll('input, textarea').forEach((field) => field.value = '');
-                bindRemoveButton(newRow.querySelector('[data-remove-medication]'));
-                medications.appendChild(newRow);
-                renumberRows();
-                newRow.querySelector('input, textarea')?.focus();
-              });
-            })();
-          </script>
-
-          <section class="superadmin-native-prescription-section" data-admin-filter-panel="doctor">
-            <h3>Medico tratante</h3>
-            <div class="superadmin-native-prescription-grid is-doctor">
-              <label>Nombre del medico<input value="Dr. Carter Jimmy" readonly></label>
-                    <label>Cedula profesional<input value="CED-2026" readonly></label>
-              <label>Especialidad<input value="Medicina interna" readonly></label>
-              <label>Firma y sello<input value="Dr. Carter Jimmy - Ced. 1234567890" readonly></label>
-            </div>
-          </section>
-        </section>
+        @include('superadmin._prescription-format')
       <?php elseif(isset($insuranceCategory)): ?>
         <?php echo $__env->make('superadmin._insurance-plans', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
       <?php elseif($section === 'insurance-carriers'): ?>
         <?php echo $__env->make('superadmin._insurance-carriers', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+      <?php elseif($section === 'medications'): ?>
+        <?php echo $__env->make('superadmin.medications.table', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
       <?php else: ?>
       <section class="superadmin-native-catalog-card">
         <?php if($section === 'institutions'): ?><div class="superadmin-institution-catalog"><?php endif; ?>
@@ -766,7 +631,7 @@
           </div>
 
           <div class="superadmin-native-heading-actions">
-          <a class="superadmin-native-csv" href="<?php echo e($csvUrl); ?>"><?php if(in_array($section, ['institutions', 'medications'], true)): ?><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M4 15v5h16v-5" /></svg>Exportar CSV<?php else: ?>CSV<?php endif; ?></a>
+          <a class="superadmin-native-csv" href="<?php echo e($csvUrl); ?>" aria-label="Exportar CSV" title="Exportar CSV">CSV</a>
           <?php if(! empty($catalog['primary_action'])): ?>
             <?php
               $primaryRoute = $catalog['primary_action']['route'];
@@ -786,7 +651,7 @@
             <thead>
               <tr>
                 <?php $__currentLoopData = $catalog['columns']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $column): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                  <th><?php echo e($column); ?></th>
+                  <th<?php if($section === 'services' && $column === 'Formatos'): ?> data-drsam-table-filter-skip-column<?php endif; ?>><?php echo e($column); ?></th>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
               </tr>
             </thead>
@@ -807,7 +672,9 @@
                     ?>
 
                     <td<?php if($column === 'fuente / perfil'): ?> class="superadmin-native-profile-cell"<?php endif; ?>>
-                      <?php if($section === 'institutions' && $index === 0): ?>
+                      <?php if($section === 'services' && $column === 'formatos'): ?>
+                        <button type="button" data-service-formats="<?php echo e($record->id); ?>" data-service-name="<?php echo e($record->name); ?>" aria-haspopup="dialog" aria-controls="service-formats-dialog" aria-label="Ver formatos de <?php echo e($record->name); ?>">Ver</button>
+                      <?php elseif($section === 'institutions' && $index === 0): ?>
                         <button type="button" class="superadmin-institution-select" data-institution-select aria-controls="institution-detail" aria-pressed="<?php echo $isSelectedInstitution ? 'true' : 'false'; ?>" aria-label="Ver información de <?php echo e($record->name); ?>"><?php echo e($value); ?></button>
                       <?php elseif($section === 'institutions' && $index >= 7): ?>
                         <?php echo $__env->make('superadmin._institution-action', ['record' => $record, 'index' => $index, 'value' => $value])->render(); ?>
@@ -1409,6 +1276,9 @@
       <?php endif; ?>
     </section>
   </div>
+<?php if($section === 'services'): ?>
+  <?php echo $__env->make('superadmin._service-formats-dialog', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+<?php endif; ?>
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('layouts.app', ['title' => $catalog['title']], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\dr-sam-laravel\resources\views\superadmin\catalog.blade.php ENDPATH**/ ?>

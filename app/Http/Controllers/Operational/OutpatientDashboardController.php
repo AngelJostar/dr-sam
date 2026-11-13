@@ -143,11 +143,22 @@ class OutpatientDashboardController extends Controller
 
     public function updateAppointment(Request $request, Appointment $appointment, PlatformAuditService $audit, DomainStateTransitionService $transitions): RedirectResponse
     {
+        if (! in_array($request->user()?->role, ['superadmin', 'admin'], true)) {
+            $unit = $this->contextUnit($request);
+            abort_unless($unit && (int) $appointment->medical_unit_id === (int) $unit->id, 403, 'No puedes modificar citas de otra unidad.');
+        }
         $data = $request->validate(['status' => ['required', Rule::in(['scheduled', 'in_progress', 'completed', 'cancelled'])]]);
         $previousStatus = $appointment->status;
         $transitions->assertAllowed('appointment', $previousStatus, $data['status']);
 
-        DB::transaction(function () use ($appointment, $data, $previousStatus, $request): void {
+        DB::transaction(function () use ($appointment, $data, $request, $transitions): void {
+            $appointment = Appointment::query()->whereKey($appointment->id)->lockForUpdate()->firstOrFail();
+            if (! in_array($request->user()?->role, ['superadmin', 'admin'], true)) {
+                $unit = $this->contextUnit($request);
+                abort_unless($unit && (int) $appointment->medical_unit_id === (int) $unit->id, 403, 'No puedes modificar citas de otra unidad.');
+            }
+            $previousStatus = $appointment->status;
+            $transitions->assertAllowed('appointment', $previousStatus, $data['status']);
             $appointment->update($data);
             AppointmentStatusEvent::query()->create([
                 'appointment_id' => $appointment->id,

@@ -75,11 +75,13 @@ class SuperAdminModuleTest extends TestCase
             ],
         ]);
 
-        foreach (['users', 'institutions', 'doctors', 'providers', 'insurance-carriers', 'insurance-advisors', 'hospitals', 'specialties', 'medications', 'medical-devices', 'patients', 'subscriptions', 'prescription-format', 'mix-request-format', 'advertising', 'modules', 'access'] as $section) {
+        foreach (['users', 'institutions', 'services', 'doctors', 'providers', 'insurance-carriers', 'insurance-advisors', 'hospitals', 'specialties', 'medications', 'medical-devices', 'patients', 'subscriptions', 'prescription-format', 'mix-request-format', 'advertising', 'modules', 'access'] as $section) {
             $response = $this->actingAs($user)
                 ->withSession(['status' => 'Aviso de prueba del catálogo'])
                 ->get(route('superadmin.catalog', $section))
                 ->assertOk()
+                ->assertSee('superadmin-catalog-body', false)
+                ->assertSee('superadmin-native-section-heading', false)
                 ->assertSee('data-admin-feedback-dialog', false)
                 ->assertSee('Aviso de prueba del catálogo')
                 ->assertDontSee('class="notice success"', false)

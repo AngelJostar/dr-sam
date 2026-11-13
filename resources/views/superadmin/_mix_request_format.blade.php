@@ -14,8 +14,19 @@
   ];
 @endphp
 
+@unless($hideFormatHeading ?? false)
+@include('superadmin._catalog-heading', [
+  'headingTitle' => $serviceFormat->name ?? 'Formato de solicitud de mezcla',
+  'headingDescription' => isset($formatService) ? 'Servicios integrales · '.$formatService->name : 'Formatos de oncología y nutrición parenteral.',
+  'headingActions' => [
+    ['label' => 'Volver a servicios integrales', 'href' => route('superadmin.catalog', 'services')],
+    ['label' => 'Actualizar', 'href' => request()->fullUrl()],
+  ],
+])
+@endunless
+@if(!isset($mixFormatPanel) || $mixFormatPanel === 'oncology')
 <section class="superadmin-mix-format" data-mix-panel="oncology" data-admin-filter-panel="oncology">
-  <header class="superadmin-mix-format-toolbar"><div><h2>Formato de solicitud de servicio</h2><p>Solicitud de Oncologia / Quimioterapia</p></div><button type="button" data-admin-filter-reset>Todos los formatos</button></header>
+  <header class="superadmin-mix-format-toolbar"><div><h2>Formato de solicitud de servicio</h2><p>Solicitud de Oncologia / Quimioterapia</p></div>@if(!isset($mixFormatPanel))<button type="button" data-admin-filter-reset>Todos los formatos</button>@endif</header>
   <form class="superadmin-oncology-form" onsubmit="event.preventDefault()">
     <h2>SOLICITUD DE ONCOLOGICOS</h2>
     <div class="superadmin-oncology-body">
@@ -37,10 +48,12 @@
     </div>
   </form>
 </section>
+@endif
 
+@if(!isset($mixFormatPanel) || $mixFormatPanel === 'parenteral')
 <section class="superadmin-mix-format" data-mix-panel="parenteral" data-admin-filter-panel="parenteral">
   <form class="superadmin-npt-form" onsubmit="event.preventDefault()">
-    <header class="superadmin-mix-format-toolbar"><div><h2>Formato de solicitud de servicio</h2><p>Solicitud de Nutricion Parenteral</p></div><button type="button" data-admin-filter-reset>Todos los formatos</button></header>
+    <header class="superadmin-mix-format-toolbar"><div><h2>Formato de solicitud de servicio</h2><p>Solicitud de Nutricion Parenteral</p></div>@if(!isset($mixFormatPanel))<button type="button" data-admin-filter-reset>Todos los formatos</button>@endif</header>
     <div class="superadmin-npt-body">
       <fieldset><legend>PACIENTE Y UBICACION</legend><div class="superadmin-npt-grid">
         <label>Paciente nombre(s)*<input required></label><label>Paciente apellidos*<input required></label><label>Servicio*<input required value="Nutricion clinica"></label>
@@ -64,3 +77,4 @@
     </div>
   </form>
 </section>
+@endif

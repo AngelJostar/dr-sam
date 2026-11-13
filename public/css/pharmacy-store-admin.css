@@ -1,0 +1,29 @@
+.pharmacy-store-admin .superadmin-native-catalog-card{padding:24px;margin-bottom:20px}.pharmacy-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;max-width:1000px}.pharmacy-form label{display:flex;flex-direction:column;gap:7px;font-weight:600}.pharmacy-form input,.pharmacy-form textarea,.pharmacy-form select,.pharmacy-store-admin select{padding:11px;border:1px solid #ccd9db;border-radius:9px;background:#fff;color:#183b3d;min-width:0}.pharmacy-form textarea{min-height:90px}.pharmacy-form small,.pharmacy-store-admin small{font-weight:400;color:#58716e}.pharmacy-store-admin button,.pharmacy-store-admin .superadmin-native-section-heading a{border:0;border-radius:10px;background:#176b65;color:white;padding:11px 16px;cursor:pointer}.pharmacy-form button{align-self:end}.pharmacy-notice{padding:15px 18px;border-radius:12px;background:#eaf5f2;color:#285951;margin:18px 0}.pharmacy-product{padding:18px 0;border-bottom:1px solid #e2eae8}.pharmacy-product summary{cursor:pointer;padding-bottom:12px}.pharmacy-store-admin td form{display:flex;flex-wrap:wrap;gap:8px}.pharmacy-store-admin h2{margin-bottom:15px}@media(max-width:700px){.pharmacy-form{grid-template-columns:1fr}.pharmacy-store-admin .superadmin-native-catalog-card{padding:16px}}
+
+/* Keep off-screen accessibility labels anchored inside scrollable order rows. */
+.pharmacy-store-admin td form{position:relative}
+.pharmacy-store-admin .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+.pharmacy-distributor-dialog{position:fixed;inset:0;margin:auto;width:min(680px,calc(100vw - 32px));max-width:calc(100vw - 32px);max-height:calc(100dvh - 40px);box-sizing:border-box;padding:0;border:1px solid var(--admin-border,#d9e3ed);border-radius:20px;background:#fff;color:var(--admin-ink,#10244c);box-shadow:0 24px 80px #10244c33;overflow:hidden}
+.pharmacy-distributor-dialog[open]{display:flex;flex-direction:column}
+.pharmacy-distributor-dialog::backdrop{background:rgb(16 36 60 / 42%)}
+.pharmacy-distributor-dialog-header{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;padding:24px;border-bottom:1px solid var(--admin-border,#d9e3ed);flex-shrink:0}
+.pharmacy-distributor-dialog h2{margin:0;font-size:22px;line-height:1.3}
+.pharmacy-distributor-dialog-header p{margin:7px 0 0;color:var(--admin-muted,#58716e);font-size:13px}
+.pharmacy-distributor-dialog-content{padding:24px;overflow:auto;overscroll-behavior:contain;min-height:0}
+.pharmacy-distributor-dialog .pharmacy-form{margin:0;max-width:none;font-size:13px}
+.pharmacy-distributor-dialog .pharmacy-form input,.pharmacy-distributor-dialog .pharmacy-form select{box-sizing:border-box;width:100%;height:42px}
+.pharmacy-distributor-dialog .pharmacy-form small{font-size:11px;line-height:1.5}
+.pharmacy-distributor-wide{grid-column:1/-1}
+.pharmacy-distributor-hint{margin:0;padding:12px;border-radius:10px;background:#eaf5f2;color:#285951;font-size:12px;line-height:1.5}
+.native-shell .pharmacy-distributor-dialog button{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:10px 18px;border:1px solid #176b65;border-radius:10px;background:#176b65;color:#fff;box-shadow:none;font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+.pharmacy-distributor-dialog button:hover{filter:brightness(.96)}
+.native-shell .pharmacy-distributor-dialog .pharmacy-distributor-close{width:40px;height:40px;min-width:40px;padding:0;border-color:var(--admin-border,#d9e3ed);background:#fff;color:var(--admin-ink,#10244c);font-size:24px;line-height:1}
+.native-shell .pharmacy-distributor-dialog .pharmacy-distributor-cancel{background:#fff;color:var(--admin-ink,#10244c);border-color:var(--admin-border,#d9e3ed)}
+.pharmacy-distributor-dialog :is(input,select,button,summary):focus-visible{outline:2px solid var(--admin-accent,#009c9b);outline-offset:3px}
+.pharmacy-distributor-demo{margin-top:20px;padding-top:16px;border-top:1px solid var(--admin-border,#d9e3ed);font-size:12px;color:var(--admin-muted,#58716e)}
+.pharmacy-distributor-demo summary{cursor:pointer;color:#176b65;font-weight:600}
+.pharmacy-distributor-demo .pharmacy-form{margin-top:16px}
+.pharmacy-distributor-dialog-actions{display:flex;justify-content:flex-end;gap:10px;padding:16px 24px;border-top:1px solid var(--admin-border,#d9e3ed);flex-shrink:0}
+.pharmacy-distributor-errors{margin:0 0 20px;background:#fff1f1;color:#943535;font-size:13px}
+@media(max-width:700px){.pharmacy-distributor-dialog{max-height:calc(100dvh - 24px)}.pharmacy-distributor-dialog-header,.pharmacy-distributor-dialog-content{padding:18px}.pharmacy-distributor-dialog-actions{padding:14px 18px}.pharmacy-distributor-dialog-actions button{flex:1}.pharmacy-distributor-dialog h2{font-size:20px}}
