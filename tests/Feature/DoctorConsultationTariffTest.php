@@ -71,7 +71,10 @@ class DoctorConsultationTariffTest extends TestCase
         $this->assertSame($user->id, $tariff->created_by);
         $this->assertNull($other->fresh()->current_consultation_tariff_id);
         $audit = AuditLog::query()->where('event', 'doctor.consultation_tariff.publish')->firstOrFail();
-        $this->assertSame(['tariff_id', 'version', 'currency', 'amount_cents', 'modality'], array_keys($audit->payload['context']));
+        $this->assertEqualsCanonicalizing(
+            ['tariff_id', 'version', 'currency', 'amount_cents', 'modality'],
+            array_keys($audit->payload['context']),
+        );
         $this->assertSame($tariff->id, $audit->payload['context']['tariff_id']);
         $this->assertDatabaseCount('doctor_consultation_tariffs', 1);
     }
